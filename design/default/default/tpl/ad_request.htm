@@ -1,0 +1,149 @@
+{startblock(script)}
+{parentblock()}
+<script type="text/javascript">
+    jQuery(function() {
+
+        dosearch = function() {
+            if(jQuery("#SEARCHURL").val() != "") { location.href = jQuery("#SEARCHURL").val(); }
+        }
+        presearch = function() {
+            if (jQuery('#CITY').val() != '' || jQuery('#ZIP').val() != '') {
+                getLatiLongi("", "", "", "", "", function() {
+                    dopresearch();
+                });
+            } else {
+                jQuery("#LATITUDE, #LONGITUDE").val('');
+                dopresearch();
+            }
+        }
+        function dopresearch() {
+            jQuery.ajax({
+                url: jQuery("#presearch-adrequest").attr("action"),
+                type: 'POST',
+                data: jQuery("#presearch-adrequest").serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    $('#ASB').val('[[ translation : marketplace : search.results.show : ALL_ADS="' + response["COUNT"] + '" : ({ALL_ADS}) Treffer anzeigen ]]');
+
+                    if (response["COUNT"] > 0) {
+                        $('#SEARCHURL').val('{uri_baseurl(/)}gesuche/gesuche,'+jQuery("#FK_KAT").val()+',' + response["HASH"] + '.htm');
+                    }
+                    else {
+                        $('#SEARCHURL').val('');
+                    }
+                }
+            });
+        }
+
+        presearch();
+        //generateCategoryTree("#adRequestCategoryTreeNode", categoryTree);
+
+    })
+
+</script>
+{endblock(script)}
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+        {if OFFSET==0}
+        <div class="jumbotron">
+            <h1>[[ translation : marketplace : requests.recent :: Aktuelle Gesuche ]]</h1>
+            <div class="row">
+                <div class="col-md-9">
+                    <h2>
+                        [[ translation : marketplace : requests.recent.intro :: Bieten Sie hier aktiv Ihre Produkte an unsere User an ]]
+                    </h2>
+                    <p>
+                        Sie haben nicht das richtige Produkt gefunden? Dann stellen Sie Ihre Ihr Produktgesuch ein.
+                    </p>
+                </div>
+                <div class="col-md-3 text-right">
+                    <img src="{uri_resource(/images/gesuche.png)}"  alt="gesuche" class="img-responsive">
+                </div>
+            </div>
+
+            <p><a class="btn btn-primary btn-lg" href="{uri_action(info)}" role="button">Mehr erfahren</a></p>
+        </div>
+
+        {endif}
+
+
+
+        <div class="advertisement-box">{adserver(,1780,)}</div>
+
+        <div class="text-box design-location clearfix">
+            <div class="pull-left">
+                {kat_ariadne_dynamic({CATEGORY},ad_request)}
+            </div>
+            <div class="pull-right">
+                <span class="text-muted">[[ translation : marketplace : requests.count : COUNT=ALL_AD_REQUESTS : {COUNT} Gesuche ]]</span>
+            </div>
+        </div>
+
+        {if liste}
+        {liste}
+
+        {pager}
+        {else}
+        <p>
+            [[ translation : marketplace : requests.none.found :: In dieser Kategorie wurden leider keine Gesuche gefunden. ]]
+        </p>
+        {endif}
+    </div>
+    <div class="design-page-menu">
+        <div class="panel panel-primary">
+            <div class="panel-heading">[[ translation : marketplace : category.selection :: Kategorie Auswahl ]]</div>
+            <ul class="menu-box menu-box-striped" id="adRequestCategoryTreeNode">
+                {CATEGORY_TREE}
+            </ul>
+            <div class="panel-body">
+                <p>
+                    <a href="{uri_action(ad_request)}">[[ translation : marketplace : requests.show.all :: alle Gesuche anzeigen ]]</a>
+                </p>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">[[ translation : marketplace : requests.search.filter :: Suchfilter ]]</div>
+            <div class="panel-body">
+                <form onsubmit="dosearch(); return false;" id="presearch-adrequest" method="post" action="{uri_baseurl(/index.php)}">
+                    <input type="hidden" name="page" value="presarch_adrequest_ajax" />
+                    <input type="hidden" name="FK_KAT" id="FK_KAT" value="{CATEGORY}" />
+                    <input type="hidden" name="frame" value="ajax" />
+                    <input type="hidden" id="SEARCHURL" name="SEARCHURL" value="" />
+                    <input type="hidden" name="LATITUDE" value="{LATITUDE}" id="LATITUDE" />
+                    <input type="hidden" name="LONGITUDE" value="{LONGITUDE}" id="LONGITUDE" />
+
+                    <div class="form-group">
+                        <label>[[ translation : general : search :: Suche ]]:</label>
+                        <input type="text" class="form-control" id="SEARCH_AD_REQUEST" name="SEARCH_AD_REQUEST" value="{htm(SEARCH_AD_REQUEST)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : country :: Land ]]:</label>
+                        {select_country(,,,,onchange="presearch();" id="COUNTRY" class="form-control")}
+                    </div>
+
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : zip :: PLZ ]]:</label>
+                        <input type="text" class="form-control" id="ZIP" name="ZIP" value="{htm(SEARCH_PLZ)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : city :: ORT ]]:</label>
+                        <input type="text" class="form-control" id="CITY" name="CITY" value="{htm(SEARCH_ORT)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : area :: Im Umkreis ]]:</label>
+                        {lookup(UMKREIS,,, onchange="presearch();" class="form-control",F_ORDER ASC)}
+                    </div>
+
+                    <p>
+                        <input onclick="dosearch()" class="btn btn-success" type="submit" id="ASB" value="[[ translation : marketplace : search.results.show : ALL_ADS='0' : ({ALL_ADS}) Treffer anzeigen ]]" />
+                    </p>
+                </form>
+            </div>
+        </div>
+        {content_page()}
+    </div>
+</div>
+

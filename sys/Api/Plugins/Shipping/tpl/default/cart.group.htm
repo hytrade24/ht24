@@ -1,0 +1,10 @@
+[[ translation : marketplace : ad.cart.article.by.seller : SELLER='<a href="{uri_action(view_user,{urllabel(ANBIETER_NAME)},{ANBIETER_ID_USER})}">{ANBIETER_NAME}</a>' :
+    Artikel vom Verkäufer {SELLER}
+]]
+{if PAYMENT_ADAPTER}
+  [[ translation : marketplace : ad.cart.article.with.payment.method :: mit der Zahlungsweise '{htm(PAYMENT_ADAPTER)}' ]]
+{endif}
+<br />
+<small class="text-muted">
+  [[ translation : plugin : shipping.cart.group.title :: Versand mit {htm(SHIPPING_PROVIDER)} ]]
+</small>

@@ -1,0 +1,89 @@
+<script type="text/javascript">
+    jQuery(function() {
+    	jQuery("#clubFormularSearchWordTab").tabs();
+    });
+</script>
+
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}[[ translation : general : group.index :: Gruppenverzeichnis ]]</h1>
+
+{if saved}
+<div class="alert alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+
+</div>
+{endif}
+{if errors}
+<div class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4>[[ translation : general : error :: Fehler ]]!</h4>
+	<ul>
+		{errors}
+	</ul>
+</div>
+{endif}
+
+{if CLUB_ID_CLUB}
+	{subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+
+	<span class="lead">[[ translation : marketplace : type.searchwords :: Geben Sie die Suchbegriffe ein, unter denen Sie gefunden werden wollen. ]]</span>
+	<div class="visibleOnEnabledClub">
+	    <script type="text/javascript">
+	        jQuery(function() {
+	            reloadClubSearchWordList = function(el, l) {
+	                jQuery.ajax({
+	                    url: ebiz_trader_baseurl + 'my-pages/my-club-searchword.htm',
+	                    data: { 'do': 'GET_AJAX', ID_CLUB: {CLUB_ID_CLUB}, LANG: l },
+	                    type: 'POST',
+	                    success: function(result) {
+	                        jQuery(el).html(result);
+	                    }
+	                })
+	            }
+
+	            jQuery(".deleteClubSearchWord").on('click', function() {
+	                var word = jQuery(this).attr('rel');
+	                var lang = jQuery(this).parent().parent().find("input[name=LANG]").val();
+
+	                if(confirm("[[ translation : marketplace : want.searchword :: Möchten Sie das Schlagwort ]]" + word + "[[ translation : marketplace : really.delete :: wirklich löschen ]]?")) {
+	                    jQuery.ajax({
+	                        url: ebiz_trader_baseurl + 'my-pages/my-club-searchword.htm',
+	                        data: { 'do': 'DELETE', ID_CLUB: {CLUB_ID_CLUB}, SEARCHWORD: word, LANG: lang },
+	                        dataType: 'json',
+	                        type: 'POST',
+	                        success: function(result) {
+	                            reloadClubSearchWordList('#clubSearchList' + lang, lang);
+	                        }
+	                    })
+	                }
+
+	                return false;
+	            })
+
+	            jQuery(".clubSearchWordFormular").submit(function() {
+	                var formular = this;
+	                jQuery.ajax({
+	                    url: ebiz_trader_baseurl + 'my-pages/my-club-searchword,{CLUB_ID_CLUB}.htm',
+	                    data: jQuery(this).serialize(),
+	                    dataType: 'json',
+	                    type: 'POST',
+	                    success: function(result) {
+	                        jQuery(formular).find("input[name=SEARCHWORD]").val('');
+	                        reloadClubSearchWordList('#' + jQuery(formular).attr('id') + ' .clubSearchList', jQuery(formular).find("input[name=LANG]").val());
+	                    }
+	                })
+
+	                return false;
+	            })
+	        })
+	    </script>
+
+	    <div id="clubFormularSearchWordTab">
+	        <ul>
+	            {searchWordLanguageHeader}
+	        </ul>
+			<div class="design-content-box">
+	        	{searchWordLanguageBody}
+			</div>
+	    </div>
+	</div>
+{endif}

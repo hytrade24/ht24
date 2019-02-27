@@ -1,0 +1,5 @@
+{if LANG_ACTIVE}
+<textarea class="inputTaskName" name="CONFIG[TASKS][NAME_{ABBR}][]" placeholder="Name" rows="6">{htm(NAME)}</textarea>
+{else}
+<input type="hidden" name="CONFIG[TASKS][NAME_{ABBR}][]" placeholder="Name" value="{htm(NAME)}" />
+{endif}

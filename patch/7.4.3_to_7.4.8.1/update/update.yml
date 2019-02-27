@@ -1,0 +1,189 @@
+-
+  'action': 'systemCheckPhp'
+  'parameters':
+    'version': '5.6'
+-
+  'action': 'sqlRun'
+  'parameters':
+    'file': 'update.sql'
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'sepa_export'
+    'ALIAS': ''
+    'V1':
+      'de': 'Lastschrift Zahlungen'
+    'V2':
+      'de': 'Lastschrift Zahlungen'
+    'TARGET':
+      'BY_IDENT': 'buchhaltung'
+    'S_LAYOUT': ''
+    'POSITION': 'appendChild'
+    'B_VIS': 1
+    'B_SYS': 1
+    'ROLES': [ 'Admin' ]
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'lastschrift_check_export'
+    'ALIAS': ''
+    'V1':
+      'de': 'Lastschrift Kontoverifizierungen'
+    'V2':
+      'de': 'Lastschrift Kontoverifizierungen'
+    'TARGET':
+      'BY_IDENT': 'sepa_export'
+    'S_LAYOUT': ''
+    'POSITION': 'appendChild'
+    'B_VIS': 1
+    'B_SYS': 1
+    'ROLES': [ 'Admin' ]
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my_customers'
+    'ALIAS': ''
+    'V1':
+      'de': 'Meine Kunden'
+    'V2':
+      'de': 'Meine Kunden'
+    'TARGET':
+      'BY_IDENT': 'my-verkaufen'
+    'S_LAYOUT': '-user'
+    'POSITION': 'appendChild'
+    'B_VIS': 1
+    'B_SYS': 1
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'PAYMENT_PINCODE_EMAIL'
+    'BESCHREIBUNG': 'Infomail über den verschickten Pin-Code zur Bestätigung eines Lastschrift Kontos'
+    'V1':
+      'de': 'Bitte bestätigen Sie ihr Konto für die Zahlung per Lastschrift'
+    'T1':
+      'de': |
+        Hallo {VORNAME} {NACHNAME}!
+        
+        Bitte geben Sie unter der nachfolgenden URL den Pin-Code ein, den Sie mit im Betreff einer von uns veranlassten Überweisung erhalten haben.
+        {uri_action_full(my-payment-adapter)}
+-
+  'action': 'manualStep'
+  'parameters':
+    'description': |
+      Bitte bearbeiten Sie den Infobereich "header scripts" und löschen Sie den Inhalt vollständig.
+      Wenn Sie eigene Skripte in dieser Datei hinzugefügt haben, dann löschen Sie alles ausser den von ihnen
+      neu hinzugefügten Skripten.
+-
+  'action': 'stringAdd'
+  'parameters':
+    'TABLE': 'payment_adapter'
+    'STATUS': 0
+    'STATUS_USER': 1
+    'ADAPTER_NAME': 'Bar'
+    'V1':
+      'de': 'Barzahlung'
+    'V2':
+      'de': 'Barzahlung'
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'AD_AGENT_REMINDER'
+    'BESCHREIBUNG': 'Anzeigenagent läuft in kürze aus'
+    'V1':
+      'de': 'Ihr Anzeigenagent läuft in kürze aus!'
+    'T1':
+      'de': |
+        Hallo Max Mustermann!
+        
+        Einer oder mehrere ihrer Anzeigen-Agenten laufen in kürze aus. Um diese zu verlängern besuchen Sie die folgende URL:
+        {uri_action_full(ad_agent)}
+        
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'LASTSCHRIFT_BANK_KONTO_BLOCK'
+    'BESCHREIBUNG': 'Payments'
+    'V1':
+      'de': 'Lastschrift Bank Konto Block'
+    'T1':
+      'de': |
+        Hallo {NAME},
+
+        die Zahlung per Lastschrift wurde für ihren Account gesperrt. Dies passiert in der Regel dann, wenn ihre Kontodaten fehlerhaft sind oder es eine Rücklastschrift gab.
+
+        Um die Lastschrift-Zahlung wieder freizuschalten, bitte prüfen und korrigieren Sie die Zahlungsdaten in ihrem Account und kontaktieren Sie anschließend unser Support-Team.
+
+        Ihre aktuellen Zahlungsdaten lauten:
+
+        Kontoinhaber: {Recipient}
+        IBAN: {IBAN}
+        BIC:  {BIC}
+
+        Mit freundlichen Grüßen
+        {SITENAME} Team
+
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'LASTSCHRIFT_BANK_KONTO_UNBLOCK'
+    'BESCHREIBUNG': 'Payments'
+    'V1':
+      'de': 'Lastschrift Bank Konto Unblock'
+    'T1':
+      'de': |
+        Hallo {NAME},
+
+        die Zahlung per Lastschrift wurde erneut freigeschaltet und steht ihnen nun wieder zur Verfügung.
+
+        Ihre aktuellen Zahlungsdaten lauten:
+
+        Kontoinhaber: {Recipient}
+        IBAN: {IBAN}
+        BIC:  {BIC}
+
+        Mit freundlichen Grüßen
+        {SITENAME} Team
+
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'LASTSCHRIFT_BANK_KONTO_CHANGED'
+    'BESCHREIBUNG': 'Payments'
+    'V1':
+      'de': 'Lastschrift Bank Konto Ändern'
+    'T1':
+      'de': |
+        Hallo {NAME},
+
+        Sie haben ihre Zahlungsinformationen für Lastschrift-Zahlungen aktualisiert. Die neuen Zahlungsdaten lauten:
+
+
+        Kontoinhaber: {Recipient}
+        IBAN: {IBAN}
+        BIC:  {BIC}
+
+        Mit freundlichen Grüßen
+        {SITENAME} Team
+
+-
+  'action': 'execCode'
+  'parameters':
+    'file': 'update.php'
+-
+  'action': 'filesCopy'
+  'parameters':
+    'source': 'Dateien'
+    'backup': 'DateienBackup'
+-
+  'action': 'designCheck'
+  'parameters':
+    'language': 'de'
+    'backup': 'DateienBackup'
+-
+  'action': 'cacheClear'
+  'parameters':
+    'type': 'step_all'

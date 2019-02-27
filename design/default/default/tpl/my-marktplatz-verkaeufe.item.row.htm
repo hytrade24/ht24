@@ -1,0 +1,54 @@
+<div class="marketplaceSellerOrderItem">
+    <div class="row">
+        <div class="col-xs-2 marketplaceSellerOrderItemImage">
+			{if AD_ID}
+				<a href="{uri_action(marktplatz_anzeige,{AD_ID},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} [[ translation : marketplace : view.product :: ansehen ]]">
+					<img src="{if AD_SRC}{thumbnail_article({AD_ID},{AD_SRC},40,40,crop)}{else}{uri_resource(/images/marketplace/nopic.jpg)}{endif}" alt="{htm(PRODUKTNAME)}" />
+				</a>
+			{endif}
+        </div>
+        <div class="col-xs-10">
+            <div class="row">
+                <div class="col-xs-8">
+					{if AD_ID}
+						<p class="marketplaceOrderItemTitle">
+							<a href="{uri_action(marktplatz_anzeige,{AD_ID},{urllabel(AD_PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(AD_PRODUKTNAME)} [[ translation : marketplace : view.product :: ansehen ]]">
+								<strong>{if MENGE > 1}{MENGE}x {endif}{htm(AD_PRODUKTNAME)}</strong>
+							</a>
+            				<br />
+							[[ translation : marketplace : order.item :: 
+								{VARIANT}
+								{if AVAILABILITY}
+								<br />
+								{if AVAILABILITY_DATE_TO}
+								Zwischen dem {todate(AVAILABILITY_DATE_FROM)} und dem {todate(AVAILABILITY_DATE_TO)}
+								{else}
+								Am {todate(AVAILABILITY_DATE_FROM)}
+								{endif} 
+								{if AVAILABILITY_TIME_FROM}ab {AVAILABILITY_TIME_FROM}Uhr{endif}
+								{endif}
+							]]
+						</p>
+						<p class="marketplaceOrderItemDescription text-muted">
+							{htm(AD_BESCHREIBUNG)}
+						</p>
+					{else}
+						<p class="marketplaceOrderItemTitle">
+							{if MENGE > 1}{MENGE}x {endif}{htm(PRODUKTNAME)}
+						</p>
+					{endif}
+                </div>
+                <div class="col-xs-4">
+                    <div class="marketplaceOrderItemInfoPrice">
+												<strong>{topreis(PREIS)} {CURRENCY_DEFAULT}</strong><br />
+                        <span class="text-muted">{subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={MWST})}</span>
+												{if !CONFIRMED}
+                            <br />
+                            <span class="label label-info">[[ translation : marketplace : unconfirmed  :: unbestätigt ]]</span>
+                        {endif}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+
+<div class="row design-page-with-menu design-group-forum-new">
+    <div class="design-page-content">
+        <h1>{htm(CLUB_NAME)} - [[ translation : marketplace : club.forum :: Forum ]]</h1>
+
+        <p class="lead">
+        {if ACTION_NEW}
+            [[ translation : marketplace : club.forum.new.lead :: Neues Thema erstellen ]]
+        {endif}
+        {if ACTION_EDIT}
+            [[ translation : marketplace : club.forum.edit.lead :: Beitrag bearbeiten ]]
+        {endif}
+        {if ACTION_REPLY}
+            [[ translation : marketplace : club.forum.reply.lead :: Antwort schreiben ]]
+        {endif}
+        </p>
+
+        <form method="post" class="forumThreadNew form-horizontal">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="FORUM_NAME">
+                    [[ translation : marketplace : club.forum.new.name :: Titel des Themas ]]
+                </label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" id="FORUM_NAME" name="NAME" value="{htm(FORUM_NAME)}"{if ACTION_REPLY || ACTION_EDIT_POST} disabled{endif} />
+                </div>
+            </div>
+            {if ACTION_NEW || ACTION_EDIT}
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="FORUM_NAME">
+                    [[ translation : marketplace : club.forum.new.public :: Öffentliche Diskussion ]]
+                </label>
+                <div class="col-sm-9 checkbox">
+                    <label>
+                        <input type="checkbox" id="FORUM_PUBLIC" name="PUBLIC" value="1"{if FORUM_PUBLIC} checked="checked"{endif} />
+                        <i class="icon-globe"></i>
+                        [[ translation : marketplace : club.forum.new.public.label :: Dieses Thema auch für Benutzer ausserhalb der Gruppe verfügbar machen. ]]
+                    </label>
+                </div>
+            </div>
+            {endif}
+            {if CLUB_IS_ADMIN || CLUB_IS_MODERATOR}
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="FORUM_NAME">
+                    [[ translation : marketplace : club.forum.new.moderation :: Moderation ]]
+                </label>
+                <div class="col-sm-9">
+                    {if CLUB_FORUM_MODERATED}
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="FORUM_REVIEWED" name="REVIEWED" value="1"{if FORUM_REVIEWED} checked="checked"{endif} />
+                        <i class="icon-ok"></i>
+                        [[ translation : marketplace : club.forum.new.reviewed.label :: Freigabe ]]
+                    </label>
+                    {endif}
+                    {if ACTION_NEW || ACTION_EDIT}
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="FORUM_STICKY" name="STICKY" value="1"{if FORUM_STICKY} checked="checked"{endif} />
+                        <i class="icon-warning-sign"></i>
+                        [[ translation : marketplace : club.forum.new.sticky.label :: Wichtig ]]
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="FORUM_ANNOUNCE" name="ANNOUNCE" value="1"{if FORUM_ANNOUNCE} checked="checked"{endif} />
+                        <i class="icon-bullhorn"></i>
+                        [[ translation : marketplace : club.forum.new.announce.label :: Ankündigung ]]
+                    </label>
+                    {endif}
+                </div>
+            </div>
+            {endif}
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="FORUM_BODY">
+                    [[ translation : marketplace : club.forum.new.body :: Ihr Beitrag ]]
+                </label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="FORUM_BODY" name="BODY" rows="8">{htm(FORUM_BODY)}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group text-right">
+                <button class="btn btn-default" onclick="window.history.back(); return false;">[[ translation : marketplace : club.forum.new.back :: Zurück ]]</button>
+            {if ACTION_NEW}
+                <button class="btn btn-success">[[ translation : marketplace : club.forum.new.submit :: Thema erstellen ]]</button>
+            {endif}
+            {if ACTION_EDIT || ACTION_EDIT_POST}
+                <button class="btn btn-success">[[ translation : marketplace : club.forum.edit.submit :: Änderung speichern ]]</button>
+            {endif}
+            {if ACTION_REPLY}
+                <button class="btn btn-success">[[ translation : marketplace : club.forum.reply.submit :: Antworten ]]</button>
+            {endif}
+            </div>
+
+        </form>
+    </div>
+    <div class="design-page-menu">
+        {subtpl(tpl/{SYS_TPL_LANG}/club.info.htm,*)}
+        {content_page()}
+    </div>
+</div>

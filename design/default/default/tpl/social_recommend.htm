@@ -1,0 +1,44 @@
+<div class="panel panel-primary design-subtpl design-social-recommend">
+    <div class="panel-heading">Unsere Seite empfehlen</div>
+    <div class="panel-body">
+        <script type="text/javascript" src="{uri_resource(/lib/socialshareprivacy/jquery.socialshareprivacy.min.js)}"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function ($) {
+                if ($('#socialshareprivacy').length > 0) {
+                    $('#socialshareprivacy').socialSharePrivacy({
+                        css_path: '{uri_resource(/lib/socialshareprivacy/socialshareprivacy/socialshareprivacy.css)}',
+                        info_link: '{uri_action(datenschutzerklaerung)}',
+
+                        services: {
+                            facebook: {
+                                dummy_img: '{uri_resource(/lib/socialshareprivacy/socialshareprivacy/images/dummy_facebook.png)}'
+                            },
+                            twitter: {
+                                dummy_img: '{uri_resource(/lib/socialshareprivacy/socialshareprivacy/images/dummy_twitter.png)}'
+                            },
+                            gplus: {
+                                'display_name': 'Google Plus',
+                                dummy_img: '{uri_resource(/lib/socialshareprivacy/socialshareprivacy/images/dummy_gplus.png)}'
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
+        <div id="socialshareprivacy"></div>
+        <br/>
+        <p>[[ translation : general : social.visit.us :: Besuchen Sie auch unsere Sozialmedia-Seiten ]]</p>
+        <div class="btn-group">
+            <a href="http://www.facebook.com/{FB_NAME}" class="btn" target="_blank" rel="nofollow">
+                <img src="{uri_resource(/images/icons/facebook_color02_32x32.png)}" width="32" height="32"/>
+            </a>
+            <a href="https://plus.google.com/{GP_ID}/" class="btn" target="_blank" rel="nofollow">
+                <img src="{uri_resource(/images/icons/google_color02_32x32.png)}" width="32" height="32"/>
+            </a>
+            <a href="http://twitter.com/{TW_NAME}" class="btn" target="_blank" rel="nofollow">
+                <img src="{uri_resource(/images/icons/twitter02_color_32x32.png)}" width="32" height="32"/>
+            </a>
+        </div>
+    </div>
+    ^SUBTPL_ADMIN°
+</div>

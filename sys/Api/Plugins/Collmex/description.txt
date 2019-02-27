@@ -1,0 +1,1 @@
+Synchronisiert die Rechnungen des ebiz-trader mit einer Collmex-Warenwirtschaft.

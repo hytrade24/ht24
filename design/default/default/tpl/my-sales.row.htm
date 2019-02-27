@@ -1,0 +1,62 @@
+        <tr>
+            <td class="design-action-buttons">
+                <a class="btn btn-default salesUserInfo" title="[[ translation : marketplace : sales.distribution.information :: Informationen ]]">
+                    <i class="glyphicon glyphicon-info-sign"></i>
+                    <script type="text/html">
+                        <p>
+                            {if FIRMA}{htm(FIRMA)}<br />{endif}
+                            {if VORNAME || NACHNAME}{htm(VORNAME)} {htm(NACHNAME)}<br />{endif}
+                            {if STRASSE}{htm(STRASSE)}<br />{endif}
+                            {if ORT || PLZ}{htm(PLZ)} {htm(ORT)}<br />{endif}
+                        </p>
+                        <p>
+                            {if TEL}<strong>[[ translation : general : tel :: Tel ]]:</strong> {htm(TEL)}<br />{endif}
+                            {if FAX}<strong>[[ translation : general : fax :: Fax ]]:</strong> {htm(FAX)}<br />{endif}
+                            {if EMAIL}<strong>[[ translation : general : email :: E-Mail ]]:</strong> {htm(EMAIL)}<br />{endif}
+                        </p>
+                        <p>
+                            <strong>[[ translation : marketplace : sales.distribution.code.short :: Reg.-Code ]]:</strong>
+                            {if REG_CODE_DESC}{htm(REG_CODE_DESC)}{else}{REG_CODE}{endif}
+                        </p>
+                        <p>
+                            [[ translation : marketplace : sales.distribution.search.last.contact :: Letzter Kontakt ]]:
+                            <span class="contactDate">{if CONTACT_SALES}{todate(CONTACT_SALES)}{else}---{endif}</span>
+                        </p>
+                        <button onclick="UpdateContactDate(this);" class="btn btn-mini" data-user="{ID_USER}">[[ translation : marketplace : sales.distribution.contact.update :: Letzten Kontakt auf Heute setzen ]]</button>
+                        <button type="button" class="btn btn-mini" onclick="jQuery(this).closest('td').find('.btn').popover('hide'); return false;">[[ translation : marketplace : sales.distribution.popover.close :: Schließen ]]</button>
+                    </script>
+                </a>
+            </td>
+            <td>
+                {htm(NAME)}
+            </td>
+            <td>
+                {todate(STAMP_REG)}
+            </td>
+            <td>
+                {todate(LAST_TURNOVER)}
+            </td>
+            <td>
+                {topreis_ex(TURNOVER)} {CURRENCY_DEFAULT}
+            </td>
+            <td>
+                {topreis_ex(PROVISION)} {CURRENCY_DEFAULT}
+            </td>
+            <td>
+                {if MEMBERSHIP_NAME}{htm(MEMBERSHIP_NAME)}{else}---{endif}
+            </td>
+            <td>
+                {if MEMBERSHIP_NAME}
+                    {if MEMBERSHIP_ACTIVE}
+                    <span class="text-success">[[ translation : marketplace : sales.distribution.status.active :: Aktiv ]]</span>
+                    {else}
+                    <span class="text-error">[[ translation : marketplace : sales.distribution.status.canceled :: Gekündigt ]]</span>
+                    {endif}
+                {else}
+                    ---
+                {endif}
+            </td>
+            <td>
+                {htm(NOTE)}
+            </td>
+        </tr>

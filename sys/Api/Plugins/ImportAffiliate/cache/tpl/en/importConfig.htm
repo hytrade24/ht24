@@ -1,0 +1,53 @@
+<div class="form-group importAffiliateEnable">
+	<label class="control-label design-input-label">Affiliate-Import:</label>
+	<div class="design-input-field">
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="PRESET_TYPE_CONFIG[affiliateImport]" value="1"{if PRESET_TYPE_CONFIG_affiliateImport} checked{endif} />
+        Dieser Import enthält Affiliate-Artikel
+      </label>
+        <p><a href="https://www.ebiz-trader.de/marktplatz-faq/?action=search&search=affiliate" target="_blank">Weitere Informationen zum Theme Affiliate-Artikel erhalten Sie hier</a></p>
+    </div>
+	</div>
+</div>
+<div class="form-group importAffiliateOption">
+	<label class="control-label design-input-label">Affiliates löschen:</label>
+	<div class="design-input-field">
+    Aktion für nicht mehr aufgeführte Affiliate-Anzeigen:
+    <div class="radio">
+      <label>
+        <input type="radio" name="PRESET_TYPE_CONFIG[affiliateDeleteAction]" value="1"{if PRESET_TYPE_CONFIG_affiliateDeleteAction==1 || !PRESET_TYPE_CONFIG_affiliateDeleteAction} checked{endif} />
+        Deaktivieren
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="PRESET_TYPE_CONFIG[affiliateDeleteAction]" value="2"{if PRESET_TYPE_CONFIG_affiliateDeleteAction==2} checked{endif} />
+        Als "nicht vorrätig" anzeigen
+      </label>
+    </div>
+	</div>
+</div>
+<script type="text/javascript">
+  jQuery(function() {
+    var affiliateInputUpdate = function(checkbox) {
+      var configContainer = jQuery(checkbox).closest(".TYPE_CONFIG_CONTAINER");
+      if (jQuery(checkbox).prop("checked")) {
+        configContainer.find(".importAffiliateOption input").prop("disabled", false);
+      } else {
+        configContainer.find(".importAffiliateOption input").prop("disabled", true);
+      }
+    };
+    jQuery(".importAffiliateEnable input[type=checkbox]").change(function() {
+      affiliateInputUpdate(this);
+    });
+    // Hook into function that updates the input fields for the preset type (csv/xml)
+    var importTypeUpdate = ipe.toggleTypeConfig;
+    ipe.toggleTypeConfig = function() {
+      importTypeUpdate();
+      jQuery(".importAffiliateEnable input[type=checkbox]").each(function() {
+        affiliateInputUpdate(this);
+      });
+    };
+  });
+</script>

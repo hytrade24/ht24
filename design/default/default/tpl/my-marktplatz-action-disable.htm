@@ -1,0 +1,59 @@
+{if PROCESSING}
+  {startblock(head)}
+    {parentblock()}
+    <!-- Redirect for next step -->
+    <meta http-equiv="refresh" content="1;url={uri_action_full(my-marktplatz,disable,process)}" />
+  {endblock(head)}
+  <h3>[[ translation : marketplace : ads.selected.disable :: Ausgewählte Anzeigen deaktivieren ]]</h3>
+  <p>
+  [[ translation : marketplace : ads.selected.disable.processing :: 
+      Bitte warten Sie während die Artikel deaktiviert werden ... ({PROCESS_DONE} von {PROCESS_COUNT} fertig)
+  ]]
+  </p>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{PROCESS_PERCENT}" aria-valuemin="0" aria-valuemax="100"
+         style="min-width: 3em; width: {PROCESS_PERCENT}%;">
+      {PROCESS_PERCENT}%
+    </div>
+  </div>
+  <div class="text-right">
+    <a href="{uri_action(my-marktplatz,disable,cancel)}" class="btn btn-danger" 
+       onclick="return confirm('[[ translation : marketplace : ads.selected.disable.cancel.confirm :: Möchten Sie den Deaktivierung wirklich abbrechen? ]]');">
+      [[ translation : marketplace : ads.selected.disable.cancel :: Abbrechen ]]
+    </a>
+  </div>
+{else}
+<form id="formActionBack" action="{REFERER}" method="POST">
+    {HIDDEN_INPUT_SELECTED}
+</form>
+<form method="POST">
+    <input type="hidden" name="action" value="{action}" />
+    <input type="hidden" name="SUCCESS" value="{SUCCESS}" />
+    <h3>[[ translation : marketplace : ads.selected.disable :: Ausgewählte Anzeigen deaktivieren ]]</h3>
+    
+    <p>
+        [[ translation : marketplace : ads.selected.disable.long ::
+            Die ausgewählten Anzeigen werden deaktiviert. Die Restlaufzeit der Anzeigen bleibt erhalten und wird während
+            die Anzeige deaktiviert ist nicht reduziert.
+        ]]
+    </p>
+            
+    <div class="text-box">
+    {if countEnabled > 0}
+        <b>[[ translation : marketplace : ads.selected.disable.count :: Es werden {countEnabled} Anzeigen deaktiviert. ]]</b>
+        {if countDisabled > 0}
+        [[ translation : marketplace : ads.selected.disable.count.not.affected :: {countDisabled}  Anzeigen sind bereits deaktiviert und bleiben unverändert. ]]
+        {endif}
+    {else}
+        <b>[[ translation : marketplace : ads.selected.disable.count.none.affected :: Die von ihnen ausgewählten Anzeigen sind bereits deaktiviert. ]]</b>
+    {endif}
+    </div>
+            
+    <div class="pull-right">
+        <button class="btn btn-danger" onclick="jQuery('#formActionBack').submit(); return false;">[[ translation : general : back :: Zurück ]]</button>
+    {if countEnabled > 0}
+        <button class="btn btn-success" name="confirm" value="1" type="submit">[[ translation : marketplace : ads.selected.disable.confirm :: Ausgewählte Anzeigen deaktivieren ]]</button>
+    {endif}
+    </div>
+</form>
+{endif}

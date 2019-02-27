@@ -1,0 +1,20 @@
+{if liste_uploads}
+<ul class="nav nav-tabs">
+    <li class="active">
+        <a title="[[ translation : marketplace : ad.view.downloads.show :: Downloads anzeigen ]]" href="#tab_files" data-toggle="tab">[[ translation : marketplace : ad.view.downloads.show :: Downloads anzeigen ]]</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div id="tab_files" class="tab-pane active">
+        <table class="table table-bordered table-striped table-condensed">
+            <thead>
+            <tr>
+                <th>[[ translation : marketplace : ad.downloads.name :: Dateiname ]]</th>
+                <th>[[ translation : marketplace : ad.downloads.type :: Dateityp ]]</th>
+            </tr>
+            </thead>
+            {liste_uploads}
+        </table>
+    </div>
+</div>
+{endif}

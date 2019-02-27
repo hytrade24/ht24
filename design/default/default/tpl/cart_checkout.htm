@@ -1,0 +1,168 @@
+<script type="text/javascript">
+	function showAgb(idAd) {
+			ShowContentDialog(jQuery("#cartAgb-"+idAd).html(), "[[ translation : general : gtc.and.cancelation :: AGB und Widerrufsbelehrung ]]");
+	}
+	
+	jQuery(function() {
+  	jQuery('[data-toggle="tooltip"]').tooltip();
+	});
+</script>
+
+<h1>[[ translation : marketplace : ad.cart.checkout.title :: Bestellung abschließen ]]</h1>
+<p class="lead">
+    [[ translation : marketplace : ad.cart.checkout.lead :: Bitte prüfen Sie auf dieser Seite Ihre Angaben, bevor Sie den Einkauf abschließen ]]
+</p>
+
+{if error_noaddress}
+    <div class="alert alert-danger">
+        <h2>[[ translation : general : notice :: Hinweis ]]</h2>
+        <p>
+            [[ translation : marketplace : ad.cart.notice.profile :: Bitte ergänzen Sie folgende Angaben in ihrem <a href="{uri_action(my-profil)}">Profil</a> bevor Sie etwas kaufen: ]]
+            <br />
+            <ul>
+                {if error_addr_first}<li>[[ translation : general : name.first :: Vorname ]]</li>{endif}
+                {if error_addr_last}<li>[[ translation : general : name.last :: Nachname ]]</li>{endif}
+                {if error_addr_street}<li>[[ translation : general : street :: Straße ]]</li>{endif}
+                {if error_addr_zip}<li>[[ translation : general : zip :: PLZ ]]</li>{endif}
+                {if error_addr_city}<li>[[ translation : general : city :: Ort ]]</li>{endif}
+            </ul>
+        </p>
+    </div>
+{else}
+
+    <form action="{uri_action(cart_checkout)}" method="POST" class="design-user-cart">
+        <input type="hidden" name="DO" value="BUY">
+
+      	<div class="design-content-box">
+            {if err_address || err_user_create || err_buying_unregistered_not_allowed}
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>[[ translation : general : error.an.error.occured :: Es ist ein Fehler aufgetreten! ]]</strong>
+
+                <ul>
+				{if err_address}
+					<li>Bitte geben Sie ihre vollständige Adresse an um die Bestellung abzuschließen.</li>
+				{endif}
+                {if err_address_required}
+                    <li>Sie müssen alle Pflichtfelder ausfüllen.</li>
+                {endif}
+                {if err_address_name_or_company}
+                    <li>Sie müssen entweder Vor- und Nachname oder einen Firmennamen angeben.</li>
+                {endif}
+				{if err_user_create}
+					<li>[[ translation : marketplace : virtual.user.create.email.exist :: Es existiert bereits ein User mit dieser E-Mail Adresse ]]</li>
+				{endif}
+				{if err_buying_unregistered_not_allowed}
+					<li>[[ translation : marketplace : virtual.user.buying.not.allowed :: Ein Einkauf ohne Benutzerkonto ist leider nicht möglich. Bitte registrieren Sie sich auf unserem Marktplatz ]]</li>
+				{endif}
+                </ul>
+            </div>
+            {endif}
+			{if ID_USER || SETTINGS_BUYING_UNREGISTERED}
+				<div class="row design-user-cart-address-split">
+					<div>
+						<h3>[[ translation : marketplace : ad.cart.address.invoice :: Ihre Rechnungsadresse ]]</h3>
+						<dl id="userInvoice_Current" class="dl-table-horizontal">
+							{if INVOICE_FIRSTNAME || INVOICE_LASTNAME}
+							<dt>[[ translation : general : your.name :: Ihr Name ]]:</dt>
+								<dd>
+										<span id="userInvoice_Current_Firstname">{htm(INVOICE_FIRSTNAME)}</span>
+										<span id="userInvoice_Current_Lastname">{htm(INVOICE_LASTNAME)}</span>
+							</dd>
+							{endif}
+							{if INVOICE_COMPANY}
+							<dt class="userInvoice_CompanyBlock">[[ translation : general : company :: Firma ]]:</dt>
+							<dd class="userInvoice_CompanyBlock">
+								<span id="userInvoice_Current_Company">{htm(INVOICE_COMPANY)}</span>
+							</dd>
+							{endif}
+						
+							<dt>[[ translation : marketplace : user.invoice.address :: Anschrift ]]:</dt>
+							<dd>
+								<span id="userInvoice_Current_Street">{htm(INVOICE_STREET)}</span><br />
+								<span id="userInvoice_Current_Zip">{htm(INVOICE_ZIP)}</span>
+								<span id="userInvoice_Current_City">{htm(INVOICE_CITY)}</span><br />
+								<span id="userInvoice_Current_Country">{print_fk(country,INVOICE_FK_COUNTRY)}</span>
+							</dd>
+						
+							{if INVOICE_PHONE}
+							<dt class="userInvoice_PhoneBlock">[[ translation : general : phone :: Telefon ]]:</dt>
+							<dd class="userInvoice_PhoneBlock">
+								<span id="userInvoice_Current_Phone">{htm(INVOICE_PHONE)}</span>
+							</dd>
+							{endif}
+						</dl>
+					</div>	
+					<div>
+						<h3>[[ translation : marketplace : ad.cart.address.shipping :: Ihre Versandadresse ]]</h3>
+						<dl id="userVersand_Current" class="dl-table-horizontal">
+							{if VERSAND_FIRSTNAME || VERSAND_LASTNAME}
+							<dt>[[ translation : marketplace : user.shipping.name :: Ihr Name ]]:</dt>
+							<dd>
+								<span id="userVersand_Current_Firstname">{htm(VERSAND_FIRSTNAME)}</span>
+								<span id="userVersand_Current_Lastname">{htm(VERSAND_LASTNAME)}</span>
+							</dd>
+							{endif}
+							{if VERSAND_COMPANY}
+							<dt class="userVersand_CompanyBlock">[[ translation : marketplace : user.shipping.company :: Firma ]]:</dt>
+							<dd class="userVersand_CompanyBlock">
+								<span id="userVersand_Current_Company">{htm(VERSAND_COMPANY)}</span>
+							</dd>
+							{endif}
+						
+							<dt>[[ translation : marketplace : user.shipping.address :: Anschrift ]]:</dt>
+							<dd>
+								<span id="userVersand_Current_Street">{htm(VERSAND_STREET)}</span><br />
+								<span id="userVersand_Current_Zip">{htm(VERSAND_ZIP)}</span>
+								<span id="userVersand_Current_City">{htm(VERSAND_CITY)}</span><br />
+								<span id="userVersand_Current_Country">{print_fk(country,VERSAND_FK_COUNTRY)}</span>
+							</dd>
+						
+							{if VERSAND_PHONE}
+							<dt class="userVersand_PhoneBlock">[[ translation : general : phone :: Telefon ]]:</dt>
+							<dd class="userVersand_PhoneBlock">
+								<span id="userVersand_Current_Phone">{htm(VERSAND_PHONE)}</span>
+							</dd>
+							{endif}
+						</dl>
+					</div>
+				</div>
+			{endif}
+            <p>
+                [[ translation : marketplace : ad.cart.checkout.warnings ::
+                    Sie bestellen Waren bei verschiedenen Anbietern, die jeweils eigene Allgemeine Geschäfts- und Widerrufsbedingungen besitzen.
+                    <br><br>
+                    <strong>
+                        Der Verkauf erfolgt unter Vorbehalt der Verfügbarkeit!
+                        Der Kauf ist rechtsverbindlich und kann nicht storniert werden!
+                    </strong>
+                ]]
+            </p>
+		</div>
+
+		{if err_agb || err_payment_adapter}
+			<div class="alert alert-danger">
+			{if err_agb}
+                [[ translation : marketplace : ad.cart.error.gtc :: Sie haben nicht die AGB und Widerrusbelehrungen aller Anbieter akzeptiert. ]]
+			{endif}
+			{if err_payment_adapter}
+                [[ translation : marketplace : ad.cart.error.payment :: Die ausgewählte Zahlungsweise ist für diesen Anbieter nicht verfügbar. ]]
+			{endif}
+			</div>
+		{endif}
+
+		<div class="design-cart-checkout-list">
+			{subtpl(tpl/{SYS_TPL_LANG}/cart_checkout.list.htm,*)}
+		</div>
+
+		{PLUGIN_HTML}
+			
+		<div>
+        	<a href="{uri_action(cart)}" class="btn btn-default">[[ translation : marketplace : ad.cart.checkout.cancel :: Zurück zum Warenkorb ]]</a>
+        	{if liste}
+                <input type="submit" href="{uri_action(cart_checkout)}" class="btn btn-success pull-right" value="[[ translation : marketplace : ad.cart.checkout.submit :: Rechtsverbindlich kaufen ]]">
+            {endif}
+        </div>
+    </form>
+{endif}
+

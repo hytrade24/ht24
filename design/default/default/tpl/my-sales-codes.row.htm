@@ -1,0 +1,18 @@
+
+<tr>
+    <td>
+        <a class="btn btn-default" onclick="return showSalesQrCode({ID_SALES_CODE});" title="[[ translation : marktplatz : sales.distribution.dialog.qrcode :: QR-Code anzeigen/herunterladen ]]">
+            <i class="glyphicon glyphicon-qrcode"></i>
+        </a>
+        <a class="btn btn-default" href="{uri_action(my-sales-codes,del,{ID_SALES_CODE})}" title="[[ translation : general : delete :: Löschen ]]">
+            <i class="glyphicon glyphicon-remove"></i>
+        </a>
+    </td>
+    <td>{htm(CODE)}</td>
+    <td>
+        <a href="{uri_action_full(register_code,{CODE})}">
+            {uri_action_full(register_code,{CODE})}
+        </a>
+    </td>
+    <td>{if DESCRIPTION}{htm(DESCRIPTION)}{else}---{endif}</td>
+</tr>

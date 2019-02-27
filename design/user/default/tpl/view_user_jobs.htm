@@ -1,0 +1,75 @@
+{if USER_ID_USER}
+    <div class="row design-page single-vendor-page">
+        <div class="design-page-content">
+            {subtpl(tpl/{SYS_TPL_LANG}/view_user.info.htm,*)}
+            <div class="row">
+                <div class="col-md-3 col-sm-12">
+
+                    {content_page()}
+                </div>
+                <div class="col-md-9 col-sm-12">
+                    {if ID_JOB}
+                    <div class="page-header">
+                        <h1>{htm(V1)}</h1>
+                        <div>{todate(STAMP)}</div>
+                    </div>
+                    <div class="advertisement-box">{adserver(,1780,)}</div>
+                    <div class="design-job-info " style="">
+                        <p>{htm(V2)}</p>
+                        <p>{T1}</p>
+                        {if JOB_CITY}
+                        <div class="panel-footer">
+                            <h4>[[ translation : marketplace : job.location :: Standort ]]</h4>
+                            <p>
+                                {if JOB_STREET}{JOB_STREET}<br>{endif}
+                                {if JOB_CITY}{JOB_ZIP} {JOB_CITY}<br>{endif}
+                                {if JOB_COUNTRY}{JOB_COUNTRY}<br>{endif}
+                            </p>
+                        </div>
+                        {endif}
+                    </div>
+                    {endif}
+                    {if (!ID_JOB || liste)}
+                    {if liste}
+                    {liste}
+                    {else}
+                    <h2>[[ translation : marketplace : no.jobs.currently :: Derzeit sind keine Jobs eingetragen. ]]</h2>
+                    {endif}
+                    {endif}
+                </div>
+            </div>
+            <div class="row pager-row">
+                <div class="col-md-12" style="padding-right: 0;">
+                    {pager}
+                </div>
+            </div>
+        </div>
+    </div>
+{startblock(script)}
+{parentblock()}
+<script type="application/ld+json">
+    {
+        "@graph": [
+        {
+            "@context":             "http://schema.org",
+            "@type":                "JobPosting",
+            "title":                "{htm(V1)}",
+            "description":          "{T1}",
+            "datePosted":           "{date_format(STAMP,Y-m-d)}",
+            "jobLocation":          {
+                "@type":        "Place",
+                "address":      {
+                    "@type":            "PostalAddress",
+                    "streetAddress":    "{JOB_STREET}",
+                    "addressLocality":  "{JOB_CITY}",
+                    "postalCode":       "{JOB_ZIP}",
+                    "addressCountry":   "{JOB_COUNTRY}"
+                }
+            }
+        },
+        {kat_ariadne_dynamic_json_ld({FK_KAT},jobs,{V1})}
+        ]
+    }
+</script>
+{endblock(script)}
+{endif}

@@ -1,0 +1,85 @@
+{if success}
+<div class="alert alert-success">
+	<h3>[[ translation : marketplace : ad.extended :: Anzeige verlängert ]]</h3>
+	<p>[[ translation : marketplace : ad.extended.success :: Ihre Anzeige wurde erfolgreich verlängert! ]]</p>
+	<input class="btn btn-default pull-right" type="button" value="Fenster schließen" onclick="HideDialog();" />
+	<br style="clear: right;">
+</div>
+{else}
+<form action="{uri_action(my-marktplatz-extend,{ad_id},{ad_kat})}" onsubmit="return ExtendAdSubmit(this);" method="post">
+	<input type="hidden" name="action" value="extend" />
+	<input type="hidden" id="AdExtend_ID" name="ad_id" value="{ad_id}" />
+	<input type="hidden" id="AdExtend_Kat" name="ad_kat" value="{ad_kat}" />
+
+	{if err}
+		<div class="alert alert-danger">
+            {if err_menge}[[ translation : marketplace : plz.correct.amount :: Bitte geben Sie die verfügbare Menge korrekt an. ]]{endif}
+            {if err_unknown}[[ translation : marketplace : ad.extend.error.unknown :: Unerwarteter Fehler beim Aktivieren der Anzeige! ]]{endif}
+		</div>
+	{endif}
+
+
+	{if !FREE_ADS}
+
+		<p class="align-left">
+                        [[ translation : marketplace : hint.extend.ad ::
+                            <strong>Wichtiger Hinweis:</strong> Das Verlängern einer Anzeige
+                            kostet, wie auch das Eintragen, eine Anzeige aus ihrem Anzeigepaket.
+                        ]]
+		</p>
+
+	{endif}
+
+	{if FREE_ADS}
+	<input type="hidden" name="FK_PACKET_ORDER" value="1" />
+	{endif}
+			
+	<div class="row">
+		{if !FREE_ADS}
+		<div class="col-xs-6">
+			<p id="article_packet" class="align-left">
+				<strong>[[ translation : marketplace : display.package :: Anzeigenpaket ]]:</strong>
+			</p>
+			<div id="packet_select" class="align-left">
+				{if liste_packets}
+					<select class="form-control" name="FK_PACKET_ORDER">
+							{liste_packets}
+					</select>
+				{else}
+					<div class="text-error">
+						[[ translation : marketplace : no.display.package.left :: Sie haben kein ausreichendes Anzeigenpaket &uuml;brig. ]]
+					</div>
+				{endif}
+			</div>
+			<h3 id="packet_current" style="display: none;"></h3>
+
+		</div>
+		{endif}
+		<div class="col-xs-6">
+			<p class="align-left">
+				<strong>[[ translation : marketplace : ad.extend.by :: Anzeige verlängern um ]]:</strong>
+			</p>
+			{lookup(LAUFZEIT,,, class="form-control",F_ORDER ASC)}
+
+		</div>
+	</div>
+	<br />
+
+	{if !AD_MENGE}
+
+		<p>
+			
+				<strong>[[ translation : marketplace : amount :: Menge ]]:</strong><br>
+				[[ translation : marketplace : ad.amount.refresh :: Um die Anzeige zu verlängern, aktualisieren Sie bitte die verfügbare Menge. ]]
+		</p>
+		<input class="form-control" type="text" name="MENGE" required="required" value="{if MENGE}{MENGE}{else}1{endif}">
+	{endif}
+
+	<p class="text-right">
+		<input class="btn btn-default" type="button" value="[[ translation : general : cancel :: Abbrechen ]]" onclick="HideDialog();" />
+		{if liste_packets || FREE_ADS}
+		<input class="btn btn-success" type="submit" value="[[ translation : marketplace : ad.extend :: Anzeige verlängern ]]" />
+		{endif}
+	</p>
+</form>
+{endif}

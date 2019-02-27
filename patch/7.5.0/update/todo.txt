@@ -1,0 +1,28 @@
+=== Priorität 1 (Zwingend umsetzen!) ===
+
+ - Kundenverwaltung für Händler
+   - Übersicht über die Käufer (inkl. Auswertungen und Export-Möglichkeiten)
+   
+=== Priorität 2 (Umsetzen wenn möglich) ===
+
+ - SitemapXml-Plugin um noch fehlende Bereiche erweitern
+   - Gesuche
+   - Anbieter/Branchenbuch
+   - Gruppen
+   - Stellenangebote
+   
+ - User-Backend
+   - Erweiterte Statistiken zu den Anfragen
+   - Zugriff auf alle CSS & Html-Dateien
+   
+ - Produkt-Empfehlungen (Ähnliche Artikel untereinander verknüpfen)
+ 
+ - YAML-Dateien definieren um bestimmte Aufgaben zu vereinfachen (z.B. Gruppen deaktivieren)
+ 
+ - Datenbankstruktur prüfen (Indizes & Queries optimieren)
+ 
+=== Priorität 3 (Optionale Verbesserungen) ===
+
+ - Gutscheincode automatisch bei Registrierung einlösen
+ 
+ - Verschieben von Navigationspunkten vereinfachen

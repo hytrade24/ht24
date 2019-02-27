@@ -1,0 +1,52 @@
+<div class="design-vendor-box design-vendor-box-small">
+	<div class="design-vendor-box-name">
+		<h4>
+			<a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}" title="[[ translation : marketplace : show.vendor :: {htm(VENDOR_NAME)} ansehen ]]">
+				{htm(VENDOR_FIRMA)}
+			</a>
+		</h4>
+	</div>
+	<div class="design-vendor-box-logo text-center">
+		<a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}" title="[[ translation : marketplace : show.vendor :: {htm(VENDOR_NAME)} ansehen ]]">
+		{if VENDOR_LOGO}
+			<img src="{thumbnail(VENDOR_LOGO,265,212)}" data-watchlist="true" />
+		{else}
+			<img src="{uri_resource(/images/marketplace/nopic_vendor.jpg)}" />
+		{endif}
+		</a>
+	</div>
+	{if RATING}
+	<div class="design-vendor-box-rating">
+		<img title="[[ translation : marketplace : average.rating :: Durchschnittliche Bewertung ]]" src="{uri_baseurl(/gfx/stars_{RATING}.png)}" />
+	</div>
+	{endif}
+	<p>
+		{VENDOR_STRASSE}<br />
+		{VENDOR_PLZ} {VENDOR_ORT}, {VENDOR_COUNTRY}
+	</p>			
+
+	<div class="design-vendor-box-contents">
+		<div class="design-vendor-box-contents-row">
+		{if VENDOR_ALLOW_COMMENTS && SYSTEM_ALLOW_COMMENTS}
+			<div class="design-vendor-box-contents-comments">
+				<a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}#comments" class="js-tooltip" title="[[ translation : marketplace : count.comments :: {if COUNT_COMMENTS}{COUNT_COMMENTS}{else}0{endif} Kommentare ]]">
+					<i class="glyphicon glyphicon-comment"></i>
+					{int(VENDOR_COUNT_COMMENTS)}
+				</a>
+			</div>
+		{endif}
+			<div class="design-vendor-box-contents-events">
+				<a href="{uri_action(view_user_events,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}" class="js-tooltip" title="[[ translation : marketplace : count.events :: {COUNT_EVENTS} Veranstaltungen ]]">
+					<i class="glyphicon glyphicon-calendar"></i>
+					{int(VENDOR_COUNT_EVENTS)}
+				</a>
+			</div>
+			<div class="design-vendor-box-contents-images">
+				<a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}#gallery" class="js-tooltip" title="[[ translation : marketplace : count.gallery :: {COUNT_GALLERY} Bilder in der Galerie ]]">
+					<i class="glyphicon glyphicon-picture"></i>
+					{int(VENDOR_COUNT_GALLERY)}
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

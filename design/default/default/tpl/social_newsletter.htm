@@ -1,0 +1,28 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">[[ translation : general : social.newsletter.order :: Newsletter bestellen ]]</div>
+    <div class="panel-body">
+        [[ translation : general : social.newsletter.order.lead :: Jetzt anmelden und kein Angebot mehr verpassen ]]
+        <br />
+        <form action="{uri_action(newsletter)}" method="post">
+            <div class="input-group">
+                <span class="input-group-addon">@</span>
+                <input class="form-control" name="EMAIL" type="email" value="{htm(EMAIL)}" placeholder="[[ translation : general : social.newsletter.order.email :: Emailadresse ]]" required />
+            </div>
+
+            <div class="radio">
+                <label>
+                    <input name="mode" type="radio" id="optionsRadios1" value="optin" checked />
+                    Newsletter bestellen
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input name="mode" type="radio" id="optionsRadios2" value="optout" />
+                    Newsletter kündigen
+                </label>                
+            </div>
+
+            <input type="submit" value="Bestellen" class="btn btn-success" />
+        </form>
+    </div>
+</div>

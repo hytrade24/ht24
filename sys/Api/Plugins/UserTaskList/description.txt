@@ -1,0 +1,1 @@
+Aufgabenliste die neuen Benutzern automatisch im Profil angezeigt wird. So können Benutzer z.B. aufgefordert werden ihr Profil/Impressum/... auszufüllen.

@@ -1,0 +1,119 @@
+<div data-id-order="{ID_AD_ORDER}" class="design-content-box marketplaceOrder {if ORDER_PARTIAL_CONFIRMED}partialConfirmed{endif}">
+	<div class="row">
+		<div class="col-xs-12 col-sm-3">
+			<p>{todate(STAMP_CREATE)}</p>
+			<p>[[ translation : marketplace : order.num :: Bestell-Nr. ]]: {ID_AD_ORDER}</p>
+            <p>
+                <strong>[[ translation : marketplace : seller :: Verkäufer ]]:
+                {if !MARKTPLATZ_HIDE_CONTACT_INFO || ORDER_CONFIRMED}
+                    <a href="#" onclick="showSellerInformation('{FK_USER_VK}'); return false;">{htm(USER_VK_NAME)}</a>
+                {else}
+                    {htm(USER_VK_NAME)}
+                {endif}
+                </strong>
+            </p>
+            <p>
+                <a href="#" onclick="SendMail({FK_USER_VK},'Bestellung #{ID_AD_ORDER}','','', {ID_AD_ORDER}{if USER_IS_VIRTUAL}, { page: 'user_msg_neu' }{endif}); return false;" class="btn btn-default btn-link">[[ translation : marketplace : contact :: Kontakt aufnehmen ]]</a>
+            </p>
+		</div>
+
+		<div class="col-xs-12 col-sm-6">
+            {if tplItems}
+                {tplItems}
+            {endif}
+            {if tplItemsNotConfirmed}
+                {tplItemsNotConfirmed}
+            {endif}
+			{if REMARKS}
+			<div class="alert alert-warning">
+				<strong>[[ translation : marketplace : your.comments.to.seller :: Ihre Anmerkungen an den Verkäufer ]]:</strong>
+                <p>{text(REMARKS)}</p>
+			</div>
+			{endif}
+		</div>
+
+		<div class="col-xs-12 col-sm-3 text-right">
+			<div class="marketplaceOrderPrice">
+				<span class="cost">{topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT}</span>
+
+				{if SHIPPING_PRICE}<span class="text-muted">[[ translation : marketplace : shipping.price.included :: inkl. {topreis_ex(SHIPPING_PRICE)} {CURRENCY_DEFAULT} Versand ]] </span>{endif}
+
+				{if PAYMENT_ADAPTER_NAME}<br /><small>{PAYMENT_ADAPTER_NAME}</small>{endif}
+			</div>
+
+
+			<div class="marketplaceOrderAction">
+				{if ORDER_CONFIRMED==1}
+					{if STATUS_PAYMENT == 0}
+						{if FK_PAYMENT_ADAPTER}
+							<p>{BUTTON}</p>
+						{else}
+							<p>
+								<a href="#" onclick="showPaymentInformation('{ID_AD_ORDER}'); return false;" class="btn btn-success">[[ translation : marketplace : pay.now :: Jetzt bezahlen ]]</a>
+							</p>
+							<div id="paymentInformation-{ID_AD_ORDER}" class="display-none">
+								<p>
+									{if USER_VK_ZAHLUNGSINFORMATIONEN}
+										<p>[[ translation : marketplace : seller.payment.info :: Der Verkäufer hat folgende Zahlungsinformationen hinterlegt ]]:</p>
+										{USER_VK_ZAHLUNGSINFORMATIONEN}
+									{else}
+										[[ translation : marketplace : seller.no.payment.info :: Der Verkäufer hat keine Zahlungsinformationen hinterlegt. Bitte erfragen Sie diese bei Ihm direkt. ]]
+									{endif}
+								</p>
+
+								<div id="modalFooterContainer" class="display-none">
+									<div class="modal-footer">
+										<a href="#" onclick="HideDialog(); return false;" class="btn btn-default">[[ translation : general : close.window :: Fenster schließen ]]</a>
+									</div>
+								</div>
+							</div>
+						{endif}
+					{else}
+
+					{endif}
+
+					{if SHIPPING_TRACKING_URL}
+						<p><a href="{htm(SHIPPING_TRACKING_URL)}" target="_blank" class="btn btn-default">[[ translation : marketplace : track.shipping :: Lieferung verfolgen ]]</a></p>
+					{endif}
+				{else}
+					{if ORDER_PARTIAL_CONFIRMED}
+						<p><a href="#" onclick="splitOrder('{ID_AD_ORDER}'); return false;" class="btn btn-default">[[ translation : marketplace : share.order :: Bestellung teilen ]]</a></p>
+					{endif}
+				{endif}
+
+				{if ORDER_CONFIRMATION_OPEN}
+				<div class="alert alert-danger">
+					<b>[[ translation : marketplace : sale.not.confirmed :: Der Verkauf wurde noch nicht bestätigt ]]</b>
+				</div>
+				{endif}
+
+				{if ORDER_DECLINED}
+				<div class="alert alert-danger">
+					<b>[[ translation : marketplace : sale.rejected :: Der Verkauf wurde abgelehnt ]]</b>
+				</div>
+				{endif}
+
+				{if !STATUS_ARCHIVED}
+					<p><a href="{uri_action(my-marktplatz-einkaeufe-action)}?DO=ARCHIVE&ID_AD_ORDER={ID_AD_ORDER}" class="btn btn-default btn-link js-tooltip" data-toggle="tooltip" data-placement="top" title="[[ translation : marketplace : archiving.completed.orders :: Archivieren Sie Einkäufe, die für Sie abgeschlossen sind ]]">[[ translation : marketplace : archiving :: Archivieren ]]</a></p>
+				{else}
+					<p><a href="{uri_action(my-marktplatz-einkaeufe-action)}?DO=UNARCHIVE&ID_AD_ORDER={ID_AD_ORDER}" class="btn btn-default btn-link js-tooltip" data-toggle="tooltip" data-placement="top" title="[[ translation : marketplace : dearchiving.completed.orders :: Entfernen Sie Einkäufe aus dem Archiv, die Sie erneut in das Auge fassen möchten ]]">[[ translation : marketplace : unarchiving :: Dearchivieren ]]</a></p>
+				{endif}
+			</div>
+
+			{if ORDER_CONFIRMED}
+				<div class="marketplaceOrderStatus">
+					{if STATUS_SHIPPING == 0}<span class="label label-default">[[ translation : marketplace : shipping.open :: Versand offen ]]</span><br>{endif}
+					{if STATUS_SHIPPING == 1}<span class="label label-info">[[ translation : marketplace : in.progress :: in Bearbeitung ]]</span><br>{endif}
+					{if STATUS_SHIPPING == 2}<span class="label label-success">[[ translation : marketplace : sent :: versandt ]]</span><br>{endif}
+
+
+					{if STATUS_PAYMENT == 0}<span class="label label-default">[[ translation : marketplace : payment.open :: Zahlung offen ]]</span><br>{endif}
+					{if STATUS_PAYMENT == 1}<span class="label label-success">[[ translation : marketplace : payment.paid :: bezahlt ]]</span><br>{endif}
+					{if STATUS_PAYMENT == 3}<span class="label label-success">[[ translation : marketplace : payment.pending :: Zahlung schwebend ]]</span><br>{endif}
+
+					{if STATUS_ARCHIVED}<span class="label label-default">[[ translation : marketplace : archiv :: Archiv ]]</span>{endif}
+				</div>
+			{endif}
+		</div>
+	</div>
+</div>

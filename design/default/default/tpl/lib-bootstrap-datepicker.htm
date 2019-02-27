@@ -1,0 +1,9 @@
+{if tpl_limit_global(jsBootstrapDatepicker)}
+  <link rel="stylesheet" type="text/css" href="{uri_resource(/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css)}" />
+  <script type="text/javascript" src="{uri_resource(/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js)}"></script>
+  <script type="text/javascript" src="{uri_resource(/lib/bootstrap-datepicker/locales/bootstrap-datepicker.{SYS_TPL_LANG}.min.js)}"></script>
+  <script type="text/javascript">
+    // Default settings - Language: {SYS_TPL_LANG}
+    jQuery.fn.datepicker.defaults.language = '{SYS_TPL_LANG}';
+  </script>
+{endif}

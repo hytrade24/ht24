@@ -1,0 +1,260 @@
+{if ID_IMPORT_PROCESS}
+<script src="{uri_resource(js/import-process-viewer.js)}"></script>
+<script src="{uri_resource(lib/datatables/media/js/jquery.dataTables.min.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_resource(lib/datatables/media/css/jquery.dataTables.css)}">
+
+<script>
+	var ipv = null;
+
+	jQuery(function () {
+		ipv = new ImportProcessViewer("#importProcessViewer", '{ID_IMPORT_PROCESS}');
+		ipv.init();
+		ipv.pollCurrentState(true);
+		ipv.pollLog();
+		ipv.pollMarkerTable(1);
+		ipv.pollMarkerTable(2);
+	});
+
+</script>
+{endif}
+
+{if NEW_IMPORT}
+
+<h1>
+{if ID_IMPORT_SOURCE}
+    [[ translation : marketplace : import.run.source.edit :: Quelle bearbeiten ]]
+{else}
+    [[ translation : marketplace : import.run.source.add :: Quelle hinzufügen ]]
+{endif}
+</h1>
+
+<p>
+    [[ translation : marketplace : import.run.source.add.intro ::
+        Wählen Sie im nachfolgenden Formular die gewünschte Import Vorlage aus und geben Sie die darauf folgenden Einstellungen ein.
+        Sobald Sie die Quelle hinzugefügt haben können Sie darüber ihre Daten importieren.
+    ]]
+
+</p>
+
+<hr>
+
+
+{if !liste_presets}
+<p class="lead">
+	[[ translation : marketplace : import.run.no.presets.available :: Keine Vorlagen gefunden ]]
+</p>
+<p>
+	[[ translation : marketplace : import.run.no.presets.available.text ::
+		Sie haben bisher keine
+		<a href="{uri_action(my-import-presets)}">Import Vorlagen</a> angelegt. Mit Importvorlagen legen Sie die Struktur Ihrer Importdateien
+		fest, um Datensätze einfach in den Marktplatz importieren zu können.
+		<br><br>
+		<a href="{uri_action(my-import-presets-edit)}?DO=NEW_PRESET">Jetzt eine neue Import Vorlage anlegen</a>
+	]]
+</p>
+{else}
+
+{if ERR}
+<div class="alert alert-danger">{ERR}</div>
+{endif}
+
+<form action="{uri_baseurl(index.php)}?page=my-import-run&DO=CREATE" method="POST" class="form form-horizontal" id="importPresetEditorTypeForm" enctype="multipart/form-data">
+	{if ID_IMPORT_SOURCE}<input type="hidden" name="ID_IMPORT_SOURCE" value="{ID_IMPORT_SOURCE}" />{endif}
+
+	<div class="form-group">
+		<label class="control-label design-input-label">[[ translation : marketplace : import.run.import.preset :: Import Vorlage ]]:</label>
+
+		<div class="design-input-field">
+			<select class="form-control" name="FK_IMPORT_PRESET">
+				{liste_presets}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label design-input-label">[[ translation : marketplace : import.run.import.name :: Import Bezeichnung ]]</label>
+
+		<div class="design-input-field">
+			<input class="form-control" type="text" name="SOURCE_NAME" value="{htm(SOURCE_NAME)}">
+		</div>
+	</div>
+
+	<hr>
+	
+	{IMPORT_SOURCE_CONFIG_TEMPLATES}
+
+	{if tpl_has_permission(cron_allowed,C)}
+		<div class="form-group" data-file-field>
+		<label class="control-label design-input-label">[[ translation : marketplace : import.preset.source.url :: Abruf per URL ]]:</label>
+
+		<div class="design-input-field">
+			<input class="form-control" type="text" name="DOWNLOAD_URL" value="{DOWNLOAD_URL}" placeholder="[[ translation : marketplace : import.preset.source.url.placeholder :: http://www.example.com/ihredatei.csv ]]">
+			<div class="text-muted">
+				[[ translation : marketplace : import.preset.source.url.notice ::
+				<b>Optional.</b> Geben Sie hier die URL an unter der ihre CSV/XML-Datei heruntergeladen werden kann.<br />
+				Wenn Sie die Datei selbst hochladen möchten, dann lassen Sie dieses Feld einfach leer.
+				]]
+			</div>
+			<br />
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="DOWNLOAD_CRON" onchange="jQuery('[data-require=DOWNLOAD_CRON]').prop('disabled', !jQuery(this).prop('checked'));" value="1"{if DOWNLOAD_CRON || DOWNLOAD_INTERVAL} checked{endif}/>
+					[[ translation : marketplace : import.preset.source.url.cron.checkbox :: Automatisch abrufen alle ]]
+				</label>
+			</div>
+			<div class="input-group">
+				<input data-require="DOWNLOAD_CRON" name="DOWNLOAD_INTERVAL" type="number" class="form-control" placeholder="[[ translation : marketplace : import.preset.source.cron.interval :: Anzahl Stunden ]]"{if !DOWNLOAD_CRON && !DOWNLOAD_INTERVAL} disabled{else} value="{htm(DOWNLOAD_INTERVAL)}"{endif}>
+				<div class="input-group-addon">[[ translation : general : time.hours :: Stunden ]]</div>
+			</div>
+		</div>
+	</div>
+	{endif}
+
+	<br /><br />
+	
+	<div class="form-actions text-right">
+	{if ID_IMPORT_SOURCE}
+		<button type="submit" class="btn btn-primary">[[ translation : marketplace : import.source.button.save :: Quelle aktualisieren ]]</button>
+	{else}
+		<button type="submit" class="btn btn-primary">[[ translation : marketplace : import.source.button.add :: Quelle hinzufügen ]]</button>
+	{endif}
+	</div>
+</form>
+<script type="text/javascript">
+
+    // Process preset changes
+    var presetChanged = function() {
+        var fileRequired = jQuery(this).find("option:selected").attr("data-file");
+        if (fileRequired == "false") {
+            jQuery("[data-file-field]").hide();
+        } else {
+            jQuery("[data-file-field]").show();
+        }
+    };
+    jQuery("select[name=FK_IMPORT_PRESET]").on("change", presetChanged).each(presetChanged);
+
+</script>
+{endif}
+{else}
+
+<h1>[[ translation : marketplace : import.run.title :: Import ausführen ]]</h1>
+
+<p>
+    [[ translation : marketplace : import.run.intro ::
+    Der Import Prozess zeigt Ihnen den aktuellen Status Ihres Imports des jeweilige Schrittes. Bitte folgen Sie den unten aufgeführten Anweisungen.
+    ]]
+
+</p>
+
+<hr>
+
+<div id="importProcessViewer">
+	<div id="importProcessBarContainer">
+		<p>
+			<strong>[[ translation : marketplace : import.process.currentstate :: aktueller Status ]]:</strong>
+			<span class="statusPercent"></span>
+			(<span class="statusText">wird abgefragt</span>)
+		</p>
+
+		<div class="progress">
+			<div class="progress-bar progress-bar-striped active" style="width: 0%;"></div>
+		</div>
+	</div>
+
+	<p><small>[[ translation : marketplace : import.run.do.notclose :: Bitte schließen Sie während des Imports das Fenster nicht ]]</small></p>
+
+	<div id="importProcessContentContainer">
+		<ul class="nav nav-tabs">
+			<li class="active">
+				<a href="#log" data-toggle="tab">[[ translation : marketplace : import.process.container.tab.log :: Protokoll ]]</a>
+			</li>
+			<li>
+				<a href="#errors" data-toggle="tab">[[ translation : marketplace : import.process.container.tab.errors :: Fehlerhafte Datensätze ]]</a>
+			</li>
+			<li>
+				<a href="#successdata" data-toggle="tab">[[ translation : marketplace : import.process.container.tab.success :: Erfolgreiche Datensätze ]]</a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<div class="tab-pane active" id="log">
+				<div class="form-group">
+					<label class="control-label design-input-label">[[ translation : marketplace : import.process.log.leveltoshow :: Dargestelltes Loglevel ]]</label>
+
+					<div class="design-input-field">
+						<select class="form-control" name="LOG_LEVEL" onchange="ipv.reloadLog(true);">
+							<option value="1">Fehler</option>
+							<option value="4" selected>Info</option>
+							<option value="5">Debug</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="clearfix"></div>
+
+				<div class=" process-log-pane">
+					<table class="table table-condensed table-striped" id="LOG_TABLE">
+						<thead>
+						<tr>
+							<th>[[ translation : generale : date :: Datum ]]</th>
+							<th>[[ translation : marketplace : log.level :: Stufe ]]</th>
+							<th>[[ translation : marketplace : log.message :: Nachricht ]]</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr class="log-row-dummy">
+							<td colspan="3">[[ translation : marketplace : import.run.log.nomessage :: Keine Protokolleinträge vorhanden ]]</td>
+						</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+			<div class="tab-pane" id="errors">
+
+				<p>
+					<a class="btn btn-default" href="#" onclick="ShowDialog('{uri_baseurl()}index.php?page=my-import-presets-edit&DO=SHOW_TABLE_FIELD_INFO&ID_IMPORT_PRESET={ID_IMPORT_PRESET}', '[[ translation : marketplace : import.preset.tablefieldinfo.header :: Feldeigenschaften ]]', '900'); return false;">
+						[[ translation : marketplace : import.preset.tablefieldinfo.button :: Feldeigenschaften anzeigen ]]
+					</a>
+				</p>
+
+				<div id="ERROR_TABLE_CONTAINER" class="process-error-pane">
+					<table id="MARKER_TABLE_2" class="display" cellspacing="0" width="100%">
+						<thead>
+						<tr>
+							<th>#ID</th>
+							<th style="min-width:300px;" class="messageColumn">MESSAGE</th>
+							{MARKER_TABLE_TH}
+						</tr>
+						</thead>
+					</table>
+
+				</div>
+
+			</div>
+			<div class="tab-pane" id="successdata">
+
+				<p>
+					<a class="btn btn-default" href="#" onclick="ShowDialog('{uri_baseurl()}index.php?page=my-import-presets-edit&DO=SHOW_TABLE_FIELD_INFO&ID_IMPORT_PRESET={ID_IMPORT_PRESET}', '[[ translation : marketplace : import.preset.tablefieldinfo.header :: Feldeigenschaften ]]', '900'); return false;">
+						[[ translation : marketplace : import.preset.tablefieldinfo.button :: Feldeigenschaften anzeigen ]]
+					</a>
+				</p>
+
+				<div id="SUCCESS_TABLE_CONTAINER" class="process-success-pane">
+					<table id="MARKER_TABLE_1" class="display" cellspacing="0" width="100%">
+						<thead>
+						<tr>
+							<th>#ID</th>
+							<th>MESSAGE</th>
+							{MARKER_TABLE_TH}
+						</tr>
+						</thead>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+{endif}

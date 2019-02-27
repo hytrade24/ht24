@@ -1,0 +1,14 @@
+
+<li name="child{PARENT}" id="row{ID_KAT}"{if level>0} style="display: none"{endif}>
+  {if kidcount > 0}
+    <a class="level{level} parent" href="javascript:UpdateKatSelector({ID_KAT}, '{htm(V1)}', {KAT_ROOT});" style="cursor: pointer;">
+    	<span style="color: black; font-family: fixedsys;">+</span>
+    	{htm(V1)}
+	</a>
+  {else}
+    <a class="level{level}" href="javascript:UpdateKatSelector({ID_KAT}, '{htm(V1)}', {KAT_ROOT}, true);" title="[[ translation : general : select :: Ausw&auml;hlen ]]">
+      <span style="font-family: fixedsys;">&nbsp;</span>
+      {htm(V1)}
+	</a>
+  {endif}
+</li>

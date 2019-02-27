@@ -1,0 +1,25 @@
+<div class="design-subtpl">
+    {if FK_INFOSEITE && !SEARCH_HASH}
+        <div class="marketplaceLeadStory design-content-box-unstyled">
+            {content_page({FK_INFOSEITE})}
+        </div>
+    {endif}
+    
+    <h2>{htm(KAT_V1)}</h2>
+    <h3>
+    {if USE_HERSTELLER}
+        [[ translation : marketplace : choose.category.or.manufacturer :: Bitte wählen Sie eine Kategorie oder einen Hersteller aus. ]]
+    {else}
+        [[ translation : marketplace : choose.category :: Bitte wählen Sie eine Kategorie aus. ]]
+    {endif}
+    </h3>
+     
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{if ID_KAT}{uri_action(marktplatz,{ID_KAT})}{else}{uri_action(marktplatz)}{endif}" title="[[ translation : marketplace : ads :: Anzeigen ]]">[[ translation : marketplace : categories.upper :: KATEGORIEN ]]</a></li>
+        {if USE_HERSTELLER}<li><a href="{if ID_KAT}{uri_action(hersteller,{ID_KAT})}{else}{uri_action(hersteller)}{endif}" title="[[ translation : marketplace : producer :: Hersteller ]]">[[ translation : marketplace : manufacturer.upper :: HERSTELLER ]]</a></li>{endif}
+    </ul>
+    
+    {CATEGORIES_CONTENT}
+    
+    ^SUBTPL_ADMIN°
+</div>

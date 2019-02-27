@@ -1,0 +1,40 @@
+{if liste}
+	<div id="comment_list_{TABLE}_{FK}" data-url="{uri_action(comment_list,{TABLE},{FK})}" class="design-comment-list">
+		<fieldset class="fieldGroup">
+			<legend>
+			{if SHOW_RATING && ALLOW_COMMENTS_RATED}
+				[[ translation : marketplace : comments.rated :: Bewertungen ]]
+			{else}
+				[[ translation : marketplace : comments :: Kommentare ]]
+			{endif}
+			</legend>
+		</fieldset>
+		
+		<div>
+			{subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE={TABLE},FK={FK})}
+		</div>
+			
+		{liste}
+		
+		{pager}
+	</div>
+	<script type="text/javascript">
+		commentListInitPager('{TABLE}', {FK});
+	</script>
+{else}
+	<div id="comment_list_{TABLE}_{FK}" data-url="{uri_action(comment_list,{TABLE},{FK})}">
+		<fieldset class="fieldGroup">
+			<legend>
+			{if SHOW_RATING && ALLOW_COMMENTS_RATED}
+				[[ translation : marketplace : comments.rated :: Bewertungen ]]
+			{else}
+				[[ translation : marketplace : comments :: Kommentare ]]
+			{endif}
+			</legend>
+		</fieldset>
+		
+		<div class="text-muted">
+			[[ translation : marketplace : comments.none.yet :: Es sind noch keine Kommentare vorhanden. ]]
+		</div>
+	</div>
+{endif}

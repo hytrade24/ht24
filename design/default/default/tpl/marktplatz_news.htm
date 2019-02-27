@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=4,COUNT_PER_ROW=4,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES=0,TEMPLATE=row_list,CACHE_LIFETIME=102)}
+    </div>
+
+</div>
+
+<h1 class="text-center">Mode & Design</h1>
+
+<div class="row">
+    <div class="col-xs-12 col-md-8">
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=1,COUNT_PER_ROW=1,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES=0,TEMPLATE=row_big,CACHE_LIFETIME=102)}
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <h3>Mehr ...</h3>
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=6,COUNT_PER_ROW=1,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES=0,TEMPLATE=row_list,CACHE_LIFETIME=102)}
+    </div>
+</div>
+
+<h1 class="text-center">Auto & Motorrad</h1>
+{subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=2,COUNT_PER_ROW=2,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES=0,TEMPLATE=row_big,CACHE_LIFETIME=102)}
+{subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,{ID_KAT},COUNT=6,COUNT_PER_ROW=4,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES=0,TEMPLATE=row_list,CACHE_LIFETIME=102)}
+
+
+<div class="row">
+    <div class="col-xs-12 col-md-8">
+<h1>Sie planen einen neuen Online-Marktplatz? <br>Testen Sie unsere Marktplatzsoftware!</h1>
+        <h2>Multi-Branchen-Marktplatzsoftware</h2>
+            <p>ebiz-trader ist eine komplexe und vollumfängliche Marktplatz- bzw. Shop-In-Shop-Lösung. Ganz gleich ob Sie einen Marktplatz für die KFZ-Branche oder ein Immobilien-Portal oder einen allgemeinen B2B-B2C-Marktplatz betreiben wollen, die Einsatzmöglichkeiten sind vielfältig.</p>
+        <p><a href="http://www.ebiz-trader.de/">mehr Informationen</a></p>
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <a href="http://www.ebiz-trader.de/"><img src="{uri_resource(images/slider/slider-01.png)}" /></a>
+    </div>
+</div>
+

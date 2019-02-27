@@ -1,0 +1,85 @@
+<div class="row design-page-with-menu">
+
+    <div class="design-page-content">
+
+        {content_page(Leads - oeffentliche Darstellung - Header)}
+        <p>&nbsp;</p>
+        <table class="table table-bordered table-striped table-condensed">
+            <thead>
+            <tr>
+                <th>Ref-Id.</th>
+                <th>Name</th>
+                <th>Dokumente</th>
+                <th>Abgabefrist in</th>
+                <th>Eingetragen am</th>
+                <th>Letzte Änderung</th>
+            </tr>
+            </thead>
+            <tbody>
+            {list_leads}
+            </tbody>
+        </table>
+        {pager}
+
+        {content_page(Leads - oeffentliche Darstellung - Footer)}
+
+    </div>
+    <div class="design-page-menu">
+
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="design-search-content">
+                    <div class="design-search-row-item">
+                        <form class="search-form">
+                            <div class="form-group">
+                                <label for="ref-id" class="control-label">
+                                    Ref-Id.
+                                </label>
+                                <input type="text" id="ref-id" class="form-control search-field" value="{htm(ref_id)}" />
+                            </div>
+                            <div class="form-group">
+                                <label for="title" class="control-label">
+                                    Titel / Beschreibung
+                                </label>
+                                <input type="text" id="title" class="form-control search-field" value="{htm(title)}" />
+                            </div>
+                            <div class="form-group">
+                                <div class="pull-right">
+                                    <button class="btn btn-default submit" type="submit">
+                                        Leads Suche
+                                    </button>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    {if !ID_USER}
+        {content_page(Werbung - Leads)}
+    {endif}
+
+        {content_page()}
+    </div>
+</div>
+
+{startblock(script)}
+{parentblock()}
+<script type="application/javascript">
+jQuery(function() {
+    var urlEncodeCustom = function(string) {
+        return encodeURIComponent(string).replace(/%/g, "$");
+    };
+    
+    jQuery(".search-form").submit(function(event) {
+        event.preventDefault();
+        var url = '{uri_action_full(leads-directory,{n_page},##ref_id##,##title##)}';
+        document.location.href = url
+            .replace("##ref_id##", urlEncodeCustom(jQuery("#ref-id").val()) )
+            .replace("##title##", urlEncodeCustom(jQuery("#title").val()) );
+    });
+});
+</script>
+{endblock(script)}

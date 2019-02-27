@@ -1,0 +1,28 @@
+<p>
+	Bitte überweisen Sie den offenen Betrag i.H.v {ORDER_TOTAL_PRICE} an das folgende Konto. Bitte geben Sie als Verwendungszweck
+	Ihren Namen und die <strong>Bestellnummer {ORDER_ID_AD_ORDER}</strong> an.
+</p>
+
+<dl>
+	<dt>Empfänger:</dt>
+	<dd>{SELLER_CONFIG_Recipient}</dd>
+
+	<dt>Kontonummer:</dt>
+	<dd>{SELLER_CONFIG_AccountNumber}</dd>
+
+	<dt>Bankleitzahl:</dt>
+	<dd>{SELLER_CONFIG_Bankcode}</dd>
+
+	<dt>Bank:</dt>
+	<dd>{SELLER_CONFIG_Bank}</dd>
+
+	{if SELLER_CONFIG_Iban}
+		<dt>IBAN:</dt>
+		<dd>{SELLER_CONFIG_Iban}</dd>
+	{endif}
+
+	{if SELLER_CONFIG_Bic}
+		<dt>BIC:</dt>
+		<dd>{SELLER_CONFIG_Bic}</dd>
+	{endif}
+</dl>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head lang="de">
+  <meta charset="UTF-8">
+  <title>ebiz-trader Update-Anleitung</title>
+  
+  <link rel="stylesheet" href="{DOC_PATH}/doc_style.css" type="text/css" />
+  
+</head>
+
+<body>
+  <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">
+      <h1>ebiz-trader Update</h1>
+      <h2>Anleitung für die Aktualisierung von Version {VERSION_FROM} auf {VERSION_TO}</h2>
+      
+      <p>
+        In diesem Dokument werden die notwendigen Schritte für ein Update des ebiz-trader von
+        Version {VERSION_FROM} auf {VERSION_TO} beschrieben. Grundlage für die Aktualisierung ist eine vollständige
+        und funktionstüchtige Installation der Ausgangsversion.<br />
+        Durch das Update gehen keine Daten oder Einstellungen verloren.
+      </p>
+      
+      <div class="row">
+        <div class="col-xs-offset-4 col-xs-4" style="background: red; color: white; padding: 8px;">
+          <h3 class="text-center">Wichtig!</h3>
+          <ul>
+            <li>Erstellen Sie ein Backup aller Dateien der aktuellen ebiz-trader Installation!</li>
+            <li>Erstellen Sie ein vollständiges Backup der gesamten Datenbank, in der Ihr ebiz-trader installiert wurde!!</li>
+          </ul>
+        </div>
+      </div>
+      
+      <p>
+        Bei Rückfragen stehen wir Ihnen gerne zur Verfügung!
+      </p>
+    </div>    
+    {PAGE_FOOTER}
+  </div>
+
+  <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">
+      <h3>Vorbemerkung</h3>
+      <p>
+        Mit der Version 6.5.1 haben wir ein neues Updateprogramm eingeführt, um die Aktualisierung der
+        Software weitestgehend automatisiert auszuführen und damit zu erleichtern.<br />
+        Ihr Einschreiten ist nur an den Stellen erforderlich, an denen Sie manuell Änderungen ge-
+        genüber der Standardversion vorgenommen haben.
+      </p>
+      <p>
+        Die folgende Updateanweisung zeigt und erklärt daher mögliche Eingriffe. Je nach Instal-
+        lation werden bei Ihnen alle, nur ein Teil oder ggf. keine der beschriebenen Eingriffe not-
+        wendig sein.
+      </p>
+      <p>
+        Wir empfehlen Ihnen daher <b>eindringlich</b> vorab eine <b>Sicherungskopie</b> anzulegen.
+      </p>
+      
+      <h4>1) Vorbereitung</h4>
+      
+      <ul>
+        <li>
+          Öffnen Sie das Frontend und die Administration Ihrer Installation des ebiz-trader in einem Browser
+        </li>
+        <li>
+          Starten Sie ein FTP Programm und loggen sich auf Ihrem Webspace ein. 
+          Die folgende Anleitung geht davon aus, dass Sie sich im Hauptverzeichnis des ebiz-trader befinden.
+        </li>
+      </ul>
+      
+      <h4>2) Update-Anleitung</h4>
+      
+      <ol>
+        <li>
+          Erstellen Sie ein <b>Backup aller Dateien</b> der aktuellen ebiz-trader Installation
+        </li>
+        <li>
+          Erstellen Sie ein <b>vollständiges Backup der gesamten Datenbank</b>, in der Ihr ebiz-trader installiert wurde.
+        </li>
+        <li>
+          Laden Sie alle Dateien aus dem Updatepaket ./Dateien/ per FTP in das Hauptverzeichnis des ebiz-trader hoch. 
+          Überschreiben Sie dabei schon vorhandene Dateien und Ordner.
+        </li>
+        <li>
+          Achten Sie darauf, dass Sie in Ihrem FTP-Programm den Übertragungsmodus <b>Binär</b> ausgewählt haben.
+        </li>
+        <li>
+          Rufen Sie die Administration Ihrer ebiz-trader Installation auf. 
+          Diese finden Sie i.d.R. unter http://www.ihredomain.de/admin/
+        </li>
+        <li>
+          Sollten Sie noch nicht eingeloggt sein, melden Sie sich mit den Admin Zugangsdaten an.
+        </li>
+      </ol>
+    </div>    
+    {PAGE_FOOTER}
+  </div>  
+
+  <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">
+		
+		<ol start="7">
+			<li>
+				Folgen Sie den Anweisungen auf dem Bildschirm. Starten Sie das Update, indem Sie auf den Button „Update starten“ drücken.
+			</li>
+		</ol>
+		
+		<img src="{DOC_PATH}/screenshot01.png" width="710" />
+		
+		<ol start="8">
+			<li>
+				Wenn keine manuellen Eingriffe notwendig sein sollten, führt Sie das Updateprogramm
+				durch alle weiteren Schritte. Hält das Programm an einem Schritt an, folgen
+				Sie bitte den Anweisungen unter <b>„Mögliche erforderliche Eingriffe Ihrerseits“</b>
+			</li>
+		</ol>
+	
+	</div>
+    {PAGE_FOOTER}
+  </div>
+  
+  
+
+  <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">
+	
+		<h3> <b> Mögliche erforderliche Eingriffe Ihrerseits </b> </h3>
+		<h3> <b> 1) PHP Datei wurde angepasst / Schritt Dateien kopieren </b></h3>
+		
+		<img src="{DOC_PATH}/screenshot02.png" width="710" />
+		
+		<p> 
+			In diesem Fall wurden Änderungen an PHP Dateien in Ihrer Installation erkannt, die nicht
+			unserer Standardversion entsprechen. <br>
+			Sie sehen nun eine Vergleichsoberfläche, in der Ihnen die erkannten Änderungen aufgezeigt
+			werden. <br> Hier gibt es in der Regel 3 Ansichten:
+		</p>
+		<p>
+			<b>Original-Version (vor dem Update) </b> <br>
+			In diesem Bereich sehen Sie die Datei ihrer aktuellen ebiz-trader Version ohne ihre Anpassungen.
+		</p>
+		<p>
+			<b> Neue Version (nach dem Update) </b> <br>
+			In diesem Bereich sehen Sie die neue Version der Datei, wie Sie mit dem Update ausgeliefert
+			wird. Vergleichen Sie diese mit der Original-Version um festzustellen welchen Änderungen
+			im Zuge des Updates vorgenommen wurden.
+		</p>
+		<p>
+			<b> Aktuelle Version (modifiziert) </b> <br>
+			In diesem Bereich sehen Sie aktuelle Version der Datei, wie Sie in ihrer ebiz-trader Version
+			vorliegt. Vergleichen Sie diese mit der Neuen Version oder Original-Version um festzustellen
+			welchen Änderungen Sie an dieser Datei vorgenommen haben.
+		</p>
+	
+	</div>
+    {PAGE_FOOTER}
+  </div>
+  
+  
+   <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">
+		
+		<img src="{DOC_PATH}/screenshot03.png" width="710" />
+		
+		<p> 
+			Die Bearbeitung erfolgt immer im linken (bei 2 Datei-Versionen) bzw. mittleren (bei 3 Datei-
+			Versionen) Bereich. (Auch zu erkennen am helleren/weißen Hintergrund.) Sie können ihre
+			Änderungen jederzeit speichern und zu einem späteren Zeitpunkt fortsetzen.
+			Zwischen den Überschriften der Bereiche "Neue Version" und "Aktuelle Version" haben
+			Sie die Möglichkeit diese Bereiche zu tauschen um, anstelle auf Basis der neuen Version,
+			das Update auf Basis ihrer aktuellen Version vorzunehmen.
+		</p>
+		
+		<p> Wenn Sie die Änderungen vollständig zusammengeführt haben, klicken Sie auf den Button
+			"Jetzt abschließen!" um die Änderungen engültig zu speichern. <b> Sobald Sie dies machen
+			wird die aktuelle Datei ihrer ebiz-trader Installation unwiderruflich durch die von ihnen
+			zusammengeführte Datei ersetzt! Stellen Sie daher zuvor sicher, dass Sie auch
+			wirklich alle nötigen Änderungen übertragen haben. </b>
+		</p>
+		
+		<p>
+			Sobald alle Dateien zusammengeführt wurden werden Sie automatisch gefragt ob das Update
+			fortgesetzt werden soll. Mit einem Klick auf „ok“ (oder später auf „Update fortsetzen)
+			geht das Update-Tool zum nächsten Schritt über.
+		</p>
+		
+		<p>
+			Die Vergleichsansicht dient als nützliche Unterstützung, um gemachte Änderungen zu erkennen.
+			Wir empfehlen Ihnen dennoch immer <b>jede Änderung</b> an unserer Standardversion
+			zu dokumentieren!
+		</p>
+		
+		
+	</div>
+    {PAGE_FOOTER}
+  </div>
+  
+  
+   <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">
+	
+		<img src="{DOC_PATH}/screenshot04.png" width="710" />
+		
+		<p>
+			In diesem Beispiel sehen Sie wie im Zuge des Updates einige Code-Zeilen hinzugefügt
+			wurden. Diese sind allerdings bereits in der aktuellen Version vorhanden (rechts sind keine
+			Änderungen markiert).
+		</p>
+	
+	
+	</div>
+    {PAGE_FOOTER}
+  </div>
+  
+  
+  
+  
+  <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">
+	
+		<h3> 2) Template Datei wurde angepasst / Schritt Userdesign überprüfen</h3>
+		
+		<img src="{DOC_PATH}/screenshot05.png" width="710" />
+		
+		<p>
+			In diesem Fall wurden an Template Dateien im User-Design Änderungen von Ihnen erkannt.
+			Sie sehen nun eine Vergleichsoberfläche, in der Ihnen die erkannten Änderungen
+			aufgezeigt werden. Hier gibt es in der Regel 3 Ansichten:
+		</p>
+		
+		<p>
+			<b>Original-Version (vor dem Update)</b> <br>
+			In diesem Bereich sehen Sie die Datei ihrer aktuellen ebiz-trader Version ohne ihre Anpassungen.
+		</p>
+		
+		<p>
+			<b> Neue Version (nach dem Update) </b> <br>
+			In diesem Bereich sehen Sie die neue Version der Datei, wie Sie mit dem Update ausgeliefert
+			wird. Vergleichen Sie diese mit der Original-Version um festzustellen welchen Änderungen
+			im Zuge des Updates vorgenommen wurden.
+		</p>
+		
+		<p>
+			<b> User-Design </b> <br>
+			In diesem Bereich sehen Sie aktuelle Version der Datei, wie Sie in ihrem eigenen Design
+			vorliegt. Vergleichen Sie diese mit der Neuen Version oder Original-Version um
+			festzustellen welchen Änderungen Sie an dieser Datei vorgenommen haben.
+		</p>
+	
+	</div>
+    {PAGE_FOOTER}
+  </div>
+  
+  
+  
+  
+  <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">
+	
+		<p>
+			Die Bearbeitung erfolgt immer im linken (bei 2 Datei-Versionen) bzw. mittleren (bei 3 Datei-
+			Versionen) Bereich. (Auch zu erkennen am helleren/weißen Hintergrund.) Sie können ihre
+			Änderungen jederzeit speichern und zu einem späteren Zeitpunkt fortsetzen.
+			Zwischen den Überschriften der Bereiche "Neue Version" und "Aktuelle Version" haben
+			Sie die Möglichkeit diese Bereiche zu tauschen um, anstelle auf Basis der neuen Version,
+			das Update auf Basis ihrer aktuellen Version vorzunehmen.
+		</p>
+	
+		<p>
+			Wenn Sie die Änderungen vollständig zusammengeführt haben, klicken Sie auf den Button
+			"Jetzt abschließen!" um die Änderungen engültig zu speichern. <b> Sobald Sie dies machen
+			wird die aktuelle Datei ihrer ebiz-trader Installation unwiderruflich durch die von ihnen
+			zusammengeführte Datei ersetzt! Stellen Sie daher zuvor sicher, dass Sie auch
+			wirklich alle nötigen Änderungen übertragen haben. </b>
+		</p>
+		
+		<p>
+			Sobald alle Dateien zusammengeführt wurden werden Sie automatisch gefragt ob das Update
+			fortgesetzt werden soll. Mit einem Klick auf „ok“ (oder später auf „Update fortsetzen)
+			geht das Update-Tool zum nächsten Schritt über.
+		</p>
+		
+		<p>
+			Die Vergleichsansicht dient als nützliche Unterstützung, um gemachte Änderungen zu erkennen.
+			Wir empfehlen Ihnen dennoch immer <b>jede Änderung </b> an unserer Standardversion
+			zu dokumentieren!
+		</p>
+		
+		<img src="{DOC_PATH}/screenshot06.png" width="710" />
+		
+		<p>
+			In diesem Beispiel wurde im Zuge des Updates die CSS-Klasse „row“ in „row-fluid“ geändert.
+			Im User-Design wurden zudem die beiden Links geändert.
+		</p>
+	
+	</div>
+    {PAGE_FOOTER}
+  </div>
+  
+
+  
+  
+  
+  <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">
+		
+		<h3> 3) E-Mail Template / Schritt Userdesign überprüfen </h3>
+		
+		<p>
+			Es wurden Änderungen an E-Mail Templates gegenüber der Standardversion festgestellt,
+			sodass das Updateprogramm diese nicht automatisch überschreiben kann.
+			Ihnen wird daher der Inhalt des neuen Templates dargestellt. Bitte kopieren Sie diesen per
+			Hand in das angegebene E-Mail Template und bestätigen Sie die Aktion mit „Update Änderungen
+			ignorieren“
+		</p>
+		
+		<img src="{DOC_PATH}/screenshot07.png" width="710" /> 
+		
+	<br><br>
+		
+		<p>
+			<div align="center"> 
+				<span style="font-size:18px;"> <b>Abschluss des Updates</b> </span>
+			</div>
+		</p>
+		
+		<p>
+			Das Update ist mit den o.g. Schritten abgeschlossen. Überprüfen Sie die neue Versionsnummer
+			{VERSION_TO} auf der Startseite der Administration.
+		</p>
+	
+	
+	</div>
+    {PAGE_FOOTER}
+  </div>
+  
+</body>
+</html>

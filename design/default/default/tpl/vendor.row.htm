@@ -1,0 +1,108 @@
+<div class="design-vendor-row{if USER_TOP_USER} top{endif}">
+    <div class="row">
+        <div class="col-sm-4 col-md-3 col-lg-3">
+            <div class="design-vendor-image thumbnail">
+                <a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}" title="[[ translation : marketplace : show.vendor :: {htm(VENDOR_NAME)} ansehen ]]">
+                    {if VENDOR_LOGO}<img src="{thumbnail(VENDOR_LOGO,165,150)}" data-watchlist="true" />{else}<img src="{uri_resource(/images/marketplace/nopic.jpg)}" />{endif}
+                </a>
+            </div>
+
+            {if RATING}
+            <div class="text-center">
+                <img title="[[ translation : marketplace : average.rating :: Durchschnittliche Bewertung ]]" src="{uri_baseurl(/gfx/stars_{RATING}.png)}" />
+            </div>
+            {endif}
+
+
+            <div class="design-vendor-box-contents">
+                <div class="design-vendor-box-contents-row">
+                    {if ALLOW_COMMENTS && SYSTEM_ALLOW_COMMENTS}
+                    <div class="design-vendor-box-contents-comments">
+                        <a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}#comments" class="js-tooltip" title="[[ translation : marketplace : count.comments :: {if COUNT_COMMENTS}{COUNT_COMMENTS}{else}0{endif} Kommentare ]]">
+                            <i class="glyphicon glyphicon-comment"></i>
+                            {int(COUNT_COMMENTS)}
+                        </a>
+                    </div>
+                    {endif}
+                    <div class="design-vendor-box-contents-events">
+                        <a href="{uri_action(view_user_events,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}" class="js-tooltip" title="[[ translation : marketplace : count.events :: {COUNT_EVENTS} Veranstaltungen ]]">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                            {int(COUNT_EVENTS)}
+                        </a>
+                    </div>
+                    <div class="design-vendor-box-contents-images">
+                        <a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}#gallery" class="js-tooltip" title="[[ translation : marketplace : count.gallery :: {COUNT_GALLERY} Bilder in der Galerie ]]">
+                            <i class="glyphicon glyphicon-picture"></i>
+                            {int(COUNT_GALLERY)}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="col-sm-8 col-md-9 col-lg-9">
+            <div class="row">
+                <div class="col-xs-7 col-sm-6 col-md-8">
+                    <p>
+                        <a class="design-vendor-name" href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}"
+                           title="[[ translation : marketplace : show.vendor : VENDOR_NAME=VENDOR_FIRMA : {htm(VENDOR_NAME)} ansehen ]]">
+                            {htm(VENDOR_FIRMA)}
+                        </a>
+                    </p>
+                    <p class="marketplaceListItemDescription muted">
+                        {strip_tags(VENDOR_SHORT_DESCRIPTION)}
+                    </p>
+                </div>
+                <div class="col-xs-5 col-sm-6 col-md-4">
+                    <dl class="dl-table">
+                        {if COUNTRY_CODE}
+                        <dd>
+                            <img src="{uri_baseurl(/bilder/flags/{lower(COUNTRY_CODE)}.png)}" alt="{COUNTRY_CODE}" title="{COUNTRY_CODE}" />
+                        </dd>
+                        {endif}
+                        {if VENDOR_PLZ}
+                            <dt>[[ translation : marketplace : address :: Adresse ]]:</dt>
+                            <dd>
+                                {VENDOR_PLZ} {VENDOR_ORT}<br />
+                                {VENDOR_COUNTRY}
+                            </dd>
+                        {endif}
+                        {if VENDOR_TEL}
+                            <dt>[[ translation : marketplace : phone :: Telefon ]]:</dt>
+                            <dd>{VENDOR_TEL}</dd>
+                        {endif}
+                        {if VENDOR_FAX}
+                            <dt>[[ translation : marketplace : fax :: Fax ]]:</dt>
+                            <dd>{VENDOR_FAX}</dd>
+                        {endif}
+                        <dt>&nbsp;</dt>
+                            <dt>
+                        {if USER_TOP_USER}
+                        <img class="userBoxIconTopUser js-tooltip" src="{uri_resource(/images/icons/award_star_gold_3.png)}" data-toggle="tooltip" data-placement="bottom" title="[[ translation : marketplace : top.vendor :: TOP Anbieter ]]" />
+                        {endif}
+                        {if USER_TOP_SELLER}
+                        <img class="userBoxIconTopSeller js-tooltip"  src="{uri_resource(/images/icons/rainbow.png)}" data-toggle="tooltip" data-placement="bottom" title="[[ translation : marketplace : top.seller :: TOP Seller ]]" />
+                        {endif}
+                        {if USER_PROOFED}
+                        <img class="userBoxIconProofed js-tooltip" src="{uri_resource(/images/icons/shield.png)}" data-toggle="tooltip" data-placement="bottom" title="[[ translation : marketplace : approved.vendor :: geprüfter Anbieter ]]" />
+                        {endif}
+                        </dt>
+                        
+                    </dl>
+
+                </div>
+            </div>
+
+            <div class="row-fluid">
+                <div class="span8 marketplaceListItemCategory">
+                    {if VENDOR_CATEGORIES}<strong>[[ translation : marketplace : categorie :: Kategorie ]]: </strong>{VENDOR_CATEGORIES}{endif}
+                </div>
+                <div class="span4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

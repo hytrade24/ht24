@@ -1,0 +1,19 @@
+  <div class="design-news-media{if SELECTED} design-news-media-active{endif}">
+    <a onclick="ArticleSetMediaPreview(this);" style="cursor: pointer;">
+      <input type="radio" name="MEDIA_PREVIEW[{BITVAL}]" value="{PATH}" style="display: none;"{if SELECTED} checked{endif} />
+    {if TYPE_IMAGE}
+      <img class="img-responsive-center" src="{PATH}" />
+    {endif}
+    {if TYPE_VIDEO}
+      <div class="thumbnail-video">
+        <img class="img-responsive-center" src="https://i{SERVER}.ytimg.com/vi/{CODE}/default.jpg" />
+        <div class="video_play">
+          <img src="{uri_baseurl(/bilder/play.png)}"/>
+        </div>
+      </div>
+    {endif}
+    </a>
+    <div class="design-news-media-active-text">
+      [[ translation : general : news.media.is.preview :: Vorschau ]]
+    </div>
+  </div>

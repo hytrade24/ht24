@@ -1,0 +1,15 @@
+<p id="uploadImageNoneYet" class="text-error"{if liste} style="display: none"{endif}>
+[[ translation : marketplace : no.images.uploaded :: Sie haben noch keine Bilder hochgeladen. ]]
+</p>
+<table id="uploadImageTable" class="table table-bordered table-striped table-condensed"{if !liste} style="display: none"{endif}>
+    <thead>
+        <tr>
+            <th>[[ translation : marketplace : user.media.image.preview :: Vorschau ]]</th>
+            <th>[[ translation : marketplace : user.media.image.actions :: Aktionen ]]</th>
+            <th>[[ translation : marketplace : user.media.image.details :: Details ]]</th>
+        </tr>
+    </thead>
+    <tbody>
+        {liste}
+    </tbody>
+</table>

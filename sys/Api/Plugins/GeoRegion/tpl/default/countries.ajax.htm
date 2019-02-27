@@ -1,0 +1,9 @@
+<div id="geoRegions_{SEARCH_HASH}">
+  <script type="text/javascript">
+    jQuery(function() {
+      jQuery.post("index.php?pluginAjax=GeoRegion&pluginAjaxAction=getRegionsSearch", "category={ID_KAT}&region={ID_GEO_REGION}&hash={SEARCH_HASH}", function(result) {
+        jQuery("#geoRegions_{SEARCH_HASH}").html(result);
+      });
+    });
+  </script>
+</div>

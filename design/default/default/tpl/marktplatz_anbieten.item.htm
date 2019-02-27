@@ -1,0 +1,23 @@
+<tr>
+  <td>
+    <input type="radio" id="OFFER_ARTICLE_ID_{ID_AD_MASTER}" name="OFFER_ARTICLE_ID" value="{htm(ID_AD_MASTER)}" />
+  </td>
+  <td>
+    <img style="min-width: 60px;" src="{if !IMG_DEFAULT_SRC}{thumbnail(uri_resource(/images/marketplace/nopic.jpg),60,60,crop)}{else}{thumbnail({IMG_DEFAULT_SRC},60,60,crop)}{endif}" alt="{htm(PRODUKTNAME)}" class="img-responsive pull-left" />
+  </td>
+  <td>
+    <label for="OFFER_ARTICLE_ID_{ID_AD_MASTER}">
+      <h4>{htm(PRODUKTNAME)}</h4>
+    </label>
+  </td>
+  <td>
+    {htm(MENGE)}
+  </td>
+  <td>
+    {topreis(PREIS)}&nbsp;{htm(CURRENCY_DEFAULT)}
+    <br />
+    <span class="text-muted">
+      {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={MWST})}
+    </span>
+  </td>
+</tr>

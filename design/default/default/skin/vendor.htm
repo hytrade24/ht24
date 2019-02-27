@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{strip_tags(pagetitle)} {if newstitle}- {newstitle}{endif} {site_name}</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    {metatags}
+    {content_page(header meta)}
+    {content_page(CODE FUER WEBSTATISTIK)}
+
+    {subtpl(tpl/{SYS_TPL_LANG}/header_scripts.htm,*)}
+    {if USER_CSS_ISSET}
+    <link rel="stylesheet" type="text/css" href="{uri_baseurl(/sys/Api/Plugins/VendorHomepage/cache/user.{USER_ID_USER}.css?updated={USER_CSS_CHANGED})}">
+    {endif}
+</head>
+<body{if scrollspy} data-spy="scroll" data-target="{htm(scrollspy)}"{endif}>
+    {subtpl(tpl/{SYS_TPL_LANG}/vendor_homepage_design_header.htm,*)}
+
+    <div class="container design-vendor-header">
+        {VENDOR_HEADER}
+    </div>
+
+    <div id="content" class="container content-{page}">
+        {content}
+    </div>
+
+    <div id="footer">
+        <div class="container">
+            {USER_FOOTER}
+        </div>
+    </div>
+    
+    {SECTION_BODY_END}
+    {startblock(script)}
+        {parentblock()}
+        <!-- Javascript includes -->
+    {endblock(script)}
+</body>
+</html>

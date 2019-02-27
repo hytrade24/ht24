@@ -1,0 +1,514 @@
+
+<h1>
+    <img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg?{rand})}" alt="" border="0" align="left"
+         hspace="10"/>
+    [[ translation : marketplace : user.files :: Benutzerdaten für User ]]: {htm(NAME)}<br/>
+    <span>[[ translation : marketplace : your.personal.profile :: Ihr pers&ouml;nliches Profil ]]</span>
+</h1>
+[[ translation : marketplace : your.personal.profile.notice ::
+    <p>
+        Geben Sie hier Ihre pers&ouml;nlichen Daten ein.
+        <br/>
+        Datenschutz ist uns wichtig! Ihre Daten werden ausschlie&szlig;lich von uns f&uuml;r die Verwendung hier auf dem
+        Portal genutzt!
+    </p>
+    <p>
+    Bei R&uuml;ckfragen stehen wir Ihnen gerner zur Verf&uuml;gung
+    <br/>
+]]
+</p>
+{if err}
+<div class="alert alert-danger">
+    [[ translation : marketplace : wrong.entered.error :: Es ist ein Fehler aufgetreten. Bitte überprüfen Sie Ihre Eingaben ]].
+    {err}
+</div>
+{else}
+    {if allok}
+    <div class="alert alert-success">
+        [[ translation : general : settings.saved :: Ihre Einstellungen wurden erfolgreich gespeichert ]]!
+    </div>
+    {endif}
+{endif}
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-settings-nav.htm,*)}
+
+{if password_change}
+<form method="post" enctype="multipart/form-data" action=""{uri_action(my-profil)}" style="display:inline;">
+    <input type="hidden" name="do" value="password" />
+    <h1>[[ translation : marketplace : change.password.long :: Passwort ändern</h1>
+    <p>
+        Hier k&ouml;nnen Sie Ihr Passwort neu setzten. &Auml;nderungen werden sofort &uuml;bernommen. Bitte verwenden Sie nur
+        sichere Passw&ouml;rter ]].
+    </p>
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr>
+            <th colspan="4">
+                [[ translation : general : password :: Passwort ]]
+            </th>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : general : password :: Passwort ]]
+            </td>
+            <td>
+                <input class="form-control" type="password" value="" name="pass1" maxlength="64"/>
+            </td>
+            <td>
+                [[ translation : general : again :: Wiederholung ]]
+            </td>
+            <td>
+                <input class="form-control" type="password" value="" name="pass2" maxlength="64"/>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4" style="text-align: right;">
+                <input name="reset" type="reset" class="btn btn-default" value="[[ translation : general : reset :: Reset ]]"/>
+                <input name="button" type="submit" class="btn btn-success" value="[[ translation : general : save :: Speichern ]]"/>
+            </th>
+        </tr>
+    </table>
+</form>
+{else}
+<form method="post" enctype="multipart/form-data" action=""{uri_action(my-profil)}" style="display:inline;">
+    <input type="hidden" name="do" value="profile" />
+
+    <table class="mytable table table-bordered table-striped table-condensed design-user-profile-form">
+        {if CH_USERNAME}
+        <tr>
+            <th colspan="4">
+                [[ translation : general : username :: Benutzername ]]
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <p class="text-error">
+                    [[ translation : general : you.can.change.name.once :: Sie d&uuml;rfen einmalig Ihren Benutzernamen &auml;ndern ]]!
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : general : username :: Benutzername ]]:
+            </td>
+            <td>
+                <input type="text" name="NAME" value="{htm(NAME)}" class="form-control"/>
+            </td>
+            <td colspan="2">
+                &nbsp;
+            </td>
+        </tr>
+        {endif}
+        <tr>
+            <th colspan="4">
+                [[ translation : general : personal :: Pers&ouml;nliches ]]
+            </th>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : general : salutation :: Anrede ]]
+            </td>
+            <td>
+                {lookup(ANREDE,,,id="anrede" tabindex="1" class="form-control",F_ORDER ASC)}
+            </td>
+            <td>
+                <!-- Berufsstand -->
+            </td>
+            <td>
+                <!--{lookup(PROFESSION,,,)}-->
+            </td>
+        </tr>
+        <tr>
+            <td class="design-user-profile-form-first-name-label">
+                [[ translation : general : first.name :: Vorname ]]*
+            </td>
+            <td class="design-user-profile-form-first-name-input">
+                <input type="text" name="VORNAME" maxlength="60" value="{htm(VORNAME)}" required="required" class="form-control"/>
+            </td>
+            <td class="design-user-profile-form-last-name-label">
+                [[ translation : general : last.name :: Nachname ]]*
+            </td>
+            <td class="design-user-profile-form-last-name-input">
+                <input type="text" name="NACHNAME" maxlength="60" value="{htm(NACHNAME)}" required="required" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : general : firm :: Firma ]]
+            </td>
+            <td>
+                <input type="text" name="FIRMA" maxlength="60" value="{htm(FIRMA)}" class="form-control"/>
+            </td>
+            <td>
+                [[ translation : general : birthdate :: Geburtsdatum ]]
+            </td>
+            <td class="input-autowidth">
+                {datedrop(GEBDAT,1900..-10)}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4">
+                [[ translation : general : address :: Anschrift ]]
+            </th>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : general : street.number :: Straße & Hausnummer ]]*
+            </td>
+            <td>
+                <input type="text" name="STRASSE" maxlength="60" value="{htm(STRASSE)}" required="required" class="form-control"/>
+            </td>
+            <td>
+                [[ translation : general : country :: Land ]]*
+            </td>
+            <td>
+                {select_country(,,,,id="land" class="form-control" required="required")}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : general : postcode :: PLZ ]]*
+            </td>
+            <td>
+                <input type="text" name="PLZ" maxlength="60" value="{htm(PLZ)}" required="required" class="form-control"/>
+            </td>
+            <td>
+                [[ translation : general : location :: Ort ]]*
+            </td>
+            <td>
+                <input type="text" name="ORT" maxlength="60" value="{htm(ORT)}" required="required" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+            </td>
+            <td title="[[ translation : marketplace : sales.tax.id :: Umsatzsteuer-Identifikationsnummer ]]">
+                [[ translation : marketplace : sales.tax.id.abbr :: USt-IdNr ]].
+            </td>
+            <td>
+                <div class="form-group{if UST_ID_VALID == 1} has-success{endif}{if UST_ID_VALID == 2} has-error{endif} has-feedback js-tooltip"{if UST_ID_VALID == 1}
+                    data-toggle="tooltip" title="[[ translation : marketplace : good.sales.tax.id :: Ihre USt-Id. ist gültig ]](geprüft am {todate(UST_ID_CHECKDATE)})"{endif}{if UST_ID_VALID == 2}
+                    data-toggle="tooltip" title="[[ translation : marketplace : sales.tax.not.good :: Ihre USt-Id. ist ungültig ]]"{endif}>
+                    <input type="text" name="UST_ID" maxlength="60"  data-original="{UST_ID}" value="{UST_ID}" class="form-control"
+                            onchange="updateUstIdIcon(this);" onkeyup="updateUstIdIcon(this);" />
+                {if UST_ID_VALID == 1}
+                    <span class="form-control-feedback">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </span>
+                {endif}
+                {if UST_ID_VALID == 2}
+                    <span class="form-control-feedback js-tooltip" >
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </span>
+                {endif}
+                    <span class="form-control-feedback js-tooltip icon-ustid-dirty" style="display: none;">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </span>
+                </div>
+            </td>
+        </tr>
+        {if LATITUDE}
+        <tr>
+            <th colspan="4">
+                [[ translation : marketplace : user.address.location :: Ihre Standortadresse ]]
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                {javascript_google_maps()}
+                <script type="text/javascript">
+                    ebizGoogleMapCallback(function() {
+                        // Google Maps
+                        {if LATITUDE}
+                        var bounds = new google.maps.LatLngBounds();
+
+                        var latlng = new google.maps.LatLng({LATITUDE}, {LONGITUDE});
+                        bounds.extend(latlng);
+
+                        var myOptions = {
+                            zoom: 13,
+                            zoomMax:15,
+                            center: latlng,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        };
+
+                        var map = new google.maps.Map(document.getElementById("eventMap"), myOptions);
+
+                        // Marker
+                        var marker = new Array();
+                        var infowindow = new Array();
+
+                        marker[0] = new google.maps.Marker({
+                            position: latlng,
+                            map: map
+                        });
+                        {endif}
+                    });
+                </script>
+                <div id="eventMap" style="height: 250px; width: 100%;"></div>
+            </td>
+        </tr>
+        {endif}
+        <tr>
+            <th colspan="4">
+                [[ translation : marketplace : contact.date :: Kontaktdaten ]]
+            </th>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : marketplace : e.mail :: Email ]]*
+            </td>
+            <td>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        @
+                    </div>
+                    <input name="EMAIL" type="text" value="{htm(EMAIL)}" placeholder="[[ translation : marketplace : email.address :: Emailadresse ]]" required="required" class="form-control">
+                </div>
+
+            </td>
+            <td>
+                [[ translation : marketplace : link :: URL http:// ]]
+            </td>
+            <td>
+                <input type="text" name="URL" maxlength="60" value="{htm(URL)}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : marketplace : phone :: Telefon ]]
+            </td>
+            <td>
+                <input type="text" name="TEL" maxlength="255" value="{htm(TEL)}" class="form-control"/>
+            </td>
+            <td>
+                [[ translation : general : fax :: Fax ]]
+            </td>
+            <td>
+                <input type="text" name="FAX" maxlength="60" value="{htm(FAX)}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : general : mobile :: Mobil ]]
+            </td>
+            <td>
+                <input type="text" name="MOBIL" maxlength="255" value="{htm(MOBIL)}" class="form-control"/>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4">
+                [[ translation : marketplace : personal.description :: persönliche Beschreibung ]]
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <p>
+                    [[ translation : marketplace : personal.description.long ::
+                        Hier können Sie sich selbst beschreiben. Der Text wird zu Ihrem Profil abgezeigt und kann von jedem
+                        gesehen werden! Bitte verwenden Sie kein HTML!
+                    ]]
+                </p>
+
+                <textarea rows="5" name="UEBER" class="form-control">{htm(UEBER)}</textarea>
+
+            </td>
+        </tr>                          
+        <tr>
+            <th colspan="4" class="text-right">
+				<input name="reset" type="reset" class="btn btn-default" value="[[ translation : general : reset :: Reset ]]"/>
+				<input name="button" type="submit" class="btn btn-success" value="[[ translation : general : save :: Speichern ]]"/>
+            </th>
+        </tr>
+    </table>
+    <h1 id="impressum_header">[[ translation : marketplace : imp.long :: Impressum, AGB, Widerrufserkl&auml;rung und Zahlungsinformationen ]]</h1>
+    <p>
+        [[ translation : marketplace : imp.notice :: Hier können Sie Ihre Verkaufsbedingungen definieren. Diese dienen als Vorlage und werden bei jeder Neu-Anzeige im
+        Formular vorausgefüllt. ]]
+    </p>
+
+    <table class="mytable table table-bordered table-striped table-condensed">
+
+        <tr>
+            <th colspan="4" id="impressum">
+                [[ translation : marketplace : imp :: Impressum ]]
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <p>
+                    [[ translation : marketplace : imp.info :: Geben Sie hier, sofern Sie als gewerblicher Händler auftreten, die nach §5 TMG erforderlichen
+                    Informationen für Ihr Impressum an. ]]
+                </p>
+
+                <textarea name="IMPRESSUM" id="IMPRESSUM" class="form-control">{IMPRESSUM}</textarea>
+
+            </td>
+        </tr>
+
+        <tr>
+            <th colspan="4">
+                [[ translation : marketplace : agb.for.sold :: AGB für den Verkauf ]]
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <p>
+                    [[ translation : marketplace : agb.for.sold.notice :: Hier können Sie die allgemeinen Geschäftsbedingungen für ihre Verkäufe angeben.
+                    Bitte verwenden Sie kein HTML ]]!
+                </p>
+
+                <textarea class="form-control" rows="5" name="AGB">{htm(AGB)}</textarea>
+
+                <p align="right">[[ translation : marketplace : change.active.displays :: Alle aktiven Anzeigen ändern ]] <input type="checkbox" value="1" name="upd_AGB"/></p>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4">
+                [[ translation : marketplace : no.sold.long :: Widerrufs-/R&uuml;cktrittserkl&auml;rung f&uuml;r den Verkauf ]]
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <p>
+                    [[ translation : marketplace : no.sold.notice :: Hier können Sie die Widerrufs-/R&uuml;cktrittserkl&auml;rung für ihre Verkäufe angeben.
+                    Bitte verwenden Sie kein HTML! ]]
+                </p>
+
+                <textarea rows="5" name="WIDERRUF" class="form-control">{htm(WIDERRUF)}</textarea>
+
+                <p align="right">[[ translation : marketplace : change.all.active :: Alle aktiven Anzeigen ändern ]] <input type="checkbox" value="1" name="upd_WIDERRUF"/></p>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4">
+                [[ translation : marketplace : payment.info.long :: Zahlungsinformationen für den Verkauf ]]
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <p>
+                    [[ translation : marketplace : payment.info.notice :: Hier k&ouml;nnen Sie z.B. ihre Kontodaten hinterlegen. Diese werden dem K&auml;ufer
+                    automatisch zugeschickt sobald dieser den Artikel bezahlen muss ]].
+                </p>
+
+                <textarea rows="5" name="ZAHLUNG" class="form-control">{htm(ZAHLUNG)}</textarea>
+
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4" class="text-right">
+				<input name="reset" type="reset" class="btn btn-default" value="[[ translation : general : reset :: Reset ]]"/>
+				<input name="button" type="submit" class="btn btn-success" value="[[ translation : general : save :: Speichern ]]"/>
+            </th>
+        </tr>
+    </table>
+    <h1>[[ translation : marketplace : profile.picture.change :: Profilbild ändern ]]</h1>
+    <p>
+        [[ translation : marketplace : profile.picture.change.notice ::
+            Hier k&ouml;nnen Sie ein Bild von Ihnen im JPG-, GIF-, und PNG-Format hochladen. Bitte keine Bilder hochladen deren
+            Rechteinhaber Sie nicht sind!
+        ]]
+    </p>
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr>
+            <th colspan="2">
+                [[ translation : marketplace : profile.picture :: Profilbild ]]
+            </th>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : marketplace : profile.picture.hint :: Geben Sie das Bild an das Sie verwenden möchten ]]
+            </td>
+            <td>
+                <input type="file" name="BILD" size="20"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : marketplace : profile.picture.current :: Aktuelles Bild ]]
+            </td>
+            <td>
+                <img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg?{rand})}" alt="" border="0"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                [[ translation : marketplace : delete.own.picture :: Eigenes Bild löschen ]]?
+            </td>
+            <td>
+                <input type="checkbox" name="DEL_BILD" value="1"/>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2" style="text-align: right;">
+				<input name="reset" type="reset" class="btn" value="[[ translation : general : reset :: Reset ]]"/>
+				<input name="button" type="submit" class="btn btn-success" value="[[ translation : general : save :: Speichern ]]"/>
+            </th>
+        </tr>
+    </table>
+</form>
+{endif}
+<span class="smallText">* [[ translation : marketplace : must.rows :: Muss-Felder. Diese Felder m&uuml;ssen Sie angeben ]]</span>
+
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        tinyMCE.init({
+            // General options
+            mode : "none",
+            elements : "IMPRESSUM",
+            theme : "advanced",
+            width: "100%",
+            height: "250",
+            language: "de",
+            object_resizing : false,
+            convert_fonts_to_spans : true,
+            convert_urls : false,
+            document_base_url : "/",
+            relative_urls : false,
+            remove_script_host : true,
+            file_browser_callback : "editorImageUpload",
+
+            plugins : "safari,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+            // Theme options
+            theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull",
+            theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,cleanup,|,insertdate,inserttime,|",
+            theme_advanced_buttons3 : "",
+            theme_advanced_buttons4 : "",
+            theme_advanced_toolbar_location : "top",
+            theme_advanced_toolbar_align : "left",
+            theme_advanced_statusbar_location : "bottom",
+            theme_advanced_resizing : true,
+
+            // Example content CSS (should be your site CSS)
+            content_css : "/skin/style.css?" + new Date().getTime()
+        });
+
+        tinyMCE.execCommand("mceAddControl", true, "IMPRESSUM");
+    });
+    function updateUstIdIcon(input) {
+        var classOriginal = "{if UST_ID_VALID == 1}has-success{else}has-error{endif}";
+        var titleOriginal = "{if UST_ID_VALID == 1}[[ translation : marketplace : good.sales.tax.id :: Ihre USt-Id. ist gültig ]](geprüft am {todate(UST_ID_CHECKDATE)}){else}[[ translation : marketplace : sales.tax.not.good :: Ihre USt-Id. ist ungültig ]]{endif}";
+        var inputGroup = jQuery(input).closest(".form-group");
+        var inputValueCur = jQuery(input).val();
+        var inputValueOld = jQuery(input).attr("data-original");
+        if (inputValueCur == inputValueOld) {
+            inputGroup.removeClass("has-warning").addClass(classOriginal);
+            inputGroup.attr("title", titleOriginal);
+            inputGroup.attr("data-original-title", titleOriginal);
+            inputGroup.find(".icon-ustid-dirty").hide();
+            inputGroup.find(".form-control-feedback").show();
+        } else {
+            inputGroup.addClass("has-warning").removeClass(classOriginal);
+            inputGroup.attr("title", "[[ translation : marketplace : dirty.sales.tax.id :: Ihre USt-Id. wurde noch nicht geprüft ]]");
+            inputGroup.attr("data-original-title", "[[ translation : marketplace : dirty.sales.tax.id :: Ihre USt-Id. wurde noch nicht geprüft ]]");
+            inputGroup.find(".form-control-feedback").hide();
+            inputGroup.find(".icon-ustid-dirty").show();
+        }
+    }
+</script>

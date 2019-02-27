@@ -1,0 +1,195 @@
+<h3>[[ translation : marketpace : import.preset.init.ebay.title :: eBay Import - Anzeigen auswählen ]]</h3>
+
+<p>
+  [[ translation : marketpace : import.preset.init.ebay.description :: Bitte wählen Sie die Anzeigen, die Sie aus eBay übernehmen möchten. ]]
+</p>
+
+{PLUGIN_INFO}
+
+<div id="datatable-{hash}" class="dataTableContainer" style="width: 100%;">
+    <div class="mdl-card__menu">
+    </div>
+    <div for="datatable-{hash}-filter">
+        {filter}
+    </div>
+    <br />
+
+    <table id="datatable-{hash}-table" class="table table-striped table-condensed table-bordered" cellspacing="0" style="width: 100%;" data-container="#datatable-{hash}" data-ajax-url="{ajaxUrl}&ajax=dataTable"{if jsonQueryOptions} data-query-options="{htm(jsonQueryOptions)}"{endif}>
+        <thead>
+            <tr>
+                <th colspan="{calc(colCount)}" style="padding: 8px; line-height: 26px; text-align: right;">
+                    <div style="float: left;" class="form-inline">
+                        <label for="datatable-{hash}-page-item-count-top">
+                            Elemente pro Seite:
+                        </label>
+                        <select id="datatable-{hash}-page-item-count-top" class="form-control" data-action="page-item-count">
+                            <option value="10"{if limit==10} selected="selected"{endif}>10</option>
+                            <option value="20"{if limit==20} selected="selected"{endif}>20</option>
+                            <option value="50"{if limit==50} selected="selected"{endif}>50</option>
+                            <option value="100"{if limit==100} selected="selected"{endif}>100</option>
+                        </select>
+                    </div>
+
+                    <div style="float: right;">
+                            <span>
+                                <span data-value="page-item-first">{resultFirst}</span>-<span data-value="page-item-last">{resultLast}</span>
+                                von <span data-value="result-count">{resultCount}</span>
+                            </span>
+
+                        <button class="btn btn-default" data-action="page-first" title="[[ translation : admin : dataTable.pager.first :: Erste Seite ]]">
+                            <i class="material-icons">&lt;&lt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-prev" title="[[ translation : admin : dataTable.pager.prev :: Vorherige Seite ]]">
+                            <i class="material-icons">&lt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-next" title="[[ translation : admin : dataTable.pager.next :: Nächste Seite ]]">
+                            <i class="material-icons">&gt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-last" title="[[ translation : admin : dataTable.pager.last :: Letzte Seite ]]">
+                            <i class="material-icons">&gt;&gt;</i>
+                        </button>
+                    </div>
+                    <br style="clear: both;" />
+                </th>
+            </tr>
+            <tr>
+                {if selectable}
+                <th>
+                    <input data-action="select-toggle-all" type="checkbox" />
+                </th>
+                {endif}
+                {header}
+            </tr>
+        </thead>
+        {body}
+        <thead>
+            {if selectable}
+            <tr>
+                <th colspan="{calc(colCount)}" style="padding: 8px; line-height: 26px;">
+                    <div style="float: left;">
+                        <span data-value="select-count">0</span>&nbsp;ausgewählt
+                    </div>
+                    <div style="float: left;">
+                        {action}
+                    </div>
+                    <div style="float: right;">
+                        <button id="datatable-{hash}-select-result-all" data-action="select-result-all" class="btn btn-default">
+                            Suchergebnis auswählen
+                        </button>
+                        <button id="datatable-{hash}-select-result-none" data-action="select-result-none" class="btn btn-default">
+                            Suchergebnis abwählen
+                        </button>
+                        <button id="datatable-{hash}-select-all" data-action="select-all" class="btn btn-default">
+                            Alle auswählen
+                        </button>
+                        <button id="datatable-{hash}-select-none" data-action="select-none" class="btn btn-default">
+                            Alle abwählen
+                        </button>
+                    </div>
+                    <br style="clear: both;" />
+                </th>
+            </tr>
+            {endif}
+            <tr>
+                <th colspan="{calc(colCount)}" style="padding: 8px; line-height: 26px; text-align: right;">
+                    <div style="float: left;" class="form-inline">
+                        <label for="datatable-{hash}-page-item-count-bottom">
+                            Elemente pro Seite:
+                        </label>
+                        <select id="datatable-{hash}-page-item-count-bottom" class="form-control" data-action="page-item-count">
+                            <option value="10"{if limit==10} selected="selected"{endif}>10</option>
+                            <option value="20"{if limit==20} selected="selected"{endif}>20</option>
+                            <option value="50"{if limit==50} selected="selected"{endif}>50</option>
+                            <option value="100"{if limit==100} selected="selected"{endif}>100</option>
+                        </select>
+                    </div>
+
+                    <div style="float: right;">
+                        <span>
+                            <span data-value="page-item-first">{resultFirst}</span>-<span data-value="page-item-last">{resultLast}</span>
+                            von <span data-value="result-count">{resultCount}</span>
+                        </span>
+
+                        <button class="btn btn-default" data-action="page-first" title="[[ translation : admin : dataTable.pager.first :: Erste Seite ]]">
+                            <i class="material-icons">&lt;&lt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-prev" title="[[ translation : admin : dataTable.pager.prev :: Vorherige Seite ]]">
+                            <i class="material-icons">&lt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-next" title="[[ translation : admin : dataTable.pager.next :: Nächste Seite ]]">
+                            <i class="material-icons">&gt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-last" title="[[ translation : admin : dataTable.pager.last :: Letzte Seite ]]">
+                            <i class="material-icons">&gt;&gt;</i>
+                        </button>
+                    </div>
+                    <br style="clear: both;" />
+                </th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div class="form-actions text-right">
+    <form id="ebayInitSubmit" method="get">
+        <div class="alert alert-danger alert-limit" style="display: none;">
+            [[ translation : marketpace : import.preset.init.ebay.limit.reached :: 
+                Sie haben zu viele Artikel ausgewählt! Sie können heute nur noch {int(selectionLimit)} Artikel importieren. Das Gesamt-Limit beträgt {int(selectionLimitMax)} Artikel pro Tag.   
+            ]]
+        </div>
+        
+        <input type="hidden" name="STEP" value="categories" />
+        <a href="{uri_action(my-import-process,{SOURCE_ID})}" class="btn btn-default">
+            [[ translation : marketpace : import.preset.edit.ebay.button.cancel :: Abbrechen ]]
+        </a>
+        <button type="button" class="btn btn-primary">[[ translation : marketpace : import.preset.edit.ebay.button.next :: Weiter ]]</button>
+    </form>
+</div>
+
+<div id="importPresetEditorModalLoading" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+    jQuery(function() {
+        var selectLimit = {int(selectionLimit)};
+        jQuery("#datatable-{hash}-table").dataTable({
+            filterKeepSelection: true,
+            selectionAdd: {selection},
+            callbackLoading: function(isLoading) {
+                if (isLoading) {
+                    var modal = jQuery("#importPresetEditorModalLoading");
+                    modal.find(".modal-body").html('<div class="ajax-loader" style="text-align: center;"><img src="'+ ebiz_trader_baseurl +'gfx/ajax-loader.gif"></div>');
+                    modal.modal({ keyboard: false, show: true });
+                } else {
+                    jQuery("#importPresetEditorModalLoading").modal("hide");
+                }
+            },
+            callbackSelection: function(selectCount) {
+                if (selectCount > selectLimit) {
+                    jQuery("#ebayInitSubmit .alert-limit").show();
+                    jQuery("#ebayInitSubmit button.btn-primary").prop("disabled", true);
+                } else {
+                    jQuery("#ebayInitSubmit .alert-limit").hide();
+                    jQuery("#ebayInitSubmit button.btn-primary").prop("disabled", false);
+                }
+            }
+        });
+        
+        jQuery("#ebayInitSubmit button").click(function(event) {
+            event.preventDefault();
+            jQuery("#datatable-{hash}-table").dataTable("executeAction", "save", undefined, null, function(success) {
+                if (success) {
+                    jQuery("#ebayInitSubmit").submit();
+                }
+            });
+        })
+    });
+</script>
+
+<script src="{uri_resource(/lib/datatable/jqDataTable.js)}"></script>

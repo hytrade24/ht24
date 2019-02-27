@@ -1,0 +1,9 @@
+<div class="input-group">
+	<select class="form-control" {if MULTIPLE}name="DEFAULTVALUE[{TABLE_DEF}][{FIELD_NAME}][]"{else}name="DEFAULTVALUE[{TABLE_DEF}][{FIELD_NAME}]"{endif} class="" {if MULTIPLE}multiple{endif} onchange="jQuery('#TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_DEFAULTVALUE').attr('disabled', false);" >
+		<option value="">[[ translation : marketplace : import.no.default :: kein Standardwert ]]</option>
+		{SELECT_ACCEPTED_VALUES}
+	</select>
+    <div class="input-group-btn">
+		<input type="button" class="btn btn-default" onclick="ipe.saveDefaultFieldValue('{FIELD_NAME}', '{TABLE_DEF}'); return false;" value="[[ translation : marketplace : import.save :: Speichern ]]" id="TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_DEFAULTVALUE" disabled>
+    </div>
+</div>

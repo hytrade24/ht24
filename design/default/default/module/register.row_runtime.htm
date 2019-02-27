@@ -1,0 +1,146 @@
+<div class="radio{if COUPON_RUNTIME} coupon-runtime{endif}">
+    <label class="align-center">
+        <input type="radio" id="FK_RUNTIME_{FK_PACKET}" class="registerRuntimeRadio" rel="{FK_PACKET}" name="FK_RUNTIME" value="{ID_PACKET_RUNTIME}" {if FK_PACKET_RUNTIME == ID_PACKET_RUNTIME}checked="checked"{endif} />
+        {if !BILLING_PRICE}
+            {if IS_TRIAL}
+                [[ translation : general : price.free.trial :: Kostenloser Testzeitraum ]]
+                <br />
+                {RUNTIME_NUM}
+                {if CYCLE_DAY}
+                    {if RUNTIME_NUM==1}
+                        [[ translation : general : date.day :: Tag ]]
+                    {else}
+                        [[ translation : general : date.days : PLURAL_COUNT=RUNTIME_NUM : Tage ]]
+                    {endif}
+                {endif}
+                {if CYCLE_WEEK}
+                    {if RUNTIME_NUM==1}
+                        [[ translation : general : date.week :: Woche ]]
+                    {else}
+                        [[ translation : general : date.weeks : PLURAL_COUNT=RUNTIME_NUM : Wochen ]]
+                    {endif}
+                {endif}
+                {if CYCLE_MONTH}
+                    {if RUNTIME_NUM==1}
+                        [[ translation : general : date.month :: Monat ]]
+                    {else}
+                        [[ translation : general : date.months : PLURAL_COUNT=RUNTIME_NUM : Monate ]]
+                    {endif}
+                {endif}
+                {if CYCLE_QUARTER}
+                    {if RUNTIME_NUM==1}
+                        [[ translation : general : date.quarter :: Quartal ]]
+                    {else}
+                        [[ translation : general : date.quarters : PLURAL_COUNT=RUNTIME_NUM : Quartale ]]
+                    {endif}
+                {endif}
+                {if CYCLE_YEAR}
+                    {if RUNTIME_NUM==1}
+                        [[ translation : general : date.year :: Jahr ]]
+                    {else}
+                        [[ translation : general : date.years : PLURAL_COUNT=RUNTIME_NUM : Jahre ]]
+                    {endif}
+                {endif}
+                [[ translation : marketplace : runtime :: Laufzeit ]]
+            {else}
+                [[ translation : general : price.free :: Kostenlos ]]
+            {endif}
+        {else}
+            <span id="packet-price-{ID_PACKET_RUNTIME}">
+            {if PRICE_NETTO}
+                {topreis(BILLING_PRICE)}
+            {else}
+                {topreis(BILLING_PRICE_BRUTTO)}
+            {endif}
+            </span>
+            {CURRENCY_DEFAULT}
+            {if !CYCLE_ONCE}
+                /
+                {if BILLING_FACTOR > 1}
+                    {BILLING_FACTOR}
+                {endif}
+                {if CYCLE_DAY}
+                    {if BILLING_FACTOR==1}
+                        [[ translation : general : date.day :: Tag ]]
+                    {else}
+                        [[ translation : general : date.days : PLURAL_COUNT=BILLING_FACTOR : Tage ]]
+                    {endif}
+                {endif}
+                {if CYCLE_WEEK}
+                    {if BILLING_FACTOR==1}
+                        [[ translation : general : date.week :: Woche ]]
+                    {else}
+                        [[ translation : general : date.weeks : PLURAL_COUNT=BILLING_FACTOR : Wochen ]]
+                    {endif}
+                {endif}
+                {if CYCLE_MONTH}
+                    {if BILLING_FACTOR==1}
+                        [[ translation : general : date.month :: Monat ]]
+                    {else}
+                        [[ translation : general : date.months : PLURAL_COUNT=BILLING_FACTOR : Monate ]]
+                    {endif}
+                {endif}
+                {if CYCLE_QUARTER}
+                    {if BILLING_FACTOR==1}
+                        [[ translation : general : date.quarter :: Quartal ]]
+                    {else}
+                        [[ translation : general : date.quarters : PLURAL_COUNT=BILLING_FACTOR : Quartale ]]
+                    {endif}
+                {endif}
+                {if CYCLE_YEAR}
+                    {if BILLING_FACTOR==1}
+                        [[ translation : general : date.year :: Jahr ]]
+                    {else}
+                        [[ translation : general : date.years : PLURAL_COUNT=BILLING_FACTOR : Jahre ]]
+                    {endif}
+                {endif}
+            {endif}
+            {if PRICE_NETTO}
+                [[ translation : general : plus.taxes :: zzgl. {TAX_PERCENT}% MwSt ]]
+            {endif}
+            <br />
+            {if CYCLE_ONCE}
+                [[ translation : general : cycle.once :: Einmalig ]]
+            {else}
+                {RUNTIME_NUM}
+                {if CYCLE_DAY}
+                    {if RUNTIME_NUM==1}
+                        [[ translation : general : date.day :: Tag ]]
+                    {else}
+                        [[ translation : general : date.days : PLURAL_COUNT=RUNTIME_NUM : Tage ]]
+                    {endif}
+                {endif}
+                {if CYCLE_WEEK}
+                    {if RUNTIME_NUM==1}
+                        [[ translation : general : date.week :: Woche ]]
+                    {else}
+                        [[ translation : general : date.weeks : PLURAL_COUNT=RUNTIME_NUM : Wochen ]]
+                    {endif}
+                {endif}
+                {if CYCLE_MONTH}
+                    {if RUNTIME_NUM==1}
+                        [[ translation : general : date.month :: Monat ]]
+                    {else}
+                        [[ translation : general : date.months : PLURAL_COUNT=RUNTIME_NUM : Monate ]]
+                    {endif}
+                {endif}
+                {if CYCLE_QUARTER}
+                    {if RUNTIME_NUM==1}
+                        [[ translation : general : date.quarter :: Quartal ]]
+                    {else}
+                        [[ translation : general : date.quarters : PLURAL_COUNT=RUNTIME_NUM : Quartale ]]
+                    {endif}
+                {endif}
+                {if CYCLE_YEAR}
+                    {if RUNTIME_NUM==1}
+                        [[ translation : general : date.year :: Jahr ]]
+                    {else}
+                        [[ translation : general : date.years : PLURAL_COUNT=RUNTIME_NUM : Jahre ]]
+                    {endif}
+                {endif}
+                [[ translation : marketplace : runtime :: Laufzeit ]]
+            {endif}
+            <br />
+        {endif}
+    </label>
+</div>

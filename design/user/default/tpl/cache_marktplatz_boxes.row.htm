@@ -1,0 +1,22 @@
+{if B_VIS}
+<div id="katBox{ID_KAT}" onmouseover="hoverKatBox(this);" class="design-category-box{if KAT_PRIMARY} primary{endif} design-row-item">
+
+    <div class="img-container">
+        {if KAT_PRIMARY && ICON}
+        <a href="{uri_action(marktplatz,{ID_KAT},{urllabel(V1)})}" title="{htm(V1)}">
+            <img src="{uri_baseurl({ICON_BIG})}" class="img-responsive" />
+        </a>
+        {endif}
+    </div>
+    <div class="category-desc">
+        <div class="head">
+            <a href="{uri_action(marktplatz,{ID_KAT},{urllabel(V1)})}" title="{htm(V1)}">
+                {htm(V1)}
+            </a>
+        </div>
+        {if V2}
+        <div class="category-desc-text">{V2}</div>
+        {endif}
+    </div>
+</div>
+{endif}

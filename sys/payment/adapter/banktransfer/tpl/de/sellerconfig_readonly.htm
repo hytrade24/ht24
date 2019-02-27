@@ -1,0 +1,60 @@
+<div>
+	{if PAYMENT_ADAPTER_SELLER_CONFIG_Recipient}
+	<div class="form-group">
+		<label class="control-label">Kontoinhaber:</label>
+		<div>
+			{htm(PAYMENT_ADAPTER_SELLER_CONFIG_Recipient)}
+		</div>
+	</div>
+	{endif}
+	
+	{if PAYMENT_ADAPTER_SELLER_CONFIG_Iban}
+	<div class="form-group">
+		<label class="control-label">IBAN:</label>
+	
+		<div>
+			{htm(PAYMENT_ADAPTER_SELLER_CONFIG_Iban)}
+		</div>
+	</div>
+	{endif}
+	
+	{if PAYMENT_ADAPTER_SELLER_CONFIG_Bic}
+	<div class="form-group">
+		<label class="control-label">BIC:</label>
+	
+		<div>
+			{htm(PAYMENT_ADAPTER_SELLER_CONFIG_Bic)}
+		</div>
+	</div>
+	{endif}
+	
+	{if PAYMENT_ADAPTER_SELLER_CONFIG_AccountNumber}
+	<div class="form-group">
+		<label class="control-label">Kontonummer:</label>
+	
+		<div>
+			{htm(PAYMENT_ADAPTER_SELLER_CONFIG_AccountNumber)}
+		</div>
+	</div>
+	{endif}
+	
+	{if PAYMENT_ADAPTER_SELLER_CONFIG_Bankcode}
+	<div class="form-group">
+		<label class="control-label">BLZ:</label>
+	
+		<div>
+			{htm(PAYMENT_ADAPTER_SELLER_CONFIG_Bankcode)}
+		</div>
+	</div>
+	{endif}
+	
+	{if PAYMENT_ADAPTER_SELLER_CONFIG_Bank}
+	<div class="form-group">
+		<label class="control-label">Bank:</label>
+	
+		<div>
+			{htm(PAYMENT_ADAPTER_SELLER_CONFIG_Bank)}
+		</div>
+	</div>
+	{endif}
+</div>

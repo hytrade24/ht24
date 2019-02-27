@@ -1,0 +1,59 @@
+
+			<tr>
+				<td title="[[ translation : marketplace : quantity :: Menge ]]">
+					<input type="hidden" name="FK_PACKET_RUNTIME" value="{ID_PACKET_RUNTIME}" />
+				</td>
+				<td title="{htm(T1)}">{htm(V1)}</td>
+				<td>
+					{topreis_ex(BILLING_PRICE)} {CURRENCY_DEFAULT}
+					{if CYCLE_ONCE}
+						([[ translation : general : cycle.once :: Einmalig ]])
+					{else}
+						/ {BILLING_FACTOR}
+                        {if CYCLE_DAY}
+                            {if BILLING_FACTOR==1}
+                                [[ translation : general : date.day :: Tag ]]
+                            {else}
+                                [[ translation : general : date.days : PLURAL_COUNT=BILLING_FACTOR : Tage ]]
+                            {endif}
+                        {endif}
+                        {if CYCLE_WEEK}
+                            {if BILLING_FACTOR==1}
+                                [[ translation : general : date.week :: Woche ]]
+                            {else}
+                                [[ translation : general : date.weeks : PLURAL_COUNT=BILLING_FACTOR : Wochen ]]
+                            {endif}
+                        {endif}
+                        {if CYCLE_MONTH}
+                            {if BILLING_FACTOR==1}
+                                [[ translation : general : date.month :: Monat ]]
+                            {else}
+                                [[ translation : general : date.months : PLURAL_COUNT=BILLING_FACTOR : Monate ]]
+                            {endif}
+                        {endif}
+                        {if CYCLE_QUARTER}
+                            {if BILLING_FACTOR==1}
+                                [[ translation : general : date.quarter :: Quartal ]]
+                            {else}
+                                [[ translation : general : date.quarters : PLURAL_COUNT=BILLING_FACTOR : Quartale ]]
+                            {endif}
+                        {endif}
+                        {if CYCLE_YEAR}
+                            {if BILLING_FACTOR==1}
+                                [[ translation : general : date.year :: Jahr ]]
+                            {else}
+                                [[ translation : general : date.years : PLURAL_COUNT=BILLING_FACTOR : Jahre ]]
+                            {endif}
+                        {endif}
+					{endif}
+				</td>
+				<td>{topreis_ex(PRICE_ALL)} {CURRENCY_DEFAULT}</td>
+				<td>{topreis_ex(PRICE_ALL_BRUTTO)} {CURRENCY_DEFAULT}</td>
+			</tr>
+			<tr class="table-no-lines">
+				<td>&nbsp;</td>
+				<td colspan="3" style="padding-left: 16px;">
+					[[ translation : marketplace : packet.contains :: Enthält ]]:<br />
+					{text(PACKETS_TEXT)}
+				</td>
+			</tr>

@@ -1,0 +1,284 @@
+<?php
+/* ###VERSIONSBLOCKINLCUDE### */
+
+
+#$SILENCE=false;
+function killbb(&$row,$i)
+{
+	$row['DSC'] = preg_replace("#(\[)([^\s\]]*)(\])#si", "", $row['DSC']);
+}
+
+function add_fields(&$row) {
+	global $article_data, $db, $langval;
+	if (isset($article_data[$row["F_NAME"]]) && (!$row["IS_SPECIAL"])) {
+		$row["IS_SET"] = 1;
+		if ($row["F_TYP"] == "LIST") {
+			if ($article_data[$row["F_NAME"]] == 0)
+			$row["IS_SET"] = 0;
+			$row["VALUE"] = $db->fetch_atom("SELECT V1
+            FROM liste_values l
+              LEFT JOIN string_liste_values s ON
+                s.FK=l.ID_LISTE_VALUES AND s.S_TABLE='liste_values' AND
+                s.BF_LANG=if(s.BF_LANG & ".$langval.", ".$langval.", 1 << floor(log(l.BF_LANG_LISTE_VALUES+0.5)/log(2)))
+          WHERE l.FK_LISTE=".$row["FK_LISTE"]." AND l.ID_LISTE_VALUES=".$article_data[$row["F_NAME"]]);
+		} else {
+			$row["VALUE"] = $article_data[$row["F_NAME"]];
+			if ($row["F_TYP"] == "DATE")
+			{
+				$row["VALUE"] = date('d.m.Y', strtotime($row['VALUE']));
+			}
+		}
+	}
+}
+
+if($ar_params[3] == 'kontakt')
+{
+	$tpl_content->addvar("kontaktnow", 1);
+}
+
+require_once("sys/lib.bbcode.php");
+$bbcode = new bbcode();
+
+$id_article = ($ar_params[1] ? (int)$ar_params[1] : ($_REQUEST["ID_ANZEIGE"] ? (int)$_REQUEST["ID_ANZEIGE"] : 0));
+$id_kat = ($ar_params[2] ? (int)$ar_params[2] : ($_REQUEST["ID_KAT"] ? (int)$_REQUEST["ID_KAT"] : 0));
+
+if($id_kat)
+{
+	$kat_table = $db->fetch_atom("SELECT KAT_TABLE FROM `kat` WHERE ID_KAT=".$id_kat);
+}
+else
+{
+	$ar_kat_table = $db->fetch1("SELECT AD_TABLE, FK_KAT FROM `ad_master` WHERE ID_AD_MASTER=".$id_article);
+	$kat_table = $ar_kat_table['AD_TABLE'];
+	$id_kat = $ar_kat_table['FK_KAT'];
+}
+
+// NEU
+$article_data = $db->fetch1("SELECT *, DATEDIFF(STAMP_END,NOW()) as DAYS_LEFT FROM `".$kat_table."` WHERE ID_".strtoupper($kat_table)."=".$id_article);
+$field_data = $group_ids = array();
+$group_ids[] = 0;
+$res = $db->querynow("SELECT
+		f.F_TYP,
+		f.FK_LISTE,
+		f.F_NAME,
+		f.IS_SPECIAL,
+		f2g.FK_FIELD_GROUP,
+		kf.B_NEEDED,
+		sf.V1,
+		sf.V2
+    FROM `kat2field` kf
+      LEFT JOIN `field_def` f ON f.ID_FIELD_DEF = kf.FK_FIELD
+      LEFT JOIN
+      	field2group f2g ON f.ID_FIELD_DEF=f2g.FK_FIELD_DEF
+      LEFT JOIN `string_field_def` sf ON sf.S_TABLE='field_def' AND sf.FK=kf.FK_FIELD
+        AND sf.BF_LANG=if(sf.BF_LANG & ".$langval.", ".$langval.", 1 << floor(log(f.BF_LANG_FIELD_DEF+0.5)/log(2)))
+    WHERE kf.FK_KAT=".$id_kat." AND kf.B_ENABLED=1");
+while($row = mysql_fetch_assoc($res['rsrc']))
+{
+	add_fields($row);
+	$field_data[] = $row;
+	if($row['FK_FIELD_GROUP'])
+	{
+		$group_ids[$row['FK_FIELD_GROUP']] = $row['FK_FIELD_GROUP'];
+	}
+}
+$f_groups = $f_counter = array();
+for($i=0; $i<count($field_data); $i++)
+{
+
+	if($field_data[$i]['IS_SPECIAL'] > 0)
+	{
+		continue;
+	}
+	if(!$field_data[$i]['FK_FIELD_GROUP'])
+	{
+		$field_data[$i]['FK_FIELD_GROUP'] = 0;
+	}
+
+	if(isset($field_data[$i]['VALUE']))
+	{
+		#echo "value: ".$field_data[$i]['VALUE']."<br>";
+		$f_counter[$field_data[$i]['FK_FIELD_GROUP']]++;
+		$field_data[$i]['COUNTER']++;
+	}
+
+	$f_groups[$field_data[$i]['FK_FIELD_GROUP']][] = $field_data[$i];
+}
+#echo ht(dump($field_data));
+$group_liste = $db->querynow("select t.ID_FIELD_GROUP, s.V1
+	from
+		`field_group` t
+	left join
+		string_app s on s.S_TABLE='field_group'
+		and s.FK=t.ID_FIELD_GROUP
+		and s.BF_LANG=if(t.BF_LANG_APP & 128, 128, 1 << floor(log(t.BF_LANG_APP+0.5)/log(2)))
+	where
+		ID_FIELD_GROUP IN (".implode(",", $group_ids).")
+	");
+
+$tmp = array();
+$_tmp = new Template("tpl/".$s_lang."/marktplatz_anzeige.group.htm");
+$_tmp->addlist('liste', $f_groups[0], 'tpl/'.$s_lang.'/marktplatz_neu_finish.row.htm');
+$tmp[] = $_tmp;
+
+while($row = mysql_fetch_assoc($group_liste['rsrc']))
+{
+	if($f_counter[$row['ID_FIELD_GROUP']] <1)
+	{
+		continue;
+	}
+	#echo ht(dump($f_groups[$row['ID_FIELD_GROUP']]));
+	$_tmp = new Template("tpl/".$s_lang."/marktplatz_anzeige.group.htm");
+	$_tmp->addvars($row);
+	$_tmp->addlist('liste', $f_groups[$row['ID_FIELD_GROUP']], 'tpl/'.$s_lang.'/marktplatz_neu_finish.row.htm');
+	$tmp[] = $_tmp;
+}
+
+$tpl_content->addvar("product_fields", $tmp); //, "tpl/".$s_lang."/marktplatz_neu_finish.row.htm");
+
+// NEU ENDE
+
+$article_kat = $db->fetch_atom("SELECT s.V1
+    FROM `kat` k
+      LEFT JOIN `string_kat` s ON s.S_TABLE='kat' AND s.FK=k.ID_KAT
+        AND s.BF_LANG=if(s.BF_LANG & ".$langval.", ".$langval.", 1 << floor(log(k.BF_LANG_KAT+0.5)/log(2)))
+    WHERE k.ID_KAT=".$id_kat."");
+$article_images = $db->fetch_table("SELECT * FROM `ad_images` WHERE FK_AD=".$id_article);
+
+### wofür? |< schmalle 9.2.2010
+//$article_temp = $db->fetch1("SELECT * FROM `ad_temp` WHERE FK_AD=".$id_article);
+
+$article_tpl = array(
+    "product_manufacturer"  => $db->fetch_atom("SELECT NAME FROM manufacturers
+                                                  WHERE ID_MAN=".(int)$article_data["FK_MAN"]),
+    "product_articlename"   => $article_data["PRODUKTNAME"],
+    "product_price"         => $article_data["PREIS"],
+  	"product_mwst"         => $article_data["MWST"],
+  	"product_versand"         => $article_data["VERSANDKOSTEN"],
+    "product_sold"					=> (($article_data["STATUS"]&4)==4 ? true : false),
+    "product_country"       => $db->fetch_atom("SELECT V1 FROM string
+                                                  WHERE S_TABLE='country' AND BF_LANG=".$langval." AND
+                                                    FK=".(int)$article_data["FK_COUNTRY"]),
+    "product_zip"           => $article_data["ZIP"],
+    "product_city"          => $article_data["CITY"],
+    "product_lat"			=> $article_data["LATITUDE"],
+    "product_lon"			=> $article_data["LONGITUDE"],
+    "product_desc"          => nl2br($bbcode->parseBB($article_data["BESCHREIBUNG"])),
+    "product_runtime_left"  => $article_data["DAYS_LEFT"],
+    "vk_username"			=> $db->fetch_atom("SELECT NAME FROM `user` WHERE ID_USER=".$article_data["FK_USER"]),
+    "vk_user"				=> $article_data["FK_USER"],
+	"agb"					=> $article_data["AD_AGB"],
+	"widerruf"				=> $article_data["AD_WIDERRUF"],
+	'MWST'					=> $article_data["MWST"],
+	'FK_KAT' 				=> $article_data["FK_KAT"],
+	'NOTIZ'					=> $db->fetch_atom("SELECT NOTIZ FROM `ad_master` WHERE ID_AD_MASTER=".$id_article)
+);
+
+### Verkäufer Info
+$ar_userinfo = $db->fetch1("
+	SELECT
+		u.FIRMA AS ANBIETER_FIRMA,
+		CONCAT(u.VORNAME, ' ', u.NACHNAME) AS ANBIETER_NAME,
+		u.STRASSE AS ANBIETER_STRASSE,
+		u.PLZ AS ANBIETER_PLZ,
+		u.ORT AS ANBIETER_ORT,
+		u.UST_ID AS ANBIETER_UMSTG,
+		str.V1 AS ANBIETER_COUNTRY,
+		DATE_FORMAT(u.STAMP_REG, '%Y') AS STAMP_REG,
+		s.V1 AS UGROUP,
+		(
+			SELECT COUNT(*) FROM ad_sold_rating WHERE FK_USER=".$article_data["FK_USER"]."
+		) AS RATE_N,
+		(
+			SELECT SUM(RATING) FROM ad_sold_rating WHERE FK_USER=".$article_data["FK_USER"]."
+		) AS RATE_S
+	FROM
+		`user` u
+	LEFT JOIN
+		string_usergroup s
+		on s.S_TABLE='usergroup' and s.FK=u.FK_USERGROUP
+		and s.BF_LANG=if(".$langval." & ".$langval.", ".$langval.", 1 << floor(log(".$langval."+0.5)/log(2)))
+	LEFT JOIN
+		string str
+		on str.S_TABLE='country' and str.FK=u.FK_COUNTRY
+		and str.BF_LANG=if(".$langval." & ".$langval.", ".$langval.", 1 << floor(log(".$langval."+0.5)/log(2)))
+	WHERE
+		u.ID_USER=".$article_data["FK_USER"]);
+if($ar_userinfo['RATE_N'] > 0)
+{
+	$schnitt = ($ar_userinfo['RATE_S']/$ar_userinfo['RATE_N']);
+	$hundert = 5;
+	$ein = $hundert/100;
+	$prozent = $ar_userinfo['RATE_S']/$ein;
+	$stars = round(($hundert*$prozent)/100);
+	$ar_userinfo['SCHNITT'] = $stars;
+}
+$tpl_content->addvars($ar_userinfo);
+### // verkäufer
+
+if ($article_data["FK_USER"] == $uid)
+$tpl_content->addvar("eigene", 1);
+
+$article_is_new = ($db->fetch_atom("SELECT CRON_DONE FROM `ad_master` WHERE ID_AD_MASTER=".$id_article) ? false : true);
+if ($article_is_new)
+	$tpl_content->addvar("neu", 1);
+
+if ($article_data["STATUS"] & 1) {
+	$tpl_content->addvar("aktiv", 1);
+} else {
+	$tpl_content->addvar("inaktiv", 1);
+}
+
+// Artikel ist online
+if (count($article_images) > 0) {
+	$first_image = $article_images[0];
+	$tpl_content->addvar("product_image", $first_image["SRC"]);
+	if (count($article_images) > 1)
+	$tpl_content->addlist("product_images", $article_images, "tpl/".$s_lang."/marktplatz_images.row.htm");
+}
+
+$title = $tpl_main->vars["pagetitle"];
+$title .= " - [".$article_kat."] ".$article_tpl["product_articlename"];
+
+$tpl_main->addvar("pagetitle", $title);
+$tpl_main->addvar("ID_AD", $id_article);
+$tpl_main->addvar("ID_KAT", $id_kat);
+
+$tpl_content->addvars($article_tpl);
+
+//$tpl_content->addlist("product_fields", $field_data, "tpl/".$s_lang."/marktplatz_neu_finish.row.htm");
+
+$cachefile = "cache/marktplatz/ariane_de.".$id_kat.".htm";
+if (!file_exists($cachefile)) {
+	require_once("sys/lib.pub_kategorien.php");
+	$kat_cache = new CategoriesCache();
+	$kat_cache->cacheKatAriane($id_kat);
+}
+$tpl_content->addvar("ariane", $ffile = file_get_contents($cachefile));
+$tpl_main->addvar("SKIN_KAT_PATH", $ffile);
+
+$_REQUEST['_URL'] = $_SERVER['REQUEST_URI'];
+
+### weitere Produkte
+$query = "SELECT
+    		a.*, a.ID_".strtoupper($kat_table)." as ID_AD,
+    			LEFT(a.BESCHREIBUNG, 150) AS DSC,
+    		(SELECT sk.V1 FROM `string_kat` sk WHERE sk.FK=a.FK_KAT
+    			AND sk.BF_LANG=if(sk.BF_LANG & ".$langval.", ".$langval.", 128) ) as KAT,
+    		(SELECT m.NAME FROM `manufacturers` m WHERE m.ID_MAN=a.FK_MAN) as MANUFACTURER,
+    		(SELECT slang.V1 FROM `string` slang WHERE slang.FK=a.FK_COUNTRY
+    			AND slang.BF_LANG='".$langval."' LIMIT 1) as LAND,
+    		(SELECT i.SRC_THUMB FROM `ad_images` i WHERE i.IS_DEFAULT=1 AND i.FK_AD=ID_AD LIMIT 1) as SRC_THUMB,
+    		(SELECT i.SRC FROM `ad_images` i WHERE i.IS_DEFAULT=1 AND  i.FK_AD=ID_AD LIMIT 1) as SRC_FULL
+      FROM `".$kat_table."` a
+      LEFT JOIN
+      	ad_master on ad_master.ID_AD_MASTER=".$id_article."
+      WHERE (a.STATUS&3)=1 AND a.FK_KAT=".$id_kat." AND a.ID_".strtoupper($kat_table)." <> ".$id_article."
+      GROUP BY a.ID_".strtoupper($kat_table)."
+      ORDER BY ad_master.B_TOP DESC, RAND()
+      LIMIT 6";
+$liste = $db->fetch_table($query);
+
+$tpl_content->addlist("interesse", $liste, $ab_path.'tpl/'.$s_lang.'/cache_index_new_ads.row.htm', 'killbb');
+
+?>

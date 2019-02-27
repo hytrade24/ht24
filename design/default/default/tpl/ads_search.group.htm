@@ -1,0 +1,23 @@
+<div class="design-search-row-item" style="width: {GROUP_WIDTH};">
+    <div class="design-search-group">
+        <h3 class="design-search-group-header{if ROW_COUNT_GROUPS < 2} clearfix cursor-pointer{endif}">
+            <div{if ROW_COUNT_GROUPS < 2} class="pull-left"{endif}>
+                <span>
+                    {if GROUP_ID_FIELD_GROUP>0}
+                        {htm(GROUP_V1)}
+                    {else}
+                        [[ translation : marketplace : general.information :: Allgemeine Angaben ]]
+                    {endif}
+                </span>
+            </div>
+            {if ROW_COUNT_GROUPS < 2}
+                <div class="pull-right">
+                    <i class="fa fa-angle-right"></i>
+                </div>
+            {endif}
+        </h3>
+        <div class="design-search-group-content"{if ROW_COUNT_GROUPS < 2} style="display: none;"{endif}>
+            {fields}
+        </div>
+    </div>
+</div>

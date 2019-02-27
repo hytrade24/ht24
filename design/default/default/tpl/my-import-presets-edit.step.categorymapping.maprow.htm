@@ -1,0 +1,34 @@
+<tr>
+	<td>
+		{if CATEGORY_FROM_PRESET}
+			<input type="hidden" name="CATEGORYMAPPING[KEY][]" value="{htm(CATEGORY_NAME)}">
+			<span class="exported-category-name">{htm(CATEGORY_NAME)}</span>
+		{else}
+			<input type="text" name="CATEGORYMAPPING[KEY][]" value="{htm(CATEGORY_NAME)}" placeholder="Ihre Kategoriebezeichnung" class="mapTableKeyInput form-control" onkeyup="ImportEditor_CategoryMapping_updateNewInputFields()">
+		{endif}
+	</td>
+	<td class="mapRowColumn">
+		<input type="hidden" name="CATEGORYMAPPING[FK_KAT][]" class="categoryMappingValue form-control" value="{if CATEGORY_MAPPED_ID}{CATEGORY_MAPPED_ID}{endif}">
+
+		<div class="mapRowViewTreeContainer">
+			<div href="#" onclick="editMapRow(this); return false;" class="fieldMappingDisplayViewContainer">
+				<span class="mapRowViewTreeValue">
+				{if !CATEGORY_MAPPED_ID}
+					<em class="text-error">
+						[[ translation : marketplace : import.mapping.not.assigned :: Noch nicht zugewiesen ]]
+						
+					</em>
+				{else}
+					{CATEGORY_MAPPED_NAME}
+					&nbsp;&nbsp;&nbsp;
+					<button type="button" class="btn btn-default btn-sm" onclick="(function(e){e.stopPropagation();})(event);remove_category_mapping(this);" style="color: #000000;">
+						<span class="glyphicon glyphicon-remove-sign"></span>
+					</button>
+				{endif}
+				</span>
+			</div>
+		</div>
+
+		<div class="mapRowEditTreeContainer display-none"></div>
+	</td>
+</tr>

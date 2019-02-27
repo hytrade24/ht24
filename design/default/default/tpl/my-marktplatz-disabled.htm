@@ -1,0 +1,119 @@
+{if error_ad}
+	<div class="alert alert-block alert-danger">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		<h4>[[ translation : general : error :: Fehler ]]!</h4>
+	    <p>
+			[[ translation : marketplace : ad.doesnt.exist :: 
+				Die Anzeige existiert nicht mehr.
+				Bitte erstellen Sie eine <a href="{uri_action(my-marktplatz-neu)}">neue Anzeige</a>.
+			]]
+		</p>
+	</div>
+{else}
+{if error_nofree && !free_ads}
+	<div class="alert alert-block alert-danger">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+	    <h4>[[ translation : general : error :: Fehler ]]!</h4>
+	    <p>
+			[[ translation : marketplace : no.ads.free :: Sie haben leider keine weiteren Anzeigen frei. ]]
+	    </p>
+	</div>
+{else}
+{if recreate_packet}
+	<script type="text/javascript" src="{uri_resource(/js/marktplatz-neu.js)}"></script>
+	<script>
+
+	function GetCategorysDone() {
+		GetInput();
+	}
+
+	function GetCategorysCur() {
+		var name_kat = $("#row{FK_KAT_PARENT} a").html();
+		UpdateKatSelector({FK_KAT_PARENT}, name_kat, -1);
+	}
+
+	function GetInput() {
+		var id_kat = $("#form_FK_KAT").val();
+		$("#kat_list li a").css("font-weight", "");
+		$("#row"+id_kat+" a").css("font-weight", "bold");
+	}
+
+	function SetPacket(id_vertrag) {
+		$("#form_FK_VERTRAG").val(id_vertrag);
+		$("#form_RECREATE").submit();
+	}
+
+	function SetCategory(category_id, category_text, id_ad) {
+		// Einstellungen übernehmen
+		jQuery("#DESC_ID_KAT").val(category_id);
+		jQuery("#form_FK_KAT").val(category_id);
+		jQuery("#category_text").html(category_text);
+
+		GetInput();
+
+
+	}
+
+	</script>
+
+	<h1>
+		[[ translation : marketplace : ad.relist :: Anzeige wiedereinstellen ]]<br />
+	</h1>
+		<span class="lead">
+			[[ translation : marketplace : change.produkt.categories :: Produktkategorie &auml;ndern (Optional) ]]
+		</span>
+	<div>
+		<p>[[ translation : marketplace : choose :: W&auml;hlen Sie ... ]]</p>
+		<p id="text-warning">
+			[[ translation : marketplace : warning.changes :: 
+				<strong>Achtung!</strong> Durch nachtr&auml;gliche &Auml;nderungen an der Kategorie können
+				einige Eingaben verloren gehen!
+			]]
+		</p>
+
+        <div>
+          <div id="kat_list" style="list-style-type: none;" class="katleft"></div>
+        </div>
+	</div>
+
+
+	<form id="form_RECREATE" action="{uri_action(my-marktplatz-disabled,dorecreate,{ID_AD_MASTER},{FK_KAT})}" method="post" class="form-inline">
+        <script type="text/javascript">jQuery(function() { {if FK_PACKET_ORDER} jQuery("#liste_packet").find("option[value='{FK_PACKET_ORDER}']").attr("selected", "selected");  {endif} } );</script>
+		<input type="hidden" id="form_FK_KAT" name="FK_KAT" value="{FK_KAT}" />
+
+        {if !free_ads}
+        <h1>[[ translation : marketplace : select.display.packet :: Bitte Anzeigenpaket auswählen ]]</h1>
+
+        <p>
+			[[ translation : marketplace : no.ads.in.packet :: 
+				Das für die Anzeige gewählte Paket enthält keine weiteren Anzeigen. Bitte wählen Sie das Paket
+				aus mit dem die Anzeige eingestellt werden soll:
+			]]
+        </p>
+
+        <select id="liste_packet" name="FK_PACKET_ORDER" class="form-control">
+        {if liste_packets}
+            {liste_packets}
+        {else}
+            <option value="">[[ translation : marketplace : no.display.option :: Keine Anzeigenpakete verfügbar! ]]</option>
+        {endif}
+        </select>
+        {endif}
+		
+        <input type="submit"  value="[[ translation : marketplace : ad.as.submission :: Anzeige als Vorlage verwenden ]]" class="btn btn-default" />
+	</form>
+
+	<script>
+	$(function() {
+		GetCategorysCur();
+	});
+	</script>
+{endif}
+{endif}
+{endif}
+
+<script type="text/javascript">
+    $(function() {
+        jQuery("[data-toggle=tooltip]").tooltip();
+    });
+</script>

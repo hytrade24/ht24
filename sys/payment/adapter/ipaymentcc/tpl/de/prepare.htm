@@ -1,0 +1,102 @@
+<br><br>
+
+<form method="post" action="https://ipayment.de/merchant/{API_ACCOUNT_ID}/processor/2.0/" class="form-horizontal">
+    <input type="hidden" name="trxuser_id" value="{API_APPLICATION_ID}">
+    <input type="hidden" name="trxpassword" value="{API_APPLICATION_PASSWORD}">
+
+    <input type="hidden" name="trx_amount" value="{TOTAL_PRICE_IN_CURRENCY}">
+    <input type="hidden" name="trx_currency" value="{CURRENCY}">
+
+    <input type="hidden" name="trx_paymenttyp" value="cc">
+
+    <input type="hidden" name="redirect_url" value="{URL_SUCCESS}">
+
+    <input type="hidden" name="silent" value="1">
+    <input type="hidden" name="silent_error_url" value="{URL_CANCEL}">
+    <input type="hidden" name="hidden_trigger_url" value="{URL_HIDDENTRIGGER}">
+
+    {if API_SECURITY_HASH}<input type="hidden" name="trx_securityhash"  value="{API_SECURITY_HASH}">{endif}
+    <input type="hidden" name="shopper_id" value="{INVOICE_ID}">
+    <input type="hidden" name="advanced_strict_id_check" value="1">
+    <input type="hidden" name="invoice_text" value="{INVOICE_DESCRIPTION}">
+
+    <div class="row">
+        <div class="col-xs-8">
+
+            <div class="form-group">
+                <label class="control-label design-input-label align-left"><strong>Kartentyp:</strong></label>
+                <div class="design-input-field">
+                    <select class="form-control" name="cc_typ">
+                        <option>MasterCard</option>
+                        <option>VisaCard</option>
+                        <option>AmexCard</option>
+                        <option>DinersClubCard</option>
+                        <option>JCBCard</option>
+                        <option>SoloCard</option>
+                        <option>DiscoverCard</option>
+                        <option>MaestroCard</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label design-input-label align-left"><strong>Karteninhaber:</strong></label>
+                <div class="design-input-field">
+                    <input class="form-control" type="text" name="addr_name" value="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label design-input-label align-left"><strong>Karten Nr.:</strong></label>
+                <div class="design-input-field">
+                    <input class="form-control" type="text" name="cc_number" value="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label design-input-label align-left"><strong>Prüfziffer:</strong></label>
+                <div class="design-input-field">
+                    <input class="form-control" type="text" name="cc_checkcode" value="" class="input-small">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label design-input-label align-left"><strong>gültig bis:</strong></label>
+                <div class="design-input-field">
+                    <select class="form-control" name="cc_expdate_month" >
+                        <option>01</option>
+                        <option>02</option>
+                        <option>03</option>
+                        <option>04</option>
+                        <option>05</option>
+                        <option>06</option>
+                        <option>07</option>
+                        <option>08</option>
+                        <option>09</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                    </select>
+
+                    <select class="form-control" name="cc_expdate_year">
+                        <option>2012</option>
+                        <option>2013</option>
+                        <option>2014</option>
+                        <option>2015</option>
+                        <option>2016</option>
+                        <option>2017</option>
+                        <option>2018</option>
+                        <option>2019</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4 align-right">
+            <img src="{uri_baseurl(/sys/payment/adapter/ipaymentcc/images/vbv.png)}" />
+            <br>
+            <img src="{uri_baseurl(/sys/payment/adapter/ipaymentcc/images/sc.png)}" />
+        </div>
+    </div>
+
+    <input type="submit" name="form_submit" class="btn btn-default"  value="Bezahlen">
+</form>

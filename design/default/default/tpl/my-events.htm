@@ -1,0 +1,37 @@
+{if CAN_CREATE_EVENT}
+<h1>[[ translation : general : events :: Veranstaltungen ]]</h1>
+
+<ul class="nav nav-tabs userTabsTable">
+	<li{if show_created} class="active"{endif}>
+		<a href="{uri_action(my-events,1,created)}">[[ translation : general : own.events :: Eigene Veranstaltungen ]]</a>
+	</li>
+	<li{if show_signedup} class="active"{endif}>
+		<a href="{uri_action(my-events,1,signedup)}">[[ translation : general : my.participations :: Meine Teilnahmen ]]</a>
+	</li>
+</ul>
+{else}
+<h1>[[ translation : general : my.participations :: Meine Teilnahmen ]]</h1>
+{endif}
+
+{if CAN_CREATE_EVENT && show_created}
+    {if CAN_CREATE_EVENT}
+    <p class="text-right">
+        <a href="{uri_action(my-calendar-events-add)}" class="btn btn-success">
+            <i class="glyphicon glyphicon-plus"></i> [[ translation : marketplace : add.new.event :: Neue Veranstaltung eintragen ]]
+        </a>
+    </p>
+    {endif}
+
+	{subtpl(tpl/{SYS_TPL_LANG}/my-calendar-events-list.htm,*,TYPE=ALL,STAMP_END_GT={STAMP_TODAY})}
+{else}
+	{subtpl(tpl/{SYS_TPL_LANG}/my-calendar-events-list.htm,*,TYPE=ALL_SIGNUP,STAMP_END_GT={STAMP_TODAY},TYPE_LOCKED=1)}
+
+    <div class="alert alert-info">
+        <h3>[[ translation : marketplace : create.events :: Erstellen von Veranstaltungen ]]</h3>
+        <p>
+            [[ translation : marketplace : create.events.long :: Sie können nur als Anbieter oder Gruppenmitglied eine Veranstaltung einfügen.
+            Um eine neue Veranstaltung einzustellen richten Sie ein Anbieterverzeichnis ein oder
+            gründen/betreten Sie eine Gruppe. ]]
+        </p>
+    </div>
+{endif}

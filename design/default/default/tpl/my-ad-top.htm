@@ -1,0 +1,86 @@
+{if ERROR}
+<p class="error">
+	[[ translation : marketplace : error.toparticle :: Fehler beim buchen der Top-Anzeige! Die gew&uuml;nschte Anzeige ist nicht (mehr) g&uuml;ltig. ]]
+</p>
+{else}
+<form method="post" action="{uri_action(my-service)}">
+	<input type="hidden" id="ID_PACKET" name="ID_PACKET" value="{ID_PACKET}" />
+	<input type="hidden" id="FK_TARGET" name="FK_TARGET" value="{FK_TARGET}" />
+	<input type="hidden" id="success" name="success" value="/my-pages/my-marktplatz.htm" />
+    {if PENDING}
+    <p>
+        [[ translation : marketplace : ad.my.premium.pending ::
+        <strong>Sie haben bereits Top-Features für diese Anzeige bestellt!</strong><br />
+        Diese werden aktiv sobald folgende Rechnungen bezahlt sind:
+        ]]
+        <ul>
+            {PENDING_INVOICES}
+        </ul>
+    </p>
+    {else}
+	<p>
+		[[ translation : marketplace : ad.top.book.now.intro :: Buchen Sie jetzt {htm(PRODUKTNAME)} als Top-Anzeige und erhalten Sie exklusive Vorteile: ]]
+		<ul>
+			<li>[[ translation : marketplace : your.article.advertised :: Ihre Anzeige wird auf der Startseite beworben ]]</li>
+			<li>[[ translation : marketplace : article.alert.two :: Beim durchsuchen der Kategorien erscheint Ihre Anzeige vor allen normalen Anzeigen ]]</li>
+			<li>[[ translation : marketplace : article.alert.three :: Ihre Anzeige wird farblich hervorgehoben ]]</li>
+		</ul>
+	</p>
+    {endif}
+	<p>
+		<div class="form-inline">
+			<strong>[[ translation : marketplace : choose.time :: Laufzeit w&auml;hlen: ]]</strong>
+			{lookup(LAUFZEIT_T,,, class="form-control" onchange="TopAdRuntime(this.value);",F_ORDER ASC,----)}
+		</div>
+		
+		{if EXTENDED_TOP_ADS}
+		<input type="hidden" name="BF_OPTIONS[]" value="0" />
+			{if PRICE_0 >= 0}
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="BF_OPTIONS[]" onchange="TopAdUpdate();" value="1"{if ((BF_OPTIONS&1)==1) || ((B_TOP&1)==1)} checked="checked"{endif}{if ((B_TOP&1)==1)} disabled="disabled"{endif}>
+						  <span>
+							  <strong>{htm(V1_0)} <span class="text-muted">{topreis_ex(PRICE_0)}&nbsp;{CURRENCY_DEFAULT}/Tag</span></strong>
+							  <br />
+							  {htm(T1_0)}
+						  </span>
+				</label>
+			</div>
+			{endif}
+
+			{if PRICE_1 >= 0}
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="BF_OPTIONS[]" onchange="TopAdUpdate();" value="2"{if ((BF_OPTIONS&2)==2) || ((B_TOP&2)==2)} checked="checked"{endif}{if ((B_TOP&2)==2)} disabled="disabled"{endif}>
+	                <span>
+	                    <strong>{htm(V1_1)} <span class="text-muted">{topreis_ex(PRICE_1)}&nbsp;{CURRENCY_DEFAULT}/Tag</span></strong>
+	                    <br />
+	                    {htm(T1_1)}
+	                </span>
+				</label>
+			</div>
+			{endif}
+
+			{if PRICE_2 >= 0}
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="BF_OPTIONS[]" onchange="TopAdUpdate();" value="4"{if ((BF_OPTIONS&4)==4) || ((B_TOP&4)==4)} checked="checked"{endif}{if ((B_TOP&4)==4)} disabled="disabled"{endif}>
+					<span>
+						<strong>{htm(V1_2)} <span class="text-muted">{topreis_ex(PRICE_2)}&nbsp;{CURRENCY_DEFAULT}/Tag</span></strong>
+						<br />
+						{htm(T1_2)}
+					</span>
+				</label>
+			</div>
+			{endif}
+		{endif}
+	{if DAYS_LEFT<DAYS_RUNTIME}
+	<p>
+		<strong>[[ translation : general : warning :: Achtung! ]]</strong><br />
+		[[ translation : marketplace : rest.one :: Ihre Anzeige hat nur noch eine Restlaufzeit von ]] {DAYS_LEFT} Tag(en)! [[ translation : marketplace : rest.two :: Wenn Sie diese Top-Anzeige dennoch buchen
+		l&auml;uft diese ]] {calc(DAYS_RUNTIME-DAYS_LEFT)} [[ translation : marketplace : rest.three :: Tage k&uuml;rzer als oben gew&auml;hlt. ]]
+	</p>
+	{endif}
+	<input type="submit" class="btn btn-default" value="[[ translation : marketplace : book.offer :: Top-Anzeige buchen ]]"{if !DAYS_RUNTIME} disabled="disabled"{endif} />
+</form>
+{endif}

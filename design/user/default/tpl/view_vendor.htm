@@ -1,0 +1,384 @@
+{javascript_google_maps()}
+
+<script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+<script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+<script type="application/javascript" src="{uri_resource(/lib/jquery.slimscroll.min.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+
+<script type="text/javascript">
+    ebizGoogleMapCallback(function() {
+        {if VENDOR_LATITUDE || VENDOR_PLACES}
+        jQuery(".vendorMapContainer").height(jQuery('.vendorInfo').height() + 'px');
+        // Google Maps
+        var bounds = new google.maps.LatLngBounds();
+
+        var latlng = new google.maps.LatLng({VENDOR_LATITUDE}, {VENDOR_LONGITUDE});
+        bounds.extend(latlng);
+
+        var myOptions = {
+            zoom: 13,
+            zoomMax:15,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+
+        var map = new google.maps.Map(document.getElementById("vendorMap"), myOptions);
+
+        // Marker
+        var marker = new Array();
+        var infowindow = new Array();
+
+        marker[0] = new google.maps.Marker({
+            position: latlng,
+            map: map
+        });
+        infowindow[0] = new google.maps.InfoWindow({
+            content: "<p><strong>{VENDOR_FIRMA}</strong><br />{VENDOR_STRASSE}, {VENDOR_PLZ} {VENDOR_ORT}, {VENDOR_COUNTRY}</p>"
+        });
+
+        google.maps.event.addListener(marker[0], 'click', function() {
+            infowindow[0].open(map,marker[0]);
+        });
+
+        {if JSON_VENDOR_PLACES}var vendorPlaces = {JSON_VENDOR_PLACES};{endif}
+
+
+
+        jQuery.each(vendorPlaces, function(key, value) {
+            var p = new google.maps.LatLng(value.LATITUDE, value.LONGITUDE);
+
+            marker[key+1] = new google.maps.Marker({
+                position: p,
+                map: map,
+                zIndex: key+1
+            });
+
+            infowindow[key+1] = new google.maps.InfoWindow({
+                content: "<p><strong>"+value.NAME+"</strong><br />"+value.STRASSE+", "+value.PLZ+" "+value.ORT+"</p>"
+            });
+
+            google.maps.event.addListener(marker[key+1], 'click', function() {
+                infowindow[key+1].open(map,marker[key+1]);
+            });
+
+            bounds.extend(p);
+        });
+
+        if(vendorPlaces.length > 0) {
+            map.fitBounds(bounds);
+        }
+        {endif}
+    });
+
+    {if USER_IS_ADMIN}
+    function UnlockVendor() {
+        jQuery.post("{uri_action(view_user_vendor,{urllabel(USER_NAME)},{USER_ID_USER})}", "ajax=unlockEvent", function() {
+            debugger;
+            var isPopup = (document.referrer.match(/\/admin\/index.php[\?$]/) != null ? true : false);
+            if (isPopup) {
+                window.opener.UnlockSuccess();
+                window.close();
+            } else {
+                document.location.href = "{uri_action(view_user_vendor,{urllabel(USER_NAME)},{USER_ID_USER},unlocked)}";
+            }
+        });
+    }
+
+    function UnlockDecline(id_ad, title) {
+        var isPopup = (document.referrer.match(/\/admin\/index.php[\?$]/) != null ? true : false);
+        if (isPopup) {
+            window.opener.UnlockDecline(id_ad, title);
+            window.close();
+        } else {
+            jQuery("#modalVendorDecline").modal();
+        }
+    }
+    {endif}
+
+    jQuery(document).ready(function () {
+        jQuery(".extra-details-block").slimScroll({
+            height: '212px',
+            railVisible: true
+            //alwaysVisible: true
+        });
+    });
+
+
+
+</script>
+{if USER_ID_USER}
+<div class="row design-page single-vendor-page">
+    <div class="col-md-12 design-page-content">
+
+        {subtpl(tpl/{SYS_TPL_LANG}/view_user.info.htm,*)}
+
+        <div class="row vendor-top-row2">
+            <div class="col-md-9 col-sm-12">
+                <div class="vendor-block images-block">
+                    <div class="row">
+                        {if VENDOR_GALLERY_VIDEO || VENDOR_GALLERY}
+                        <div class="col-md-2 col-sm-12">
+                            <div class="all-thumbnails">
+                                {if VENDOR_GALLERY_VIDEO}
+                                    {VENDOR_GALLERY_VIDEO}
+                                {endif}
+                                {if VENDOR_GALLERY}
+                                    {VENDOR_GALLERY}
+                                {endif}
+                            </div>
+                        </div>
+                        <div class="col-md-10 col-sm-12">
+                            {if VENDOR_BIG_IMAGE}
+                            <div class="big_image">
+                                <img class="img-responsive" src="{thumbnail({VENDOR_BIG_IMAGE},null,441)}"  />
+                            </div>
+                            {else}
+                            <div class="big_image">
+                                <img class="img-responsive" src="{uri_resource(/images/marketplace/nopic.jpg)}" />
+                            </div>
+                            {endif}
+                        </div>
+                        {else}
+                        <div class="col-md-12">
+                            {if VENDOR_BIG_IMAGE}
+                            <div class="big_image">
+                                <img class="img-responsive" src="{VENDOR_BIG_IMAGE}"  />
+                            </div>
+                            {else}
+                            <div class="big_image">
+                                <img class="img-responsive" src="{uri_resource(/images/marketplace/nopic.jpg)}" />
+                            </div>
+                            {endif}
+                        </div>
+                        {endif}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="vendor-block address-block">
+                    <h3>{VENDOR_FIRMA}</h3>
+                    <div>
+                        {if VENDOR_STRASSE}{VENDOR_STRASSE}<br />{endif}
+                        {if VENDOR_ORT}{VENDOR_PLZ} {VENDOR_ORT}<br />{endif}
+                        {if VENDOR_COUNTRY}{VENDOR_COUNTRY}{endif}
+                        {if VENDOR_PLACES}{VENDOR_PLACES}{endif}
+                    </div>
+                    <div class="small-text">
+                        {if VENDOR_TEL}Tel: {VENDOR_TEL}<br />{endif}
+                        {if VENDOR_FAX}Fax: {VENDOR_FAX}<br />{endif}
+                        {if VENDOR_URL}URL: {VENDOR_URL}<br />{endif}
+                    </div>
+                    <div style="text-align: center;">
+                        {if rating_avg}
+                        <img title="[[ translation : marketplace : average.rating :: Durchschnittliche Bewertung ]]"
+                             src="{uri_baseurl(/gfx/stars_{rating_avg}.png)}" />
+                        <br />
+                        {endif}
+
+                        <a href="{uri_action(view_user_impressum,{urllabel(USER_NAME)},{USER_ID_USER})}"
+                           class="btn btn-big btn-impressum">
+                            <i class="glyphicon glyphicon-info-sign"></i>
+                            <span>[[ translation : marketplace : imprint :: Impressum ]]</span>
+                        </a>
+
+                        {if ID_USER}
+                        <!---
+                            <a class="btn btn-big btn-anfrage"
+                                onclick="SendMail({VENDOR_USER_ID}, '', 0, 0, 0); return false;"
+                                type="button">
+                            Anfrage stellen
+                        </a>
+                        --->
+                        {endif}
+
+                        <a href="#comments" class="btn btn-big btn-rating"
+                                type="button">
+                            <i class="fa fa-star"></i>
+                            <span>Bewerten</span>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            {if fields}
+            <div class="col-md-6 col-sm-12">
+                <div class="vendor-block extra-details-block">
+                    {fields}
+                </div>
+            </div>
+            {endif}
+            {if VENDOR_BUSINESS_HOURS}
+            <div class="col-md-3 col-sm-12">
+                <div class="vendor-block">
+                    <div class="block">
+                        <div class="name-block">
+                            <h4>
+                                <i class="fa fa-clock-o"></i>
+                                [[ translation : marketplace : business.hours :: Öffnungszeiten ]] :
+                            </h4>
+                        </div>
+                        <div class="name-desc">
+                            <div class="name-desc-row"{if VENDOR_BUSINESS_HOURS_0_ACTIVE} style="font-weight: bold;"{endif}>
+                                <div class="pull-left">[[ translation : marketplace : business.hours.monday :: Montag ]]:</div>
+                                <div class="pull-right">{htm(VENDOR_BUSINESS_HOURS_0)}</div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="name-desc-row"{if VENDOR_BUSINESS_HOURS_1_ACTIVE} style="font-weight: bold;"{endif}>
+                                <div class="pull-left">[[ translation : marketplace : business.hours.tuesday :: Dienstag ]]:</div>
+                                <div class="pull-right">{htm(VENDOR_BUSINESS_HOURS_1)}</div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="name-desc-row"{if VENDOR_BUSINESS_HOURS_2_ACTIVE} style="font-weight: bold;"{endif}>
+                                <div class="pull-left">[[ translation : marketplace : business.hours.wednesday :: Mittwoch ]]:</div>
+                                <div class="pull-right">{htm(VENDOR_BUSINESS_HOURS_2)}</div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="name-desc-row"{if VENDOR_BUSINESS_HOURS_3_ACTIVE} style="font-weight: bold;"{endif}>
+                                <div class="pull-left">[[ translation : marketplace : business.hours.thursday :: Donnerstag ]]:</div>
+                                <div class="pull-right">{htm(VENDOR_BUSINESS_HOURS_3)}</div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="name-desc-row"{if VENDOR_BUSINESS_HOURS_4_ACTIVE} style="font-weight: bold;"{endif}>
+                                <div class="pull-left">[[ translation : marketplace : business.hours.friday :: Freitag ]]:</div>
+                                <div class="pull-right">{htm(VENDOR_BUSINESS_HOURS_4)}</div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="name-desc-row"{if VENDOR_BUSINESS_HOURS_5_ACTIVE} style="font-weight: bold;"{endif}>
+                                <div class="pull-left">[[ translation : marketplace : business.hours.saturday :: Samstag ]]:</div>
+                                <div class="pull-right">{htm(VENDOR_BUSINESS_HOURS_5)}</div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="name-desc-row"{if VENDOR_BUSINESS_HOURS_6_ACTIVE} style="font-weight: bold;"{endif}>
+                                <div class="pull-left">[[ translation : marketplace : business.hours.sunday :: Sonntag ]]:</div>
+                                <div class="pull-right">{htm(VENDOR_BUSINESS_HOURS_6)}</div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {endif}
+            {if VENDOR_LATITUDE || VENDOR_PLACES}
+            <div class="col-md-3 col-sm-12">
+                <div class="map-block vendorInfo" id="map_container">
+                    <div id="vendorMap" class="vendorMapContainer">
+                    </div>
+                </div>
+            </div>
+            {endif}
+        </div>
+
+        {if VENDOR_DESCRIPTION}
+        <div class="row heading-leading-with-line">
+            <div class="col-md-12">
+                <div class="heading">
+                        <span class="all-text">
+                            <span class="text text-bold">Firmenprofil</span>
+                            <span class="text text-light">{VENDOR_FIRMA}</span>
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="row vendor-desc-row">
+            <div class="col-md-12 col-sm-12">
+                {VENDOR_DESCRIPTION}
+            </div>
+        </div>
+        {else}
+        <div class="row vendor-desc-row">
+            <div class="col-md-12">Keine Beschreibung</div>
+        </div>
+        {endif}
+        <br />
+        <br />
+
+        {plugin(Leads,vendor_profiles,{USER_ID_USER})}
+
+        {if VENDOR_ADS}
+            <div class="row heading-leading-with-line">
+                <div class="col-md-12">
+                    <div class="heading">
+                        <span class="all-text">
+                            <span class="text text-bold">NEUE</span>
+                            <span class="text text-light"> - PRODUKTE</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row vendor-ads">
+                {VENDOR_ADS}
+            </div>
+        {endif}
+
+        {if vendors_admin_moderated && USER_IS_ADMIN}
+            {if MODERATED!=1}
+                <p>
+                    <strong>[[ translation : marketplace : vendor.moderate.title :: Firmenprofil Moderieren: ]]</strong>
+                    <br />
+                    <a class="btn btn-success" onclick="UnlockVendor();">
+                        [[ translation : marketplace : vendor.moderate.unlock :: Firmenprofil freigeben ]]
+                    </a>
+                    <a class="btn btn-danger{if MODERATED==2} disabled{endif}"{if MODERATED!=2} onclick="UnlockDecline({VENDOR_ID_VENDOR}, '{if product_manufacturer}{htm(product_manufacturer)} {endif}{htm(product_articlename)}');"{endif}>
+                        [[ translation : marketplace : vendor.moderate.decline :: Ablehnen ]]
+                    </a>
+                </p>
+            {endif}
+            {if MODERATED==2}
+                <div class="alert alert-danger">
+                    <strong>[[ translation : marketplace : vendor.moderate.confirmed :: Freigabe abgelehnt ]]</strong>
+                    <p>
+                        [[ translation : marketplace : vendor.moderate.confirmed.long :: Sie haben die Freigabe dieses Firmenprofils abgelehnt.{if DECLINE_REASON} Begründung:<br />{text(EVENT_DECLINE_REASON)}{endif} ]]
+                    </p>
+                </div>
+            {endif}
+        {endif}
+        {if VENDOR_ALLOW_COMMENTS}
+            {if comments_enabled}
+                <a name="comments"></a>
+                <div class="row heading-leading-with-line">
+                    <div class="col-md-12">
+                        <div class="heading">
+                            <span class="all-text">
+                                <span class="text text-bold">NEUE</span>
+                                <span class="text text-light"> - [[ translation : marketplace : comments.rated :: Bewertungen ]]</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {subtpl(tpl/{SYS_TPL_LANG}/comment_standard_view.htm,ID_USER,TABLE=vendor,FK={VENDOR_ID_VENDOR},LABEL={VENDOR_FIRMA},COL1_GRID=3,COL2_GRID=9)}
+            {endif}
+        {endif}
+        {if USER_IS_ADMIN}
+            <div id="modalVendorDecline" class="modal hide fade">
+                <form method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3>Freigabe ablehnen</h3>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="page" value="{curpage}" />
+                        <input type="hidden" name="decline" value="{VENDOR_ID_VENDOR}" />
+                        <h4>
+                            Freigabe des Firmenprofils <b id="modalAdDeclineTitle">{htm(VENDOR_FIRMA)}</b> ablehnen
+                        </h4>
+                        <table width="100%">
+                            <tr>
+                                <th align="left" valign="top">Begründung:</th>
+                                <td>
+                                    <textarea name="REASON" style="height: 200px; width: 95%;"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" data-dismiss="modal" class="btn">Abbrechen</a>
+                        <a href="#" onclick="jQuery(this).closest('form').submit();" class="btn btn-danger">Ablehnen</a>
+                    </div>
+                </form>
+            </div>
+        {endif}
+    </div>
+</div>
+{endif}

@@ -1,0 +1,11 @@
+<tr>
+    <td>
+    </td>
+    <td colspan="4">
+    {if PARENT_ID_GEO_REGION>0}
+        <i>[[ translation : marketplace : plugin.geo.region.content.empty.child :: Innerhalb von {htm(PARENT_NAME)} wurden keine weiteren Regionen gefunden! ]]</i>
+    {else}
+        <i>[[ translation : marketplace : plugin.geo.region.content.empty.root :: Es wurden keine Regionen gefunden! ]]</i>
+    {endif}
+    </td>
+</tr>

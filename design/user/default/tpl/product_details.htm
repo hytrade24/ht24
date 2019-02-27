@@ -1,0 +1,18 @@
+<h1>{htm(FULL_PRODUKTNAME)}</h1>
+
+<div class="clearfix">
+  <div class="pull-left hdbProductImage">
+    {plugin(Hydromot,ProductImage,IMPORT_IMAGES,200,140)}
+  </div>
+  {BESCHREIBUNG}
+</div>
+
+{subtpl(tpl/{SYS_TPL_LANG}/product_details.fields.htm,ID_HDB_PRODUCT={ID_HDB_PRODUCT},ID_KAT={FK_KAT})}
+
+<div class="productOfferList">
+{if ID_USER}
+  {subtpl(tpl/{SYS_TPL_LANG}/product_details.offers.htm,ID_HDB_PRODUCT={ID_HDB_PRODUCT},ID_KAT={FK_KAT})}
+{else}
+  {content_page(Registrieren für Angebot)}
+{endif}
+</div>

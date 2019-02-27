@@ -1,0 +1,219 @@
+{startblock(script)}
+{parentblock()}
+<script type="text/javascript">
+    jQuery(function() {
+
+        dosearch = function() {
+            if(jQuery("#SEARCHURL").val() != "") { location.href = jQuery("#SEARCHURL").val(); }
+        }
+        presearch = function() {
+            if (jQuery('#CITY').val() != '' || jQuery('#ZIP').val() != '') {
+                getLatiLongi("", "", "", "",  "", function() {
+                    dopresearch();
+                });
+            } else {
+                jQuery("#LATITUDE, #LONGITUDE").val('');
+                dopresearch();
+            }
+        }
+        dopresearch = function() {
+            jQuery.ajax({
+                url: jQuery("#presearch").attr("action"),
+                type: 'POST',
+                data: jQuery("#presearch").serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    jQuery('#ASB').val("Show hits ("+response["COUNT"]+")");
+
+                    if (response["COUNT"] > 0) {
+                        $('#SEARCHURL').val('{uri_baseurl(/)}groups,'+$("#FK_KAT").val()+',' + response["HASH"] + '.htm');
+                    }
+                    else {
+                        $('#SEARCHURL').val('');
+                    }
+                }
+            });
+        }
+
+        club_order = function(elm) {
+            window.location.href = elm.value;
+        }
+
+        presearch();
+    })
+
+</script>
+{endblock(script)}
+
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+        {if URI_CURPAGE==1}
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <h1>Group directory</h1>
+                <p>Here you find an overview of all interest groups of our portal. You can create a public or closed group on a specific topic.</p>
+                <p>Start your own Group now!</p>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <img src="{uri_resource(images/demo/gruppe.png)}" class="img-responsive-center" />
+            </div>
+        </div>
+
+
+
+        <h2>New posts</h2>
+        <p class="lead">
+            Recently published forum posts.
+        </p>
+
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_group_list.htm,COUNT=3,CACHE_LIFETIME=102)}
+        {endif}
+
+
+
+        <div class="advertisement-box">{adserver(,1780,)}</div>
+
+        <p class="lead">
+            {if SHOW_MYGROUPS}
+                Meine Gruppen in der Übersicht
+            {else}
+                Our groups in the overview
+            {endif}
+        </p>
+
+        <div class="text-box design-location">
+
+            <!-- Ariadne/Location and sorting/view -->
+            <div class="row">
+                <div class="col-md-6 col-lg-7 clearfix">
+                    <div class="pull-left">
+                        {kat_ariadne_dynamic({CATEGORY},club)}
+                    </div>
+                    <div class="pull-right">
+                        <span class="text-muted">{ALL_CLUBS} groups</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    <form method="get" action="{uri_baseurl(/index.php)}">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-9 col-md-8 col-xl-9 design-sort">
+                                <select class="form-control" name="ordering" onchange="club_order(this);">
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},STAMP,DESC,{VIEW_TYPE})}" {if CUR_SORT_STAMP_DESC}selected="selected"{endif}>
+                                        Newest first
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},STAMP,ASC,{VIEW_TYPE})}" {if CUR_SORT_STAMP_ASC}selected="selected"{endif}>
+                                        Oldest first
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},NAME,ASC,{VIEW_TYPE})}" {if CUR_SORT_NAME_ASC}selected="selected"{endif}>
+                                        Alphabet ascending
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},NAME,DESC,{VIEW_TYPE})}" {if CUR_SORT_NAME_DESC}selected="selected"{endif}>
+                                        Alphabet descending
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},MEMBERS,DESC,{VIEW_TYPE})}" {if CUR_SORT_MEMBERS_DESC}selected="selected"{endif}>
+                                        Most members first zuerst
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},COMMENTS,DESC,{VIEW_TYPE})}" {if CUR_SORT_COMMENTS_DESC}selected="selected"{endif}>
+                                        Most comments first
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},EVENTS,DESC,{VIEW_TYPE})}" {if CUR_SORT_EVENTS_DESC}selected="selected"{endif}>
+                                        Most events first
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},GALLERY,DESC,{VIEW_TYPE})}" {if CUR_SORT_GALLERY_DESC}selected="selected"{endif}>
+                                        Most images first
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4 col-sm-3 col-md-4 col-xl-3 design-view">
+                                <div class="btn-group">
+                                    <a class="btn btn-default {if VIEW_TYPE_LIST}active{endif}" href="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},1,{SORT},{SORT_DIR},LIST|KAT_NAME={urllabel(V1)})}">
+                                        <span class="glyphicon glyphicon-th-list"></span>
+                                    </a>
+                                    <a class="btn btn-default {if VIEW_TYPE_BOX}active{endif}" href="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},1,{SORT},{SORT_DIR},BOX|KAT_NAME={urllabel(V1)})}">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        {if clubs}
+        {if VIEW_TYPE_LIST}
+        {clubs}
+        {else}
+        <div class="row">
+            {clubs}
+        </div>
+        {endif}
+
+        {pager}
+        {else}
+        <p>No groups were found this category.</p>
+        {endif}
+    </div>
+    <div class="design-page-menu">
+        <form onsubmit="dosearch(); return false;" id="presearch" method="post" action="{uri_baseurl(/index.php)}">
+            <input type="hidden" name="page" value="presearch_club_ajax" />
+            <input type="hidden" name="FK_KAT" id="FK_KAT" value="{CATEGORY}" />
+            <input type="hidden" name="frame" value="ajax" />
+            <input type="hidden" name="LATITUDE" value="{LATITUDE}" id="LATITUDE" />
+            <input type="hidden" name="LONGITUDE" value="{LONGITUDE}" id="LONGITUDE" />
+            <input type="hidden" id="SEARCHURL" name="SEARCHURL" value="" />
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">Category selection</div>
+
+                <ul class="menu-box" id="clubCategoryTree">
+                    {CATEGORY_TREE}
+                </ul>
+
+                <div class="panel-body">
+                    <a href="{uri_action(clubs)}">Show all groups</a>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">Searchfilter</div>
+
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Suche:</label>
+                        <input type="text" class="form-control" id="SEARCHCLUB" name="SEARCHCLUB" value="{htm(SEARCHCLUB)}" onkeyup="updateInputState(presearch);" onchange="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Country:</label>
+                        {select_country(SEARCH_FK_COUNTRY,,,,onchange="presearch();" id="COUNTRY" class="form-control",---)}
+                    </div>
+
+                    <div class="form-group">
+                        <label>ZIP:</label>
+                        <input type="text" class="form-control" id="ZIP" name="ZIP" value="{htm(SEARCH_PLZ)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>City:</label>
+                        <input type="text" class="form-control" id="CITY" name="CITY" value="{htm(SEARCH_ORT)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Within:</label>
+                        {lookup(UMKREIS,,, onchange="presearch();" class="form-control",F_ORDER ASC)}
+                    </div>
+
+                    <div>
+                        <input onclick="dosearch()" class="btn btn-default form-control" type="submit" id="ASB" value="Show results" />
+                        <a href="{uri_action(clubs,,my-groups)}" class="btn btn-default form-control">Meine Gruppen anzeigen</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        {content_page()}
+    </div>
+</div>

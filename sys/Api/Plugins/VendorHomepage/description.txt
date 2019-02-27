@@ -1,0 +1,2 @@
+Erweitert das Anbieter-Profil um die Möglichkeit eine eigene "Mini-Homepage" zu erstellen, 
+so dass alle Anbieter-Informationen über eine eigene Domain/Subdomain verfügbar sind.

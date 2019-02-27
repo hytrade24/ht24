@@ -1,0 +1,80 @@
+{if done}
+	<h1>
+		[[ translation : marketplace : order.successfull :: Bestellung erfolgreich ]]<br />
+		<span>[[ translation : marketplace : thank.you.for.your.trust :: Vielen Dank f&uuml;r Ihr Vertrauen! ]]</span>
+	</h1>
+	
+	<p>
+		[[ translation : marketplace : order.of.the.package.successfull :: Die Bestellung des Pakets wurde erfolgreich abgeschlossen. ]]<br />
+		{if PREPAID}
+			[[ translation : marketplace : you.can.use.the.package.when.the.payment.is.comfirmed ::
+                Sie können das Paket nutzen sobald die Zahlung bestätigt wurde.
+            ]]
+		{else}
+			[[ translation : marketplace : you.can.use.the.package.now :: Sie können das Paket ab sofort nutzen. ]]
+		{endif}
+		<br />
+	</p>
+	<h2>
+		[[ translation : marketplace : your.next.possibilities :: Ihre n&auml;chsten M&ouml;glichkeiten ]]
+	</h2>
+	<ul>
+        {if FK_INVOICE>0}
+        <li>
+            <a href="{uri_action(invoice,{FK_INVOICE},pay)}">
+                [[ translation : marketplace : package.invoice.pay :: Rechnung jetzt bezahlen. ]]
+            </a>
+        </li>
+        {endif}
+		<li>
+			<a href="{uri_action(my-marktplatz-neu)}" title="[[ translation : marketplace : sell.product.now ::Jetzt Produkt verkaufen ]]">
+				[[ translation : marketplace : set.new.advert :: Neue Anzeige schalten ]]
+			</a>
+		</li>
+		<li>
+			<a href="{uri_action(marktplatz)}" title="[[ translation : marketplace : to.marketplace :: Zum Marktplatz ]]">
+				[[ translation : marketplace : to.marketplace :: Zum Marktplatz ]]
+			</a>
+		</li>
+		<li>
+			<a href="{uri_action(invoices)}" title="[[ translation : marketplace : my.bills :: Meine Rechnungen ]]">
+				[[ translation : marketplace : my.bills :: Meine Rechnungen ]]
+			</a>
+		</li>
+	</ul>
+{else}
+	<h1>[[ translation : general : error :: Fehler ]]!</h1>
+	<p>
+		[[ translation : marketplace : payment.failed :: Bezahlvorgang fehlgeschlagen! ]]
+		{if error_noaddress}
+		<div class="stdBox">
+			<h1 class="error">[[ translation : general : notice :: Hinweis ]]</h1>
+			 [[ translation : marketplace : please.add.following.data.to.your.profile :: Bitte erg&auml;nzen Sie folgende Angaben in ihrem ]]
+             <a href="{uri_action(my-profil)}">
+             [[ translation : marketplace : profile :: Profil ]]
+             </a>
+             [[ translation : marketplace : before.you.order.a.package :: bevor Sie ein Anzeigenpaket bestellen: ]]
+             <br />
+			<ul>
+				{if error_addr_first}<li>[[ translation : marketplace : forename :: Vorname ]]</li>{endif}
+				{if error_addr_last}<li>[[ translation : marketplace : surname :: Nachname ]]</li>{endif}
+				{if error_addr_street}<li>[[ translation : marketplace : street :: Straße ]]</li>{endif}
+				{if error_addr_zip}<li>[[ translation : marketplace : postcode :: Postleitzahl ]]</li>{endif}
+				{if error_addr_city}<li>[[ translation : marketplace : residence :: Wohnort ]]</li>{endif}
+			</ul>
+		</div>
+		{else}
+		[[ translation : marketplace : please.try.again.later.or.contact.the.support :: Bitte versuchen Sie es erneut oder wenden Sie sich an den Support. ]]
+		{endif}
+		{if error_payment_paypal}
+		<br />
+		<br />
+		<strong>[[ translation : marketplace : error.payment.paypal :: Fehlermeldung von PayPal: ]]</strong> {htm(error_payment_paypal)}
+		{endif}
+		{if error_coupon}
+			<br><br><strong>{error_coupon}</strong>
+		{endif}
+	</p>
+
+	<p><a href="#" onclick="history.back();">[[ translation : marketplace : packet.buy.error.backlink :: Zurück zur Bestellung ]]</a> </p>
+{endif}

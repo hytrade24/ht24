@@ -1,0 +1,67 @@
+{if CLUB_ID_CLUB}
+<p>[[ translation : marketplace : describe.group.exactly :: Beschreiben Sie hier Ihre Gruppe so genau wie möglich ]]!</p>
+
+<p>[[ translation : marketplace : shown.group :: Gruppe in der öffentlichen Ansicht &lsaquo;<a href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}">anzeigen</a>&rsaquo; ]]</p>
+{endif}
+	<ul class="nav nav-tabs userTabsTable">
+	    <li class="{uri_is_active(my-club,active,)}">
+	        <a href="{uri_action(my-club,{CLUB_ID_CLUB},view)}">[[ translation : general : group :: Gruppe ]]</a>
+	    </li>
+	    {if !CLUB_NEW}
+	   
+          <li class="dropdown visibleOnEnabledClub {uri_is_active(my-club-description,active,)}{uri_is_active(my-club-searchword,active,)}{uri_is_active(my-club-gallery,active,)}">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                [[ translation : general : description :: Beschreibung ]] <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                    <li><a href="{uri_action(my-club-description,{CLUB_ID_CLUB})}">[[ translation : general : description :: Beschreibung ]]</a></li>  
+                    <li><a href="{uri_action(my-club-searchword,{CLUB_ID_CLUB})}">[[ translation : general : searchwords :: Schlagworte ]]</a></li>   
+                    <li><a href="{uri_action(my-club-gallery,{CLUB_ID_CLUB})}">[[ translation : general : pics.and.videos :: Bilder und Videos ]]</a></li>
+                    
+            </ul>
+         </li>
+       
+       
+       
+ 
+	    
+        
+        <li class="visibleOnEnabledClub {uri_is_active(my-club-members,active,)}">
+	        <a href="{uri_action(my-club-members,{CLUB_ID_CLUB})}">[[ translation : general : members :: Mitglieder ]]</a>
+	    </li>
+
+        {if CLUB_MODERATOR}
+        <li class="dropdown visibleOnEnabledClub {uri_is_active(my-club-forum,active,)}">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                [[ translation : marketplace : club.forum :: Forum ]] <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="{uri_action(my-club-forum,{CLUB_ID_CLUB},unconfirmed)}">[[ translation : marketplace : club.forum.not.reviewed :: Nicht freigegeben ]]</a></li>
+                <li><a href="{uri_action(my-club-forum,{CLUB_ID_CLUB},confirmed)}">[[ translation : marketplace : club.forum.reviewed :: Freigegeben ]]</a></li>
+                <li><a href="{uri_action(my-club-forum,{CLUB_ID_CLUB},all)}">[[ translation : marketplace : club.forum.all.threads :: Alle Themen ]]</a></li>
+            </ul>
+
+        </li>
+        <li class="visibleOnEnabledClub {uri_is_active(my-club-comments,active,)}">
+            <a href="{uri_action(my-club-comments,{CLUB_ID_CLUB})}">[[ translation : general : comments :: Kommentare ]]</a>
+        </li>
+        {endif}
+       
+        <li class="dropdown visibleOnEnabledClub {uri_is_active(my-club-events,active,)}">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              [[ translation : marketplace : club.events :: Veranstaltungen ]]<span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                    <li><a href="{uri_action(my-group-events,{CLUB_ID_CLUB},view)}" >[[ translation : general : calendar :: Kalender ]]</a></li>  
+                    <li><a href="{uri_action(my-calendar-events-add,,group,{CLUB_ID_CLUB},view)}">[[ translation : general : create.calendar.record :: Kalendereintrag erstellen ]]</a></li>     
+                    
+            </ul>
+         </li>
+         
+		{if CLUB_MODERATOR}
+		<li class="visibleOnEnabledClub {uri_is_active(my-club-rundmail,active,)}">
+			<a href="{uri_action(my-club-rundmail,{CLUB_ID_CLUB})}">[[ translation : general : broadcast.mail :: Rundmail ]]</a>
+		</li>
+		{endif}
+	    {endif}
+	</ul>

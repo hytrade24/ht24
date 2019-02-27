@@ -1,0 +1,368 @@
+{if EVENT_NOT_FOUND}
+	<h1>[[ translation : marketplace : calendar.event.error.not.found :: Veranstaltung wurde nicht gefunden ]]</h1>
+
+	<p>
+        [[ translation : marketplace : calendar.event.error.not.found.long ::
+            Die Veranstaltung wurde nicht gefunden oder ist nicht mehr aktiv.
+        ]]
+    </p>
+    {startblock(script)}
+        {parentblock()}
+        <script type="text/javascript">
+    
+            jQuery(function() {
+                if (typeof window.opener.callbackEventNotAvailable == "function") {
+                    window.opener.callbackEventNotAvailable();
+                    window.close();
+                }
+            });
+    
+        </script>
+    {endblock(script)}
+{else}
+    {startblock(script)}
+        {parentblock()}
+        {javascript_google_maps()}
+    
+        <script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+        <script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+        <script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+        <link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+    
+        <script type="text/javascript">
+            ebizGoogleMapCallback(function() {
+                // Google Maps
+                {if EVENT_LATITUDE}
+                    jQuery(".design-event-details-map-container").height(jQuery('.design-event-details-info').height() + 'px');
+                    var bounds = new google.maps.LatLngBounds();
+    
+                    var latlng = new google.maps.LatLng({EVENT_LATITUDE}, {EVENT_LONGITUDE});
+                    bounds.extend(latlng);
+    
+                    var myOptions = {
+                        zoom: 13,
+                        zoomMax:15,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+    
+    
+                    var map = new google.maps.Map(document.getElementById("eventMap"), myOptions);
+    
+                    // Marker
+                    var marker = new Array();
+                    var infowindow = new Array();
+    
+                    marker[0] = new google.maps.Marker({
+                        position: latlng,
+                        map: map
+                    });
+                {endif}
+    
+            });
+    
+            function empfehlen() {
+                ShowDialog(ebiz_trader_baseurl + "index.php?page=calendar_events_empfehlen&id={EVENT_ID_CALENDAR_EVENT}&frame=ajax", "[[ translation : marketplace : calendar.event.recommend :: Veranstaltung Empfehlen ]]", "auto", "auto");
+                return false;
+            }
+    
+            function empfehlen_submit() {
+                $.ajax({
+                    //url: 		'',
+                    type: 		'POST',
+                    data:		$('#sEmp').serialize(),
+                    success: 	function(result) {
+                        var footer = jQuery('#modalDialogContent').html(result).find("#modalFooterContainer");
+                        if (footer.length > 0) {
+                            jQuery('#modalDialog .modal-footer').replaceWith(footer.html());
+                        }
+                    }
+                });
+            }
+    
+        {if USER_IS_ADMIN}
+            function UnlockEvent() {
+                jQuery.post("{uri_action(calendar_events_view,{urllabel(EVENT_TITLE)},{EVENT_ID_CALENDAR_EVENT})}", "ajax=unlockEvent", function() {
+                    var isPopup = (document.referrer.match(/\/admin\/index.php[\?$]/) != null ? true : false);
+                    if (isPopup) {
+                        window.opener.UnlockSuccess();
+                        window.close();
+                    } else {
+                        document.location.href = "{uri_action(calendar_events_view,{urllabel(EVENT_TITLE)},{EVENT_ID_CALENDAR_EVENT},unlocked)}";
+                    }
+                });
+            }
+    
+            function UnlockDecline(id_ad, title) {
+                var isPopup = (document.referrer.match(/\/admin\/index.php[\?$]/) != null ? true : false);
+                if (isPopup) {
+                    window.opener.UnlockDecline(id_ad, title);
+                    window.close();
+                } else {
+                    jQuery("#modalEventDecline").modal();
+                }
+            }
+        {endif}
+    
+        </script>
+
+        <script type="application/ld+json">
+            {
+                "@context":     "http://schema.org",
+                "@type":        "Event",
+                "name":         "{EVENT_TITLE}",
+                "startDate":    "{EVENT_STAMP_START}",
+                "endDate":      "{EVENT_STAMP_END}",
+                "description":  "{text(EVENT_DESCRIPTION)}",
+                "location":     {
+                    "@type":    "Place",
+                    "name":     "{EVENT_LOCATION}",
+                    "address":  {
+                        "@type":            "PostalAddress",
+                        "streetAddress":    "{htm(EVENT_STREET)}",
+                        "addressLocality":  "{EVENT_CITY}",
+                        "postalCode":       "{EVENT_ZIP}"
+                    }
+                }
+            }
+        </script>
+
+        <script type="application/ld+json">
+        {kat_ariadne_dynamic_json_ld({EVENT_FK_KAT},calendar_events,{EVENT_TITLE})}
+        </script>
+    {endblock(script)}
+
+    <div class="row design-event-details">
+        <div class="col-xs-12 col-md-9 col-md-push-3">
+            
+            <div class="text-box design-location">
+                <div class="design-ariande design-ariande-calendar-events">
+                    {kat_ariadne_dynamic({EVENT_FK_KAT},calendar_events,{EVENT_TITLE})}
+                </div>
+            </div>
+ 
+            {if info_declined}
+            <div class="alert alert-info">
+                [[ translation : marketplace : admin.event.declined ::
+                <h2>Freigabe der Veranstaltung abgelehnt</h2>
+                <p>
+                    Sie haben die Freigabe der Veranstaltung abgelehnt. Der Benutzer wird per E-Mail darüber benachrichtigt.
+                    <br />
+                    Sobald der Benutzer die Veranstaltung bearbeitet hat erhalten Sie diese erneut zur Prüfung.
+                </p>
+                ]]
+            </div>
+            {endif}
+            {if info_unlocked}
+            <div class="alert alert-success">
+                [[ translation : marketplace : admin.event.unlocked ::
+                <h2>Veranstaltung freigegeben</h2>
+                <p>
+                    Sie haben die Veranstaltung freigegeben. Die Veranstaltung ist nun öffentlich zugänglich.
+                </p>
+                ]]
+            </div>
+            {endif}
+ 
+            <h1>[[ translation : marketplace : calendar.event :: Veranstaltung ]] {EVENT_TITLE}</h1>
+ 
+            <div class="row">
+                <div class="col-xs-12 col-md-6 design-event-details-info">
+                    <dl class="dl-table-horizontal">
+ 
+                        <dt>[[ translation : general : date.when :: Wann ]]:</dt>
+                        <dd>
+                             [[ translation : general : datetime.span : BEGIN=EVENT_STAMP_START,END=EVENT_STAMP_END : {todate(BEGIN,1)} bis {todate(END,1)} ]]
+                         </dd>
+ 
+                        {if EVENT_LOCATION || EVENT_STREET || EVENT_ZIP || EVENT_CITY}
+                        <dt>[[ translation : general : location.where :: Wo ]]:</dt>
+                        <dd>
+                            {if EVENT_LOCATION}{htm(EVENT_LOCATION)}<br />{endif}
+                            {if EVENT_STREET}{htm(EVENT_STREET)}<br />{endif}
+                            <span class="muted">{EVENT_ZIP} {EVENT_CITY}</span>
+                        </dd>
+                        {endif}
+ 
+                        <dt></dt><dd class="separator"></dd>
+ 
+                        <dt>[[ translation : general : category :: Kategorie ]]:</dt>
+                        <dd>{EVENT_KAT_NAME}</dd>
+ 
+                        {if EVENT_KEYWORDS}
+                            <dt>[[ translation : general : keywords :: Schlagworte ]]:</dt>
+                            <dd class="design-btn-small">{EVENT_KEYWORDS}</dd>
+                        {endif}
+                            <dt>[[ translation : marketplace : calendar.event.participants :: Teilnehmer ]]:</dt>
+                            <dd>
+                            {if (EVENT_SIGNUPS_CONFIRMED + EVENT_SIGNUPS_UNSURE + EVENT_SIGNUPS_DECLINED)>0}
+                                <span>
+                                    <i class="glyphicon glyphicon-plus-sign"></i> [[ translation : marketplace : calendar.event.participants.accepted : COUNT=EVENT_SIGNUPS_CONFIRMED : {int(COUNT)} zugesagt ]]<br />
+                                    <i class="glyphicon glyphicon-question-sign"></i> [[ translation : marketplace : calendar.event.participants.unsure : COUNT=EVENT_SIGNUPS_UNSURE : {int(COUNT)} unsicher ]]<br />
+                                    <i class="glyphicon glyphicon-minus-sign"></i> [[ translation : marketplace : calendar.event.participants.declined : COUNT=EVENT_SIGNUPS_DECLINED : {int(COUNT)} abgelehnt ]]<br />
+                                </span>
+                            {else}
+                                 [[ translation : marketplace : calendar.event.participants.none.yet :: Noch keine Teilnehmer. ]]
+                            {endif}
+                            </dd>
+                    </dl>
+ 
+                    {if SIGNUPS>0}
+                    <strong class="text-success">
+                         [[ translation : marketplace : calendar.event.participants.long : COUNT=SIGNUPS : Es haben sich {COUNT} Benutzer zu dieser Veranstaltung angemeldet. ]]
+                     </strong>
+                    {endif}
+ 
+                    {if ID_USER}
+                         {if USER_IS_ADMIN}
+                             {if MODERATED!=1}
+                             <p>
+                                 <strong>[[ translation : marketplace : event.moderate.title :: Veranstaltung Moderieren: ]]</strong>
+                                 <br />
+                                 <a class="btn btn-success" onclick="UnlockEvent();">
+                                     [[ translation : marketplace : event.moderate.unlock :: Veranstaltung freigeben ]]
+                                 </a>
+                                 <a class="btn btn-danger{if MODERATED==2} disabled{endif}"{if MODERATED!=2} onclick="UnlockDecline({ID_AD}, '{if product_manufacturer}{htm(product_manufacturer)} {endif}{htm(product_articlename)}');"{endif}>
+                                 [[ translation : marketplace : event.moderate.decline :: Ablehnen ]]
+                                 </a>
+                             </p>
+                             {endif}
+                             {if MODERATED==2}
+                             <div class="alert alert-danger">
+                                 <strong>[[ translation : marketplace : event.moderate.confirmed :: Freigabe abgelehnt ]]</strong>
+                                 <p>
+                                     [[ translation : marketplace : event.moderate.confirmed.long :: Sie haben die Freigabe dieser Veranstaltung abgelehnt.{if EVENT_DECLINE_REASON} Begründung:<br />{text(EVENT_DECLINE_REASON)}{endif} ]]
+                                 </p>
+                             </div>
+                             {endif}
+                         {endif}
+                        {if USER_IS_SIGNEDUP}
+                            {if USER_SIGNUP_STATUS==0}
+                                <strong class="text-error">[[ translation : marketplace : calendar.event.self.declined :: Sie sind für diese Veranstaltung abgemeldet. ]]</strong>
+                            {endif}
+                            {if USER_SIGNUP_STATUS==1}
+                                <strong class="text-success">[[ translation : marketplace : calendar.event.self.accepted :: Sie sind für diese Veranstaltung angemeldet. ]]</strong>
+                            {endif}
+                            {if USER_SIGNUP_STATUS==2}
+                                <strong class="text-warning">[[ translation : marketplace : calendar.event.self.unsure :: Sie haben sich als ungewiss eingetragen. ]]</strong>
+                            {endif}
+                        {else}
+                        <span>
+                            [[ translation : marketplace : calendar.events.self.question :: Möchten Sie sich für diese Veranstaltung anmelden? ]]
+                        </span>
+                        {endif}
+                        <br />
+ 
+                         <div class="dropdown">
+                             <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
+                                 {if USER_IS_SIGNEDUP}
+                                     [[ translation : marketplace : calendar.event.self.change :: Anmeldung ändern ]]
+                                 {else}
+                                     [[ translation : marketplace : calendar.event.self.signup :: Jetzt anmelden ]]
+                                 {endif}
+                                 <span class="caret"></span>
+                             </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#event_confirm" data-url="{uri_action(calendar_events_view,{urllabel(EVENT_TITLE)},{EVENT_ID_CALENDAR_EVENT})}" onclick="requestCalendarEventSignup(this, 1); return false;">
+                                        <i class="glyphicon glyphicon-plus-sign"></i>
+                                        [[ translation : marketplace : calendar.event.do.accept :: Teilnahme bestätigen ]]
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#event_confirm" data-url="{uri_action(calendar_events_view,{urllabel(EVENT_TITLE)},{EVENT_ID_CALENDAR_EVENT})}" onclick="requestCalendarEventSignup(this, 2); return false;">
+                                        <i class="glyphicon glyphicon-question-sign"></i>
+                                        [[ translation : marketplace : calendar.event.do.unsure :: Teilnahme ungewiss ]]
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#event_confirm" data-url="{uri_action(calendar_events_view,{urllabel(EVENT_TITLE)},{EVENT_ID_CALENDAR_EVENT})}" onclick="requestCalendarEventSignup(this, 0); return false;">
+                                        <i class="glyphicon glyphicon-minus-sign"></i>
+                                        [[ translation : marketplace : calendar.event.do.decline :: Teilnahme absagen ]]
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                         <br />
+                    {endif}
+ 
+                     <p>
+                         <a class="btn btn-default" href="{uri_action(calendar_events_view,{urllabel(EVENT_TITLE)},{EVENT_ID_CALENDAR_EVENT},iCal)}">
+                             <i class="glyphicon glyphicon-calendar"></i>
+                             [[ translation : marketplace : calendar.event.download :: Termin herunterladen ]]
+                         </a>
+                         <a class="btn btn-default" onclick="empfehlen(); return false;">
+                             <i class="glyphicon glyphicon-share-alt"></i>
+                             [[ translation : marketplace : calendar.event.recommend :: Weiterempfehlen ]]
+                         </a>
+                     </p>
+                </div>
+                <div id="map_container" class="col-xs-12 col-md-6 design-event-details-map">
+                    {if EVENT_LATITUDE}
+                        <div id="eventMap" class="design-event-details-map-container">
+ 
+                        </div>
+                    {endif}
+                </div>
+            </div>
+            <h3>[[ translation : marketplace : calendar.event.description :: Beschreibung der Veranstaltung ]]:</h3>
+            {if EVENT_DESCRIPTION}
+                <div class="eventDescription">
+                    {EVENT_DESCRIPTION}
+                </div>
+            {endif}
+ 
+            <div data-hide-when-empty="true">
+                {subtpl(tpl/{SYS_TPL_LANG}/view_user_media.htm,TABLE=calendar_event,ID={EVENT_ID_CALENDAR_EVENT},HIDE_PARENT=1)}
+            </div>
+ 
+            <div class="clearfix"></div>
+            {if EVENT_ALLOW_COMMENTS}
+                {if comments_enabled}
+                    {subtpl(tpl/{SYS_TPL_LANG}/comment_list.htm,TABLE=calendar_event,FK={EVENT_ID_CALENDAR_EVENT})}
+                    {subtpl(tpl/{SYS_TPL_LANG}/comment.htm,ID_USER,TABLE=calendar_event,FK={EVENT_ID_CALENDAR_EVENT})}
+                {endif}
+            {endif}
+        </div>
+        <div class="col-xs-12 col-md-3 col-md-pull-9">
+            {if EVENT_FK_REF_TYPE_CLUB}
+                {subtpl(tpl/{SYS_TPL_LANG}/club.info.htm,OVERRIDE_CLUB_ID={EVENT_FK_REF})}
+            {endif}
+            {if EVENT_FK_REF_TYPE_USER}
+                {subtpl(tpl/{SYS_TPL_LANG}/view_user.info.htm,OVERRIDE_USER_ID={EVENT_FK_REF})}
+            {endif}
+            {content_page()}
+        </div>
+    </div>
+
+    {if USER_IS_ADMIN}
+    <div id="modalEventDecline" class="modal hide fade">
+        <form method="post">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Freigabe ablehnen</h3>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="page" value="{curpage}" />
+                <input type="hidden" name="decline" value="{EVENT_ID_CALENDAR_EVENT}" />
+                <h4>
+                    Freigabe der Veranstaltung <b id="modalAdDeclineTitle">{htm(EVENT_TITLE)}</b> ablehnen
+                </h4>
+                <table width="100%">
+                    <tr>
+                        <th align="left" valign="top">Begründung:</th>
+                        <td>
+                            <textarea name="REASON" style="height: 200px; width: 95%;"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Abbrechen</a>
+                <a href="#" onclick="jQuery(this).closest('form').submit();" class="btn btn-danger">Ablehnen</a>
+            </div>
+        </form>
+    </div>
+    {endif}
+
+{endif}

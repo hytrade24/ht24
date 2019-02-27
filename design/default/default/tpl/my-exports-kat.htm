@@ -1,0 +1,57 @@
+<h1>[[ translation : marketplace : category.export :: Kategorie Export ]]</h1>
+
+<p>
+    [[ translation : marketplace : category.export.long :: Sie können Ihre Anzeigen als CSV exportieren. Wählen Sie hierzu die geünschten Filter Regeln aus und drücken Sie auf
+    <em>Anzeigen exportieren ]]</em>.
+</p>
+
+<form method="post" action="{uri_baseurl(/index.php)}" id="exportFormular">
+    <input type="hidden" name="page" value="{curpage}"/>
+    <input type="hidden" name="FK_KAT" id="FORM_FK_KAT" value ="" />
+    <input type="hidden" name="DO" value="EXPORT" />
+
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr>
+            <td style="vertical-align: top; padding-top: 10px; ">[[ translation : marketplace : category.table :: Kategorie Tabelle ]]:</td>
+            <td>
+                <select class="form-control" name="KAT_TABLE">
+                    <option value="ad_master">[[ translation : marketplace : master.table :: Master Tabelle ]]</option>
+                    {TABLES}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>[[ translation : marketplace : display.status :: Anzeigenstatus ]]:</td>
+            <td>
+                <select class="form-control" name="STATUS">
+                    <option value="">[[ translation : marketplace : all.displays :: alle Anzeigen ]]</option>
+                    <option value="1">[[ translation : marketplace : active.displays :: aktive Anzeigen ]]</option>
+                    <option value="2">[[ translation : marketplace : old.displays :: ausgelaufene Anzeigen ]]</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>[[ translation : general : filter :: Filter ]]:</td>
+            <td>
+                <select class="form-control" name="FILTER">
+                    <option value="">[[ translation : marketplace : dont.use.filter :: kein Filter anwenden ]]</option>
+                    {FILTER}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>[[ translation : marketplace : row.name :: Spaltenbezeichnung ]]:</td>
+            <td>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="FIRST_LINE_COLUMN_NAMES" />
+                        [[ translation : marketplace : export.row.name.long :: Spaltenbezeichnung exportieren ]]
+                    </label>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="text-right">
+        <input type="submit" value="[[ translation : marketplace : export.submit :: Anzeigen exportieren ]]" class="btn btn-success"/>
+    </div>
+</form>

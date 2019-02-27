@@ -1,0 +1,22 @@
+{
+    "name": "scs/common-billing-bundle",
+    "type": "symfony-bundle",
+    "description": "Sedcard-Service Common Billing Bundle",
+    "homepage": "http://sedcard-service.de/",
+    "license": "closed",
+    "authors": [
+        {
+            "name": "Thomas Rudolph",
+            "email": "rudolph@secamedia.de"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "symfony/framework-bundle": "~2.7|~3.0",
+        "doctrine/common": "v2.7.2"
+    },
+    "autoload": {
+        "psr-4": { "Scs\\Common\\BillingBundle\\": "" }
+    },
+    "minimum-stability": "dev"
+}

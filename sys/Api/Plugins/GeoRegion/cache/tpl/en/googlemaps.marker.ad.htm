@@ -1,0 +1,53 @@
+<div class="singlemarker">
+  <div class="design-google-maps-marker-location">
+    <strong>
+      {htm(PRODUKTNAME)}
+    </strong>
+    <br/>
+
+    <p>
+      {if STREET}<span>{htm(STREET)}, </span>{endif}
+      {if ZIP || CITY}<span>{htm(ZIP)} {htm(CITY)}, </span>{endif}
+      {if COUNTRY}<span>{htm(COUNTRY)}</span>{endif}
+    </p>
+  </div>
+  <div class="design-google-maps-marker-article">
+    <div class="design-google-maps-marker-article-thumbnail">
+      {if IMPORT_IMAGES}{thumbnail_article_loader(#map-img-{ID_AD},{ID_AD},165,150,crop)}{endif}
+      <img src="{if !IMG_DEFAULT_SRC}{uri_resource(/images/marketplace/nopic.jpg)}{else}{thumbnail_article({ID_AD},{IMG_DEFAULT_SRC},165,150,crop)}{endif}" id="map-img-{ID_AD}" data-watchlist="true" />
+    </div>
+
+    {if PREIS}
+    <strong>Price:</strong>
+    <span>{htm(PREIS)} {CURRENCY_DEFAULT}</span>
+    <br />
+    {endif}
+
+    {if MENGE}
+    <strong>quantity:</strong>
+    <span>{htm(MENGE)}</span>
+    <br />
+    {endif}
+
+    {if TEL}
+    <strong>Phone:</strong>
+    <span>{htm(TEL)}</span>
+    <br />
+    {endif}
+
+    {if FAX}
+    <strong>Fax:</strong>
+    <span>{htm(FAX)}</span>
+    <br />
+    {endif}
+
+    <p>
+      <span class="muted">{htm(KAT_NAME)}</span>
+    </p>
+  </div>
+  <div class="design-google-maps-marker-links">
+    <a href="{uri_action(marktplatz_anzeige,{htm(ID_AD)},{url(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+      more information
+    </a>
+  </div>
+</div>

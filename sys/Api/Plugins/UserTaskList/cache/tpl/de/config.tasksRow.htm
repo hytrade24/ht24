@@ -1,0 +1,47 @@
+<tr>
+    <td>
+        <a href="#deleteRow" class="inputTaskDelete">
+            <img src="gfx/btn.del.gif" width="32" height="16" alt="löschen" border="0">
+        </a>
+    </td>
+    <td>
+        <input type="hidden" class="inputTaskId" name="CONFIG[TASKS][ID][]" value="{htm(ID)}"/>
+        <input type="text" class="inputTaskPriority" name="CONFIG[TASKS][PRIORITY][]" placeholder="Priorität" value="{htm(PRIORITY)}" />
+    </td>
+    <td>
+        <select class="inputTaskType" name="CONFIG[TASKS][TYPE][]">
+            <option value="info"{if TYPE_info} selected="selected"{endif}>
+              Hinweis (blau)
+            </option>
+            <option value="warning"{if TYPE_warning} selected="selected"{endif}>
+              Wichtig (gelb)
+            </option>
+            <option value="danger"{if TYPE_danger} selected="selected"{endif}>
+              Kritisch (rot)
+            </option>
+        </select>
+    </td>
+    <td width="100%">
+        {names}
+    </td>
+    <td>
+        <select class="inputTaskResolve" name="CONFIG[TASKS][RESOLVE][]">
+            <option value="USER"{if RESOLVE_USER} selected="selected"{endif}>
+              ... die Aufgabe wegklickt
+            </option>
+            <option value="USER_IMPRINT"{if RESOLVE_USER_IMPRINT} selected="selected"{endif}>
+              ... sein Impressum ausgefüllt hat
+            </option>
+            <option value="USER_MEMBERSHIP_OPEN"{if RESOLVE_USER_MEMBERSHIP_OPEN} selected="selected"{endif}>
+              ... seine Mitgliedschaft bezahlt hat
+            </option>
+            <option value="USER_PAYMENT_METHOD"{if RESOLVE_USER_PAYMENT_METHOD} selected="selected"{endif}>
+              ... eine Zahlungsweise definiert hat
+            </option>
+        </select>
+    </td>
+    <td>
+        <input type="text" class="inputTaskTarget" name="CONFIG[TASKS][TARGET][]" placeholder="Zielseite" value="{htm(TARGET)}" />
+    </td>
+    {roles}
+</tr>

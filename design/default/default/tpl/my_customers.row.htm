@@ -1,0 +1,27 @@
+<tr>
+    <td><a title="Kunden Statistik anzeigen" class="btn btn-default" href="#statistics" onclick="return statsLoadModal(this);"
+           data-stats="{uri_baseurl(index.php?frame=stats&page=ui_stats&show=kunden_rechnungen&kunden_id={ID_USER})}"
+           data-height="300" data-title="Kunden Rechnungs-Statistik"><i class="glyphicon glyphicon-stats"></i></a></td>
+    <td>
+        <a onclick="showBuyerInformation('{ID_USER}')" title="See user detailed info" href="#">
+            {NAME}
+        </a><br />
+        {if FULL_NAME}{FULL_NAME}<br />{endif}
+        {EMAIL}
+    </td>
+    <td>
+        {if FIRMA}{FIRMA}<br />{endif}
+        {STRASSE}<br />
+        {PLZ}<br />
+        {ORT}
+    </td>
+    <td>{TOTAL_SUM} - €</td>
+    <td>{TOTAL_COMMISSION} - €</td>
+    <td>
+        <a href="#" title="See inidividual order" onclick="searchBuyer('{NAME}')">
+            {NO_OF_ORDERS}
+            <!--<i class="glyphicon glyphicon-search"></i>-->
+        </a>
+    </td>
+    <td>{LAST_ORDER_DATE}</td>
+</tr>

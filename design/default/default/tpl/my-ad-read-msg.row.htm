@@ -1,0 +1,16 @@
+{if SHOWMESSAGE}
+<div class="chat-item chat-item-row{even}{if !SHOWMESSAGE} chat-item-notapproved{endif}{if MESSAGE_OWN} chat-item-own{endif}">
+    <p>
+        <strong>
+        {if SENDER_ID && !SENDER_VIRTUAL}
+            <a href="{uri_action(view_user,{htm(SENDER_NAME)},{SENDER_ID})}" target="_blank">{SENDER_NAME}</a>
+        {else}
+            {SENDER_NAME}
+        {endif}
+            [[ translation : marketplace : written.on.the :: hat am {todate(STAMP_CREATE,1)} geschrieben: ]]
+        </strong>
+    </p>
+
+    <p>{nl2br(MESSAGE)}</p>
+</div>
+{endif}

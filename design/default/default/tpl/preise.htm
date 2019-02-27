@@ -1,0 +1,53 @@
+<script type="text/javascript">
+jQuery(function() {
+    jQuery(".registerTabs > li:first-child a").tab("show");
+});
+</script>
+
+<h1>[[ translation : marketplace : price.list :: Preisliste ]]</h1>
+
+<p>
+    [[ translation : marketplace : price.list.notice.create.ad ::
+        Um selber Anzeigen aufgeben zu k&ouml;nnen ben&ouml;tigen Sie ein Anzeigenpaket. Ein Anzeigenpaket
+        besteht z.B. aus 10 Anzeigen die Sie nach dem Kauf zu beliebiger Zeit aufbrauchen k&ouml;nnen.
+        Zus&auml;tzlich k&ouml;nnen Sie Bilderpakete erwerben die es ihnen erm&ouml;glichen weitere Bilder
+        zu ihrer Anzeige hinzuzuf&uuml;gen.
+    ]]
+    <br />
+	{if FREE_IMAGES > 0}
+		[[ translation : marketplace : price.list.free.images :: Zu jeder Anzeige können Sie <strong>{FREE_IMAGES} Bilder kostenlos</strong> hochladen. ]]
+	{endif}
+</p>
+
+{if FREE_ADS}
+<div class="userInfo">
+	<strong>[[ translation : general : notice :: Hinweis ]]:</strong>
+	[[ translation : marketplace : price.list.notice.free :: Das einstellen von Anzeigen ist derzeit kostenlos! ]]
+</div>
+<br />
+{endif}
+
+<div id="registerContainerUsergroup">
+    <p class="lead">
+    [[ translation : marketplace : price.list.select.usergroup :: Bitte wählen Sie eine passende Benutzergruppe aus ]]</p>
+
+    <ul class="nav nav-tabs registerTabs">
+        {usergroups}
+    </ul>
+
+    <div class="tab-content registerTabContent">
+        {usergroups_content}
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+<br />
+
+<script>
+    jQuery("[data-toggle=popover]").popover({
+        'trigger': 'hover',
+        'placement': 'top',
+        'html': false
+    });
+</script>

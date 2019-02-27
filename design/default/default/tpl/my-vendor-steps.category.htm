@@ -1,0 +1,214 @@
+<div class="design-content-box">
+  <input type="hidden" id="CATEGORIES" name="CATEGORIES" value="" />
+  <div id="vendorCategoryTree" style="overflow: auto; max-height: 400px;">
+  
+  </div>
+  
+  <p id="vendorCategoryTreeSelected"></p>
+  <p class="help-messages">
+    [[ translation : marketplace : category.message.main.category :: Wählen Sie ihre Hauptkategorie mittels Klick auf den Stern. ]]<br/>
+    <span class="glyphicon glyphicon-star"></span>
+    <span>[[ translation : marketplace : main.category :: Hauptkategorie ]]</span><br/>
+    <span class="glyphicon glyphicon-star-empty"></span>
+    <span>[[ translation : marketplace : normal.category :: Normalkategorie ]]</span><br/>
+  </p>
+  
+</div>
+
+<div id="vendorFormularSearchwordTab">
+  <ul>
+    {searchWordLanguageHeader}
+  </ul>
+  <div class="well">
+    {searchWordLanguageBody}
+  </div>
+</div>
+
+<script type="text/html" id="tplSearchword">
+  <span class="label label-primary">
+    <input type="hidden" name="SEARCHWORDS[##LANG##][]" value="##WORD##" />
+    ##WORD##
+    <span data-action="searchword-delete">
+      <i class="glyphicon glyphicon-remove"></i>
+    </span>
+  </span>
+</script>
+<script type="text/javascript">
+jQuery(function() {
+    
+    jQuery("#vendorFormularSearchwordTab").tabs();
+    
+    var searchwordsInit = function(words) {
+        for (var lang in words) {
+            var wordList = jQuery("#lang-"+lang+" .searchwords");
+            for (var wordIndex in words[lang]) {
+                var word = words[lang][wordIndex];
+                searchwordsAdd(wordList, word, lang);
+            }
+        }
+    };
+    
+    var searchwordsBind = function(wordList) {
+        jQuery(wordList).find("[data-action=searchword-delete]").off("click").on("click", function(event) {
+            jQuery(this).closest(".label").remove();
+        });
+    };
+    
+    var searchwordsAdd = function(wordList, word, lang) {
+        var wordHtml = RenderJavascriptTemplate( jQuery("#tplSearchword").html(), { WORD: word, LANG: lang } );
+        wordList.append(wordHtml);
+        searchwordsBind(wordList);
+    };
+    
+    searchwordsInit({searchWordJson});
+    
+    jQuery("#StepContent form button[data-action=searchword-add]").on("click", function(event) {
+        event.preventDefault();
+        var lang = jQuery(this).data("lang");
+        var word = jQuery("#SEARCHWORD_"+lang).val();
+        if (word != "") {
+          var wordList = jQuery("#lang-"+lang+" .searchwords");
+          searchwordsAdd(wordList, word, lang);
+          jQuery("#SEARCHWORD_"+lang).val("");
+        }
+    });
+    
+    var categoryTree = {CATEGORY_JSON_TREE};
+    var categoryTreeMaxSelects = {CATEGORY_TREE_MAX_SELECTS};
+    var categoryTreeObject = null;
+    var categoryMainAssigned = false;
+    
+    var categoryMainSet = function(toggleMain) {
+        var selected_vals = categoryTreeObject.getSelectedNodes();
+        var jqToggleMain = jQuery(toggleMain);
+        var targetKey = jqToggleMain.data("key");
+        var enable = (jqToggleMain.attr("data-add") == "true");
+        if (!enable) {
+            // Don't do anything when clicking on an item that already is the main category
+            return;
+        }
+        // Ensure clicked node is selected
+        var isSelected = false;
+        jQuery.each(selected_vals, function(index, node) {
+            if (node.data.key == targetKey) {
+                isSelected = true;
+            }
+        });
+        if (!isSelected) {
+            // Target category not selected! Prevent setting main category
+            return;
+        }
+        // Disable existing main category
+        categoryMainAssigned = false;
+        // Enable new main category
+        jQuery.each(selected_vals, function(index, node) {
+            var jqItemToggle = jQuery(node.li).find("[data-action=category-main]");
+            var itemKey = jqItemToggle.data("key");
+            if (itemKey == targetKey) {
+                // Set main category
+                categoryMainAssigned = true;
+                node.data.is_preferred = true;
+                jqItemToggle
+                    .removeClass("glyphicon-star-empty")
+                    .addClass("glyphicon-star")
+                    .attr("data-add", "false");
+            } else {
+                // Set secondary category
+                node.data.is_preferred = false;
+                jqItemToggle
+                    .removeClass("glyphicon-star")
+                    .addClass("glyphicon-star-empty")
+                    .attr("data-add", "true");
+            }
+        });
+        // Update input field and display
+        categoryTreeUpdate();
+    };
+    var categoryTreeUpdate = function() {
+        var selected = categoryTreeObject.getSelectedNodes();
+        jQuery("#CATEGORIES").val('');
+        var selKeys = jQuery.map(selected, function(node){
+            if ( node.data.is_preferred ) {
+                return node.data.key + "_P";
+            }
+            else {
+                return node.data.key + "_NP";
+            }
+
+        });
+        jQuery("#CATEGORIES").val(selKeys.join(","));
+
+        if (categoryTreeMaxSelects > 0) {
+            jQuery("#vendorCategoryTreeSelected").html("[[ translation : marketplace : vendor.my.categories.selected : CUR='"+selKeys.length+"',MAX='"+categoryTreeMaxSelects+"' : Sie haben {CUR} von {MAX} Kategorien gewählt ]]");
+        }
+    };
+    // Initialize tree
+    categoryTreeObject = $("#vendorCategoryTree").dynatree({
+        checkbox: true,
+        selectMode: 2,
+        autoCollapse: true,
+        debugLevel: 0,
+        children: categoryTree,
+        onCustomRender: function (node) {
+            var html;
+            if ( node.bSelected && node.data.is_preffered_value == "P" ) {
+                node.data.is_preferred = true;
+                html = '<span data-key="'+node.data.key+'" data-action="category-main" data-add="false" title="[[ translation : marketplace : main.category :: Hauptkategorie ]]" class="glyphicon glyphicon-star">';
+                html += '</span>';
+                categoryMainAssigned = true;
+            }
+            else {
+                node.data.is_preferred = false;
+                html = '<span data-key="'+node.data.key+'" data-action="category-main" data-add="true" title="[[ translation : marketplace : main.category :: Hauptkategorie ]]" class="glyphicon glyphicon-star-empty">';
+                html += '</span>';
+            }
+            html += '<a class="dynatree-title" href="#">';
+            html += node.data.title;
+            html += '</a>';
+            return html;
+        },
+        onSelect: function(select, node) {
+            var selectedNodes = node.tree.getSelectedNodes();
+            if ((categoryTreeMaxSelects == 0) || (selectedNodes.length <= categoryTreeMaxSelects)) {
+                // Valid amount of categories selected
+                var jqItemToggle = jQuery(node.li).find("[data-action=category-main]");
+                if (select) {
+                    // Category selected
+                    if (!categoryMainAssigned) {
+                        // No main category assigned yet, set selected category as main category
+                        categoryMainSet( jqItemToggle );
+                    }
+                } else {
+                    // Category deselected
+                    if (node.data.is_preferred) {
+                        // Deselected primary category!
+                        if (selectedNodes.length > 0) {
+                            // Set first selected category as new main category
+                            categoryMainSet( jQuery(selectedNodes[0].li).find("[data-action=category-main]") );
+                        } else {
+                            // No main category selected anymore
+                            categoryMainAssigned = false;
+                        }
+                    }
+                    node.data.is_preferred = false;
+                    jqItemToggle
+                        .removeClass("glyphicon-star")
+                        .addClass("glyphicon-star-empty")
+                        .attr("data-add", "true");
+                }
+            } else {
+                // Invalid amount of categories selected! Prevent selection.
+                node.select(false);
+            }
+            // Update input field and display
+            categoryTreeUpdate();
+        }
+    }).dynatree("getTree");
+    // Bind main category icons
+    jQuery("#vendorCategoryTree [data-action=category-main]").off("click").on("click", function() {
+        categoryMainSet( this );
+    });
+    // Initial UI update
+    categoryTreeUpdate();
+});
+</script>

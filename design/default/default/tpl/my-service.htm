@@ -1,0 +1,47 @@
+<h1>{htm(title)}</h1>
+<h2>
+	[[ translation : marketplace : order.process :: Bestellvorgang ]]<br />
+	<span class="lead">[[ translation : marketplace : please.notice.the.costs :: Bitte beachten Sie die enstehenden Kosten ]]</span>
+</h2>
+<p>
+	[[ translation : marketplace : after.checking.payment.you.can.buy.the.service :: Nach Pr&uuml;fung Ihrer Auswahl k&ouml;nnen Sie die 
+	gew&auml;hlten Leistungen kaufen.   ]]
+</p>
+
+{if error_coupon}<div class="alert alert-danger">{error_coupon}</div>{endif}
+
+<form method="post" action="{uri_action(my-service)}">
+	<input type="hidden" name="success" value="{htm(success)}" />
+		<h2>Kosten</h2>
+		<table class="table table-condensed table-striped">
+            <thead>
+			<tr>
+				<th>[[ translation : general : amount :: Anzahl ]]</th>
+				<th>[[ translation : marketplace : item :: Posten ]]</th>
+				<th>[[ translation : marketplace : price.per.piece.netto :: Stückpreis (Netto) ]]</th>
+				<th>[[ translation : marketplace : net.price :: Netto-Preis ]]</th>
+				<th>[[ translation : marketplace : gross.price :: Brutto-Preis ]]</th>
+			</tr>
+            </thead>
+			{liste}
+			<tr>
+				<td style="border-top: 3px double black; font-weight: bold; text-decoration: underline;">&nbsp;</td>
+				<td style="border-top: 3px double black; font-weight: bold; text-decoration: underline;">[[ translation : marketplace : total.cost :: Gesamtkosten ]]</td>
+				<td style="border-top: 3px double black; font-weight: bold; text-decoration: underline;">&nbsp;</td>
+				<td style="border-top: 3px double black; font-weight: bold; text-decoration: underline;">{topreis_ex(PRICE)} {CURRENCY_DEFAULT}</td>
+				<td style="border-top: 3px double black; font-weight: bold; text-decoration: underline;">{topreis_ex(PRICE_BRUTTO)} {CURRENCY_DEFAULT}</td>
+			</tr>
+		</table>
+	<br />
+
+	<div class="row">
+		{if OPTION_COUPON_ENABLED}
+		<div class="col-xs-8">
+			{subtpl(tpl/{SYS_TPL_LANG}/coupon_widget.htm,*)}
+		</div>
+		{endif}
+		<div class="col-xs-4 pull-right">
+			<input type="submit" name="finish" class="btn btn-success pull-right" value="[[ translation : marketplace : finish.charged.order :: Bestellung kostenpflichtig abschließen ]]" />
+		</div>
+	</div>
+</form>

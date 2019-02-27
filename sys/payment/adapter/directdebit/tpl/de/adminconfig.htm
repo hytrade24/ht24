@@ -1,0 +1,97 @@
+<tr>
+    <td>
+        <strong>Kontoinhaber</strong>
+    </td>
+    <td valign="top">
+        <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[Recipient]"  value="{PAYMENT_ADAPTER_CONFIG_Recipient}" />
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>IBAN</strong>
+    </td>
+    <td valign="top">
+        <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[iban]"  value="{PAYMENT_ADAPTER_CONFIG_iban}" />
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>BIC</strong>
+    </td>
+    <td valign="top">
+        <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[bic]"  value="{PAYMENT_ADAPTER_CONFIG_bic}" />
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>Bank</strong>
+    </td>
+    <td valign="top">
+        <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[Bank]"  value="{PAYMENT_ADAPTER_CONFIG_Bank}" />
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>Konto ist verifiziert?</strong>
+    </td>
+    <td valign="top">
+        <input type="hidden" name="PAYMENT_ADAPTER_CONFIG[VerifiedDate]"
+               value="{if !PAYMENT_ADAPTER_CONFIG_Verified}0000-00-00 00:00:00{else}{PAYMENT_ADAPTER_CONFIG_VerifiedDate}{endif}" />
+        <div class="radio">
+            <label>
+                <input type="radio" name="PAYMENT_ADAPTER_CONFIG[Verified]"  value="1" {if PAYMENT_ADAPTER_CONFIG_Verified}checked="checked"{endif} />
+                Ja
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="PAYMENT_ADAPTER_CONFIG[Verified]"  value="0" {if !PAYMENT_ADAPTER_CONFIG_Verified}checked="checked"{endif} />
+                Nein
+            </label>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>Bankkonto blockieren</strong>
+    </td>
+    <td valign="top">
+        <input name="PAYMENT_ADAPTER_CONFIG[Block_Account]" value="1" {if PAYMENT_ADAPTER_CONFIG_Block_Account}checked{endif} type="checkbox" />
+    </td>
+</tr>
+<!--
+<tr>
+    <td>
+        <strong>Verifizierung beantragt?</strong>
+    </td>
+    <td valign="top">
+        <div class="radio">
+            <label>
+                <input type="radio" name="PAYMENT_ADAPTER_CONFIG[RequestVerification]"  value="1" {if PAYMENT_ADAPTER_CONFIG_RequestVerification}checked="checked"{endif} />
+                Ja
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="PAYMENT_ADAPTER_CONFIG[RequestVerification]"  value="0" {if 1PAYMENT_ADAPTER_CONFIG_RequestVerification}checked="checked"{endif} />
+                Nein
+            </label>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>Verifizierung Betrag 1</strong>
+    </td>
+    <td valign="top">
+        <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[VerificationRequestValue1]"  value="{PAYMENT_ADAPTER_CONFIG_VerificationRequestValue1}" />
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>Verifizierung Betrag 2</strong>
+    </td>
+    <td valign="top">
+        <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[VerificationRequestValue2]"  value="{PAYMENT_ADAPTER_CONFIG_VerificationRequestValue2}" />
+    </td>
+</tr>-->

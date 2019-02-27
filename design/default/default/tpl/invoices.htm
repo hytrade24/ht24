@@ -1,0 +1,313 @@
+<style type="text/css">
+	.highlight {
+		background-color: #FFFBCC !important;
+	}
+</style>
+
+<h1>[[ translation : marketplace : invoice.overview.header :: Rechnungsübersicht ]]</h1>
+<p>[[ translation : marketplace : invoice.overview.header.subtitle :: Ihre Rechnungen in der Übersicht ]]</p>
+
+{if OPEN}
+	<p>
+		[[ translation : marketplace : invoice.overview.info.open.invoices :: Sie müssen noch <strong>{topreis_ex(OPEN)}</strong> {CURRENCY_DEFAULT} offene Rechnungen begleichen. ]]
+	</p>
+{endif}
+
+
+<ul class="nav nav-tabs userTabsTable">
+	<li{if show_open} class="active"{endif}>
+		<a href="{uri_action(invoices)}">[[ translation : marketplace : invoice.overview.open.invoices :: Offene Rechnungen ]]</a>
+	</li>
+	<li{if show_paid} class="active"{endif}>
+		<a href="{uri_action(invoices,1,paid)}">[[ translation : marketplace : invoice.overview.paid.invoices :: Bezahlte Rechnungen ]]</a>
+	</li>
+	<li{if show_storno} class="active"{endif}>
+		<a href="{uri_action(invoices,1,storno)}">[[ translation : marketplace : invoice.overview.storno.invoices :: Stornierte Rechnungen ]]</a>
+	</li>
+	<li{if show_credit} class="active"{endif}>
+		<a href="{uri_action(invoices,1,credit)}">[[ translation : marketplace : invoice.overview.show_credit :: Gutschriften und Abrechnung ]]</a>
+	</li>
+
+	{if OPTION_COUPON_ENABLED}
+	<li{if show_coupon} class="active"{endif}>
+		<a href="{uri_action(invoices,1,coupon)}">[[ translation : marketplace : invoice.overview.show_coupon :: Gutscheine ]]</a>
+	</li>
+	{endif}
+	<li{if show_cancel_requests} class="active"{endif}>
+		<a href="{uri_action(invoices,1,cancel_requests)}">[[ translation : marketplace : :: Eingereichte Stornoanfragen ]]</a>
+	</li>
+</ul>
+{if show_open || show_paid || show_storno}
+	<form action="{uri_action(invoice_print)}" method="post">
+	<input type="hidden" id="input_do" name="do" value="selected" />
+
+	{if !liste}
+	<div class="alert alert-info">
+		[[ translation : marketplace : invoice.overview.no.invoices.found :: Keine Rechnungen gefunden ]]
+	</div>
+	{else}
+		<table class="mytable table table-bordered table-striped table-condensed">
+			<tr>
+				<th>
+				</th>
+				<th>
+					[[ translation : marketplace : invoice.invoice.number :: Rechnungs-Nr. ]]
+				</th>
+				<th style="padding-right:55px;">
+					[[ translation : marketplace : invoice.invoice.date :: Rechnungsdatum ]]
+				</th>
+				<th>
+					[[ translation : marketplace : invoice.invoice.due.until :: Fällig bis ]]
+				</th>
+				<th>
+					[[ translation : marketplace : invoice.invoice.status :: Rechnungsstatus ]]
+				</th>
+
+				<th style="text-align:right;">
+					[[ translation : marketplace : invoice.invoice.amount :: Betrag ]]
+				</th>
+				<th>
+					[[ translation : marketplace : action :: Aktion ]]
+				</th>
+			</tr>
+			{liste}
+		</table>
+
+		{pager}
+		<p>
+			<button type="button" name="do" class="btn btn-default" onclick="$('#input_do').val('print').parent('form').submit();">
+				<i class="glyphicon glyphicon-print"></i>
+				[[ translation : marketplace : invoice.print.selected.invoices :: Ausgewählte Rechnungen ausdrucken ]]
+			</button>
+			<button type="button" name="do" class="btn btn-default" onclick="$('#input_do').val('download').parent('form').submit();">
+				<i class="glyphicon glyphicon-download"></i>
+				[[ translation : marketplace : invoice.download.selected.invoices :: Ausgewählte Rechnungen herunterladen ]]
+			</button>
+		</p>
+	{endif}
+	</form>
+
+	<div class="design-content-box design-icon-legend">
+		<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-eye-open"></i></a> [[ translation : general : explenation.view :: = Ansehen ]]
+		</div>
+		<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-print"></i></a> [[ translation : general : explenation.print :: = Drucken  ]]
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default">
+				<i class="fa fa-eraser"></i>
+			</a> [[ translation : general : explenation.cancel.invoice :: = Anfrage für Rechnung stornieren  ]]
+		</div>
+		<div class="pull-left">
+			<span class="btn btn-default" style="color: blue;">
+				<strong>!</strong>
+			</span> = [[ translation : marketplace : invoice.include.cancel.requests :: Beinhaltet Strornoanfragen ]]
+		</div>
+	</div>
+{endif}
+{if show_credit}
+
+
+	<h4>[[ translation : marketplace : invoices.my.creditnotes.headline :: Meine Gutschriften ]]</h4>
+
+	{if TOTAL_CREDITNOTE_SUM}
+		<p>[[ translation : marketplace : invoices.my.creditnotes.intro :: Sie haben aktuell ein Guthaben durch Gutschriften
+		in Höhe von {topreis_ex(TOTAL_CREDITNOTE_SUM)} {CURRENCY_DEFAULT}.<br> Dieses wird mit Ihrer nächsten Rechnung automatisch ausgeglichen. ]]</p>
+	{endif}
+
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+				<th>[[ translation : marketpace : date :: Datum ]]</th>
+				<th>[[ translation : marketpace : creditnote.description :: Beschreibung ]]</th>
+				<th>[[ translation : marketpace : creditnote.totalprice :: Gesamtsumme ]]</th>
+				<th>[[ translation : marketpace : creditnote.remainprice :: verbleibende Restsumme ]]</th>
+			</tr>
+		</thead>
+		{if liste_creditnotes}
+			{liste_creditnotes}
+		{else}
+			<tr><td colspan="4">[[ translation : marketplace : creditnote.no.creditnotes.found :: Sie haben zur Zeit keine Gutschriften ]]</td></tr>
+		{endif}
+	</table>
+
+	{if liste_billableitems}
+		<hr>
+
+		<h4>[[ translation : marketplace : invoices.my.billableitems.headline :: Noch nicht abgerechnete Positionen ]]</h4>
+
+		<p>[[ translation : marketplace : invoices.my.billableitems.intro :: Die folgenden Positionen werden im nächsten Buchungslauf in Rechnung gestellt. ]]</p>
+
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+				<th>[[ translation : marketpace : date :: Datum ]]</th>
+				<th>[[ translation : marketpace : billableitems.description :: Beschreibung ]]</th>
+				<th>[[ translation : marketpace : billableitems.totalprice :: Summe ]]</th>
+			</tr>
+		</thead>
+		{if liste_billableitems}
+			{liste_billableitems}
+		{else}
+			<tr><td colspan="3">[[ translation : marketplace : billableitems.no.billableitems.found :: Sie haben zur Zeit keine noch nicht abgerechneten Positionen ]]</td></tr>
+		{endif}
+	</table>
+
+	{endif}
+{endif}
+{if show_coupon && OPTION_COUPON_ENABLED}
+	<h4>[[ translation : marketplace : invoices.my.coupons.headline :: Meine Gutscheine ]]</h4>
+
+
+	[[ translation : marketplace : my.coupons.intro ::
+		<p>Wenn Sie von uns Gutscheincodes erhalten haben, können Sie diese mit dem unten stehenden Formular einlösen. Gutscheine
+		können Preis-Reduzierungen von bestimmten Leistungsangeboten oder aber auch Gutschriften in einer bestimmten Höhe enthalten.
+		</p>
+		<p>Sofern Sie Gutscheincodes bereits eingegeben, die dazugehörige Leistung aber noch nicht eingelöst haben werden Ihnen die Gutscheine unten
+			aufgeführt.</p>
+	]]
+
+	{if SUCCESS_COUPON}
+		<div class="alert alert-success">[[ translation : marketplace : coupon.successfully.activated :: Der Gutschein {htm(COUPON_CODE)} wurde erfolgreich eingelöst. ]]<br>{SUCCESS_COUPON_MSG}</div>
+	{endif}
+	{if ERR_COUPON}
+		<div class="alert alert-danger">{htm(ERR_COUPON)}</div>
+	{endif}
+
+	<form class="form form-horizontal design-content-box" action="{uri_action(invoices,1,coupon)}" method="post">
+		<div class="control-group">
+			<label class="control-label"><strong>[[ translation : marketplace : coupon.type.couponcode :: Gutscheincode eingeben ]]:</strong></label>
+			<div class="controls">
+				<input type="text" name="COUPON_CODE" value="{htm(COUPON_CODE)}" placeholder="[[ translation : marketplace : coupon.code :: Gutscheincode ]]">
+				<input type="submit" class="btn" value="[[ translation : marketplace : coupon.submit.code :: Gutschein einlösen ]]">
+			</div>
+		</div>
+	</form>
+
+
+	{if liste_coupons}
+
+	<h5>[[ translation : marketplace : invoices.my.coupons.activated :: Noch nicht eingelöste Gutscheine ]]</h5>
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+				<th>[[ translation : marketpace : coupon.name :: Gutschein ]]</th>
+				<th>[[ translation : marketpace : coupon.activated.on :: eingegeben am ]]</th>
+				<th>[[ translation : marketpace : coupon.used.code :: Gutschein-Code ]]</th>
+			</tr>
+		</thead>
+		{if liste_coupons}
+			{liste_coupons}
+		{endif}
+	</table>
+	{endif}
+
+{endif}
+
+{if show_cancel_requests}
+<div class="row">
+	<div class="col-md-12">
+		<table class="list-cancel-requests table table-bordered table-striped table-condensed">
+			<thead>
+			<tr>
+				<th>[[ translation : marketplace : invoice.cancel.id :: Stornoanfrage ID ]]</th>
+				<th>[[ translation : marketplace : invoice.cancel.description :: Beschribung ]]</th>
+				<th>Status</th>
+				<th>[[ translation : marketplace : invoice.cancel.remarks.customer :: Kundenanmerkung ]]</th>
+				<th>[[ translation : marketplace : invoice.cancel.remarks.admin :: Adminanmerkung ]]</th>
+				<th>[[ translation : marketplace : invoice.cancel.last.modified :: Zuletzt bearbeitet ]]</th>
+				<th>[[ translation : marketplace : invoice.cancel.created.at :: Stempel erstellen ]]</th>
+				<th>[[ translation : marketplace : action :: Aktion ]]</th>
+			</tr>
+			</thead>
+			<tbody>
+			{liste_cancel_requests}
+			</tbody>
+		</table>
+	</div>
+</div>
+{endif}
+
+{if show_open}
+	<h1>[[ translation : marketplace : invoice.positions :: Rechnungspositionen ]]</h1>
+	{if liste_rechnungslauf}
+	<table class="table table-bordered table-striped table-condensed">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>[[ translation : marketplace : invoice.position.perform.date :: Leistungsdatum ]]</th>
+			<th>[[ translation : marketplace : invoice.cancel.description :: Beschreibung ]]</th>
+			<th>[[ translation : marketplace : invoice.table.header.quantity :: Anzahl ]]</th>
+			<th>[[ translation : marketplace : invoice.cancel.price.netto :: Preis (netto) ]]</th>
+			<th>[[ translation : marketplace : invoice.table.header.vat :: Steuer ]]</th>
+			<th>[[ translation : marketplace : invoice.cancel.price.brutto :: Gesamt (brutto) ]]</th>
+			<th>[[ translation : marketplace : action :: Aktion ]]</th>
+		</tr>
+		</thead>
+		<tbody>
+		{liste_rechnungslauf}
+		</tbody>
+	</table>
+	<p>
+		<span>Note :</span>
+		<span>[[ translation : marketplace : invoice.position.note :: Der Rechnungslauf startet zu folgenden Tagen im Monat ]] <b>{INVOICE_DAYS_AUTOMATIC_BILLING}</b> [[ translation : marketplace : invoice.position.automatic :: automatsich ]]!</span>
+	</p>
+
+	<h4>[[ translation : marketplace : invoice.position.charge :: Ihre ausgewählte Zahlungsweise ]]</h4>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-3">
+					<strong>[[ translation : marketplace : invoice.position.charge.method :: Methode ]]</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_NAME}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<strong>IBAN</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_IBAN}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<strong>BIC</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_BIC}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<strong>Bank</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_BANK}</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 15px;">
+		<div class="col-md-12">
+			<a href="{uri_action(my-payment-adapter)}" class="btn btn-success">
+				[[ translation : marketplace : payment.methods :: Zahlungsweisen ]]
+			</a>
+		</div>
+	</div>
+	{else}
+	* [[ translation : marketplace : invoice.no.positions :: Aktuell keine Positionen vorhanden ]]
+	{endif}
+{endif}
+
+<script type="application/javascript">
+
+	$(document).ready(function() {
+        {if newly_added}
+			var newly_added = "{newly_added}";
+        	console.log( newly_added );
+			newly_added = newly_added.split("-");
+			console.log( newly_added );
+			var list_cancel_requests = $(".list-cancel-requests");
+			$.each(newly_added,function(index, value) {
+				var temp = list_cancel_requests.find('tr[data-row-cancel-requests="'+value+'"]');
+				temp.addClass("highlight");
+				console.log( temp );
+			});
+        {endif}
+	});
+
+</script>

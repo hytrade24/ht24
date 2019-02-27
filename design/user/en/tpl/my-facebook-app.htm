@@ -1,0 +1,98 @@
+<h1>Facebook-app configuration</h1>
+<p>Facebook-app configuration</p>
+
+{if NOTIFICATION_ADDED || NOTIFICATION_REMOVED || NOTIFICATION_SAVED}
+    <div class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Success!</h4>
+    {if NOTIFICATION_ADDED}
+        Your Facebook-page was successfully linked with your account.
+    {endif}
+    {if NOTIFICATION_REMOVED}
+        Your account is no longer connected with any Facebook-page.
+    {endif}
+    {if NOTIFICATION_SAVED}
+        Your changes on the settings were saved.
+    {endif}
+    </div>
+{endif}
+{if err}
+    <div class="alert alert-danger alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Error!</h4>
+    {if err_facebook_auth}
+        Error while authorizing Facebook-page, please try again.
+    {endif}
+    </div>
+{endif}
+
+    <form method="POST">
+        <table class="mytable table table-bordered table-striped table-condensed">
+            <tr>
+                <th colspan="2">
+                    Connected Facebook-Page
+                </th>
+            </tr>
+            <tr>
+                <th width="200">
+                    Facebook page
+                </th>
+                <td>
+                {if FACEBOOK_PAGE_EXISTS}
+                    <p>
+                        Your account is currently connected with the Facebook-page <strong>{htm(FACEBOOK_PAGE_NAME)}</strong>.
+                    </p>
+                    <a class="btn btn-default" href="{FACEBOOK_PAGE_URL}" target="facebook">
+                        Open Facebook-page
+                    </a>
+                    <button name="FACEBOOK_LINK_REMOVE" class="btn btn-danger" value="{FACEBOOK_PAGE_ID}">
+                        Disconnect connection
+                    </button>
+                {else}
+                    <p>
+                        Your account is currently not connected with a Facebook-page.
+                    {if FACEBOOK_PAGE_AVAILABLE}
+                        <br />
+                        Do you want to connect your account with the Facebook-page <strong>{htm(FACEBOOK_PAGE_NAME)}</strong>?
+                        <button name="FACEBOOK_LINK_ADD" class="btn btn-success" value="{FACEBOOK_PAGE_ID}">
+                            Connect Facebook-page
+                        </button>
+                    {else}
+                        <br />
+                        <a class="btn btn-default" href="{uri_action(facebook,add)}">
+                            Add Facebook-app to your page
+                        </a>
+                    {endif}
+                    </p>
+                {endif}
+                </td>
+            </tr>
+        </table>
+    </form>
+{if FACEBOOK_PAGE_EXISTS}
+    <form method="POST">
+        <table class="mytable table table-bordered table-striped table-condensed">
+            <tr>
+                <th colspan="2">
+                    Settings
+                </th>
+                </td>
+            </tr>
+            <tr>
+                <th width="200">
+                    Count of articles per page
+                </th>
+                <td>
+                    <input class="form-control" type="number" min="1" max="{FACEBOOK_MAX_ADS_PER_PAGE}" name="SETTINGS[COUNT_PER_PAGE]" value="{SETTINGS_COUNT_PER_PAGE}" />
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2" style="text-align: right;">
+                    <input name="RESET" type="reset" class="btn btn-default" value="Dismiss changes">
+                    <input name="SAVE" type="submit" class="btn btn-success" value="Save">
+                </th>
+            </tr>
+        </table>
+    </form>
+{endif}
+</form>

@@ -1,0 +1,8 @@
+
+DESIGN
+========
+
+Neue Produkte
+ - Wählt man die Listendarstellung, dann wird die Banner-Werbung mit ausgegeben
+News
+- Man kan nnicht einstellen, ab wann er in einem bestimmten Bereich anfangen soll ( zb. ab. 3 Eintrag)

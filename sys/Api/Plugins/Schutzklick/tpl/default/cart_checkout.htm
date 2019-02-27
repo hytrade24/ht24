@@ -1,0 +1,44 @@
+<script type="text/javascript">
+  
+  var _sdbag = _sdbag || [];
+  var _sdbag_init = function(country) {
+    _sdbag = [];
+    _sdbag.push(['products', {JSON_ARTICLES}]);
+    
+    _sdbag.push(['partnerId', {CONFIG_PARTNER_ID}]);
+    _sdbag.push(['shopId', {CONFIG_SHOP_ID}]);
+    _sdbag.push(['country', (typeof country == "undefined" ? '{CONFIG_COUNTRY}' : country)]);
+    _sdbag.push(['init', 'checkout']);
+  
+    jQuery("#sisu_container").remove();
+    (function() {
+      var ss = document.createElement('script');
+      ss.type = 'text/javascript';
+      ss.async = true;
+      ss.src = (document.location.protocol == 'https:' ? 'https://' : 'http://') + 'www.schutzklick.de/jsapi/sisu-checkout-2.x.min.js'
+        +"?nocache="+new Date().getTime();
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ss, s);
+    })();
+  };
+  jQuery(function() {
+    // Initialize
+    var countryLoad = function() {
+      var countryId = jQuery(this).val();
+      if (countryId > 0) {
+        jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Schutzklick&pluginAjaxAction=country.resolve", "id="+jQuery(this).val(), function(result) {
+          if (result.success) {
+            _sdbag_init(result.code.toLowerCase());
+          }
+        });
+      } else {
+        _sdbag_init();
+      }
+    };
+    // Anonymous address
+    jQuery("#invoice_country").each(countryLoad).change(countryLoad);
+    // Registered address
+    jQuery("#userInvoice_Country").each(countryLoad).change(countryLoad);
+  });
+  
+</script>

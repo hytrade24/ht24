@@ -1,0 +1,76 @@
+{if err}
+<div class="alert alert-danger">
+    <h2>[[ translation : marketplace : error :: Fehler aufgetreten ]]</h2>
+    <p>
+        {err}
+    </p>
+</div>
+{endif}
+{if OK}
+    <p class="alert alert-success">
+        [[ translation : marketplace : send.recommendation :: Ihre Empfehlung wurde versendet! ]]
+    </p>
+{else}
+<form action="{uri_baseurl(/index.php)}" method="post" enctype="multipart/form-data" id="sEmp" class="form-horizontal design-event-recommend">
+    <input type="hidden" name="frame" value="ajax"><input type="hidden" name="page" value="calendar_events_empfehlen">
+    <input type="hidden" name="id" value="{id}" />
+    <input type="hidden" name="_URL" value="{_URL}" />
+
+
+    <div class="form-group">
+        <label class="control-label design-input-label">[[ translation : marketplace : your.email :: Ihre E-Mail Adresse ]]:</label>
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="absender" value="{htm(EMAIL)}" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label design-input-label">[[ translation : marketplace : your.name :: Ihr Name ]]:</label>
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="NAME" value="{htm(NAME)}" />
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <label class="control-label design-input-label">[[ translation : marketplace : reciever.name :: Empfänger Name ]]:</label>
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="empfeangername" value="{htm(empfeangername)}"  />
+        </div>
+    </div>
+
+    <div class="form-group">
+       <label class="control-label design-input-label">[[ translation : marketplace : reciever.email :: Empfänger E-Mail Adresse ]]:</label>
+       <div class="design-input-field">
+           <input class="form-control" type="text" name="empfeanger" value="{htm(empfeanger)}" />
+       </div>
+    </div>
+
+    <div class="form-group">
+       <label class="control-label design-input-label">[[ translation : marketplace : comment :: Kommentar ]]:</label>
+       <div class="design-input-field">
+           <textarea class="form-control" name="kommentar" rows="5">{htm(kommentar)}</textarea>
+       </div>
+    </div>
+
+    <p><strong>[[ translation : marketplace : answer.security.question :: Bitte beantworten Sie die Sicherheitsfrage ]]:</strong></p>
+
+    <div class="form-group">
+        <label class="control-label design-input-label">{question()}:</label>
+
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="ANSWER"/>
+        </div>
+    </div>
+</form>
+{endif}
+
+<div class="hide" id="modalFooterContainer">
+    <div class="modal-footer">
+        <a href="#" onclick="HideDialog(); return false;" class="btn btn-default">[[ translation : general : close.window:: Fenster schließen ]]</a>
+        {if !OK}
+        <input type="button" value="[[ translation : marketplace : recommend :: Empfehlen ]]" class="btn btn-primary" onclick="empfehlen_submit()"/>
+        {endif}
+    </div>
+</div>

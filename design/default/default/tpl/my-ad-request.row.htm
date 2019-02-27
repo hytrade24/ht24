@@ -1,0 +1,29 @@
+<tr>
+    <td class="design-action-buttons" colspan="2">
+        <a title="[[ translation : marketplace : change.search :: Dieses Gesuch ver&auml;ndern ]]" href="{uri_action(gesuch_neu,{ID_AD_REQUEST})}" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+		</a>
+        <a title="[[ translation : marketplace : delete.search :: Dieses Gesuch löschen ]]" onclick="return confirm('[[ translation : marketplace : delete.search.really :: Gesuch wirklich löschen? ]]');" href="{uri_action(my-ad-request,{npage},delete,{ID_AD_REQUEST})}" class="btn btn-default">
+            <i class="glyphicon glyphicon-remove"></i>
+		</a>
+	</td>
+
+	<td align="left" style="padding-right:20px;"  >
+		{ID_AD_REQUEST}
+	</td>
+    <td>
+        {todate(STAMP_START)}
+    </td>
+    <td>
+        {KAT_NAME}
+    </td>
+    <td>
+        {if !STATUS}
+        	<em>[[ translation : general : check :: (wird geprüft) ]]</em>
+        {else}
+        	<a href="{uri_action(gesuch_anzeigen,{ID_AD_REQUEST},{urllabel(PRODUKTNAME)})}" target="_blank">
+        		{PRODUKTNAME}
+        	</a>
+        {endif}
+    </td>
+</tr>

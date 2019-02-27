@@ -1,0 +1,18 @@
+<div class="design-row-item">
+  <div class="alert alert-{TYPE}{if RESOLVE_USER} alert-dismissible{endif} clearfix" role="alert" data-id="{htm(ID)}">
+    
+    {if RESOLVE_USER}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {endif}
+    
+    <div class="design-user-task-list-content">
+      {NAME}
+    </div>
+    
+    {if TARGET}
+    <a class="alert-link pull-right" href="{uri_action({TARGET})}{if TARGET_HASH}#{TARGET_HASH}{endif}">Click here</a>
+    {endif}
+  </div>
+</div>

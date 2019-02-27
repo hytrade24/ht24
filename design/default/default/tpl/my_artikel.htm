@@ -1,0 +1,86 @@
+<script type="text/javascript">
+var neu;
+
+function showComment(id) {
+	var div = jQuery("#news"+id);
+	var row = jQuery("#news"+id+"_row");
+	if (row.css("display") == 'none') {
+		div.html('[[ translation : general : load.please.wait :: Bitte warten... ]]');
+		div.load(ebiz_trader_baseurl + 'index.php?page=showcomment_ajax&frame=ajax&kat=news&id='+id);
+		row.show();
+	} else {
+		row.hide();
+	}
+}
+
+</script>
+<style type="text/css">
+.showComment {
+	height: 150px;
+	overflow: auto;
+	display: none;
+	width: 100%;
+	border: 1px #cccccc solid;
+}
+</style>
+  
+<h1>[[ translation : news : my.written.articles :: Meine geschriebenen Artikel ]]</h1>
+<p>
+    [[ translation : news : my.written.articles.long :: 
+        Hier finden Sie alle Artikel, die Sie bisher verfasst haben! Neue Artikel k&ouml;nnen Sie <a href="{uri_action(artikel_edit)}" title="Jetzt neuen Artiekl schreiben">hier</a> anlegen.
+        <br />Ihre Artikel bekommen erst ein ver&ouml;ffentlichungsdatum, wenn Sie selbst eine Freigabe gesetzt haben!
+    ]]
+ </p>
+<p align="right">
+	<a href="{uri_action(artikel_edit)}" class="btn btn-info">
+		<i class="glyphicon glyphicon-pencil"></i> [[ translation : news : new.article :: Neuen Artikel einstellen ]]
+	</a>
+</p>
+ {if err}
+<div class="alert alert-danger">{err}
+</div>
+{endif}
+<table class="table table-bordered table-striped table-condensed">
+	<tr>
+		<th colspan="3">[[ translation : general : action :: Aktion ]]</th>
+		<th>[[ translation : general : status :: Status ]]</th>
+		<th>[[ translation : news : article :: Artikel ]]</th>
+		<th>[[ translation : general : date :: Datum ]]</th>
+		<th></th>
+		<th>&nbsp;</th>   
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+	<tr>
+		<td colspan="8" align="center">
+			<span class="text-error">[[ translation : news : no.article :: Keine Artikel ]]</span>
+		</td>
+	</tr>
+	{endif}
+</table>
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = [[ translation : general : edit :: Bearbeiten ]]
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>  = [[ translation : news : delete :: löschen (wenn noch nicht veröffentlicht) ]]
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-fullscreen"></i></a>  = [[ translation : news : show.online :: Online ansehen ]]
+	</div>
+	<div class="pull-left clearfix">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-retweet"></i></a> = [[ translation : general : comments.here :: Kommentare vorhanden ]]
+	</div>
+    <br style="clear: left;" />
+	<div class="pull-left clearfix">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-hand-right"></i></a> = [[ translation : news : have.to.release :: muss von Ihnen freigegeben werden ]]
+	</div>
+	<div class="pull-left clearfix">
+		<a class="btn btn-info"><i class="glyphicon glyphicon-user"></i></a> = [[ translation : general : wait.for.release :: Auf Freigabe warten ]]
+	</div>
+    <br style="clear: left;" />
+</div>
+<div class="pager">
+{pager}
+</div>

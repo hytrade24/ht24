@@ -1,0 +1,112 @@
+<div id="pluginShippingDetails"{if CONFIG_custom} data-custom="1"{endif}>
+  <div class="plugin-shipping-form">
+    {if CONFIG_custom}
+    <div class="alert alert-warning">
+      <strong>Achtung! Benutzerdefinierte Versandkonfiguration!</strong>
+      <br />
+      Dies ist eine benutzerdefinierte Versandkonfiguration, die ausschließlich für den aktuellen Artikel gültig ist!
+    </div>
+    {endif}
+    <div class="clearfix">
+      <div class="form-group">
+        <label for="pluginShippingGroupName" class="col-sm-12">
+          Name der Versandkonfiguration
+        </label>
+        <div class="col-sm-12">
+          <input type="text" class="form-control" id="pluginShippingGroupName" placeholder="Name der Versandkonfiguration" value="{htm(CONFIG_name)}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="pluginShippingGroupProvider" class="col-sm-12">
+          Versand-Anbieter auswählen
+        </label>
+        <div class="col-sm-12">
+          <select class="form-control" id="pluginShippingGroupProvider" multiple data-selected-text-format="count > 4">
+            {providers}
+          </select>
+        </div>
+      </div>
+      <div id="pluginShippingGroupRegionAdd" class="form-group">
+        <label for="pluginShippingGroupRegion" class="col-sm-12">
+          Regionen/Länder auswählen
+        </label>
+        <div class="col-sm-12">
+          <select class="form-control" id="pluginShippingGroupRegion" multiple data-selected-text-format="count > 4">
+            {regions}
+          </select>
+        </div>
+      </div>
+      <div id="pluginShippingGroupDirty" class="alert alert-info" style="display: none;">
+        <strong>Versand-Anbieter und/oder Regionen geändert</strong>
+        <p>
+          Sie haben Änderungen an den Versand-Anbietern und/oder Regionen vorgenommen. 
+            Klicken Sie auf den nachfolgenden Button um die Preis-Tabelle zu aktualisieren.
+            <br />
+            Achtung! In diesem Zuge können von ihnen vorgenommene Preisangaben verloren gehen!
+        </p>
+        <button data-action="config-region-provider-update" class="btn btn-success">
+          Aktualisieren
+        </button>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-12">
+          Länder und Preise
+        </label>
+        <div class="col-sm-12">
+          <div id="pluginShippingGroupPriceList" style="overflow-x: auto;">
+            {prices}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="pluginShippingGroupDirtyGlobal" class="alert alert-warning" style="display: none;">
+      <strong>Ungespeicherte Änderungen</strong>
+      {if articleEdit}
+      <p>
+        Sie haben noch nicht gespeicherte Änderungen an der Versand-Konfiguration.
+          Bitte speichern Sie diese ab bevor Sie mit dem Einstellen des Artikels fortfahren, damit ihre Änderungen übernommen werden.
+      </p>
+      {else}
+      <p>
+        Sie haben noch nicht gespeicherte Änderungen an der Versand-Konfiguration.
+          Bitte speichern Sie diese ab bevor Sie ihre Einstellungen abspeichern, damit ihre Änderungen übernommen werden.
+      </p>
+      {endif}
+    </div>
+    
+    <div>
+      <button data-action="config-close" type="button" class="btn btn-default">
+        <i class="glyphicon glyphicon-remove"></i>
+        Cancel
+      </button>
+    {if CONFIG_NEW}
+      {if articleEdit}
+      <button data-action="config-save-custom" type="button" class="btn btn-primary">
+        <i class="glyphicon glyphicon-floppy-disk"></i>
+        Für diesen Artikel
+      </button>
+      {endif}
+      <button data-action="config-save" type="button" class="btn btn-primary">
+        <i class="glyphicon glyphicon-floppy-disk"></i>
+        Als neue Konfiguration
+      </button>
+    {else}
+      <button data-action="config-save-new" type="button" class="btn btn-primary">
+        <i class="glyphicon glyphicon-floppy-disk"></i>
+        Als Kopie
+      </button>
+      {if articleEdit}
+      <button data-action="config-save-custom" type="button" class="btn btn-primary">
+        <i class="glyphicon glyphicon-floppy-disk"></i>
+        Für diesen Artikel
+      </button>
+      {endif}
+      <button data-action="config-save" type="button" class="btn btn-primary">
+        <i class="glyphicon glyphicon-floppy-disk"></i>
+        Als Standard
+      </button>
+    {endif}
+    </div>
+  </div>
+</div>

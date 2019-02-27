@@ -1,0 +1,29 @@
+<tr class="">
+	<td>
+		{subtpl(tpl/{SYS_TPL_LANG}/my-import-presets-edit.fieldmappingrenderer.partial.buttons.htm,*)}
+	</td>
+	<td>
+		<b>[[ translation : marketplace : import.mapping.assignment :: Feldzuweisung ]]</b>
+	</td>
+	<td>
+		<div class="input-group">
+			<select class="form-control" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}]" onchange="ipe.saveMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', {POS}); return false;">
+				<option value="">[[ translation : marketplace : import.please.choose :: Bitte wählen ]]</option>
+				{SELECT_DATAFIELD}
+			</select>
+	
+			{if FIELD_MAPPING_VALUE_IDENTIFIER != -1}
+				<span class="input-group-btn">
+					<a href="#" onclick="ipe.showDataFieldTable('{FIELD_MAPPING_VALUE_IDENTIFIER}'); return false;" class="btn btn-default"><i class="glyphicon glyphicon-list"></i></a>
+				</span>
+			{else}
+				<br>
+				<small>
+					[[ translation : marketplace : import.preset.datafield.edit.helpinline ::
+						 Wählen Sie aus der Liste eine Spalte/Element  Ihrer CSV oder XML Datei um die Artikeleigenschaft mit den darin enthaltenen Werten
+						zu befüllen ]]
+				</small>
+			{endif}
+		</div>
+	</td>
+</tr>

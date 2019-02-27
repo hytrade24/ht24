@@ -1,0 +1,92 @@
+<div id="comment_{TABLE}_{FK_STR}" class="alert-info" style="padding: 5px">
+	<fieldset class="fieldGroup">
+        <legend>[[ translation : marketplace : comment.write.lead :: Hier können Sie einen Kommentar verfassen ]]</legend>
+	<fieldset>    
+	
+	{if err}
+	<div class="alert alert-danger">
+        {err}
+    </div>
+	{endif}
+	{if success}
+	<div class="alert alert-success">
+		<strong>[[ translation : general : success :: Erfolg ]]!</strong>
+        [[ translation : marketplace : comment.added :: Ihr Kommentar wurde erfolgreich hinzugefügt. ]]<br />
+		{if !confirmed}[[ translation : marketplace : comment.added.unconfirmed :: Sie erhalten in kürze eine E-Mail mit einem Link, über den Sie den Kommentar bestätigen müssen. ]]<br />{endif}
+		{if !online}[[ translation : marketplace : comment.added.moderated :: Bitte beachten Sie, dass ihr Kommentar erst dargestellt wird, nachdem dieser überprüft wurde. ]]{endif}
+	</div>
+	<script type="text/javascript">
+        // jQuery('html,body').animate({
+        //     scrollTop: (jQuery("#comment_list_{TABLE}_{FK_STR}").offset().top - 100)
+        // }, 600 , function() { });
+	</script>
+	{else}
+	<form action="{uri_action(comment_ean)}" id="form_comment_{TABLE}_{FK_STR}" class="" onsubmit="return commentSubmit(this);">
+		<input type="hidden" name="TABLE" value="{TABLE}" />
+		<input type="hidden" name="FK_STR" value="{FK_STR}" />
+    {if SHOW_RATING}
+        <input type="hidden" name="SHOW_RATING" value="{SHOW_RATING}" />
+    {endif}
+	{if !ID_USER}
+		<div class="form-group">
+        <label class="" for="inputName" required="required">[[ translation : marketplace : comment.write.name :: Name ]]</label>
+            <input type="text" id="inputName" name="name" required="required" class="form-control" placeholder="Name" value="{htm(name)}" />
+        </div>
+		<div class="form-group">
+			<label class="" for="inputEmail">[[ translation : marketplace : comment.write.email :: E-Mail-Adresse ]]</label>
+            <input type="email" id="inputEmail" name="email" required="required" class="form-control" placeholder="E-Mail-Adresse" value="{htm(email)}" />
+		</div>
+	{endif}
+    {if (ID_USER || SHOW_RATING_ANONYMOUS) && SHOW_RATING}
+        {if ALREADY_RATED}
+            <div class="alert alert-info">
+                <p>
+                    [[ translation : marketplace : comment.already.rated :: Sie haben bereits eine Bewertung abgegeben! ]]
+                </p>
+                {if ID_COMMENT}
+                    <p>
+                        [[ translation : marketplace : comment.edit.changed.mind :: Meinung geändert? Hier <a href="{uri_action(my-comment-edit,{ID_COMMENT})}"> bearbeiten</a> ]]
+                    </p>
+                {endif}
+            </div>
+        {else}
+            <div class="form-group">
+                <label class="" for="inputCommentRating">[[ translation : marketplace : comment.pick.rating :: Bewertung ]]</label>
+                <div>
+                    <div id="comment_rating">
+                        <input name="RATING" id="inputCommentRating" value="{if RATING}{RATING}{else}-1{endif}" type="hidden" />
+                    </div>
+                </div>
+            </div>
+        {endif}
+    {endif}
+        <div class="form-group">
+            <label class="" for="inputComment">[[ translation : marketplace : comment.write.text :: Kommentar ]]</label>
+            <textarea id="inputComment" name="comment" required="required" class="form-control">{htm(comment)}</textarea>
+            <br>
+            [[ translation : marketplace : comment.write.text.notice :: Bitte gegen Sie mindestens 10 Zeichen ein. ]]
+        </div>
+    {if !ID_USER}
+        <div class="form-group">
+        <label class="" for="ANSWER" required="required">[[ translation : general : security.question :: Sicherheitsfrage ]]</label>
+            <strong>{question()}</strong>
+            <br />
+            <input required="required" style="width: 250px;" tabindex="13" type="text" id="ANSWER" name="ANSWER" class="form-control">
+        </div>
+    {endif}
+		<div class="form-group">
+            <button type="submit" class="btn">[[ translation : marketplace : comment.write.submit :: Kommentar hinzufügen ]]</button>
+        </div>
+	</form>
+    <script type="text/javascript" src="{uri_baseurl(/lib/rating.js)}"></script>
+    <script type="text/javascript">
+                        
+        jQuery(function() {
+            var vote_user = new Rating(1, 5);
+            vote_user.SetInput("#inputCommentRating");
+            jQuery('#comment_rating').append(vote_user.html);
+        });
+        
+    </script>
+    {endif}
+</div>

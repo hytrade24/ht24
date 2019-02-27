@@ -1,0 +1,162 @@
+<div id="header-{ABBR}">
+    <input type="hidden" name="langs[]" value="{BITVAL}" />
+    <table class="table table-bordered table-striped table-condensed">
+        <tr>
+            <td colspan="2">
+                <span class="lead">[[ translation : news : article.summary :: Kurzbeschreibung ]]</span>
+                <p>
+                    [[ translation : news : article.summary.info :: Die Kurzbeschreibung wird in der Übersicht unseres Portals angezeigt. ]]
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td width="200">
+                [[ translation : news : article.title :: Überschrift ]]
+            </td>
+            <td align="right">
+                <input name="V1[{BITVAL}]" value="{htm(V1)}" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td width="200">
+                [[ translation : news : article.subject :: Thema ]]
+            </td>
+            <td align="right">
+                <select name="FK_KAT" class="form-control" onchange="UpdateKat(this.value);">
+                    {themen}
+                </select>
+                <div class="header_themen"></div>
+            </td>
+        </tr>
+        <tr>
+            <td width="200">
+                [[ translation : news : article.preview :: Vorschautext ]]
+            </td>
+            <td>
+                <textarea name="V2[{BITVAL}]" rows="4" class="form-control" onkeyup="checkLength(this);">{htm(V2)}</textarea>
+                <br/>
+                <span id="zz">0</span>
+                [[ translation : general : characters :: Zeichen ]]
+            </td>
+        </tr>
+    </table>
+
+    <table class="table table-bordered table-striped table-condensed">
+        <tr>
+            <td>
+                <span class="lead">[[ translation : news : article.text :: Artikeltext ]]</span>
+                <p>
+                    [[ translation : news : article.text.info ::
+                        Bitte schreiben Sie ausführlich und vermeiden Sie Rechtschreibfehler.<br>
+                        Nicht ordnungsgemäße Texte werden von uns nicht freigeschaltet
+                    ]]
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+                <textarea id="T1-{BITVAL}" name="T1[{BITVAL}]" data-lang="{ABBR}">{htm(T1)}</textarea>
+                <script type="text/javascript">
+                jQuery(function() {                    
+                    tinyMCE.init({
+                        // General options
+                        mode : "none",
+                        theme : "advanced",
+                        width: "100%",
+                        height: "400",
+                        language: "de",
+                        object_resizing : false,
+                        convert_fonts_to_spans : true,
+                        convert_urls : false,
+                        document_base_url : "/",
+                        relative_urls : false,
+                        remove_script_host : true,
+                        file_browser_callback : "editorImageUpload",
+
+                        plugins : "safari,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+                        // Theme options
+                        theme_advanced_buttons1 : "code,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,image",
+                        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,cleanup,|,insertdate,inserttime,|",
+                        theme_advanced_buttons3 : "",
+                        theme_advanced_buttons4 : "",
+                        theme_advanced_toolbar_location : "top",
+                        theme_advanced_toolbar_align : "left",
+                        theme_advanced_statusbar_location : "bottom",
+                        theme_advanced_resizing : true,
+
+                        // Example content CSS (should be your site CSS)
+                        content_css : "/skin/{ABBR}/style.css",
+                        
+                        // Setup function
+                        setup: function(editor) {
+                            editor.onPreProcess.add(function (ed, o) {
+                                // Cleanup div classes
+                                jQuery(o.node).find(".design-youtube-video-wrapper").each(function() {
+                                    if (jQuery(this).find("iframe,img[data-mce-json]").length == 0) {
+                                        jQuery(this).contents().unwrap().wrap('<p/>');
+                                    }
+                                });
+                            });
+                            editor.onPaste.add(function(ed, e) {
+                                // Paste youtube videos e.g.: https://www.youtube.com/watch?v=Npf518kDBUg
+                                var clipboardData = e.clipboardData.getData("text").trim();
+                                var callbackAddVideo = function(code, element) {
+                                    var videoWrapper = document.createElement("div");
+                                    videoWrapper.className = "design-youtube-video-wrapper";
+                                    var videoElement = document.createElement("iframe");
+                                    videoElement.width = 1280;
+                                    videoElement.height = 720;
+                                    videoElement.frameBorder = 0;
+                                    videoElement.allowfullscreen = true;
+                                    videoElement.src = "https://www.youtube.com/embed/"+code;
+                                    videoWrapper.appendChild(videoElement);
+                                    e.preventDefault();
+                                    e.target.parentNode.insertBefore(videoWrapper, e.target);
+                                };
+                                var youtubeMatch = clipboardData.match(/^https:\/\/(www\.)?youtu\.be\/([A-Za-z0-9-_]+)(\&|$)/i);
+                                if (youtubeMatch !== null) {
+                                    // Video found!
+                                    callbackAddVideo(youtubeMatch[2], e.target);
+                                    return;
+                                }
+                                youtubeMatch = clipboardData.match(/^https:\/\/(www\.)?youtube\.com\/watch\?.*v=([A-Za-z0-9-_]+)(\&|$)/i);
+                                if (youtubeMatch !== null) {
+                                    // Video found!
+                                    callbackAddVideo(youtubeMatch[2], e.target);
+                                    return;
+                                }
+                            });
+                        }
+                    });
+                    tinyMCE.execCommand("mceAddControl", true, "T1-{BITVAL}");
+                });
+                </script>
+            </td>
+        </tr>
+    </table>
+    
+    {if MEDIA_LIST}
+    <table class="table table-bordered table-striped table-condensed">
+        <tr>
+            <td colspan="2">
+                <span class="lead">[[ translation : news : article.media.preview :: Vorschau ]]</span>
+                <p>
+                    [[ translation : news : article.media.preview.media :: Dieses Bild/Video wird in der Vorschau des Artikels angezeigt. ]]
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td width="200">
+                [[ translation : news : article.media.preview.label :: Bilder/Videos ]]
+            </td>
+            <td>
+                <div class="design-news-media-list">
+                    {MEDIA_LIST}
+                </div>
+            </td>
+        </tr>
+    </table>
+    {endif}
+</div>

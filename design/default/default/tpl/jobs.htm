@@ -1,0 +1,163 @@
+{startblock(script)}
+{parentblock()}
+<script type="text/javascript">
+    jQuery(function() {
+
+        dosearch = function() {
+            if(jQuery("#SEARCHURL").val() != "") { location.href = jQuery("#SEARCHURL").val(); }
+        }
+        presearch = function() {
+            if (jQuery('#CITY').val() != '' || jQuery('#ZIP').val() != '') {
+                getLatiLongi("", "", "", "", "", function() {
+                    dopresearch();
+                });
+            } else {
+                jQuery("#LATITUDE, #LONGITUDE").val('');
+                dopresearch();
+            }
+        }
+        function dopresearch() {
+            jQuery.ajax({
+                url: jQuery("#presearch-job").attr("action"),
+                type: 'POST',
+                data: jQuery("#presearch-job").serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    var results = "[[ translation : marketplace : search.results.show : ALL_ADS='"+response["COUNT"]+"' : ({ALL_ADS}) Treffer anzeigen ]]";
+                    $('#ASB').val(results);
+
+                    if (response["COUNT"] > 0) {
+                        $('#SEARCHURL').val('{uri_baseurl(/)}jobs/jobs,'+jQuery("#FK_KAT").val()+',' + response["HASH"] + '.htm');
+                    }
+                    else {
+                        $('#SEARCHURL').val('');
+                    }
+                }
+            });
+        }
+
+        job_order = function(elm) {
+            window.location.href = elm.value;
+        }
+
+
+        presearch();
+
+    })
+
+</script>
+{endblock(script)}
+
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+
+
+        {if URI_CURPAGE==1}
+        <div class="jumbotron">
+            <h1>[[ translation : marketplace : jobs.header :: Stellenangebote ]]</h1>
+
+            <div class="row">
+                <div class="col-md-9">
+                    <h2>
+                        [[ translation : marketplace : jobs.header.subtitle :: Stellenangebote unserer User ]]
+                    </h2>
+                    <p>Veröffentlichen Sie auf unserem Portal zielgerichtet Ihre Stellenangebote oder Gesuche.</p>
+                    <p><a class="btn btn-primary btn-lg" href="{uri_action(info)}" role="button">Mehr erfahren</a></p>
+                </div>
+                <div class="col-md-3 text-right">
+                    <img src="{uri_resource(/images/stellenangebote.png)}"  alt="stellenangebote" class="img-responsive">
+                </div>
+            </div>
+        </div>
+        {endif}
+
+        <div class="advertisement-box">{adserver(,1780,)}</div>
+
+        <div class="text-box design-location">
+
+            <!-- Ariadne/Location and sorting/view -->
+            <div class="row">
+                <div class="col-md-6 col-lg-7 clearfix">
+                    <div class="pull-left">
+                        {kat_ariadne_dynamic({CATEGORY},jobs)}
+                    </div>
+                    <div class="pull-right">
+                        <span class="text-muted">[[ translation : marketplace : jobs.search.count.jobs.found :: {ALL_JOBS} Jobs ]]</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    <form method="get" action="{uri_baseurl(/index.php)}">
+                        <select name="ordering" class="form-control" onchange="job_order(this);">
+                            <option value="{uri_action(jobs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},STAMP,DESC)}" {if CUR_SORT_STAMP_DESC}selected="selected"{endif}>[[ translation : marketplace : sort.recent.desc :: Neueste zuerst ]]</option>
+                            <option value="{uri_action(jobs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},STAMP,ASC)}" {if CUR_SORT_STAMP_ASC}selected="selected"{endif}>[[ translation : marketplace : sort.recent.asc :: Älteste zuerst ]]</option>
+                            <option value="{uri_action(jobs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},NAME,ASC)}" {if CUR_SORT_NAME_ASC}selected="selected"{endif}>[[ translation : marketplace : sort.alphabet.asc :: Alphabet aufsteigend ]]</option>
+                            <option value="{uri_action(jobs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},NAME,DESC)}" {if CUR_SORT_NAME_DESC}selected="selected"{endif}>[[ translation : marketplace : sort.alphabet.desc :: Alphabet absteigend ]]</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        {if liste}
+        {liste}
+
+        {pager}
+        {else}
+        <p>[[ translation : marketplace : jobs.no.jobs.found :: In dieser Kategorie wurden keine Jobs gefunden. ]]</p>
+        {endif}
+    </div>
+    <div class="design-page-menu">
+        <div class="panel panel-primary">
+            <div class="panel-heading">[[ translation : marketplace : category.selection :: Kategorie Auswahl ]]</div>
+            <ul class="menu-box menu-box-striped" id="jobCategoryTreeNode">
+                {CATEGORY_TREE}
+            </ul>
+            <div class="panel-body">
+                <p><a href="{uri_action(jobs)}">[[ translation : marketplace : jobs.show.all.jobs :: alle Jobs anzeigen ]]</a></p>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">[[ translation : marketplace : search.filter :: Suchfilter ]]</div>
+            <div class="panel-body">
+                <form onsubmit="dosearch(); return false;" id="presearch-job" method="post"
+                      action="{uri_baseurl(/index.php)}">
+                    <input type="hidden" name="page" value="presearch_job_ajax"/>
+                    <input type="hidden" name="FK_KAT" id="FK_KAT" value="{CATEGORY}"/>
+                    <input type="hidden" name="frame" value="ajax"/>
+                    <input type="hidden" id="SEARCHURL" name="SEARCHURL" value=""/>
+                    <input type="hidden" name="LATITUDE" value="{LATITUDE}" id="LATITUDE" />
+                    <input type="hidden" name="LONGITUDE" value="{LONGITUDE}" id="LONGITUDE" />
+                    <div class="form-group">
+                        <label>[[ translation : general : search :: Suche ]]:</label>
+                        <input type="text" class="form-control" id="SEARCH_JOB" name="SEARCH_JOB" value="{htm(SEARCH_JOB)}"
+                               onkeyup="updateInputState(presearch);" size="25"/>
+                    </div>
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : country :: Land ]]:</label>
+                        {select_country(,,,,onchange="presearch();" id="COUNTRY" class="form-control")}
+                    </div>
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : zip :: PLZ ]]:</label>
+                        <input type="text" class="form-control" id="ZIP" name="ZIP" value="{htm(SEARCH_PLZ)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : city :: ORT ]]:</label>
+                        <input type="text" class="form-control" id="CITY" name="CITY" value="{htm(SEARCH_ORT)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : area :: Im Umkreis ]]:</label>
+                        {lookup(UMKREIS,,, onchange="presearch();" class="form-control",F_ORDER ASC)}
+                    </div>
+                    <p>
+                        <input onclick="dosearch()" class="btn btn-success" type="submit" id="ASB" value="[[ translation : marketplace : search.show.results :: Ergebnisse anzeigen ]]"/>
+                    </p>
+                </form>
+            </div>
+        </div>
+        {content_page()}
+    </div>
+</div>
+
+
+

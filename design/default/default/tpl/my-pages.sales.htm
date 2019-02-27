@@ -1,0 +1,62 @@
+<tr>
+	<td class="design-action-buttons">
+		<a onclick="showOrderDetails({ID_AD_ORDER});" class="btn btn-default">
+			<i class="glyphicon glyphicon-eye-open"></i>
+		</a>
+		<a href="{uri_action(sale_details_seller)}?do=print&ID_AD_ORDER={ID_AD_ORDER}&frame=print" target="_blank" class="btn btn-default">
+			<i class="glyphicon glyphicon-print"></i>
+		</a>
+	</td>
+	<td>{ID_AD_ORDER}</td>
+	<td>{todate(STAMP_CREATE,1)}</td>
+	<td><a href="#" onclick="showBuyerInformation('{FK_USER}'); return false;">{htm(USER_EK_NAME)}</a></td>
+    {if ORDER_CONFIRMATION_PARTIAL_OPEN || ORDER_DECLINED}
+    {if ORDER_CONFIRMATION_PARTIAL_OPEN}
+    <td colspan="2">
+        <span class="label label-warning">[[ translation : marketplace : unconfirmed  :: unbestätigt ]]</span>
+    </td>
+    {endif}
+    {if ORDER_DECLINED}
+    <td colspan="2">
+        <span class="label label-error">[[ translation : marketplace : rejected :: abgelehnt ]]</span>
+    </td>
+    {endif}
+    {else}
+	<td>
+		{if STATUS_SHIPPING == 0}<span class="label label-default">[[ translation : marketplace : shipping.open :: Versand offen ]]</span>{endif}
+		{if STATUS_SHIPPING == 1}<span class="label label-info">[[ translation : marketplace : in.progress :: in Bearbeitung ]]</span>{endif}
+		{if STATUS_SHIPPING == 2}<span class="label label-success">[[ translation : marketplace : sent :: versandt ]]</span>{endif}
+	</td>
+	<td>
+		{if STATUS_PAYMENT == 0}<span class="label label-default">[[ translation : marketplace : payment.open :: Zahlung offen ]]</span>{endif}
+		{if STATUS_PAYMENT == 1}<span class="label label-success">[[ translation : marketplace : payment.paid :: bezahlt ]]</span>{endif}
+		{if STATUS_PAYMENT == 3}<span class="label label-success">[[ translation : marketplace : payment.pending :: Zahlung schwebend ]]</span><br>{endif}
+	</td>
+	{endif}
+	<td class="text-right">
+		<span class="marketplaceSellerOrderPrice" id="marketplaceSellerOrderArticlePopUpTrigger-{ID_AD_ORDER}" data-order="{ID_AD_ORDER}">
+			{topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT}
+			<i class="glyphicon glyphicon-question-sign"></i>
+		</span>
+
+		<div class="display-none">
+			<div id="marketplaceSellerOrderArticlePopUpContent-{ID_AD_ORDER}">
+				{if tplItems}
+					{tplItems}
+				{endif}
+			</div>
+		</div>
+
+		<script>
+			jQuery("#marketplaceSellerOrderArticlePopUpTrigger-{ID_AD_ORDER}").popover({
+				'title': 'Artikelübersicht',
+				'trigger': 'hover',
+				'placement': 'left',
+				'html': true,
+				'container': '.marketplaceSellerOrder',
+				'content': jQuery("#marketplaceSellerOrderArticlePopUpContent-{ID_AD_ORDER}").html()
+			});
+		</script>
+
+	</td>
+</tr>

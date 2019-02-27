@@ -1,0 +1,68 @@
+add.event: 'Add event'
+add.new.event: 'Add new event'
+archive: Messages-archive
+archive.lead: 'All messages, that were published on our portal.'
+article: Article
+article.edit: 'Edit article'
+article.error: 'Error while saving the article!'
+article.language.save.first: 'Please save the article first to change the language!'
+article.language.warning: 'Have you saved your changes?\nPress Cancel if you are not sure!'
+article.notice.profile: 'Please add the following details on your <a href="{uri_action(my-profil)}">profile</a> before you publish something:<br />'
+article.preview: Preview
+article.subject: Subject
+article.summary: Summary
+article.summary.info: 'The summary will be displayed in the overview of our portal.'
+article.text: Article text
+article.text.info: |
+  Please write detailed and avoid spelling errors.<br>
+                          Improperly texts will not be released from us
+article.title: Title
+article.write: 'Write article'
+article.write.intro: 'Write a newsentry and draw attention for your products or services.'
+articles.none.found: 'No articles were found'
+calendar.record: 'Create calendar entry'
+cancle.newsletter: 'Cancel newsletter'
+category: Category
+category.empty: 'Currently there are no news in this category'
+category.tooltip: 'more from the category {htm(KATNAME)}'
+club.member.request.reason: Reason for joining
+comments.long: |
+  Here you have an overview over all your comments you wrote or received.<br />
+      Under <a href="{uri_action(my-settings)}">settings</a> you can choose, if you want to release received comments automatically or manually.
+date.added: 'added on {todate(STAMP)}'
+delete: 'delete (if not publish yet)'
+delete.article: 'Delete this article'
+edit.article: 'Edit this article'
+got.comments: 'Received comments'
+have.to.release: 'has to be released by you'
+hint: Hint
+hint.long: |
+  Please add the following details on your <a href="{uri_action(my-profil)}">profile</a> before you publish something:<br />
+  		<ul>
+  			{if error_addr_first}<li>Forename</li>{endif}
+  			{if error_addr_last}<li>Surname</li>{endif}
+  			{if error_addr_street}<li>Street</li>{endif}
+  			{if error_addr_zip}<li>Postcode</li>{endif}
+  			{if error_addr_city}<li>Residence</li>{endif}
+links.to.article: 'Links to article'
+make.other.user.attentive: 'Draw other users attention on your events and appointments'
+more.articles: 'More articles'
+my.written.articles: 'My written articles'
+my.written.articles.long: |
+  Here you find all articles, you wrote so far! You can create new articles <a href="{uri_action(artikel_edit)}" title="Jetzt neuen Artiekl schreiben">here</a>.
+          <br />Your articles get publishing date, once you set a release!
+new.article: 'Add new a article'
+news: News
+news.title.general: General
+newsletter.form.email: E-Mail address
+no.article: 'No articles'
+order.newsletter: 'Order newsletter'
+read.article: 'Read article'
+read.lead: 'Read all news about the branch and our marketplace'
+register.now.for.our.newsletter: 'Register now for our newsletter!'
+related.topics: 'Related topics'
+show.online: 'Show online'
+sure.delete.article: 'Are you sure that you want to delete this article?'
+user.news: 'View {htm(V1)}'
+written.comments: 'Written comments'
+you.editing: 'in progress'

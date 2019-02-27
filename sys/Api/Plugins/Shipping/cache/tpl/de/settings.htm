@@ -1,0 +1,44 @@
+<tr>
+  <th colspan="2">
+    Versandeinstellungen für ihre Artikel
+  </th>
+</tr>
+<tr>
+  <th>
+    Standard Versandkonfiguration
+  </th>
+  <td>
+      <div id="pluginShippingDetails">
+        
+      </div>
+    
+      <div id="pluginShippingActions">
+    
+        <select class="form-control" name="SHIPPING_GROUP" id="SHIPPING_GROUP"{if !shipping_groups} style="display: none;"{endif}>
+          {shipping_groups}
+        </select>
+        <br />
+      
+        <p class="design-shipping-no-config-available"{if shipping_groups} style="display: none;"{endif}>
+          Sie haben noch keine Versandeinstellungen konfiguriert.
+        </p>
+        
+        <p>
+          <a id="pluginShippingButtonAdd" class="btn btn-success" href="#SHIPPING_GROUP" onclick="return pluginShippingShowConfig('new');">
+            <i class="glyphicon glyphicon-plus"></i>
+            Neu
+          </a>
+          <a id="pluginShippingButtonEdit" class="btn btn-default" href="#SHIPPING_GROUP" onclick="return pluginShippingShowConfig();">
+            <i class="glyphicon glyphicon-pencil"></i>
+            Bearbeiten
+          </a>
+          <a id="pluginShippingButtonDelete" class="btn btn-danger" href="#SHIPPING_GROUP" onclick="return pluginShippingDeleteConfig();">
+            <i class="glyphicon glyphicon-remove"></i>
+            Löschen
+          </a>
+        </p>
+      </div>
+  </td>
+</tr>
+
+{SCRIPT}

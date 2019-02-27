@@ -1,0 +1,27 @@
+<div class="col-md-6 col-sm-12">
+    <div class="row profile-row">
+        <div class="col-md-4 col-sm-12">
+            <img src="{avatarUrl}" alt="">
+        </div>
+        <div class="col-md-8 col-sm-12">
+            <dl>
+                {if first_name}
+                <dt>NAME</dt>
+                <dd>{htm(first_name)} {htm(last_name)}</dd>
+                {endif}
+                {if telephone}
+                <dt>Telephone </dt>
+                <dd>{telephone}</dd>
+                {endif}
+                {if email}
+                <dt>EMAIL</dt>
+                <dd>{email}</dd>
+                {endif}
+                {if description}
+                <dt>responsible</dt>
+                <dd>{description}</dd>
+                {endif}
+            </dl>
+        </div>
+    </div>
+</div>

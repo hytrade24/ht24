@@ -1,0 +1,231 @@
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery("#invoicePaymentAdapterSelector").change(function() {
+            var adapterId = jQuery(this).val();
+            jQuery.ajax({
+                url: '{uri_action(invoice,{INVOICE_ID_BILLING_INVOICE},setadapter)}',
+                type: 'POST',
+                data: { 'PAYMENT_ADAPTER': adapterId },
+                success: function(response) {
+                    location.reload();
+                }
+            });
+        });
+
+        var get_vars = [];
+
+        document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+            function decode(s) {
+                return decodeURIComponent(s.split("+").join(" "));
+            }
+            get_vars[decode(arguments[1])] = decode(arguments[2]);
+        });
+
+        if ( get_vars["highlight"] != undefined ) {
+            var ids = get_vars["highlight"].split("-");
+
+            jQuery.each( ids, function(index, value) {
+                var row =jQuery("table tr[data-invoice-billing-item='"+value+"']");
+                row.css("background-color","#ffff99");
+            });
+        }
+
+    })
+</script>
+
+<h1>
+    [[ translation : marketplace : invoice.view.invoice :: Rechnung ansehen ]]
+    <p class="lead">
+        [[ translation : marketplace : invoice.invoice.number.abbr :: Rechnung Nr. ]] {INVOICE_ID_BILLING_INVOICE}
+    {if INVOICE_STAMP_CORRECTION}
+        <span class="text-danger">[[ translation : marketplace : invoice.print.marked.as.corrected :: KORREKTUR ]]</span>
+    {endif}
+    {if INVOICE_STATUS==2}
+        <span class="text-danger">[[ translation : marketplace : invoice.print.marked.as.storno :: STORNIERT ]]</span>
+    {endif}
+    </p>
+</h1>
+
+{if ERROR}
+<div class="alert alert-danger">
+[[ translation : marketplace : invoice.transaction.error :: Bei der Transaktion ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie den Seitenbetreiber. ]]
+</div>
+{endif}
+
+
+{if INVOICE_ID_BILLING_INVOICE}
+    <div class="row">
+        <div class="col-xs-8">
+            <strong>[[ translation : marketplace : invoice.invoice.recipient :: Rechnungsempfänger ]]</strong><br />
+			{nl2br(INVOICE_ADDRESS)}
+        </div>
+        <div class="col-xs-4">
+            <dl class="dl-table">
+                <dt>[[ translation : marketplace : invoice.invoice.number.abbr :: Rechnung Nr. ]]:</dt>
+                <dd>{INVOICE_ID_BILLING_INVOICE}</dd>
+
+                <dt>[[ translation : marketplace : invoice.invoice.date :: Rechnungsdatum ]]:</dt>
+                <dd>
+                {if INVOICE_STAMP_CORRECTION}
+                    {todate(INVOICE_STAMP_CORRECTION)}
+                    <span class="text-muted" style="text-decoration: line-through;">{todate(INVOICE_STAMP_CREATE)}</span>
+                {else}
+                    {todate(INVOICE_STAMP_CREATE)}
+                {endif}
+                </dd>
+
+                <dt>[[ translation : marketplace : invoice.invoice.customer.number.abbr :: Kunden Nr. ]]:</dt>
+                <dd>{INVOICE_USER_ID_USER}</dd>
+            </dl>
+        </div>
+    </div>
+    <br />
+
+
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr>
+            <th>[[ translation : marketplace : invoice.table.header.position :: Pos. ]]</th>
+            <th>[[ translation : marketplace : invoice.table.header.item :: Posten ]]</th>
+            <th class="text-right">[[ translation : marketplace : invoice.table.header.quantity :: Menge ]]</th>
+            <th class="text-right">[[ translation : marketplace : invoice.table.header.unitprice :: Einzelpreis<br/>(netto) ]]</th>
+            <th class="text-right">[[ translation : marketplace : invoice.table.header.vat :: MwSt. ]]</th>
+            <th class="text-right">[[ translation : marketplace : invoice.table.header.totalprice :: Gesamtpreis<br/>(brutto) ]]</th>
+        </tr>
+        {if INVOICE_ITEMS}
+        {INVOICE_ITEMS}
+        <tr>
+            <th colspan="5" class="text-right">[[ translation : marketplace : invoice.total.net :: Gesamt Netto ]]:</th>
+            <th class="text-right">{topreis_ex(INVOICE_TOTAL_PRICE_NET)} {CURRENCY_DEFAULT}</th>
+        </tr>
+        {INVOICE_TAXES}
+        <tr>
+            <th colspan="5" class="text-right">[[ translation : marketplace : invoice.total.gross :: Gesamt Brutto ]]:</th>
+            <th class="text-right">{topreis_ex(INVOICE_TOTAL_PRICE)} {CURRENCY_DEFAULT}</th>
+        </tr>
+        {else}
+        <tr>
+            <td colspan="6" align="center">
+                <span class="error">[[ translation : marketplace : invoice.error.no.items.found :: Fehler! Keine Rechnungsposten gefunden ]]</span>
+            </td>
+        </tr>
+        {endif}
+    </table>
+
+	{if INVOICE_TAX_EXEMPT}
+		<p>
+			[[ translation : marketplace : invoice.taxexempt.info :: Es handelt sich hierbei um eine steuerfreie innergemeinschaftliche Lieferung. ]]
+			{if INVOICE_TAX_EXEMPT_USTID}<br>[[ translation : marketplace : invoice.taxexempt.user.ustid :: Die USt.-Id des Leistungsempfängers ]]: {INVOICE_TAX_EXEMPT_USTID} {if INVOICE_TAX_EXEMPT_USTID_CHECKDATE}([[ translation : marketplace : invoice.taxexempt.user.ustid.checked.on :: geprüft am {todate(INVOICE_TAX_EXEMPT_USTID_CHECKDATE)} ]]){endif}{endif}
+		</p>
+		<br><br>
+	{endif}
+
+    <div class="row">
+        <div class="col-xs-6">
+            <a href="{uri_action(invoice_print,{INVOICE_ID_BILLING_INVOICE})}" class="btn btn-default">
+                <i class="glyphicon glyphicon-print"></i> [[ translation : marketplace : invoice.print :: Rechnung drucken ]]
+            </a><br>
+            <a href="{uri_action(invoice_cancel,{INVOICE_ID_BILLING_INVOICE},invoice)}" class="btn btn-default">
+                <i class="fa fa-eraser"></i> [[ translation : marketplace : invoice.cancel :: Rechnungen oder Position stornieren ]]
+            </a>
+
+        </div>
+        <div class="col-xs-6">
+            <div class="pull-right">
+                <table cellspacing="0">
+                    <tr>
+                        <td style="width: 150px;"><strong>[[ translation : marketplace : invoice.conditions.of.payment :: Zahlungsbedingungen ]]:</strong></td>
+                        <td>[[ translation : marketplace : invoice.conditions.of.payment.due :: Zahlbar bis {todate(INVOICE_STAMP_DUE)} ]]</td>
+                    </tr>
+                    <tr>
+                        <td><strong>[[ translation : marketplace : invoice.conditions.of.payment.method :: Zahlungsart ]]:</strong></td>
+                        <td>
+                            {if INVALID_PAYMENT_ADAPTER}
+                                [[ translation : marketplace : invoice.conditions.of.payment.invalid :: Bitte wenden Sie sich an den Seitenbetreiber ]]
+                            {else}
+                                {INVOICE_PAYMENT_ADAPTER_NAME}
+                            {endif}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="design-content-box design-icon-legend" style="margin-top: 10px;">
+                <span>Note : </span>
+                <span class="btn btn-default" style="color: blue;">
+				<strong>!</strong>
+			</span> = [[ translation : marketplace : invoice.include.cancel.requests :: Beinhaltet Strornoanfragen ]]
+            </div>
+        </div>
+    </div>
+
+	<br>
+
+
+
+    <br />
+
+	{if INVOICE_STATUS == 0}
+    <h3>[[ translation : marketplace : invoice.transactions :: Zahlungseingänge ]]</h3>
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr>
+            <th>[[ translation : marketplace : invoice.transactions.number :: Nr. ]]</th>
+            <th>[[ translation : general : date :: Datum ]]</th>
+            <th>[[ translation : general : description :: Beschreibung ]]</th>
+            <th class="text-right">[[ translation : marketplace : invoice.transactions.amount :: Betrag ]]</th>
+        </tr>
+        {if TRANSACTIONS}
+            {TRANSACTIONS}
+        {else}
+            <tr>
+                <td colspan="4" align="center">
+                    <span class="text-error">[[ translation : marketplace : invoice.transactions.no.transacoions.found :: Es sind bisher keine Zahlungseingänge vorhanden ]]</span>
+                </td>
+            </tr>
+        {endif}
+		{if INVOICE_STATUS == 0}
+        <tr>
+            <th colspan="3" class="text-right">[[ translation : marketplace : invoice.transactions.paid.price :: bereits bezahlt ]]:</th>
+            <th class="text-right">{topreis_ex(INVOICE_PAID_PRICE)} {CURRENCY_DEFAULT}</th>
+        </tr>
+		<tr>
+            <th colspan="3" class="text-right">[[ translation : marketplace : invoice.transactions.remaining.price :: noch offen ]]:</th>
+            <th class="text-right">{topreis_ex(INVOICE_REMAINING_PRICE)} {CURRENCY_DEFAULT}</th>
+        </tr>
+		{endif}
+    </table>
+	{endif}
+
+
+    <div class="design-content-box form-inline">
+		{if PAYMENT_ADAPTER_SUCCESS_OUTPUT || PAYMENT_ADAPTER_PENDING_OUTPUT || PAYMENT_ADAPTER_CANCEL_OUTPUT}
+            {if PAYMENT_ADAPTER_CANCEL_OUTPUT}{PAYMENT_ADAPTER_CANCEL_OUTPUT}{endif}
+            {if PAYMENT_ADAPTER_PENDING_OUTPUT}{PAYMENT_ADAPTER_PENDING_OUTPUT}{endif}
+    		{if PAYMENT_ADAPTER_SUCCESS_OUTPUT}{PAYMENT_ADAPTER_SUCCESS_OUTPUT}{endif}
+		{else}
+			{if INVOICE_STATUS == 0}
+				<h3 class="top">[[ translation : marketplace : invoice.select.payment.method :: Zahlungsweise auswählen ]]</h3>
+
+				<p>[[ translation : marketplace : invoice.select.payment.method.text :: Bitte wählen Sie aus der Liste die gewünschte Zahlungsart aus, um die Rechnung zu begeleichen. ]]</p>
+
+				<select class="form-control" name="PAYMENT_ADAPTER" id="invoicePaymentAdapterSelector">
+					{PAYMENT_ADAPTER}
+				</select>
+
+				{if PAYMENT_ADAPTER_PREPARE_OUTPUT}
+					{PAYMENT_ADAPTER_PREPARE_OUTPUT}
+				{endif}
+			{endif}
+			{if INVOICE_STATUS == 1}
+				<p class="text-success"><strong>[[ translation : marketplace : invoice.status.paid :: Die Rechnung wurde vollständig bezahlt ]]</strong></p>
+			{endif}
+
+			{if INVOICE_STATUS == 2}
+				<p class="text-warning"><strong>[[ translation : marketplace : invoice.status.canceled :: Die Rechnung wurde storniert ]]</strong></p>
+			{endif}
+		{endif}
+    </div>
+
+{endif}

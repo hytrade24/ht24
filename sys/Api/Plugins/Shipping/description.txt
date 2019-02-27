@@ -1,0 +1,1 @@
+Erweiterte Konfiguration des Versands (Länder-Zuordnung, Versandanbieter, etc.)

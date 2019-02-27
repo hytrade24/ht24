@@ -1,0 +1,3 @@
+<p>Sehr geehrte(r) {{ invite.greeting }}</p>
+<p>{{ invite.info|nl2br }}</p>
+<p>Um die Anmeldung zu best&auml;tigen, bitte klicken Sie auf den folgenden Link: <a href="{{ route('public_hydromot_register', { code: invite.code }) }}"> {{ route("public_hydromot_register", { code: invite.code }) }} </a></p>

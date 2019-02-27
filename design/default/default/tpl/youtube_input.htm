@@ -1,0 +1,16 @@
+<div class="input-group js-tooltip {class}" data-toggle="tooltip" title="[[ translation : marketplace : youtube.video.hint :: Bitte Youtube-Link einf&uuml;gen ]]">
+	<div class="input-group input-group-nested has-feedback">
+		<input class="form-control" onchange="YoutubeCheckInput(this);" onkeyup="YoutubeCheckInput(this);" name="{name}" size="{size}" />
+		<a class="form-control-feedback" id="youtube_{name}">
+			<img style="margin-bottom: -6px;" height="20" id="PRODUKTNAME_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+		</a>
+	</div>
+	{if button}
+	<div class="input-group-btn">
+		<input class="btn btn-default" disabled="disabled" type="submit" value="[[ translation : marketplace : youtube.video.add :: Video hinzuf&uuml;gen ]]" />
+	</div>
+	{endif}
+</div>
+<p>
+	{content_page(youtube)}
+</p>

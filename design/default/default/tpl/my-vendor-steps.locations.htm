@@ -1,0 +1,201 @@
+<table class="mytable table table-bordered table-striped table-condensed">
+	<tr>
+	    <th></th>
+	    <th>[[ translation : marketplace : vendor.my.places.name :: Bezeichnung ]]</th>
+	    <th>[[ translation : marketplace : vendor.my.places.street :: Straße ]]</th>
+	    <th>[[ translation : marketplace : vendor.my.places.zip.city :: PLZ / Ort ]]</th>
+	    <th>[[ translation : marketplace : vendor.my.places.country :: Land ]]</th>
+	</tr>
+{if BASE_STRASSE}
+	<tr>
+	    <td></td>
+	    <td>{BASE_FIRMA}</td>
+	    <td>{BASE_STRASSE}</td>
+	    <td>{BASE_PLZ} {BASE_ORT}</td>
+	    <td>{BASE_COUNTRY}</td>
+	</tr>
+{endif}
+{if liste}
+	{liste}
+{else}
+	<tr>
+        <td colspan="5">[[ translation : marketplace : vendor.my.places.empty :: Noch keine Standorte vorhanden ]]</td>
+    </tr>
+{endif}
+</table>
+
+<div class="design-content-box">
+{if EDIT}
+  <input type="hidden" name="INDEX" value="{htm(INDEX)}" />
+{endif}
+  <table class="mytable" width="100%">
+    <tr>
+      <td>[[ translation : marketplace : vendor.my.places.name :: Bezeichnung ]]:</td>
+      <td>
+        <input class="form-control" type="text" name="NAME" value="{htm(NAME)}" />
+      </td>
+    </tr>
+    <tr>
+      <td>[[ translation : marketplace : vendor.my.places.street :: Straße ]]:</td>
+      <td>
+        <input class="form-control" type="text" name="STRASSE" id="STREET" value="{htm(STRASSE)}" />
+      </td>
+    </tr>
+        <tr>
+      <td>[[ translation : marketplace : vendor.my.places.zip :: PLZ ]]:</td>
+      <td>
+        <input class="form-control" type="text" name="PLZ" id="ZIP" value="{htm(PLZ)}" />
+      </td>
+    </tr>
+        <tr>
+      <td>[[ translation : marketplace : vendor.my.places.city :: Ort ]]:</td>
+      <td>
+        <input class="form-control" type="text" name="ORT" id="CITY" value="{htm(ORT)}" />
+      </td>
+    </tr>
+        <tr>
+      <td>[[ translation : marketplace : vendor.my.places.country :: Land ]]:</td>
+      <td>
+        {select_country(,,,, class="form-control" onchange="" id="COUNTRY",----)}
+      </td>
+    </tr>
+    <tr>
+        <td colspan="2">[[ translation : marketplace : vendor.my.places.description :: Standort Beschreibung ]]</td>            
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div id="vendorPlaceAddFormularDescriptionTab">
+                <ul>
+                    {languageHeader}
+                </ul>
+                {languageBody}
+
+            </div>
+        </td>
+    </tr>
+  </table>
+  <div class="text-right">
+  {if EDIT}
+    <button data-action="update" class="btn btn-success" >
+        [[ translation : marketplace : vendor.my.places.update :: Standort aktualisieren ]]
+    </button>
+  {else}
+    <button data-action="add" class="btn btn-success" >
+        [[ translation : marketplace : vendor.my.places.add :: Standort hinzufügen ]]
+    </button>
+  {endif}
+  </div>
+</div>
+
+<div id="modal_step_dirty_location" class="modal fade" style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 align="center">
+                    [[ translation : marketplace : vendor.location.step.dirty.title :: Nicht gespeicherter Standort vorhanden! ]]
+                </h3>
+            </div>
+            <div class="modal-body">
+                <p align="center">
+                    [[ translation : marketplace : vendor.location.step.dirty.description ::
+                        Sie haben noch nicht gespeicherte Änderungen auf der aktuellen Seite. 
+                        Sollen diese gespeichert werden, bevor Sie den Schritt wechseln? 
+                    ]]
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-action="cancel" data-dismiss="modal" title="[[ translation : marketplace : ad.create.step.dirty.button.cancel.long :: Abbrechen und aktuellen Schritt weiter bearbeiten ]]">
+                    [[ translation : marketplace : ad.create.step.dirty.button.cancel :: Abbrechen ]]
+                </button>
+                <button type="button" class="btn btn-danger" data-action="discard" title="[[ translation : marketplace : ad.create.step.dirty.button.discard.long :: Änderungen verwerfen und zum gewählten Schritt wechseln ]]">
+                    [[ translation : marketplace : ad.create.step.dirty.button.discard :: Änderungen verwerfen ]]
+                </button>
+                <button type="button" class="btn btn-success" data-action="save" title="[[ translation : marketplace : ad.create.step.dirty.button.save.long :: Änderungen speichern und zum gewählten Schritt wechseln ]]">
+                    [[ translation : marketplace : ad.create.step.dirty.button.save :: Änderungen speichern ]]
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+jQuery(function() {
+    
+    var formContentInitial = jQuery("#StepContent form").serialize();
+    var formLocationForce = false;
+    var modalLocationDirty = function(stepIdent, additionalParams) {
+        var form = jQuery("#StepContent form");
+        jQuery("#modal_step_dirty_location").modal("show");
+        jQuery("#modal_step_dirty_location [data-action=discard]").off("click").on("click", function(event) {
+            event.preventDefault();
+            // Discard changes and change step
+            formLocationForce = true;
+            SubmitStep(form);
+            // Hide modal
+            jQuery("#modal_step_dirty_location").modal("hide");
+        });
+        jQuery("#modal_step_dirty_location [data-action=save]").off("click").on("click", function(event) {
+            event.preventDefault();
+            // Save changes and change step
+            SubmitStep(form, (additionalParams != "" ? additionalParams+"&" : "")+"{if STEP_NEXT_IDENT}stepNext={STEP_NEXT_IDENT}{else}stepFinish=1{endif}");
+            // Hide modal
+            jQuery("#modal_step_dirty_location").modal("hide");
+        });
+    }
+    
+    jQuery("#vendorPlaceAddFormularDescriptionTab").tabs();
+    
+    jQuery("#StepContent form button[data-action=add]").on("click", function(event) {
+        event.preventDefault();
+        SubmitStep( jQuery(this).closest("form"), "location=new" );
+    });
+    jQuery("#StepContent form button[data-action=update]").on("click", function(event) {
+        event.preventDefault();
+        SubmitStep( jQuery(this).closest("form"), "location=update" );
+    });
+    jQuery("#StepContent form button[data-action=delete]").on("click", function(event) {
+        event.preventDefault();
+        var locationIndex = jQuery(this).data("index");
+        SubmitStep( jQuery(this).closest("form"), "location=delete&index="+locationIndex );
+    });
+    jQuery("#StepContent form button[data-action=edit]").on("click", function(event) {
+        event.preventDefault();
+        var locationIndex = jQuery(this).data("index");
+        ShowStep( "locations", "edit="+locationIndex );
+    });
+    
+    // Save changed editors before submitting
+    CallbackSubmitStepAdd(function(form, params) {
+        var editorSaved = false;
+        jQuery(form).find("textarea").each(function() {
+            // TinyMCE
+            var inputId = jQuery(this).attr("id");
+            var editor = tinyMCE.editors[inputId];
+            if ((typeof editor != "undefined") && editor.isDirty()) {
+                editor.save();
+                editor.isNotDirty = 1;
+                editorSaved = true;
+            }
+        });
+        if (editorSaved) {
+            window.setTimeout(function () {
+                SubmitStep(form, params);
+            });
+            return false;
+        } else if (params == "") {
+            if (formContentInitial != jQuery("#StepContent form").serialize()) {
+                if (formLocationForce) {
+                    return true;
+                } else {
+                    modalLocationDirty(stepCurrent, "location={if EDIT}update{else}new{endif}");
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return true;
+        }
+    });
+    
+});
+</script>

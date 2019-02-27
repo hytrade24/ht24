@@ -1,0 +1,9 @@
+{if BASE64}
+    <a href="data:{TYPE};base64,{BASE64}" title="{htm(META_TITLE)}" data-title="<b>{htm(META_TITLE)}</b>{if META_SOURCE}<br>[[ translation : marketplace : user.media.image.source :: Quelle ]]: {htm(META_SOURCE)}{endif}" class="marketplaceArticleImagePreview thumbnail" rel="lightbox-gallery galleryImagePreview">
+        <img src="data:image/jpeg;base64,{BASE64_THUMB}">
+    </a>
+{else}
+    <a href="{uri_baseurl({SRC})}" title="{htm(META_TITLE)}" data-title="<b>{htm(META_TITLE)}</b>{if META_SOURCE}<br>[[ translation : marketplace : user.media.image.source :: Quelle ]]: {htm(META_SOURCE)}{endif}" class="marketplaceArticleImagePreview thumbnail" rel="lightbox-gallery galleryImagePreview">
+      <img alt="{thumbnail(SRC,492,300)}" src="{thumbnail({SRC},80,80,crop)}">
+    </a>
+{endif}

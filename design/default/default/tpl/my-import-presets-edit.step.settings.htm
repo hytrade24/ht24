@@ -1,0 +1,22 @@
+<script>
+
+</script>
+
+
+
+<form action="{uri_baseurl(index.php)}?page=my-import-presets-edit&DO=SAVE_DATA" method="POST" class="form form-horizontal" id="importPresetEditorSettingsForm" enctype="multipart/form-data">
+
+	{if FLASHMESSAGES}
+	<div class="alert alert-danger">{FLASHMESSAGES}</div>
+	{endif}
+
+
+	<p class="text-muted text-center">
+		[[ translation : marketplace : import.preset.editor.settings.no.settings.available :: Für Ihre aktuelle Konfiguration stehen keine weiteren Einstellungen zur Verfügung. <br>Sie können die Importvorlage nun speichern und mit einem Import fortfahren. ]]
+	</p>
+
+
+	<div class="form-actions text-right">
+		<button type="submit" class="btn btn-primary">[[ translation : marketplace : import.preset.save :: Import Vorlage speichern ]]</button>
+	</div>
+</form>

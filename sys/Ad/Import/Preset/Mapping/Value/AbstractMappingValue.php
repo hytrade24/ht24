@@ -1,0 +1,5 @@
+<?php
+
+abstract class Ad_Import_Preset_Mapping_Value_AbstractMappingValue implements Ad_Import_Preset_Mapping_Value_MappingValueInterface {
+
+}

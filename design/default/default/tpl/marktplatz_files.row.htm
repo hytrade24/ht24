@@ -1,0 +1,10 @@
+<tr>
+	<td>
+		<a href="{uri_baseurl(/index.php?page=ad_showup&{if ID_AD_UPLOAD>0}ID_AD_UPLOAD={ID_AD_UPLOAD}{else}INDEX={INDEX}{endif})}" target="_blank" title="[[ translation : marketplace : show.file :: Datei {htm(FILENAME)} anzeigen ]]">
+			{if FILENAME != FILENAME_SHORT}{htm(FILENAME_SHORT)} ...{else}{htm(FILENAME)}{endif}
+		</a>
+	</td>
+	<td>
+		{EXT}
+	</td>
+</tr>

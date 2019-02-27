@@ -1,0 +1,131 @@
+<script type="application/javascript">
+
+function validateCodeInput(input) {
+    var code = jQuery(input).val();
+    var error = jQuery(input).attr("data-content");
+    var errorPrev = error;
+    if (code == "") {
+        error = "[[ translation : marketplace : sales.distribution.code.empty :: Sie müssen einen Code eingeben. ]]";
+    } else if (!code.match(/^[a-z0-9-_]+$/i)) {
+        error = "[[ translation : marketplace : sales.distribution.code.invalid :: Der eingegebene Code enthält ungültige Zeichen!<br />Zugelassen sind Buchstaben, Zahlen sowie Bindestriche. ]]";
+    } else {
+        error = "";
+    }
+    if (error == "") {
+        jQuery(input).removeClass("error");
+    } else {
+        jQuery(input).addClass("error");
+    }
+    if (errorPrev != error) {
+        jQuery(input).attr("data-content", error).removeClass("error-visible");
+    }
+    showErrorMessage(input);
+}
+
+function showErrorMessage(input) {
+    if (jQuery(input).is('[data-content][data-content!=""]:focus')) {
+        if (!jQuery(input).is(".error-visible")) {
+            jQuery(input).addClass("error-visible").popover("show");
+        }
+    } else {
+        jQuery(input).removeClass("error-visible").popover("hide");
+    }
+}
+    
+function showSalesQrCode(codeId) {
+    jQuery.post("{uri_action(my-sales-codes,qrcode,"+codeId+")}", function(result) {
+        jQuery("#modalSalesQrCode").html(result).modal("show");
+    });
+}
+
+</script>
+
+<h1>[[ translation : marketplace : sales.distribution.codes :: Vertrieb - Registrierungs-Codes ]]</h1>
+
+<p>
+    [[ translation : marketplace : sales.distribution.codes.lead ::
+        Hier haben Sie die Möglichkeit Registrierungs-Codes zu generieren um neue Kunden zu werben.
+        In der folgenden Übersicht finden Sie alle von ihnen bereits angelegten Registrierungs-Codes und die dazugehörigen Links.
+    ]]
+</p>
+
+{if ADDED || DELETED}
+<div class="alert alert-success">
+    {if ADDED}<strong>[[ translation : marketplace : sales.distribution.code.add.success :: Registrierungs-Code erfolgreich hinzugefügt ]]</strong>{endif}
+    {if DELETED}<strong>[[ translation : marketplace : sales.distribution.code.del.success :: Registrierungs-Code erfolgreich gelöscht ]]</strong>{endif}
+</div>
+{endif}
+
+<table class="table table-bordered table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>[[ translation : marketplace : sales.distribution.codes.action :: Aktion ]]</th>
+            <th>[[ translation : marketplace : sales.distribution.codes.code :: Code ]]</th>
+            <th>[[ translation : marketplace : sales.distribution.codes.link :: Link ]]</th>
+            <th>[[ translation : marketplace : sales.distribution.codes.description :: Beschreibung ]]</th>
+        </tr>
+    </thead>
+    <tbody>
+    {if liste}
+        {liste}
+    {else}
+        <tr>
+            <td colspan="4">
+                <i>[[ translation : marketplace : sales.distribution.codes.none.yet :: Sie haben noch keine Registrierungs-Codes angelegt ]]</i>
+            </td>
+        </tr>
+    {endif}
+    </tbody>
+</table>
+
+<h3>[[ translation : marketplace : sales.distribution.codes.new :: Neuen Code hinzufügen ]]</h3>
+
+<p>
+    [[ translation : marketplace : sales.distribution.codes.new.into ::
+        Um einen neuen Registrierubgs-Code hinzuzufügen, geben Sie den Code und optional eine Beschreibung ein und klicken Sie auf "Code hinzufügen".
+        <br />
+        <b>Der Code</b> ist frei wählbar und kann zum Beispiel aus ihrem Firmennamen bestehen. 
+        In dem Link, über den Sie dann Kunden werben können wird dieser Code enthalten sein.
+        <br />
+        <b>Die Beschreibung</b> ist optional und wird nicht öffentlich dargestellt. Diese dient nur zu ihrer Übersicht,
+        damit Sie für sich notieren können auf welche Art und Weise oder zu welcher Gelegenheit der entsprechende
+        Registrierungs-Code verteilt wird.
+        (z.B. "Messe Hamburg 2016" oder "E-Mail Newsletter 05/2016") 
+    ]]    
+</p>
+
+{if ERROR}
+<div class="alert alert-danger">
+    <strong>[[ translation : general : error :: Fehler ]]!</strong>
+    <br />
+    {if ERROR_CODE_EMPTY}[[ translation : marketplace : sales.distribution.codes.error.empty :: Sie müssen einen Code eingeben! ]]{endif}
+    {if ERROR_CODE_DUPLICATE}[[ translation : marketplace : sales.distribution.codes.error.duplicate :: Der von ihnen eingegebene Code ist bereits vergeben! ]]{endif}
+    {if ERROR_CODE_INVALID}[[ translation : marketplace : sales.distribution.code.invalid :: Der eingegebene Code enthält ungültige Zeichen!<br />Zugelassen sind Buchstaben, Zahlen sowie Bindestriche. ]]{endif}
+</div>
+{endif}
+
+<div class="design-content-box">
+    <form method="post">
+        <div class="row">
+            <div class="col-xs-4">[[ translation : marketplace : sales.distribution.codes.code :: Code ]]</div>
+            <div class="col-xs-4">[[ translation : marketplace : sales.distribution.codes.description :: Beschreibung ]]</div>
+            <div class="col-xs-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <input type="text" name="CODE" value="{htm(CODE)}" required="required"
+                       data-placement="bottom" data-title="[[ translation : general : error :: Fehler ]]" data-html="true" data-trigger="manual"
+                       onfocus="showErrorMessage(this);" onblur="showErrorMessage(this);"
+                       onchange="validateCodeInput(this);" onkeyup="validateCodeInput(this);" />
+            </div>
+            <div class="col-xs-4">
+                <input type="text" name="DESCRIPTION" value="{htm(DESCRIPTION)}" />
+            </div>
+            <div class="col-xs-4">
+                <button class="btn">[[ translation : marketplace : sales.distribution.codes.new.submit :: Code hinzufügen ]]</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal" id="modalSalesQrCode"></div>

@@ -1,0 +1,155 @@
+<div class="design-search-market design-search-{STYLE} design-subtpl">
+    <div class="panel panel-primary panel-vendor">
+        <div class="panel-heading">Suchfilter</div>
+        <div class="panel-body">
+            <form class="design-search-market-form" id="vendorSearch_{HASH}" method="post" action="{uri_action(presearch_vendor_ajax)}">
+                <input type="hidden" name="FK_KAT" value="{ID_KAT}" />
+                <input type="hidden" name="LATITUDE" value="{LATITUDE}" />
+                <input type="hidden" name="LONGITUDE" value="{LONGITUDE}" />
+                <input type="hidden" name="SEARCHURL" value="" />
+                {SEARCH_HIDDEN}
+
+                <div class="design-search-content">
+                    <div class="input-group">
+                        <input class="form-control" id="SEARCHVENDOR"
+                               value="^htm(SEARCHVENDOR)°" name="SEARCHVENDOR" type="text" />
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                    </div>
+
+                    {SEARCH_PREPEND}
+                    {rows}
+                    {SEARCH_APPEND}
+                </div>
+                <div class="design-search-toggle">
+                    <a class="btn btn-default btn-collapse form-control" onclick="adsSearchFieldsCollapse(this);" style="display: block;">
+                        <i class="glyphicon glyphicon-chevron-up"></i>
+                        [[ translation : marketplace : search.collapse.collapse :: Weniger Suchoptionen ]]
+                        <i class="glyphicon glyphicon-chevron-up"></i>
+                    </a>
+                    <a class="btn btn-default btn-expand form-control" onclick="adsSearchFieldsExpand(this);" style="display: none;">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                        [[ translation : marketplace : search.collapse.expand :: Mehr Suchoptionen ]]
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </a>
+                </div>
+                <div class="design-search-footer">
+                    <a class="btn btn-success disabled form-control" href="#SearchFirst">
+                        [[ translation : marketplace : search.results.show :: ({ALL_ADS}) Treffer anzeigen ]]
+                    </a>
+                </div>
+            </form>
+            ^SUBTPL_ADMIN°
+        </div>
+    </div>
+</div>
+
+{startblock(script)}
+    {parentblock()}
+    {if tpl_limit_local(jsAutoCollapse)}
+        <script type="text/javascript" src="{uri_resource(js/jqAutoCollapse.js)}"></script>
+    {endif}
+    {if tpl_limit_local(jsTwitterTypeahead)}
+        <script type="text/javascript" src="{uri_resource(lib/twitter/typeahead.bundle.js)}"></script>
+    {endif}
+    <script type="text/javascript">
+    
+        jQuery(function() {
+            // Collapse search groups
+            jQuery("#vendorSearch_{HASH} .design-search-group-content").autoCollapse({
+                callbackBeforeCollapse: function(element, settings) {
+                    // Automatically collapse contained multicheck-lists
+                    jQuery(element).find(".design-search-field-multicheck").autoCollapse("collapse");
+                },
+                expanded: checkExpandedGroup,
+                hideChildren: false
+            });
+            // Check responsive view
+            if (jQuery("#vendorSearch_{HASH} .design-search-content").css("display") == "block") {
+                jQuery("#vendorSearch_{HASH} .design-search-row").first()  // Get first row
+                        .children().hide().first().show();              // Hide all groups except the first
+            }
+            // Initialize search form
+            jQuery("#vendorSearch_{HASH}").ebizSearch({
+                locationZip: "input[name=PLZ]",
+                locationCity: "input[name=ORT]"
+            });
+
+            // Check for hidden filled input elements
+            if (checkExpandedGroup( jQuery("#vendorSearch_{HASH} .design-search-row").not(":visible") )) {
+                var button = jQuery("#vendorSearch_{HASH} > .design-search-toggle > .btn-expand");
+                adsSearchFieldsExpand(button);
+            }
+            var searchRows = jQuery("#vendorSearch_{HASH}").find(".design-search-row");
+            if (searchRows.length > 1) {
+                // Hide all but the first row
+                //jQuery("#adsSearch_{HASH}").find(".design-search-row").hide().first().show();
+            } else {
+                // Check if there are any input fields that were hidden
+                var hiddenInputs = jQuery("#vendorSearch_{HASH}").find(".form-group:hidden");
+                if (hiddenInputs.length <= 0) {
+                    // Hide "show more"-button
+                    jQuery("#vendorSearch_{HASH}").find(".design-search-toggle").hide();
+                }
+            }
+            var button_expand = jQuery("#vendorSearch_{HASH} > .design-search-toggle > .btn-expand");
+            adsSearchFieldsExpand(button_expand);
+        });
+    
+        var checkExpandedMulticheck = function(container) {
+            if (jQuery(container).find("input[type=checkbox]:checked").not(":visible").length > 0) {
+                return true;
+            }
+            return false;
+        };
+        var checkExpandedGroup = function(container) {
+            if (jQuery(container).find("input[type=checkbox]:checked").not(":visible").length > 0) {
+                return true;
+            }
+            var result = false;
+            jQuery(container).find("select").not(":visible").each(function() {
+                if ((jQuery(this).attr("name") == "FK_COUNTRY") && (jQuery(this).val() == 1)) {
+                    return; // Für das vorausgewählte Land "Deutschland" nicht die Umkreissuche aufklappen   
+                }
+                if (jQuery(this).val() > 0) result = true;
+            });
+            jQuery(container).find("input[type=text]").not(":visible").each(function() {
+                if (jQuery(this).val().length > 0) result = true;
+            });
+            return result;
+        };
+    
+        function adsSearchFieldsCollapse(button) {
+            var buttonContainer = jQuery(button).parent();
+            var searchContent = jQuery(buttonContainer).prev();
+            if (searchContent.length > 0) {
+                jQuery(button).hide();
+                searchContent.find('.design-search-row-item').autoCollapse('collapse');
+                searchContent.find(".design-search-group-content").autoCollapse("collapse");
+                if (searchContent.css("display") == "block") {
+                    searchContent.find('.design-search-row').hide().first().show()      // Hide all rows except the first
+                            .children().hide().first().show();                          // Within the first row: hide all groups except the first
+                } else {
+                    searchContent.find('.design-search-row').hide().first().show();     // Hide all rows except the first   
+                }
+                buttonContainer.children(".btn-expand").show();
+            }
+        }
+    
+        function adsSearchFieldsExpand(button) {
+            var buttonContainer = jQuery(button).parent();
+            var searchContent = jQuery(buttonContainer).prev();
+            if (searchContent.length > 0) {
+                jQuery(button).hide();
+                searchContent.find('.design-search-row').show()     // Show all rows
+                        .first().children().show();                 // Show all childrens of the first row
+                searchContent.find('.design-search-row-item').autoCollapse('expand');
+                searchContent.find(".design-search-group-content").autoCollapse("expand");
+                buttonContainer.children(".btn-collapse").show();
+            }
+        }
+    
+    </script>
+    {SEARCH_SCRIPT}
+{endblock(script)}

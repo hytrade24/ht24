@@ -1,0 +1,32 @@
+<tr>
+	<td width="30" class="design-action-buttons">
+		<a style="cursor: pointer;" onclick="ToggleBids({FK_AD}, '{FK_AD_VARIANT}');" class="btn btn-default">
+			<i class="glyphicon glyphicon-eye-open"></i>
+		</a>
+	</td>
+	<td nowrap>{todate(LAST_BID_DATE,1)}</td>
+	<td>
+		<a href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="[[ translation : marketplace : goto.article :: Zum Artikel ]]" target="_blank">
+			{htm(PRODUKTNAME)}{if VARIANT} ({htm(VARIANT)}){endif}
+		</a>
+	</td>
+	<td align="right" nowrap>
+		{topreis_ex(MAXBID)} {CURRENCY_DEFAULT}
+	</td>
+	<td>
+		<a href="{uri_action(view_user,{urllabel(MAXBID_USERNAME)},{MAXBID_USER_ID})}" title="[[ translation : marketplace : display.profile :: Profil anzeigen ]]" target="_blank">
+			{htm(MAXBID_USERNAME)}
+		</a>
+	</td>
+    <td>{COUNTUSER}</td>
+	<td>
+		{if MYMAXBID}
+			{topreis_ex(MYMAXBID)} {CURRENCY_DEFAULT}
+		{else}
+			---
+		{endif}
+	</td>
+</tr>
+<tr id="bids_{FK_AD}_{FK_AD_VARIANT}" class="nohover" style="display: none;">
+	<td colspan="7" style="padding: 4px 4px 4px 32px;"></td>
+</tr>

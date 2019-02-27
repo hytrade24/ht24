@@ -1,0 +1,39 @@
+<div id="pluginSchutzklick">
+  {if SAVED}
+  <h3 class="ok">
+      [[ translation : marketplace : plugin.geo.region.list.config.saved :: Die Konfiguration wurde erfolgreich gespeichert! ]]
+  </h3>
+  {endif}
+  
+  <h3>
+      [[ translation : marketplace : plugin.schutzklick.config.base :: Grundkonfiguration ]]
+  </h3>
+  
+  
+  <table class="liste" cellspacing="0">
+      <tr>
+          <td>
+              <b>Partner-ID</b>
+          </td>
+          <td>
+              <input type="text" name="CONFIG[PARTNER_ID]" value="{htm(CONFIG_PARTNER_ID)}" />
+          </td>
+      </tr>
+      <tr>
+          <td>
+              <b>Shop-ID</b>
+          </td>
+          <td>
+              <input type="text" name="CONFIG[SHOP_ID]" value="{htm(CONFIG_SHOP_ID)}" />
+          </td>
+      </tr>
+      <tr>
+          <td>
+              <b>Länderkennung (z.B. "de" oder "pl")</b>
+          </td>
+          <td>
+              <input type="text" name="CONFIG[COUNTRY]" value="{htm(CONFIG_COUNTRY)}" />
+          </td>
+      </tr>
+  </table>
+</div>

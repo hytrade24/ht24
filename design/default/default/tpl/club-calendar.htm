@@ -1,0 +1,55 @@
+
+    <div class="row design-page-with-menu">
+        <div class="design-page-content">
+			<h1>[[ translation : marketplace : calendar.events.title :: Veranstaltungskalender ]]</h1>
+			<p class="lead">
+                [[ translation : marketplace : calendar.events.lead :: Finden Sie interessante Veranstaltungen und Events ]]
+            </p>
+	        {if SEARCH_HASH}{subtpl(tpl/{SYS_TPL_LANG}/googlemaps.htm,type=event,ident=h{SEARCH_HASH},height=300)}{endif}
+
+			<div class="advertisement-box">{adserver(,1780,)}</div>
+			
+			<div class="text-box design-location">
+		
+			   <!-- Ariadne/Location and sorting/view -->
+			   <div class="row">
+				   <div class="col-md-6 col-lg-7 clearfix">
+					   <span class="text-muted">
+						   {if VIEW_TYPE_LIST}
+							   <span id="calendarEventResultCount">{ALL_CALENDAR_EVENTS}</span>
+								 [[ translation : marketplace : calendar.events :: Veranstaltungen ]]
+						   {else}
+								 [[ translation : marketplace : calendar.events.title :: Veranstaltungskalender ]]
+						   {endif}
+					   </span>
+				   </div>
+				   <div class="col-md-6 col-lg-5 text-right">
+					   <div class="btn-group">
+						   <a class="btn btn-default {if VIEW_TYPE_LIST}active{endif}" href="{uri_action(club-calendar,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},LIST,{SEARCH_SORT_BY},{SEARCH_SORT_DIR})}">
+							   <span class="glyphicon glyphicon-th-list"></span>
+						   </a>
+						   <a class="btn btn-default {if VIEW_TYPE_BOX}active{endif}" href="{uri_action(club-calendar,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},BOX,{SEARCH_SORT_BY},{SEARCH_SORT_DIR})}">
+							   <span class="glyphicon glyphicon-th"></span>
+						   </a>
+					   </div>
+				   </div>
+			   </div>
+		
+		   	</div>  
+
+			{if VIEW_TYPE_LIST}
+				{subtpl(tpl/{SYS_TPL_LANG}/calendar_events_list.htm,SEARCH_*,HIDE_PAGER=1)}
+			{else}
+				{subtpl(tpl/{SYS_TPL_LANG}/calendar_events_cal.htm,SEARCH_*)}
+			{endif}
+		</div>
+        <div class="design-page-menu">
+			{subtpl(tpl/{SYS_TPL_LANG}/club.info.htm,*)}
+   			{content_page()}
+		</div>
+	</div>
+	<script type="text/javascript">
+		function calendarEvent_order(elm) {
+			window.location.href = elm.value;
+		}
+	</script>

@@ -1,0 +1,54 @@
+<a name="{ID_CLUB_DISCUSSION}"></a>
+<div class="row design-group-forum-post">
+    <div class="col-xs-1">
+        <div>
+            {if FK_USER>0}
+            <a href="{uri_action(view_user,{USER_NAME},{FK_USER})}">
+                <img src="{thumbnail({uri_baseurl(/cache/users/{USER_CACHE}/{FK_USER}/{FK_USER}.jpg)},48,48)}" alt="{USER_NAME}">
+            </a>
+            {else}
+            <img src="{thumbnail({uri_baseurl(/uploads/users/no_FIRMA.jpg)},48,48)}" alt="{USER_NAME}">
+            {endif}
+        </div>
+    </div>
+    <div class="col-xs-11">
+        <div class="tooltip static right">
+            <a  name="#{ID_COMMENT}"></a>
+            <div class="tooltip-arrow"></div>
+            <div class="tooltip-inner tooltip-not-scrollable">
+                <div class="author text-muted">
+                    [[ translation : marketplace : comment.written.by :: Geschrieben von ]]
+                    {if FK_USER>0}
+                    <a href="{uri_action(view_user,{USER_NAME},{FK_USER})}">
+                        {htm(USER_NAME)}
+                    </a>
+                    {else}
+                    <strong>{htm(USER_NAME)}</strong>
+                    {endif}
+                    [[ translation : general : date.at :: Am ]] {todate(STAMP_CREATE,1)}
+                    {if FK_USER==ID_USER}
+                    -
+                    {if ID_CLUB_DISCUSSION}
+                    <a href="{uri_action(club-forum-new,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},edit,{ID_CLUB_DISCUSSION})}">
+                        {else}
+                        <a href="{uri_action(club-forum-new,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},edit_post,{FK_CLUB_DISCUSSION},{ID_CLUB_DISCUSSION_COMMENT})}">
+                            {endif}
+                            <i class="icon-edit"></i>
+                            [[ translation : marketplace : club.forum.edit :: bearbeiten ]]
+                        </a>
+                        {endif}
+                </div>
+                <div>
+                    {BODY}
+                {if STAMP_UPDATE}
+                    <br />
+                    <i class="muted small">
+                        [[ translation : marketplace : club.forum.last.edited :: Zuletzt bearbeitet am {todate(STAMP_UPDATE,1)} ]]
+                    </i>
+                    <br />
+                {endif}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

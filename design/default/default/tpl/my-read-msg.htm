@@ -1,0 +1,131 @@
+{if err}
+<p class="alert alert-block alert-danger">
+	<button type="button" class="close" data-dismiss="alert">×</button>
+    {if err_notfound}
+    <h4>[[ translation : marketplace : could.not.find.message :: Die Nachricht konnte nicht gefunden werden! ]]</h4>
+    {endif}
+    {if err_reply}
+		{err}
+    {endif}
+</p>
+{endif}
+{if !err_notfound}
+<h1>[[ translation : marketplace : read.message :: Nachricht lesen ]]</h1>
+
+<div class="row design-message-header expanded">
+  <div class="{if SHOW_CONTACT}col-md-6 design-message-header-title{else}col-md-12{endif}">    
+    <p>
+    {if FK_AD}
+      <strong>[[ translation : marketplace : read.message.related.to.ad :: Bezug auf Anzeige ]] #{FK_AD}:</strong><br>
+      {if FK_AD_NAME}
+      <a href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(FK_AD_NAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" target="_blank">
+        <i class="glyphicon glyphicon-link"></i>
+        {htm(FK_AD_NAME)}
+      </a>
+      {else}
+        <span class="text-error">Anzeige gelöscht</span>
+      {endif}
+    {endif}
+
+    {if FK_TRANS}
+      <strong>[[ translation : marketplace : read.message.related.to.transaction :: Bezug auf Transaktion ]] #{FK_TRANS}</strong>
+    {else}
+      {if FK_AD_ORDER}
+        <strong>[[ translation : marketplace : read.message.related.to.order :: Bezug auf Bestellung ]] #{FK_AD_ORDER}:</strong>
+        {if AD_ORDER_FK_USER_VK != ID_USER}
+          <a href="{uri_action(my-marktplatz-einkaeufe)}?ID_AD_ORDER={FK_AD_ORDER}" target="_blank">
+            <i class="glyphicon glyphicon-link"></i>
+            [[ translation : marketplace : order :: Bestellung ]] #{FK_AD_ORDER}
+          </a>
+        {else}
+          <a href="#" onclick="ShowDialog(ebiz_trader_baseurl + 'index.php?page=sale_details_seller&frame=ajax&ID_AD_ORDER={FK_AD_ORDER}','Bestellung Nr. {FK_AD_ORDER}', 800, 600); return false;">
+            <i class="glyphicon glyphicon-link"></i>
+            [[ translation : marketplace : order :: Bestellung ]] #{FK_AD_ORDER}
+          </a>
+        {endif}
+      {endif}
+    {endif}
+    </p>
+    <p>
+        <a href="{uri_action(my-msg)}">
+            <i class="glyphicon glyphicon-arrow-left"></i>
+            [[ translation : marketplace : here.to.the.overview :: Hier geht es zur Übersicht zurück ]]
+        </a>
+    </p>
+    <p>
+      <a href="{uri_action(my-read-msg,{ID_CHAT})}?DO=MARK_UNREAD" class="btn btn-warning">[[ translation : marketplace : mark.as.unread :: als ungelesen markieren ]]</a>
+      <a href="{uri_action(my-read-msg,{ID_CHAT})}?DO=DELETE" onclick="return confirm('[[ translation : marketplace : really.want.to.delete.message :: Möchten Sie die Nachricht wirklich löschen? ]]');" class="btn btn-default">[[ translation : marketplace : delete.message :: Nachricht löschen ]]</a>
+    </p>
+  </div>
+{if SHOW_CONTACT}
+  <div class="col-md-6 col-md-offset-6 design-message-header-contact">
+    <div class="panel-group" id="contactAccordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="contactPanelHeading">
+          <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#contactAccordion" href="#contactPanel" aria-expanded="true" aria-controls="collapseOne">
+              <i class="design-message-header-contact-icon"></i>
+              {if CONTACT_ID_CHAT_USER_VIRTUAL}
+                <!-- Anonymer Benutzer -->
+                <b>{htm(CONTACT_NAME)}</b>
+              {else}
+                <!-- Registrierter Benutzer -->
+                <b>{htm(CONTACT_VORNAME)} {htm(CONTACT_NACHNAME)}</b>
+              {endif}
+              <i class="pull-right">[[ translation : marketplace : conversation.contact :: Kontaktdaten ]]</i>
+            </a>
+          </h4>
+        </div>
+        <div id="contactPanel" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="contactPanelHeading">
+          <div class="panel-body">
+          {subtpl(tpl/{SYS_TPL_LANG}/my-msg-contact.htm,CONTACT_*)}
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      jQuery('#contactPanel')
+        .on('show.bs.collapse', function () {
+          jQuery(this).closest(".design-message-header").addClass("expanded");
+        })
+        .on('hide.bs.collapse', function () {
+          jQuery(this).closest(".design-message-header").removeClass("expanded");
+        })
+    </script>
+  </div>
+{endif}
+</div>
+
+<table class="table table-bordered table-striped table-condensed">
+	<tr>
+	    <th class="first">
+        	[[ translation : marketplace : conversation :: Konversation: ]] {if SUBJECT}{htm(SUBJECT)}{else}[[ translation : marketplace : no.subject :: kein Betreff ]]{endif}
+    	</th>
+	</tr>
+    <tr>
+        <th>
+            <form action="{uri_action(my-read-msg,{ID_CHAT})}" method="post" class="text-right">
+                <input type="hidden" name="ID_CHAT" value="{ID_CHAT}"/>
+                <input type="hidden" name="DO" value="REPLY"/>
+
+                <textarea class="form-control" id="BODY" name="BODY" rows="8" style="width:98%;"></textarea>
+                <br/>
+                <input type="submit" class="btn btn-success" value="[[ translation : marketplace : message.reply :: Antworten ]]"/>
+
+            </form>
+        </th>
+    </tr>
+	<tr>
+	    <td>
+        	<div class="chat-container" >
+            {if liste}
+               	{liste}
+           	{else}
+                <p>[[ translation : marketplace : no.message.available :: Keine Nachrichten vorhanden ]]</p>
+            {endif}
+	        </div>
+    	</td>
+    </tr>
+</table>
+
+{endif}

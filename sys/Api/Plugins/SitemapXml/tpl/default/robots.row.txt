@@ -1,0 +1,1 @@
+Sitemap: {uri_baseurl_full(cache/sitemap/sitemap_{ABBR}.xml)}

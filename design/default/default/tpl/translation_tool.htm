@@ -1,0 +1,220 @@
+<div class="translation-tool-dummy"></div>
+<script src="{uri_resource(/lib/jquery.highlightRegex/jquery.highlightregex.js)}"></script>
+<script>
+	var TranslationTool_initial = "";
+	var TranslationTool_changedFields = 0;
+
+	function TranslationTool_WindowHide() {
+		jQuery(".translation-tool").removeClass("windowsmall").removeClass("windowfull").addClass("windowhide");
+		jQuery(".translation-tool-dummy").height(jQuery(".translation-tool").outerHeight());
+		TranslationTool_SaveSettings("windowhide");
+	}
+	function TranslationTool_WindowSmall() {
+		jQuery(".translation-tool").removeClass("windowhide").removeClass("windowfull").addClass("windowsmall");
+		jQuery(".translation-tool-dummy").height(jQuery(".translation-tool").outerHeight());
+		TranslationTool_SaveSettings("windowsmall");
+	}
+	function TranslationTool_WindowFull() {
+		jQuery(".translation-tool").removeClass("windowhide").removeClass("windowsmall").addClass("windowfull");
+		jQuery(".translation-tool-dummy").height(jQuery(".translation-tool").outerHeight());
+		TranslationTool_SaveSettings("windowfull");
+	}
+
+	function TranslationTool_SaveSettings(setting) {
+		TranslationTool_createCookie('ebiz_trader_translation_tool.windowsettings', setting, 30);
+	}
+
+	function TranslationTool_LoadSettings() {
+		var s = TranslationTool_readCookie("ebiz_trader_translation_tool.windowsettings");
+		jQuery(".translation-tool").removeClass("windowsmall").removeClass("windowfull").removeClass("windowhide").addClass(s);
+		jQuery(".translation-tool-dummy").height(jQuery(".translation-tool").outerHeight());
+	}
+
+	function TranslationTool_createCookie(name, value, days) {
+		if (days) {
+			var date = new Date();
+			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+			var expires = "; expires=" + date.toGMTString();
+		} else var expires = "";
+		document.cookie = name + "=" + value + expires + "; path=/";
+	}
+
+	function TranslationTool_readCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
+	}
+
+	function TranslationTool_FormSubmit() {
+		var me = jQuery("#translation-tool-form");
+
+		TranslationTool_SetResultText("Bitte warten, die Übersetzung wird gespeichert", "");
+
+		jQuery.ajax({
+			url: me.attr('action'),
+			type: 'post',
+			data: me.serialize(),
+			dataType: 'json',
+			success: function(result) {
+				if(result.success) {
+					TranslationTool_initial = jQuery("#translation-tool-form").serialize();
+					TranslationTool_SetResultText("Übersetzung erfolgreich gespeichert. Es wurden "+result.data.affectedRows+" aktualisiert", "text-success");
+					jQuery(".translation-tool-content input").removeClass("translation-tool-changed");
+				} else {
+					TranslationTool_SetResultText("Es ist ein Fehler aufgetreten", "text-error");
+				}
+			},
+			error: function() {
+				TranslationTool_SetResultText("Es ist ein Fehler aufgetreten", "text-error");
+			}
+		});
+
+		return false;
+	}
+
+	function TranslationTool_FormDiscard() {
+		if(confirm("[[ translation : general : translation.tool.discard.changes :: Möchten Sie wirklich alle Änderungen verwerfen ? ]]")) {
+			jQuery("#translation-tool-form").get(0).reset();
+			jQuery(".translation-tool-content input").removeClass("translation-tool-changed");
+		}
+
+		return false;
+	}
+
+	function TranslationTool_SetResultText(text, status) {
+		jQuery(".translation-tool-result").html('<span class="'+status+'">'+text+'</span>');
+	}
+
+	function TranslationTool_HasChanged() {
+		return !(TranslationTool_initial === jQuery("#translation-tool-form").serialize());
+	}
+
+
+	function TranslationTool_Init() {
+		TranslationTool_initial = jQuery("#translation-tool-form").serialize();
+
+		jQuery(".translation-tool-content input").on('change', function() {
+			jQuery(this).addClass("translation-tool-changed");
+		});
+
+		jQuery(".translation-tool-content table input").on('focus', function() {
+			jQuery("body").highlightRegex();
+
+			var me = jQuery(this).parent().parent();
+
+			words = [];
+			words.push(me.find(".data-translation-fallback").text());
+			me.find("input").each(function(key, value) {
+				words.push(jQuery(value).val());
+			});
+
+			var regexp = new RegExp(words.join('|'), "ig");
+
+			jQuery("body").highlightRegex(regexp);
+
+
+		});
+		
+		// Iterate all translation rows
+		jQuery(".translation-tool-content table > tbody > tr").each(function() {
+			var row = this;
+			var firstTranslation = false;
+			// Iterate all input fields
+			jQuery(this).find("input").each(function() {
+				var currentTranslation = jQuery(this).val();
+				if (firstTranslation === false) {
+					// Store translation of first (primary) language for comparison
+					firstTranslation = currentTranslation;
+				} else {
+					// Compare with first (primary) translation
+					if (firstTranslation == currentTranslation) {
+						// Both languages have the equal translation, highlight as potential to-do
+						jQuery(row).css("color", "#FFFF00");
+					}
+				}
+			});
+		});
+
+		jQuery(".modal").removeAttr("tabindex");
+	}
+
+	function TranslationTool_Reload() {
+		var me = jQuery("#translation-tool-form");
+
+		TranslationTool_SetResultText("Bitte warten das Translation Tool wird neu geladen", "");
+
+		jQuery.ajax({
+			url: me.attr('action'),
+			type: 'post',
+			data: { DO: 'reload' },
+			success: function(result) {
+				jQuery(".translation-tool").html(jQuery(result).find(".translation-tool-container"));
+				TranslationTool_SetResultText("", "");
+				TranslationTool_Init();
+			},
+			error: function() {
+				TranslationTool_SetResultText("Es ist ein Fehler aufgetreten", "text-error");
+			}
+		});
+
+		return false;
+	}
+
+	jQuery(function() {
+		TranslationTool_LoadSettings();
+		TranslationTool_Init();
+	});
+
+</script>
+<div class="translation-tool windowhide">
+	<div class="translation-tool-container">
+		<div class="row">
+			<div class="col-xs-2">
+				<strong>Übersetzungstools</strong>
+			</div>
+			<div class="col-xs-6">
+				<div class="translation-tool-result"></div>
+			</div>
+			<div class="col-xs-4 buttons text-right">
+				<a href="#" title="Fenster klein" data-toggle="tooltip" onclick="TranslationTool_WindowHide(); return false;" class="js-tooltip "><i class="glyphicon glyphicon-remove-sign"></i></a>
+				<a href="#" title="Fenster mittel" data-toggle="tooltip" onclick="TranslationTool_WindowSmall(); return false;" class="js-tooltip "><i class="glyphicon glyphicon-resize-small"></i></a>
+				<a href="#" title="Fullscreen" data-toggle="tooltip" onclick="TranslationTool_WindowFull(); return false;" class="js-tooltip "><i class="glyphicon glyphicon-resize-full"></i></a>
+
+
+				<span class="hide-on-close">&nbsp; &nbsp;</span>
+
+				<a href="#" title="Datensätze neu laden" data-toggle="tooltip" onclick="TranslationTool_Reload(); return false;" class="js-tooltip hide-on-close"><i class="glyphicon glyphicon-refresh"></i></a>
+				<a href="#" title="Änderung zurücksetzen" data-toggle="tooltip" onclick="TranslationTool_FormDiscard(); return false;"  class="js-tooltip hide-on-close"><i class="glyphicon glyphicon-remove"></i></a>
+				<a href="#" title="Übersetzung speichern" data-toggle="tooltip" onclick="TranslationTool_FormSubmit(); return false;"  class="js-tooltip hide-on-close"><i class="glyphicon glyphicon-ok"></i></a>
+
+			</div>
+		</div>
+
+		<div class="translation-tool-content">
+			<form action="{uri_action(system-admin,translation-yml)}" method="post" id="translation-tool-form" onsubmit="TranslationTool_FormSubmit();">
+				<input type="hidden" name="DO" value="save">
+
+				<table class="table table-condensed">
+					<thead>
+						<tr>
+							<th>Key</th>
+							<th>Standardtext</th>
+							{lang_header}
+							<th>File</th>
+						</tr>
+					</thead>
+					{if TRANSLATIONS}
+						{TRANSLATIONS}
+					{else}
+						<tr><td colspan="3">keine Übersetzbaren inhalte gefunden</td></tr>
+					{endif}
+				</table>
+			</form>
+		</div>
+	</div>
+</div>

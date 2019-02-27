@@ -1,0 +1,182 @@
+{if !uid}
+	{if lost}
+        <div class="design-content-box align-center">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="align-center">[[ translation : general : login.lost.password :: Passwort vergessen ]]</h2>
+
+
+                    <form method="post" target="_top" action="{uri_action(login,lostpassword)}">
+                        {if psw_sent}
+                            <p>
+                                [[ translation : general : login.lost.password.sent :: Ein neuen Passwort wurde generiert und an Ihre bei uns gespeicherte Emailadresse gesendet. ]]
+                            </p>
+                            <p><a href="{uri_action(login)}">[[ translation : general : to.login :: Zum Login ]] </a></p>
+                        {endif}
+                        {if psw_confirm}
+                            <p>[[ translation : general : login.lost.password.confirmation.sent :: Wir haben ihnen soeben eine Bestätigungsemail zugeschickt. Klicken Sie in dieser bitte auf den Link, um Ihr Passwort zurückzusetzen. ]]</p>
+                        {endif}
+                        {if error}
+                            <div class="alert alert-danger">
+                                [[ translation : general : login.lost.password.errors.try.again :: Es sind Fehler aufgetreten. Bitte versuchen Sie es erneut. ]]
+                            </div>
+                        {endif}
+                        {if notfound}
+                            <div class="alert alert-danger ">
+                                <p>
+                                [[ translation : general : login.lost.password.error.user ::
+                                    Dieser Benutzer ist leider nicht bekannt!
+                                    Bitte überprüfen Sie Ihre Schreibweise!
+                                ]]
+                                </p>
+                            </div>
+                            <br />
+                        {endif}
+                        {if !psw_sent && !psw_confirm}
+                        <p class="align-center lead">
+                            [[ translation : general : login.lost.password.lead ::
+                                Geben Sie den Benutzernamen an, dessen Passwort Sie vergessen haben oder Ihre E-Mail Adresse.
+                            ]]
+                        </p>
+
+                        <label for="USER">
+                            <strong>[[ translation : general : username :: Benutzername ]]:</strong>
+                        </label>
+                        <input type="text" name="USER" id="USER" value="{htm(USER)}" />
+
+                        <p class="text-muted">[[ translation : general : or :: oder ]]</p>
+
+                        <label for="EMAIL">
+                            <strong>[[ translation : general : email.address :: E-Mail Adresse ]]:</strong>
+                        </label>
+                        <input type="text" name="EMAIL" id="EMAIL" value="{htm(EMAIL)}" />
+
+                        <div class="align-center">
+                            <p>
+                                <input name="submit" type="submit" class="btn" value="[[ translation : general : login.lost.password.submit :: Passwort anfordern ]]" />
+                            </p>
+                            <br />
+                            <p>
+                                [[ translation : general : login.lost.password.notice ::
+                                    Sollten Sie innerhalb der n&auml;chsten 5 Minuten keine Email von uns erhalten haben,
+                                    dann wenden Sie sich bitte an unseren Support.
+                                ]]
+                            </p>
+                            <p>
+                                <a href="{uri_action(login)}">[[ translation : general : to.login :: Zum Login ]]</a>
+                            </p>
+
+                        </div>
+                        {endif}
+                    </form>
+                </div>
+            </div>
+        </div>
+	{endif}
+	{if !lost}		
+		{if err}
+			<div class="alert alert-danger">
+				<h2>
+					[[ translation : general : error.an.error.occured :: Es ist ein Fehler aufgetreten! ]]
+				</h2>
+				 {err}
+			</div>
+		{endif}
+	{endif}
+	{if fail}
+		{if !check_admin}
+			<div class="alert alert-danger align-center">
+				<h3>
+					[[ translation : general : login.failed :: Login fehlgeschlagen ]]!
+				</h3>
+
+				<p>[[ translation : general : login.error.user.and.pass :: Bitte überprüfen Sie Benutzernamen und Passwort! ]]</p>
+			</div>
+		{else}
+			<div class="alert alert-info align-center">
+				<h3>[[ translation : general : login.error.locked :: Benutzeraccount noch nicht freigegeben ]]</h3>
+
+				<p class="">
+					[[ translation : general : login.error.locked.long ::
+                        Ihr Account wurde bislang noch nicht von einem Administrator geprüft und freigegeben.<br>
+					    Sie werden per E-Mail informiert, sobald Ihr Zugang freigeschaltet ist.
+                    ]]
+				</p>
+			</div>
+		{endif}
+	{endif}
+	{if true}
+        <div class="alert alert-success">
+            <h2>[[ translation : general : login.successful :: Login erfolgreich! ]]</h2>
+            <p>
+                [[ translation : general : login.successful.lead :: Sie sind jetzt als Benutzer angemeldet! ]]
+            </p>
+            <p><a href="/logout.php" title="Logout">[[ translation : general : logout :: Logout ]]!</a></p>
+        </div>
+	{else}
+		{if !lost}
+            <div class="design-content-box align-center">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <h2 class="text-center">[[ translation : general : login.user :: Als Benutzer anmelden ]]</h2>
+
+                        <p class="text-center lead">
+                            [[ translation : general : login.user.lead :: Bitte melden Sie sich mit Ihrem Benutzernamen / E-mail und Ihrem Passwort an. ]]
+                        </p>
+
+                        <form method="post" target="_top" action="{uri_baseurl_ssl(/login.php)}" class="">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6 col-md-pull-3 col-md-push-3 col-xs-pull-0 col-xs-push-0">
+                                    <input type="hidden" name="dummy" value="" />
+                                    {if prevpage}
+                                    <input type="hidden" name="redirect" value="{prevpage}" />
+                                    {endif}
+                                    <input type="hidden" name="forward" value="{curpage}" />
+                                    <div class="form-group">
+                                        <label for="loginname">[[ translation : general : username :: Benutzername ]]/ E-mail:</label>
+                                        <input class="form-control design-input-svg-user" type="text" name="user" id="loginname" maxlength="30" value="{htm(user)}" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="loginpass">[[ translation : general : password :: Passwort ]]:</label>
+                                        <input class="form-control design-input-svg-locked" type="password" name="pass" id="loginpass" maxlength="64" />
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="stay" value="1"> [[ translation : general : login.remember :: eingeloggt bleiben? ]]
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-default" type="submit" name="submit">
+                                        [[ translation : general : login.submit :: Einloggen ]]
+                                    </button>
+                                    <a href="{uri_action(register)}" class="btn btn-default">
+                                        [[ translation : marketplace : register.button :: Sind Sie neu? ]]
+                                    </a>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a class="newpw" href="{uri_action(login,lostpassword)}" title="[[ translation : general : login.lost.password.title :: Passwort anfordern ]]" >[[ translation : general : login.lost.password :: Passwort vergessen ]]?</a>
+                                        </li>
+                                    </ul>
+                                    {if social_media_login_providers && SOCIAL_MEDIA_LOGIN_ENABLED}
+                                    <div class="loginbox-social-media-login-providers">
+                                        {social_media_login_providers}
+                                    </div>
+                                    {endif}
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+		{endif}
+	{endif}
+{else}
+	<div class="alert alert-success">
+		<h2>[[ translation : general : login.successful :: Login erfolgreich! ]]</h2>
+		<p>
+            [[ translation : general : login.user.lead :: Bitte melden Sie sich mit Ihrem Benutzernamen und Ihrem Passwort an. ]]
+        </p>
+		<p><a href="/logout.php" title="Logout">[[ translation : general : logout :: Logout ]]!</a></p>
+	</div>
+{endif}

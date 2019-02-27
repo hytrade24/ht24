@@ -1,0 +1,64 @@
+            <div class="panel panel-primary clubBox">
+                <div class="panel-heading clubBoxName">
+                    [[ translation : marketplace : club :: Gruppe ]]: {htm(CLUB_NAME)}
+                </div>
+
+                <div class="panel-body">
+                    <div class="clubBoxImage">
+    					{if CLUB_LOGO}<img src="{thumbnail(CLUB_LOGO,195,300)}" />{else}<img src="{uri_resource(/images/marketplace/nopic_club.jpg)}" />{endif}
+                    </div>
+    
+                    <div class="clubBoxInfo">
+                        <dl class="dl-horizontal">
+                            <dt>[[ translation : marketplace : club.count.members :: Anzahl Mitglieder ]]:</dt>
+                            <dd>{CLUB_MEMBERS}</dd>
+    
+                            <dt>[[ translation : marketplace : club.leader :: Gruppen-Leiter ]]:</dt>
+                            <dd>
+    	                        <a title="Nachricht schreiben" href="#" onclick="SendMail({CLUB_FK_USER}, '[[ translation : marketplace : club :: Gruppe ]] {htm(CLUB_NAME)}', 0, 0, 0); return false;">
+    	                        	{htm(CLUB_OWNER_NAME)}
+    	                        	<i class="glyphicon glyphicon-envelope"></i>
+    							</a>
+                            </dd>
+                        </dl>
+                        <div class="clearfix"></div>
+    
+                    </div>
+                </div>
+                
+                <ul class="menu-box menu-box-striped">
+                {if CLUB_ID_CLUB}
+                    <li class="{if active_club}active{endif}">
+                        <a href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}">
+                            [[ translation : marketplace : club :: Gruppe ]]
+                        </a>
+                    </li>
+                {endif}
+                    <li class="{if active_club_member}active{endif}">
+                        <a href="{uri_action(club-member,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}">
+                            [[ translation : marketplace : club.members :: Mitglieder ]]
+                        </a>
+                    </li>
+                {if HAS_FORUM}
+                    <li class="{if active_club_forum}active{endif}">
+                        <a href="{uri_action(club-forum,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}">
+                            [[ translation : marketplace : club.forum :: Forum ]]
+                        </a>
+                    </li>
+                {endif}
+                {if HAS_CALENDAR}
+                    <li class="{if active_club_calendar}active{endif}">
+                        <a href="{uri_action(club-calendar,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}">
+                            [[ translation : marketplace : club.events :: Veranstaltungen ]]
+                        </a>
+                    </li>
+                {endif}
+                {if own_kats}
+                    <div class="ownKatTopContainer" style="max-height: 400px;overflow: auto;">
+                        <ul class="">
+                            {own_kats}
+                        </ul>
+                    </div>
+                {endif}
+                </ul>
+            </div>

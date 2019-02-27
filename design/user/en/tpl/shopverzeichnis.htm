@@ -1,0 +1,169 @@
+{startblock(script)}
+{parentblock()}
+
+<script type="text/javascript">
+    jQuery(function() {
+
+        dosearch = function() {
+            if(jQuery("#SEARCHURL").val() != "") { location.href = jQuery("#SEARCHURL").val(); }
+        }
+        presearch = function() {
+            if (jQuery('#CITY').val() != '' || jQuery('#ZIP').val() != '') {
+                getLatiLongi("", "", "", "", "", function() {
+                    dopresearch();
+                });
+            } else {
+                jQuery("#LATITUDE, #LONGITUDE").val('');
+                dopresearch();
+            }
+        }
+        dopresearch = function() {
+            jQuery.ajax({
+                url: jQuery("#presearch").attr("action"),
+                type: 'POST',
+                data: jQuery("#presearch").serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    jQuery('#ASB').val('Show hits ('+response["COUNT"]+')');
+
+                    if (response["COUNT"] > 0) {
+                        $('#SEARCHURL').val('{uri_baseurl(/)}shopverzeichnis/shopverzeichnis,,' + response["HASH"] + ',{SORT},{SORT_DIR},{VIEW_TYPE}.htm');
+                    }
+                    else {
+                        $('#SEARCHURL').val('');
+                    }
+                }
+            });
+        }
+
+        change_sort = function(elm) {
+            window.location.href = elm.value;
+        }
+
+        presearch();
+
+    })
+
+</script>
+
+{endblock(script)}
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+        <h1>Shop directory</h1>
+        <p class="lead">Overview over our registered vendors and users</p>
+        {if SHOW_MAP}
+        {subtpl(tpl/{SYS_TPL_LANG}/googlemaps.htm,type=useroverview,ident={MAP_IDENT},height=300)}
+        {endif}
+        <div class="advertisement">{adserver(,1780,)}</div>
+        <br /><br />
+
+        <div class="text-box design-location">
+            <!-- Ariadne/Location and sorting/view -->
+            <div class="row">
+                <div class="col-md-6 col-lg-7 clearfix">
+                    <div class="pull-left">
+                        <div class="design-ariande">
+                            <ol class="breadcrumb">
+                                <li>
+                                    <a href="{uri_baseurl(shopverzeichnis)}">
+                                        Shop directory
+                                    </a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <span class="text-muted">{SHOPS_COUNT} shops</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    <form method="get" action="{uri_baseurl(/index.php)}">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-9 col-md-8 col-xl-9 design-sort">
+                                <select class="form-control" name="ordering" onchange="change_sort(this);">
+                                    <option value="{uri_action(shopverzeichnis,{PAGE},{searchHash},STAMP_REG,DESC,{VIEW_TYPE})}" {if CUR_STAMP_REG_DESC}selected="selected"{endif}>Newest first</option>
+                                    <option value="{uri_action(shopverzeichnis,{PAGE},{searchHash},STAMP_REG,ASC,{VIEW_TYPE})}" {if CUR_STAMP_REG_ASC}selected="selected"{endif}>Oldest first</option>
+                                    <option value="{uri_action(shopverzeichnis,{PAGE},{searchHash},NAME,ASC,{VIEW_TYPE})}" {if CUR_NAME_ASC}selected="selected"{endif}>alphabetically ascending</option>
+                                    <option value="{uri_action(shopverzeichnis,{PAGE},{searchHash},NAME,DESC,{VIEW_TYPE})}" {if CUR_NAME_DESC}selected="selected"{endif}>Descending alphabet</option>
+                                    <!--<option value="{uri_action(shopverzeichnis,{PAGE},{searchHash},{SORT},{SORT_DIR},{VIEW_TYPE})}" {if CUR_SORT_COMMENTS_DESC}selected="selected"{endif}>Most comments first</option>
+                                    <option value="{uri_action(shopverzeichnis,{PAGE},{searchHash},{SORT},{SORT_DIR},{VIEW_TYPE})}" {if CUR_SORT_EVENTS_DESC}selected="selected"{endif}>Most events first</option>
+                                    <option value="{uri_action(shopverzeichnis,{PAGE},{searchHash},{SORT},{SORT_DIR},{VIEW_TYPE})}" {if CUR_SORT_GALLERY_DESC}selected="selected"{endif}>Most images first</option>-->
+                                </select>
+                            </div>
+                            <div class="col-xs-4 col-sm-3 col-md-4 col-xl-3 design-view">
+                                <div class="btn-group">
+                                    <a class="btn btn-default {if VIEW_TYPE_LIST}active{endif}" href="{uri_action(shopverzeichnis,{PAGE},{searchHash},{SORT},{SORT_DIR},LIST)}">
+                                        <span class="glyphicon glyphicon-th-list"></span>
+                                    </a>
+                                    <a class="btn btn-default {if VIEW_TYPE_BOX}active{endif}" href="{uri_action(shopverzeichnis,{PAGE},{searchHash},{SORT},{SORT_DIR},BOX)}">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        {if VIEW_TYPE_BOX}
+        <div class="design-row design-row-xs-2 design-row-sm-4 design-row-md-5">
+            {liste}
+        </div>
+        {endif}
+        {if VIEW_TYPE_LIST}
+        {liste}
+        {endif}
+    </div>
+    <div class="design-page-menu">
+        {if SHOW_SEARCH_MASK_USEROVERVIEW}
+        <form onsubmit="dosearch(); return false;" id="presearch" method="post" action="{uri_baseurl(/index.php)}">
+            <input type="hidden" name="page" value="presearch_useroverview_ajax" />
+            <input type="hidden" name="frame" value="ajax" />
+            <input type="hidden" name="LATITUDE" value="{LATITUDE}" id="LATITUDE" />
+            <input type="hidden" name="LONGITUDE" value="{LONGITUDE}" id="LONGITUDE" />
+            <input type="hidden" id="SEARCHURL" name="SEARCHURL" value="" />
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">Filter</div>
+
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input type="text" class="form-control" id="SEARCH_NAME" name="SEARCH_NAME" value="{htm(SEARCH_NAME)}" onkeyup="presearch();" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Country:</label>
+                        {select_country(SEARCH_FK_COUNTRY,,,,onchange="presearch();" id="COUNTRY" class="form-control")}
+                    </div>
+
+                    <div class="form-group">
+                        <label>ZIP: </label>
+                        <input type="text" class="form-control" id="ZIP" name="ZIP" value="{htm(SEARCH_PLZ)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>PLACE: </label>
+                        <input type="text" class="form-control" id="CITY" name="CITY" value="{htm(SEARCH_ORT)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>In area:</label>
+                        {lookup(UMKREIS,,, onchange="presearch();" class="form-control",F_ORDER ASC)}
+                    </div>
+
+                    <div class="form-group">
+                        <input onclick="dosearch()" class="btn btn-default" type="submit" id="ASB" value="View results" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        {endif}
+        {content_page(Werbung - Anlegen)}
+    </div>
+</div>
+
+
+{pager}     

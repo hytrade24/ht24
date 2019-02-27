@@ -1,0 +1,56 @@
+<h1>{htm(MAN_NAME)}</h1>
+{if MAN_T1}
+  {MAN_T1}
+{endif}
+
+<div data-hide-when-empty="true">
+  <h3>[[ translation : general : manufacturer.products.top :: Top-Angebote ]]</h3>
+  
+  <div>
+    {subtpl(tpl/{SYS_TPL_LANG}/ads_new.htm,ID_KAT={ID_KAT},ID_MAN={MAN_ID_MAN},CACHE_LIFETIME=103,COUNT=4,OFFSET=0,COUNT_PER_ROW=4,ONLY_TOP=2,TEMPLATE=row_box,HIDE_PARENT=1)}
+  </div>
+</div>
+
+{if liste}
+  <h2>
+  {if ID_KAT}
+    [[ translation : general : manufacturer.products.category.title :: Produkte vom Hersteller &quot;{htm(MAN_NAME)}&quot; aus der Kategorie <a href="{uri_action(marktplatz,{ID_KAT})}">&quot;{htm(KAT_V1)}&quot;</a> ]]
+  {else}
+    [[ translation : general : manufacturer.products.title :: Produkte vom Hersteller &quot;{htm(MAN_NAME)}&quot; ]]
+  {endif}
+  </h2>
+  
+  <table class="table table-condensed table-bordered table-striped">
+    <thead>
+      <tr>
+        <th></th>
+        <th>[[ translation : general : manufacturer.products.name :: Produktbezeichnung ]]</th>
+        <th>[[ translation : general : manufacturer.products.offers :: Angebote ]]</th>
+      </tr>
+    </thead>
+    <tbody>
+        {liste}
+    </tbody>
+  </table>
+
+  {pager}
+
+  {if SEARCH_COUNT > PRODUCT_LIMIT}
+  <div class="text-right">
+    <a href="{uri_action(marktplatz,{ID_KAT},Suchergebniss,{SEARCH_HASH})}" class="btn btn-primary">
+      [[ translation : general : manufacturer.products.search.result :: Alle {SEARCH_COUNT} Angebote zu diesem Hersteller anzeigen ]]
+    </a>
+  </div>
+  {endif}
+{endif}
+{if categories}
+  <h2>
+    [[ translation : general : manufacturer.products.title :: Produkte vom Hersteller &quot;{htm(MAN_NAME)}&quot; ]]
+  </h2>
+  <p>
+    [[ translation : general : manufacturer.categories.lead :: Bitte wählen Sie eine Produktkategorie des Herstellers, um eine Liste der verfügbaren Produkte zu erhalten. ]]
+  </p>
+  <ul>
+    {categories}
+  </ul>
+{endif}

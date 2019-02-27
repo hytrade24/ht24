@@ -1,0 +1,26 @@
+<table class="table table-bordered table-striped table-condensed userSalesList">
+	<tr>
+		<th>[[ translation : marketplace : advertisement.type :: Anzeigentyp ]]:</th>
+		<td>{htm(NAME)}</td>
+	</tr>
+	<tr>
+		<th>[[ translation : marketplace : advertisement.runtime :: Laufzeit ]]:</th>
+		<td>{DAYS} [[ translation : general : date.days :: Tage ]]</td>
+	</tr>
+</table>
+<br />
+
+<table class="table table-bordered table-striped table-condensed userSalesList">
+	<tr>
+		<th>[[ translation : marketplace : advertisement.category :: Kategorie ]]</th>
+		<th>[[ translation : marketplace : advertisement.price.per.day :: Tagespreis ]]</th>
+		<th>[[ translation : marketplace : advertisement.price.overall :: Gesamtpreis ]]</th>
+	</tr>
+	{liste}
+	<tr>
+		<td><b>[[ translation : marketplace : advertisement.overall :: Gesamt ]]</b></td>
+		<td>{topreis_ex(PRICE_DAY)} {CURRENCY_DEFAULT}</td>
+		<td>{topreis_ex(PRICE_ALL)} {CURRENCY_DEFAULT}</td>
+	</tr>
+</table>
+<br />

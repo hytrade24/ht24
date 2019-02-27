@@ -1,0 +1,26 @@
+{if USER_ID_USER}
+	<div class="row design-page-with-menu">
+        <div class="design-page-content">
+			<h1>[[ translation : marketplace : event.calendar :: Veranstaltungskalender ]]</h1>
+			<p class="lead">[[ translation : marketplace : find.interest.events :: Finden Sie interessante Veranstaltungen und Events ]]</p>
+	        {if SEARCH_HASH}{subtpl(tpl/{SYS_TPL_LANG}/googlemaps.htm,type=event,ident=h{SEARCH_HASH},height=300)}{endif}
+
+			<div class="advertisement-box">{adserver(,1780,)}</div>
+
+			{if VIEW_TYPE_LIST}
+				{subtpl(tpl/{SYS_TPL_LANG}/calendar_events_list.htm,SEARCH_*,HIDE_PAGER=1)}
+			{else}
+				{subtpl(tpl/{SYS_TPL_LANG}/calendar_events_cal.htm,SEARCH_*)}
+			{endif}
+        </div>
+		<div class="design-page-menu">
+            {subtpl(tpl/{SYS_TPL_LANG}/vendor_homepage_view_user.info.htm,*)}
+            {content_page(LINKS - Anbieter-Homepage)}
+        </div>
+	</div>
+	<script type="text/javascript">
+		function calendarEvent_order(elm) {
+			window.location.href = elm.value;
+		}
+	</script>
+{endif}

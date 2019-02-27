@@ -1,0 +1,10 @@
+<li>
+		{if PREVIEW}
+			<img src="{thumbnail(PREVIEW,20,20)}" data-src="{thumbnail(PREVIEW,20,20)}">
+		{else}
+			<img src="{uri_resource(/images/marketplace/nopic.jpg)}" style="width:20px;">
+		{endif}
+	<a href="{LINK}">
+		{ITEMNAME}
+	</a>
+</li>

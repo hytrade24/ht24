@@ -1,0 +1,21 @@
+<table id="pluginShippingGroupPriceTable" class="table table-condensed table-striped table-bordered">
+{if head_providers && body}
+  <thead>
+    <tr>
+      <th>Land / Region</th>
+      {head_providers}
+    </tr>
+  </thead>
+  <tbody>
+    {body}
+  </tbody>
+{else}
+  <tbody>
+    <tr>
+      <td>
+        Bitte wählen Sie mindestens einen Versand-Anbieter und ein Land aus.
+      </td>
+    </tr>
+  </tbody>
+{endif}
+</table>

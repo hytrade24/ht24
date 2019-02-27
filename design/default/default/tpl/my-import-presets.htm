@@ -1,0 +1,74 @@
+<h1>[[ translation : marketplace : import.presets.header :: Import Vorlagen ]]</h1>
+<p class="lead">[[ translation : marketplace : import.presets.header.sub :: Legen Sie die Struktur Ihrer Importdatensätze mit Import Vorlagen fest ]]</p>
+
+<p>
+	[[
+		translation : marketplace : import.presets.list.intro ::
+		Auf dieser Seite werden alle von Ihnen erstellten und zur Verfügung gestellten Import Vorlagen aufgelistet. Sie können diese Bearbeiten oder als
+		Grundlage für eine weitere Import-Vorlagen nutzen. Import Vorlagen stellen die Grundlage eines jeden Imports dar, indem Sie eine Schnittstelle zwischen
+		der Struktur Ihrer Quelldatei und der Struktur des Marktplatzes herstellen.
+	]]
+</p>
+
+{if MESSAGE}
+	<div class="alert alert-info">{htm(MESSAGE)}</div>
+{endif}
+
+{if MESSAGE_ERROR}
+	<div class="alert alert-danger">{htm(MESSAGE_ERROR)}</div>
+{endif}
+
+
+{if ACTIVE_SESSION}
+	<div class="alert alert-info">
+		[[ translation : marketplace : import.presets.active.session.info ::
+			Sie haben zur Zeit noch eine Vorlage mit dem Namen "{ACTIVE_SESSION_NAME}" in Bearbeitung. Möchten Sie den <a href="{uri_action(my-import-presets-edit)}">Prozess fortsetzen</a> oder <a href="{uri_action(my-import-presets-edit)}?DO=RESET">abbrechen</a>?
+		]]
+	</div>
+{endif}
+
+{if liste_global}
+
+{endif}
+
+
+
+<h3>[[ translation : marketplace : import.presets.own.header :: Meine eigenen Import Vorlagen ]]</h3>
+<p class="text-right">
+	<a href="{uri_action(my-import-presets-edit)}?DO=NEW_PRESET" class="btn btn-default">[[ translation : marketplace : import.presets.btn-new :: Neue Import Vorlage ]]</a>
+</p>
+
+<table class="table table-striped table-condensed">
+	<thead>
+		<th></th>
+		<th>[[ translation : marketplace : import.presets.presetname :: Bezeichnung ]]</th>
+		<th>[[ translation : marketplace : import.presets.presettype :: Vorlagentyp ]]</th>
+		<th>[[ translation : marketplace : import.presets.status :: Status ]]</th>
+		<th>[[ translation : marketplace : import.presets.datecreate :: Datum Erstellung ]]</th>
+		<th>[[ translation : marketplace : import.presets.dateupdate :: letzte Änderung ]]</th>
+	</thead>
+	{if liste_own}
+		{liste_own}
+	{else}
+		<tr><td colspan="6">[[ translation : marketplace : import.presets.no.presets.found :: Sie haben bislang noch keine Import Vorlage angelegt ]]</td></tr>
+	{endif}
+</table>
+
+<div class="design-content-box design-icon-legend">
+    <div class="pull-left">
+        <a class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></a>
+        = [[ translation : marketplace : my.import.presets.add.source :: Quelle hinzufügen ]]
+    </div>
+    <div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a>
+        = [[ translation : marketplace : my.import.presets.edit :: bearbeiten ]]
+    </div>
+	<div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-share-alt"></i></a>
+        = [[ translation : marketplace : my.import.presets.copy :: als Vorlage verwenden ]]
+    </div>
+	<div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+        = [[ translation : marketplace : my.import.presets.delte :: löschen ]]
+    </div>
+</div>

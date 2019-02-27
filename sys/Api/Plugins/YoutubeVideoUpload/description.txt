@@ -1,0 +1,2 @@
+Erlaubt es im Einstellprozess Videos hochzuladen, ohne diese zuvor bei Youtube hochgeladen zu haben. 
+Alle hochgeladenen Videos werden unter dem konfigurierten Youtube-Kanal veröffentlich.

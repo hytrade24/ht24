@@ -1,0 +1,64 @@
+<script type="text/javascript" src="{uri_baseurl(/lib/swfobject.js)}"></script>
+<script type="text/javascript">
+
+function ToggleStats(id_ad_user) {
+	if ($("#stats_content_"+id_ad_user+" iframe").attr("src") == "about:blank") {
+		// Not loaded yet
+		//$("#stats_content_"+id_ad_user).html("[[ translation : general : load.please.wait :: Bitte warten... ]]");
+		//$("#stats_content_"+id_ad_user).load(ebiz_trader_baseurl + "index.php?page=advertisement_stat&frame=ajax&id_ad_user="+id_ad_user);
+    jQuery("#stats_content_"+id_ad_user+" iframe").attr("src", "index.php?frame=stats&page=ui_stats&show=advertisement&w=660&bg=dff0d8&id_ad_user="+id_ad_user);
+	}
+	$("#stats_"+id_ad_user).toggle();
+}
+
+function PreviewCode(id_ad) {
+	var code = document.getElementById("code"+id_ad).value;	
+	ShowContentDialog(code, "[[ translation : marketplace : advertisement.preview.title :: Vorschau der Werbung ]]", "auto", "auto");
+}
+function showAdvertisementUserInfo(id_ad) {
+	ShowDialog("{uri_baseurl(/)}advertisement_info,"+id_ad+".htm?frame=ajax", "[[ translation : marketplace : advertisement :: Werbung ]]", 720, 400);
+}
+
+</script>
+
+<h1>
+    [[ translation : marketplace : advertisement.intro :: Werben Sie auf unserer Webseite ]]
+    <p class="lead">[[ translation : marketplace : advertisement.lead :: Zielgerichtete Werbung für Ihr Unternehmen ]]</p>
+</h1>
+
+<ul class="nav nav-tabs userTabs">
+	<li class="active">
+		<a href="{uri_action(advertisement_list)}" title="[[ translation : marketplace : advertisement.show.own :: Meine Bannerwerbung anzeigen ]]">
+            [[ translation : marketplace : advertisement.show.own :: Meine Bannerwerbung anzeigen ]]
+        </a>
+	</li>
+	<li>
+		<a href="{uri_action(advertisement)}" title="[[ translation : marketplace : advertisement.book :: Weitere Werbung buchen ]]">
+            [[ translation : marketplace : advertisement.book :: Weitere Werbung buchen ]]
+        </a>
+	</li>	
+</ul>
+
+
+<table class="table table-bordered table-striped table-condensed">
+	<thead>
+        <tr>
+            <th></th>
+            <th>[[ translation : marketplace : advertisement.position :: Bannerposition ]]</th>
+            <th>[[ translation : marketplace : advertisement.status.active :: Aktiv ]]?</th>
+            <th>[[ translation : marketplace : advertisement.status :: Status ]]</th>
+            <th>[[ translation : marketplace : advertisement.categories :: Kategorien ]]</th>
+            <th>[[ translation : general : date.from :: Von ]]</th>
+            <th>[[ translation : general : date.until :: Bis ]]</th>
+            <th>[[ translation : marketplace : advertisement.price :: Preis ]]</th>
+            <th>[[ translation : marketplace : advertisement.statistics :: Statistiken ]]</th>
+        </tr>
+    </thead>
+	{liste}
+</table>
+
+<p class="pull-right">
+    <a href="{uri_action(advertisement)}" class="btn btn-info">
+        <i class="glyphicon glyphicon-plus"></i> [[ translation : marketplace : advertisement.book :: Weitere Werbung buchen ]]
+    </a>
+</p>

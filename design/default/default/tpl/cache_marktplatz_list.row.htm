@@ -1,0 +1,36 @@
+{if B_VIS}
+^if !HIDE_EMPTY || tpl_market_article_count({ID_KAT})°
+<li class="{if in_path}active{endif}{if CHILDREN_HOVER} childsHover{endif}">
+    {if 0}
+        <a class="level{level}{if ID_KAT == ID_KAT_SEL} active{endif} has_icon" data-link-category="marktplatz,{ID_KAT},{urllabel(V1)}"
+           href="{uri_action(marktplatz,{ID_KAT},{urllabel(V1)})}" ^if KAT_LEFT_2_SET_FILTER_KAT°onclick="filterCategory({ID_KAT}); return false;"^endif° title="{htm(V2)}">
+            <img src="{uri_baseurl({ICON})}" style="padding: 0px; margin: -4px 0px; border: none;"/>
+            {htm(V1)}
+        </a>
+    {else}
+    <a class="level{level}{if ID_KAT == ID_KAT_SEL} active{endif}" data-link-category="marktplatz,{ID_KAT},{urllabel(V1)}"
+       href="{uri_action(marktplatz,{ID_KAT},{urllabel(V1)})}" ^if KAT_LEFT_2_SET_FILTER_KAT°onclick="filterCategory({ID_KAT});  return false;"^endif° title="{htm(V2)}">
+        {htm(V1)}
+        ^if SHOW_AD_COUNT_KAT°
+            ^market_article_count({ID_KAT},1,(^COUNT°))°
+        ^endif°
+    </a>
+    {endif}
+    {if CHILDREN}
+        <ul>
+            {CHILDREN}
+        </ul>
+    {endif}
+    {if CHILDREN_HOVER}
+        <div class="design-sub-menu">
+            <div class="heading">
+                {htm(V1)}
+            </div>
+            <ul>
+            {CHILDREN_HOVER}
+            </ul>
+        </div>
+    {endif}
+</li>
+^endif°
+{endif}

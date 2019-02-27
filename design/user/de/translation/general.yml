@@ -1,0 +1,8 @@
+search: Suche
+chat.new.ad: 'neue Anfrage{if PLURAL_COUNT!=1}n{endif}'
+chat.new.other: 'neue Nachricht{if PLURAL_COUNT!=1}en{endif}'
+ad.cart.error.quantity: 'Es sind leider nur noch {COUNT} Stück übrig. Bitte reduzieren Sie die gewünschte Menge.'
+ad.qrcode: 'QR-Code anzeigen'
+search.results.show: '({ALL_ADS}) Treffer anzeigen'
+club.invite: Gruppen-Einladungen
+country.group.others: Sonstige

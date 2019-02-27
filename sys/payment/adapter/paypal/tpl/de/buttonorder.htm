@@ -1,0 +1,5 @@
+{if ID_AD_ORDER}
+<a href="{uri_action(my-marktplatz-einkaeufe-action,PAY,{ID_AD_ORDER})}" class="btn btn-success">Jetzt bezahlen</a>
+{else}
+<a href="#error" class="btn btn-danger disabled">Paypal-Zahlung derzeit nicht verfügbar!</a>
+{endif}

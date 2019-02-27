@@ -1,0 +1,16 @@
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>#ID</th>
+			{COL_TH}
+		</tr>
+	</thead>
+	<tbody>
+		{if liste}
+			{liste}
+		{else}
+			<tr><td colspan="{COL_TH_COUNT}">[[ translation : marketplace : import.run.datasettable.no.records.found :: Noch keine Datensätze vorhanden ]]</td></tr>
+		{endif}
+	</tbody>
+</table>

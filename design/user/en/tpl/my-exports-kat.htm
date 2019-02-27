@@ -1,0 +1,58 @@
+<h1>Export category</h1>
+
+<p>
+    You can export your advertisement as CSV. Select your desired filter rules and press on
+    <em>export advertisements
+</em>.
+</p>
+
+<form method="post" action="{uri_baseurl(/index.php)}" id="exportFormular">
+    <input type="hidden" name="page" value="{curpage}"/>
+    <input type="hidden" name="FK_KAT" id="FORM_FK_KAT" value ="" />
+    <input type="hidden" name="DO" value="EXPORT" />
+
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr>
+            <td style="vertical-align: top; padding-top: 10px; ">Category table:</td>
+            <td>
+                <select class="form-control" name="KAT_TABLE">
+                    <option value="ad_master">Master Table</option>
+                    {TABLES}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Advert status:</td>
+            <td>
+                <select class="form-control" name="STATUS">
+                    <option value="">Display all</option>
+                    <option value="1">active displays</option>
+                    <option value="2">Expired adverts</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Filter:</td>
+            <td>
+                <select class="form-control" name="FILTER">
+                    <option value="">Do not use a filter</option>
+                    {FILTER}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Row name:</td>
+            <td>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="FIRST_LINE_COLUMN_NAMES" />
+                        Export row description
+                    </label>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="text-right">
+        <input type="submit" value="Export adverts" class="btn btn-success"/>
+    </div>
+</form>

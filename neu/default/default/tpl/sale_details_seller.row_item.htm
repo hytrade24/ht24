@@ -1,0 +1,53 @@
+<tr>
+	<td>
+		{if AD_ID}
+			<a href="{uri_action(marktplatz_anzeige,{AD_ID},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+				<img src="{if AD_SRC}{thumbnail_article({AD_ID},{AD_SRC},40,40,crop)}{else}{thumbnail({uri_resource(/images/marketplace/nopic.jpg)},40,40,crop)}{endif}" alt="{htm(PRODUKTNAME)}" />
+			</a>
+		{endif}
+	</td>
+	<td>
+		{if AD_ID}
+			<a href="{uri_action(marktplatz_anzeige,{AD_ID},{urllabel(AD_PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(AD_PRODUKTNAME)} ansehen">
+				<strong>{if AD_MANUFACTURER}{htm(AD_MANUFACTURER)} {endif}{htm(AD_PRODUKTNAME)} {htm(VARIANT)}</strong>
+			</a>
+            {if AVAILABILITY}
+			<p>
+	        	{if AVAILABILITY_DATE_TO}
+	        	Zwischen dem {todate(AVAILABILITY_DATE_FROM)} und dem {todate(AVAILABILITY_DATE_TO)}
+	        	{else}
+	        	Am {todate(AVAILABILITY_DATE_FROM)}
+	        	{endif} 
+	        	{if AVAILABILITY_TIME_FROM}ab {AVAILABILITY_TIME_FROM}Uhr{endif}
+			</p>
+            {endif}
+			<p class="marketplaceOrderItemDescription muted">
+				{htm(AD_BESCHREIBUNG)}
+			</p>
+            {if AVAILABILITY}
+            <a href="{uri_action(my-calendar-add,{ID_AD_SOLD})}" class="btn btn-default" title="Als Termin hinzufügen">
+            	<i class="glyphicon glyphicon-calendar"></i>
+            	Termin hinzufügen
+            </a>
+            {endif}
+		{else}
+			<p class="marketplaceOrderItemTitle">
+				{htm(PRODUKTNAME)}
+			</p>
+		{endif}
+	</td>
+	<td>
+		{if AD_ID}{AD_ID}{else}<span class="text-muted">n.v.</span>{endif}
+	</td>
+	<td>
+		{MENGE}
+	</td>
+	<td class="text-right">
+		{topreis(PREIS_STUECK)} {CURRENCY_DEFAULT}<br />
+        <span class="text-muted">{if MWST}inkl.{else}exkl.{endif} MwSt.</span>
+	</td>
+	<td class="text-right">
+		{topreis(PREIS)} {CURRENCY_DEFAULT}<br />
+        <span class="text-muted">{if MWST}inkl.{else}exkl.{endif} MwSt.</span>
+	</td>
+</tr>

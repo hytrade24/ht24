@@ -1,0 +1,111 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+	<form action="{uri_action(club-member-request)}?frame=ajax" method="post" id="clubMemberRequestFormular" class="form-horizontal modal-form design-club-join-request">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="modalDialogTitle">
+                [[ translation : marketplace : club.request.title :: Beitrittsanfrage ]]
+            </h3>
+		</div>
+
+		<div class="modal-body" id="modalDialogContent">
+
+			{if sent}
+				<script>
+					jQuery("#modalDialog .modal-footer [type=submit]").detach();
+				</script>
+				<p>
+                    [[ translation : marketplace : message.sent :: Ihre Nachricht wurde erfolgreich verschickt ]]
+				</p>
+			{else}
+
+				<input type="hidden" name="ID_CLUB" size="20" value="{CLUB_ID_CLUB}" />
+
+				{if err_failure}
+					<div class="alert alert-danger">
+						<p><strong>[[ translation : general : error.an.error.occurred :: Es ist ein Fehler aufgetreten! ]]</strong></p>
+
+						{if err_not_found}[[ translation : marketplace : club.request.error.group.not.found :: Die Gruppe wurde nicht gefunden. Bitte versuchen Sie die Beitrittsanfrage erneut. ]]{endif}
+						{if err_member_request_not_allowed}[[ translation : marketplace : club.request.error.group.not.allowed :: Eine Beitrittsanfrage ist bei dieser Gruppe nicht gestattet. ]]{endif}
+						{if err_member_already}[[ translation : marketplace : club.request.error.group.already.member :: Sie sind bereits Mitglied in dieser Gruppe. ]]{endif}
+						{if err_membership_request_already}[[ translation : marketplace : club.request.error.pending :: Eine Beitrittsanfrage ist derzeit noch offen oder eine vergangene Anfrage wurde abgelehnt. ]]{endif}
+
+					</div>
+				{else}
+					{if REQUEST_MEMBERSHIP}
+						<input type="hidden" name="do"  value="request_membership" />
+
+						{if err}
+							<div class="alert alert-danger">
+                            {if err_reason}
+                                [[ translation : marketplace : club.request.error.reason :: Bitte begründen Sie Ihre Beitrittsanfrage. Schreiben Sie hierfür mindestens 25 Zeichen. ]]
+                            {endif}
+							</div>
+						{endif}
+
+						<div class="form-group">
+							<label class="control-label design-input-label">[[ translation : marketplace : club :: Gruppe ]]:</label>
+
+							<div class="design-input-field">
+								<label class="form-control-static">
+									<div class="text-left">{CLUB_NAME}</div>
+								</label>
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="control-label design-input-label">[[ translation : marketplace : club.request.reason :: Begründen Sie Ihre Beitrittsanfrage ]]:</label>
+
+							<div class="design-input-field">
+								<textarea id="REASON" name="REASON" rows="10" class="form-control">{htm(REASON)}</textarea>
+							</div>
+						</div>
+					{endif}
+					{if REQUEST_MEMBERSHIP_SUCCESS}
+						<div class="alert alert-success">
+                            [[ translation : marketplace : club.request.success ::
+                                Ihre Beitrittsanfrage wurde an den Gruppenleiter weitergeleitet.
+                                Sie werden nach einer erfolgreichen Prüfung Ihrer Beitrittsanfrage informiert.
+                            ]]
+						</div>
+					{endif}
+					{if MEMBERSHIP_SUCCESS}
+						<div class="alert alert-success">
+                            [[ translation : marketplace : club.join.success ::
+                                Sie sind erfolgreich der Gruppe <strong>{CLUB_NAME}</strong> beigetreten.
+                            ]]
+						</div>
+					{endif}
+
+				{endif}
+
+			{endif}
+		</div>
+		<div class="modal-footer">
+			<a href="#" onclick="HideDialog(); return false;" class="btn btn-default">[[ translation : general : window.close :: Fenster schließen ]]</a>
+			{if show_send_button}
+				<input type="submit" class="btn btn-primary" value="[[ translation : marketplace : club.request.submit :: Beitrittsanfrage senden ]]">
+			{endif}
+		</div>
+	</form>
+	<script type="text/javascript">
+		jQuery("#clubMemberRequestFormular").submit(function(e) {
+
+			var data = jQuery("#clubMemberRequestFormular").serialize();
+			jQuery.ajax({
+				url: jQuery("#clubMemberRequestFormular").attr('action'),
+				type: 'POST',
+				data: data,
+				success: function(result) {
+					$('#modalDialog .modal-content').replaceWith( jQuery(result).find(".modal-content") );
+				}
+			});
+
+			e.preventDefault();
+			return false;
+		});
+	</script>
+  </div>
+</div>
+	

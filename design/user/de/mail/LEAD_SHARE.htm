@@ -1,0 +1,14 @@
+<p>
+    Sehr geehrte Damen und Herren,
+</p>
+<p>
+    Ihnen wurde von {{ user.getDisplayName() }} ein Lead empfohlen.<br />
+    {% if comments %}
+        Persönliche Mitteilung:<br />
+        {{ comments|nl2br }}
+    {% endif %}
+    
+    <hr>
+    
+    {% include "Hydromot::snippets/lead_info" %}
+</p>

@@ -1,0 +1,64 @@
+{if kats}
+<li class="design-subtpl design-marketplace-categories-embed dropdown{if EMBED_OPEN>0} open{endif}">
+    <a href="{uri_action(marktplatz)}" class="dropdown-toggle" title="[[ translation : marketplace : categories :: Kategorien ]]">
+        [[ translation : marketplace : categories :: Kategorien ]]
+        <div class="design-bars pull-right">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </div>
+    </a>
+    <ul id="katMenuEmbed" class="dropdown-menu menu-box menu-box-striped{if SPECIAL_MENU} menu-box-special{endif}">
+        {kats}
+        {if SHOW_AD_COUNT && FK_KAT == 1}
+        <li>
+            <p class="text-muted text-padded">
+                [[ translation : marketplace : ads.count :: Anzeigen im Marktplatz: {ARTICLE_COUNT} ]]
+            </p>
+        </li>
+        {endif}
+    </ul>
+    {if SPECIAL_MENU}
+    <script type="application/javascript" src="{uri_resource(/lib/jquery.menu-aim/jquery.menu-aim.js)}"></script>
+    <script type="application/javascript">
+        jQuery(function() {
+
+            var leaveMenuTimeout = false;
+            jQuery("#katMenuEmbed").menuAim({
+                activate: function(item) {
+                    jQuery(item).addClass("hover").addClass("hoverRecent");
+                },
+                deactivate: function(item) {
+                    jQuery(item).removeClass("hover").removeClass("hoverRecent");
+                },
+                enter: function(item) {
+                    if (leaveMenuTimeout !== false) {
+                        window.clearTimeout(leaveMenuTimeout);
+                        leaveMenuTimeout = false;
+                    }
+                    // Workaround for bug when deactivating a menu entry
+                    if (jQuery(item).hasClass("hoverRecent")) {
+                        jQuery(item).addClass("hover");
+                    }
+                },
+                exitMenu: function(menu) {
+                    if (leaveMenuTimeout !== false) {
+                        window.clearTimeout(leaveMenuTimeout);
+                        leaveMenuTimeout = false;
+                    }
+                    leaveMenuTimeout = window.setTimeout(function() {
+                        jQuery(menu).find(".hover").removeClass("hover");
+                        leaveMenuTimeout = false;
+                    }, 2000);
+                }
+            });
+            // Menü schließen wenn der Benutzer auf etwas anderes klickt
+            jQuery(document).on("click", function(event) {
+                jQuery("#katMenuEmbed").find(".hover").removeClass("hover");
+            });
+
+        });
+    </script>
+    {endif}
+</li>
+{endif}

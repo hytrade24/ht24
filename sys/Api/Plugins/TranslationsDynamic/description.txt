@@ -1,0 +1,1 @@
+Plugin für die Übersetzbarkeit von dynamischen (innerhalb von PHP-Skripten generierten) Übersetzungstexten.

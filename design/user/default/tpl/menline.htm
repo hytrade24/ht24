@@ -1,0 +1,277 @@
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W3JMD82');</script>
+<!-- End Google Tag Manager -->
+
+
+
+
+{if COOKIE_WARNING}
+{startblock(script)}
+    {parentblock()}
+    <script type="text/javascript" src="{uri_resource(js/jquery.cookieBar.js)}"></script>
+    <script type="text/javascript">
+        jQuery(function() {
+            jQuery('.cookie-warning').cookieBar({
+                closeButton: '.cookie-warning-close'
+            });
+        });
+    </script>
+{endblock(script)}
+<div class="cookie-warning">
+    <div class="container">
+        <a class="btn btn-default cookie-warning-close" href="#close">
+            [[ translation : general : cookie.notice.close :: x ]]
+        </a>
+        [[ translation : general : layout.logo.alt :: {site_name} ]]
+        [[ translation : general : cookie.notice ::
+            verwendet Cookies, um ihnen die bestmögliche Leistung zu gewährleisten. 
+            Wenn Sie weiterhin auf der Seite surfen stimmen Sie der <a href="{uri_action(datenschutzerklaerung)}">Cookie-Nutzung</a> zu. 
+        ]]
+    </div>
+</div>
+{endif}
+
+{startblock(script)}
+    {parentblock()}
+
+    <script type="text/javascript">
+    jQuery(function() {
+
+        LinkReminderLoad();
+
+        // Focus username field on click
+        jQuery("[data-toggle=dropdown][href=#login]").click(function(e) {
+            // Execute after event was handled (login dialog was shown)
+            window.setTimeout(function() {
+                // Focus username field
+                jQuery("#loginDropdownDialog input[name=user]").focus();
+            });
+        });
+        // Prevent login menu from closing on clicks
+        jQuery("#loginDropdownDialog").click(function(e) {
+            e.stopPropagation();
+        });
+    });
+    </script>
+{endblock(script)}
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W3JMD82"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="headerMenline">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapseMenline">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div>
+                <div class="men-name-phone">
+                    <div class="men-desc pull-left">
+                        <i class="fas fa-globe" aria-hidden="true"></i>
+                        <span class="desc">HYTRADE24</span>
+                    </div>
+                    <div class="men-desc pull-left">
+                        <i class="fas fa-phone" aria-hidden="true"></i>
+                        <span class="desc">+49 631 370 926 95</span>
+                    </div>
+					
+<!--					
+					
+<div id="google_translate_element"></div><script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({ pageLanguage: 'de', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false }, 'google_translate_element');
+}
+</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+					
+-->					
+					
+					
+                </div>
+            </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarCollapseMenline">
+        {if ID_USER || tpl_plugin(Leads,leadsUserId)}
+            <ul class="nav navbar-nav navbar-right">
+                {if ID_USER}
+                <li>
+                    <a title="Merkliste laden" href="{if ID_USER}{uri_action(merkliste)}{else}{uri_action(login)}{endif}" class="dropdown-toggle" data-toggle="dropdown">
+                        <!--<span class="glyphicon glyphicon-star"></span>-->
+						<i class="fas fa-star"></i>
+                        [[ translation : marketplace : watchlist :: Merkzettel ]] {if MLISTE}({MLISTE}){endif}
+                    </a>
+                    <div class="dropdown-menu watchlistWidget">
+                        <h4 class="pull-left">[[ translation : marketplace : watchlist :: Merkzettel ]]</h4>
+                        <small class="pull-right"><a href="{uri_action(merkliste)}">[[ translation : marketplace : watchlist.show.all :: alle anzeigen ]]</a></small>
+                        <div class="clearfix"></div>
+                        {if watchlist_list}
+                        {watchlist_list}
+                        {else}
+                        <span class="muted">[[ translation : marketplace : watchlist.watchlist.want.create :: Möchten Sie jetzt eine <a href="{uri_action(merkliste)}" >Merkliste</a> anlegen? ]]</span>
+                        {endif}
+                    </div>
+                </li>
+                {endif}
+                <li>
+                    <a title="[[ translation : marketplace : chat.menline.tooltip :: Zum Posteingang wechseln (Nachrichten/Ungelesen) ]]"
+                       href="#messages" class="dropdown-toggle" data-toggle="dropdown">
+                        <!--<i class="glyphicon glyphicon-envelope"></i>--> <i class="fas fa-envelope"></i> [[ translation : marketplace : chat :: Nachrichten ]]
+                        {if NEW_MAILS}<span class="badge {if NEW_MAILS_AD>0}badge-important{else}badge-warning{endif}">{NEW_MAILS}</span>{endif}
+                    </a>
+                    <div class="dropdown-menu design-messages-dropdown">
+                        <h4>[[ translation : marketplace : chat :: Nachrichten ]]</h4>
+                        <p>
+                        {if NEW_MAILS_AD || NEW_MAILS_OTHER || NEW_MAILS_LEADS}
+                            {if NEW_MAILS_AD}
+                            <a href="{if ID_USER}{uri_action(my-ad-msg)}{else}{uri_action(login){endif}">
+                                <span class="badge badge-important">{NEW_MAILS_AD}</span>
+                                [[ translation : marketplace : chat.new.ad : PLURAL_COUNT=NEW_MAILS_AD : neue Anfrage{if PLURAL_COUNT!=1}n{endif} zu Artikeln ]]
+                                <br />
+                            </a>
+                            {endif}
+                            {plugin(Leads,chats_new)}
+                            {if NEW_MAILS_OTHER}
+                            <a href="{if ID_USER}{uri_action(my-msg)}{else}{uri_action(login){endif}">
+                                <span class="badge badge-warning">{NEW_MAILS_OTHER}</span>
+                                [[ translation : marketplace : chat.new.other : PLURAL_COUNT=NEW_MAILS_OTHER : neue Nachricht{if PLURAL_COUNT!=1}en{endif} ]]
+                                <br />
+                            </a>
+                            {endif}
+                        {else}
+                            <span class="text-muted">
+                                [[ translation : marketplace : chat.new.none :: Keine neuen Nachrichten. ]]
+                            </span>
+                        {endif}
+                        </p>
+                    </div>
+                </li>
+                <li>
+                    {if ID_USER}
+                    <a title="[[ translation : marketplace : account.show.profile :: Mein Account anzeigen ]]" href="{uri_action(my-pages)}">
+                        <i class="fas fa-home"></i>
+                        [[ translation : marketplace : account.my.account :: Mein Account ]]
+                        {htm(NAME)}
+                    </a>
+                    {else}
+                    <a title="[[ translation : marketplace : account.show.profile :: Mein Account anzeigen ]]" href="{uri_baseurl(/leads/user/dashboard)}">
+                        <i class="fas fa-home"></i>
+                        [[ translation : marketplace : account.my.account :: Mein Account ]]
+                        {plugin(Leads,leadsUserName)}
+                    </a>
+                    {endif}
+                </li>
+                {if USE_CART}
+                <li class="headerWidgetContainer" id="ShoppingCartWidget">
+                    <a href="{uri_action(cart)}">
+                        <i class="fas fa-shopping-cart"></i>
+                        [[ translation : marketplace : ad.cart :: Warenkorb ]] (<span id="ShoppingCartWidgetCountItems">{if CART_COUNT_ITEMS}{CART_COUNT_ITEMS}{else}0{endif}</span>)
+                    </a>
+                </li>
+                {endif}
+                {if ID_USER}
+                <li>
+                    <a href="{uri_baseurl(/)}logout.php" title="[[ translation : marketplace : logout :: Logout ]]">
+                        <i class="fas fa-sign-out-alt"></i>
+                        [[ translation : marketplace : logout :: Logout ]]
+                    </a>
+                </li>
+                {else}
+                <li>
+                    <a href="{uri_baseurl(/leads/user/logout)}" title="[[ translation : marketplace : logout :: Logout ]]">
+                        <i class="fas fa-sign-out-alt"></i>
+                        [[ translation : marketplace : logout :: Logout ]]
+                    </a>
+                </li>
+                {endif}
+                {if languages}
+                <li>
+                    {languages}
+                </li>
+                {endif}
+            </ul>
+        {else}
+            {if languages}
+            <ul class="nav navbar-nav navbar-right">
+                {languages}
+            </ul>
+            {endif}
+            {if USE_CART}
+            <div class="design-navbar-buttons navbar-right">
+                <span class="design-navbar-buttons-cart" id="ShoppingCartWidget">
+                    <a class="btn btn-default" href="{uri_action(cart)}">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        [[ translation : marketplace : ad.cart :: Warenkorb ]] (<span id="ShoppingCartWidgetCountItems">{if CART_COUNT_ITEMS}{CART_COUNT_ITEMS}{else}0{endif}</span>)
+                    </a>
+                </span>
+            </div>
+            {endif}
+            
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="dropdown-toggle" href="#login" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-sign-in-alt"></i>
+                        [[ translation : marketplace : login.button :: Login ]]
+                    </a>
+                    <div id="loginDropdownDialog" class="dropdown-menu" role="menu">
+                        <form method="post" action="{uri_baseurl_ssl(/login.php)}" onsubmit="return loginSubmit(this);" class="form">
+                            <input name="forward" value="login" type="hidden" />
+                            <div class="form-group">
+                                <label for="loginUserInput">[[ translation : marketplace : login.username :: Benutzername / E-mail ]]</label>
+                                <input class="form-control design-input-svg-user" type="text" name="user" id="loginUserInput" />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="loginUserPass">[[ translation : marketplace : login.password :: Passwort ]]</label>
+                                <input class="form-control design-input-svg-locked" type="password" name="pass" id="loginUserPass" />
+                            </div>
+                
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="stay" value="1"> [[ translation : marketplace : login.stay.logged.in :: eingeloggt bleiben ? ]]
+                                </label>
+                            </div>
+                            <button class="btn btn-default" type="submit">
+                                [[ translation : marketplace : login.button :: Login ]]
+                            </button>
+                            <a href="{uri_action(register)}" class="btn btn-default">
+                                [[ translation : marketplace : register.button :: Sind Sie neu? ]]
+                            </a>
+
+
+
+                        </form>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a class="newpw" href="{uri_action(login,lostpassword)}">[[ translation : marketplace : login.lost.password.question :: Passwort vergessen? ]]</a>
+                            </li>
+                        </ul>
+                        {if social_media_login_providers && SOCIAL_MEDIA_LOGIN_ENABLED}
+                            <div class="loginbox-social-media-login-providers">
+                                {social_media_login_providers}
+                            </div>
+                        {endif}
+                
+
+                    </div>
+                </li>
+                <li>
+                    <a title="[[ translation : marketplace : register :: Registrieren ]]" href="{uri_action(register)}">
+                        <i class="fas fa-hand-point-right"></i>
+                        [[ translation : marketplace : register :: Registrieren ]]
+                    </a>
+                </li>
+            </ul>
+        {endif}
+        </div>
+	</div>
+</nav>

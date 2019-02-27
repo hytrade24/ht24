@@ -1,0 +1,33 @@
+<style type="text/css">
+  
+@media (min-width: 768px) {
+  .design-user-task-list .alert { min-height: 200px; }
+  .design-user-task-list .alert .design-user-task-list-content { min-height: 160px; }
+}
+  
+</style>
+
+<h2>[[ translation : general : plugin.user.task.list.heading :: Erste Schritte ]]</h2>
+
+<p>
+  [[ translation : general : plugin.user.task.list.intro :: 
+    Die folgenden Schritten sollten Sie noch durchgehen, um Ihren Account zu vervollständigen:
+  ]]
+  <div class="design-user-task-list design-row design-row-xs-1 design-row-sm-{COUNT_PER_LINE_SM} design-row-md-{COUNT_PER_LINE_MD}">
+    {liste}
+  </div>
+</p>
+
+<script type="text/javascript">
+
+jQuery(".design-user-task-list .alert [data-dismiss=alert]").click(function(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  var task = jQuery(this).closest(".alert");
+  var taskId = task.attr("data-id");
+  jQuery.post("index.php?pluginAjax=UserTaskList&pluginAjaxAction=resolveTask", "id="+encodeURIComponent(taskId), function(result) {
+    task.closest(".design-row-item").remove();
+  });
+});
+  
+</script>

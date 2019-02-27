@@ -1,0 +1,163 @@
+<link href="{uri_baseurl(/js/tree/skin/ui.dynatree.css)}" rel="stylesheet" type="text/css" />
+<script src="{uri_baseurl(/js/tree/jquery.dynatree.min.js)}" type="text/javascript"></script>
+
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+
+<script type="text/javascript">
+
+    jQuery(function() {
+        jQuery("#STREET, #CITY, #ZIP, #fk_country").change(function() {
+            if(jQuery("#STREET").val() != "" && jQuery("#ZIP").val() != "" && jQuery("#CITY").val() != "") {
+                getLatiLongi();
+            }
+        });
+
+        var categoryTree = {CATEGORY_JSON_TREE};
+        tree = $("#vendorCategoryTree").dynatree({
+            checkbox: true,
+            selectMode: 1,
+            autoCollapse: true,
+            debugLevel: 0,
+            children: categoryTree,
+            onSelect: function(select, node) {
+
+                var l = node.tree.getSelectedNodes().length;
+
+                if(l == 0) { node.select(true); }
+
+                var selKeys = jQuery.map(node.tree.getSelectedNodes(), function(item){
+                    jQuery("#FK_KAT").val(item.data.key);
+                });
+            }
+        });
+
+                                       
+        InitializeEditor(true);
+
+	});
+</script>
+
+{if error_noaddress}
+	<div class="alert alert-danger">
+		<h2>[[ translation : news : hint :: Hinweis ]]</h2>
+		<p>
+		[[ translation : news : hint.long :: Bitte ergänzen Sie folgende Angaben in ihrem <a href="{uri_action(my-profil)}">Profil</a> bevor Sie etwas veröffentlichen:<br />
+		<ul>
+			{if error_addr_first}<li>Vorname</li>{endif}
+			{if error_addr_last}<li>Nachname</li>{endif}
+			{if error_addr_street}<li>Stra&szlig;e</li>{endif}
+			{if error_addr_zip}<li>Postleitzahl</li>{endif}
+			{if error_addr_city}<li>Wohnort</li>{endif} ]]
+		</ul>
+		</p>
+	</div>
+{else}
+
+	{if ID_AD_REQUEST}
+		<h1>[[ translation : marketplace : request :: Gesuch ]]{PRODUKTNAME} [[ translation : general : edit.two :: bearbeiten ]]</h1>
+	{else}
+		<h1>[[ translation : marketplace : add.new.search :: Neues Gesuch hinzufügen ]]</h1>
+	{endif}
+
+	{if err}
+		<div class="alert alert-danger">
+			<h2>[[ translation : general : an.error.occurred :: Es ist ein Fehler aufgetreten! ]]</h2>
+			<p>
+				{if ERR_PRODUKTNAME}[[ translation : marketplace : pls.give.title :: Bitte geben Sie eine Bezeichnung an ]]<br>{endif}
+				{if ERR_FK_KAT}[[ translation : marketplace : pls.choose.category :: Bitte wählen Sie eine Kategorie ]]<br>{endif}
+				{if ERR_BESCHREIBUNG}[[ translation : marketplace : pls.give.description :: Bitte geben Sie eine Beschreibung an ]]<br>{endif}
+			</p>
+		</div>
+	{endif}
+	{if OK}<div class="alert alert-success">[[ translation : marketplace : succesfully.search.add :: Das Gesuch wurde erfolgreich eingetragen. ]]</div>{endif}
+
+
+	<form id="form_step2" method="post" action="{uri_baseurl(/index.php)}">
+		<input type="hidden" name="ID_AD_REQUEST" value="{ID_AD_REQUEST}" />
+		<input type="hidden" name="page" value="my-ad-request-neu" />
+		<input type="hidden" name="FK_KAT" id="FK_KAT" value="{FK_KAT}" />
+		<input type="hidden" name="DO" value="update" />
+
+        <input type="hidden" id="LATITUDE" name="LATITUDE" value="{LATITUDE}" />
+        <input type="hidden" id="LONGITUDE" name="LONGITUDE" value="{LONGITUDE}" />
+
+		<div class="well">
+			<legend>[[ translation : general : category :: Kategorie ]]</legend>
+
+			<table class="table table-bordered table-striped table-condensed">
+				<tr>
+					<td style="vertical-align: top;">
+						<strong>[[ translation : general : category :: Kategorie ]]<span class="text-error">*</span></strong>
+						<br/>
+						[[ translation : marketplace : category.of.search :: Kategorie des Gesuches ]]
+					</td>
+					<td>
+						<div id="vendorCategoryTree" style="overflow: auto; height: 200px;"></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="well">
+			<legend>[[ translation : marketplace : describe.search :: Beschreiben Sie das Gesuch ]]</legend>
+
+			<table class="table table-bordered table-striped table-condensed">
+				<tr>
+					<td>
+						<strong>[[ translation : general : label :: Bezeichnung ]]<span class="text-error">*</span></strong>
+						<br/>
+						[[ translation : marketplace : label.article :: Name / Bezeichnung des Artikels ]]
+					</td>
+					<td>
+						<input class="form-control" onchange="checkNeededFields(); validateInput(this);" onkeyup="validateInputLive(this);" id="PRODUKTNAME" name="PRODUKTNAME" value="{htm(PRODUKTNAME)}">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<strong>[[ translation : general : description :: Beschreibung ]]<span style="color: red;">*</span></strong>
+						<br/>
+						[[ translation : marketplace : full.article.description :: Vollst&auml;ndige Beschreibung des Artikels ]]
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="padding-bottom:5px;">
+						<textarea class="form-control" style="height: 280px;" onchange="checkNeededFields();validateInput(this);" id="BESCHREIBUNG" name="BESCHREIBUNG">{htm(BESCHREIBUNG)}</textarea>
+					</td>
+				</tr>
+
+
+                <tr>
+                    <td>Straße:</td>
+                    <td>
+                        <input class="form-control" type="text" name="STREET" id="STREET" value="{STREET}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>PLZ:</td>
+                    <td>
+                        <input class="form-control" type="text" name="ZIP" id="ZIP" value="{ZIP}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ort:</td>
+                    <td>
+                        <input class="form-control" type="text" name="CITY" id="CITY" value="{CITY}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Land:</td>
+                    <td>
+                        {select_country(,,,, class="form-control" onchange="" id="COUNTRY",----)}
+                    </td>
+                </tr>
+
+
+			</table>
+		</div>
+
+		<div class="text-right">
+			<input type="submit" class="btn btn-success" id="button_done" value="[[ translation : general : save :: Speichern ]]" />
+		</div>
+
+	</form>
+{endif}

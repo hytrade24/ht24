@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{strip_tags(pagetitle)} {if newstitle}- {newstitle}{endif} {site_name}</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    {metatags}
+    {content_page(header meta)}
+
+    {finalblock(head)}
+    {startblock(head)}
+        {parentblock()}
+        <!-- Header -->
+    {endblock(head)}
+
+    {content_page(CODE FUER WEBSTATISTIK)}
+
+    {subtpl(tpl/{SYS_TPL_LANG}/header_scripts.htm,*)}
+</head>
+<body>
+    {subtpl(tpl/{SYS_TPL_LANG}/menline.htm,*)}
+
+    {subtpl(tpl/{SYS_TPL_LANG}/design_header.htm,*,HIDE_SEARCH=1,HIDE_CATEGORY=1)}
+    
+    <div class="container">
+        <div class="row design-page-with-menu">
+            <div class="design-page-content">
+                <div id="content" class="content-{page}">
+                    {content}
+                </div>
+            </div>
+            <div class="design-page-menu">
+                <div class="panel panel-primary design-user-menu">
+                    <div class="panel-heading">
+                    {if ID_USER}
+                        <a href="{uri_action(my-pages)}" class="design-user-home" title="Home">
+                            <span class="pull-left">
+                                <img src="{uri_baseurl(/gfx/home-icon.png)}" height="24" width="24" alt="Home" />
+                                {NACHNAME},{VORNAME}
+                            </span>
+                            <span class="pull-right">[{NAME}]</span>
+                            <div class="clearfix"></div>
+                        </a>
+                                                
+                        <a href="{uri_action(my-marktplatz-neu)}" class="design-user-create-ad" title="Neue Anzeige einstellen">
+                            <img src="{uri_baseurl(/gfx/cart-add-icon.png)}" height="24" width="24" alt="[[ translation : marketplace : user.new.ad :: Neue Anzeige ]]" />
+                            <span>[[ translation : marketplace : user.new.ad :: Neue Anzeige ]]</span>
+                        </a>
+                    {else}
+                        <a href="/register/" class="design-user-register" title="[[ translation : marketplace : user.register.now :: Jetzt registrieren ]]">
+                            <i class="icon-hand-right icon-white"></i>
+                            <span>[[ translation : marketplace : user.register.now :: Jetzt registrieren ]]</span>
+                        </a>
+                    {endif}
+                    </div>
+                    <ul class="menu-box">
+                    {if tpl_has_permission(leads,R)}
+                        <li class="no-pad">
+                            <a href="/de/leads/user/dashboard">
+                                <i class="fa fa-bullhorn"></i>
+                                Leads
+                            </a>
+                        </li>
+                    {endif}
+                        <li class="no-pad active">
+                            <a href="">
+                                <i class="fa fa-cart-plus"></i>
+                                Marktplatz
+                            </a>
+                        </li>
+                        {navemb(1,2,1,leftneu)}
+                    </ul>
+                </div>
+                {if ID_USER}
+                 {content_page()}
+                {endif}
+            </div>
+        </div>
+    </div>
+
+    {subtpl(tpl/{SYS_TPL_LANG}/design_footer.htm,*)}
+
+    {SECTION_BODY_END}
+    {startblock(script)}
+        {parentblock()}
+        <!-- Javascript includes -->
+   	{endblock(script)}
+</body>
+</html>

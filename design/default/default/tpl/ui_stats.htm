@@ -1,0 +1,38 @@
+{if range}
+<div>
+  <a class="btn btn-xs {if range_day}btn-primary{else}btn-default{endif}" data-range="day" 
+     href="index.php?frame=stats&page=ui_stats&show={show}&range=day{if params}&{params}{endif}{if kunden_id}&kunden_id={kunden_id}{endif}"
+     target="_self">
+    [[ translation : general : statistic.range.day :: Pro Tag ]]
+  </a>
+  <a class="btn btn-xs {if range_month}btn-primary{else}btn-default{endif}" data-range="month" 
+     href="index.php?frame=stats&page=ui_stats&show={show}&range=month{if params}&{params}{endif}{if kunden_id}&kunden_id={kunden_id}{endif}"
+     target="_self">
+    [[ translation : general : statistic.range.month :: Pro Monat ]]
+  </a>
+  <a class="btn btn-xs btn-default pull-right" 
+     href="index.php?frame=stats&page=ui_stats&show={show}&range={if range_day}day{else}month{endif}{if params}&{params}{endif}{if kunden_id}&kunden_id={kunden_id}{endif}&recache=1"
+     target="_self">
+    [[ translation : general : statistic.recache :: Aktualisieren ]]
+  </a>
+</div>
+{endif}
+<div align="center" style="position: absolute; top: {if range}24px{else}0px{endif}; left: 0px; right: 0px; bottom: 0px;">
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="{uri_resource(/lib/jquery/jquery.js)}"></script>
+<script src="{uri_baseurl(js/Chart.bundle.min.js)}"></script>
+<script type="text/javascript">
+  
+{if CHART_JSON}
+  var myPieChart = new Chart("myChart", {CHART_JSON});
+{else}
+  var myPieChart = new Chart("myChart",{
+      type: '{CHART_TYPE}',
+      data: {DATA_JSON},
+      options: {OPTIONS}
+  });
+{endif}
+  
+</script>

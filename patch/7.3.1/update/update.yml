@@ -1,0 +1,21 @@
+-
+  'action': 'sqlRun'
+  'parameters':
+    'file': 'update.sql'
+-
+  'action': 'filesCopy'
+  'parameters':
+    'source': 'Dateien'
+    'backup': 'DateienBackup'
+
+    
+    
+-
+  'action': 'designCheck'
+  'parameters':
+    'language': 'de'
+    'backup': 'DateienBackup'
+-
+  'action': 'cacheClear'
+  'parameters':
+    'type': 'step_all'

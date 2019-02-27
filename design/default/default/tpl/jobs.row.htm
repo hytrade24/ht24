@@ -1,0 +1,24 @@
+<div class="design-job-row">
+    <div class="row">
+        <div class="col-xs-12 col-md-9">
+            <p>
+                <strong><a href="{uri_action(view_user_jobs,{USER_NAME},{USER_ID},{FK_KAT},1,{ID_JOB},{urllabel(V1)})}" title="[[ translation : marketplace : jobs.view.job :: {htm(V1)} ansehen ]]">{htm(V1)}</a></strong>
+            </p>
+            <p>
+                {htm(V2)}
+            </p>
+            <span>
+				[[ translation : marketplace : category :: Kategorie ]]:
+                <a title="mehr aus der Kategorie {htm(KAT_NAME)}" href="{uri_action(jobs,{FK_KAT},)}">{htm(KAT_NAME)}</a>
+            </span>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <dl class="dl-table-horizontal">
+                <dt>[[ translation : general : job.location.city :: Ort ]]:</dt>
+                <dd>{ZIP} {CITY}</dd>
+                <dt>[[ translation : marketplace : job.created.on :: eingestellt am ]]:</dt>
+                <dd>{todate(STAMP)}</dd>
+            </dl>
+        </div>
+    </div>
+</div>

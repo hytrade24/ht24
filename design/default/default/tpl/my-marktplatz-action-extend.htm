@@ -1,0 +1,101 @@
+{if PROCESSING}
+  {startblock(head)}
+    {parentblock()}
+    <!-- Redirect for next step -->
+    <meta http-equiv="refresh" content="1;url={uri_action_full(my-marktplatz,extend,process)}" />
+  {endblock(head)}
+  <h3>[[ translation : marketplace : ads.selected.extend :: Ausgewählte Anzeigen verlängern ]]</h3>
+  <p>
+  [[ translation : marketplace : ad.create.article.bulk.description.processing :: 
+      Bitte warten Sie während die Artikel verlängert werden ... ({PROCESS_DONE} von {PROCESS_COUNT} fertig)
+  ]]
+  </p>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{PROCESS_PERCENT}" aria-valuemin="0" aria-valuemax="100"
+         style="min-width: 3em; width: {PROCESS_PERCENT}%;">
+      {PROCESS_PERCENT}%
+    </div>
+  </div>
+  <div class="text-right">
+    <a href="{uri_action(my-marktplatz,extend,cancel)}" class="btn btn-danger" 
+       onclick="return confirm('[[ translation : marketplace : ads.selected.extend.cancel.confirm :: Möchten Sie den Verlängerung der Artikel wirklich abbrechen? ]]');">
+      [[ translation : marketplace : ads.selected.extend.cancel :: Abbrechen ]]
+    </a>
+  </div>
+{else}
+<form id="formActionBack" action="{REFERER}" method="POST">
+    {HIDDEN_INPUT_SELECTED}
+</form>
+<form method="POST">
+    <input type="hidden" name="action" value="{action}" />
+    <input type="hidden" name="SUCCESS" value="{SUCCESS}" />
+    <h3>[[ translation : marketplace : ads.selected.extend :: Ausgewählte Anzeigen verlängern ]]</h3>
+
+    <p>
+    [[ translation : marketplace : ads.selected.extend.long : COUNT=EXTEND_DAYS,DATE_UNTIL=NOTICE_FREE_UNTIL :
+        Die ausgewählten Anzeigen werden um die nachfolgend ausgewählbare Laufzeit verlängert. Ausgelaufene/Deaktivierte Anzeigen
+        werden dabei wieder aktiviert.
+    ]]
+    </p>
+    
+{if REQUIREMENTS}
+    <p>
+        [[ translation : marketplace : ads.extend.requirements :: Für das Verlängern der ausgewählten Anzeigen wird folgendes von ihrem Anzeigenpaket abgezogen: ]]
+        <ul>
+        {if REQUIREMENT_ADS}
+            <li>[[ translation : marketplace : ads.extend.requirement.ads :: {REQUIREMENT_ADS} Anzeigen ]]</li>
+        {endif}
+        {if REQUIREMENT_IMAGES}
+            <li>[[ translation : marketplace : ads.extend.requirement.images :: {REQUIREMENT_IMAGES} Bilder ]]</li>
+        {endif}
+        {if REQUIREMENT_VIDEOS}
+            <li>[[ translation : marketplace : ads.extend.requirement.videos :: {REQUIREMENT_VIDEOS} Videos ]]</li>
+        {endif}
+        {if REQUIREMENT_DOWNLOADS}
+            <li>[[ translation : marketplace : ads.extend.requirement.downloads :: {REQUIREMENT_DOWNLOADS} Downloads ]]</li>
+        {endif}
+        </ul>
+    </p>
+{endif}
+    
+{if ERROR}
+    <div class="alert alert-danger">
+        <strong>[[ translation : marketplace : ads.extend.error :: Fehler beim Verlängern der Anzeigen! ]]</strong>
+        <ul>
+            {ERROR}
+        </ul>
+    {if ERROR_ADS}
+        [[ translation : marketplace : ads.extend.error.ads.list :: Dies betrifft die folgenden Anzeigen: ]]
+        <ul>
+            {ERROR_ADS}
+        </ul>
+    {else}
+        [[ translation : marketplace : ads.extend.error.ads.count :: Dies betrifft {ERROR_ADS_COUNT} der ausgwählten Anzeigen. ]]
+    {endif}
+    </div>
+{else}
+    <div class="form-inline">
+        <b>[[ translation : marketplace : ads.selected.extend.runtime :: Laufzeit ]]:</b>
+        {lookup(LAUFZEIT,,, onchange="presearch();" class="form-control")}
+    </div>
+    <br />
+    
+    <div class="text-box">
+    {if count > 0}
+        <b>[[ translation : marketplace : ads.selected.extend.count :: Es werden {count} Anzeigen verlängert. ]]</b>
+    {else}
+        <b>[[ translation : marketplace : ads.selected.extend.count.none.affected :: Sie haben keine Anzeigen gewählt. ]]</b>
+    {endif}
+    </div>
+{endif}
+            
+    <div class="pull-right">
+        <button class="btn btn-danger" onclick="jQuery('#formActionBack').submit(); return false;">[[ translation : general : back :: Zurück ]]</button>
+    {if !ERROR && (count > 0)}
+        <button class="btn btn-success" name="confirm" value="1" type="submit"{if ERROR} disabled{endif}>
+            [[ translation : marketplace : ads.selected.extend.confirm :: Jetzt verlängern ]]
+        </button>
+    {endif}
+    </div>
+</form>
+{endif}

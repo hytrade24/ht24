@@ -1,0 +1,612 @@
+{if not_found}
+<p class="alert alert-danger">
+    <span class="lead">[[ translation : general : error :: Fehler ]]!</span>
+    <br />
+    [[ translation : marketplace : events.error.not.found ::
+        Die gewünschte Veranstaltung wurde leider nicht gefunden. Möglicherweise wurde Sie gelöscht oder Sie haben keine
+        Rechte diese Veranstaltung zu bearbeiten
+    ]]
+</p>
+{else}
+<link href="{uri_baseurl(/js/tree/skin/ui.dynatree.css)}" rel="stylesheet" type="text/css">
+<script src="{uri_baseurl(/js/tree/jquery.dynatree.min.js)}" type="text/javascript"></script>
+<script type="text/javascript" src="{uri_resource(/js/ajaxfileupload.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+
+<script type="text/javascript">
+
+    function handleCalendarImageUpload(input) {
+        if (confirm('[[ translation : marketplace : want.to.upload.data :: Möchten Sie die ausgewählte Datei hochladen ]]?')) {
+            UploadCalendarEventImage();
+        } else {
+            input.value = null;
+        }
+    }
+
+	function UploadCalendarEventImage() {
+		var formular = jQuery("#form_calendar_events");
+
+		// Start ajax upload
+		jQuery.ajaxFileUpload({
+			url: ebiz_trader_baseurl + 'index.php?page=my-calendar-events-add&DO=upload_image',
+			data: { CALENDAR_EVENT_SESSION_ID: formular.find('[name=CALENDAR_EVENT_SESSION_ID]').val() },
+			fileElementId: "UPLOAD_FILE",
+			secureuri: false,
+			dataType: 'json',
+			success: function() {
+				reloadCalenderEventImage();
+                // Rebind change event
+                jQuery("#UPLOAD_FILE").change(function() {
+                    handleCalendarImageUpload(this);
+                });
+			},
+			error: function() {
+				alert("[[ translation : marketplace : calendar.events.error.upload.failed :: Upload fehlgeschlagen! ]]");
+                // Rebind change event
+                jQuery("#UPLOAD_FILE").change(function() {
+                    handleCalendarImageUpload(this);
+                });
+			}
+		});
+	}
+
+	function reloadCalenderEventImage() {
+		var formular = jQuery("#form_calendar_events");
+
+		// Start ajax upload
+		jQuery.ajax({
+			url: ebiz_trader_baseurl + 'index.php?page=my-calendar-events-add&DO=fetch_images',
+			data: formular.serialize(),
+			type: 'post',
+			success: function(response) {
+				jQuery("#list_images").html(response);
+			}
+		});
+	}
+
+	function deleteCalendarEventImage(imageId) {
+		var formular = jQuery("#form_calendar_events");
+
+		// Start ajax upload
+		jQuery.ajax({
+			url: ebiz_trader_baseurl + 'index.php?page=my-calendar-events-add&DO=delete_image&ID_IMAGE='+imageId,
+			data: formular.serialize(),
+			type: 'post',
+			success: function(response) {
+				reloadCalenderEventImage();
+			}
+		});
+	}
+
+	function UploadCalendarEventVideo() {
+		var formular = jQuery("#form_calendar_events");
+
+		// Start ajax upload
+		jQuery.ajax({
+			url: ebiz_trader_baseurl + 'index.php?page=my-calendar-events-add&DO=upload_video',
+			data: {
+				CALENDAR_EVENT_SESSION_ID: formular.find('[name=CALENDAR_EVENT_SESSION_ID]').val(),
+				VIDEO_URL: formular.find('input[name=youtube_url]').val()
+			},
+			dataType: 'json',
+			success: function(result) {
+				reloadCalenderEventVideo();
+			},
+			error: function() {
+                alert("[[ translation : marketplace : calendar.events.error.upload.failed :: Upload fehlgeschlagen! ]]");
+			}
+		});
+	}
+
+	function reloadCalenderEventVideo() {
+		var formular = jQuery("#form_calendar_events");
+
+		// Start ajax upload
+		jQuery.ajax({
+			url: ebiz_trader_baseurl + 'index.php?page=my-calendar-events-add&DO=fetch_videos',
+			data: formular.serialize(),
+			type: 'post',
+			success: function(response) {
+				jQuery("#list_videos").html(response);
+			}
+		});
+	}
+
+	function deleteCalendarEventVideo(videoId) {
+		var formular = jQuery("#form_calendar_events");
+
+		// Start ajax upload
+		jQuery.ajax({
+			url: ebiz_trader_baseurl + 'index.php?page=my-calendar-events-add&DO=delete_video&ID_VIDEO='+videoId,
+			data: formular.serialize(),
+			type: 'post',
+			success: function(response) {
+				reloadCalenderEventVideo();
+			}
+		});
+	}
+
+	function submitCalendarEvent() {
+
+	}
+
+	function updateCalendarEventRefTyp() {
+		if(jQuery("#form_calendar_events [name=FK_REF_TYPE]:checked").val() != 'club') {
+			jQuery('#calendarEventRefTypeCalendarEventContainer').addClass("disabled");
+			jQuery('#calendarEventRefTypeCalendarEventContainer select').attr('disabled', true);
+			jQuery('.onlyVisibleToGroups').hide();
+		} else {
+			jQuery('#calendarEventRefTypeCalendarEventContainer').removeClass("disabled");
+			jQuery('#calendarEventRefTypeCalendarEventContainer select').attr('disabled', false);
+			jQuery('.onlyVisibleToGroups').show();
+		}
+	}
+
+	function saveCalendarEventAndForward(section, nextStep) {
+		var formular = jQuery("#form_calendar_events");
+
+		if (section == "type") {
+			var type = formular.find("input[name=FK_REF_TYPE]:checked").val();
+			if (type == "club") {
+				jQuery('.onlyVisibleToGroups').show();
+                jQuery('.isModerator').hide();
+			} else {
+				jQuery('.onlyVisibleToGroups').hide();
+                jQuery('.isModerator').hide();
+			}
+		} else if (section == "description") {
+			jQuery("#form_calendar_events [name=DESCRIPTION]").val(tinyMCE.get('DESCRIPTION_EDITOR').getContent());
+		}
+
+		jQuery.ajax({
+			url: ebiz_trader_baseurl + 'index.php?page=my-calendar-events-add&DO=save_'+section,
+			data: formular.serialize(),
+			type: 'POST',
+			dataType: 'json',
+			success: function(result) {
+			    // Hide previous errors
+                jQuery("#form_calendar_events .alert-danger").hide();
+                jQuery(".control-group.error").removeClass("error");
+                // Check result
+				location.hash = "test";
+				if(result.success) {
+                    if (result.data.IS_MODERATOR) {
+                        if (type == "club") {
+                            jQuery('.isModerator').show();
+                        }
+                        else {
+                            jQuery('.isModerator').hide();
+                        }
+                    }
+					StepsShow(nextStep);
+				} else {
+					if (typeof result.errors != "undefined") {
+                        for(var i=0,j=result.errors.length; i<j; i++){
+                        	var arError = result.errors[i].split("#");
+                        	if (arError.length == 1) {
+								jQuery("#CONTROLS_"+arError[0]).parents(".control-group").addClass("error")
+									.find(".alert-danger").show();
+                        	} else {
+	                            jQuery("#CONTROLS_"+arError[0]).parents(".control-group").addClass("error")
+	                            	.find(".alert-danger[data-ident="+arError[1]+"]").show();
+                        	}
+                        };
+					} else {
+                        var errorId = (typeof result.error == "undefined" ? "default" : result.error);
+                        jQuery("#step_"+section+"_error_"+errorId).show();
+					}
+				}
+				location.hash = "form_top";
+			}
+		})
+	}
+
+	function reloadCalendarEventSearchWordList(el, lang) {
+		jQuery.ajax({
+		    url: ebiz_trader_baseurl + 'my-pages/my-calendar-events-add.htm',
+		    data: {
+		    	'DO': 'fetch_searchwords',
+		    	'CALENDAR_EVENT_SESSION_ID': '{CALENDAR_EVENT_SESSION_ID}',
+		    	'LANG': lang
+		    },
+		    type: 'POST',
+	        success: function(result) {
+	            jQuery(el).html(result);
+	        }
+	   });
+	}
+
+	function addCalendarEventSearchword(lang) {
+		var formular = jQuery("#calendarEventSearchWordFormular"+lang);
+		var word = formular.find("input[name=SEARCHWORD]").val();
+		jQuery.post(ebiz_trader_baseurl + 'my-pages/my-calendar-events-add.htm', {
+			'CALENDAR_EVENT_SESSION_ID': '{CALENDAR_EVENT_SESSION_ID}',
+			'DO': 'add_searchword',
+			'WORD': word,
+			'LANG': lang
+		}, function(result) {
+			jQuery(formular).find("input[name=SEARCHWORD]").val('');
+			reloadCalendarEventSearchWordList('#calendarEventSearchList' + lang, lang);
+		});
+		return false;
+	}
+
+	function remCalendarEventSearchword(button, lang) {
+		var word = jQuery(button).attr('rel');
+
+		if(confirm("[[ translation : marketplace : calendar.events.keyword.remove.confirm : WORD='"+word+"' : Möchten Sie das Schlagwort {WORD} wirklich löschen? ]]")) {
+			jQuery.ajax({
+				url: ebiz_trader_baseurl + 'my-pages/my-calendar-events-add.htm',
+				data: {
+					'DO': 'del_searchword',
+					'CALENDAR_EVENT_SESSION_ID': '{CALENDAR_EVENT_SESSION_ID}',
+					'SEARCHWORD': word,
+					'LANG': lang
+				},
+				dataType: 'json',
+				type: 'POST',
+				success: function(result) {
+					reloadCalendarEventSearchWordList('#calendarEventSearchList' + lang, lang);
+				}
+			})
+		}
+		return false;
+	}
+
+	function SelectEventType(FK_REF_TYPE, FK_REF) {
+		var radioType = jQuery("#form_calendar_events input[name=FK_REF_TYPE][value="+FK_REF_TYPE+"]");
+		if (radioType.length > 0) {
+			var optionRef = jQuery("#form_calendar_events select[name=FK_REF] option[value="+FK_REF+"]");
+			radioType.prop("checked", true);
+			updateCalendarEventRefTyp();
+			optionRef.prop("selected", true);
+			saveCalendarEventAndForward('type', 2);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	jQuery(function() {
+
+
+
+		var categoryTree = {CATEGORY_JSON_TREE};
+		var categoryTreeMaxSelects = 1;
+
+
+		tree = $("#calendarEventCategoryTree").dynatree({
+			checkbox: true,
+			classNames: {checkbox: "dynatree-radio"},
+			selectMode: 1,
+
+			autoCollapse: true,
+			debugLevel: 0,
+			children: categoryTree,
+			onSelect: function(select, node) {
+				jQuery("#form_calendar_events [name=FK_KAT]").val(node.data.key);
+			}
+		});
+
+		jQuery("#STAMP_RANGE").datepicker({
+				clearBtn: true,
+				keepEmptyValues: true,
+				format: 'dd.mm.yyyy',
+				inputs: jQuery("#STAMP_START_DATE,#STAMP_END_DATE")
+		});
+
+		InitializeEditor(true, "DESCRIPTION_EDITOR");
+		updateCalendarEventRefTyp();
+
+    	jQuery("#calendarEventFormularSearchWordTab").tabs();
+		{if TYPE_SET}
+		SelectEventType('{FK_REF_TYPE}', {int(FK_REF)});
+		{endif}
+
+        // Bind change event for image uploads
+        jQuery("#UPLOAD_FILE").change(function() {
+            handleCalendarImageUpload(this);
+        });
+	});
+</script>
+
+<h1>
+	{if ID_CALENDAR_EVENT}
+	[[ translation : news : edit.event :: Veranstaltung bearbeiten: {htm(TITLE)} ]]
+	{else}
+	[[ translation : news : add.event :: Veranstaltung hinzufügen ]]
+	{endif}
+	<p class="lead">[[ translation : news : make.other.user.attentive :: Machen Sie andere Benutzer auf Ihre Veranstaltungen und Termine aufmerksam ]]</p>
+</h1>
+
+
+<div class="progress-description progress-4 clearfix">
+	<div class="progress-desc-1 pull-left active">
+		<p>[[ translation : general : typ :: Typ ]]</p>
+	</div>
+	<div class="progress-desc-2 pull-left pending">
+		<p>[[ translation : general : category :: Kategorie ]]</p>
+	</div>
+	<div class="progress-desc-3 pull-left pending">
+		<p>[[ translation : general : description :: Beschreibung ]]</p>
+	</div>
+	<div class="progress-desc-4 pull-left pending">
+		<p>[[ translation : general : pics.and.videos :: Bilder und Videos ]]</p>
+	</div>
+</div>
+<div class="progress progress-4">
+	<div class="progress-step-1 progress-bar progress-bar-warning">
+		<strong>[[ translation : general : step.one :: Schritt 1 ]]</strong>
+	</div>
+	<div class="progress-step-2 progress-bar progress-bar-danger">
+		<strong>[[ translation : general : step.two :: Schritt 2 ]]</strong>
+	</div>
+	<div class="progress-step-3 progress-bar progress-bar-danger">
+		<strong>[[ translation : general : step.three :: Schritt 3 ]]</strong>
+	</div>
+	<div class="progress-step-4 progress-bar progress-bar-danger">
+		<strong>[[ translation : general : step.four :: Schritt 4 ]]</strong>
+	</div>
+</div>
+
+<a name="form_top"></a>
+<form id="form_calendar_events" action="{uri_action(my-calendar-events-add)}" method="post" enctype="multipart/form-data" class="form-horizontal design-event-add-form">
+	<input type="hidden" name="action" value="save" />
+	<input type="hidden" name="ID_CALENDAR_EVENT" value="{ID_CALENDAR_EVENT}" />
+	<input type="hidden" name="CALENDAR_EVENT_SESSION_ID" value="{CALENDAR_EVENT_SESSION_ID}">
+	<input type="hidden" name="FK_KAT" value="{FK_KAT}">
+	<input type="hidden" name="DESCRIPTION" value="{htm(DESCRIPTION)}">
+
+	<div class="input-step input-step-1">
+		<div class="design-content-box">
+			<legend style="font-size: 20px; font-weight: bold;">
+				[[ translation : marketplace : typ.event :: 1. Typ der Veranstaltung ]]
+			</legend>
+			<p>
+				[[ translation : marketplace : choose.if.you.want :: Bitte wählen Sie, ob Sie eine Firmenveranstaltung oder eine Gruppenveranstaltung veröffentlichen möchten. ]]
+			</p>
+			<p id="step_type_error_default" class="alert alert-danger" style="display: none;">
+				[[ translation : marketplace : click.for.continue :: Sie müssen den Typ der Veranstaltung auswählen um fortzufahren. ]]
+			</p>
+
+			<div class="radio">
+				<label>
+					<input name="FK_REF_TYPE" type="radio" required="required" onchange="updateCalendarEventRefTyp()" value="user" {if FK_REF_TYPE_USER}checked="checked"{endif}>
+	
+					<strong>[[ translation : marketplace : firm.event :: Firmenveranstaltung ]]</strong>
+					<br>
+					[[ translation : marketplace : event.info :: Die Veranstaltung wird im Namen Ihrer Firma und innerhalb Ihres Anbieterprofils veröffentlicht. ]]
+				</label>
+			</div>
+
+			<div class="radio">
+				<label>
+					<input name="FK_REF_TYPE" type="radio" required="required" onchange="updateCalendarEventRefTyp()" value="club" {if FK_REF_TYPE_CLUB}checked="checked"{endif} {if !liste_clubs}disabled="disabled"{endif}>
+	
+					<strong>[[ translation : marketplace : group.event :: Gruppenveranstaltung ]]</strong>
+					<br>
+					[[ translation : marketplace : event.in.group :: Die Veranstaltung wird in einer Ihrer Gruppen veröffentlicht. ]]
+				</label>
+			</div>
+
+			{if liste_clubs}
+			<div class="form-group" id="calendarEventRefTypeCalendarEventContainer">
+				<label class="control-label design-input-label"><strong>Gruppe:</strong></label>
+				<div class="design-input-field">
+					<select class="form-control" name="FK_REF">
+						{liste_clubs}
+					</select>
+				</div>
+			</div>
+			{endif}
+		</div>
+		<p class="pull-right">
+			<input type="button" class="btn btn-success" onclick="saveCalendarEventAndForward('type', 2);" value="[[ translation : general : continue :: Weiter ]]" />
+		</p>
+	</div>
+
+	<div class="input-step input-step-2 display-none">
+		<div class="design-content-box">
+			<legend style="font-size: 20px; font-weight: bold;">
+				2. [[ translation : general : calendar.event.add.category :: Kategorie ]]
+			</legend>
+			<p>
+				[[ translation : marketplace : calendar.event.add.category.lead :: Wählen Sie in diesem Schritt eine Kategorie, in der Ihre Veranstaltung zu finden sein soll. ]]
+			</p>
+			<p id="step_kat_error_default" class="alert alert-danger" style="display: none;">
+				[[ translation : marketplace : calendar.event.add.category.required :: Sie müssen eine Kategorie auswählen um fortzufahren. ]]
+			</p>
+
+			<div>
+				<div id="calendarEventCategoryTree" style="overflow: auto; max-height: 400px;"></div>
+			</div>
+
+		</div>
+		<p class="pull-right">
+			<input type="button" class="btn btn-default" onclick="StepsShow(1);" value="[[ translation : general : back :: Zurück ]]" />
+			<input type="button" class="btn btn-success" onclick="saveCalendarEventAndForward('kat', 3);" value="[[ translation : general : continue :: Weiter ]]" />
+		</p>
+	</div>
+
+	<div class="input-step input-step-3 display-none">
+		<div class="design-content-box">
+			<legend style="font-size: 20px; font-weight: bold;">
+				3. [[ translation : general : description :: Beschreibung ]]
+			</legend>
+
+			<div class="form-group">
+				<label class="control-label design-input-label">[[ translation : marketplace : event.title :: Titel der Veranstaltung ]] *:</label>
+				<div id="CONTROLS_TITLE" class="design-input-field">
+					<input class="form-control" type="text" name="TITLE" required="required" value="{TITLE}">
+					<span class="help-inline alert alert-danger" style="display: none;">
+						[[ translation : general : type.title :: Bitte geben Sie einen Titel ein. ]]
+					</span>
+				</div>
+			</div>
+
+			<div id="STAMP_RANGE">
+				<div class="form-group">
+					<label class="control-label design-input-label">[[ translation : general : from :: von ]] *:</label>
+					<div id="CONTROLS_STAMP_START" class="design-input-field">
+						<div class="design-input-split">
+							<div class="design-input-date">
+								<input type="text" id="STAMP_START_DATE" name="STAMP_START_DATE" required="required" class="form-control" value="{STAMP_START_DATE}">
+							</div>
+							<div class="design-input-time">
+								<input type="time" name="STAMP_START_TIME" required="required" class="form-control" value="{STAMP_START_TIME}" placeholder="12:00">
+							</div>
+						</div>
+						<span class="help-inline alert alert-danger" style="display: none;">
+							[[ translation : marketplace : type.date :: Bitte geben Sie ein gültiges Startdatum ein. ]]
+						</span>
+					</div>
+				</div>
+	
+				<div class="form-group">
+					<label class="control-label design-input-label"><strong>[[ translation : general : until :: bis ]] *:</strong></label>
+					<div id="CONTROLS_STAMP_END" class="design-input-field">
+						<div class="design-input-split">
+							<div class="design-input-date">
+								<input type="text" id="STAMP_END_DATE" name="STAMP_END_DATE" required="required" class="form-control" value="{STAMP_END_DATE}">
+							</div>
+							<div class="design-input-time">
+								<input type="time" name="STAMP_END_TIME" required="required" class="form-control" value="{STAMP_END_TIME}" placeholder="12:00">
+							</div>
+						</div>
+						<span class="help-inline alert alert-danger" style="display: none;" data-ident="INVALID">
+							[[ translation : marketplace : type.end.date :: Bitte geben Sie ein gültiges Enddatum ein. ]]
+						</span>
+						<span class="help-inline alert alert-danger" style="display: none;" data-ident="START_BEFORE_END">
+							[[ translation : marketplace : start.have.to.before.end :: Das Startdatum muss vor dem Enddatum liegen. ]]
+						</span>
+					</div>
+				</div>
+			</div>
+
+
+            <div class="form-group">
+                <label class="control-label design-input-label"><strong>[[ translation : marketplace : event.location :: Veranstaltungsort: ]]</strong></label>
+                <div id="CONTROLS_LOCATION" class="design-input-field">
+                    <input class="form-control" type="text" name="LOCATION" value="{LOCATION}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label design-input-label"><strong>[[ translation : general : street :: Straße ]]:</strong></label>
+                <div id="CONTROLS_STREET" class="design-input-field">
+                    <input class="form-control" type="text" name="STREET" value="{STREET}">
+                </div>
+            </div>
+                                                                    
+			<div class="form-group">
+				<label class="control-label design-input-label"><strong>[[ translation : general : location.zip.city :: PLZ / Ort: ]]</strong></label>
+				<div id="CONTROLS_ZIP_CITY" class="design-input-field">
+					<div class="design-input-split">
+						<div class="design-input-zip">
+							<input class="form-control" type="text" name="ZIP" value="{ZIP}">
+						</div>
+						<div class="design-input-city">
+							<input class="form-control" type="text" name="CITY" value="{CITY}">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label design-input-label"><strong>[[ translation : general : location.country :: Land ]]:</strong></label>
+				<div id="CONTROLS_FK_COUNTRY" class="design-input-field">
+					{select_country(,,,, class="form-control" onchange="" id="COUNTRY",----)}
+					<span class="help-inline">
+						<span class="alert alert-danger hidden">
+							[[ translation : marketplace : location.not.found :: Der angegebene Standort wurde nicht gefunden. Bitte ergänzen/korrigieren
+							Sie ihre Eingaben. ]]
+						</span>
+					</span>
+				</div>
+			</div>
+
+			<div class="form-group onlyVisibleToGroups">
+				<label class="control-label design-input-label"><strong>[[ translation : general : privacy :: Privatsphäre ]]:</strong></label>
+				<div id="CONTROLS_PRIVACY" class="design-input-field">
+					<div class="radio">
+						<label><input type="radio" name="PRIVACY" value="0" {if PRIVACY == 0}checked="checked"{endif}> [[ translation : marketplace : event.visibility.club :: Nur für Gruppenmitglieder sichtbar ]]</label>
+					</div>
+					<div class="radio">
+						<label><input type="radio" name="PRIVACY" value="1" {if PRIVACY == 1}checked="checked"{endif}> [[ translation : marketplace : event.visibility.public :: Öffentlich sichtbar ]]</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label design-input-label"><strong>[[ translation : general : comments :: Kommentare ]]:</strong></label>
+				<div id="CONTROLS_ALLOW_COMMENTS" class="design-input-field">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="ALLOW_COMMENTS" value="1" {if ALLOW_COMMENTS}checked="checked"{endif}>
+							[[ translation : marketplace : allow.comments :: Kommentare zu dieser Veranstaltung erlauben ]]
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group onlyVisibleToGroups isModerator">
+				<label class="control-label design-input-label"><strong>[[ translation : general : unlock :: Freischalten ]]:</strong></label>
+				<div id="CONTROLS_IS_CONFIRMED" class="design-input-field">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="IS_CONFIRMED" value="1" {if IS_CONFIRMED}checked="checked"{endif}>
+							[[ translation : marketplace : unlock.event.now :: Diese Veranstaltung sofort freischalten. ]]
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label design-input-label"><strong>[[ translation : general : tag :: Schlagworte ]]:</strong></label>
+				<div id="CONTROLS_SEARCHWORD" class="design-input-field">
+					<div id="calendarEventFormularSearchWordTab">
+						<ul>
+							{searchWordLanguageHeader}
+						</ul>
+						<div>
+							{searchWordLanguageBody}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label design-input-label"><strong>[[ translation : general : description :: Beschreibung ]] *:</strong></label>
+				<div id="CONTROLS_DESCRIPTION" class="design-input-field">
+
+					<textarea class="form-control" style="width: 100%; height: 100px" name="DESCRIPTION_EDITOR" id="DESCRIPTION_EDITOR">{htm(DESCRIPTION)}</textarea>
+					<br />
+					<span class="alert alert-danger hidden">
+						[[ translation : general : pls.enter.description :: Bitte geben Sie eine Beschreibung ein. ]]
+					</span>
+				</div>
+			</div>
+
+		</div>
+		<p class="pull-right">
+			<input type="button" class="btn btn-default" onclick="StepsShow(2);" value="[[ translation : general : back :: Zurück ]]" />
+			<input type="button" class="btn btn-success" onclick="saveCalendarEventAndForward('description', 4);" value="[[ translation : general : continue :: Weiter ]]" />
+		</p>
+	</div>
+	<div class="input-step input-step-4 display-none">
+		<div class="design-content-box">
+			<legend style="font-size: 20px; font-weight: bold;">
+				4. [[ translation : general : pics.and.videos :: Bilder und Videos ]]
+			</legend>
+
+			{subtpl(tpl/{SYS_TPL_LANG}/my-user-media.htm,TABLE=calendar_event,ID={ID_CALENDAR_EVENT},EXTEND_FREE=1,curpage)}
+        </div>
+		<p class="pull-right">
+			<input type="button" class="btn btn-default" onclick="StepsShow(3);" value="[[ translation : general : back :: Zurück ]]" />
+			<input type="submit" class="btn btn-success"  value="[[ translation : marketplace : calendar.events.add.submit :: Veranstaltung speichern ]]" />
+		</p>
+	</div>
+</form>
+{endif}

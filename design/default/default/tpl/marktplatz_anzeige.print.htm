@@ -1,0 +1,16 @@
+{if not_found}
+    <div class="alert alert-danger">
+		[[
+			translation : marketplace : ad.status.notfoundinfotext ::
+			<h2>Anzeige wurde nicht gefunden!</h2>
+			<p>Möglicherweise ist die gewünschte Anzeige nicht mehr aktuell.</p>
+		]]
+    </div>
+{else}
+    <div class="row marketplaceArticle">
+        <div class="col-xs-12">
+            {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.details.htm,*,PRINT=1)}
+        </div>
+    </div>
+{endif}
+

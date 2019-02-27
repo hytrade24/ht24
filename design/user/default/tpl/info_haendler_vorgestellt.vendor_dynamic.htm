@@ -1,0 +1,112 @@
+<div class="design-row-item">
+    <div class="design-vendor-box top">
+   	{if ADVERTISEMENT}
+   		{content_page(Anbieter Top buchen)}
+   	{else}
+   		<div class="design-vendor-box-details">
+   			<div class="row text-center">
+   				<div class="col-xs-6">
+   					<div class="design-vendor-box-logo thumbnail">
+   						<a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}" title="[[ translation : marketplace : show.vendor :: {htm(VENDOR_NAME)} ansehen ]]">
+   						{if VENDOR_LOGO}
+   							<img src="{thumbnail(VENDOR_LOGO,265,212)}" data-watchlist="true" />
+   						{else}
+   							<img src="{uri_resource(/images/marketplace/nopic_vendor.jpg)}" />
+   						{endif}
+   						</a>
+   					</div>
+   				</div>
+   				<div class="col-xs-6">
+   					<div class="design-vendor-box-name">
+   						<h4>
+   							<a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}" title="[[ translation : marketplace : show.vendor :: {htm(VENDOR_NAME)} ansehen ]]">
+   								{htm(VENDOR_FIRMA)}
+   							</a>
+   						</h4>
+   					</div>
+   					{if RATING}
+   					<div class="design-vendor-box-rating">
+   						<img title="[[ translation : marketplace : average.rating :: Durchschnittliche Bewertung ]]" src="{uri_baseurl(/gfx/stars_{RATING}.png)}" />
+   					</div>
+   					{endif}
+   					<dl class="design-vendor-box-address dl-horizontal">			
+   						<dt><i class="glyphicon glyphicon-home" title="[[ translation : marketplace : address.name :: Anschrift ]]"></i></dt>
+   						<dd>
+   							<p>{VENDOR_STRASSE}<br />{VENDOR_PLZ} {VENDOR_ORT}, {VENDOR_COUNTRY}</p>
+   						</dd>			
+   						{if VENDOR_TEL}
+   						<dt><i class="glyphicon glyphicon-earphone" title="[[ translation : marketplace : phone :: Telefon ]]"></i></dt>
+   						<dd>{VENDOR_TEL}</dd>
+   						{endif}
+   						{if VENDOR_FAX}
+   						<dt><i class="glyphicon glyphicon-phone-alt" title="[[ translation : marketplace : fax :: Fax ]]"></i></dt>
+   						<dd>{VENDOR_FAX}</dd>
+   						{endif}
+   						{if VENDOR_URL}
+   						<dt><i class="glyphicon glyphicon glyphicon-globe" title="[[ translation : marketplace : web :: Web ]]"></i></dt>
+   						<dd>
+							<a href="{VENDOR_URL}" target="_blank">
+								<span class="text-ellipsis">
+									{VENDOR_URL}
+								</span>
+							</a>
+						</dd>
+   						{endif}
+   					</dl>
+   				</div>
+   				<div class="col-xs-12">
+						{if VENDOR_DESCRIPTION}
+   					<p class="design-vendor-box-description text-left text-muted">
+   						{strip_tags(VENDOR_DESCRIPTION)}
+   					</p>
+						{endif}
+   					<div class="design-vendor-box-category align-left">
+   						{if VENDOR_CATEGORIES}<strong>[[ translation : marketplace : categories :: Kategorien ]]: </strong>{VENDOR_CATEGORIES}{endif}
+   					</div>
+   				</div>
+   			</div>		
+   			<div class="design-vendor-box-ads" data-hide-when-empty="true">
+				{if DISPLAY_ADS>0}
+					<div class="design-vendor-box-ads-title">
+						[[ translation : marketplace : vendor.box.products :: Anzeigen des Anbieters: ]]
+					</div>
+					{subtpl(tpl/{SYS_TPL_LANG}/ads_user.htm,ID_USER={VENDOR_USER_ID},COUNT={DISPLAY_ADS},COUNT_PER_ROW={DISPLAY_ADS},HIDE_PARENT=1)}
+				{endif}
+   			</div>
+   		</div>
+   		<div class="row text-center design-vendor-box-buttons">
+     			<div class="col-xs-6">
+   				<div class="design-vendor-box-contents">
+   					<div class="design-vendor-box-contents-row">
+   					{if VENDOR_ALLOW_COMMENTS && SYSTEM_ALLOW_COMMENTS}
+   						<div class="design-vendor-box-contents-comments">
+   							<a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}#comments" class="js-tooltip" title="[[ translation : marketplace : count.comments :: {if COUNT_COMMENTS}{COUNT_COMMENTS}{else}0{endif} Kommentare ]]">
+   								<i class="glyphicon glyphicon-comment"></i>
+   								{int(VENDOR_COUNT_COMMENTS)}
+   							</a>
+   						</div>
+   					{endif}
+   						<div class="design-vendor-box-contents-events">
+   							<a href="{uri_action(view_user_events,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}" class="js-tooltip" title="[[ translation : marketplace : count.events :: {COUNT_EVENTS} Veranstaltungen ]]">
+   								<i class="glyphicon glyphicon-calendar"></i>
+   								{int(VENDOR_COUNT_EVENTS)}
+   							</a>
+   						</div>
+   						<div class="design-vendor-box-contents-images">
+   							<a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}#gallery" class="js-tooltip" title="[[ translation : marketplace : count.gallery :: {COUNT_GALLERY} Bilder in der Galerie ]]">
+   								<i class="glyphicon glyphicon-picture"></i>
+   								{int(VENDOR_COUNT_GALLERY)}
+   							</a>
+   						</div>
+   					</div>
+   				</div>
+   			</div>
+     			<div class="col-xs-6 text-right">
+   				<a class="btn btn-default" href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}">
+   					[[ translation : marketplace : show.details :: Details ansehen ]]
+   				</a>
+   			</div>
+   		</div>
+   	{endif}
+   	</div>
+</div>

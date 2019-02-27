@@ -1,0 +1,8 @@
+<th>
+  {htm(TITLE)}
+  <a href="#default" class="btn {if DEFAULT}btn-success{else}btn-default{endif} btn-xs js-tooltip" data-ident="{htm(IDENT)}" data-name="{htm(TITLE)}" onclick="pluginShippingDefaultProvider(this); return false;"
+          title="Versand-Anbieter als Standard festlegen" data-toggle="tooltip">
+    <input type="radio"{if DEFAULT} checked{endif} />
+    <i class="glyphicon glyphicon-star{if !DEFAULT}-empty{endif}"></i>
+  </a>
+</th>

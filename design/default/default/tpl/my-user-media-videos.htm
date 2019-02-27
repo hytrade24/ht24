@@ -1,0 +1,18 @@
+{if liste}
+<table id="uploadVideoTable" class="table table-bordered table-striped table-condensed"{if !liste} style="display: none"{endif}>
+    <thead>
+        <tr>
+            <th>[[ translation : marketplace : user.media.image.preview :: Vorschau ]]</th>
+            <th>[[ translation : marketplace : user.media.image.actions :: Aktionen ]]</th>
+            <th>[[ translation : marketplace : user.media.image.details :: Details ]]</th>
+        </tr>
+    </thead>
+    <tbody>
+        {liste}
+    </tbody>
+</table>
+{else}
+<p class="text-error">
+	[[ translation : marketplace : no.video.uploaded :: Sie haben noch keine Videos hochgeladen. ]]
+</p>
+{endif}

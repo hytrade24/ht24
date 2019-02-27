@@ -1,0 +1,82 @@
+<div class="design-comments-rating-stats big design-subtpl"
+    data-content="comment_ratings" data-template="big" data-table="{TABLE}" data-id="{FK}" data-id-str="{FK_STR}" data-show-empty-bars="{SHOW_EMPTY_BARS}">
+    {if RATING_AVG || SHOW_EMPTY_BARS}
+        <h4>[[ translation : marketplace : comments.rating.avg :: Durchschnittliche Bewertung ]]</h4>
+        <div class="row">
+            <div class="col-lg-3 col-sm-4 col-xs-3"></div>
+            <div class="col-lg-7 col-sm-6 col-xs-7 text-center" style="margin-bottom: 8px;">
+                {if RATING_AVG}
+                    <img class="design-comment-ratings-label" src="{uri_baseurl(/gfx/stars_{RATING_AVG}.png)}" />
+                {endif}
+            </div>
+            <div class="col-xs-2"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-sm-4 col-xs-3">[[ translation : marketplace : comment.ratings.5 :: 5 Sterne ]]</div>
+            <div class="col-lg-7 col-sm-6 col-xs-7">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{calc(RATING_COUNT_5 * 100 / RATING_COUNT)}" aria-valuemin="0" aria-valuemax="100" style="width: {calc(RATING_COUNT_5 * 100 / RATING_COUNT)}%"></div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                {int(RATING_COUNT_5)}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-sm-4 col-xs-3">[[ translation : marketplace : comment.ratings.4 :: 4 Sterne ]]</div>
+            <div class="col-lg-7 col-sm-6 col-xs-7">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{calc(RATING_COUNT_4 * 100 / RATING_COUNT)}" aria-valuemin="0" aria-valuemax="100" style="width: {calc(RATING_COUNT_4 * 100 / RATING_COUNT)}%"></div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                {int(RATING_COUNT_4)}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-sm-4 col-xs-3">[[ translation : marketplace : comment.ratings.3 :: 3 Sterne ]]</div>
+            <div class="col-lg-7 col-sm-6 col-xs-7">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{calc(RATING_COUNT_3 * 100 / RATING_COUNT)}" aria-valuemin="0" aria-valuemax="100" style="width: {calc(RATING_COUNT_3 * 100 / RATING_COUNT)}%"></div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                {int(RATING_COUNT_3)}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-sm-4 col-xs-3">[[ translation : marketplace : comment.ratings.2 :: 2 Sterne ]]</div>
+            <div class="col-lg-7 col-sm-6 col-xs-7">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{calc(RATING_COUNT_2 * 100 / RATING_COUNT)}" aria-valuemin="0" aria-valuemax="100" style="width: {calc(RATING_COUNT_2 * 100 / RATING_COUNT)}%"></div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                {int(RATING_COUNT_2)}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-sm-4 col-xs-3">[[ translation : marketplace : comment.ratings.1 :: 1 Stern ]]</div>
+            <div class="col-lg-7 col-sm-6 col-xs-7">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{calc(RATING_COUNT_1 * 100 / RATING_COUNT)}" aria-valuemin="0" aria-valuemax="100" style="width: {calc(RATING_COUNT_1 * 100 / RATING_COUNT)}%"></div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                {int(RATING_COUNT_1)}
+            </div>
+        </div>
+        <small class="design-comment-ratings-info text-muted">
+            {if RATING_AVG}
+                Insgesamt {RATING_COUNT} Bewertungen
+            {else}
+                noch keine Bewertungen
+            {endif}
+        </small>
+    {endif}
+
+    {if !HIDE_ADMIN_CONFIG}
+        ^SUBTPL_ADMIN°
+    {endif}
+</div>

@@ -1,0 +1,31 @@
+{if liste_own}
+<div class="alert alert-info">
+  <p>
+    [[ translation : marketplace : ad.cart.info.own.removed ::
+        Folgende Produkte in Ihrem Warenkorb werden von Ihnen selbst angeboten und wurden aus diesem Grund
+        aus dem Warenkorb entfernt.
+    ]]
+  </p>
+  <ul>
+    {liste_own}
+  </ul>
+</div>
+{endif}
+
+<h2>[[ translation : marketplace : ad.cart.overview :: Bestellübersicht ]]</h2>
+        
+{if liste}
+  {liste}
+  <p class="align-right pull-right">
+    [[ translation : marketplace : ad.cart.price.including.shipping.for.sellers.above ::
+        Gesamtpreis inkl. Versand:<br />
+        <strong>{topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT}</strong><br />
+        bei allen oben aufgeführten Verkäufern
+    ]]
+  </p>
+  <br style="clear: both;" />
+{else}
+  <p class="text-error">
+    [[ translation : marketplace : ad.cart.empty :: Zur Zeit haben Sie keine Artikel in Ihrem Warenkorb. ]]
+  </p>
+{endif}

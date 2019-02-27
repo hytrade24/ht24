@@ -1,0 +1,13 @@
+- Infobereich "Startseite": Slider anpassen
+  - Spans innerhalb der .carousel-control einfügen statt "pfeilen"
+        <a class="carousel-control left" href="#demoLead" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control right" href="#demoLead" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+- Infobereich "Footer"
+  - Bootstrap3 Grid verwenden!
+- C-BOX "Startseite neu" anlegen

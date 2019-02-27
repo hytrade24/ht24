@@ -1,0 +1,636 @@
+{startblock(script)}
+    {parentblock()}
+    <script type="text/javascript">
+        function showAgb(idAd) {
+            ShowContentDialog(jQuery("#Agb-"+idAd).html(), "AGB und Widerrufsbelehrung");
+        }
+    </script>
+{endblock(script)}
+{if not_found}
+    <div class="alert alert-danger">
+        <h2>
+			[[ translation : marketplace : ad.error.not.found :: Anzeige wurde nicht gefunden! ]]
+        </h2>
+        <p>
+			[[ translation : marketplace : ad.error.maybe.not.available :: Möglicherweise ist die gewünschte Anzeige nicht mehr aktuell. ]]
+        </p>
+    </div>
+{else}
+	{if error_noaddress}
+        <div class="alert alert-danger">
+			<h2>[[ translation : general : notice :: Hinweis ]]</h2>
+			<p>
+				[[ translation : marketplace : ad.cart.notice.profile :: Bitte ergänzen Sie folgende Angaben in ihrem <a href="{uri_action(my-profil)}">Profil</a> bevor Sie etwas kaufen: ]]
+				<br />
+				<ul>
+					{if error_addr_first}<li>[[ translation : general : name.first :: Vorname ]]</li>{endif}
+					{if error_addr_last}<li>[[ translation : general : name.last :: Nachname ]]</li>{endif}
+					{if error_addr_street}<li>[[ translation : general : street :: Straße ]]</li>{endif}
+					{if error_addr_zip}<li>[[ translation : general : zip :: PLZ ]]</li>{endif}
+					{if error_addr_city}<li>[[ translation : general : city :: Ort ]]</li>{endif}
+				</ul>
+			</p>
+        </div>
+	{else}
+		<a name="ad_top"></a>
+		
+        <h1>
+            {if is_request}
+			        [[ translation : marketplace : ad.request.offer.header :: Artikel anbieten ]]              
+            {else}
+			        [[ translation : marketplace : ad.trade.header :: Preis aushandeln ]]
+            {endif}
+            <p class="text-lead">
+                {htm(PRODUKTNAME)}{if VARIANT} ({htm(VARIANT)}){endif}
+            </p>
+        </h1>
+
+        {if !is_request && ID_USER!=vk_user}
+        <div class="design-content-box" style="padding-bottom: 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <h3>[[ translation : marketplace : ad.cart.address.invoice :: Ihre Rechnungsadresse ]]</h3>
+
+                    {subtpl(tpl/{SYS_TPL_LANG}/user_invoice.htm,*)}
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <h3>[[ translation : marketplace : ad.cart.address.shipping :: Ihre Versandadresse ]]</h3>
+
+                    {subtpl(tpl/{SYS_TPL_LANG}/user_versand.htm,*)}
+                </div>
+            </div>
+        </div>
+        {endif}
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="design-content-box design-user-trade">
+                    {if !_STATUS || MENGE < 1}
+                        <h2 >
+                            [[ translation : marketplace : ad.error.not.in.stock :: Dieser Artikel ist leider nicht mehr verfügbar! ]]
+                        </h2>
+                        <p>
+                            [[ translation : marketplace : ad.error.disabled.or.sold.out :: Der Artikel wurde deaktiviert oder bereits an einen anderen Benutzer verkauft. ]]
+                        </p>
+                    {else}
+                        {if err_agb}
+                            <p class="alert alert-danger">
+                                [[ translation : general : an.error.occurred :: Es ist ein Fehler aufgetreten! ]]<br />
+                                [[ translation : marketplace : ad.buy.error.gtc :: Bitte akzeptieren Sie die AGB! ]]
+                            </p>
+                        {endif}
+                        {if err_bid}
+                            <p class="alert alert-danger">
+                                [[ translation : marketplace : ad.trade.error.proposed.price.to.less :: Ihr Preisvorschlag ist zu gering! ]]
+                            </p>
+                        {endif}
+                        {if err_bid_amount}
+                            <p class="alert alert-danger">
+                                [[ translation : marketplace : ad.trade.error.quantity.not.in.stock :: Die gewünschte Menge ist leider nicht verfügbar. ]]
+                            </p>
+                        {endif}
+                        {if err_bid_moq}
+                            <p class="alert alert-danger">
+                                [[ translation : marketplace : ad.trade.error.minimum.order.moq :: Sie müssen mindestens {MOQ} Stück bestellen. ]]
+                            </p>
+                        {endif}
+                        {if err_payment_adapter}
+                            <p class="alert alert-danger">
+                                [[ translation : marketplace : ad.buy.error.payment :: Die ausgewählte Zahlungsweise ist für diesen Artikel nicht verfügbar. ]]
+                            </p>
+                        {endif}
+                        {if err_bid_count}
+                            <p class="alert alert-danger">
+                                [[ translation : marketplace : ad.trade.error.bid.count.exceed :: Sie haben bereits zu oft auf diesen Artikel geboten. ]]
+                            </p>
+                        {endif}
+                        {if err_bid_count_changed}
+                            <p class="alert alert-danger">
+                                [[ translation : marketplace : ad.trade.error.cancel.current.bid.before.other.quantity :: Bitte ziehen Sie ihr aktuelles Gebot zurück bevor Sie auf eine andere Menge bieten. ]]
+                            </p>
+                        {endif}
+
+                        {if !my}
+                            <p>
+                                <strong>[[ translation : marketplace : ad.trade.current.price :: Derzeitiger Artikelpreis ]]: {topreis_ex(product_price)} {CURRENCY_DEFAULT}</strong>
+                            </p>
+                        {endif}
+                        {if canceled}
+                            <p class="alert alert-info">[[ translation : marketplace : ad.trade.trade.is.canceled :: Die Preisverhandlung wurde abgebrochen! ]]</p>
+                        {endif}
+
+                        {if liste_handeln}
+                            {if my}
+                                <h3>[[ translation : marketplace : ad.trade.proposed.price :: Preisvorschläge ]]</h3>
+                                <table class="table table-condensed table-striped">
+                                    {liste_handeln}
+                                </table>
+                            {else}
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>[[ translation : general : date :: Datum ]]</th>
+                                            <th>[[ translation : marketplace : ad.trade.partner :: Partner ]]</th>
+                                            <th>[[ translation : general : quantity :: Menge ]]</th>
+                                            <th>[[ translation : marketplace : ammount.item :: Betrag/Stück ]]</th>
+                                            <th>[[ translation : general : action :: Aktion ]]</th>
+                                        </tr>
+                                    </thead>
+                                    {liste_handeln}
+                                </table>
+                                {if trade_negotiation>0}
+                                <a class="btn btn-danger" href="{uri_action(marktplatz_handeln,{ID_AD_MASTER},{ID_AD_VARIANT},c,{trade_negotiation})}"
+                                   onclick="return confirm('[[ translation : marketplace : ad.trade.do.you.want.cancel.trade :: Achtung! Möchten Sie diese Preisverhandlung wirklich abbrechen? ]]');">
+                                    [[ translation : marketplace : ad.trade.cancel.trade :: Preisverhandlung abbrechen! ]]
+                                </a>
+                                {endif}
+                                 <a class="btn btn-default" href="{uri_action(my-marktplatz-handeln)}">
+                                    [[ translation : marketplace : ad.trade.back.trade :: zur Übersicht! ]]
+                                </a>
+
+                            {endif}
+                        {else}
+                            <button onclick="window.history.back();" class="btn btn-default">zurück</button>
+                        {endif}
+                        {if !my}
+                        <form method="post" action="{uri_baseurl(/index.php)}" class="form-horizontal">
+                            <input type="hidden" name="page" value="{curpage}" />
+                            <input type="hidden" name="ID_AD" value="{ID_AD_MASTER}" />
+                            <input type="hidden" name="ID_AD_VARIANT" value="{ID_AD_VARIANT}" />
+                          
+
+                            {if is_request}
+                            <h3>
+                                [[ translation : marketplace : ad.trade.new.trade.request.offer.header :: Artikel aus dem Bestand anbieten ]]
+                            </h3>
+                            <table id="OFFER_ARTICLE_TABLE" class="table table-bordered table-condensed">
+                              <thead>
+                                <tr>
+                                  <th colspan="5">
+                                    <div class="input-group" style="width: 100%;">
+                                      <input class="form-control" type="text" id="OFFER_ARTICLE" name="OFFER_ARTICLE" value="{htm(OFFER_ARTICLE)}" 
+                                             placeholder="[[ translation : general : message.offer.article.search :: Artikel suchen... ]]" />
+                                      <span class="input-group-btn">
+                                        <button class="btn btn-default" id="OFFER_ARTICLE_REFRESH">
+                                          <i class="glyphicon glyphicon-refresh"></i>
+                                        </button>
+                                      </span>
+                                    </div>
+                                  </th>
+                                </tr>
+                                <tr>
+                                  <th></th>
+                                  <th colspan="2">
+                                    [[ translation : marketplace : product.name :: Produktname ]]
+                                  </th>
+                                  <th>
+                                    [[ translation : marketplace : product.amount :: Menge ]]
+                                  </th>
+                                  <th>
+                                    [[ translation : marketplace : product.price :: VK-Preis ]]
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              
+                              </tbody>
+                              <thead>
+                                <tr class="pager-container">
+                                    <td colspan="5">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                  <td colspan="5">
+                                    <strong>
+                                      [[ translation : marketplace : request.offer.not.found :: Ist der Artikel noch nicht in ihrem Angebot? ]]
+                                    </strong>
+                                    <a class="btn btn-info" href="{uri_action(my-marktplatz-neu)}" target="_blank">
+                                      [[ translation : marketplace : request.offer.create :: Jetzt einen neuen Artikel einstellen ]]
+                                    </a>
+                                  </td>
+                                </tr>
+                              </thead>
+                            </table>
+                            {else}
+                            <h3>
+                                [[ translation : marketplace : ad.trade.new.trade.header :: Neuen Preisvorschlag abgeben ]]
+                            </h3>
+                            {endif}
+
+                            <div class="form-group">
+                                <label class="control-label design-input-label">[[ translation : general : quantity :: Menge ]]:</label>
+                                <div class="design-input-field">
+                                    {if trade_amount>0}
+                                        <div class="form-control-static">
+                                            {trade_amount}
+                                        </div>
+                                        <input type="hidden" name="BID_AMOUNT" value="{trade_amount}" />
+                                    {else}
+                                        <input type="text" name="BID_AMOUNT" value="{if BID_AMOUNT>0}{BID_AMOUNT}{else}{MOQ}{endif}" class="form-control" />
+                                    {endif}
+                                    <span class="help-inline">
+                                        [[ translation : marketplace : ad.pieces :: Stück ]]
+                                    {if MOQ > 1}
+                                        <br />
+                                        <span class="text-muted">([[ translation : marketplace : ad.trade.minimum.moq :: Mindestens {MOQ} ]])</span>
+                                    {endif}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label design-input-label">[[ translation : marketplace : ad.trade.proposed.price.per.unit :: Preisvorschlag (Stückpreis) ]]:</label>
+                                <div class="design-input-field">
+                                    <input type="text" name="BID_NEW" value="{BID_NEW}" class="form-control" />
+                                    <span class="help-inline">
+                                        {CURRENCY_DEFAULT} / [[ translation : marketplace : ad.pieces :: Stück ]]
+                                        <span class="muted">{if product_mwst}[[ translation : marketplace : vat.included :: inkl. MwSt. ]]{else}[[ translation : marketplace : vat.excluded :: exkl. MwSt. ]]{endif}</span><br />
+                                    </span>
+                                </div>
+                            </div>
+
+                            {if PAYMENT_ADAPTER}
+                            <div class="form-group">
+                                <label class="control-label design-input-label"><strong>[[ translation : general : payment.adapter :: Zahlungsweise ]]:</strong></label>
+                                <div class="design-input-field">
+                                    <select name="payment_adapter" class="form-control" {if userPaymentAdapter_ReadOnly}disabled="disabled"{endif}>
+                                        {PAYMENT_ADAPTER}
+                                    </select>
+                                    {if userPaymentAdapter_ReadOnly}
+                                        <input type="hidden" name="payment_adapter" value="{userPaymentAdapter_Value}" class="form-control">
+                                    {endif}
+                                </div>
+                            </div>
+                            {endif}
+
+                            <div class="form-group">
+                                <label class="control-label design-input-label"><strong>[[ translation : general : remarks :: Anmerkungen ]]:</strong></label>
+                                <div class="design-input-field">
+                                    <textarea name="REMARKS" class="form-control" rows="4"></textarea>
+                                </div>
+                            </div>
+
+                            <p>
+                                <strong>
+                                    [[ translation : marketplace : ad.trade.info.legal ::
+                                        Ihr Preisvorschlag ist verbindlich und für
+                                        <br />max. {trade_max_hours}
+                                        Stunden gültig!<br />
+                                        Erklärt sich der Verkäufer einverstanden, kommt sofort
+                                        ein rechtsverbindlicher Kauf zu Stande!
+                                    ]]
+                                </strong>
+                            </p>
+                            <p class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="AGB" name="AGB" value="1" class="nob" />
+                                    [[ translation : marketplace : ad.trade.accept.agb :: Ich habe die <a href="#" onclick="showAgb({ID_AD}); return false;">AGB und die Widerrufsbelehrung</a> gelesen und verstanden! ]]
+                                </label>
+                            </p>
+                            <p >
+                                <input class="btn btn-primary" type="submit" value="[[ translation : marketplace : ad.trade.submit :: Verbindlichen Vorschlag abgeben ]]" />
+                            </p>
+
+                            <div id="Agb-{ID_AD}" class="hidden">
+                                <span class="lead">
+                                    [[ translation : marketplace : ad.buy.legal.in.charge :: Rechtlich Verantwortlicher für dieses Angebot ]]
+                                </span>
+                                <p>
+                                    {htm(ANBIETER_FIRMA)}<br />
+                                    {htm(ANBIETER_NAME)}<br />
+                                    {htm(ANBIETER_STRASSE)}<br />
+                                    {htm(ANBIETER_PLZ)}, {htm(ANBIETER_ORT)}<br />
+                                    <br />
+                                    {htm(ANBIETER_COUNTRY)}
+                                </p>
+                                {if ANBIETER_UMSTG}
+                                    <p>
+                                        [[ translation : general : vat.id :: Umsatzsteuer ID ]]: {htm(ANBIETER_UMSTG)}
+                                    </p>
+                                {endif}
+
+                                {if AGB}
+                                <span class="lead">
+                                    [[ translation : marketplace : ad.cart.gtc :: AGB des Anbieters ]]
+                                </span>
+                                <p>
+                                <div style="overflow: auto;max-height:180px;">
+                                    {text(AGB)}
+                                </div>
+                                </p>
+                                {endif}
+
+                                {if WIDERRUF}
+                                <span class="lead">
+                                    [[ translation : marketplace : ad.cart.cancelation.terms :: Widerrufsbelehrung ]]
+                                </span>
+                                <p>
+                                <div style="overflow: auto;max-height:180px;">
+                                    {text(WIDERRUF)}
+                                </div>
+                                </p>
+                                {endif}
+                            </div>
+                        </form>
+                        {endif}
+                    {endif}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+
+                <div class="text-box design-location">
+                    <div class="design-ariande design-ariande-marketplace">
+                        {kat_ariadne_dynamic({FK_KAT},marketplace,{if product_manufacturer}{product_manufacturer} {endif}{product_articlename})}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-4 col-md-3">
+                        <div class="design-ad-image">
+                            <a href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" target="_blank" title="[[ translation : marketplace : ad.view :: {htm(PRODUKTNAME)} ansehen ]]">
+                                <img class="img-responsive" src="{if !IMG_DEFAULT_SRC}{uri_resource(/images/marketplace/nopic.jpg)}{else}{thumbnail_article({ID_AD_MASTER},{IMG_DEFAULT_SRC},165,150,crop)}{endif}" id="row-img-{ID_AD_MASTER}" data-watchlist="true" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xs-8 col-md-6">
+                        <div class="design-ad-name">
+                            <a href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" target="_blank" title="[[ translation : marketplace : ad.view :: {htm(PRODUKTNAME)} ansehen ]]">
+                                {htm(PRODUKTNAME)}
+                            </a>
+                        </div>
+                                    
+                        <div class="design-ad-description">
+                            {market_article_description({ID_AD_MASTER})}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8">
+                        <table class="adTable">
+                            <tr>
+                                <td style="min-width: 146px;">
+                                    <strong>[[ translation : marketplace : ad.number :: Anzeigennummer ]]:</strong>
+                                </td>
+                                <td>
+                                    {ID_AD}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>[[ translation : general : price :: Preis ]]:</strong>
+                                </td>
+                                <td>
+                                    <span style="font-size: 19px;">{topreis_ex(product_price)} {CURRENCY_DEFAULT}</span>
+                                    <br />
+                                    <span class="muted">{if product_mwst}[[ translation : marketplace : vat.included :: inkl. MwSt. ]]{else}[[ translation : marketplace : vat.excluded :: exkl. MwSt. ]]{endif}</span><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>[[ translation : general : quantity :: Menge ]]:</strong>
+                                </td>
+                                <td>
+                                    [[ translation : marketplace : ad.trade.quantity.available :: {product_amount} verfügbar ]]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>[[ translation : general : shipping.costs :: Versandkosten ]]:</strong>
+                                </td>
+                                <td>
+                                    {if VERSANDOPTIONEN==3}
+                                        <span class="muted">[[ translation : general : shipping.costs :: Versandkosten ]]: {market_article_shipping(ID_AD,VERSANDKOSTEN)}</span>
+                                   {else}
+                                        {if VERSANDOPTIONEN==0}<span class="text-success">[[ translation : marketplace : no.tax :: Versandkostenfrei ]]</span>{endif}
+                                        {if VERSANDOPTIONEN==1}<span class="text-error">[[ translation : marketplace : pickup.only :: Nur Selbstabholung ]]</span>{endif}
+                                        {if VERSANDOPTIONEN==2}<span class="text-error">[[ translation : marketplace : on.request :: Auf Anfrage ]]</span>{endif}
+                                   {endif}
+                                   {if VERSANDKOSTEN_INFO}
+                                        <span class="muted">[[ translation : marketplace : ad.shipping.notice :: Versandkostenhinweis ]]: {htm(VERSANDKOSTEN_INFO)}</span>
+                                   {endif}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>[[ translation : marketplace : seller :: Verkäufer ]]:</strong>
+                                </td>
+                                <td>
+                                    <a href="{uri_action(view_user,{urllabel(vk_username)},{vk_user})}">
+                                        {htm(vk_username)}
+                                    </a>
+                                    {if SCHNITT}
+                                        <img src="{uri_baseurl(/gfx/stars_{SCHNITT}.png)}" title="[[ translation : marketplace : average.rating :: Durchschnittliche Bewertung ]]">
+                                    {else}
+                                        ([[ translation : marketplace : no.reviews :: noch keine Bewertungen ]])
+                                    {endif}
+                                    <br />
+                                    [[ translation : marketplace : user.registered.since.as.usergroup :: angemeldet seit {STAMP_REG} als {htm(UGROUP)} ]]
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <h4>
+                            [[ translation : marketplace : ad.location :: Artikelstandort ]]
+                        </h4>
+                        <table>
+                            <tr>
+                                <td>
+                                    <strong>[[ translation : general : country :: Land ]]:</strong>
+                                </td>
+                                <td>
+                                    {htm(product_country)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>[[ translation : general : zip :: PLZ ]]:</strong>
+                                </td>
+                                <td>
+                                    {product_zip}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>[[ translation : general : city :: Ort ]]:</strong>
+                                </td>
+                                <td>
+                                    {htm(product_city)}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {if REQUEST_ARTICLE}
+                    <div class="col-xs-12">
+                      <h3>[[ translation : marketplace : trade.offer.for.request :: Angebot auf Gesuch ]]</h3>
+                  
+                      {REQUEST_ARTICLE}
+                    </div>
+                    {endif}
+                </div>
+
+                {if is_request && liste_offers}
+                <div>
+                    <h3>[[ translation : marketplace : trade.offers.active.request :: Ihre abgegebenen Angebote für dieses Gesuch ]]</h3>
+                    {liste_offers}
+                </div>
+                {endif}
+                
+            </div>
+        </div>
+	{endif}
+  {if is_request}
+    <link rel="stylesheet" href="{uri_resource(/lib/EasyAutocomplete-1.3.5/easy-autocomplete.min.css)}"> 
+    <link rel="stylesheet" href="{uri_resource(/lib/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css)}"> 
+    <script type="text/javascript" src="{uri_resource(/lib/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js)}"></script>
+    <script type="text/javascript">
+    jQuery(function() {
+      
+      var articleSearch = false;
+      var articleSearchLive = false;
+      var articleSearchTimer = null;
+      var articleSearchQuery = null;
+      var articleSearchList = {};
+      var articleSearchUpdate = function() {
+        if ((articleSearchLive === false) || (articleSearch != articleSearchLive)) {
+          if (articleSearchTimer !== null) {
+            window.clearTimeout(articleSearchTimer);
+            articleSearchTimer = null;
+          }
+          articleSearchTimer = window.setTimeout(function() {
+            articleSearchAjax();
+          }, 400);
+        }
+      };
+      var articleSearchAjax = function(npage) {
+        if(npage == "undefined") {
+            npage = 1;
+        }
+        var parameters = {
+          page: "marktplatz_anbieten",
+          npage: npage,
+          ajax: "autocompleteArticle",
+          dataType: "json",
+          ID_AD_MASTER: {int(ID_AD_MASTER)},
+          EXCLUDE_ADS: {JSON_EXCLUDE_ADS}
+        };
+        if (articleSearch !== false) {
+          parameters.phrase = articleSearch;
+        }
+        if (articleSearchQuery !== null) {
+          articleSearchQuery.abort();
+          articleSearchQuery = null;
+        }
+        articleSearchQuery = jQuery.post("{uri_baseurl(/index.php)}", parameters, function(result) {
+          var articleActive = jQuery("input[name=OFFER_ARTICLE_ID]:checked").val();
+          articleSearchLive = articleSearch;
+          articleSearchQuery = null;
+          articleSearchList = {};
+          var articleList = "";
+          jQuery(result.list).each(function() {
+            articleSearchList[this.ID_AD_MASTER] = this;
+            articleList += this.TPL_ROW+"\n";
+          });
+          jQuery("#OFFER_ARTICLE_TABLE tbody").html(articleList);
+          if(result.pager != "") {
+              jQuery("tr.pager-container td").html(result.pager).show();
+              jQuery("tr.pager-container td a[data-page]").on("click", function(event) {
+                  event.preventDefault();
+                  articleSearchAjax(jQuery(this).data("page"));
+              });
+          } else {
+              jQuery("tr.pager-container td").hide();
+          }
+          if (articleActive > 0) {
+            jQuery("input[name=OFFER_ARTICLE_ID]").filter("[value="+articleActive+"]").prop("checked", true);
+          }
+          jQuery("#OFFER_ARTICLE_TABLE tbody").find("input[name=OFFER_ARTICLE_ID]").on("change", function() {
+            var articleSelectedId = jQuery(this).val();
+            var articleSelected = articleSearchList[articleSelectedId];
+            jQuery("input[name=BID_AMOUNT]").val(articleSelected.MENGE < {int(BID_AMOUNT)} ? articleSelected.MENGE : {int(BID_AMOUNT)});
+            jQuery("input[name=BID_NEW]").val(articleSelected.PREIS);
+            //debugger;
+          });
+        });
+      };
+      
+      jQuery("#OFFER_ARTICLE").on("keyup", function(event) {
+        articleSearch = jQuery(this).val();
+        articleSearchUpdate();
+      });
+      jQuery("#OFFER_ARTICLE").on("change", function(event) {
+        articleSearch = jQuery(this).val();
+        articleSearchUpdate();
+      });
+      jQuery("#OFFER_ARTICLE_REFRESH").on("click", function(event) {
+        event.preventDefault();
+        articleSearchAjax();
+      });
+      // Initial update
+      articleSearchAjax();
+      
+      /*
+      var offerFallbackInfo = jQuery("#OFFER_ARTICLE_INFO").html();
+      
+      jQuery("#OFFER_ARTICLE").on("change", function(event) {
+        jQuery("#OFFER_ARTICLE_ID").val("");
+        jQuery("input[name=BID_AMOUNT]").val("");
+        jQuery("input[name=BID_NEW]").val("");
+        jQuery("#OFFER_ARTICLE_INFO").html(offerFallbackInfo).addClass("alert-warning").removeClass("alert-info");
+      });
+      jQuery("#OFFER_ARTICLE").on("focus", function(event) {
+        if (jQuery("#OFFER_ARTICLE").val() == "") {
+          var e = $.Event('keyup');
+          e.keyCode = 8;
+          jQuery(this).trigger(e);  
+        }
+      }).easyAutocomplete({
+    
+        url: function (phrase) {
+          return "{uri_baseurl(/index.php)}";
+        },
+        getValue: function (element) {
+          return element.PRODUKTNAME;
+        },
+        template: {
+          type: "iconLeft",
+          fields: {
+            iconSrc: "IMG_DEFAULT_SRC"
+          }
+        },
+        adjustWidth: false,
+        ajaxSettings: {
+          dataType: "json",
+          method: "POST",
+          data: {
+            page: "marktplatz_anbieten",
+            ajax: "autocompleteArticle",
+            dataType: "json",
+            ID_AD_MASTER: {ID_AD_MASTER}
+          }
+        },
+        preparePostData: function (data) {
+          data.phrase = $("#OFFER_ARTICLE").val();
+          return data;
+        },
+        requestDelay: 400,
+        list: {
+          hideOnEmptyPhrase: false,
+          onChooseEvent: function() {
+            var selection = jQuery("#OFFER_ARTICLE").getSelectedItemData();
+            if (typeof selection == "object") {
+              jQuery("#OFFER_ARTICLE_ID").val(selection.ID_AD_MASTER);
+              jQuery("input[name=BID_AMOUNT]").val(selection.MENGE < {int(BID_AMOUNT)} ? selection.MENGE : {int(BID_AMOUNT)});
+              jQuery("input[name=BID_NEW]").val(selection.PREIS);
+              jQuery("#OFFER_ARTICLE_INFO").html(selection.TPL_SELECTED).addClass("alert-info").removeClass("alert-warning");
+            }
+          }
+        }
+      });
+    */
+    });
+    </script>
+  {endif}
+{endif}

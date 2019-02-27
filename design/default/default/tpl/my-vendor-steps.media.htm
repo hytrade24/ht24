@@ -1,0 +1,125 @@
+<p>
+    [[ translation : marketplace : vendor.images.and.videos.lead : COUNT=maxbilder :
+        Sie können bis zu {COUNT} Bilder/Videos hinzufügen<br />
+        Diese Bilder erscheinen unterhalb Ihrer Beschreibung im öffentlichen Bereich
+    ]]
+</p>
+
+<table class="mytable table table-bordered table-striped table-condensed">
+<tr>
+	<td>
+		<h2>[[ translation : marketplace : vendor.images :: Bilder ]]</h2>
+    <div id="IMAGE_DROPZONE" class="dropzone">
+      
+      <div class="dz-message" data-dz-message>
+        <span>
+          [[ translation : marketplace : vendor.images.upload :: Klicken Sie hier oder ziehen Sie eine Bilddatei in diesen Bereich um neue Bilder hochzuladen ]]
+        </span>
+      </div>
+
+    </div>
+		
+		<h2>[[ translation : marketplace : vendor.videos :: Videos ]]</h2>
+		<ul id="VIDEO_LIST" class="design-vendor-gallery design-row design-row-sm-2 design-row-md-4 design-row-lg-5">
+			{VIDEOS}
+		</ul>
+		
+		<h2>[[ translation : marketplace : vendor.videos.add :: Neues Youtube Video einfügen ]]</h2>
+
+		<table class="mytable table table-bordered table-striped table-condensed">
+			<tr>
+				<td>[[ translation : marketplace : vendor.videos.add.link :: Youtube Link ]]:</td>
+				<td>
+					{youtube_input(youtubelink,,,,vendor)}
+				</td>
+			</tr>
+		</table>
+		<button data-action="upload-video" class="btn btn-success pull-right">
+			[[ translation : marketplace : vendor.videos.add.submit:: Video speichern ]]
+		</button>
+	</td>
+</tr>
+</table>
+<script type="text/javascript">
+jQuery(function() {
+		
+    var bindVideoEvents = function(element) {
+        jQuery(element).find("[data-action=delete-video]").off("click").on("click", function (event) {
+            event.preventDefault();
+            var videoElement = jQuery(this).closest(".design-media-video");
+            SubmitStep(jQuery("#StepContent form"), "media=delete-video&id=" + jQuery(this).data("id"), function (result) {
+                if (result.success) {
+                    videoElement.remove();
+                }
+            });
+        });
+		};
+    
+    bindVideoEvents("#VIDEO_LIST");
+    
+    jQuery("#StepContent form [data-action=upload-video]").on("click", function(event) {
+        event.preventDefault();
+        SubmitStep( jQuery("#StepContent form"), "media=upload-video", function(result) {
+            if (result.success) {
+                jQuery("#StepContent [name=youtubelink]").val("");
+                jQuery("#VIDEO_LIST").append(result.html);
+                bindVideoEvents("#VIDEO_LIST");
+						}
+				} );
+    });
+    
+    var stepReadyStatus = true;
+    
+    var stepReady = function(isReady) {
+        stepReadyStatus = isReady;
+        if (isReady) {
+            jQuery("#StepContent form button[type=submit]").removeClass("disabled");
+        } else {
+            jQuery("#StepContent form button[type=submit]").addClass("disabled");
+        }
+    };
+    
+    jQuery("#StepContent form").on("submit", function(event) {
+        if (!stepReadyStatus) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    });
+    
+    var dropzone = jQuery("#IMAGE_DROPZONE").dropzone({
+        // Options
+        url: stepUrl,
+        params: {
+            ajax: 1, action: "submit", step: "media"
+        },
+        addRemoveLinks: true,
+        maxFiles: {int(maxbilder)},
+        thumbnailWidth: 160,
+        thumbnailHeight: 100,
+        thumbnailMethod: "contain",
+        // Translations
+        dictCancelUpload: "[[ translation : general : upload.cancel :: Upload abbrechen ]]",
+        dictCancelUploadConfirmation: "[[ translation : general : upload.cancel.confirm :: Upload wirklich abbrechen? ]]",
+        dictRemoveFile: "[[ translation : marketplace : vendor.image.delete :: Bild löschen ]]"
+    })[0].dropzone;
+    // Events
+    dropzone.on("removedfile", function (file) {
+        SubmitStep( jQuery("#StepContent form"), "media=delete&file="+encodeURIComponent(file.name), function(result) {
+            if (!result.success) {
+                // TODO: Add file again?
+						}
+				} );
+    });
+    dropzone.on("sending", function (file) {
+        stepReady(false);
+    });
+    dropzone.on("complete", function (file) {
+        stepReady(true);
+    });
+    // Initial file(s)
+    var imageFile = {};
+{if IMAGES}
+    {IMAGES}
+{endif}
+});
+</script>

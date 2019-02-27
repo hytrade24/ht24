@@ -1,0 +1,9 @@
+{if !valueIsExact}[[ translation : plugin : shipping.view.starting.at :: ab ]]&nbsp;{endif}{topreis(value)}&nbsp;{currency}&nbsp;<a id="shippingInfo{id}" href="#shippingInfo"><i class="glyphicon glyphicon-info-sign"></i></a>
+
+<script type="text/javascript">
+jQuery(function() {
+  jQuery("#shippingInfo{id}").click(function() {
+    ShowDialog("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=modal_view_shipping&id={articleId}");
+  });
+});
+</script>

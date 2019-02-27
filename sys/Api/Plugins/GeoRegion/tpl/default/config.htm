@@ -1,0 +1,79 @@
+<div id="pluginGeoRegion">
+  <style type="text/css">
+      .inputTaskName { min-width: 200px; width: 99%; margin-right: 4px; }
+      #pluginGeoRegionList_tasks { width: 100%; }
+      #pluginGeoRegionList_tasks tbody tr td { vertical-align: top; }
+      #pluginGeoRegionList_tasks tbody tr:last-child .inputTaskDelete { display: none; }
+  </style>
+  {if SAVED}
+  <h3 class="ok">
+      [[ translation : marketplace : plugin.geo.region.list.config.saved :: Die Konfiguration wurde erfolgreich gespeichert! ]]
+  </h3>
+  {endif}
+  
+  <h3>
+      [[ translation : marketplace : plugin.geo.region.content :: Regionen und Inhalte ]]
+  </h3>
+  
+  <table class="liste" id="pluginGeoRegionList">
+      <thead>
+          <tr>
+              <th></th>
+              <th>[[ translation : marketplace : plugin.geo.region.content.entry.name :: Name der Region ]]</th>
+              <th>[[ translation : marketplace : plugin.geo.region.content.entry.sub :: Enthaltene Regionen ]]</th>
+              <th>[[ translation : marketplace : plugin.geo.region.content.entry.view :: Darstellung ]]</th>
+              <th>[[ translation : marketplace : plugin.geo.region.content.entry.seo :: SEO-Infobereich ]]</th>
+          </tr>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+</div>
+
+<script type="text/html" id="pluginGeoRegionList_taskTemplate">
+    {table_row}
+</script>
+<script type="text/javascript">
+
+(function() {
+  // Javascript functions
+  var updateRegionView = function() {
+    var tr = jQuery(this).closest("tr");
+    var currentView = jQuery(this).val();
+    if (currentView == "cms") {
+      // CMS-Ansicht
+      tr.find(".region-settings-info-seo").prop("disabled", false);
+    } else {
+      // Standard-Ansicht
+      tr.find(".region-settings-info-seo").prop("disabled", true);
+    }
+    pluginCheckSettings( jQuery("#plugin-GeoRegion-config form.plugin-configuration") );
+  };
+  
+  function getRegionList(parameters) {
+    if (jQuery("#plugin-GeoRegion-config form.plugin-configuration").attr("data-dirty") == "true") {
+      if (!confirm("[[ translation : marketplace : plugin.geo.region.list.config.dirty :: Achtung! Sie haben Änderungen vorgenommen, die noch nicht gespeichert wurden! Region wechseln und Änderungen verwerfen? ]]")) {
+        return;
+      }
+    }
+    if (typeof parameters == "undefined") {
+      parameters = {};
+    }
+    parameters.action = "listAdminRegions";
+    jQuery.post("index.php?page=plugins&do=configAjax&plugin=GeoRegion", parameters, function(result) {
+      if (result !== null) {
+        jQuery("#pluginGeoRegionList > tbody").html(result);
+        jQuery("a[href=#showChilds]").click(function() {
+          getRegionList({ region: jQuery(this).attr("data-id") })
+        });
+        jQuery(".region-settings-view").each(updateRegionView).change(updateRegionView);
+        pluginSetDirty(jQuery("#plugin-GeoRegion-config form.plugin-configuration"), false);
+      }
+    });
+  }
+  
+  // Initialize
+  getRegionList();
+})();
+
+</script>

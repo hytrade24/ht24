@@ -1,0 +1,167 @@
+<div class='ebizAdminLoadtimeAnalyserDetails' style="display: none;"></div>
+<div class='ebizAdminLoadtimeAnalyser'>
+    <script type="application/javascript">
+        function adminLoadtimeGraphZoomIn(button) {
+            var timeline = jQuery(button).parent().find(".eventTimeline");
+            var timelineWidth = jQuery(".timelineWrapper").innerWidth();
+            var timelineZoom = jQuery(timeline).width() * 100 / timelineWidth;
+            timelineZoom += 25;
+            jQuery(timeline).css("width", timelineZoom+"%");
+        }
+        
+        function adminLoadtimeGraphZoomOut(button) {
+            var timeline = jQuery(button).parent().find(".eventTimeline");
+            var timelineWidth = jQuery(".timelineWrapper").innerWidth();
+            var timelineZoom = jQuery(timeline).width() * 100 / timelineWidth;
+            timelineZoom -= 25;
+            if (timelineZoom <= 100) {
+                timelineZoom = 100;
+            }
+            jQuery(timeline).css("width", timelineZoom+"%");
+        }
+
+        function adminLoadtimeGraphZoomElement(element) {
+            if (jQuery(element).hasClass("zoomed")) {
+                // Reset zoom
+                var timeline = jQuery(element).parents(".eventTimeline").first();
+                jQuery(timeline).css("width", "100%");
+                jQuery(timeline).find(".zoomed").removeClass("zoomed");
+                // Hide element details
+                jQuery(".ebizAdminLoadtimeAnalyserDetails").hide();
+            } else {
+                // Zoom to element
+                var timeline = jQuery(element).parents(".eventTimeline").first();
+                jQuery(timeline).find(".zoomed").removeClass("zoomed");
+                // Zoom to element size
+                var elementLeft = parseFloat( jQuery(element).attr("data-left") );
+                var elementWidth = parseFloat( jQuery(element).attr("data-width") );
+                var timelineZoom = (100 / elementWidth) * 99;
+                jQuery(timeline).css("width", timelineZoom+"%");
+                // Scroll to element
+                jQuery(".timelineWrapper").scrollLeft( jQuery(timeline).innerWidth() * elementLeft / 100 );
+                jQuery(element).addClass("zoomed");
+                // Show element details
+                adminLoadtimeGraphShowDetails(element);
+            }
+        }
+
+        function adminLoadtimeGraphShowDetails(element) {
+            var posBottom = jQuery(".ebizAdminLoadtimeAnalyser").outerHeight();
+            var jsDetails = jQuery(".ebizAdminLoadtimeAnalyserDetails").html(element.htmlTooltip).css("bottom", posBottom+"px").show();
+        }
+        
+        jQuery(function() {
+            var requests = jQuery(".ebizAdminLoadtimeAnalyser .timelineWrapper > .eventTimeline");
+            var requestCurrent = 0;
+            var requestCurrentDom = requests.hide().first().show();
+            jQuery("#requestCurrentName").val( (requestCurrent+1)+" von "+requests.length+": "+requestCurrentDom.attr("data-name") );
+            // Fill select
+            for (var requestIndex = 0; requestIndex < requests.length; requestIndex++) {
+                jQuery("#requestCurrentName").append(
+                        '<option value="'+requestIndex+'">'+
+                            (requestIndex+1)+' von '+requests.length+': '+jQuery(requests[requestIndex]).attr("data-name")+
+                        '</option>'
+                );
+            }
+            jQuery("#requestCurrentName").change(function() {
+                var requestNew = jQuery(this).val();
+                if ((requestNew != requestCurrent) && (requestNew >= 0) && (requestNew < requests.length)) {
+                    requestCurrentDom.hide();
+                    requestCurrent = requestNew;
+                    requestCurrentDom = jQuery(requests[requestCurrent]).show();
+                }
+            });
+            // Bind events
+            jQuery(".ebizAdminLoadtimeAnalyser .requestSwitcher .requestPrev").on("click", function(event) {
+                event.preventDefault();
+                if (requestCurrent > 0) {
+                    requestCurrentDom.hide();
+                    requestCurrent--;
+                    requestCurrentDom = jQuery(requests[requestCurrent]).show();
+                    jQuery("#requestCurrentName").val(requestCurrent);
+                }
+            });
+            jQuery(".ebizAdminLoadtimeAnalyser .requestSwitcher .requestNext").on("click", function(event) {
+                event.preventDefault();
+                if (requestCurrent < (requests.length - 1)) {
+                    requestCurrentDom.hide();
+                    requestCurrent++;
+                    requestCurrentDom = jQuery(requests[requestCurrent]).show();
+                    jQuery("#requestCurrentName").val(requestCurrent);
+                }
+            });
+
+            jQuery(".timelineWrapper").on("wheel", function(event) {
+                if (event.shiftKey) {
+                    // Zoom instead of scrolling
+                    if (typeof event.originalEvent.wheelDelta !== "undefined") {
+                        event.preventDefault();
+                        if (Math.abs(event.originalEvent.wheelDelta) > 0) {
+                            if (event.originalEvent.wheelDelta > 0) {
+                                adminLoadtimeGraphZoomIn(this);
+                            } else {
+                                adminLoadtimeGraphZoomOut(this);
+                            }
+                        }
+                    }
+                } else {
+                    // Regular scrolling
+                    if (typeof event.originalEvent.wheelDeltaY !== "undefined") {
+                        if (Math.abs(event.originalEvent.wheelDeltaY) > 0) {
+                            event.preventDefault();
+                            this.scrollLeft -= event.originalEvent.wheelDeltaY;
+                        }
+                    } else {
+                        event.preventDefault();
+                        this.scrollLeft -= event.originalEvent.wheelDelta;
+                    }
+                }
+            });
+            jQuery(".eventTimelineZoomIn").on("click", function(event) {
+                event.preventDefault();
+                adminLoadtimeGraphZoomIn(this);
+            });
+            jQuery(".eventTimelineZoomOut").on("click", function(event) {
+                event.preventDefault();
+                adminLoadtimeGraphZoomOut(this);
+            });
+            jQuery(".eventTimelineZoomIn,.eventTimelineZoomOut").on("wheel", function(event) {
+                event.preventDefault();
+                if (event.originalEvent.wheelDelta > 0) {
+                    adminLoadtimeGraphZoomIn(this);
+                } else {
+                    adminLoadtimeGraphZoomOut(this);
+                }
+            });
+            jQuery(".timelineWrapper .eventEntry").on("click", function(event) {
+                event.preventDefault();
+                adminLoadtimeGraphZoomElement(this);
+            });
+            // Use bootstrap tooltips
+            jQuery(".timelineWrapper .eventEntry").each(function() {
+                this.htmlTooltip = jQuery(this).children("script").html();
+                jQuery(this).children("script").remove();
+                jQuery(this).tooltip({ html: true, title: this.htmlTooltip, container: '.ebizAdminLoadtimeAnalyser' });
+            });
+        });
+    </script>
+
+    <div class="requestSwitcher form-inline">
+        <div class="form-group">
+            <label for="requestCurrentName">Request: </label>
+            <select type="text" class="form-control" id="requestCurrentName">
+            </select>
+        </div>
+        <button class="btn btn-default requestPrev">&lt;</button>
+        <button class="btn btn-default requestNext">&gt;</button>
+    </div>
+    <div class="timelineWrapper">
+        {requests}
+    </div>
+    <a class="btn eventTimelineZoomIn">
+        <i class="icon icon-zoom-in"></i>
+    </a>
+    <a class="btn eventTimelineZoomOut">
+        <i class="icon icon-zoom-out"></i>
+    </a>
+</div>

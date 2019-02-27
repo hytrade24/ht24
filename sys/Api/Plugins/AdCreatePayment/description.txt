@@ -1,0 +1,1 @@
+Berechnet eine Einstellgebühr für Anzeigen im Marktplatz, die sich nach dem Preis des eingestellten Artikels richtet.

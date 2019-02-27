@@ -1,0 +1,38 @@
+<script type="text/javascript" src="{uri_resource(/lib/socialshareprivacy/jquery.socialshareprivacy.min.js)}"></script>
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+    if($('#socialshareprivacy').length > 0){
+      $('#socialshareprivacy').socialSharePrivacy({
+        css_path:'{uri_resource(/lib/socialshareprivacy/socialshareprivacy/socialshareprivacy.css)}',
+        info_link:'{uri_action(datenschutzerklaerung)}',
+        
+  		services : {
+    		facebook : {
+              dummy_img:'{uri_resource(/lib/socialshareprivacy/socialshareprivacy/images/dummy_facebook.png)}'
+    				}, 
+    	twitter : {
+          dummy_img:'{uri_resource(/lib/socialshareprivacy/socialshareprivacy/images/dummy_twitter.png)}'
+    				},
+    gplus : {
+      			'display_name' : 'Google Plus',
+        		dummy_img:'{uri_resource(/lib/socialshareprivacy/socialshareprivacy/images/dummy_gplus.png)}'
+    		}
+  	}     
+      }); 
+    }
+  });
+</script>
+<div id="socialshareprivacy"></div>
+
+<p>Besuchen Sie auch unsere Sozialmedia-Seiten</p>
+<div class="btn-group">
+    <a href="http://www.facebook.com/ebizconsult" class="btn btn-default" target="_blank" rel="nofollow">
+        <img src="{uri_resource(/images/icons/facebook_color02_32x32.png)}" width="32" height="32"/>
+    </a>
+    <a href="https://plus.google.com/116121863112545414498/" class="btn btn-default" target="_blank" rel="nofollow">
+        <img src="{uri_resource(/images/icons/google_color02_32x32.png)}" width="32" height="32"/>
+    </a>
+    <a href="http://twitter.com/ebiz_trader" class="btn btn-default" target="_blank" rel="nofollow">
+        <img src="{uri_resource(/images/icons/twitter02_color_32x32.png)}" width="32" height="32"/>
+    </a>
+</div>

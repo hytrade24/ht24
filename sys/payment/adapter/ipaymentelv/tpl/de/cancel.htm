@@ -1,0 +1,13 @@
+<div class="alert alert-danger">
+    <h3>Fehler im Zahlungsablauf</h3>
+    <p>
+        Während der Zahlung ist ein Fehler aufgetreten.
+    </p>
+    {if errmsg}
+        <p>
+            <strong>{errmsg}</strong>
+        </p>
+    {endif}
+
+    <p><strong><i class="glyphicon glyphicon-arrow-right"></i> <a href="{uri_action(invoice,{INVOICE_ID})}">Erneut versuchen</a></strong></p>
+</div>

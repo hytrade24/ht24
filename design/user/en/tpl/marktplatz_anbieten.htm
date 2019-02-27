@@ -1,0 +1,159 @@
+<link rel="stylesheet" href="{uri_resource(/lib/EasyAutocomplete-1.3.5/easy-autocomplete.min.css)}"> 
+<link rel="stylesheet" href="{uri_resource(/lib/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css)}"> 
+<script type="text/javascript" src="{uri_resource(/lib/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js)}"></script>
+
+<div class="row">
+	<div class="col-md-6">
+		<h3>Details of the request</h3>
+		
+		<h4>{htm(AD_PRODUKTNAME)}</h4>
+		
+		<fieldset class="fieldGroupPrice">
+			<legend>
+				Price and quantity
+			</legend>
+			<dl class="dl-horizontal">
+				<dt>expected Price</dt>
+				<dd>
+					<b>
+						{topreis_ex(AD_PREIS)} {CURRENCY_DEFAULT}
+						pro Mengeneinheit
+					</b>
+					<br />
+					<span class="text-muted">
+						{subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={AD_MWST})}
+					</span>
+				</dd>
+				
+				<dt>Requested quantity</dt>
+				<dd>
+					<span id="marketplaceArticleQuanitityValue">{htm(AD_MENGE)}</span>
+				</dd>
+			</dl>
+		</fieldset>
+		
+		{subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.fields.htm,ID_AD_MASTER={ID_AD_MASTER},SHOW_HTML_FIELDS=0)}
+
+		<fieldset class="fieldGroup{ID_FIELD_DEF}">
+			<legend>
+				Description
+			</legend>
+			<div>
+				{AD_BESCHREIBUNG}
+			</div>
+		</fieldset>
+		
+		<fieldset class="fieldGroupUser">
+			<legend>
+				Seeker
+			</legend>
+			{subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.vendor.htm,OVERRIDE_USER_ID={AD_FK_USER})}
+		</fieldset>
+	</div>
+	<div class="col-md-6">
+		<h3>Send Offer</h3>
+		
+		<div class="control-group">
+			<label class="control-label">Product:</label>
+
+			<div class="controls">
+				<input type="hidden" id="OFFER_ARTICLE_ID" name="OFFER_ARTICLE_ID" value="{htm(OFFER_ARTICLE_ID)}" />
+				<input class="form-control" type="text" id="OFFER_ARTICLE" name="OFFER_ARTICLE" value="{htm(OFFER_ARTICLE)}" />
+			</div>
+			
+			<br />
+			
+			<div id="OFFER_ARTICLE_INFO" class="offer-item-info alert alert-warning">
+				<strong>No Ad selected</strong>
+				You have not selected any of their ads. If you continue, a general offer will be created for the searching person.
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="control-group">
+					<label class="control-label">Quantity:</label>
+
+					<div class="controls">
+						<input class="form-control" type="text" id="OFFER_ARTICLE_QUANTITY" name="OFFER_ARTICLE_QUANTITY" value="{htm(OFFER_ARTICLE_QUANTITY)}" />
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="control-group">
+					<label class="control-label">Price per unit of measure:</label>
+
+					<div class="controls">
+						<input class="form-control" type="text" id="OFFER_ARTICLE_PRICE" name="OFFER_ARTICLE_PRICE" value="{htm(OFFER_ARTICLE_PRICE)}" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Your message:</label>
+	
+			<div class="controls">
+				<textarea class="form-control" id="BODY" name="BODY" rows="5">{htm(BODY)}</textarea>
+			</div>
+		</div>
+		<br />
+		<div class="text-right">
+				<button type="submit" class="btn btn-primary">Send offer</button>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+jQuery(function() {
+	
+	var offerFallbackInfo = jQuery("#OFFER_ARTICLE_INFO").html();
+	
+	jQuery("#OFFER_ARTICLE").on("change", function(event) {
+		jQuery("#OFFER_ARTICLE_ID").val("");
+		jQuery("#OFFER_ARTICLE_QUANTITY").val("");
+		jQuery("#OFFER_ARTICLE_PRICE").val("");
+		jQuery("#OFFER_ARTICLE_INFO").html(offerFallbackInfo).addClass("alert-warning").removeClass("alert-info");
+	});
+	jQuery("#OFFER_ARTICLE").easyAutocomplete({
+
+		url: function (phrase) {
+			return "{uri_baseurl(/index.php)}";
+		},
+		getValue: function (element) {
+			return element.PRODUKTNAME;
+		},
+		template: {
+			type: "iconLeft",
+			fields: {
+				iconSrc: "IMG_DEFAULT_SRC"
+			}
+		},
+		adjustWidth: false,
+		ajaxSettings: {
+			dataType: "json",
+			method: "POST",
+			data: {
+				page: "marktplatz_anbieten",
+				ajax: "autocompleteArticle",
+				dataType: "json",
+				ID_AD_MASTER: {ID_AD_MASTER}
+			}
+		},
+		preparePostData: function (data) {
+			data.phrase = $("#OFFER_ARTICLE").val();
+			return data;
+		},
+		requestDelay: 400,
+		list: {
+			onChooseEvent: function() {
+				var selection = jQuery("#OFFER_ARTICLE").getSelectedItemData();
+				if (typeof selection == "object") {
+					jQuery("#OFFER_ARTICLE_ID").val(selection.ID_AD_MASTER);
+					jQuery("#OFFER_ARTICLE_QUANTITY").val(selection.MENGE < {int(AD_MENGE)} ? selection.MENGE : {int(AD_MENGE)});
+					jQuery("#OFFER_ARTICLE_PRICE").val(selection.PREIS);
+					jQuery("#OFFER_ARTICLE_INFO").html(selection.TPL_SELECTED).addClass("alert-info").removeClass("alert-warning");
+				}
+			}
+		}
+	});
+});
+</script>

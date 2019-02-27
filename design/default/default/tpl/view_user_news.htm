@@ -1,0 +1,42 @@
+{if USER_ID_USER}
+    <div class="row design-page-with-menu">
+
+        <div class="design-page-content">
+        {if ID_NEWS}
+            <div class="design-news-article">
+                <h1>{htm(V1)}</h1>
+                <div class="date">{todate(STAMP)}</div>
+                <div>{if IMG}<img src="{uri_baseurl({IMG})}" width="{IMGW}" height="{IMGH}" style="float:{IMGFLOAT};margin-right:4px;margin-bottom:2px;" />{endif}
+                    <span class="lead">{htm(V2)}</span>
+                    <p>{T1}</p>
+                </div>
+            </div>
+            {if comments_enabled}
+            <div class="generic-box-margin-bottom">
+              {subtpl(tpl/de/comment_list.htm,TABLE=news,FK={ID_NEWS})}
+              {subtpl(tpl/de/comment.htm,ID_USER,TABLE=news,FK={ID_NEWS})}
+            </div>
+            {endif}
+        {endif}
+
+            {if (!ID_NEWS || liste)}              
+                <div class="tabbable">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a>{if ID_NEWS}[[ translation : marketplace : more.press.releases :: Weitere {endif}Pressemitteilungen ]]</a></li>
+                    </ul>
+                </div>
+                
+                {if liste}
+                    {liste}
+                {else}
+                    <h2>[[ translation : marketplace : no.press.releases.currently :: Derzeit sind keine Pressemitteilungen eingetragen. ]]</h2>
+                {endif}
+            {endif}
+        </div>
+        <div class="design-page-menu">
+            {subtpl(tpl/{SYS_TPL_LANG}/view_user.info.htm,*)}
+            {content_page()}
+        </div>
+    </div>
+</div>
+{endif}

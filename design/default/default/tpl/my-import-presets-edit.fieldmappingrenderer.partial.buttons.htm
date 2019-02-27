@@ -1,0 +1,16 @@
+<div class="btn-group">
+	<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#" title="[[ translation : marketplace : import.mapping.insert.after.this :: Zuweisung nach dieser einfügen ]]">
+		<i class="glyphicon glyphicon-plus"></i>
+		<span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li><a href="#" onclick="ipe.addMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', (jQuery(this).closest('tr').prevAll().length - 1), 'Ad_Import_Preset_Mapping_Value_DataFieldMappingValue'); return false;">[[ translation : marketplace : import.mapping.assignment :: Feldzuweisung ]]</a></li>
+		<li><a href="#" onclick="ipe.addMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', (jQuery(this).closest('tr').prevAll().length - 1), 'Ad_Import_Preset_Mapping_Value_FixMappingValue'); return false;">[[ translation : marketplace : import.mapping.fixed.value :: Fester Wert ]]</a></li>
+		<li><a href="#" onclick="ipe.addMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', (jQuery(this).closest('tr').prevAll().length - 1), 'Ad_Import_Preset_Mapping_Value_FunctionMappingValue'); return false;">[[ translation : marketplace : import.mapping.function :: Funktion ]]</a></li>
+	</ul>
+</div>
+
+
+<a class="btn btn-default" href="#" onclick="ipe.removeMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', (jQuery(this).closest('tr').prevAll().length - 1)); jQuery(this).closest('tr').detach(); return false;" title="[[ translation : marketplace : import.mapping.delete :: Zuordnung löschen ]]">
+	<i class="glyphicon glyphicon-remove"></i>
+</a>

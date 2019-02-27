@@ -1,0 +1,41 @@
+<link href="{uri_baseurl(/js/tree/skin/ui.dynatree.css)}" rel="stylesheet" type="text/css">
+<script src="{uri_baseurl(/js/tree/jquery.dynatree.min.js)}" type="text/javascript"></script>
+
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+<script type="text/javascript">
+    jQuery(function() {
+
+        setVendorFormular = function(d) {
+            if(d) {
+                jQuery(".visibleOnEnabledVendor").show();
+            } else {
+                jQuery(".visibleOnEnabledVendor").hide();
+            }
+        }
+
+        jQuery("#vendorFormularDescriptionTab").tabs();
+
+        setVendorFormular({if VENDOR_STATUS}true{else}false{endif});
+    });
+
+
+</script>
+
+<h1>[[ translation : marketplace : vendor.directory :: Anbieterverzeichnis ]]</h1>
+
+{if DO_SAVE}
+<p>
+    <strong>[[ translation : marketplace : vendor.my.saved :: Formular wurde gespeichert.. ]]</strong>
+</p>
+{endif}
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-vendor-nav.htm,*)}
+<p>
+    [[ translation : marketplace : vendor.my.comments.lead ::
+        Hier finden Sie eine Übersicht über alle Kommentare die Sie erhalten haben.<br />
+        Unter <a href="{uri_action(my-settings)}">Einstellungen</a> können Sie angeben, ob erhaltenen Kommentare automatisch oder manuell freigeschaltet werden müssen.
+    ]]
+</p>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-comments-list.htm,*,TYPE=VENDOR,TYPE_LOCKED=1)}

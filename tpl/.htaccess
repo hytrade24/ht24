@@ -1,0 +1,22 @@
+ErrorDocument 404 /404.php
+
+RewriteEngine on
+
+## Geniale Rules by Schmalle :-) 
+## noch genialer erweitert by Titus
+## See Comments to understand ´em
+## Auf keinen Fall an der Reihenfolge rumfummeln
+
+#RewriteRule ^login/?$ index.php?page=login
+RewriteRule ^admin/?$ admin/index.php
+## um zu vermeiden, dass /admin/ auf index.php?page=admin umleitet
+RewriteRule ^/?$ index.php?page=index
+## damit Startseite = page=index, auch wenn die versteckt ist
+
+RewriteRule (^|/)([^/]*)\.htm$ index.php?page=$2
+## ^^ ersetzt URL/verzeichnis/datei.htm durch page=datei
+RewriteRule (^|/)([^/\.]*)/?$ index.php?page=$2
+## ^^ ersetzt URL/verzeichnis/ durch page=verzeichnis
+
+## die index.php (public) sorgt jetzt dafuer, dass alles was durch Kommata
+## abgetrennt ist, im Array $ar_params landet.

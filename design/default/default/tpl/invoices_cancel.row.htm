@@ -1,0 +1,53 @@
+{if TYPE == 1}
+<tr>
+    <td>
+        <input onclick="check_or_uncheck_all_checkboxes(this)" class="cancel-checkbox"
+               name="INVOICE_CANCEL_ITEM_CHECK[]" type="checkbox"
+               {if ID_BILLING_CANCEL}checked{endif}
+        />
+        <input name="INVOICE_CANCEL_ITEM[]" type="hidden"
+               value="{ID_BILLING_INVOICE_ITEM}"
+        />
+    </td>
+    <td>
+        <a href="{uri_action(invoice,{FK_BILLING_INVOICE})}?highlight={ID_BILLING_INVOICE_ITEM}">
+            <span>{DESCRIPTION}</span>
+        </a>
+    </td>
+    <td>{QUANTITY}</td>
+    <td>( {topreis_ex(PRICE)} {CURRENCY_DEFAULT} )</td>
+    <td>{TAX_VALUE} %</td>
+    <td>( {topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT} )</td>
+    <td>
+        {lookup(CANCEL_INVOICE_REASON,CANCEL_INVOICE_ITEM_REASON_{ID_BILLING_INVOICE_ITEM},,class="form-control")}
+    </td>
+</tr>
+{else}
+    {if TYPE == 2}
+    <tr>
+        <td>
+            <input class="cancel-checkbox"
+                   name="BILLING_BILLABLEITEM_CANCEL_CHECK" type="checkbox"
+                   {if ID_BILLING_CANCEL}checked{endif}
+            />
+            <input name="BILLING_BILLABLEITEM_CANCEL" type="hidden"
+                   value="{ID_BILLING_BILLABLEITEM}"
+            />
+        </td>
+        <td>
+            {if REF_TYPE == "4" && REF_FK != "" }
+            <a href="{uri_action(sale_details_seller)}?ID_AD_ORDER={FK_AD_ORDER}">
+                {htm(DESCRIPTION)}
+            </a>
+            {else}
+                {htm(DESCRIPTION)}
+            {endif}
+        </td>
+        <td>{QUANTITY}</td>
+        <td>( {topreis_ex(PRICE)} {CURRENCY_DEFAULT} )</td>
+        <td>{TAX_VALUE} %</td>
+        <td>( {topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT} )</td>
+        <td>{lookup(CANCEL_INVOICE_REASON,CANCEL_INVOICE_ITEM_REASON_{ID_BILLING_BILLABLEITEM},,class="form-control")}</td>
+    </tr>
+    {endif}
+{endif}

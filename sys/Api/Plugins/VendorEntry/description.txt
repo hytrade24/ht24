@@ -1,0 +1,2 @@
+Erweitert die Paketverwaltung um den Bestandteil "Anbietereintrag", so dass dieser über Pakete/Mitgliedschaften gebucht werden kann.
+Achtung! Sicherstellen dass die Benutzergruppe die Zugriffsrechte hat, um einen Anbietereintrag zu erstellen!

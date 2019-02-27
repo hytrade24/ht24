@@ -1,0 +1,23 @@
+'V1':
+  'de': 'Korrektur für die Rechnung Nr. {ID_BILLING_INVOICE}'
+'T1':
+  'de': |
+    Hallo {VORNAME} {Nachname}!
+    
+    Es gibt eine erneuerte Rechnung für die Rechnungsnummer {ID_BILLING_INVOICE}.{IF INVOICE_MAIL_PDF} Eine Kopie der Rechnung ist in der E-Mail. {edif}
+    
+    Rechnungsnummer: {ID_BILLING_INVOICE}
+    Betrag: {topreis(Total_Price)} EUR
+    Zahlung: {todate(STAMP_DUE)}
+    
+    Sie können die Rechnung unter folgendem Link ansehen und Bezahlen.
+    {uri_action_full(invoice,[ID_BILLING_INVOICE])]
+    
+    Bitte kontrollieren sie die Rechnung und bezahlen Sie sie Zeitnahe.
+    
+    Wir bedanken uns für die Partnerschafft.
+    
+    Bei fragen wenden Sie sich bitte an unsere Buchhaltung.
+    
+    Mit freundlichen Grüßen
+    [SITENAME] Team

@@ -1,0 +1,20 @@
+{if !HIDE_TABS}
+<h3>[[ translation : marketplace : manufacture.select.category.or.manufacture :: Bitte wählen Sie eine Kategorie oder Hersteller aus. ]]</h3>
+<ul class="nav nav-tabs">
+	<li>
+		<a href="{uri_action(marktplatz)}" title="[[ translation : general : categories :: Kategorien ]]">
+			[[ translation : general : categories.uppercase :: KATEGORIEN ]]
+		</a>
+	</li>
+	<li class="active">
+		<a href="{uri_action(hersteller)}" title="[[ translation : general : manufacturer :: Hersteller ]]">
+			[[ translation : general : manufacturer.uppercase :: HERSTELLER ]]
+		</a>
+	</li>
+</ul>
+{endif}
+
+<div class="design-hersteller-content">
+	{MANUFACTURERS_CONTENT}
+</div>
+

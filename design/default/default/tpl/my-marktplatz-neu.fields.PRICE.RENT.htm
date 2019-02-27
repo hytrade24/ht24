@@ -1,0 +1,14 @@
+<div class="design-input-field design-input-rent-prices">
+    <input type="hidden" name="tmp_type[PREIS]" value="float">
+    <div class="input-group">
+        <span class="input-group-addon">{CURRENCY_DEFAULT}</span>
+        <input type="text" pattern="[0-9]+([,\.][0-9]+)?" onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="MIETPREISE_{ID_LOOKUP}" name="MIETPREISE[{ID_LOOKUP}]"
+               placeholder="[[ translation : marketplace : price.rent.per :: Mietpreis / {htm(V1)} ]]" title="[[ translation : marketplace : price.rent.per :: Mietpreis / {htm(V1)} ]]" value="{AD_VALUE}" />
+    </div>
+</div>
+<div class="design-input-help">
+    <span class="help-inline design-help-inline-glyphicon">
+        <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="" 
+           data-original-title="[[ translation : marketplace : price.rent.per :: Mietpreis / {htm(V1)} ]]"></i>        
+    </span>
+</div>

@@ -1,0 +1,5 @@
+{if IS_DELIMITER}
+	<option value="">----</option>
+{else}
+	<option value="{ID_IMPORT_PRESET}" data-file="{if REQUIRES_FILE}true{else}false{endif}"{if IS_SELECTED} selected{endif}>{PRESET_NAME}</option>
+{endif}

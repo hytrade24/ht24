@@ -1,0 +1,25 @@
+{if USER_ID_USER}
+    <div class="row design-page-with-menu">
+        <div class="design-page-content">
+            <h1>[[ translation : marketplace : imprint :: Impressum ]]</h1>
+            {USERCONTENT_IMPRESSUM}
+            {if USERCONTENT_AGB}
+                <h3>[[ translation : marketplace : agb :: AGB ]]</h3>
+                {text(USERCONTENT_AGB)}
+            {endif}
+            {if USERCONTENT_WIDERRUF}
+                <h3>[[ translation : marketplace : revocation :: Widerrufserklärung ]]</h3>
+                {text(USERCONTENT_WIDERRUF)}
+            {endif}
+            
+            {if USERCONTENT_ZAHLUNG}
+                <h3>[[ translation : marketplace : payment.reference :: Zahlungshinweis ]]</h3>
+            {text(USERCONTENT_ZAHLUNG)}
+            {endif}
+        </div>
+        <div class="design-page-menu">
+            {subtpl(tpl/{SYS_TPL_LANG}/vendor_homepage_view_user.info.htm,*)}
+            {content_page(LINKS - Anbieter-Homepage)}
+        </div>
+    </div>
+{endif}

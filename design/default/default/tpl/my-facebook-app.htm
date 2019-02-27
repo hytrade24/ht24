@@ -1,0 +1,104 @@
+<h1>[[ translation : marketplace : facebook.app.configuration :: Facebook-App Konfiguration ]]</h1>
+<p>[[ translation : marketplace : facebook.app.configuration :: Hier können Sie die Konfiguration unserer Facebook-App anpassen ]]</p>
+
+{if NOTIFICATION_ADDED || NOTIFICATION_REMOVED || NOTIFICATION_SAVED}
+    <div class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>[[ translation : marketplace : facebook.app.success :: Erfolg ]]!</h4>
+    {if NOTIFICATION_ADDED}
+        [[ translation : marketplace : facebook.app.notification.added :: Ihre Facebook-Seite wurde erfolgreich mit ihrem Account verknüpft. ]]
+    {endif}
+    {if NOTIFICATION_REMOVED}
+        [[ translation : marketplace : facebook.app.notification.removed :: Ihr Account ist nun mit keiner Facebook-Seite mehr verknüpft. ]]
+    {endif}
+    {if NOTIFICATION_SAVED}
+        [[ translation : marketplace : facebook.app.notification.saved :: Ihre Änderungen an den Einstellungen wurden gespeichert. ]]
+    {endif}
+    </div>
+{endif}
+{if err}
+    <div class="alert alert-danger alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>[[ translation : marketplace : facebook.app.error :: Fehler ]]!</h4>
+    {if err_facebook_auth}
+        [[ translation : marketplace : facebook.app.error.auth :: Fehler bei der Autorisation der Facebook-Seite, bitte versuchen Sie es erneut. ]]
+    {endif}
+    </div>
+{endif}
+
+    <form method="POST">
+        <table class="mytable table table-bordered table-striped table-condensed">
+            <tr>
+                <th colspan="2">
+                    Verknüpfte Facebook-Seite
+                </th>
+            </tr>
+            <tr>
+                <th width="200">
+                    [[ translation : marketplace : facebook.app.configuration.page :: Facebook Seite ]]
+                </th>
+                <td>
+                {if FACEBOOK_PAGE_EXISTS}
+                    <p>
+                        [[ translation : marketplace : facebook.app.configuration.connected ::
+                            Ihr Account ist derzeit mit der Facebook-Seite <strong>{htm(FACEBOOK_PAGE_NAME)}</strong> verknüpft.
+                        ]]
+                    </p>
+                    <a class="btn btn-default" href="{FACEBOOK_PAGE_URL}" target="facebook">
+                        [[ translation : marketplace : facebook.app.configuration.btn.open :: Facebook-Seite öffnen ]]
+                    </a>
+                    <button name="FACEBOOK_LINK_REMOVE" class="btn btn-danger" value="{FACEBOOK_PAGE_ID}">
+                        [[ translation : marketplace : facebook.app.configuration.btn.disconnect :: Verknüpfung entfernen ]]
+                    </button>
+                {else}
+                    <p>
+                        [[ translation : marketplace : facebook.app.configuration.not.connected ::
+                            Ihr Account ist derzeit mit keiner Facebook-Seite verknüpft.
+                        ]]
+                    {if FACEBOOK_PAGE_AVAILABLE}
+                        <br />
+                        [[ translation : marketplace : facebook.app.configuration.connection.available ::
+                            Möchten Sie ihren Account mit der Facebook-Seite <strong>{htm(FACEBOOK_PAGE_NAME)}</strong> verknüpfen?
+                        ]]
+                        <button name="FACEBOOK_LINK_ADD" class="btn btn-success" value="{FACEBOOK_PAGE_ID}">
+                            [[ translation : marketplace : facebook.app.configuration.btn.connect :: Facebook-Seite verknüpfen ]]
+                        </button>
+                    {else}
+                        <br />
+                        <a class="btn btn-default" href="{uri_action(facebook,add)}">
+                            [[ translation : marketplace : facebook.app.configuration.btn.add :: Facebook-App zu ihrer Seite hinzufügen ]]
+                        </a>
+                    {endif}
+                    </p>
+                {endif}
+                </td>
+            </tr>
+        </table>
+    </form>
+{if FACEBOOK_PAGE_EXISTS}
+    <form method="POST">
+        <table class="mytable table table-bordered table-striped table-condensed">
+            <tr>
+                <th colspan="2">
+                    [[ translation : marketplace : facebook.app.configuration.settings :: Einstellungen ]]
+                </th>
+                </td>
+            </tr>
+            <tr>
+                <th width="200">
+                    [[ translation : marketplace : facebook.app.configuration.article.count :: Anzahl Artikel pro Seite ]]
+                </th>
+                <td>
+                    <input class="form-control" type="number" min="1" max="{FACEBOOK_MAX_ADS_PER_PAGE}" name="SETTINGS[COUNT_PER_PAGE]" value="{SETTINGS_COUNT_PER_PAGE}" />
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2" style="text-align: right;">
+                    <input name="RESET" type="reset" class="btn btn-default" value="[[ translation : marketplace : facebook.app.configuration.btn.reset :: Änderungen verwerfen ]]">
+                    <input name="SAVE" type="submit" class="btn btn-success" value="[[ translation : marketplace : facebook.app.configuration.btn.save :: Speichern ]]">
+                </th>
+            </tr>
+        </table>
+    </form>
+{endif}
+</form>

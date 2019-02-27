@@ -1,0 +1,12 @@
+<tr>
+	<td title="[[ translation : general : my.pages.club.invite.actions :: Aktionen ]]">
+		<a href="{uri_action(my-club,{FK_CLUB},accept)}" class="btn btn-sm btn-success">[[ translation : general : my.pages.club.invite.accept :: Akzeptieren ]]</a>
+		<a href="{uri_action(my-club,{FK_CLUB},decline)}" class="btn btn-sm btn-danger">[[ translation : general : my.pages.club.invite.decline :: Ablehnen ]]</a>
+	</td>
+	<td title="[[ translation : general : my.pages.club.invite.club.name :: Club-Name ]]">
+		{htm(CLUB_NAME)}
+	</td>
+	<td title="[[ translation : general : my.pages.club.invite.date :: Datum der Einladung ]]">
+		{todate(STAMP)}
+	</td>
+</tr>

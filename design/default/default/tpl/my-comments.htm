@@ -1,0 +1,16 @@
+<h1>[[ translation : general : comments :: Kommentare ]]</h1>
+<p>
+	[[ translation : news : comments.long :: Hier finden Sie eine Übersicht über alle Kommentare die Sie verfasst oder erhalten haben.<br />
+    Unter <a href="{uri_action(my-settings)}">Einstellungen</a> können Sie angeben, ob erhaltenen Kommentare automatisch oder manuell freigeschaltet werden müssen. ]]
+</p>
+
+<ul class="nav nav-tabs userTabsTable">
+	<li{if show_received} class="active"{endif}>
+		<a href="{uri_action(my-comments,1,received)}">[[ translation : news : got.comments :: Erhaltene Kommentare ]]</a>
+	</li>
+	<li{if show_sent} class="active"{endif}>
+		<a href="{uri_action(my-comments,1,sent)}">[[ translation : news : written.comments :: Geschriebene Kommentare ]]</a>
+	</li>
+</ul>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-comments-list.htm,*,TYPE)}

@@ -1,0 +1,87 @@
+-
+  'action': 'systemCheckPhp'
+  'parameters':
+    'version': '5.6'
+-
+  'action': 'sqlRun'
+  'parameters':
+    'file': 'update.sql'
+-
+  'action': 'filesCopy'
+  'parameters':
+    'source': 'Dateien'
+    'backup': 'DateienBackup'
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'sepa_export'
+    'ALIAS': ''
+    'V1':
+      'de': 'Lastschrift Zahlungen'
+    'V2':
+      'de': 'Lastschrift Zahlungen'
+    'TARGET':
+      'BY_IDENT': 'buchhaltung'
+    'S_LAYOUT': ''
+    'POSITION': 'appendChild'
+    'B_VIS': 1
+    'B_SYS': 1
+    'ROLES': [ 'Admin' ]
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'lastschrift_check_export'
+    'ALIAS': ''
+    'V1':
+      'de': 'Lastschrift Kontoverifizierungen'
+    'V2':
+      'de': 'Lastschrift Kontoverifizierungen'
+    'TARGET':
+      'BY_IDENT': 'sepa_export'
+    'S_LAYOUT': ''
+    'POSITION': 'appendChild'
+    'B_VIS': 1
+    'B_SYS': 1
+    'ROLES': [ 'Admin' ]
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my_customers'
+    'ALIAS': ''
+    'V1':
+      'de': 'Meine Kunden'
+    'V2':
+      'de': 'Meine Kunden'
+    'TARGET':
+      'BY_IDENT': 'my-verkaufen'
+    'S_LAYOUT': '-user'
+    'POSITION': 'appendChild'
+    'B_VIS': 1
+    'B_SYS': 1
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'PAYMENT_PINCODE_EMAIL'
+    'BESCHREIBUNG': 'Infomail über den verschickten Pin-Code zur Bestätigung eines Lastschrift Kontos'
+    'V1':
+      'de': 'Bitte bestätigen Sie ihr Konto für die Zahlung per Lastschrift'
+    'T1':
+      'de': |
+        Hallo {VORNAME} {NACHNAME}!
+        
+        Bitte geben Sie unter der nachfolgenden URL den Pin-Code ein, den Sie mit im Betreff einer von uns veranlassten Überweisung erhalten haben.
+        {uri_action_full(my-payment-adapter)}
+
+-
+  'action': 'designCheck'
+  'parameters':
+    'language': 'de'
+    'backup': 'DateienBackup'
+-
+  'action': 'cacheClear'
+  'parameters':
+    'type': 'step_all'

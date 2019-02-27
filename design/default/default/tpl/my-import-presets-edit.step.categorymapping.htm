@@ -1,0 +1,448 @@
+<link href="{uri_resource(lib/jqTree/jqTree.css)}" rel="stylesheet">
+<link href="{uri_resource(lib/jqTreeSelect/jqTreeSelect.css)}" rel="stylesheet">
+<script src="{uri_resource(lib/jqTree/jqTree.js)}" type="application/javascript"></script>
+<script src="{uri_resource(lib/jqTreeSelect/jqTreeSelect.js)}" type="application/javascript"></script>
+
+
+<link href="{uri_resource(lib/jstree/themes/default/style.css)}" rel="stylesheet">
+<script src="{uri_resource(lib/jstree/jstree.min.js)}" type="application/javascript"></script>
+<script src="{uri_resource(lib/jquery.highlight/jquery.highlight.min.js)}" type="application/javascript"></script>
+
+
+<script>
+	function initTreeSelectForElement(selector) {
+
+
+	}
+	/**
+	 * adds new tr input fields
+	 * @constructor
+	 * @private
+	 */
+	function ImportEditor_CategoryMapping_updateNewInputFields() {
+		var el = jQuery("#TMP_MAP_CATEGORYMAPPING tbody");
+		var emptyfieldexists = false;
+		el.find("input.mapTableKeyInput").each(function() {
+			if(!jQuery.trim(jQuery(this).val()).length) { emptyfieldexists = true; }
+		});
+
+
+		if(!emptyfieldexists) {
+			var trClone = el.find("tr:last-child").clone();
+
+			jQuery(trClone).find("input").val('')
+			jQuery(trClone).find(".mapRowEditTreeContainer").html('').hide();
+			jQuery(trClone).find(".mapRowViewTreeValue").text('[[ translation : marketplace : import.mapping.not.assigned :: Noch nicht zugewiesen ]]');
+			jQuery(trClone).find(".mapRowViewTreeContainer").show();
+
+			el.append(trClone);
+		}
+	}
+
+	var treeContainer = null;
+	var tree = null;
+	var treeSearch = false;
+	var openMapRowColumn = null;
+
+	function remove_category_mapping(el) {
+	    //el.stopPropagation();
+        var mapRowColumn =  jQuery(el).closest(".mapRowColumn");
+        var categoryMappingValue = mapRowColumn.find('.categoryMappingValue');
+        var category_mapping = mapRowColumn.prev().find('input');
+
+        var span_mapRowViewTreeValue = mapRowColumn.find('.mapRowViewTreeValue');
+
+
+        var html = '<em class="text-error">';
+        html += 'Noch nicht zugewiesen';
+        html += '</em>';
+
+        $.ajax({
+			type: "POST",
+			dataType: "JSON",
+			url: "{uri_baseurl(index.php?page=my-import-presets-edit&DO=remove-category-mapping)}",
+			data: {
+			    'CATEGORY_MAPPING_KEY': category_mapping.val(),
+				'CATEGORY_MAPPING_VALUE': categoryMappingValue.val()
+			},
+			success: function ( resp ) {
+			    console.log( resp );
+			    if ( resp.success ) {
+                    span_mapRowViewTreeValue.html( html );
+                    categoryMappingValue.val('');
+                    category_mapping.val('');
+				}
+			},
+			error: function ( resp ) {}
+		});
+
+        openMapRowColumn = mapRowColumn;
+	}
+	
+	function assign_categories_to_search_results(el) {
+        var search_str = $("#search-string-exported-categories").val();
+        var search_str2 = search_str.toLowerCase();
+        var all_exported_categories = $('#TMP_MAP_CATEGORYMAPPING td:first-child');
+        var temp = '<i class="fa fa-spinner" aria-hidden="true"></i>';
+        temp += '<span>Zuordnen</span>';
+        $(this).html( temp );
+
+        var categoryMappingValue = $(el).prev().find('.categoryMappingValue').val();
+
+        if ( categoryMappingValue != "search" ) {
+
+            console.log("In if", categoryMappingValue);
+
+            var parent_element = $(el).parent();
+            parent_element.find(".text-error").remove();
+
+            $.each(all_exported_categories,function() {
+                var element = $(this).find('.exported-category-name');
+                var text = element.text();
+                var text2 = text.toLowerCase();
+                var search = text2.search( search_str2 );
+                if ( search != -1 || search == 0 ) {
+                    $(this).removeHighlight();
+                    var iterated_mapRowColumn = $(this).next();
+                    var categoryMappingValue = $(el).prev().find('.categoryMappingValue').val();
+                    var categoryMappingValueText = $(el).prev().find('.categoryMappingValueText').val();
+                    var html = categoryMappingValueText;
+                    html += '&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default btn-sm" ' +
+                        'onclick="(function(e){e.stopPropagation();})(event);remove_category_mapping(this);" ' +
+                        'style="color: #000000;">';
+                    html += '<span class="glyphicon glyphicon-remove-sign"></span>';
+                    html += '</button>';
+                    iterated_mapRowColumn.find('.mapRowViewTreeValue').html( html );
+                    add_step_to_session(
+                        'CATEGORYMAPPING_KEY',
+                        text,
+                        'CATEGORYMAPPING.FK_KAT',
+                        categoryMappingValue
+                    );
+                    $(this).highlight(search_str);
+                }
+            });
+		}
+		else {
+            var parent_element = $(el).parent();
+            parent_element.find(".text-error").remove();
+            var html = '<div class="text-error" style="color: #FF0000;">';
+            html += 'Bitte wählen Sie zuerst eine beliebige Marktplatzkategorie';
+            html += '</div>';
+            parent_element.append( html );
+		}
+        $(this).html( '<span>Zuordnen</span>' );
+    }
+
+	function editMapRow(el) {
+		var mapRowColumn =  jQuery(el).closest(".mapRowColumn");
+		var viewContainer = mapRowColumn.find(".mapRowViewTreeContainer");
+		var editContainer = mapRowColumn.find(".mapRowEditTreeContainer");
+		var currentMappingValue = mapRowColumn.find("input.categoryMappingValue").val();
+
+		openMapRowColumn = mapRowColumn;
+
+		jQuery(".mapRowEditTreeContainer").hide();
+		jQuery(".mapRowViewTreeContainer").show();
+
+		treeContainer.detach().appendTo(editContainer);
+
+		if(currentMappingValue != '' && currentMappingValue > 0) {
+			var a = $('#jstree_test').jstree(true);
+			a.select_node(currentMappingValue);
+		} else {
+			$('#jstree_test').jstree(true).deselect_all();
+		}
+
+		viewContainer.hide();
+		editContainer.show();
+
+		jQuery(document).scrollTop(jQuery(mapRowColumn).offset().top);
+	}
+
+	function add_step_to_session(id_name, id_value, key_name, key_value) {
+		var url = '';
+		url = '{uri_baseurl(index.php?page=my-import-presets-edit&DO=add-mappings-to-sesseion)}';
+	    $.ajax({
+			type: "POST",
+			dataType: "JSON",
+			url: url,
+			data: {
+				id_name: id_name,
+				id_value: id_value,
+				key_name: key_name,
+				key_value: key_value
+			},
+			success: function ( resp ) {
+			    console.log( resp );
+			},
+			error: function ( resp ) {}
+		})
+	}
+
+	jQuery(function() {
+
+		jQuery.getJSON('{uri_baseurl(index.php?page=my-import-presets-edit&DO=LOAD_CATEGORIES)}&jqTreeAction=readChilds', function(result) {
+
+			tree = jQuery("#jstree_test").on('changed.jstree', function (e, data) {
+			    var i, j, r = [];
+
+				var node = data.node;
+
+				if(typeof node != 'undefined' && typeof data.event != 'undefined') {
+					if (node.children.length == 0) {
+						// last child
+						if (confirm('[[ translation : marketplace : import.category.confirm.assignement : CATEGORY="' + node.text + '" : Möchten Sie die Kategorie {CATEGORY} zuordnen? ]]')) {
+						    var tree_node_id = node.id;
+						    var key = '';
+
+						    var temp = openMapRowColumn.find("input.categoryMappingValue");
+                            var temp4 = temp.attr("name");
+						    //temp = temp.closest( ".mapRowColumn" ).prev().find('input');
+						    var temp2 = temp.attr("name");
+						    var temp3 = openMapRowColumn.closest("tr").find(".exported-category-name").text();
+
+						    if ( temp.hasClass('yes') ) {
+                                openMapRowColumn.find("input.categoryMappingValueText").val(node.text);
+                            }
+                            else {
+                                add_step_to_session(
+                                    'CATEGORYMAPPING_KEY',
+                                    temp3,
+                                    'CATEGORYMAPPING.FK_KAT',
+                                    tree_node_id
+                                );
+                            }
+
+						    var html = '&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default btn-sm" onclick="(function(e){e.stopPropagation();})(event);remove_category_mapping(this);" style="color: #000000;"><span class="glyphicon glyphicon-remove-sign"></span></button>';
+
+							openMapRowColumn.find("input.categoryMappingValue").val(node.id);
+							openMapRowColumn.find(".mapRowViewTreeValue").html(node.text + html);
+
+							if ( $(this).closest(".mapRowColumn").parent().attr("class") == "col-md-6" ) {
+                                $(this).closest(".mapRowColumn").parent().find(".text-error").remove();
+							}
+
+							openMapRowColumn.find(".mapRowEditTreeContainer").hide();
+							openMapRowColumn.find(".mapRowViewTreeContainer").show();
+
+							jQuery(document).scrollTop(jQuery(openMapRowColumn).offset().top);
+							openMapRowColumn = null;
+						}
+					} else {
+						$('#jstree_test').jstree(true).toggle_node(node);
+					}
+				}
+
+}			).jstree({
+				core: {
+					data: result.nodes,
+					multiple: false
+				},
+				search: {
+					show_only_matches: true,
+					show_only_matches_children: true
+				},
+				plugins: ['search']
+			});
+
+			treeContainer = jQuery("#treeContainer");
+
+			jQuery("#tree_search_input").keypress(function(e) {
+				if(e.which == 10 || e.which == 13) {
+					e.preventDefault();
+
+					jQuery('#tree_search_button').trigger('click');
+					return false;
+				}
+			});
+
+			$('#tree_search_button').click(function (e) {
+				e.preventDefault();
+
+				var v = $('#tree_search_input').val();
+				if((v.length > 3) || (v.length == 0)) {
+					$('#jstree_test').jstree("search", v);
+				}
+
+				return false;
+			});
+
+
+			jQuery("#C_PLEASE_WAIT").hide();
+			jQuery("#C_SHOW").show();
+		})
+
+	});
+
+	function search_exported_categories() {
+	    var search_str = $("#search-string-exported-categories").val();
+	    var search_str2 = search_str.toLowerCase();
+	    var all_exported_categories = $('#TMP_MAP_CATEGORYMAPPING td:first-child');
+	    $.each(all_exported_categories,function() {
+	        var element = $(this).find('.exported-category-name');
+	        var text = element.text();
+	        var text2 = text.toLowerCase();
+	        var search = text2.search( search_str2 );
+	        if ( search != -1 || search == 0 ) {
+	            $(this).removeHighlight();
+                $(this).highlight(search_str);
+            }
+        });
+    }
+
+    function refresh_search_textbox_and_remove_highlight() {
+	    $('#search-string-exported-categories').val("");
+        $('#TMP_MAP_CATEGORYMAPPING td:first-child').removeHighlight();
+    }
+</script>
+
+<style type="text/css">
+	.mapRowViewTreeValue em.text-error {
+		color: #FF0000;
+	}
+    .highlight {
+        background-color: yellow
+    }
+</style>
+
+
+<form action="{uri_baseurl(index.php)}?page=my-import-presets-edit&DO=SAVE_DATA&s=3" method="POST" class="form form-horizontal" id="importPresetEditorCategoryMappingForm" enctype="multipart/form-data">
+
+	{if FLASHMESSAGES}
+	<div class="alert alert-danger">{FLASHMESSAGES}</div>
+	{endif}
+
+
+	[[ translation : marketplace : import.preset.editor.categorymapping.help ::
+		<p>
+			In diesem Schritt ordnen Sie Kategorien aus Ihrer Quelldatei (z.B. CSV Datei) den verfügbaren Kategorien aus dem Marktplatz zu. In der Regel
+			verwenden Sie in Ihrer Warenwirtschaft oder Onlineshop andere Kategorien als der Marktplatz. In der unten aufgeführten Tabelle sehen Sie
+			in der linken Spalte die Kategorien, die aus Ihrer Quelldatei ausgelesen werden konnten. Zu jeder dieser Kategorien, können Sie nun auf der
+			rechten Seite eine passende Marktplatz-Kategorie wählen.
+		</p>
+		<p>
+			Sollten nicht alle Kategorien aus Ihrer Quelldatei aufgeführt sein bzw. sollten Sie noch weitere Kategorien zuordnen wollen, können Sie am Ende
+			der Tabelle weitere Einträge hinzufügen.
+		</p>
+		<p>
+			Im Import werden alle Datensätze, für die es keine gültige Kategoriezuordnung gibt in die Standardkategorie sortiert oder, falls diese nicht
+			angegeben wurde, verworfen.
+		</p>
+	]]
+
+
+	<div class="display-none">
+		<div id="treeContainer">
+			<p>[[ translation : marketplace : import.preset.editor.categorymapping.please.select.cat :: Bitte wählen Sie die gewünschte zugeordnete Kategorie aus ]]</p>
+
+			<label>
+				<div class="input-group">
+					<input class="form-control" type="text" name="tree_search" id="tree_search_input" placeholder="[[ translation : marketplace : import.category.search.text :: Suche nach Kategorie, min. 3 Zeichen ]]">
+					<div class="input-group-btn">
+						<button class="btn btn-default" id="tree_search_button">[[ translation : marketplace : import.categpry.search.button :: Suchen ]]</button>
+					</div>
+				</div>
+			</label>
+			<div id="jstree_test"></div>
+		</div>
+	</div>
+
+
+	{if !NO_CATEGORY_FIELD}
+
+		<div class="display-none" id="C_SHOW">
+			<div class="row">
+				<div class="col-md-6">
+                    <div class="form-horizontal" style="margin-left: 15px; margin-right: 15px;">
+                        <div class="form-group">
+                            <label class="control-label">Search Kategorien</label>
+                            <input id="search-string-exported-categories" type="text" class="form-control"  />
+                        </div>
+                        <button class="btn btn-default" type="button" onclick="search_exported_categories()">Suchen</button>
+                        <button class="btn btn-default" type="button" onclick="refresh_search_textbox_and_remove_highlight()">Löschen</button>
+                    </div>
+				</div>
+				<div class="col-md-6">
+                    <div class="mapRowColumn">
+                        <input type="hidden" class="categoryMappingValue yes" value="search" />
+                        <input type="hidden" class="categoryMappingValueText" value="" />
+                        <div class="mapRowViewTreeContainer">
+                            <div class="fieldMappingDisplayViewContainer" onclick="editMapRow(this);return false;">
+                                <span class="mapRowViewTreeValue">Kategorie zu den Suchergebnissen zuordnen</span>
+                            </div>
+                        </div>
+                        <div class="mapRowEditTreeContainer display-none"></div>
+                    </div>
+                    <button type="button" class="btn btn-default" onclick="assign_categories_to_search_results(this)">
+                        <span>Zuordnen</span>
+                    </button>
+                </div>
+			</div>
+			<table class="table table-striped" id="TMP_MAP_CATEGORYMAPPING">
+				<thead>
+				 <tr>
+					 <th>[[ translation : marketplace : import.mapping.categories.file :: Ihre Kategorien ]]</th>
+					 <th>[[ translation : marketplace : import.mapping.categories.marketplace :: Zuordnung der Marktplatzkategorien ]]</th>
+				 </tr>
+				</thead>
+
+				<tbody>
+					{if CATEGORY_MAP}
+						{CATEGORY_MAP}
+					{endif}
+					<tr>
+						<td>
+							<input type="text" name="CATEGORYMAPPING[KEY][]" value="" placeholder="Ihre Kategoriebezeichnung" class="mapTableKeyInput form-control" onkeyup="ImportEditor_CategoryMapping_updateNewInputFields()">
+						</td>
+						<td  class="mapRowColumn">
+							<input type="hidden" name="CATEGORYMAPPING[FK_KAT][]" class="categoryMappingValue" value="">
+
+							<div class="mapRowViewTreeContainer">
+								<div href="#" onclick="editMapRow(this); return false;" class="fieldMappingDisplayViewContainer">
+									<span class="mapRowViewTreeValue"><em>[[ translation : marketplace : import.mapping.not.assigned :: Noch nicht zugewiesen ]]</em></span>
+								</div>
+							</div>
+
+							<div class="mapRowEditTreeContainer hidden"></div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<hr>
+			<p>
+				<strong>Standard Kategorie:</strong> {if CATEGORY_DEFAULT_VALUE_NAME}{CATEGORY_DEFAULT_VALUE_NAME}{else}<em>keine Standardkategorie angegeben</em>{endif}
+				<br><small>Diese Kategorie wird verwendet, wenn keine gültige Zuordnung zu anderen Kategorien gefunden werden konnte</small>
+			</p>
+		</div>
+		<div id="C_PLEASE_WAIT" class="text-center">
+			<br><br><br>
+			<div class="ajax-loader"><img src="{uri_baseurl(gfx/ajax-loader.gif)}"></div>
+			[[ translation : marketplace : import.presets.editor.categorymapping.pleasewait :: Bitte warten Sie während die Kategorien geladen werden ... ]]
+		</div>
+
+	{else}
+		<div class="design-content-box">
+			<strong>
+				[[ translation : marketplace : import.category.no.field.assigned ::
+					Es wurde kein Kategoriefeld in Ihrer Datei zugeordnet.<br>
+					So wird jeder Datensatz in die Standardkategorie <u>{htm(CATEGORY_DEFAULT_VALUE_NAME)}</u> einsortiert.  
+				]]
+			</strong>
+		</div>
+		<p>
+		[[ translation : marketplace : import.category.no.field.assigned.more :: 
+			Wenn Ihre Import Datensätze in verschiedene Kategorien einsortiert werden sollen, gehen Sie bitte einen Schritt zurück und weisen Sie dem Feld
+			zugeordnete Kategorie ein Eintrag in Ihrer Quelldatei zu.
+		]]
+		</p>
+	{endif}
+
+	<div class="form-actions text-right">
+		<button type="submit" class="btn btn-primary">[[ translation : marketplace : import.next :: Weiter ]]</button>		
+		{if ID_IMPORT_PRESET}
+			<button class="btn btn-default" onclick="ipe.saveFormAndClose(); ">[[ translation : marketplace : import.save.and.close :: Speichern und schließen ]]</button>
+		{endif}
+	</div>
+</form>

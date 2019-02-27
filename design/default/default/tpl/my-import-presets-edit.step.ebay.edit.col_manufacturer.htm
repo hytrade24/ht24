@@ -1,0 +1,18 @@
+<td class="ebayImportManufacturer">
+    <div class="form-group" data-placement="bottom">
+    {if category}
+        <select id="itemManufacturer{ITEM_ID}" class="form-control" onchange="ebayImportEdit_ArticleManufacturer(this);"{if options} required{else} disabled{endif}>
+        {if options}
+            <option value="">Bitte wählen</option>
+            {options}
+        {else}
+            <option>Keine Hersteller vorhanden</option>
+        {endif}
+        </select>
+    {else}
+        <select id="itemManufacturer{ITEM_ID}" class="form-control" onchange="ebayImportEdit_ArticleManufacturer(this);" disabled>
+            <option value="">Bitte Kategorie zuordnen!</option>
+        </select>
+    {endif}
+    </div>
+</td>

@@ -1,0 +1,24 @@
+{if NEW_MONTH}
+<div class="col-md-12">
+	<h4 class="month-and-year">{date_format(STAMP_START,F Y)}</h4>
+</div>
+{endif}
+
+<div class="col-md-4 col-sm-12">
+	<div class="design-calendar-event-box">
+		<a href="{uri_action(calendar_events_view,{TITLE},{ID_CALENDAR_EVENT})}">
+			<div class="img-div">
+				{if IMAGE_SRC}
+					<img class="img-responsive" src="{thumbnail(IMAGE_SRC,350,250)}" alt="" />
+				{else}
+					<i class="fa fa-calendar"></i>
+				{endif}
+			</div>
+			<div class="desc-div">
+				<span class="event-title">{TITLE}</span>
+				<p>{shorten({DESCRIPTION},95,1)}</p>
+			</div>
+			<div class="stamp">{date_format(STAMP_START,M j)}, {date_format(STAMP_START,Y)}</div>
+		</a>
+	</div>
+</div>

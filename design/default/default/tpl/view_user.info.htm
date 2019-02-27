@@ -1,0 +1,209 @@
+<script type="text/javascript">
+	function toggleKatContainer() {
+		jQuery(".ownKatTopContainer").toggle();
+		jQuery(".ownKatContainer").toggle();
+
+		return false;
+	}
+
+	$(function() {
+		$(".userContactAdd").click(function() {
+        	ShowDialog("{uri_action(my-contacts-add,{USER_ID_USER})}", "[[ translation : marketplace : contact.add.title :: Kontakt hinzufügen ]]", 400, 500);
+        	return false;
+        });
+    })
+</script>
+{if USER_IS_VENDOR}
+<div class="row vendor-top-row">
+    <div class="col-md-3 col-sm-12">
+        {if VENDOR_LOGO}<img src="{thumbnail(VENDOR_LOGO,195,300)}" />{else}<img src="{uri_resource(/images/marketplace/nopic_vendor.jpg)}" />{endif}
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <h3>{VENDOR_FIRMA}</h3>
+        <h4>Hydraulik - Pneumatik</h4>
+
+        <div class="row row-col-3">
+            <div class="col-md-4 col-sm-12">
+                <div class="small-text">Sitz:</div>
+                <div class="bold-text">Frankfurt am Main</div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="small-text">Antwortrate:</div>
+                <div class="bold-text">100 %</div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="small-text">Berufserfahrung:</div>
+                <div class="bold-text">18 Jahre</div>
+            </div>
+        </div>
+        <div class="row row-with-points">
+            <div class="col-md-3 col-sm-12">Schwerpunkte:</div>
+            <div class="col-md-9 col-sm-12 all-points">
+                <div class="single-point">hydraulik</div>
+                <div class="single-point">pneumatik</div>
+                <div class="single-point">hydra</div>
+                <div class="single-point">matik</div>
+                <div class="single-point">hydraulik</div>
+                <div class="single-point">pneumatik</div>
+                <div class="single-point">hydra</div>
+                <div class="single-point">matik</div>
+            </div>
+        </div>
+        <div class="row row-name-and-number">
+            <div class="col-md-12">
+                <div class="name-and-number">
+                    <span class="name">Stellenanzeigen (</span>
+                    <span class="number">5</span>
+                    <span class="name">)</span>
+                </div>
+                <div class="name-and-number">
+                    <span class="name">Termine (</span>
+                    <span class="number">3</span>
+                    <span class="name">)</span>
+                </div>
+                <div class="name-and-number">
+                    <span class="name">Blog (</span>
+                    <span class="number">13</span>
+                    <span class="name">)</span>
+                </div>
+                <div class="name-and-number">
+                    <span class="name">Produkte (</span>
+                    <span class="number">1543</span>
+                    <span class="name">)</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-3 col-sm-12 row-col-rating-and-other">
+        <div class="row">
+            <div class="col-md-6">
+                Info
+            </div>
+            <div class="col-md-6 text-center">
+                Kontakt
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Bewertungen</div>
+            <div class="col-md-6 text-center">
+                {if rating_avg}
+                <img title="[[ translation : marketplace : average.rating :: Durchschnittliche Bewertung ]]"
+                     src="{uri_baseurl(/gfx/stars_{rating_avg}.png)}" />
+                {endif}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Standort</div>
+            <div class="col-md-6 text-center"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Umsatz</div>
+            <div class="col-md-6 text-center">21 Mio</div>
+        </div>
+    </div>
+</div>
+{else}
+<div class="panel panel-primary userBox">
+    <div class="panel-heading">
+        [[ translation : marketplace : store :: Shop ]]: {if showcontact || VENDOR_FIRMA}{if VENDOR_FIRMA}{htm(VENDOR_FIRMA)}{else}{if USER_FIRMA}{USER_FIRMA}{else}{USER_VORNAME} {USER_NACHNAME}{endif}{endif}{else}{htm(USER_NAME)}{endif}
+    </div>
+    <div class="panel-body">
+        <div class="userBoxImage">
+            {if USER_IS_VENDOR}
+            {if VENDOR_LOGO}<img src="{thumbnail(VENDOR_LOGO,195,300)}" />{else}<img src="{uri_resource(/images/marketplace/nopic_vendor.jpg)}" />{endif}
+            {else}
+            <img src="{thumbnail(/cache/users/{USER_CACHE}/{USER_ID_USER}/{USER_ID_USER}.jpg,195,300)}" />
+            {endif}
+        </div>
+        <div class="userBoxIcons">
+            {if USER_TOP_USER}
+            <img class="userBoxIconTopUser js-tooltip" src="{uri_resource(/images/icons/award_star_gold_3.png)}" data-toggle="tooltip" data-placement="bottom" title="[[ translation : marketplace : top.vendor :: TOP Anbieter ]]" />
+            {endif}
+            {if USER_TOP_SELLER}
+            <img class="userBoxIconTopSeller js-tooltip"  src="{uri_resource(/images/icons/rainbow.png)}" data-toggle="tooltip" data-placement="bottom" title="[[ translation : marketplace : top.seller :: TOP Seller ]]" />
+            {endif}
+            {if USER_PROOFED}
+            <img class="userBoxIconProofed js-tooltip" src="{uri_resource(/images/icons/shield.png)}" data-toggle="tooltip" data-placement="bottom" title="[[ translation : marketplace : approved.vendor :: geprüfter Anbieter ]]" />
+            {endif}
+        </div>
+        <div class="userBoxRating">
+            {if rating_avg}
+            <img title="[[ translation : marketplace : average.rating :: Durchschnittliche Bewertung ]]" src="{uri_baseurl(/gfx/stars_{rating_avg}.png)}" />
+            {else}
+            ([[ translation : marketplace : no.reviews :: noch keine Bewertungen ]])
+            {endif}
+        </div>
+
+        <div class="userBoxInfo">
+            <dl class="dl-horizontal">
+                <dt>[[ translation : marketplace : member.since :: Mitglied seit ]]:</dt>
+                <dd>{todate(USER_STAMP_REG)}</dd>
+
+                <dt>[[ translation : marketplace : last.activity :: letzte Aktivität ]]:</dt>
+                <dd>{todate(USER_LASTACTIV)}</dd>
+            </dl>
+            <div class="clearfix"></div>
+            {if USER_ALLOW_CONTACS && ID_USER}
+            <p class="userBoxActions" align="right">
+                <a title="[[ translation : marketplace : write.message :: Nachricht schreiben ]]" href="#" onclick="SendMail({USER_ID_USER}, '', 0, 0, 0); return false;">
+                    <i class="icon-user"></i>
+                    [[ translation : marketplace : take.contact :: Kontakt aufnehmen ]]
+                </a>
+            </p>
+            {endif}
+        </div>
+    </div>
+    {if !PRINT}
+    <div class="userBoxMenu">
+        <ul class="menu-box menu-box-striped">
+            {if USER_IS_VENDOR}<li class="{if active_vendor}active{endif}"><a href="{uri_action(view_user_vendor,{urllabel(USER_NAME)},{USER_ID_USER})}">[[ translation : marketplace : business :: Unternehmen ]]</a></li>{endif}
+            {if USER_HAS_CLUBS}
+            <li class="{if active_club}active{endif}">
+                <a href="{uri_action(view_user_clubs,{urllabel(USER_NAME)},{USER_ID_USER})}">[[ translation : marketplace : member.count.groups :: Mitglied in {USER_CLUB_COUNT} Gruppe{if USER_CLUB_COUNT>1}n{endif} ]]</a>
+            </li>
+            {endif}
+            <li class="{if active_shop}active{endif}">
+                <a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">[[ translation : marketplace : store :: Shop ]]</a>
+                {if active_shop && own_kats}
+                <div class="clearfix">
+                    {if own_kats_top}
+                    <div class="col-xs-12 ownKatTopContainer" style="max-height: 300px;overflow: auto;">
+                        <ul class="design-user-shop-kat-list design-user-shop-kat-list-top">
+                            {own_kats_top}
+                        </ul>
+                        <p class="toggleKat">
+                            <a href="#" onclick="toggleKatContainer(); return false;">[[ translation : marketplace : show.all.categories :: alle Kategorien anzeigen ]]</a>
+                        </p>
+                    </div>
+                    {endif}
+                    <div class="col-xs-12 ownKatContainer {if own_kats_top}display-none{endif}">
+                        <ul class="design-user-shop-kat-list">
+                            {own_kats}
+                        </ul>
+                        {if own_kats_top}
+                        <p class="toggleKat">
+                            <a href="#" onclick="toggleKatContainer(); return false;">[[ translation : marketplace : show.only.top.categories :: nur Top 50 Kategorien anzeigen ]]</a>
+                        </p>
+                        {endif}
+                    </div>
+                </div>
+                {endif}
+            </li>
+            {if USER_HAS_NEWS}<li class="{if active_news}active{endif}"><a href="{uri_action(view_user_news,{urllabel(USER_NAME)},{USER_ID_USER})}">[[ translation : marketplace : press.releases :: Pressemitteilungen ]]</a></li>{endif}
+            {if USER_HAS_JOBS}<li class="{if active_jobs}active{endif}"><a href="{uri_action(view_user_jobs,{urllabel(USER_NAME)},{USER_ID_USER})}">[[ translation : marketplace : jobs :: Jobs ]]</a></li>{endif}
+            {if USER_HAS_EVENTS}<li class="{uri_is_active(view_user_events,active,)}"><a href="{uri_action(view_user_events,{urllabel(USER_NAME)},{USER_ID_USER})}">[[ translation : marketplace : events :: Veranstaltungen ]]</a></li>{endif}
+            <li class="{if active_rating}active{endif}"><a href="{uri_action(view_user_rating,{urllabel(USER_NAME)},{USER_ID_USER})}">[[ translation : marketplace : reviews :: Bewertungen ]]</a></li>
+            <li class="{if active_contact}active{endif}"><a href="{uri_action(view_user_contacts,{urllabel(USER_NAME)},{USER_ID_USER})}">[[ translation : marketplace : contacts :: Kontakte ]]</a></li>
+            {if USER_HAS_IMPRESSUM}<li class="{if active_impressum}active{endif}"><a href="{uri_action(view_user_impressum,{urllabel(USER_NAME)},{USER_ID_USER})}">[[ translation : marketplace : imprint :: Impressum ]]</a></li>{endif}
+        </ul>
+        {if VENDOR_ALLOW_ADD_USER_CONTACT && (USER_ID_USER!=ID_USER) && ID_USER>0 && !IN_CONTACT}
+        <div class="panel-body">
+            <a href="#" class="userContactAdd">[[ translation : marketplace : contact.request :: Kontaktanfrage stellen ]]</a>
+        </div>
+        {endif}
+    </div>
+    {endif}
+</div>
+{endif}
+

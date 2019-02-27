@@ -1,0 +1,12 @@
+<li>
+	<a onclick="UpdateSelection_Packet({ID_PACKET_ORDER}, $(this).html()); GetCategorys({if (PRICE>0)}1{else}0{endif});" style="cursor:pointer;" title="{htm(V2)}">
+		<strong>
+			{htm(V1)} vom {todate(STAMP_START)}
+		</strong>
+		{if (MAX0==-1)}
+		(Flatrate)
+		{else}
+		({calc(MAX0-USED0)} / {MAX0} Anzeigen frei)
+		{endif}
+	</a>
+</li>

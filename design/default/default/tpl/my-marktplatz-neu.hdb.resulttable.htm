@@ -1,0 +1,64 @@
+<p class="lead">[[ translation : marketplace : ad.create.hdb.resulttable.title :: Produktsuche ]]</p>
+
+{if !err}
+
+	{if liste}
+
+		<p>[[
+				translation : marketplace : ad.create.hdb.resulttable.text ::
+				Wir haben bei der Suchanfrage nach <strong>{if SEARCH_EAN}EAN {htm(SEARCH_EAN)}{else}{if SEARCH_PRODUCT}Produkt {htm(SEARCH_PRODUCT)}{endif}{endif}</strong>
+				insgesamt {ALL} Ergebnisse gefunden, die in der unten stehenden Tabelle aufgelistet wurden. Bitte wählen Sie das gewünschte Produkt aus.
+			]]
+		</p>
+
+		<table class="table table-striped table-condensed">
+			<thead>
+				<tr>
+					<th class="span1"></th>
+					<th class="span4">[[ translation : marketplace : product :: Produkt ]]</th>
+					{if USE_EAN}<th>[[ translation : marketplace : ean :: EAN ]]</th>{endif}
+					<th>[[ translation : marketplace : category :: Kategorie ]]</th>
+					<th></th>
+				</tr>
+			</thead>
+			{liste}
+		</table>
+
+		<div class="hdb-resulttable-pager">
+			{pager}
+		</div>
+
+		<p>
+		[[ translation : marketplace : ad.create.hdb.error.product.nfa ::
+			Sie haben das gewünschte Produkt in unserer Datenbank nicht gefunden ?
+			<br>
+			Bitte überprüfen Sie ob Sie sich vielleicht verschrieben haben. Wenn Sie sicher sind
+			dass die eingegebenen Daten korrekt sind klicken Sie auf den folgenden Link um fortzufahren.<br><br>
+			<a href="#" onclick="selectProduct(); return false;">Ich möchte ein anderes Produkt anlegen</a>
+		]]
+		</p>
+	{else}
+		<div class="alert alert-info ">
+			<p>
+		  [[ translation : marketplace : ad.create.hdb..error.product.nf ::
+				<strong>Es wurde leider kein passendes Produkt gefunden</strong>
+				<br>
+				Die von Ihnen angegebene Kombination aus Hersteller und Artikelbezeichnung ist uns derzeit nicht bekannt.
+				Bitte überprüfen Sie ob Sie sich vielleicht verschrieben haben. Wenn Sie sicher sind
+				dass die eingegebenen Daten korrekt sind klicken Sie auf den folgenden Button um fortzufahren.
+			</p>
+			<a href="#" onclick="selectProduct(); return false;" class="btn btn-default">Produkt {SEARCH_PRODUCT} neu anlegen</a>
+		]]
+		</div>
+
+	{endif}
+
+	<script>
+		swiperGalleryAutoload("a[rel^=lightbox-gallery]");
+
+	</script>
+{else}
+	{if err_too_short}<p class="text-error">[[ translation : marketplace : ad.create.hdb.error.tooshort :: Bitte geben Sie mindestens 3 Zeichen in die Suchanfrage ein ]]</p>{endif}
+
+	<p>[[ translation : marketplace : ad.create.hdb.dont.want.use.it :: <a href="#" onclick="selectProduct(); return false;">Ich möchte die Produktdatenbank nicht nutzen und anstelle mein Produkt selbst einstellen</a> ]]</p>
+{endif}

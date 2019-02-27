@@ -1,0 +1,55 @@
+{if USER_ID_USER}
+    <div class="row design-page-with-menu">
+        <div class="design-page-content">
+            <div class="breadcrumb clearfix">
+                <div class="arianeBig">
+                    <a href="{uri_action(anbieter)}">[[ translation : marketplace : vendor.directory :: Anbieterverzeichnis ]]</a>
+                    >
+                    <a href="{uri_action(view_user_rating,{urllabel(USER_NAME)},{USER_ID_USER})}"><strong>
+                        [[ translation : marketplace : user.ratings :: Bewertungen ]]
+                    </strong></a>
+                </div>
+            </div>
+            <h1>[[ translation : marketplace : user.ratings :: Bewertungen ]]</h1>
+
+            <p>[[ translation : marketplace : user.ratings.overall :: Insgesamt ]]: <img src="{uri_baseurl(/gfx/stars_{adRatingAverageValue}.png)}" title="[[ translation : marketplace : average.rating :: Durchschnittliche Bewertung ]]" style=""/> [[ translation : marketplace : star.rating :: {adRatingAverageValue} von 5 Sternen ({adRatingCount} {if adRatingCount > 0}Bewertung{else}Bewertungen{endif}) ]]</p>
+            {urllabel(adRatingTest.a.x)}
+
+            <ul class="nav nav-tabs">
+                <li {if !useViewSeller & !useViewBuyer}class="active"{endif}>
+                    <a href="{uri_action(view_user_rating,{urllabel(USER_NAME)},{USER_ID_USER})}">[[ translation : marketplace : all.ratings :: alle Bewertungen ]]</a>
+                </li>
+                <li {if useViewBuyer}class="active"{endif}>
+                    <a href="{uri_action(view_user_rating,{urllabel(USER_NAME)},{USER_ID_USER},kaeufer)}">[[ translation : marketplace : ratings.as.buyer :: Bewertungen als K&auml;ufer ]]</a>
+                </li>
+                <li {if useViewSeller}class="active"{endif}>
+                    <a href="{uri_action(view_user_rating,{urllabel(USER_NAME)},{USER_ID_USER},verkaeufer)}">[[ translation : marketplace : rating.as.seller :: Bewertungen als Verk&auml;ufer ]]</a>
+                </li>
+            </ul>
+            <table class="table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>[[ translation : marketplace : review :: Bewertung ]]</th>
+                        <th>[[ translation : marketplace : comment :: Kommentar ]]</th>
+                        <th>[[ translation : marketplace : of :: von ]]</th>
+                        <th>[[ translation : marketplace : date :: Datum ]]</th>
+                        <th>[[ translation : marketplace : display :: Anzeige ]]</th>
+                    </tr>
+                </thead>
+                {if adRatings}
+                    {adRatings}
+                {else}
+                    <tr>
+                        <td colspan="5">[[ translation : marketplace : no.ratings.yet :: Noch keine Bewertungen vorhanden ]]</td>
+                    </tr>
+                {endif}
+            </table>
+
+            {pager}
+        </div>
+        <div class="design-page-menu">
+            {subtpl(tpl/{SYS_TPL_LANG}/view_user.info.htm,*)}
+            {content_page()}
+        </div>
+    </div>
+{endif}

@@ -1,0 +1,132 @@
+{if B_SALES && !SHIPPING_DISABLED}
+<div class="design-ad-create-shipping">
+    <h3>
+        Bitte machen Sie Angaben zum Versand
+    </h3>
+    <div class="design-content-box">
+    {if !HIDE_SHIPPING}
+        <div id="VERSANDOPTIONEN_INPUT" class="form-group">
+            <label class="control-label design-input-label">
+                <strong>Versandoptionen <span class="text-error">*</span></strong>
+                <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Bitte wählen Sie die gewünschte Versandoption"></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[VERSANDOPTIONEN]" value="int">
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="VERSANDOPTIONEN0" name="VERSANDOPTIONEN" onchange="updateVersand();" value="0" class="nob"{if VERSANDOPTIONEN==0} checked="checked"{endif} />
+                        Versandkostenfrei
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="VERSANDOPTIONEN1" name="VERSANDOPTIONEN" onchange="updateVersand();" value="1" class="nob"{if VERSANDOPTIONEN==1} checked="checked"{endif} />
+                        Nur Selbstabholung
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="VERSANDOPTIONEN2" name="VERSANDOPTIONEN" onchange="updateVersand();" value="2" class="nob"{if VERSANDOPTIONEN==2} checked="checked"{endif} />
+                        Auf Anfrage
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="VERSANDOPTIONEN3" name="VERSANDOPTIONEN" onchange="updateVersand();" value="3" class="nob"{if VERSANDOPTIONEN==3} checked="checked"{endif} />
+                        Preis
+                    </label>
+                </div>
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div id="VERSANDKOSTEN_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="SHIPPING_GROUP">
+                <strong>Versandkosten <span class="text-error">*</span></strong>
+                <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Versandkosten in €"></i>
+            </label>
+            <div class="design-input-field">
+              
+                <div class="design-content-box-nested design-plugin-shipping-disabled" style="display: none;">
+                  <p class="text-danger">
+                    Versand deaktiviert / auf Anfrage.
+                  </p>
+                </div>
+                
+              
+                <div class="design-content-box-nested design-plugin-shipping-enabled">
+                  <input type="hidden" name="tmp_type[VERSANDKOSTEN]" value="float">
+                  <input type="hidden" name="VERSANDKOSTEN" id="VERSANDKOSTEN" value="{topreis(VERSANDKOSTEN)}" />
+                
+                  <div id="pluginShippingDetails">
+                    
+                  </div>
+                
+                  <div id="pluginShippingActions">
+                
+                    <select class="form-control" name="SHIPPING_GROUP" id="SHIPPING_GROUP"{if !shipping_groups} style="display: none;"{endif}>
+                      {shipping_groups}
+                    </select>
+                    <br />
+                  
+                    <p class="design-shipping-no-config-available"{if shipping_groups} style="display: none;"{endif}>
+                      Sie haben noch keine Versandeinstellungen konfiguriert.
+                    </p>
+                    
+                    <p>
+                      <a id="pluginShippingButtonAdd" class="btn btn-success" href="#SHIPPING_GROUP" onclick="return pluginShippingShowConfig('new');">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        Neu
+                      </a>
+                      <a id="pluginShippingButtonEdit" class="btn btn-default" href="#SHIPPING_GROUP" onclick="return pluginShippingShowConfig();">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        Bearbeiten
+                      </a>
+                      <a id="pluginShippingButtonDelete" class="btn btn-danger" href="#SHIPPING_GROUP" onclick="return pluginShippingDeleteConfig();">
+                        <i class="glyphicon glyphicon-remove"></i>
+                        Löschen
+                      </a>
+                    </p>
+                  </div>
+                </div>
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div id="LIEFERTERMIN_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="LIEFERTERMIN">
+                <strong>Liefertermin <span class="text-error">*</span></strong>
+                <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Geben Sie den voraussichtlichen Liefertermin an."></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[LIEFERTERMIN]" value="text">
+                <input type="text" onchange="validateInput(this);" onkeyup="validateInputLive(this);"{if VERSANDOPTIONEN!=1} required="required"{endif} class="form-control" id="LIEFERTERMIN" name="LIEFERTERMIN" placeholder="Liefertermin" title="Liefertermin" value="{htm(LIEFERTERMIN)}" />
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+    {else}
+        <input type="hidden" name="VERSANDOPTIONEN" value="2" />
+    {endif}
+        <div id="VERSANDKOSTEN_INFO_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="VERSANDKOSTEN_INFO">
+                <strong>weitere Angaben zum Versand</strong>
+                <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Weitere Informationen zum Versand."></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[VERSANDKOSTEN_INFO]" value="text">
+                <textarea onchange="validateInput(this);" id="VERSANDKOSTEN_INFO" name="VERSANDKOSTEN_INFO" class="form-control">{htm(VERSANDKOSTEN_INFO)}</textarea>
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{SCRIPT}
+
+{endif}

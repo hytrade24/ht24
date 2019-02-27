@@ -1,0 +1,21 @@
+{if IS_SET}
+<div class="row">
+    <div class="col-md-3">{htm(V1)}:</div>
+    <div class="col-md-9">
+        {if VALUE_TPL}
+            <a href="{uri_action(anbieter,anbieter,{VENDOR_ROOT_CATEGORY},{SEARCHHASH})}">{VALUE_TPL}</a>
+        {else}
+            {if TYPE_CHECKBOX}
+                {if VALUE}[[ translation : marketplace : yes :: Ja ]] {else}[[ translation : marketplace : no :: Nein ]]{endif}
+            {else}
+                {if F_TYP_MULTICHECKBOX_AND||F_TYP_MULTICHECKBOX}
+                    {FIELD_TPL}
+                {else}
+                    <a href="{uri_action(anbieter,{VENDOR_ROOT_CATEGORY},{SEARCHHASH})}">{htm(VALUE)}
+                        {htm(V2)}</a>
+                {endif}
+            {endif}
+        {endif}
+    </div>
+</div>
+{endif}

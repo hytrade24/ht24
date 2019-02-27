@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{strip_tags(pagetitle)} {if newstitle}- {newstitle}{endif} {site_name}</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    {metatags}
+    {content_page(header meta)}
+
+    {finalblock(head)}
+    {startblock(head)}
+        {parentblock()}
+        <!-- Header -->
+    {endblock(head)}
+
+    {content_page(CODE FUER WEBSTATISTIK)}
+
+    {subtpl(tpl/{SYS_TPL_LANG}/header_scripts.htm,*)}
+</head>
+<body>
+    {subtpl(tpl/{SYS_TPL_LANG}/menline.htm,*)}
+
+    {subtpl(tpl/{SYS_TPL_LANG}/design_header.htm,*)}
+    
+    {finalblock(pre-content)}
+    {startblock(pre-content)}
+        {parentblock()}
+        <!-- Before content -->
+    {endblock(pre-content)}
+    
+    <div id="content" class="container content-{page}">
+        {content}
+    </div>
+    
+    {finalblock(post-content)}
+    {startblock(post-content)}
+        {parentblock()}
+        <!-- After content -->
+    {endblock(post-content)}
+
+    {subtpl(tpl/{SYS_TPL_LANG}/design_footer.htm,*)}
+
+	{SECTION_BODY_END}
+    {startblock(script)}
+        {parentblock()}
+        <!-- Javascript includes -->
+    <script type="application/ld+json">
+        {search_site_json_ld()}
+    </script>
+   	{endblock(script)}
+</body>
+</html>

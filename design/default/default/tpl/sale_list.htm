@@ -1,0 +1,40 @@
+<div class="design-sale-list design-subtpl">
+  <script type="text/javascript">
+    
+    function showOrderDetails(orderId) {
+      location.href = '{uri_action(sale_details_seller)}?ID_AD_ORDER='+orderId;
+    }
+    
+  </script>
+  <table class="table table-bordered table-striped table-condensed userList">
+    <thead>
+      <tr>
+        <th>[[ translation : marketplace : order.num :: Bestell-Nr. ]]</th>
+        <th>[[ translation : general : date :: Datum ]]</th>
+        <th>[[ translation : marketplace : customer :: Kunde ]]</th>
+        <th>[[ translation : marketplace : shipping.status :: Versandstatus ]]</th>
+        <th>[[ translation : marketplace : payment.status :: Zahlungsstatus ]]</th>
+        <th>[[ translation : marketplace : article.count :: Artikel ]]</th>
+        <th class="text-right">[[ translation : marketplace : total.amount :: Gesamtbetrag ]]</th>
+    
+        {if use_prov}
+        <th class="text-right">
+          [[ translation : marketplace : provisoin :: Prov. ]]
+        </th>
+        {endif}
+      </tr>
+    </thead>
+    <tbody>
+      {if orders}
+        {orders}
+      {else}
+      <tr>
+        <td colspan="8">
+          [[ translation : marketplace : no.item.match :: Keine passenden Verk&auml;ufe gefunden. ]]
+        </td>
+      </tr>
+      {endif}
+    </tbody>
+  </table>
+  ^SUBTPL_ADMIN°
+</div>

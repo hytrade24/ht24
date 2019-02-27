@@ -1,0 +1,33 @@
+<div class="design-row-item {if B_TOP}topnews{endif}">
+    <div class="design-news-archive-vendor-box">
+        <div class="row">
+            {if PREVIEW_TYPE}
+            <div class="col-xs-12 col-md-4">
+                <!-- {PREVIEW_TYPE} / {PREVIEW_PATH} / {PREVIEW_SERVER} / {PREVIEW_CODE} -->
+                {if PREVIEW_TYPE_VIDEO}
+                <img class="img-responsive-center design-user-news-shortlist" src="https://i{PREVIEW_SERVER}.ytimg.com/vi/{PREVIEW_CODE}/default.jpg"/>
+                {endif}
+                {if PREVIEW_TYPE_IMAGE}
+                <img class="img-responsive-center design-user-news-shortlist" src="{thumbnail({PREVIEW_PATH},120,90,crop,Center)}" title="{htm(V1)}" />
+                {endif}
+            </div>
+            <div class="col-xs-12 col-md-8">
+            {else}
+            <div class="col-xs-12 col-md-12">
+            {endif}
+                <h3>
+                    <a href="{URL}">{htm(V1)}</a>
+                </h3>
+            </div>
+            <div class="col-xs-12">
+                <p class="design-news-archive-vendor-box-content">
+                    {htm(V2)}
+                </p>
+                <span  class="text-muted">
+                    {todate(STAMP)} - {htm(AUTOR)}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,13 @@
+{if ENABLED}
+<div>
+	<div class="radio">
+		<label>
+		   <input id="ad{ID_ADVERTISEMENT}" name="FK_ADVERTISEMENT" onclick="CheckInput('banner');"
+			type="radio" value="{ID_ADVERTISEMENT}" {if ID_ADVERTISEMENT==FK_ADVERTISEMENT} checked="checked"{endif}/>
+			<strong>{htm(V1)}</strong>
+			<br />
+			{text(T1)}
+		</label>
+	</div>
+</div>	
+{endif}

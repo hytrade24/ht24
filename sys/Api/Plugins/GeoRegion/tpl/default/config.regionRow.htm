@@ -1,0 +1,36 @@
+<tr>
+    <td>
+        <a href="#editRow" class="inputTaskDelete">
+            <img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0">
+        </a>
+        <a href="#deleteRow" class="inputTaskDelete">
+            <img src="gfx/btn.del.gif" width="32" height="16" alt="löschen" border="0">
+        </a>
+        <a href="#showChilds" data-id="{ID_GEO_REGION}">
+            <img src="gfx/btn.put.gif" width="16" height="16" alt="untergeordnete regionen" border="0">
+        </a>
+    </td>
+    <td>
+        <a href="#showChilds" data-id="{ID_GEO_REGION}">
+            {htm(NAME)}
+        </a>
+    </td>
+    <td>
+    {if CHILD_COUNT > 0}
+        [[ translation : marketplace : plugin.geo.region.content.entry.sub.amount :: {int(CHILD_COUNT)} Regionen ]]
+    {else}
+        <i>[[ translation : marketplace : plugin.geo.region.content.entry.sub.none :: Keine vorhanden ]]</i>
+    {endif}
+    </td>
+    <td>
+        <select name="CONFIG[REGIONS][{ID_GEO_REGION}][VIEW]" class="region-settings-view">
+            <option value="default"{if OPTIONS_VIEW_default} selected{endif}>Standard-Ansicht</option>
+            <option value="cms"{if OPTIONS_VIEW_cms} selected{endif}>CMS-Ansicht</option>
+        </select>
+    </td>
+    <td>
+        <select name="CONFIG[REGIONS][{ID_GEO_REGION}][INFO_SEO]" class="region-settings-info-seo">
+            <option value="">TODO: Seo-Infobereich</option>
+        </select>
+    </td>
+</tr>

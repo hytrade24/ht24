@@ -1,0 +1,22 @@
+<tr>
+    <td>
+        <a href="{htm(url)}">
+            {id}
+        </a>
+    </td>
+    <td>
+        <a href="{htm(url)}">
+            {htm(title)}
+        </a>
+    </td>
+    <td>{documents}</td>
+    <td>{deadline} [[ translation : marketplace : days :: Tage ]]</td>
+    <td>{date_format(created_at,d.m.Y)}</td>
+    <td>
+    {if created_at!=updated_at}
+        {date_format(created_at,d.m.Y)}
+    {else}
+        -
+    {endif}
+    </td>
+</tr>

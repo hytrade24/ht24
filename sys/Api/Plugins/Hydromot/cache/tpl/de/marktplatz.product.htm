@@ -1,0 +1,91 @@
+
+{if (!noads) && ((i==0) || (i==3))}
+<div class="advertisement-box" style="text-align: center;">
+    {advertisement(1)}
+</div>
+{endif}
+
+<div class="design-ad-row{if (B_TOP&4)==4} top{endif}">
+
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+            <div class="design-ad-image">
+                <div class="design-ad-image-container">
+                    {if (B_TOP&4)==4}
+                        <a href="{plugin(Hydromot,ProductLink)}" title="{htm(PRODUKTNAME)} ansehen">
+                            <div class="design-ad-status-top">
+                                <span>Top</span>
+                            </div>
+                        </a>
+                    {endif}
+                    {if RUNTIME_DAYS_GONE<DAYS_ADS_NEW}
+                        <a href="{plugin(Hydromot,ProductLink)}" title="{htm(PRODUKTNAME)} ansehen">
+                            <div class="design-ad-status-new">
+                                <span>Neu</span>
+                            </div>
+                        </a>
+                    {endif}
+                    ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(BF_CONSTRAINTS_B2B)} == 0)°
+                        {if TRADE}
+                            <a href="{plugin(Hydromot,ProductLink)}" title="{htm(PRODUKTNAME)} ansehen">
+                                <div class="design-ad-status-trade"
+                                     data-toggle="tooltip" data-placement="right" title="Der Artikelpreis ist verhandelbar">
+                                    <span>VB</span>
+                                </div>
+                            </a>
+                        {endif}
+                        {if PSEUDOPREIS && B_PSEUDOPREIS_DISCOUNT && (PSEUDOPREIS > PREIS)}
+                            <a href="{plugin(Hydromot,ProductLink)}" title="{htm(PRODUKTNAME)} ansehen">
+                                <div class="design-ad-status-discount">
+                                    <span>-{pseudopreis_discount({PREIS}, {PSEUDOPREIS})}%</span>
+                                </div>
+                            </a>
+                        {endif}
+                    ^endif°
+
+                    <a href="{plugin(Hydromot,ProductLink)}" title="{htm(PRODUKTNAME)} ansehen">
+                        {plugin(Hydromot,ProductImage,IMPORT_IMAGES)}
+                    </a>
+                </div>
+                {if SHOW_RATING}
+                <div class="design-ad-ratings">
+                    {if EAN}
+                        {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=ad_master,FK_STR={EAN},TEMPLATE=small)}
+                    {endif}
+                </div>
+                {endif}
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-5">
+            <div class="design-ad-name">
+                <a href="{plugin(Hydromot,ProductLink)}" title="{htm(PRODUKTNAME)} ansehen">
+                    {htm(FULL_PRODUKTNAME)}
+                </a>
+            </div>
+
+            <div class="design-ad-description">
+                {shorten({BESCHREIBUNG},200,1)}
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-3 text-right">
+            <div class="design-ad-price">
+                {if VERKAUFSOPTIONEN!=4 && !HIDE_PRICE && PREIS_MIN>0}
+                ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(BF_CONSTRAINTS_B2B)} == 0)°
+                <div class="design-ad-price-new">
+                    ab {topreis_ex(PREIS_MIN)} {CURRENCY_DEFAULT}
+                </div>
+                ^endif°
+                {endif}
+            </div>
+            <div class="design-ad-vendor-count">
+                <a href="{plugin(Hydromot,ProductLink)}" title="{htm(PRODUKTNAME)} ansehen">
+                {if ARTICLE_COUNT == 1}
+                    {int(ARTICLE_COUNT)} Angebot
+                {else}
+                    {int(ARTICLE_COUNT)} Angebote
+                {endif}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

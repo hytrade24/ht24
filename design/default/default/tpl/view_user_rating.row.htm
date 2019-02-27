@@ -1,0 +1,31 @@
+<tr>
+	<td style="width: 100px; vertical-align: top;">
+		{if RATING}
+			<img src="{uri_baseurl(/gfx/stars_{RATING}.png)}" title="[[ translation : marketplace : average.rating :: Durchschnittliche Bewertung ]]" />
+		{endif}
+	</td>
+	<td style="vertical-align: top;">{COMMENT}</td>
+	<td style="width: 100px; vertical-align: top;">
+		{if USER_FROM_ID}
+			{if USER_FROM_VIRTUAL}
+				{USER_FROM_NAME}
+			{else}
+				<a href="{uri_action(view_user,{urllabel(USER_FROM_NAME)},{USER_FROM_ID})}">{USER_FROM_NAME}</a>
+			{endif}
+		{else}
+			******
+		{endif}
+	</td>
+	<td style="width: 100px; vertical-align: top;">{todate(STAMP_RATED)}</td>
+	<td style="width: 150px; vertical-align: top;">
+		{if AD_EXISTS}
+			<a href="{uri_action(marktplatz_anzeige,{AD_ID},{urllabel(AD_NAME)}|KAT_PATH={market_kat_path_url({AD_FK_KAT})})}" title="[[ translation : marketplace : show.productname :: {htm(PRODUKTNAME)} ansehen ]]">{htm(AD_NAME)}</a>
+		{else}
+			{if AD_NAME}
+				{htm(AD_NAME)}
+			{else}
+				******
+			{endif}
+		{endif}
+	</td>
+</tr>

@@ -1,0 +1,32 @@
+{if USER_ID_USER}
+    <div class="row design-page-with-menu">
+        <div class="design-page-content">
+            <div class="text-box design-location">
+                <div class="design-ariande design-ariande-marketplace">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="{uri_action(vendor)}">[[ translation : marketplace : vendor.directory :: Anbieterverzeichnis ]]</a>
+                        </li>
+                        <li>
+                            <a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                            	<strong>[[ translation : marketplace : store :: Shop ]]</strong>
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            {if USER_ADS}
+				{USER_ADS}
+				<p>
+					{pager}
+				</p>
+            {else}
+                <p>[[ translation : marketplace : no.ads.currently :: Derzeit keine Anzeigen geschaltet! ]]</p>
+            {endif}
+        </div>
+        <div class="design-page-menu">
+            {subtpl(tpl/{SYS_TPL_LANG}/view_user.info.htm,*)}
+            {content_page()}
+        </div>
+    </div>
+{endif}

@@ -1,0 +1,29 @@
+{if B_VIS}
+<div id="katBox{ID_KAT}" onmouseover="hoverKatBox(this);" class="design-category-box{if KAT_PRIMARY} primary{endif} design-row-item">
+    <a href="{uri_action(marktplatz,{ID_KAT},{urllabel(V1)})}" title="{htm(V2)}">
+        <div class="design-category-box-inner">
+            <div class="design-category-box-text">
+                {htm(V1)}
+            {if !HIDE_COUNT}
+                <span class="design-category-box-article-count">({market_article_count(ID_KAT)})</span>
+            {endif}
+            {if V2}
+                <br />
+                <span class="text-muted">{htm(V2)}</span>
+            {endif}
+            </div>
+            {if KAT_PRIMARY && ICON}
+            <img src="{uri_baseurl({ICON_BIG})}" class="design-category-box-icon" />
+            {endif}
+        </div>
+    </a>
+{if CHILDREN}
+    <div class="{if KAT_PRIMARY}popover bottom {endif}children">
+        {if KAT_PRIMARY}<div class="arrow"></div>{endif}
+        <div class="design-row design-row-xs-{CHILD_COLUMN_COUNT_XS} design-row-sm-{CHILD_COLUMN_COUNT_SM} design-row-md-{CHILD_COLUMN_COUNT_MD} design-row-lg-{CHILD_COLUMN_COUNT_LG}">
+            {CHILDREN}
+        </div>
+    </div>
+{endif}
+</div>
+{endif}

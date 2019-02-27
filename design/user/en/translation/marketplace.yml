@@ -1,0 +1,86 @@
+more.categories: 'Additional Categories'
+search.suggestion: Suggestions
+chat.new.ad: 'New advertisement{if PLURAL_COUNT!=1}s{endif}'
+chat.new.other: 'New message{if PLURAL_COUNT!=1}s{endif}'
+ad.cart.error.quantity: 'There are only {COUNT} pieces left. Please reduce your requested quantity.'
+search.results.show: 'Show hits ({ALL_ADS})'
+search.only.b2b: 'Only B2B Products'
+search.only.discounted: 'Only discounted Products'
+register.button: 'Not registered yet?'
+order.modal.title: 'Order Nr. {ORDER_ID}'
+no.vendor.in.this.categorie: 'No vendors have been found in this category.'
+link.more.informations: 'more information'
+search.for.companies: 'Search for companies'
+search.collapse.collapse: 'Fewer search options'
+like.action.dislike: 'I don''t like the ad'
+like.action: 'I like this ad'
+all.categories: 'All categories'
+ad.contact.header: 'Ask a question to &quot;{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}&quot;'
+pseudoprice: 'instead of {topreis_ex(PSEUDOPREIS)} {CURRENCY_DEFAULT}'
+minimum.order.quantity: 'Minimum order quantity: {MOQ}'
+shipping.costs: 'Shippingcosts: {topreis_ex(VERSANDKOSTEN)} {CURRENCY_DEFAULT}'
+general.information.view: 'General Information'
+article.lead.create: 'Create a Lead'
+ad.contact.request.title: 'Send Inquiry'
+show.all.products: 'Show all Products'
+vendor.more.products: 'Further Products of this Vendor'
+comments.rated.list: 'Submitted Reviews'
+comment.already.rated: 'You have already submitted a review!'
+comment.edit.changed.mind: 'Changed your mind? Edit <a href="{uri_action(my-comment-edit,{ID_COMMENT})}"> here</a>'
+comment.ratings.5: '5 Stars'
+comment.ratings.4: '4 Stars'
+comment.ratings.3: '3 Stars'
+comment.ratings.2: '2 Stars'
+comment.ratings.1: '1 Star'
+to.shop: Store
+agents: Agents
+plugin.user.task.list.link.click.here: 'Click here'
+ad.deleted: 'An ad has been deleted!'
+product.sales.type: 'type of sales'
+ad.sales.any: 'All types of sales'
+ad.sales.article.request: Request
+user.articles.selected: '{COUNT} selected articles'
+article.view.bids: '{BID_COUNT} Offer(s)'
+ad.counter.viewed: 'View at advert {adClicks}x'
+ad.counter.viewed.text: '{adClicks} x viewed'
+ad.counter.memorized: 'Advert {adReminderCount}x memorized'
+ad.counter.memorized.text: '{adReminderCount} x memorized'
+article.count: Products
+my.customers.title: 'My customers'
+search.kunden: 'Search customers'
+customers.num: Customer
+last_order: 'Last Order'
+register.membership.feature.vendorEntry: 'Supplier directory'
+register.packets.flatrate.tooltip: 'In this Membership are {PACKET_NAME} included as a flat rate'
+register.plugin.vendor.entry.enabled: Available
+register.plugin.vendor.entry.enabled.title: 'Entry in the Supplier Directory'
+register.plugin.vendor.homepage.enabled: Available
+register.plugin.vendor.homepage.enabled.title: 'Own Homepage'
+category.confirm: 'Do you want select {NAME} as category?'
+sales.distribution.turnover.last: 'Last Sale'
+sales.distribution.intro: |
+    In this area you have the possibility to acquire new customers.
+            Customers who have been recruited by you will be linked to your account and 
+            <b>
+                You get {PROVISION_PERCENT}% of the turnover as commission, 
+                that the advertised customer makes to this portal.
+            </b>
+            (e.g. by booking a paid membership, placing advertisements or booking top advertisements)
+            <br />
+            <i>
+                As soon as you have acquired a first customer, instead of the
+                Explanatory text provides an overview with statistics on the users they have recruited and their sales.
+            </i>
+sales.distribution.intro.sales.codes: 'Create registration code(s) and refer customers'
+sales.distribution.intro.sales.codes.long: 'For customers you refer to to be assigned correctly, you must create a <a href="{uri_action(my-sales-codes)}">registration code</a>. Send the appropriate link to the customers you would like to advertise or print it on an advertising flyer/advertisement. Every visitor who comes to the marketplace via this link and then registers is automatically linked to their account.'
+sales.distribution.codes.none.yet: 'You have not yet created any registration codes'
+sales.distribution.codes.new.into: 'To add a new registration code, enter the code and optionally a description and click on "Add code". <br /> <b>The code</b> is freely selectable and can consist of your company name, for example. The link you can use to refer customers will contain this code. <br /> <b>The description</b> is optional and is not displayed publicly. This serves only as an overview, so that you can make notes for yourself in which way or on which occasion the corresponding registration code is distributed. (e.g. "Messe Hamburg 2016" or "E-Mail Newsletter 05/2016")'
+sales.tax.not.good: 'Your VAT ID is invalid'
+dirty.sales.tax.id: 'Your VAT ID has not yet been checked'
+payment.settings.market: 'Preferred payment method to {htm(site_name)}'
+invoice.overview.storno.invoices: 'Canceled invoices'
+0: 'Eingereichte Stornoanfragen'
+old.displays: 'Expired adverts'
+ad.create.category.confirm: 'Do you want to choose "{NAME}" as a category?'
+article.type.show.other.products: '{COUNT} Angebot(e) bei anderen Händlern'
+chat.new.lead: 'neue Anfrage{if PLURAL_COUNT!=1}n{endif} zu Leads'

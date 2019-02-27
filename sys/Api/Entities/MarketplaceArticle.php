@@ -1,0 +1,1816 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: jens
+ * Date: 11.06.15
+ * Time: 10:58
+ */
+
+class Api_Entities_MarketplaceArticle {
+
+    protected static $queueQuery = [];
+
+    /**
+     * @param int $articleId
+     * @param Api_Entities_MarketplaceArticle $articleObject
+     * @param string $articleTable
+     */
+    public static function queueAddArticle($articleId, Api_Entities_MarketplaceArticle $articleObject, $articleTable = "ad_master") {
+        if (!array_key_exists($articleId, static::$queueQuery[$articleTable])) {
+            static::$queueQuery[$articleTable][$articleId] = $articleObject;
+        }
+    }
+
+    /**
+     * @param int $articleId
+     * @param Api_Entities_MarketplaceArticle $articleObject
+     * @param string|null $articleTable
+     */
+    public static function queueRemArticle($articleId, Api_Entities_MarketplaceArticle $articleObject, $articleTable = null) {
+        if ($articleTable === null) {
+            foreach (static::$queueQuery as $articleTable => $articleList) {
+                static::queueRemArticle($articleId, $articleObject, $articleTable);
+            }
+            return;
+        }
+        if (array_key_exists($articleId, static::$queueQuery[$articleTable])) {
+            unset(static::$queueQuery[$articleTable][$articleId]);
+        }
+    }
+
+    /**
+     * @param string|null $articleTable
+     * @param ebiz_db|null $db
+     */
+    public static function queueQueryArticles($articleTable = null, $db = null) {
+        if ($db === null) {
+            $db = $GLOBALS["db"];
+        }
+        if ($articleTable === null) {
+            foreach (static::$queueQuery as $articleTable => $articleList) {
+                static::queueQueryArticles($articleTable, $db);
+            }
+            return;
+        }
+        if (!array_key_exists($articleTable, static::$queueQuery)) {
+            static::$queueQuery[$articleTable] = [];
+        }
+        if (empty(static::$queueQuery[$articleTable])) {
+            return;
+        }
+        if ($articleTable == "ad_master") {
+            // Master table
+            $arArticleMasterList = $db->fetch_table("
+                SELECT * 
+                FROM `ad_master` 
+                WHERE ID_AD_MASTER IN (".implode(", ", array_keys(static::$queueQuery[$articleTable])).")");
+            foreach ($arArticleMasterList as $articleIndex => $arArticleMasterData) {
+                $articleId = $arArticleMasterData["ID_AD_MASTER"];
+                /** @var Api_Entities_MarketplaceArticle $articleObject */
+                $articleObject = static::$queueQuery[$articleTable][$articleId]; 
+                $articleObject->setData_ArticleMaster($arArticleMasterData);
+                unset(static::$queueQuery[$articleTable][$articleId]);
+            }
+            return;
+        }
+        if (preg_match("/^artikel_.+$/", $articleTable)) {
+            $arArticleFullById = [];
+            // Article table
+            $arArticleFullList = $db->fetch_table("
+                SELECT *
+                FROM `".mysql_real_escape_string($articleTable)."`
+                WHERE ID_".mysql_real_escape_string(strtoupper($articleTable))." IN (".implode(", ", array_keys(static::$queueQuery[$articleTable])).")");
+            foreach ($arArticleFullList as $articleIndex => $arArticleFullData) {
+                $articleId = $arArticleFullData[ "ID_".strtoupper($articleTable) ];
+                $arArticleFullData["images"] = [];
+                $arArticleFullData["uploads"] = [];
+                $arArticleFullData["videos"] = [];
+                $arArticleFullById[$articleId] = $arArticleFullData;
+            }
+            // Article images
+            $arArticleImageList = $db->fetch_table("
+                SELECT * 
+                FROM `ad_images` 
+                WHERE FK_AD IN (".implode(", ", array_keys(static::$queueQuery[$articleTable])).")
+                ORDER BY FK_AD ASC, IS_DEFAULT DESC");
+            foreach ($arArticleImageList as $articleIndex => $arArticleImageData) {
+                $articleId = $arArticleImageData["FK_AD"];
+                $arImageMeta = @unserialize($arArticleImageData["SER_META"]);
+                if (is_array($arImageMeta)) {
+                    $arArticleImageData['META'] = $arImageMeta;
+                }
+                $arArticleFullById[$articleId]["images"][] = $arArticleImageData;
+            }
+            // Article documents
+            $arArticleUploadList = $db->fetch_table("
+                SELECT *
+                FROM `ad_upload`
+                WHERE FK_AD IN (".implode(", ", array_keys(static::$queueQuery[$articleTable])).")
+                ORDER BY FK_AD ASC");
+            foreach ($arArticleUploadList as $articleIndex => $arArticleUploadData) {
+                $articleId = $arArticleUploadData["FK_AD"];
+                $arArticleFullById[$articleId]["uploads"][] = $arArticleUploadData;
+            }
+            // Article videos
+            $arArticleVideoList = $db->fetch_table("
+                SELECT *
+                FROM `ad_video`
+                WHERE FK_AD IN (".implode(", ", array_keys(static::$queueQuery[$articleTable])).")
+                ORDER BY FK_AD ASC");
+            foreach ($arArticleVideoList as $articleIndex => $arArticleVideoData) {
+                $articleId = $arArticleVideoData["FK_AD"];
+                $arArticleFullById[$articleId]["videos"][] = $arArticleVideoData;
+            }
+            // Set article data
+            foreach ($arArticleFullById as $articleId => $arArticleFullData) {
+                /** @var Api_Entities_MarketplaceArticle $articleObject */
+                $articleObject = static::$queueQuery[$articleTable][$articleId]; 
+                $articleObject->setData_ArticleFull($arArticleFullData);
+                unset(static::$queueQuery[$articleTable][$articleId]);
+            }
+            return;
+        }
+        if (preg_match("/^hdb_table_(.+)$/", $articleTable, $arMatchTable)) {
+            $productTable = $articleTable;
+            $articleTable = $arMatchTable[1];
+            /**
+             * @var int $articleId
+             * @var Api_Entities_MarketplaceArticle $articleObject
+             */
+            foreach (static::$queueQuery[$productTable] as $articleId => $articleObject) {
+                if (!$articleObject->hasData_ArticleMaster()) {
+                    static::queueAddArticle($articleId, $articleObject, "ad_master");
+                }
+            }
+            static::queueQueryArticles("ad_master", $db);
+            // Get product ids
+            $arProductIds = [];
+            foreach (static::$queueQuery[$productTable] as $articleId => $articleObject) {
+                $productId = $articleObject->getData_ArticleMaster("FK_PRODUCT");
+                if ($productId > 0) {
+                    if (!array_key_exists($productId, $arProductIds)) {
+                        $arProductIds[$productId] = [];
+                    }
+                    $arProductIds[$productId][] = $articleId;
+                } else {
+                    /** @var Api_Entities_MarketplaceArticle $articleObject */
+                    $articleObject = static::$queueQuery[$productTable][$articleId];
+                    $articleObject->setData_ArticleProduct([ "ARTICLE_COUNT" => 1 ]);
+                    unset(static::$queueQuery[$productTable][$articleId]);
+                }
+            }
+            if (!empty($arProductIds)) {
+                // Product table
+                $arArticleProductList = $db->fetch_table("
+                    SELECT
+                        p.*,
+                        COUNT(a.ID_".mysql_real_escape_string(strtoupper($articleTable)).") AS ARTICLE_COUNT
+                    FROM `".mysql_real_escape_string($productTable)."` p
+                    LEFT JOIN `".mysql_real_escape_string($articleTable)."` a
+                        ON a.FK_PRODUCT=p.ID_".mysql_real_escape_string(strtoupper($productTable))."
+                            AND a.STATUS IN (1,3,5,7,9,11,13,15) AND a.DELETED=0
+                    WHERE p.ID_".mysql_real_escape_string(strtoupper($productTable))." IN (".implode(", ", array_keys($arProductIds)).")
+                    GROUP BY p.ID_".mysql_real_escape_string(strtoupper($productTable)));
+                foreach ($arArticleProductList as $productIndex => $arArticleProductData) {
+                    $productId = $arArticleProductData[ "ID_".strtoupper($productTable) ];
+                    $arArticleProductData["ID_PRODUCT"] = $productId;
+                    foreach ($arProductIds[$productId] as $articleIndex => $articleId) {
+                        /** @var Api_Entities_MarketplaceArticle $articleObject */
+                        $articleObject = static::$queueQuery[$productTable][$articleId];
+                        if (empty($arArticleProductData["FULL_PRODUKTNAME"])) {
+                            $arArticleProductData["FULL_PRODUKTNAME"] = $articleObject->getData_ArticleMaster("PRODUKTNAME");
+                        }
+                        $articleObject->setData_ArticleProduct($arArticleProductData);
+                        unset(static::$queueQuery[$productTable][$articleId]);
+                    }
+                }
+            }
+            return;
+        }
+    }
+    
+    /**
+     * Create an article object by its data as an assoc array
+     * @param array     $arArticleMaster
+     * @return Api_Entities_MarketplaceArticle
+     */
+    public static function createFromMinimalArray($arArticleMinimal, ebiz_db $db = null, $langval = null) {
+        $idArticle = null;
+        if (array_key_exists("ID_AD_MASTER", $arArticleMinimal)) {
+            $idArticle = (int)$arArticleMinimal["ID_AD_MASTER"];
+        }
+        if (array_key_exists("ID_AD", $arArticleMinimal)) {
+            $idArticle = (int)$arArticleMinimal["ID_AD"];
+        }
+        if ($idArticle !== null) {
+            return new Api_Entities_MarketplaceArticle($idArticle, null, null, $db, $langval);
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Create an article object by its data as an assoc array
+     * @param array     $arArticleMaster
+     * @return Api_Entities_MarketplaceArticle
+     */
+    public static function createFromMasterArray($arArticleMaster, ebiz_db $db = null, $langval = null) {
+        return new Api_Entities_MarketplaceArticle($arArticleMaster["ID_AD_MASTER"], $arArticleMaster, null, $db, $langval);
+    }
+
+    /**
+     * Create an article object by its data as an assoc array
+     * @param array     $arArticleMaster
+     * @return Api_Entities_MarketplaceArticle
+     */
+    public static function createFromFullArray($arArticleFull, ebiz_db $db = null, $langval = null) {
+        $articleTable = self::getArticleTableByCategory((int)$arArticleFull["FK_KAT"]);
+        return new Api_Entities_MarketplaceArticle($arArticleFull["ID_".strtoupper($articleTable)], null, $arArticleFull, $db, $langval);
+    }
+
+    /**
+     * Create an array of article objects by an array of assoc article datasets
+     * @param array     $arArticleList
+     * @return array
+     */
+    public static function createMultipleFromMinimalArray($arArticleList, ebiz_db $db = null, $langval = null) {
+        $arResult = array();
+        foreach ($arArticleList as $articleIndex => $arArticle) {
+            $arResult[] = self::createFromMinimalArray($arArticle, $db, $langval);
+        }
+        return $arResult;
+    }
+
+    /**
+     * Create an array of article objects by an array of assoc article datasets
+     * @param array     $arArticleList
+     * @return array
+     */
+    public static function createMultipleFromMasterArray($arArticleList, ebiz_db $db = null, $langval = null) {
+        $arResult = array();
+        foreach ($arArticleList as $articleIndex => $arArticle) {
+            $arResult[] = self::createFromMasterArray($arArticle, $db, $langval);
+        }
+        return $arResult;
+    }
+
+    /**
+     * Create an array of article objects by an array of assoc article datasets
+     * @param array     $arArticleList
+     * @return array
+     */
+    public static function createMultipleFromFullArray($arArticleList, ebiz_db $db = null, $langval = null) {
+        $arResult = array();
+        foreach ($arArticleList as $articleIndex => $arArticle) {
+            $arResult[] = self::createFromFullArray($arArticle, $db, $langval);
+        }
+        return $arResult;
+    }
+    
+    /**
+     * Get an article object by id
+     * @param int           $articleId
+     * @param bool          $useCache
+     * @param ebiz_db|null  $db
+     * @return Api_Entities_MarketplaceArticle
+     */
+    public static function getById($articleId, $useCache = true, ebiz_db $db = null, $langval = null) {
+        if ($db === null) {
+            $db = $GLOBALS['db'];
+        }
+        if ($langval === null) {
+            $langval = $GLOBALS['langval'];
+        }
+        if ($useCache) {
+            // Use cache to prevent loading the same article multiple times from database
+            if (!array_key_exists($articleId, self::$articleCache)) {
+                self::$articleCache[$articleId] = new Api_Entities_MarketplaceArticle($articleId, null, null, $db, $langval);
+            }
+            return self::$articleCache[$articleId];
+        } else {
+            // Do not use cache, force a new object which will read the most current article data from database
+            return new Api_Entities_MarketplaceArticle($articleId, null, null, $db, $langval);
+        }
+    }
+
+    private static function getArticleTableByCategory($categoryId, ebiz_db $db = null) {
+        if ($db === null) {
+            $db = $GLOBALS['db'];
+        }
+        return $db->fetch_atom("SELECT KAT_TABLE FROM `kat` WHERE ID_KAT=".$categoryId);
+    }
+
+    /**
+     * @param Api_Entities_MarketplaceArticle[] $arArticleObjects
+     * @return array
+     */
+    public static function toAssocList($arArticleObjects) {
+        $arResult = array();
+        foreach ($arArticleObjects as $articleIndex => $articleObject) {
+            $arResult[] = $articleObject->toAssoc();
+        }
+        return $arResult;
+    }
+    
+    protected static $articleCache = array();
+    
+    protected $articleId;
+    protected $articleDataMaster;
+    protected $articleDataFull;
+    protected $articleDataProduct;
+    protected $articleUser;
+    protected $fieldsGroups;
+    protected $fieldsSystemGroups;
+    protected $fieldsVariant;
+    protected $db;
+    protected $langval;
+    
+    function __construct($articleId, $arArticleMaster = null, $arArticleFull = null, ebiz_db $db = null, $langval = null) {
+        $this->articleId = ($articleId > 0 ? (int)$articleId : null);
+        $this->articleDataMaster = $arArticleMaster;
+        $this->articleDataFull = $arArticleFull;
+        $this->articleDataProduct = null;
+        $this->articleUser = null;
+        $this->fieldsGroups = null;
+        $this->fieldsSystemGroups = null;
+        $this->fieldsVariant = null;
+        $this->db = ($db === null ? $GLOBALS['db'] : $db);
+        $this->langval = ($langval === null ? $GLOBALS['langval'] : $langval);
+        if ($arArticleMaster === null) {
+            static::queueAddArticle($articleId, $this, "ad_master");
+        } else if ($arArticleFull === null) {
+            static::queueAddArticle($articleId, $this, $arArticleMaster["AD_TABLE"]);
+        }
+    }
+    
+    public function buy($quantity = 1, $variantId = null, $userId = null, $userInvoice = null, $userShipping = null, $paymentAdapter = null, $availability = false, $arOptions = array()) {
+        require_once $GLOBALS["ab_path"].'sys/lib.ads.php';
+        require_once $GLOBALS["ab_path"].'sys/lib.user.php';
+        require_once $GLOBALS["ab_path"].'sys/lib.ad_variants.php';
+        require_once $GLOBALS["ab_path"].'sys/lib.ad_order.php';
+        $userManagement = UserManagement::getInstance($this->db);
+        $variantManagement = AdVariantsManagement::getInstance($this->db);
+        $adOrderManagement = AdOrderManagement::getInstance($this->db);
+        // Parameters
+        $variantId = (int)$variantId;
+        $paymentAdapter = (int)$paymentAdapter;
+        // Create article list
+        $articleUser = $userManagement->fetchById($this->getData_ArticleMaster("FK_USER"));
+        if (!$userInvoice) {
+            $userInvoice = array(
+                "COMPANY" => $articleUser["FIRMA"],
+                "FIRSTNAME" => $articleUser["VORNAME"],
+                "LASTNAME" => $articleUser["NACHNAME"],
+                "STREET" => $articleUser["STRASSE"],
+                "ZIP" => $articleUser["PLZ"],
+                "CITY" => $articleUser["ORT"],
+                "FK_COUNTRY" => $articleUser["FK_COUNTRY"],
+                "PHONE" => $articleUser["TEL"]
+            );
+        }
+        if (!$userShipping) {
+            $userShipping = array(
+                "COMPANY" => $articleUser["FIRMA"],
+                "FIRSTNAME" => $articleUser["VORNAME"],
+                "LASTNAME" => $articleUser["NACHNAME"],
+                "STREET" => $articleUser["STRASSE"],
+                "ZIP" => $articleUser["PLZ"],
+                "CITY" => $articleUser["ORT"],
+                "FK_COUNTRY" => $articleUser["FK_COUNTRY"],
+                "PHONE" => $articleUser["TEL"]
+            );
+        }
+        $articleVariant = $variantManagement->getAdVariantDetailsById($variantId);
+        $articleList = array();
+        $articleKey = $this->articleId.".".$variantId;
+        $articlePrice = (!empty($articleVariant['PREIS']) ? $articleVariant['PREIS'] : $this->getData_ArticleMaster("PREIS"));
+        if (!empty($arOptions["PREIS"])) {
+            $articlePrice = $arOptions["PREIS"];
+        }
+        $articleShipping = 0;
+        if ($this->getData_ArticleMaster("VERSANDOPTIONEN") == 3) {
+            $articleShipping = (!empty($arOptions['VERSANDKOSTEN']) ? $arOptions['VERSANDKOSTEN'] : $this->getData_ArticleMaster("VERSANDKOSTEN"));
+        }
+        $articleList[$articleKey] = array(
+            'ID_AD' => $this->articleId,
+            'ID_AD_VARIANT' => $variantId,
+            'ID_PAYMENT_ADAPTER' => $paymentAdapter,
+            'ARTICLEDATA' => $this->getData_ArticleMaster(),
+            'USERDATA' => $articleUser,
+            'QUANTITY' => $quantity,
+            'AVAILABILITY_ARRAY' => $availability,
+            'AVAILABILITY' => ($availability !== false),
+            'AVAILABILITY_DATE_FROM' => (is_array($availability) ? $availability['DATE_FROM'] : false),
+            'AVAILABILITY_TIME_FROM' => (is_array($availability) ? $availability['TIME_FROM'] : false),
+            'AVAILABILITY_DATE_TO' => (is_array($availability) ? $availability['DATE_TO'] : false),
+            'MOQ' => $this->getData_ArticleMaster("MOQ"),
+            'PRICE' => $articlePrice,
+            'SHIPPING_PRICE' => $articleShipping,
+            'TOTAL_ARTICLE_PRICE' => $quantity * $articlePrice,
+            'TOTAL_PRICE' => $quantity * $articlePrice,
+            'OPTIONS' => (!empty($arOptions["MORE"]) ? $arOptions["MORE"] : array())
+        );
+        // Group order
+        $order = array();
+        foreach ($articleList as $articleKey => $articleDetails) {
+            $order[] = array(
+                'article' => $articleDetails,
+                'userInvoice' => $userInvoice,
+                'userVersand' => $userShipping,
+                'price' => $articleDetails["PRICE"],
+                'quantity' => $articleDetails['QUANTITY'],
+                'paymentAdapter' => $articleDetails['ID_PAYMENT_ADAPTER']
+            );
+        }
+        $orderGrouped = array();
+        $paramCartArticlesGroup = new Api_Entities_EventParamContainer(array(
+            "orderManagement"	=> $adOrderManagement,
+            "orders" 			=> $order,
+            "result"    		=> array()
+        ));
+        Api_TraderApiHandler::getInstance()->triggerEvent(Api_TraderApiEvents::MARKETPLACE_ORDER_GROUP, $paramCartArticlesGroup);
+        
+        if ($paramCartArticlesGroup->isDirty()) {
+            // Plugin grouping
+            $orderGrouped = $paramCartArticlesGroup->getParam("result");
+        } else {
+            // Default grouping
+            foreach($order as $key => $orderDetail) {
+              $tmpSellerId = $orderDetail['article']["ARTICLEDATA"]["FK_USER"];
+              $tmpPaymentAdapter = $orderDetail['paymentAdapter'];		
+              $orderGrouped[$tmpSellerId.';'.$tmpPaymentAdapter][] = $orderDetail;
+            }
+        }
+        // Order article
+        $orderId = null;
+        $orderResult = $adOrderManagement->createOrder($userId, $orderGrouped, $orderId);
+        return ($orderResult ? $orderId : null);
+    }
+
+    public function createJsonCache() {
+        $result = array();
+        foreach($GLOBALS["lang_list"] as $langAbbr => $langDetails) {
+            $this->langval = $langDetails["BITVAL"];
+            $this->fieldsGroups = null;
+            $arGroups = $this->getData_FieldsGroups();
+            foreach($arGroups as $groupIndex => $groupId) {
+                $arFields = $this->getFields($groupId);
+                foreach ($arFields as $index => $arField) {
+                    if(!array_key_exists("V1", $arField)) {
+                        $arFieldStrings = $this->getFieldStringsByName($arField["F_NAME"]);
+                        if (is_array($arFieldStrings)) {
+                            $arField = array_merge($arField, $arFieldStrings);
+                        }
+                    }
+                    $fieldValue = $this->getData_ArticleFull($arField["F_NAME"]);
+                    $result["raw"][$arField["F_NAME"]] = $fieldValue;
+                    $result[$langAbbr."_label"][$arField["F_NAME"]] = $arField["V1"];
+                    if(isset($fieldValue)) {
+                        if($arField["F_TYP"] == "CHECKBOX") {
+                            if($fieldValue == 1) {
+                                $result[$langAbbr][$arField["F_NAME"]] = $arField["V1"];
+                            } else {
+                                $result[$langAbbr][$arField["F_NAME"]] = '';
+                            }
+                        } else if(in_array($arField["F_TYP"], ["MULTICHECKBOX", "MULTICHECKBOX_AND", "LIST"])) {
+                            $ids = array_filter(explode('x', $fieldValue)); // checkbox-ids
+                            if(!empty($ids)) {
+                                $result[$langAbbr][$arField["F_NAME"]] = implode(', ', $this->db->fetch_col("
+                              SELECT s.V1
+                              FROM `liste_values` t
+                              LEFT JOIN string_liste_values s
+                                ON s.S_TABLE='liste_values' AND s.FK=t.ID_LISTE_VALUES
+                                   AND s.BF_LANG=if(t.BF_LANG_LISTE_VALUES & ".$this->langval.", ".$this->langval.", 1 << floor(log(t.BF_LANG_LISTE_VALUES+0.5)/log(2)))
+                              WHERE t.ID_LISTE_VALUES IN(".implode(',', $ids).")"));
+                            } else {
+                                $result[$langAbbr][$arField["F_NAME"]] = '';
+                            }
+                        } else if(in_array($arField["F_TYP"], ["TEXT", "LONGTEXT"])) {
+                            $result[$langAbbr][$arField["F_NAME"]] = htmlentities($fieldValue);
+                        } else if(in_array($arField["F_TYP"], ["INT", "FLOAT"])) {
+                            if(isset($arField["V2"])) {
+                                $result[$langAbbr][$arField["F_NAME"]] = $fieldValue.' '.htmlentities($arField["V2"]);
+                            } else {
+                                $result[$langAbbr][$arField["F_NAME"]] = $fieldValue;
+                            }
+                        } else if($arField["F_TYP"] == 'DATE') {
+                            $result[$langAbbr][$arField["F_NAME"]] = date('d.m.Y', strtotime($fieldValue));
+                        } else {
+                            $result[$langAbbr][$arField["F_NAME"]] = $fieldValue;
+                        }
+                    } else {
+                        $result[$langAbbr][$arField["F_NAME"]] = '';
+                    }
+                }
+            }
+        }
+        /*
+        echo "RESULT\r\n\r\n";
+        var_dump($result);
+        die();
+        */
+        // TODO: Update database
+        return $result;
+    }
+
+    /**
+     * Clear all cache files that are automatically generated
+     */
+    public function clearVolatileCache() {
+        $cachePath = $this->getVolatileCachePath();
+        if (file_exists($cachePath."/description.htm")) {
+            unlink($cachePath."/description.htm");
+        }
+        if (file_exists($cachePath."/description.txt")) {
+            unlink($cachePath."/description.txt");
+        }
+        if (file_exists($cachePath."/urls.json")) {
+            unlink($cachePath."/urls.json");
+        }
+    }
+
+    /**
+     * Returns the article dataset as assoc array
+     * @param string|null $fieldName
+     * @return array|string|null
+     */
+    public function getData_Article($fieldName = null) {
+        if ($fieldName !== null) {
+            $result = $this->getData_ArticleMaster($fieldName);
+            if ($result !== null) {
+                return $result;
+            }
+            $result = $this->getData_ArticleFull($fieldName);
+            if ($result !== null) {
+                return $result;
+            }
+            return null;
+        } else {
+            $result = array();
+            if ($this->getData_ArticleMaster() !== null) {
+                $result = array_merge($result, $this->articleDataMaster);
+            }
+            if ($this->getData_ArticleFull() !== null) {
+                $result = array_merge($result, $this->articleDataFull);
+            }
+            return $result;
+        }
+    }
+
+    /**
+     * Returns the article dataset as assoc array
+     * @param string|null   $fieldName
+     * @return array|string|null
+     */
+    public function getData_ArticleMaster($fieldName = null) {
+        if (($this->articleDataMaster === null) && ($this->articleId !== null)) {
+            static::queueAddArticle($this->articleId, $this);
+            static::queueQueryArticles("ad_master", $this->db);
+        }
+        if (is_array($this->articleDataMaster)) {
+            if ($fieldName !== null) {
+                // Get single field data
+                return (array_key_exists($fieldName, $this->articleDataMaster) ? $this->articleDataMaster[$fieldName] : null);
+            } else {
+                return $this->articleDataMaster;
+            }
+        } else {
+            // Fallback to full dataset if everything else fails
+            return $this->getData_ArticleFull($fieldName);
+        }
+    }
+
+    /**
+     * Returns the article dataset as assoc array
+     * @param string|null   $fieldName
+     * @return array|string|null
+     */
+    public function getData_ArticleFull($fieldName = null) {
+        if (($this->articleDataFull === null) && ($this->articleId !== null)) {
+            $articleTable = $this->getData_ArticleMaster("AD_TABLE");
+            static::queueAddArticle($this->articleId, $this, $articleTable);
+            static::queueQueryArticles($articleTable, $this->db);
+        }
+        if (is_array($this->articleDataFull)) {
+            if ($fieldName !== null) {
+                // Get single field data
+                return (array_key_exists($fieldName, $this->articleDataFull) ? $this->articleDataFull[$fieldName] : null);
+            } else {
+                return $this->articleDataFull;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param string|null $fieldName
+     * @return array|mixed|null
+     */
+    public function getData_ArticleProduct($fieldName = null) {
+        if (($this->articleDataProduct === null) && ($this->articleId !== null)) {
+            $articleTable = $this->getData_ArticleMaster("AD_TABLE");
+            $productTable = "hdb_table_".$articleTable;
+            static::queueAddArticle($this->articleId, $this, $productTable);
+            static::queueQueryArticles($productTable, $this->db);
+        }
+        if (is_array($this->articleDataProduct)) {
+            if ($fieldName !== null) {
+                // Get single field data
+                return (array_key_exists($fieldName, $this->articleDataProduct) ? $this->articleDataProduct[$fieldName] : null);
+            } else {
+                return $this->articleDataProduct;
+            }
+        } else {
+            return null;
+        }
+    }
+    
+    public function getData_ArticleTableId() {
+        $articleTable = $this->getData_ArticleMaster("AD_TABLE");
+        if ($articleTable !== null) {
+            $articleTableId = (int)$this->db->fetch_atom("SELECT ID_TABLE_DEF FROM `table_def` WHERE T_NAME='".mysql_real_escape_string($articleTable)."'");
+            if ($articleTableId > 0) {
+                return $articleTableId;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns the article dataset as assoc array
+     * @return array
+     */
+    public function getData_FieldsGroups() {
+        if ($this->fieldsGroups === null) {
+            $articleTableId = $this->getData_ArticleTableId();
+            if ($articleTableId !== null) {
+                $this->fieldsGroups = $this->db->fetch_col("SELECT ID_FIELD_GROUP FROM `field_group` WHERE FK_TABLE_DEF=".$articleTableId);
+            } else {
+                $this->fieldsGroups = array();
+            }
+            $this->fieldsGroups[] = null;
+            if ($this->getData_FieldsSystemGroups() !== null) {
+                foreach ($this->fieldsSystemGroups as $groupIndex => $groupFields) {
+                    $this->fieldsGroups[] = $groupIndex;
+                }
+            }
+        }
+        return $this->fieldsGroups;
+    }
+
+    /**
+     * Returns the article dataset as assoc array
+     * @return array
+     */
+    public function getData_FieldsSystemGroups() {
+        if ($this->fieldsSystemGroups === null) {
+            $arArticle = $this->getData_Article();
+            if ($arArticle !== null) {
+                require_once $GLOBALS["ab_path"]."sys/lib.ad_create.php";
+                $this->fieldsSystemGroups = AdCreate::getSystemGroups( $arArticle );
+            }
+        }
+        return $this->fieldsSystemGroups;
+    }
+
+    /**
+     * Returns cached field data that is stored as json encoded array in the master table
+     * @return array
+     */
+    public function getData_JsonCached() {
+        $jsonData = $this->getData_ArticleMaster("JSON_CACHED");
+        $arJsonData = @json_decode($jsonData, true);
+        return (is_array($arJsonData) ? $arJsonData : $this->createJsonCache());
+    }
+
+    /**
+     * Returns additional data that is stored as json encoded array in the master table
+     * @return array
+     */
+    public function getData_JsonAdditional() {
+        $jsonData = $this->getData_ArticleMaster("JSON_ADDITIONAL");
+        if (is_array($jsonData)) {
+            $arJsonData = $jsonData;
+        } else {
+            $arJsonData = @json_decode($jsonData, true);
+        }
+        return (is_array($arJsonData) ? $arJsonData : array());
+    }
+    
+    /**
+     * Returns a field by name if found. Contains name, type and wheter its required.
+     * @param   string $fieldName   Name of the field to be found
+     * @return  array|bool          The field with name, type and whether its required as array or false if not found.
+     */
+    public function getFieldByName($fieldName) {
+        $this->getData_FieldsSystemGroups();
+        // Look for matching field in system groups
+        foreach ($this->fieldsSystemGroups as $groupName => $arFields) {
+            foreach ($arFields as $fieldIndex => $arField) {
+                if ($arField["F_NAME"] == $fieldName) {
+                    return $arField;
+                }
+            }
+        }
+        // No system field found, search in database
+        $categoryId = $this->getData_Article("FK_KAT");
+        $arField = $this->db->fetch1("
+                SELECT
+                    f.ID_FIELD_DEF, f.F_NAME, f.F_TYP, IFNULL(kf.B_NEEDED,f.B_NEEDED) AS B_NEEDED, s.*
+				FROM `kat` k
+				LEFT JOIN `table_def` t ON t.T_NAME=k.KAT_TABLE
+				LEFT JOIN `field_def` f ON f.FK_TABLE_DEF=t.ID_TABLE_DEF
+				LEFT JOIN `kat2field` kf ON kf.FK_KAT=k.ID_KAT AND kf.FK_FIELD=f.ID_FIELD_DEF
+                LEFT JOIN `string_field_def` s ON s.S_TABLE='field_def' AND s.FK=f.ID_FIELD_DEF
+					AND s.BF_LANG=if(f.BF_LANG_FIELD_DEF & ".$this->langval.", ".$this->langval.", 1 << floor(log(f.BF_LANG_FIELD_DEF+0.5)/log(2)))
+				WHERE k.ID_KAT=".(int)$categoryId." AND kf.B_ENABLED=1 AND f.B_ENABLED=1
+				    AND f.F_NAME='".mysql_real_escape_string($fieldName)."'");
+        return $arField;
+    }
+
+    public function getFieldStringsByName($fieldName) {
+        $categoryId = $this->getData_Article("FK_KAT");
+        return $this->db->fetch1("
+                SELECT
+                    s.*
+				FROM `kat` k
+				LEFT JOIN `table_def` t ON t.T_NAME=k.KAT_TABLE
+				LEFT JOIN `field_def` f ON f.FK_TABLE_DEF=t.ID_TABLE_DEF
+				LEFT JOIN `kat2field` kf ON kf.FK_KAT=k.ID_KAT AND kf.FK_FIELD=f.ID_FIELD_DEF
+                LEFT JOIN `string_field_def` s ON s.S_TABLE='field_def' AND s.FK=f.ID_FIELD_DEF
+					AND s.BF_LANG=if(f.BF_LANG_FIELD_DEF & ".$this->langval.", ".$this->langval.", 1 << floor(log(f.BF_LANG_FIELD_DEF+0.5)/log(2)))
+				WHERE k.ID_KAT=".(int)$categoryId." AND f.F_NAME='".mysql_real_escape_string($fieldName)."'");
+    }
+
+    /**
+     * Returns a list of all fields with name, type and whether its required.
+     * @param   int $idFieldGroup   Field group to be read
+     * @return array    List of all fields with name, type and whether its required.
+     */
+    public function getFields($idFieldGroup = null) {
+        $this->getData_FieldsSystemGroups();
+        if (array_key_exists($idFieldGroup, $this->fieldsSystemGroups)) {
+            // System group, read from array
+            return $this->fieldsSystemGroups[$idFieldGroup];
+        } else {
+            // Regular group, read from database
+            $categoryId = $this->getData_Article("FK_KAT");
+            $arFields = $this->db->fetch_table("
+                SELECT
+                    f.F_NAME, f.F_TYP, f.FK_FIELD_GROUP, f.FK_LISTE, f.IS_SPECIAL, IFNULL(kf.B_NEEDED,f.B_NEEDED) AS B_NEEDED, s.*
+                FROM `kat` k
+                LEFT JOIN `table_def` t ON t.T_NAME=k.KAT_TABLE
+                LEFT JOIN `field_def` f ON f.FK_TABLE_DEF=t.ID_TABLE_DEF
+                LEFT JOIN `kat2field` kf ON kf.FK_KAT=k.ID_KAT AND kf.FK_FIELD=f.ID_FIELD_DEF
+                        LEFT JOIN `string_field_def` s ON s.S_TABLE='field_def' AND s.FK=f.ID_FIELD_DEF
+                  AND s.BF_LANG=if(f.BF_LANG_FIELD_DEF & ".$this->langval.", ".$this->langval.", 1 << floor(log(f.BF_LANG_FIELD_DEF+0.5)/log(2)))
+                WHERE k.ID_KAT=".(int)$categoryId." AND kf.B_ENABLED=1 AND f.B_ENABLED=1
+                    AND f.FK_FIELD_GROUP".($idFieldGroup === null ? " IS NULL" : "=".(int)$idFieldGroup)."
+                ORDER BY f.FK_FIELD_GROUP ASC, f.F_ORDER ASC");
+            return $arFields;
+        }
+    }
+    
+    public function getFieldsHtml() {
+        $arFields = $this->db->fetch_table("
+            SELECT
+                f.F_NAME, f.F_TYP, f.FK_FIELD_GROUP, f.FK_LISTE, f.IS_SPECIAL, IFNULL(kf.B_NEEDED,f.B_NEEDED) AS B_NEEDED, s.*
+            FROM `kat` k
+            LEFT JOIN `table_def` t ON t.T_NAME=k.KAT_TABLE
+            LEFT JOIN `field_def` f ON f.FK_TABLE_DEF=t.ID_TABLE_DEF
+            LEFT JOIN `kat2field` kf ON kf.FK_KAT=k.ID_KAT AND kf.FK_FIELD=f.ID_FIELD_DEF
+                    LEFT JOIN `string_field_def` s ON s.S_TABLE='field_def' AND s.FK=f.ID_FIELD_DEF
+              AND s.BF_LANG=if(f.BF_LANG_FIELD_DEF & ".$this->langval.", ".$this->langval.", 1 << floor(log(f.BF_LANG_FIELD_DEF+0.5)/log(2)))
+            WHERE k.ID_KAT=".(int)$this->getData_ArticleMaster("FK_KAT")." AND kf.B_ENABLED=1 AND f.B_ENABLED=1 AND f.F_TYP='HTMLTEXT'
+            ORDER BY f.FK_FIELD_GROUP ASC, f.F_ORDER ASC");
+        foreach ($arFields as $fieldIndex => $arField) {
+            $arFields[$fieldIndex]["VALUE"] = $this->getData_ArticleFull($arField["F_NAME"]);
+        }
+        return $arFields;
+    }
+
+    public function getFieldsVariant() {
+        if ($this->fieldsVariant === null) {
+            require_once $GLOBALS['ab_path'].'sys/lib.ad_variants.php';
+            $variants = AdVariantsManagement::getInstance($this->db);
+            $this->fieldsVariant = $variants->getAdVariantFieldsById($this->articleId, $this->langval);            
+        }
+        return $this->fieldsVariant;
+    }
+    
+    public function getFieldsVariantText($articleVariantId) {
+        require_once $GLOBALS['ab_path'].'sys/lib.ad_variants.php';
+        $variants = AdVariantsManagement::getInstance($this->db);
+        return $variants->getAdVariantTextById($articleVariantId, $this->langval);
+    }
+    
+    /**
+     * Get the id of the article
+     * @return int|null
+     */
+    public function getId() {
+        return $this->articleId;
+    }
+
+    /**
+     * Get the cache directory of the article
+     * @param bool $createIfNotExist
+     * @param bool $absoluteUrl
+     * @return string
+     */
+    public function getCachePath($createIfNotExist = true, $absoluteUrl = true) {        
+        $cachePathBase = "cache/marktplatz/anzeigen";
+        $cachePathHash = md5($this->articleId);
+        $cachePathHashParts = array(
+            substr($cachePathHash, 0, 3),
+            substr($cachePathHash, 3, 3),
+            substr($cachePathHash, 6, 3)
+        );
+        $cachePathArticle = $cachePathBase."/".implode("/", $cachePathHashParts)."/".$this->articleId;
+        $cachePathArticleAbsolute = $GLOBALS["ab_path"].$cachePathArticle;
+        // Create path if requested
+        if ($createIfNotExist && !is_dir($cachePathArticleAbsolute)) {
+            mkdir($cachePathArticleAbsolute, 0777, true);
+        }
+        return ($absoluteUrl ? $cachePathArticleAbsolute : $cachePathArticle);
+    }
+
+    /**
+     * Get the url of the article
+     * @param bool          $absoluteUrl
+     * @param Template|null $tplTemp
+     * @return string
+     */
+    public function getUrl($absoluteUrl = false, &$tplTemp = null, $disableCache = false, $useSSL = null) {
+        $cachePath = $this->getVolatileCachePath();
+        $cacheFile = $cachePath."/urls.json";
+        $cacheStorage = array();
+        $cacheIdent = ($absoluteUrl ? "abs_" : "rel_").$this->langval;
+        if (file_exists($cacheFile) && !$disableCache) {
+            $cacheStorageLoader = json_decode(file_get_contents($cacheFile), true);
+            if (is_array($cacheStorageLoader)) {
+                $cacheStorage = $cacheStorageLoader;
+                $cacheStorageLoader = null;
+            }
+        }
+        if (!array_key_exists($cacheIdent, $cacheStorage) || $disableCache) {
+            if ($tplTemp === null) {
+                $tplTemp = new Template("tpl/de/empty.htm");
+            }
+            $urlParams = "marktplatz_anzeige,".$this->getId().                                  // Page ident and article id
+                ",".addnoparse(chtrans($this->getData_ArticleMaster("PRODUKTNAME"))).           // Article name
+                "|KAT_PATH={market_kat_path_url(".$this->getData_ArticleMaster("FK_KAT").")}";  // Category path
+            $cacheStorage[$cacheIdent] = ($absoluteUrl ? $tplTemp->tpl_uri_action_full($urlParams, $useSSL) : $tplTemp->tpl_uri_action($urlParams, false, $useSSL));
+            
+            file_put_contents($cacheFile, json_encode($cacheStorage));
+        }
+        return $cacheStorage[$cacheIdent];
+    }
+    
+    /**
+     * Get the cache directory of the article
+     * @param bool $createIfNotExist
+     * @param bool $absoluteUrl
+     * @return string
+     */
+    public function getVolatileCachePath($createIfNotExist = true, $absoluteUrl = true) {        
+        $cachePathBase = "cache/marktplatz/anzeigen_volatile";
+        $cachePathHash = ($this->articleId - ($this->articleId % 1000));
+        $cachePathArticle = $cachePathBase."/".$cachePathHash."/".$this->articleId;
+        $cachePathArticleAbsolute = $GLOBALS["ab_path"].$cachePathArticle;
+        // Create path if requested
+        if ($createIfNotExist && !is_dir($cachePathArticleAbsolute)) {
+            @mkdir($cachePathArticleAbsolute, 0777, true);
+        }
+        return ($absoluteUrl ? $cachePathArticleAbsolute : $cachePathArticle);
+    }
+
+    /**
+     * Get the name of the user
+     * @return string
+     */
+    public function getTitle() {
+        return $this->getData_Article("PRODUKTNAME");
+    }
+
+    /**
+     * Get the articles descripton as html
+     * @param array     $removeTags     HTML-Tags to be removed from the description
+     * @return string
+     */
+    public function getDescriptionHtml($removeTags = null, $disableCache = false) {
+        $cachePath = $this->getVolatileCachePath();
+        $cacheFile = $cachePath."/description.htm";
+        if (!file_exists($cacheFile) || $disableCache) {
+            // Set default parameter value if not set
+            if ($removeTags === null) {
+                $removeTags = array("script", "style", "link");
+            }
+            // Generate html description
+            $descriptionHtml = $this->getData_Article("BESCHREIBUNG");
+            if (is_array($removeTags) && !empty($removeTags)) {
+                // Convert UTF-8 characters to html entities
+                $descriptionHtml = mb_convert_encoding($descriptionHtml, 'HTML-ENTITIES', 'UTF-8');
+                // Create DOMDocument and load html description
+                $descriptionHtmlDom = new DOMDocument();
+                @$descriptionHtmlDom->loadHTML("<div>".$descriptionHtml."</div>");
+                // Remove DOCTYPE and html-/body-tags 
+                $descriptionHtmlDom->removeChild($descriptionHtmlDom->doctype);
+                $descriptionHtmlDom->replaceChild($descriptionHtmlDom->firstChild->firstChild->firstChild, $descriptionHtmlDom->firstChild);
+                // Remove forbidden tags
+                foreach ($removeTags as $tagIndex => $tagName) {
+                    $nodeList = $descriptionHtmlDom->getElementsByTagName($tagName);
+                    for ($nodeIndex = $nodeList->length; --$nodeIndex >= 0;) {
+                        $node = $nodeList->item($nodeIndex);
+                        $node->parentNode->removeChild($node);
+                    }
+                }
+                $descriptionHtml = $descriptionHtmlDom->saveHTML();
+            }
+            if ($disableCache) {
+                return $descriptionHtml;
+            }
+            file_put_contents($cacheFile, $descriptionHtml);
+            return $descriptionHtml;
+        } else {
+            // Return cached html description
+            return file_get_contents($cacheFile);
+        }
+    }
+
+    /**
+     * Get a plain text description of the article
+     * @return array|null|string
+     */
+    public function getDescriptionText($disableCache = false, $manualTagRemoval = array()) {
+        $cachePath = $this->getVolatileCachePath();
+        $cacheFile = $cachePath."/description.txt";
+        if (!file_exists($cacheFile) || $disableCache) {
+            // Generate text description
+            $descriptionHtml = $this->getDescriptionHtml(null, $disableCache);
+            foreach ($manualTagRemoval as $tagIndex => $tagName) {
+                $descriptionHtml = preg_replace("/<".preg_quote($tagName).">.+</".preg_quote($tagName).">/U", "", $descriptionHtml);
+            }
+            $descriptionText = strip_tags($descriptionHtml);
+            if ($disableCache) {
+                return $descriptionText;
+            }
+            file_put_contents($cacheFile, $descriptionText);
+            return $descriptionText;
+        } else {
+            // Return cached text description
+            return file_get_contents($cacheFile);
+        }
+    }
+    
+    public function getConstraint($name) {
+        require_once $GLOBALS["ab_path"]."sys/lib.ad_constraint.php";
+        foreach (AdConstraintManagement::$mappingDefinition as $bitValue => $constraintName) {
+            if ($constraintName == $name) {
+                return (($this->getData_ArticleMaster("BF_CONSTRAINTS") & $bitValue) > 0 ? 1 : 0);
+            }
+        }
+        return 0;
+    }
+    
+    public function getPrice() {
+        return $this->getData_ArticleMaster("PREIS");
+    }
+    
+    public function getPseudoPrice() {
+        return $this->getData_ArticleMaster("PSEUDOPREIS");
+    }
+    
+    public function getRuntimeDays() {
+        $stampStart = $this->getData_ArticleMaster("STAMP_START");
+        $timeStart = strtotime($stampStart);
+        if ($timeStart !== false) {
+            return (time() - $timeStart) / 86400;
+        }
+        return null;
+    }
+    
+    public function getSellingType() {
+        return $this->getData_ArticleMaster("VERKAUFSOPTIONEN");
+    }
+
+    /**
+     * @return Api_Entities_User
+     */
+    public function getUser() {
+        if ($this->articleUser === null) {
+            $this->articleUser = Api_Entities_User::getById( $this->getData_ArticleMaster("FK_USER"), $this->db );
+        }
+        return $this->articleUser;
+    }
+    
+    public function hasData_ArticleMaster() {
+        return ($this->articleDataMaster !== null);
+    }
+    
+    public function hasData_ArticleFull() {
+        return ($this->articleDataFull !== null);
+    }
+    
+    public function hasData_ArticleProduct() {
+        return ($this->articleDataProduct !== null);
+    }
+
+    public function isOnline() {
+        return (($this->getData_ArticleMaster("STATUS") & 3) == 1);
+    }
+    
+    public function isTop($bitMask = 15, $requireAllBits = true) {
+        if ($requireAllBits) {
+            return (($this->getData_ArticleMaster("B_TOP") & $bitMask) == $bitMask);
+        } else {
+            return (($this->getData_ArticleMaster("B_TOP") & $bitMask) > 0);
+        }
+    }
+    
+    public function isTradeAllowed($userIdFrom, $userIdTo = null, $idVariant = null) {
+        if ($this->getData_Article("TRADE")) {
+            return true;
+        }
+        if ($this->getData_Article("VERKAUFSOPTIONEN") == 5) {
+            return true;
+        }
+        if ($userIdTo === null) {
+            $userIdTo = $this->getData_Article("FK_USER");
+        }
+        $bidCount = $this->db->fetch_atom("
+          SELECT count(*) FROM `trade` 
+          WHERE FK_AD=".(int)$this->articleId." AND FK_AD_VARIANT=".(int)$idVariant ." 
+            AND (FK_USER_FROM=".$userIdFrom." OR FK_USER_TO=".$userIdFrom.")");
+        if ($bidCount > 0) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function isPseudoPriceDiscount() {
+        return ($this->getData_ArticleMaster("B_PSEUDOPREIS_DISCOUNT") && ($this->getPseudoPrice() > $this->getPrice()) ? true : false); 
+    }
+    
+    public function setData_ArticleMaster($arData) {
+        $this->articleDataMaster = $arData;
+        if ($this->articleDataMaster !== null) {
+            static::queueAddArticle($this->getId(), $this, $this->articleDataMaster["AD_TABLE"]);
+            if ($this->articleDataMaster["FK_PRODUCT"] > 0) {
+                static::queueAddArticle($this->getId(), $this, "hdb_table_".$this->articleDataMaster["AD_TABLE"]);
+            }
+        }
+    }
+    
+    public function setData_ArticleFull($arData) {
+        $this->articleDataFull = $arData;
+    }
+    
+    public function setData_ArticleProduct($arData) {
+        $this->articleDataProduct = $arData;
+    }
+        
+    public function toAssoc() {
+        $arResult = ["ID_AD" => $this->getId()];
+        if ($this->getData_ArticleProduct() !== null) {
+            $arResult = array_merge($arResult, $this->getData_ArticleProduct());
+        }
+        if ($this->getData_ArticleMaster() !== null) {
+            $arResult = array_merge($arResult, $this->getData_ArticleMaster());
+        }
+        if ($this->getData_ArticleFull() !== null) {
+            $arResult = array_merge($arResult, $this->getData_ArticleFull());
+        }
+        // Default image
+        if (array_key_exists("images", $arResult) && !empty($arResult)) {
+            $arResult["IMG_DEFAULT_SRC"] = $arResult["images"][0]["SRC"];
+        }
+        // User info
+        $user = $this->getUser();
+        if ($user !== null) {
+            $arResult = array_merge(array_flatten($user->asArray(), true, "_", "USER_"), $arResult);
+        }
+        // Vendor info
+        $vendor = $user->getVendorEntry();
+        if ($vendor !== null) {
+            $arResult = array_merge(array_flatten($vendor->asArray(), true, "_", "VENDOR_"), $arResult);
+        }
+        return $arResult;
+    }
+    
+    public function traderOffersActive($userIdFrom, $loadImages = false) {
+        $arOffers = [];
+        if ($this->getData_Article("VERKAUFSOPTIONEN") == 5) {
+            // Request
+            $arOffers = $this->db->fetch_table("
+                SELECT
+                    t.*, a.ID_AD_MASTER, a.PRODUKTNAME, 
+                    tao.BID as BID_ACTIVE_OWN, tau.BID as BID_ACTIVE_USER
+                FROM `trade` t
+                JOIN `ad_master` a
+                    ON a.ID_AD_MASTER=t.FK_AD
+                LEFT JOIN `trade` tao
+                    ON tao.FK_NEGOTIATION=t.FK_NEGOTIATION AND tao.BID_STATUS='ACTIVE' AND tao.FK_USER_FROM=t.FK_USER_TO
+                LEFT JOIN `trade` tau
+                    ON tau.FK_NEGOTIATION=t.FK_NEGOTIATION AND tau.BID_STATUS='ACTIVE' AND tau.FK_USER_FROM=t.FK_USER_FROM
+                WHERE t.ID_TRADE=t.FK_NEGOTIATION
+                    AND t.FK_USER_TO=".$userIdFrom."
+                GROUP BY t.ID_TRADE");
+        } else {
+            // Article
+            $arOffers = $this->db->fetch_table("
+                SELECT
+                    t.*, a.ID_AD_MASTER, a.PRODUKTNAME,
+                    tao.BID as BID_ACTIVE_OWN, tau.BID as BID_ACTIVE_USER
+                FROM `trade` t
+                JOIN `ad_master` a
+                    ON a.ID_AD_MASTER=t.FK_AD
+                LEFT JOIN `trade` tao
+                    ON tao.FK_NEGOTIATION=t.FK_NEGOTIATION AND tao.BID_STATUS='ACTIVE' AND tao.FK_USER_FROM=t.FK_USER_FROM
+                LEFT JOIN `trade` tau
+                    ON tau.FK_NEGOTIATION=t.FK_NEGOTIATION AND tau.BID_STATUS='ACTIVE' AND tau.FK_USER_FROM=t.FK_USER_TO
+                WHERE t.ID_TRADE=t.FK_NEGOTIATION
+                    AND t.FK_USER_FROM=".$userIdFrom."
+                GROUP BY t.ID_TRADE");
+        }
+        if ($loadImages) {
+            foreach ($arOffers as $offerIndex => $arOffer) {
+                $articleOffer = Api_Entities_MarketplaceArticle::getById($arOffer["ID_AD_MASTER"]);
+                $arOffers[$offerIndex]["IMG_DEFAULT_SRC"] = $articleOffer->getImagePath();
+            }
+        }
+        return $arOffers;
+    }
+    
+    public function tradeOffer($amount, $price, $remarks, $userIdFrom, $userIdTo, $userInvoiceId, $userVersandId, $userPaymentId, $idVariant = null, $idRequest = null, $countMax = null, &$errors = array(), $checkTradeAllowed = true) {
+        if ($checkTradeAllowed && !$this->isTradeAllowed($userIdFrom, $userIdTo, $idVariant)) {
+            return false;
+        }
+        require_once $GLOBALS["ab_path"].'sys/lib.ad_payment_adapter.php';
+        $adPaymentAdapterManagement = AdPaymentAdapterManagement::getInstance($this->db);
+        
+        $bidActive = $this->db->fetch1("
+          SELECT * FROM `trade` 
+          WHERE FK_AD=".(int)$this->articleId." AND FK_AD_VARIANT=".(int)$idVariant ." AND FK_AD_REQUEST=".(int)$idRequest ." AND BID_STATUS='ACTIVE'
+            AND ((FK_USER_FROM=".$userIdFrom." AND FK_USER_TO=".$userIdTo.") OR (FK_USER_FROM=".$userIdTo." AND FK_USER_TO=".$userIdFrom."))");
+        $bidCount = $this->db->fetch_atom("
+          SELECT count(*) FROM `trade` 
+          WHERE FK_AD=".(int)$this->articleId." AND FK_AD_VARIANT=".(int)$idVariant ." AND FK_AD_REQUEST=".(int)$idRequest ."
+            AND FK_USER_FROM=".$userIdFrom." AND FK_USER_TO=".$userIdTo);
+        if ($countMax === null) {
+            if ($userIdFrom == $this->getData_Article('FK_USER')) {
+                $countMax = $GLOBALS['nar_systemsettings']['MARKTPLATZ']['TRADE_BID_COUNT'];			// max Anzahl der Gegenvorschlägen
+            } else {
+                $countMax = $GLOBALS['nar_systemsettings']['MARKTPLATZ']['TRADE_BID_USER_COUNT'];	// max Anzahl der eigenen Preisvorschläge
+            }
+        }
+        // Check quantity
+        if (($amount <= 0) || ($amount > $this->getData_Article('MENGE'))) {
+            // Menge nicht mehr verfügbar (oder <= 0)
+            $errors[] = 'err_bid_amount';
+        }
+        if ($amount < $this->getData_Article('MOQ')) {
+            // Menge nicht mehr verfügbar (oder <= 0)
+            $errors[] = 'err_bid_moq';
+        }
+        if (!empty($bidActive)) {
+            // Es ist ein aktives Gebot von diesem Benutzer vorhanden
+            if (($bidActive["BID"] == $price)) {
+                // Preis identisch! Fehler!
+                $errors[] = 'err_bid_duplicate';
+            }
+            if (($bidActive["AMOUNT"] != $amount)) {
+                // Anzahl hat sich geändert! Fehler!
+                $errors[] = 'err_bid_count_changed';
+            }
+        }
+        if (!($price > 0)) {
+            // Kein Preis angegeben (oder <= 0)
+            $errors[] = 'err_bid';
+        }
+        if (($bidCount >= $countMax)) {
+            // Mehr als 2 Gegenangebote! Kein weiteres Handeln möglich.
+            $errors[] = 'err_bid_count';
+        }
+        if (($userPaymentId > 0) && !$adPaymentAdapterManagement->isPaymentAdapterAvailableForAd($userPaymentId, $this->articleId)) {
+            $errors[] = 'err_payment_adapter';
+        }
+        $arUserInvoice = array();
+        if ($userInvoiceId > 0) {
+            $arUserInvoice = $this->db->fetch1("SELECT * FROM `user_invoice` WHERE ID_USER_INVOICE=".(int)$userInvoiceId);
+            if (empty($arUserInvoice)) {
+                $errors[] = 'err_invoice';
+            }
+        }
+        $arUserVersand = array();
+        if ($userVersandId > 0) {
+            $arUserVersand = $this->db->fetch1("SELECT * FROM `user_versand` WHERE ID_USER_VERSAND=".(int)$userVersandId);
+            if (empty($arUserVersand)) {
+                $errors[] = 'err_versand';
+            }
+        }
+        if (!empty($errors)) {
+            // Failed to add offer
+            return false;
+        } else {
+            // Add offer to database
+            return $this->tradeOfferFinal($amount, $price, $remarks, $userIdFrom, $userIdTo, $arUserInvoice, $arUserVersand, $userPaymentId, $idVariant, $idRequest, $bidActive);
+        }
+    }
+    
+    public function tradeOfferRequest($amount, $priceRequest, $priceOffer, $remarks, $userIdFrom, $userIdTo, $userInvoiceId, $userVersandId, $userPaymentId, $idVariant = null, $idRequest = null, $countMax = null, &$errors = array()) {
+        // Initial offer for the request
+        $arOfferRequest = $this->tradeOffer(
+          $amount, $priceRequest, "", 
+          $userIdTo, $userIdFrom, $userInvoiceId, $userVersandId, $userPaymentId,
+          $idVariant, $idRequest, $countMax, $errors, false
+        );
+        if ($arOfferRequest === false) {
+            return false;
+        }
+        // Response offer
+        $arOffer = $this->tradeOffer(
+          $amount, $priceOffer, $remarks, 
+          $userIdFrom, $userIdTo, null, null, null,
+          $idVariant, $idRequest, $countMax, $errors, false
+        );
+        $this->db->querynow("
+            UPDATE `trade` SET BID_STATUS='REQUEST' WHERE ID_TRADE=".(int)$arOfferRequest["ID_TRADE"]);
+        return $arOffer;
+    }
+    
+    private function tradeOfferFinal($amount, $price, $remarks, $userIdFrom, $userIdTo, $arUserInvoice, $arUserVersand, $userPaymentId, $idVariant = null, $idRequest = null, &$bidActive = false) {
+        // Active bid
+        if ($bidActive === false) {
+            $bidActive = $this->db->fetch1("
+              SELECT * FROM `trade` 
+              WHERE FK_AD=".(int)$this->articleId." AND FK_AD_VARIANT=".(int)$idVariant ." AND BID_STATUS='ACTIVE'
+                AND ((FK_USER_FROM=".$userIdFrom." AND FK_USER_TO=".$userIdTo.") OR (FK_USER_FROM=".$userIdTo." AND FK_USER_TO=".$userIdFrom."))");
+        }
+        if (($idRequest === null) && ($bidActive !== false) && ($bidActive["FK_AD_REQUEST"] > 0)) {
+            $idRequest = $bidActive["FK_AD_REQUEST"];
+        }
+        // Variante
+        $arVariantData = array();
+        if ($idVariant > 0) {
+            $arVariantData = $this->getFieldsVariantText($idVariant);
+        }
+        // Datensatz für den Insert
+        $bidNew = array(
+          "FK_AD"               => $this->articleId,
+          "FK_AD_VARIANT"       => (int)$idVariant,
+          "FK_AD_REQUEST"       => (int)$idRequest,
+          "SER_VARIANT"         => serialize($arVariantData),
+          "FK_NEGOTIATION"      => (empty($bidActive) ? 1 : $bidActive['FK_NEGOTIATION']),
+          "FK_USER_AD_OWNER"    => $this->getData_Article("FK_USER"),
+          "FK_USER_FROM"        => $userIdFrom,
+          "FK_USER_TO"          => $userIdTo,
+          "AMOUNT"              => $amount,
+          "BID"                 => $price,
+          "STAMP_BID"           => date("Y-m-d H:i:s"),
+          "BID_STATUS"          => "ACTIVE",
+          "REMARKS"             => $remarks
+        );
+
+        if ($bidNew["FK_USER_AD_OWNER"] == $bidNew["FK_USER_FROM"]) {
+            $bidNew["FK_PAYMENT_ADAPTER"] = $bidActive['FK_PAYMENT_ADAPTER'];
+            $bidNew['FK_USER_INVOICE'] = $bidActive['FK_USER_INVOICE'];
+            $bidNew["INVOICE_FIRMA"] = $bidActive["INVOICE_FIRMA"];
+            $bidNew["INVOICE_VORNAME"] = $bidActive["INVOICE_VORNAME"];
+            $bidNew["INVOICE_NACHNAME"] = $bidActive["INVOICE_NACHNAME"];
+            $bidNew["INVOICE_STRASSE"] = $bidActive["INVOICE_STRASSE"];
+            $bidNew["INVOICE_PLZ"] = $bidActive["INVOICE_PLZ"];
+            $bidNew["INVOICE_ORT"] = $bidActive["INVOICE_ORT"];
+            $bidNew["INVOICE_FK_COUNTRY"] = $bidActive["INVOICE_FK_COUNTRY"];
+            $bidNew["INVOICE_TEL"] = $bidActive["INVOICE_TEL"];
+            $bidNew["FK_USER_VERSAND"] = $bidActive['FK_USER_VERSAND'];
+            $bidNew["VERSAND_FIRMA"] = $bidActive["VERSAND_FIRMA"];
+            $bidNew["VERSAND_VORNAME"] = $bidActive["VERSAND_VORNAME"];
+            $bidNew["VERSAND_NACHNAME"] = $bidActive["VERSAND_NACHNAME"];
+            $bidNew["VERSAND_STRASSE"] = $bidActive["VERSAND_STRASSE"];
+            $bidNew["VERSAND_PLZ"] = $bidActive["VERSAND_PLZ"];
+            $bidNew["VERSAND_ORT"] = $bidActive["VERSAND_ORT"];
+            $bidNew["VERSAND_FK_COUNTRY"] = $bidActive["VERSAND_FK_COUNTRY"];
+            $bidNew["VERSAND_TEL"] = $bidActive["VERSAND_TEL"];
+        } else {
+            $idUserBuyer = ($this->getData_Article("FK_USER") != $userIdFrom ? $userIdFrom : $userIdTo);
+            $arUserBuyer = $this->db->fetch1("
+              SELECT FIRMA, VORNAME, NACHNAME, STRASSE, PLZ, ORT, FK_COUNTRY, TEL 
+              FROM `user` 
+              WHERE ID_USER=".(int)$idUserBuyer);
+            // Rechnungsadresse
+            if (!empty($arUserInvoice)) {
+                $bidNew["FK_USER_INVOICE"] = $arUserInvoice["ID_USER_INVOICE"];
+                $bidNew["INVOICE_FIRMA"] = $arUserInvoice["COMPANY"];
+                $bidNew["INVOICE_VORNAME"] = $arUserInvoice["FIRSTNAME"];
+                $bidNew["INVOICE_NACHNAME"] = $arUserInvoice["LASTNAME"];
+                $bidNew["INVOICE_STRASSE"] = $arUserInvoice["STREET"];
+                $bidNew["INVOICE_PLZ"] = $arUserInvoice["ZIP"];
+                $bidNew["INVOICE_ORT"] = $arUserInvoice["CITY"];
+                $bidNew["INVOICE_FK_COUNTRY"] = $arUserInvoice["FK_COUNTRY"];
+                $bidNew["INVOICE_TEL"] = $arUserInvoice["PHONE"];
+            } else {
+                $bidNew["FK_USER_INVOICE"] = 0;
+                $bidNew["INVOICE_FIRMA"] = $arUserBuyer["FIRMA"];
+                $bidNew["INVOICE_VORNAME"] = $arUserBuyer["VORNAME"];
+                $bidNew["INVOICE_NACHNAME"] = $arUserBuyer["NACHNAME"];
+                $bidNew["INVOICE_STRASSE"] = $arUserBuyer["STRASSE"];
+                $bidNew["INVOICE_PLZ"] = $arUserBuyer["PLZ"];
+                $bidNew["INVOICE_ORT"] = $arUserBuyer["ORT"];
+                $bidNew["INVOICE_FK_COUNTRY"] = $arUserBuyer["FK_COUNTRY"];
+                $bidNew["INVOICE_TEL"] = $arUserBuyer["TEL"];
+            }
+            // Versandinformationen
+            if (!empty($arUserVersand)) {
+                $bidNew["FK_USER_VERSAND"] = $arUserVersand["ID_USER_VERSAND"];
+                $bidNew["VERSAND_FIRMA"] = $arUserVersand["COMPANY"];
+                $bidNew["VERSAND_VORNAME"] = $arUserVersand["FIRSTNAME"];
+                $bidNew["VERSAND_NACHNAME"] = $arUserVersand["LASTNAME"];
+                $bidNew["VERSAND_STRASSE"] = $arUserVersand["STREET"];
+                $bidNew["VERSAND_PLZ"] = $arUserVersand["ZIP"];
+                $bidNew["VERSAND_ORT"] = $arUserVersand["CITY"];
+                $bidNew["VERSAND_FK_COUNTRY"] = $arUserVersand["FK_COUNTRY"];
+                $bidNew["VERSAND_TEL"] = $arUserVersand["PHONE"];
+            } else {
+                $bidNew["FK_USER_VERSAND"] = 0;
+                $bidNew["VERSAND_FIRMA"] = $arUserBuyer["FIRMA"];
+                $bidNew["VERSAND_VORNAME"] = $arUserBuyer["VORNAME"];
+                $bidNew["VERSAND_NACHNAME"] = $arUserBuyer["NACHNAME"];
+                $bidNew["VERSAND_STRASSE"] = $arUserBuyer["STRASSE"];
+                $bidNew["VERSAND_PLZ"] = $arUserBuyer["PLZ"];
+                $bidNew["VERSAND_ORT"] = $arUserBuyer["ORT"];
+                $bidNew["VERSAND_FK_COUNTRY"] = $arUserBuyer["FK_COUNTRY"];
+                $bidNew["VERSAND_TEL"] = $arUserBuyer["TEL"];
+            }
+            $bidNew["FK_PAYMENT_ADAPTER"] = $userPaymentId;
+        }
+        
+        // Gebot abgeben
+        $buy_ad = false;
+        $buy_mail = "MAIL_NEW_TRADE";
+        $buy_auto_amount = $this->getData_Article("AUTOBUY");
+        $mail_to = $userIdTo;
+        $mail_from = $userIdFrom;
+        if ($bidNew["FK_USER_AD_OWNER"] == $userIdFrom) {
+            // Gebot vom Besitzer (Gegenangebot)
+            $buy_mail = "MAIL_NEW_TRADE_SELLER";
+        } else {
+            // Gebot vom Käufer
+            $buy_mail = "MAIL_NEW_TRADE";
+            if (($buy_auto_amount > 0) && ($buy_auto_amount <= $bidNew["BID"])) {
+                // Automatischer Zuschlag!
+                $buy_ad = true;
+            }
+        }
+        // Aktive Gebote deaktivieren
+        $this->db->querynow("
+          UPDATE `trade`
+          SET BID_STATUS='ENDED' 
+          WHERE FK_AD=".(int)$this->articleId." AND FK_AD_VARIANT=".(int)$idVariant." AND BID_STATUS='ACTIVE' AND FK_USER_FROM=".$userIdFrom);
+        // Neues Gebot hinzufügen
+        $bidNew["ID_TRADE"] = $this->db->update("trade", $bidNew);
+        if (empty($bidActive)) {
+            $bidNew["FK_NEGOTIATION"] = $bidNew["ID_TRADE"];
+            $this->db->querynow("
+              UPDATE `trade` 
+              SET FK_NEGOTIATION=".$bidNew["ID_TRADE"]." 
+              WHERE ID_TRADE=".$bidNew["ID_TRADE"]);
+        }
+        // Daten zusammengefasst wegspeichern
+        $bidMax = $this->db->fetch1("
+          SELECT * FROM `trade` 
+          WHERE FK_AD=".(int)$this->articleId." AND FK_AD_VARIANT=".(int)$idVariant." AND FK_USER_FROM<>FK_USER_AD_OWNER AND BID_STATUS='ACTIVE'
+          ORDER BY BID DESC");
+        $arTradeAd = array(
+          "FK_AD"               => (int)$this->articleId,
+          "FK_AD_VARIANT"       => (int)$idVariant,
+          "FK_NEGOTIATION"      => $bidNew["FK_NEGOTIATION"],
+          "FK_USER"             => $this->getData_Article("FK_USER"),
+          "MAXBID"              => $bidMax['BID'],
+          "MAXBID_USER_ID"      => $bidMax['FK_USER_FROM'],
+          "MYMAXBID"            => $this->db->fetch_atom("
+                                      SELECT MAX(BID)
+                                      FROM `trade`
+                                      WHERE FK_AD=".(int)$this->articleId." AND FK_USER_FROM=FK_USER_AD_OWNER
+                                        AND BID_STATUS='ACTIVE' GROUP BY FK_AD"),
+          "COUNTUSER"           => $this->db->fetch_atom("
+                                      SELECT
+                                        count(*)
+                                      FROM `trade`
+                                      WHERE FK_AD=".(int)$this->articleId." AND BID_STATUS='ACTIVE'
+                                        AND FK_USER_AD_OWNER<>FK_USER_FROM"),
+          "LAST_BID_DATE"       => $this->db->fetch_atom("
+                                      SELECT
+                                        STAMP_BID
+                                      FROM `trade`
+                                      WHERE FK_AD=".(int)$this->articleId." AND BID_STATUS='ACTIVE'
+                                        AND FK_USER_AD_OWNER<>FK_USER_FROM
+                                      ORDER BY STAMP_BID DESC")
+        );
+        $query = "
+          INSERT INTO `trade_ad` 
+            (FK_AD, FK_AD_VARIANT, FK_USER, MAXBID, MAXBID_USER_ID, MYMAXBID, COUNTUSER, LAST_BID_DATE)
+			    VALUES 
+			      ('".$arTradeAd['FK_AD']."','".$arTradeAd['FK_AD_VARIANT']."','".$arTradeAd['FK_USER']."',
+			       '".$arTradeAd['MAXBID']."','".$arTradeAd['MAXBID_USER_ID']."','" . $arTradeAd['MYMAXBID']."',
+			       '".$arTradeAd['COUNTUSER']."','".$arTradeAd['LAST_BID_DATE']."')
+			    ON DUPLICATE KEY UPDATE
+			      FK_AD='".$arTradeAd['FK_AD']."',FK_AD_VARIANT='".$arTradeAd['FK_AD_VARIANT']."',
+			      FK_USER='".$arTradeAd['FK_USER']."',MAXBID='".$arTradeAd['MAXBID']."',
+			      MAXBID_USER_ID='".$arTradeAd['MAXBID_USER_ID']."',MYMAXBID='".$arTradeAd['MYMAXBID']."',
+			      COUNTUSER='".$arTradeAd['COUNTUSER']."',LAST_BID_DATE='".$arTradeAd['LAST_BID_DATE']."'";
+        $this->db->querynow($query);
+        if ($buy_ad) {
+            // Anzeige kaufen!
+            $bidNew["DO_BUY"] = true;
+        } else {
+            // Mail verschicken
+            $arMail = $this->getData_Article();
+            $arMail['USERNAME'] = $this->db->fetch_atom("SELECT CONCAT(VORNAME, ' ', NACHNAME) FROM user WHERE ID_USER=" . $mail_to);
+            $arMail['BIDDER'] = $this->db->fetch_atom("SELECT `NAME` FROM user WHERE ID_USER=" . $mail_from);
+            $arMail['SELLER'] = $this->db->fetch_atom("SELECT `NAME` FROM user WHERE ID_USER=" . $mail_to);
+            $arMail['FK_AD'] = $bidNew['FK_AD'];
+            $arMail['BID_NEW'] = $price;
+
+            sendMailTemplateToUser(0, $mail_to, $buy_mail, $arMail, false);
+        }
+        return $bidNew;
+    }
+
+    /**
+     * Check whether the article data is valid (all required fields filled, etc)
+     * @return array|bool   true if valid, array of errors if not.
+     */
+    public function validate() {
+        $errors = array();
+        $arGroups = $this->getData_FieldsGroups();
+        foreach ($arGroups as $groupIndex => $groupId) {
+            $arFields = $this->getFields($groupId);
+            foreach ($arFields as $index => $arField) {
+                $name = $arField["F_NAME"];
+                $type = $arField["F_TYP"];
+                $value = $this->getData_Article($name);
+                switch ($type) {
+                    case 'MULTICHECKBOX':
+                    case 'MULTICHECKBOX_AND':
+                        $value = explode("x", trim($value, "x"));
+                        break;
+                    case 'VARIANT':
+                        $arVariantFields = $this->getData_Article("_VARIANTS_FIELDS");
+                        $value = $arVariantFields[$name];
+                        break;
+                }
+                $validateResult = $this->validateField($name, $value, $arField["B_NEEDED"], $type);
+                if (!$validateResult["valid"]) {
+                    $errors[$name] = $validateResult["error_msg"];
+                }
+            }
+        }
+        return (empty($errors) ? true : $errors);
+    }
+    public function validateField($name, $value, $needed = null, $type = null) {
+        if (($needed === null) || ($type === null)) {
+            $arField = $this->getFieldByName($name);
+            $needed = $arField["B_NEEDED"];
+            $type = $arField["F_TYP"];
+        } else {
+            $type = strtoupper($type);
+        }
+        
+        // Sonderfälle / Sonstige Abhängigkeiten
+        switch ($name) {
+            case 'LIEFERTERMIN':
+                if (($this->getData_Article("VERSANDOPTIONEN") != 1) && ($this->getData_Article("VERKAUFSOPTIONEN") != 4) && ($this->getData_Article("VERKAUFSOPTIONEN") != 5)) {
+                    $needed = true;
+                }
+                break;
+            case 'PREIS':
+                if (($this->getData_Article("VERKAUFSOPTIONEN") == 2) || ($this->getData_Article("VERKAUFSOPTIONEN") == 4) || ($this->getData_Article("VERKAUFSOPTIONEN") == 5)) {
+                    $needed = false;
+                }
+                break;
+        }
+        
+        // Ergebnis vorbereiten
+        $arResult = array(
+            'valid' => 1,
+            'error' => "",
+            'type' => $type,
+            'required' => $needed
+        );
+        
+        /**************************************
+         * Standard-Felder kontrollieren
+         **************************************/
+        if (!is_numeric($value) && empty($value) && $needed) {
+            $arResult["fname"] = $name;
+            $arResult["valid"] = 0;
+            $arResult["error"] = "FIELD_NEEDED";
+            $arResult["error_msg"] = implode("", get_messages("AD_NEW", $arResult["error"]));
+            return $arResult;
+        }
+
+        switch ($type) {
+            /*************************
+             * Zahlen
+             *************************/
+            case 'INT':
+                if (!empty($value) || $needed) {
+                    $value = str_replace(",", ".", $value);
+                    if (round($value) != $value) {
+                        $arResult["fname"] = $name;
+                        $arResult["valid"] = 0;
+                        $arResult["error"] = "NOT_INTEGER";
+                    }
+                    if (!is_numeric($value)) {
+                        $arResult["fname"] = $name;
+                        $arResult["valid"] = 0;
+                        $arResult["error"] = "NOT_NUMERIC";
+                    }
+                }
+                break;
+            case 'FLOAT':
+                $value = str_replace(",", ".", $value);
+                if (!empty($value) || $needed) {
+                    if (!is_numeric($value)) {
+                        $arResult["fname"] = $name;
+                        $arResult["valid"] = 0;
+                        $arResult["error"] = "NOT_NUMERIC";
+                    }
+                }
+                break;
+            /*************************
+             * Auswahllisten
+             *************************/
+            case 'LIST':
+            case 'LISTE':
+                if ((!is_numeric($value) || ($value <= 0)) && ($needed == 1)) {
+                    $arResult["fname"] = $name;
+                    $arResult["valid"] = 0;
+                    $arResult["error"] = "INVALID_SELECTION";
+                }
+                break;
+			case 'VARIANT':
+            case 'MULTICHECKBOX':
+            case 'MULTICHECKBOX_AND':
+                if ((((int)$value == 0) || empty($value)) && ($needed == 1)) {
+                    $arResult["fname"] = $name;
+                    $arResult["valid"] = 0;
+                    $arResult["error"] = "FIELD_NEEDED";
+                }
+                break;
+        }
+        switch ($name) {
+            /*************************
+             * Kurzer Text
+             *************************/
+            case 'PRODUKTNAME':
+                // - Artikelbezeichnung
+                if (strlen(trim($value)) < 2) {
+                    $arResult["fname"] = $name;
+                    $arResult["valid"] = 0;
+                    $arResult["error"] = "TOO_SHORT";
+                }
+                break;
+            case 'ZIP':
+            case 'CITY':
+                // - Postleitzahl
+                // - Ort
+                if (strlen(trim($value)) < 3) {
+                    $arResult["fname"] = $name;
+                    $arResult["valid"] = 0;
+                    $arResult["error"] = "TOO_SHORT";
+                }
+                break;
+            /*************************
+             * Langer Text
+             *************************/
+            case 'BESCHREIBUNG':
+                $value = strip_tags($value);	// Remove html tags
+                break;
+            /*************************
+             * Auswahllisten (Zahl>0)
+             *************************/
+            case 'FK_COUNTRY':
+            case 'ZUSTAND':
+                // - Land
+                // - Versandkosten
+                // - Breite, Höhe, Tiefe
+                // - Leistung
+                if (!is_numeric($value) || ($value <= 0)) {
+                    $arResult["fname"] = $name;
+                    $arResult["valid"] = 0;
+                    $arResult["error"] = "INVALID_SELECTION";
+                }
+                break;
+            /*************************
+             * Positive Zahl (größer Null)
+             *************************/
+            case 'MENGE':
+            case 'PREIS':
+                $value = str_replace(',', '.', $value);
+                if ($value < 0) {
+                    $arResult["fname"] = $name;
+                    $arResult["valid"] = 0;
+                    $arResult["error"] = "NEGATIVE_NUMBER";
+                }
+                if (!empty($value) || $needed) {
+                    // Nur prüfen wenn nicht leer oder Pflichtfeld
+                    if (!is_numeric($value)) {
+                        $arResult["fname"] = $name;
+                        $arResult["valid"] = 0;
+                        $arResult["error"] = "NOT_NUMERIC";
+                    }
+                    if ($value < 0.01) {
+                        $arResult["fname"] = $name;
+                        $arResult["valid"] = 0;
+                        $arResult["error"] = "NULL_NUMBER";
+                    }
+                }
+                break;
+            case 'AUTOBUY':
+                $value = str_replace(',', '.', $value);
+                if (!empty($value) && ($value != 0)) {
+                    if (!is_numeric($value)) {
+                        $arResult["fname"] = $name;
+                        $arResult["valid"] = 0;
+                        $arResult["error"] = "NOT_NUMERIC";
+                    }
+                    if ($value < 0) {
+                        $arResult["fname"] = $name;
+                        $arResult["valid"] = 0;
+                        $arResult["error"] = "NEGATIVE_NUMBER";
+                    }
+                    if ($value < 0.01) {
+                        $arResult["fname"] = $name;
+                        $arResult["valid"] = 0;
+                        $arResult["error"] = "NULL_NUMBER";
+                    }
+                }
+                break;
+            /*************************
+             * Positive Zahl
+             *************************/
+            case 'VERSANDKOSTEN':
+            case 'BREITE': case 'HOEHE': case 'TIEFE':
+            case 'LEISTUNG':
+                // - Verkaufspreis
+                // - Versandkosten
+                // - Breite, Höhe, Tiefe
+                // - Leistung
+                $value = str_replace(',', '.', $value);
+                if ($needed || !empty($value)) {
+                    if (!is_numeric($value)) {
+                        $arResult["fname"] = $name;
+                        $arResult["valid"] = 0;
+                        $arResult["error"] = "NOT_NUMERIC";
+                    }
+                }
+                if ($value < 0) {
+                    $arResult["fname"] = $name;
+                    $arResult["valid"] = 0;
+                    $arResult["error"] = "NEGATIVE_NUMBER";
+                }
+                break;
+        }
+        
+		// Trigger plugin event
+		$paramAdValidate = new Api_Entities_EventParamContainer(array(
+            "fieldName"     => $name,
+            "fieldValue"    => $value,
+            "fieldNeeded"   => $needed,
+            "fieldType"     => $type,
+            "article"       => $this,
+            "result"        => $arResult
+        ));
+		Api_TraderApiHandler::getInstance()->triggerEvent(Api_TraderApiEvents::MARKETPLACE_AD_FIELD_VALIDATE, $paramAdValidate);
+        if ($paramAdValidate->isDirty()) {
+            $arResult = $paramAdValidate->getParam("result");
+        }
+        
+        if (!$arResult["valid"] && !array_key_exists("error_msg", $arResult)) {
+            $arResult["error_msg"] = implode("", get_messages("AD_NEW", $arResult["error"]));
+        }
+        return $arResult;
+    }
+    
+    public function writeToDatabase($enable = true, $validate = true) {
+        if ($validate && !$this->validate()) {
+            return false;
+        }
+        if ($this->articleId > 0) {
+            // Existing article, update
+            return $this->writeToDatabase_Update($enable);
+        } else {
+            // New article, create
+            return $this->writeToDatabase_Create($enable);
+        }
+    }
+    
+    protected function writeToDatabase_Create($enable = true) {
+        require_once $GLOBALS["ab_path"]."sys/lib.ads.php";
+        $success = false;
+        $idUser = (int)$this->getData_Article("FK_USER");
+        if ($idUser <= 0) {
+            return false;
+        }
+        $idArticle = AdManagment::createArticleFromArray($this->getData_Article(), $idUser, $enable, $success);
+        if ($success) {
+            $this->articleId = $idArticle;
+            // Update statistic
+            AdManagment::logCreateArticle($idUser);
+            // Clear volatile cache
+            $this->clearVolatileCache();
+            // Create variants
+            $this->writeToDatabase_Variants($this->articleId);
+        }
+        return $success;
+    }
+    
+    protected function writeToDatabase_Update($enable = true) {
+        require_once $GLOBALS["ab_path"]."sys/lib.ads.php";
+        $success = false;
+        $idUser = (int)$this->getData_Article("FK_USER");
+        if ($idUser <= 0) {
+            return false;
+        }
+        AdManagment::updateArticleFromArray($this->getData_Article(), $idUser, $enable, $success);
+        if ($success) {
+            // Clear volatile cache
+            $this->clearVolatileCache();
+            // Create variants
+            $this->writeToDatabase_Variants($this->articleId);
+        }
+        return $success;
+    }
+    
+    protected function writeToDatabase_Variants($enable = true) {
+        $arVariants = $this->getData_Article("_VARIANTS");
+        $arVariantIds = array();
+        if (!empty($arVariants)) {            
+            $idVariantDefault = false;
+            foreach ($arVariants as $arVariantRaw) {
+                $arVariant = array(
+                    'FK_AD_MASTER'  => $this->articleId,
+                    'STATUS'        => $arVariantRaw['STATUS'],
+                    'PREIS'         => $arVariantRaw['PREIS'],
+                    'MENGE'         => $arVariantRaw['MENGE'],
+                );
+                // Create / update variant
+                if ($arVariantRaw['ID_AD_VARIANT'] > 0) {
+                    // Update existing
+                    $idVariant = $arVariant['ID_AD_VARIANT'] = (int)$arVariantRaw['ID_AD_VARIANT'];
+                    $this->db->update("ad_variant", $arVariant);
+                } else {
+                    $idVariant = $this->db->update("ad_variant", $arVariant);
+                }
+                $arVariantIds[] = $idVariant;
+                // Add links to variant values (if not present yet)
+                foreach ($arVariantRaw["FIELDS"] as $fieldIndex => $arField) {
+                    $arField = array_merge( $this->getFieldByName($arField["F_NAME"]), $arField );
+                    $arVariantValue = array(
+                        'FK_AD_VARIANT'     => $idVariant,
+                        'FK_FIELD_DEF'      => $arField['ID_FIELD_DEF'],
+                        'F_NAME'            => $arField['F_NAME'],
+                        'FK_LISTE_VALUES'   => $arField['LIST_VALUE']
+                    );
+                    $idVariantValue = $this->db->update("ad_variant2liste_values", $arVariantValue);
+                }
+
+                if ($arVariantRaw['IS_DEFAULT']) {
+                    $idVariantDefault = $idVariant;
+                }
+            }
+            // Delete removed variants
+            $queryDeleted = "SELECT ID_AD_VARIANT FROM `ad_variant` WHERE ID_AD_VARIANT NOT IN (".implode(", ", $arVariantIds).") AND FK_AD_MASTER=".$this->articleId;
+            $arVariantsDelete = array_keys($this->db->fetch_nar($queryDeleted));
+            $this->db->querynow("DELETE FROM `ad_variant2liste_values` WHERE FK_AD_VARIANT IN (".implode(", ", $arVariantsDelete).")");
+            $this->db->querynow("DELETE FROM `ad_variant` WHERE ID_AD_VARIANT IN (".implode(", ", $arVariantsDelete).")");
+            // Set default
+            if ($idVariantDefault !== false) {
+                // Update default variant
+                $this->db->querynow("UPDATE `ad_master` SET FK_AD_VARIANT='".$idVariantDefault."' WHERE ID_AD_MASTER=".$this->articleId);
+            }
+        }
+        return true;
+    }
+
+    public function update($arData) {
+        $arDataBase = $this->getData_ArticleFull();
+        if ($arDataBase === null) {
+            return false;
+        }
+        $this->articleDataFull = array_merge($arDataBase, $arData);
+        return true;
+    }
+
+    public function getImagePath($index = 0) {
+        $arImages = $this->getData_ArticleFull("images");
+        if (is_array($arImages) && ($index < count($arImages))) {
+            return $arImages[$index]["SRC"];
+        }
+        return null;
+    }
+
+}

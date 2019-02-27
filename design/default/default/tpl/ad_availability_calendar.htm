@@ -1,0 +1,154 @@
+<link rel="stylesheet" type="text/css" href="{uri_resource(/js/fullcalendar/fullcalendar.css)}">
+<link rel="stylesheet" type="text/css" href="{uri_resource(/js/chronoline/chronoline.css)}">
+<link rel="stylesheet" type="text/css" href="{uri_resource(/js/chronoline/jquery.qtip.min.css)}">
+<script type="text/javascript" src="{uri_resource(/js/fullcalendar/fullcalendar.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/fullcalendar/translation.js)}"></script>
+<script type="text/javascript">
+
+function updateFilter() {
+	var form = jQuery("#formCalendarFilter");
+	jQuery.post(form.attr("action"), form.serialize(), function(result) {
+		if (result.success) {
+			document.location.reload();
+		}
+	});
+}
+
+// Initialize calendar
+jQuery(function() {
+	var calEvents = {JSON_EVENTS};
+	var calendar = jQuery('#availability .calendar').html("").fullCalendar({
+		timeFormat: 'H:mm{ - H:mm}', // 24h format
+		defaultView: 'agendaWeek',		
+		events: calEvents,
+		eventClick: function( event, jsEvent, view ) {
+			var target = jQuery(jsEvent.target).parent().parent();
+			jQuery("#availability .calendar .tooltipVisible").popover('hide').removeClass('tooltipVisible');
+			if (!jQuery(target).hasClass("tooltipGenerated")) {
+				var htmlContent = "";
+				var template = jQuery("#availbility_tooltip_template").html();
+				var templateRow = jQuery("#availbility_tooltip_template_row").html();
+				for(var i=0,j=event.eventList.length; i<j; i++){
+					var curEvent = event.eventList[i];
+					var dateBegin = new Date(curEvent.begin * 1000);
+					var dateEnd = new Date(curEvent.end * 1000);
+					var timeBegin = (dateBegin.getHours() < 10 ? "0" : "")+dateBegin.getHours()
+						+":"+(dateBegin.getMinutes() < 10 ? "0" : "")+dateBegin.getMinutes();
+					var timeEnd = (dateEnd.getHours() < 10 ? "0" : "")+dateEnd.getHours()
+						+":"+(dateEnd.getMinutes() < 10 ? "0" : "")+dateEnd.getMinutes();
+					// Replace variables
+					var curHtml = templateRow;
+					curHtml = curHtml.replace(/%TIME_BEGIN%/g, timeBegin);
+					curHtml = curHtml.replace(/%TIME_END%/g, timeEnd);
+					curHtml = curHtml.replace(/%TITLE%/g, curEvent.title);
+					curHtml = curHtml.replace(/%DESCRIPTION%/g, (typeof curEvent.description == "undefined" ? "" : curEvent.description));
+					curHtml = curHtml.replace(/%AMOUNT%/g, curEvent.amount);
+					// Add to content
+					htmlContent = htmlContent + curHtml;
+				};
+				if (event.eventList.length > 0) {
+					htmlContent = template.replace(/%LIST%/g, htmlContent);
+				} else {
+					if (event.amount == 0) {
+						htmlContent = jQuery("#availbility_tooltip_template").attr("data-text-none");	
+					} else {
+						if (event.amount < event.amountMax) {
+							htmlContent = jQuery("#availbility_tooltip_template").attr("data-text-blocked-partially");
+						} else {
+							htmlContent = jQuery("#availbility_tooltip_template").attr("data-text-blocked");
+						}
+					}
+				}
+				
+				jQuery(target).popover({
+					html: true,
+					placement: 'left',
+					trigger: 'manual',
+					title: event.start.toLocaleString(),
+					content: template.replace(/%LIST%/g, htmlContent)
+				}).addClass("tooltipGenerated");
+			}
+			jQuery(target).addClass('tooltipVisible').popover('show');
+		},
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		}
+	});
+});
+
+</script>
+
+<div style="display: none;">
+	<div id="availbility_tooltip_template"
+        data-text-none="[[ translation : marketplace : availability.free :: Keine Termine vorhanden ]]"
+		data-text-blocked="[[ translation : marketplace : availability.blocked :: Vollständig belegt ]]"
+        data-text-blocked-partially="[[ translation : marketplace : availability.blocked.partially :: Teilweise belegt ]]">
+		<ul class="calendar-tooltip-events">%LIST%</ul>
+	</div>
+	<div id="availbility_tooltip_template_row">
+		<li>
+			<span class="text-muted">[[ translation : general : time.span : BEGIN="%TIME_BEGIN%",END="%TIME_END%" : {BEGIN}Uhr - {END}Uhr ]]</span>
+			<div class="details">
+				<strong>%TITLE%</strong>
+				<p>%DESCRIPTION%</p>
+			</div>
+		</li>
+	</div>
+</div>
+{if SHOW_FILTER}
+<div id="availability_calendar_filter">
+	<form id="formCalendarFilter" action="{uri_action(marktplatz_anzeige)}">
+		<input type="hidden" name="ajax" value="availability_multi_setup" />
+		
+		<div class="header pull-left">
+			<h4>[[ translation : marketplace : availability.filter.settings :: Filter-Einstellungen ]]:</h4>
+		</div>
+		<div class="dropdown pull-left">
+			<a class="dropdown-toggle btn" data-toggle="dropdown" href="#">
+                [[ translation : marketplace : availability.ads.selected : COUNT=count_ads : {COUNT} Anzeigen gewählt ]]
+				<b class="caret"></b>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+				{liste_ads}
+			</ul>
+		</div>
+		
+		<div class="header pull-left">
+			<h4>[[ translation : general : legend :: Legende ]]:</h4>
+		</div>
+		<div class="header pull-left fc fc-ltr legend">
+			<span class="fc-event fc-event-hori fc-event-start fc-event-end pull-left type-na">
+                [[ translation : marketplace : availability.no.worktime :: Keine Arbeitszeit ]]
+            </span>
+			<span class="fc-event fc-event-hori fc-event-start fc-event-end pull-left type-event blocked-partially">
+                [[ translation : marketplace : availability.blocked.partially :: Teilweise belegt ]]
+            </span>
+			<span class="fc-event fc-event-hori fc-event-start fc-event-end pull-left type-event blocked-full">
+                [[ translation : marketplace : availability.blocked :: Vollständig belegt ]]
+            </span>
+		</div>
+	</form>
+</div>
+{else}
+<div>
+	<div class="header pull-left">
+		<h4>[[ translation : general : legend :: Legende ]]:</h4>
+	</div>
+	<div class="header pull-left fc fc-ltr legend">
+        <span class="fc-event fc-event-hori fc-event-start fc-event-end pull-left type-na">
+            [[ translation : marketplace : availability.no.worktime :: Keine Arbeitszeit ]]
+        </span>
+        <span class="fc-event fc-event-hori fc-event-start fc-event-end pull-left type-event blocked-partially">
+            [[ translation : marketplace : availability.blocked.partially :: Teilweise belegt ]]
+        </span>
+        <span class="fc-event fc-event-hori fc-event-start fc-event-end pull-left type-event blocked-full">
+            [[ translation : marketplace : availability.blocked :: Vollständig belegt ]]
+        </span>
+	</div>
+</div>
+{endif}
+<div id="availability">
+	<div class="calendar"></div>
+</div>

@@ -1,0 +1,224 @@
+{startblock(script)}
+    {parentblock()}
+	<link rel="stylesheet" type="text/css" href="{uri_resource(/js/fullcalendar/fullcalendar.css)}">
+	
+	<script type="text/javascript">
+		var showListSinceDate = new Date({SEARCH_UNIX_DATE_START});
+		var showListUntilDate = {if SEARCH_UNIX_DATE_END}new Date({SEARCH_UNIX_DATE_END}){else}false{endif};
+	
+		function CalendarEventsDateFormat(targetDate) {
+			var dateY = targetDate.getFullYear();
+			var dateM = targetDate.getMonth()+1;
+			var dateD = targetDate.getDate();
+			var dateStr =
+				(dateD.length == 1 ? "0"+dateD : dateD)+"."+
+				(dateM.length == 1 ? "0"+dateM : dateM)+"."+
+				dateY;
+			return dateStr;
+		}
+		
+		function CalendarEventsListNext(link) {
+			if (jQuery(link).is("a[href]")) {
+				//return true;
+			}
+			showListSinceDate.setMonth(showListSinceDate.getMonth() + 1);
+			showListSinceDate.setDate(1);
+			CalendarEventsListShowMonth(showListSinceDate);
+			return false;
+		}
+	
+		function CalendarEventsListPrev(link) {
+			if (jQuery(link).is("a[href]")) {
+				//return true;
+			}
+			showListSinceDate.setMonth(showListSinceDate.getMonth() - 1);
+			showListSinceDate.setDate(1);
+			CalendarEventsListShowMonth(showListSinceDate);
+			return false;
+		}
+		
+		function CalendarEventsListShowMonthViewActive(startDate, endDate) {
+			if ((endDate == false) || (startDate.getDate() != 1)) {
+				return false;
+			}
+			var targetMonthEnd = new Date(startDate);
+			targetMonthEnd.setMonth(targetMonthEnd.getMonth() + 1);
+			targetMonthEnd.setDate(targetMonthEnd.getDate() - 1);
+			if (endDate.getTime() != targetMonthEnd.getTime()) {
+				return false;
+			}
+			return true;
+		}
+	
+		function CalendarEventsListShowMonth(targetMonth) {
+			var targetMonthEnd = new Date(targetMonth);
+			targetMonthEnd.setMonth(targetMonthEnd.getMonth() + 1);
+			targetMonthEnd.setDate(targetMonthEnd.getDate() - 1);
+			CalendarEventsLoadData(targetMonth, targetMonthEnd);
+			if (jQuery("#presearch").length > 0) {
+				jQuery("#STAMP_END_GT").val( CalendarEventsDateFormat(targetMonth) );
+				jQuery("#STAMP_START_LT").val( CalendarEventsDateFormat(targetMonthEnd) );
+				presearch();
+			}
+		}
+	
+		function CalendarEventsListToday() {
+			showListSinceDate = new Date();
+			CalendarEventsLoadData(showListSinceDate);
+			var dateY = showListSinceDate.getFullYear();
+			var dateM = showListSinceDate.getMonth()+1;
+			var dateD = showListSinceDate.getDate();
+			var dateStr =
+				(dateD.length == 1 ? "0"+dateD : dateD)+"."+
+				(dateM.length == 1 ? "0"+dateM : dateM)+"."+
+				dateY;
+			jQuery("#STAMP_START_GT").val(dateStr);
+			presearch();
+		}
+	
+		function CalendarEventsLoadData(startDate, endDate, page, perPage) {
+        page = (typeof page == "undefined" ? 1 : page);
+        perPage = (typeof perPage == "undefined" ? 10 : perPage);
+
+        jQuery.ajax({
+            url: '{uri_baseurl(index.php)}?page=calendar_events_ajax&frame=ajax',
+            data: {
+                list_start: Math.floor((startDate.getTime() / 1000)),
+                list_end: "false",//((typeof endDate == "undefined") || (endDate == false) ? false : Math.floor((endDate.getTime()/1000))),
+                DO: 'FETCH_EVENTS',
+                TYPE: '{SEARCH_TYPE}',
+                CATEGORY: '{SEARCH_CATEGORY}',
+                PRIVACY: '{SEARCH_PRIVACY}',
+                FK_REF: '{SEARCH_FK_REF}',
+                FK_REF_TYPE: '{SEARCH_FK_REF_TYPE}',
+                FK_USER: '{SEARCH_FK_USER}',
+                SEARCHCALENDAREVENT: '{SEARCH_SEARCHCALENDAREVENT}',
+                FK_COUNTRY: '{SEARCH_FK_COUNTRY}',
+                ZIP: '{SEARCH_ZIP}',
+                CITY: '{SEARCH_CITY}',
+                LATITUDE: '{SEARCH_LATITUDE}',
+                LONGITUDE: '{SEARCH_LONGITUDE}',
+                LU_UMKREIS: '{SEARCH_LU_UMKREIS}',
+                SEARCHHASH: '{SEARCH_HASH}',
+                SORT_BY: '{SEARCH_SORT_BY}',
+                SORT_DIR: '{SEARCH_SORT_DIR}',
+                AS_OBJECT: 1,
+                PAGE_REF: '{curpage}',
+                PAGE_CUR: page,
+                PAGE_ITEMS: perPage
+            },
+            success: function (result) {
+                var resultHtml = "";
+
+                jQuery("#calendarEventResultCount").html(result.all);
+                if (result.length > 25) {
+                    jQuery("#calendarEventsDateAt").show();
+                    jQuery("#calendarEventsDateFrom").hide();
+                }
+                jQuery.each(result, function (key, event) {
+                    var template = '<tr>' +
+                        '<td>%STAMP_START% - %STAMP_END%<br />%IMAGE_HTML%</td>' +
+                        '<td>' +
+                        '<a href="%EVENT_URL%"><strong>%TITLE%</strong></a>' +
+                        '<br>' +
+                        '<span class="muted">%SHORT_DESCRIPTION%</span>' +
+                        '<br>' +
+                        '<a class="btn btn-default pull-right" href="%EVENT_URL_DL%">' +
+                        '   <i class="glyphicon glyphicon-calendar"></i>' +
+                        '   [[ translation : marketplace : calendar.event.download :: Termin herunterladen ]]' +
+                        '</a>' +
+                        '<br style="clear: right;" />' +
+                        '</td>' +
+                        '<td>' +
+                        '%LOCATION%<br><span class="text-muted">%ZIP% %CITY%</span>' +
+                        '</td>' +
+                        '</tr>'
+
+                    template = template.replace(/%TITLE%/, event.title);
+                    template = template.replace(/%SHORT_DESCRIPTION%/, event.DESCRIPTION_SHORT);
+                    template = template.replace(/%ID_CALENDAR_EVENT%/, event.ID_CALENDAR_EVENT);
+                    template = template.replace(/%LOCATION%/, event.LOCATION);
+                    template = template.replace(/%ZIP%/, event.ZIP);
+                    template = template.replace(/%CITY%/, event.CITY);
+                    template = template.replace(/%STAMP_START%/, event.STAMP_START_FORMATTED);
+                    template = template.replace(/%STAMP_END%/, event.STAMP_END_FORMATTED);
+                    template = template.replace(/%EVENT_URL%/, event.EVENT_URL);
+                    template = template.replace(/%EVENT_URL_DL%/, event.EVENT_URL_DL);
+                    if (typeof event.IMAGE_SRC_THUMB != "undefined") {
+                        template = template.replace(/%IMAGE_HTML%/, '<img src="' + event.IMAGE_SRC_THUMB + '" />');
+                    } else {
+                        template = template.replace(/%IMAGE_HTML%/, "");
+                    }
+
+                    resultHtml += template;
+                });
+
+                jQuery("#calendarEventsResultTable").html("").html(resultHtml);
+                jQuery("#calendarEventsResultPager").html("").html(result.pager);
+                jQuery("#calendarEventsResultPager [data-page]").click(function (e) {
+                    e.preventDefault();
+                    var page = jQuery(this).data("page");
+                    CalendarEventsLoadData(startDate, endDate, page, perPage);
+                });
+
+                if (CalendarEventsListShowMonthViewActive(startDate, endDate)) {
+                    var monthIndex = startDate.getMonth();
+                    var yearCurrent = startDate.getFullYear();
+                    var monthIndexPrev = (monthIndex > 0 ? monthIndex - 1 : 11);
+                    var yearPrev = (monthIndex > 0 ? yearCurrent : yearCurrent - 1);
+                    var monthIndexNext = (monthIndex < 11 ? monthIndex + 1 : 0);
+                    var yearNext = (monthIndex < 11 ? yearCurrent : yearCurrent + 1);
+                    //jQuery("#calendarEventsDate").html(ebizDateTranslations['months'][monthIndex] + " " + yearCurrent);
+                    var dateText = CalendarEventsDateFormat(startDate);
+                    if (endDate != false) {
+                        dateText += " [[ translation : general : date.until.between :: bis ]] " + CalendarEventsDateFormat(endDate);
+                    } else {
+                        dateText = "[[ translation : general : date.starting.at :: Ab dem ]] " + dateText;
+                    }
+                    jQuery("#calendarEventsDate").html(dateText);
+                    jQuery("#calendarEventsDatePrev").show().html('<i class="glyphicon glyphicon-chevron-left"></i> ' + ebizDateTranslations['months'][monthIndexPrev] + " " + yearPrev);
+                    if (typeof result.linkPrev == "undefined") {
+                        jQuery("#calendarEventsDatePrev").attr("href", null);
+                    } else {
+                        jQuery("#calendarEventsDatePrev").attr("href", result.linkPrev);
+                    }
+                    jQuery("#calendarEventsDateNext").show().html(ebizDateTranslations['months'][monthIndexNext] + " " + yearNext + ' <i class="glyphicon glyphicon-chevron-right"></i>');
+                    if (typeof result.linkNext == "undefined") {
+                        jQuery("#calendarEventsDateNext").attr("href", null);
+                    } else {
+                        jQuery("#calendarEventsDateNext").attr("href", result.linkNext);
+                    }
+                } else {
+                    var dateText = CalendarEventsDateFormat(startDate);
+                    if (endDate != false) {
+                        dateText += " [[ translation : general : date.until.between :: bis ]] " + CalendarEventsDateFormat(endDate);
+                    } else {
+                        dateText = "[[ translation : general : date.starting.at :: Ab dem ]] " + dateText;
+                    }
+                    jQuery("#calendarEventsDate").html(dateText);
+                    jQuery("#calendarEventsDatePrev").attr("href", null).hide();
+                    jQuery("#calendarEventsDateNext").attr("href", null).hide();
+                }
+            }
+        });
+		}
+	
+		jQuery(function() {
+		{if SEARCH_UNIX_DATE_START || SEARCH_UNIX_DATE_END}
+			//CalendarEventsLoadData(showListSinceDate, showListUntilDate);
+		{else}
+            //CalendarEventsLoadData(showListSinceDate, showListUntilDate);
+			//showListSinceDate.setDate(1);console.log("in else");
+			//CalendarEventsListShowMonth(showListSinceDate);
+		{endif}
+		});
+	</script>
+{endblock(script)}
+
+<div class="row design-calendar-event-row">
+	{events_list}
+</div>
+	
+<div id="calendarEventsResultPager">
+  
+</div>

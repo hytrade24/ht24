@@ -1,0 +1,145 @@
+.glyphicon{
+  position: static;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+  font-size: @font-size-base;
+}
+
+.form-inline > .form-group {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.nav.nav-tabs {
+  margin-bottom: @line-height-computed;
+}
+
+.input-group .input-group-nested {
+  width: 100%;
+}
+
+div.pagination {
+  display: block;
+  &.pagination-centered {
+	text-align: center;
+  }
+  > ul {
+    .pagination;
+  }
+}
+
+.colorpicker {
+  z-index: 100;
+}
+
+figure.articleImageLoader { display: inline-block; vertical-align: middle; text-align: center; margin: 0; }
+figure.articleImageLoader img { vertical-align: middle; text-align: center; }
+
+/*
+ * Facebook
+ */
+
+.traderFacebookSearch {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 88px;
+    border-bottom: 1px solid silver;
+}
+
+.traderFacebookSearchInput,
+.traderFacebookSearchButton {
+    margin-left: 8px;
+}
+
+.traderFacebookSearchButton {
+    margin-top: 20px;
+}
+
+.tradeFacebookList {
+    overflow: auto;
+    overflow-x: hidden;
+    height: 672px;
+    margin-top: 88px;
+}
+
+.content-facebook .discountBadge {
+    right: 5px;
+}
+
+.content-sitemap {
+  ul > li {
+    &.slevel1 { margin-left: 0; }
+    &.slevel2 { margin-left: 20px; }
+    &.slevel3 { margin-left: 40px; }
+    &.slevel4 { margin-left: 60px; }
+    &.slevel5 { margin-left: 80px; }
+  }
+}
+
+/*
+ * Fortschrittsbalken
+ */
+
+.progress-1 > .bar,
+.progress-1 > div { width: 100.0%; }
+.progress-2 > .bar,
+.progress-2 > div { width: 50.00%; }
+.progress-3 > .bar,
+.progress-3 > div { width: 33.33%; }
+.progress-4 > .bar,
+.progress-4 > div { width: 25.00%; }
+.progress-5 > .bar,
+.progress-5 > div { width: 20.00%; }
+
+.progress-description {
+}
+
+.progress-description .done {
+	-webkit-box-shadow: inset 0px -10px rgba(92, 182, 92, 0.25);
+	-moz-box-shadow: inset 0px -10px rgba(92, 182, 92, 0.25);
+	box-shadow: inset 0px -10px rgba(92, 182, 92, 0.25);
+}
+
+.progress-description .active {
+	font-weight: bold;
+	-webkit-box-shadow: inset 0px -10px rgba(250, 160, 43, 0.25);
+	-moz-box-shadow: inset 0px -10px rgba(250, 160, 43, 0.25);
+	box-shadow: inset 0px -10px rgba(250, 160, 43, 0.25);
+}
+
+.progress-description .pending {
+	-webkit-box-shadow: inset 0px -10px rgba(210, 70, 70, 0.25);
+	-moz-box-shadow: inset 0px -10px rgba(210, 70, 70, 0.25);
+	box-shadow: inset 0px -10px rgba(210, 70, 70, 0.25);
+}
+
+.progress-description > div {
+}
+
+.progress-description > div p {
+	padding: 2px;
+}
+
+.popover {
+  max-width: 380px;
+}
+
+.debug-template-file-container { padding: 0px; margin: 1px; border: 1px red dotted;  }
+.debug-template-file-name { background: red; color: #FFFFFF; margin: 2px; padding: 2px;  }
+
+.glyphicon{
+  position: static;
+}
+
+.content-shopverzeichnis .popover {
+  min-width: 280px;
+}
+
+/* Bootstrap bug? */
+.modal-dialog { z-index: 1050; }
+
+/* jQueryUi Datepicker */
+.ui-datepicker { z-index: 10 !important; }

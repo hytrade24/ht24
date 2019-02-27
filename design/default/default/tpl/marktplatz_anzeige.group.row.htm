@@ -1,0 +1,15 @@
+{if IS_SET}
+    <dt>{htm(V1)}:</dt>
+    <dd>
+    {if VALUE_TPL}
+        {VALUE_TPL}
+    {else}
+        {if TYPE_CHECKBOX}
+            {if VALUE}[[ translation : marketplace : yes :: Ja ]] {else}[[ translation : marketplace : no :: Nein ]]{endif}
+        {else}
+            {htm(VALUE)}
+            {htm(V2)}
+        {endif}
+    {endif}
+    </dd>
+{endif}

@@ -1,0 +1,66 @@
+<div class="design-group-row {if B_TOP} top{endif}">
+    <div class="row">
+        <div class="col-sm-4 col-md-3 col-lg-2">
+            <div class="design-group-image thumbnail">
+                <a href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}" title="[[ translation : marketplace : club.view :: {htm(CLUB_NAME)} ansehen ]]">
+                    {if CLUB_LOGO}
+                        <img src="{thumbnail(CLUB_LOGO,165,150)}" />
+                    {else}
+                        <img src="{uri_resource(/images/marketplace/nopic_club.jpg)}" vspace="5" />
+                    {endif}
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-8 col-md-9 col-lg-10">
+            <div class="row">
+                <div class="col-xs-7 col-sm-6 col-md-7">
+                    <p>
+                        <a href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}" title="[[ translation : marketplace : club.view :: {htm(CLUB_NAME)} ansehen ]]">
+                            <strong>{htm(CLUB_NAME)}</strong>
+                        </a>
+                    </p>
+                    <p class="marketplaceListItemDescription muted">
+                        {strip_tags(CLUB_SHORT_DESCRIPTION)}
+                    </p>
+                </div>
+                <div class="col-xs-5 col-sm-6 col-md-5">
+                    <dl class="dl-table-horizontal">
+
+                         <dt>[[ translation : marketplace : club.founded :: Gegründet ]]:</dt>
+                         <dd>{todate(STAMP)}<dd>
+                         <dt>[[ translation : marketplace : club.members :: Mitglieder ]]:</dt>
+                         <dd>{MEMBERS}<dd>
+                            <!--
+                            {if CLUB_PLZ}
+                                <dt>Adresse:</dt>
+                                <dd>
+                                    {CLUB_PLZ} {CLUB_ORT}<br />
+                                    {CLUB_COUNTRY}
+                                </dd>
+                            {endif}
+                            {if CLUB_TEL}
+                                <dt>Telefon:</dt>
+                                <dd>{CLUB_TEL}</dd>
+                            {endif}
+                            {if CLUB_FAX}
+                                <dt>Fax:</dt>
+                                <dd>{CLUB_FAX}</dd>
+                            {endif}
+                            -->
+                        {if CLUB_CATEGORY}
+                            <dt>[[ translation : marketplace : categorie :: Kategorie ]]:</dt>
+                            <dd>{CLUB_CATEGORY}<dd>
+                        {endif}
+                        {if ALLOW_MEMBER_REQUESTS==0 || ALLOW_MEMBER_REQUESTS==1 || ALLOW_MEMBER_REQUESTS==2}
+                            <dd>
+                                {if ALLOW_MEMBER_REQUESTS==0}[[ translation : marketplace : only.with.invite :: nur durch Einladung ]]{endif}
+                                {if ALLOW_MEMBER_REQUESTS==1}[[ translation : marketplace : free.joining :: freier Beitritt möglich ]]{endif}
+                                {if ALLOW_MEMBER_REQUESTS==2}[[ translation : marketplace : joining.request.needs.enter :: Beitrittsanfrage erfordert Bestätigung ]]{endif}
+                            <dd>
+                        {endif}
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

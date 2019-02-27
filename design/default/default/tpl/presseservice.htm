@@ -1,0 +1,173 @@
+{if !READY}
+{if err}
+<div class="hinweis"><span class="error">{err}</span></div>
+{endif}
+<form action="{uri_baseurl(index.php)}" method="post">
+<input type="hidden" name="page" value="{curpage}">
+<h1>[[ translation : marketplace : our.press.service :: Unser Presseservice ]]</h1>
+<table border="0" width="100%" align="center" valign="top" cellspacing="0" cellpadding="0" class="formTable">
+  <tr>
+    <td valign="top" rowspan="3">&nbsp;</td>
+    <td width="100%">
+<strong>[[ translation : marketplace : please.send.me.all.press.messages.over :: Bitte senden Sie mir alle Pressemitteilungen per: ]]</strong>
+<p>
+<input type=radio name="kontaktart" value="[[ translation : marketplace : email :: E-Mail ]]" class="nob" {if kontaktart_E-Mail || !kontaktart} checked{endif}>&nbsp;[[ translation : marketplace : email :: E-Mail ]] &nbsp;&nbsp;&nbsp;
+<input type=radio name="kontaktart" value="[[ translation : marketplace : fax :: Fax ]]" class="nob"{if kontaktart_Fax} checked{endif}>&nbsp;Fax &nbsp;&nbsp;&nbsp;
+<input type=radio name="kontaktart" value="[[ translation : marketplace : postal :: Post ]]" class="nob" {if kontaktart_Post} checked{endif}>&nbsp;Post &nbsp;&nbsp;&nbsp;&nbsp;
+[[ translation : marketplace : to.the.addresses.below :: an untenstehende Adressangaben. ]]</p></td>
+    <td  valign="top"><img src="{uri_baseurl(pic/space.gif)}" width="25" height="1"></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+    
+<tr><td>       
+               <table border="0" width="100%" cellspacing="0" cellpadding="0">
+
+          <tr>
+            <td width="4%" valign="top">
+             <input type=checkbox name="pressemappe" value="[[ translation : marketplace : yes.please.send :: Ja, bitte zusenden. ]]" class="nob"{if pressemappe} checked{endif}>
+            </td>
+            
+            <td width="96%"> <strong>[[ translation : marketplace : please.send.me.the.current.press.folder :: Bitte senden Sie mir die aktuelle Pressemappe zu. ]]<br>
+            </strong>[[ translation : marketplace : i.have.interest.in :: Ich interessiere mich für: ]]</td>
+          </tr>
+
+          <tr>
+            <td width="4%"><br>
+&nbsp;
+            </td>
+            
+            <td width="96%"><br>
+<textarea cols=30 rows=5 name="interessen">{htm(interessen)}</textarea><br>&nbsp;
+            </td>
+            
+
+
+          </tr>
+
+
+          <tr>
+            <td width="4%" valign="top">
+               <input  class="nob" type=checkbox name="recherchereise" value="[[ translation : marketplace : yes.please.call.me :: Ja, bitte rufen Sie mich an. ]]"{if recherchereise} checked{endif}>
+            </td>
+            
+            <td width="96%"> <strong>[[ translation : marketplace : i.plan.a.research.trip.&uuml;ber :: Ich plane eine Recherchereise über: ]]<br>
+              <br>
+            </strong>
+              <input size=25  style="width:250;" maxlength=60 name="recherchethema" value="{htm(recherchethema)}">
+                <br>
+                <br>
+                [[ translation : marketplace : please.call.me.because.of.this :: Rufen Sie mich doch diesbezüglich bitte einmal an. ]]
+                <p>
+            </td></tr>
+
+          <tr>
+            <td width="4%" valign="top">&nbsp;
+             
+            </td>
+            
+            <td width="96%">              <strong>[[ translation : marketplace : what.i.always.wanted.to.say :: Was Sie uns schon immer einmal sagen wollten... ]]</strong></td>
+                                 
+          </tr>
+
+          <tr>
+            <td width="4%">&nbsp;
+               
+            </td>
+            
+            <td width="96%"><br>
+<textarea cols=30 rows=5 name="meinung">{htm(meinung)}</textarea><br><br>
+            </td>
+            
+
+
+          </tr>
+
+<tr><td colspan="2"><br>
+
+
+        <table border="0" width="100%" height="65" align="left" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td colspan="2" align="left"><strong>[[ translation : marketplace : now.we.need.you.datas :: Und jetzt benötigen wir noch Ihre Daten: ]]</strong></td>
+          </tr>
+          <tr>
+            <td colspan="3">&nbsp; </td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%"> <b>[[ translation : marketplace : name :: Name ]]:</b> </td>
+            <td width="100%" align="left"><input size=25  style="width:250;" maxlength=60 name="Name" value="{htm(Name)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>[[ translation : marketplace : forename :: Vorname ]]:&nbsp;</b> </td>
+            <td width="100%" height="15"><input size=25  style="width:250;" maxlength=60 name="Vorname" value="{htm(Vorname)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>[[ translation : marketplace : medium :: Medium ]]:</b> </td>
+            <td width="100%" height="15"><input size=25  style="width:250;" maxlength=60 name="Medium" value="{htm(Medium)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>[[ translation : marketplace : department :: Ressort ]]:</b> </td>
+            <td width="100%" height="15" valign="top"><input size=25  style="width:250;" maxlength=60 name="Ressort" value="{htm(Ressort)}"></td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp; </td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>[[ translation : marketplace : street :: Straße ]]:</b> </td>
+            <td width="100%" height="15"><input size=25  style="width:250;" maxlength=60 name="Strasse" value="{htm(Strasse)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>[[ translation : marketplace : postalcode :: PLZ ]]:</b> </td>
+            <td width="100%" height="15"><input size=9  style="width:100;" maxlength=30 name="PLZ" value="{htm(PLZ)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>[[ translation : marketplace : residence :: Wohnort ]]:</b> </td>
+            <td width="100%" height="15"><input size=25  style="width:250;" maxlength=60 name="Wohnort" value="{htm(Wohnort)}"></td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp; </td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>[[ translation : marketplace : phone.number :: Telefon ]]:</b> </td>
+            <td width="100%" height="15"><input size=20  style="width:180;" maxlength=45 name="Telefon" value="{htm(Telefon)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>[[ translation : marketplace : fax :: Fax ]]:</b> </td>
+            <td width="100%" height="15"><input size=20  style="width:180;" maxlength=45 name="Telefax" value="{htm(Telefax)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>[[ translation : marketplace : email :: E-Mail ]]:</b> </td>
+            <td width="100%" height="15"><input size=20  style="width:180;" maxlength=45 name="Email" value="{htm(Email)}"></td>
+          </tr>
+          <tr align="right" class="footer">
+            <td colspan="3">
+                <input name="submit" type="submit" class="button">
+                </td>
+            </tr>
+        </table></td>
+</tr>
+        </table>
+
+</td>
+    <td  valign="top"><img src="{uri_baseurl(pic/space.gif)}" width="25" height="1"></td></tr>
+
+  
+
+  
+</table>
+</form>
+{else}
+<h1>[[ translation : marketplace : thanks :: Vielen Dank! ]]</h1>
+<p>[[ translation : marketplace : we.recieved.your.message.and.will.message.you.shortly::
+Wir haben Ihre Nachricht erhalten, und werden uns in K&uuml;rze bei Ihnen melden! ]]</p>
+{endif}
+

@@ -1,0 +1,51 @@
+@font-face {
+  font-family: 'Glyphicons Halflings';
+
+  src: url('./fonts/glyphicons-halflings-regular.eot');
+  src: url('./fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('./fonts/glyphicons-halflings-regular.woff') format('woff'), url('./fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('./fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.jqTreeSelect {
+    display: inline-block;
+    position: relative;
+}
+
+.jqTreeSelect .jqTreeSelectDropdown:before {
+    content: "\e114";
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+	margin-top: 2px;
+}
+
+.jqTreeSelect .jqTreeSelectDropdown {
+    border-left: 1px solid #A9A9A9;
+    font-size: 13px;
+    line-height: 26px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    padding: 0px 4px;
+    position: absolute;
+}
+
+.jqTreeSelect .jqTree {
+    background: #FFFFFF;
+    border: 1px solid #ccc;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 20px;
+    position: absolute;
+    top: 25px;
+	z-index: 1;
+}
+
+.jqTreeSelect.open .jqTree {
+    display: block;
+}
+
+.jqTreeSelect .jqTree a {
+    white-space: nowrap;
+	cursor: pointer;
+}

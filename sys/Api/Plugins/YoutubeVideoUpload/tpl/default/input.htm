@@ -1,0 +1,150 @@
+<input id="uploadVideos" type="file" name="file">
+<script id="templateVideoList" type="text/html">
+	
+</script>
+<script id="templateVideoDownload" type="text/html">
+		<tr id="articleImage#VIDEO_INDEX#">
+				<td style="width: 130px;">
+					{youtube_preview(#VIDEO_ID#)}
+				</td>
+				<td>
+					<a onclick="VideoDelete(#VIDEO_INDEX#);">
+						[[ translation : general : delete :: Löschen ]]
+					</a>
+				</td>
+				<td class="form-horizontal">
+						<div class="form-group">
+								<label class="control-label design-input-label" for="inputVideoMetaTitle#VIDEO_INDEX#">[[ translation : marketplace : user.media.title :: Titel ]]</label>
+								<div class="design-input-field">
+										<input class="form-control" type="text" id="inputVideoMetaTitle#VIDEO_INDEX#" name="META[VIDEOS][#VIDEO_INDEX#][TITLE]" value="{htm(META_TITLE)}" placeholder="[[ translation : marketplace : user.media.video.title :: Video-Titel ]]" />
+								</div>
+						</div>
+				</td>
+		</tr>
+</script>
+<script id="templateVideoUpload" type="text/html">
+    <tr>
+        <td>
+            <strong>[[ translation : marketplace : please.wait :: Bitte warten... ]]</strong>
+        </td>
+        <td>
+            [[ translation : marketplace : ad.create.media.upload.active :: Wird hochgeladen... ]]
+        </td>
+        <td>
+            <div class="progress progress-success">
+                <div class="progress-bar progress-bar-striped active bar"></div>
+            </div>
+        </td>
+    </tr>
+</script>
+<script type="text/javascript">
+	jQuery(function() {
+        if (typeof VideoDelete_UpgradedByYoutubeVideoUpload == "undefined") {
+            VideoDelete_UpgradedByYoutubeVideoUpload = true;
+            VideoDelete = function(videoId) {
+                jQuery.post('{uri_baseurl(/index.php)}?pluginAjax=YoutubeVideoUpload&pluginAjaxAction=delete', 'id='+encodeURIComponent(videoId)+'&target={target}', function(result) {
+                    jQuery("#list_videos").html(result);
+                    // Update media usage
+                    UploadRefresh();
+                });
+            };
+        }
+
+		jQuery("#uploadVideos").fileupload({
+			autoUpload: true,
+			forceIframeTransport: true,
+			filesContainer: jQuery('#list_videos > tbody'),
+			uploadTemplate: function (o) {
+					jQuery("#list_videos").show();
+					jQuery("#uploadVideoNoneYet").hide();
+					var videoIndex = jQuery("#list_videos .design-media-video").length;
+					var rows = jQuery();
+					jQuery.each(o.files, function (index, file) {
+							var video = { VIDEO_INDEX: videoIndex, VIDEO_TYPE: file.type, VIDEO_DATA: '' };
+							var templateSource = jQuery("#templateVideoUpload").html();
+							// Replace variables
+							jQuery.each(video, function (name, value) {
+									templateSource = templateSource.replace(eval('/#'+name+'#/g'), value);
+							});
+							var row = jQuery(templateSource);
+							rows = rows.add(row);
+					});
+					return rows;
+			},
+			downloadTemplate: function (o) {
+					var rows = jQuery();
+					jQuery.each(o.files, function (index, video) {
+							if (typeof video.ERRORS == "undefined") {
+									var templateSource = jQuery("#templateVideoDownload").html();
+									// Replace variables
+									jQuery.each(video, function (name, value) {
+											templateSource = templateSource.replace(eval('/#'+name+'#/g'), value);
+									});
+									// Add preview
+									var row = jQuery(templateSource);
+									row.find(".galleryImagePreview").append( jQuery(video.preview).addClass('thumbnail') );
+									// Set default state
+									if (video.IMAGE_DEFAULT) {
+											row.find("a.default").addClass("active");
+									} else {
+											row.find("a.default").removeClass("active");
+									}
+									rows = rows.add(row);
+							} else {
+									var templateSource = jQuery("#templateError").html();
+									// Replace variables
+									templateSource = templateSource.replace(eval('/#ERRORS#/g'), video.ERRORS.join("<br>\n"));
+									var row = jQuery(templateSource);
+									rows = rows.add(row);
+							}
+							// Update media usage
+							UploadRefresh();
+					});
+					return rows;
+			},
+			submit: function (e, data) {
+				var that = jQuery(this);
+				jQuery.ajax({
+					url: '{uri_baseurl(/index.php)}?pluginAjax=YoutubeVideoUpload&pluginAjaxAction=upload&target={target}',
+					type: 'POST',
+					dataType: 'json',
+					processData: false,
+					data: "title="+encodeURIComponent(data.files[0].name),
+					success: function(result) {
+						if (result.success) {
+							data.url = result.url;
+							data.formData = { token: result.token };
+							data.jqXHR = that.fileupload('send', data);
+                            uploadsPending.push(data);
+						} else {
+							data.abort();
+						}
+					}
+                });
+				return false;
+			}
+		});
+
+        var uploadsPending = [];
+        AddStepChangeCallback(function(options) {
+            for (var i = uploadsPending.length-1; i >= 0; i--) {
+                if (uploadsPending[i].jqXHR.readyState == 0) {
+                    // Upload done/canceled! Remove upload from pending.
+                    uploadsPending.splice(i, 1);
+                }
+            }
+            if (uploadsPending.length > 0) {
+                if (!confirm("[[ translation : marketplace : plugin.youtube.video.upload.confirm.cancel :: Achtung! Alle laufenden Video-Uploads werden abgebrochen wenn Sie zu einem anderen Schritt wechseln! Trotzdem fortfahren? ]]")) {
+                    options.allowChange = false;
+                    return false;
+                }
+                for (var i = uploadsPending.length-1; i >= 0; i--) {
+                    uploadsPending[i].abort();
+                    // Upload done/canceled! Remove upload from pending.
+                    uploadsPending.splice(i, 1);
+                }
+            }
+            return true;
+        });
+	});
+</script>

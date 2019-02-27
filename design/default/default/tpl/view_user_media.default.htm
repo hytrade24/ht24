@@ -1,0 +1,52 @@
+{if IMAGE_DEFAULT_SRC || liste_images || liste_videos || liste_uploads}
+<div class="design-content-box">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a title="[[ translation : marketplace : ad.view.images.show :: Bilder/Videos anzeigen ]]" href="#tab_images" data-toggle="tab">[[ translation : marketplace : ad.view.images.show :: Bilder/Videos anzeigen ]]</a>
+        </li>
+        {if liste_uploads}
+        <li>
+            <a title="[[ translation : marketplace : ad.view.downloads.show :: Downloads anzeigen ]]" href="#tab_files" data-toggle="tab">[[ translation : marketplace : ad.view.downloads.show :: Downloads anzeigen ]]</a>
+        </li>
+        {endif}
+    </ul>
+    <div class="tab-content">
+        <div id="tab_images" class="tab-pane active design-media-images">
+            {if IMAGE_DEFAULT_SRC}
+                <a href="{uri_baseurl({IMAGE_DEFAULT_SRC})}" title="{htm(IMAGE_DEFAULT_META_TITLE)}" data-title="<b>{htm(IMAGE_DEFAULT_META_TITLE)}</b>{if IMAGE_DEFAULT_META_SOURCE}<br>[[ translation : marketplace : user.media.image.source :: Quelle ]]: {htm(IMAGE_DEFAULT_META_SOURCE)}{endif}" id="link_image" rel="lightbox-gallery galleryImagePreview" class="design-media-images-big">
+                    <div class="design-media-images-big-frame">
+                        <img src="{thumbnail({IMAGE_DEFAULT_SRC},680,415)}" id="img_large" data-watchlist="1">
+                    </div>
+                </a>
+            {else}
+                <div class="design-ad-details-images-big-frame">
+                    <img src="{uri_resource(/images/marketplace/nopic.jpg)}"  alt="no-pic" title="[[ translation : general : image.notfound :: Kein Bild gefunden ]]" class="design-media-images-big" />
+                </div>
+            {endif}
+            {if liste_images || liste_videos}
+                <div class="marketplaceArticleImagePreviewContainer design-media-images-small">
+                    {liste_images}
+                    {liste_videos}
+                </div>
+            {endif}
+        </div>
+        <div id="tab_files" class="tab-pane">
+            <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                <tr>
+                    <th>[[ translation : marketplace : ad.downloads.name :: Dateiname ]]</th>
+                    <th>[[ translation : marketplace : ad.downloads.type :: Dateityp ]]</th>
+                    <th>[[ translation : marketplace : ad.downloads.title :: Beschreibung ]]</th>
+                    <th>[[ translation : marketplace : ad.downloads.size :: Dateigröße ]]</th>
+                </tr>
+                </thead>
+                {liste_uploads}
+            </table>
+        </div>
+    </div>
+</div>
+{else}
+    {if HIDE_PARENT}
+    <div class="specialHideParent"></div>
+    {endif}
+{endif}

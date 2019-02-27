@@ -1,0 +1,41 @@
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+
+        <h1>[[ translation : marketplace : ads.overview :: Anzeigen-Übersicht ]]</h1>
+        <p class="lead">
+            [[ translation : marketplace : ads.overview.lead :: Alle Anzeigen in der Übersicht. ]]
+        </p>
+        
+        <div class="breadcrumb">
+            <span class="text-muted">[[ translation : marketplace : ads.count : ARTICLE_COUNT=ALL_ADS : Anzeigen im Marktplatz: {ARTICLE_COUNT} ]]</span>
+        </div>
+        <div class="clearfix"></div>
+
+        {if NO_ERGS}
+            <p class="text-error">
+                [[ translation : marketplace : ads.search.no.result :: Es wurden leider keine Anzeigen gefunden. ]]
+            </p>
+        {endif}
+
+        <script type="text/javascript">
+            function market_order(elm) {
+                window.location.href = elm.value;
+            }
+        </script>
+
+        {if liste}
+            {liste}
+        {else}
+            <p class="text-error">
+                [[ translation : marketplace : ads.none.yet :: Leider keine Anzeigen gefunden ]]
+            </p>
+        {endif}
+        <div style="clear:left;height:1px;"></div>
+        {pager}
+    </div>
+
+
+    <div class="design-page-menu">
+        {content_page()}
+    </div>
+</div>

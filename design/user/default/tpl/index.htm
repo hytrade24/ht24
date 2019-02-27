@@ -1,0 +1,113 @@
+{startblock(pre-content)}
+{content_page(headerbild)}
+{content_page(Startseite Partner)}
+<div class="welcome-and-search heading-leading-with-line">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 welcome-part">
+                {content_page(WILKOMMEN AUF HYTRADER24)}
+            </div>
+            <div class="col-sm-12 col-md-6 search-part">
+                <h2 class="heading">
+                    <span class="all-text">
+                        <span class="text text-bold">Maschinen</span>
+                    <span class="text text-light">suchen</span>
+                    </span>
+                </h2>
+                {subtpl(tpl/{SYS_TPL_LANG}/ads_search_box.htm,ID_KAT=64584)}
+         </div>
+     </div>
+ </div>
+</div>
+
+<div class="welcome-and-search heading-leading-with-line">
+    <div class="container">
+<div class="row heading-leading-with-line">
+    <div class="col-xs-12 col-md-12">
+        <div class="design-list-area design-list-area-ads-new" data-hide-when-empty="true">
+            <h2 class="heading">
+                <span class="all-text">
+                    <span class="text text-bold">Vorgestellte</span>
+                    <span class="text text-light"> - PRODUKTE</span>
+                </span>
+            </h2>
+            <div class="content">
+                {subtpl(tpl/{SYS_TPL_LANG}/ads_random.htm,ID_KAT,ID_KAT={ID_KAT},ID_GEO_REGION,ID_GEO_REGION={ID_GEO_REGION},CACHE_LIFETIME=103,COUNT=4,COUNT_PER_ROW=4,COUNT_PER_ROW_RESPONSIVE=xs-1 sm-2,ONLY_TOP,EXCLUDE_ADS=,TEMPLATE=row_box,HIDE_PARENT=1)}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+
+<div class="system-categories heading-leading-with-line">
+ <div class="container">
+     <h2 class="heading-center">
+         <span class="all-text">
+             <span class="text text-bold">unsere</span>
+             <span class="text text-light">kategorien</span>
+         </span>
+     </h2>
+     <div class="row">
+         <div class="col-md-12 category-description">
+             A quick brown fox jumps over the lazy dog. A quick brown fox jumps over the lazy dog. A quick brown fox jumps over the lazy dog. A quick brown fox jumps over the lazy dog.
+         </div>
+     </div>
+     <div class="row boxes-row">
+         <div class="col-sm-12 col-md-12">
+             {subtpl(tpl/de/kat_boxes.htm,ID_KAT=64584,COLUMNS=4,COLUMNS_SM=2,COLUMNS_MD=3)}
+         </div>
+     </div>
+    </div>
+</div>
+
+{endblock(pre-content)}
+
+<div class="design-list-area design-list-area-top-recommendation heading-leading-with-line" data-hide-when-empty="true">
+    <h2 class="heading">
+        <span class="all-text">
+            <span class="text text-bold">VORGESTELLT</span>
+            <span class="text text-light"> - PARTNER</span>
+        </span>
+    </h2>
+    {content_page(HEADER VORGESTELLT - PARTNER)}
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
+            {subtpl(tpl/{SYS_TPL_LANG}/info_haendler_vorgestellt.htm,ID_KAT=,ID_USER=,CACHE_LIFETIME=102,COUNT=1,COUNT_PER_ROW=1,DISPLAY_ADS=3,TEMPLATE=vendor_row,HIDE_PARENT=1)}
+        </div>
+    </div>
+</div>
+
+<div class="row heading-leading-with-line">
+    <div class="col-xs-12 col-md-12">
+        <div class="design-list-area design-list-area-ads-new" data-hide-when-empty="true">
+            <h2 class="heading">
+                <span class="all-text">
+                    <span class="text text-bold">NEUE</span>
+                    <span class="text text-light"> - PRODUKTE</span>
+                </span>
+            </h2>
+            {content_page(HEADER NEUE - PRODUKTE)}
+            <div class="content">
+                {subtpl(tpl/{SYS_TPL_LANG}/ads_new.htm,ID_KAT,ID_KAT={ID_KAT},ID_GEO_REGION,ID_GEO_REGION={ID_GEO_REGION},CACHE_LIFETIME=103,COUNT=4,OFFSET=0,COUNT_PER_ROW=4,COUNT_PER_ROW_RESPONSIVE=xs-1 sm-2,ONLY_TOP,EXCLUDE_ADS=,TEMPLATE=row_box,HIDE_PARENT=1)}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row heading-leading-with-line">
+    <div class="col-xs-12 col-md-12">
+        <h2 class="heading">
+            <span class="all-text">
+                <span class="text text-bold">INTERSSANTES</span>
+                <span class="text text-light">AUF HYDROMOT</span>
+            </span>
+        </h2>
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=6,COUNT_PER_ROW=3,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES=0,TEMPLATE=row_big,CACHE_LIFETIME=102,HIDE_PARENT=1,DEFAULT_PIC=1)}
+    </div>
+</div>
+
+
+{content_page(Startseite Footer SEO Text)}

@@ -1,0 +1,10 @@
+{if ID_COUNTRY}
+<option data-type="country" data-level="{NS_LEVEL}" value="{ID_COUNTRY}" style="padding-left: {calc(NS_LEVEL*12-8)}px;"{if SELECTED} selected{endif}>
+  {htm(V1)}
+</option>
+{endif}
+{if ID_COUNTRY_GROUP}
+<option data-type="country_group" data-level="{NS_LEVEL}" value="{ID_COUNTRY_GROUP}" style="padding-left: {calc(NS_LEVEL*12-8)}px;"{if SELECTED} selected{endif}>
+  {htm(V1)}
+</option>
+{endif}

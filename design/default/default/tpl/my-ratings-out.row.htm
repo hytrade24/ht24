@@ -1,0 +1,40 @@
+<tr>
+    <td class="first design-action-buttons">
+    {if RATING>0}
+        <a class="btn btn-default" title="[[ translation : marketplace : take.back.rating :: Bewertung zurückziehen ]]" onclick="return confirm('[[ translation : marketplace : really.take.back.rating :: Bewertung wirklich zurückziehen? ]]');" href="{uri_action(my-ratings,out,remove,{ID_AD_SOLD_RATING})}">
+            <i class="glyphicon glyphicon-remove"></i>
+        </a>
+    {else}
+        <a class="btn btn-default" title="[[ translation : marketplace : show.rating :: Bewertung anzeigen ]]"
+           onclick="show_ratings('{ID_AD_SOLD_RATING}','{FK_AD_SOLD}');"
+           href="javascript:;">
+            <i class="glyphicon glyphicon-eye-open"></i>
+        </a>
+    {endif}
+    </td>
+    <td>
+        {ID_AD_SOLD}
+    </td>
+    <td>
+        {FK_AD}
+    </td>
+    <td>
+        {todate(STAMP_BOUGHT)}
+    </td>
+	<td>
+		<a href="{uri_action(view_user,{urllabel(USER)},{UID})}" target="_blank" title="[[ translation : marketplace : open.profile.in.new.window :: Profil in einem neuen Fenster öffnen ]]">
+			{htm(USER)}
+		</a>
+	</td>
+    <td>
+        <a title="[[ translation : marketplace : open.advert.in.new.window :: Anzeige in einem neuen Fenster öffnen ]]" target="_blank" href="{uri_action(marktplatz_anzeige,{FK_AD},{FK_KAT},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+        	{htm(PRODUKTNAME)}
+        </a>
+    </td>
+    <td>
+        <img src="{uri_baseurl(/gfx/stars_{if RATING>0}{RATING}{else}removed{endif}.png)}">
+    </td>
+    <td class="last">
+        {htm(COMMENT)}
+    </td>
+</tr>

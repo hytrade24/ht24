@@ -1,0 +1,28 @@
+<ul class="nav nav-pills">
+	<li class="step {if CURRENT_STEP == 1}active{endif}">
+        <a  href="#" {if MAX_STEP >= 1}onclick="ipe.loadStep(1)"{endif}>
+            [[ translation : marketplace : import.preset.editor.nav.step.type :: 1. Vorlagentyp ]]
+        </a>
+    </li>
+	<li class="step {if CURRENT_STEP == 2}active{endif} {if MAX_STEP < 2}disabled{endif}">
+        <a href="#" {if MAX_STEP >= 2}onclick="ipe.loadStep(2)"{endif}>
+			[[ translation : marketplace : import.preset.editor.nav.step.basemapping :: 2. Basis Zuweisung ]]
+        </a>
+    </li>
+	<li class="step {if CURRENT_STEP == 3}active{endif} {if MAX_STEP < 3}disabled{endif}">
+        <a href="#" {if MAX_STEP >= 3}onclick="ipe.loadStep(3)"{endif}>
+			[[ translation : marketplace : import.preset.editor.nav.step.categorymapping :: 3. Kategorie Zuordnung ]]
+        </a>
+    </li>
+	<li class="step {if CURRENT_STEP == 4}active{endif} {if MAX_STEP < 4}disabled{endif}">
+        <a href="#" {if MAX_STEP >= 4}onclick="ipe.loadStep(4)"{endif}>
+			[[ translation : marketplace : import.preset.editor.nav.step.fieldmapping :: 4. Feld Zuordnung ]]
+        </a>
+    </li>
+	<li class="step {if CURRENT_STEP == 5}active{endif} {if MAX_STEP < 5}disabled{endif}">
+        <a href="#" {if MAX_STEP >= 5}onclick="ipe.loadStep(5)"{endif}>
+			[[ translation : marketplace : import.preset.editor.nav.step.settings :: 5. Einstellungen ]]
+
+        </a>
+    </li>
+</ul>

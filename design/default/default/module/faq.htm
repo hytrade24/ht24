@@ -1,0 +1,29 @@
+{if !ID_FAQKAT}
+{content_page(FAQ header)}
+{endif}
+
+<a name="home"></a>
+
+<h1>{htm(V1)}</h1>
+<p class="lead">
+    {htm(V2)}
+</p>
+
+{if liste}
+    {liste}
+    <div>
+        [[ translation : general : faq.contact.for.further.questions :: Sollten Sie weitere Fragen haben, steht Ihnen unser Support-Team gerne zur Verfügung. ]]
+        <p>&nbsp;</p>
+    </div>
+{else}
+    <div class="text-error">
+        <span class="error">[[ translation : general : faq.no.topics.found :: Keine Themen gefunden ]]</span>
+    </div>
+{endif}
+{if ID_FAQKAT}
+    <div>
+		<a href="{uri_action({IDENT})}" title="[[ translation : general : faq.overview :: Übersicht ]]">
+            [[ translation : general : faq.back.to.overview :: Zurück zur Übersicht ]]
+        </a>
+    </div>
+{endif}

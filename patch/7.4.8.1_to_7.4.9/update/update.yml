@@ -1,0 +1,185 @@
+-
+  'action': 'systemCheckPhp'
+  'parameters':
+    'version': '5.6'
+-
+  'action': 'sqlRun'
+  'parameters':
+    'file': 'update.sql'
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-business-hours'
+    'ALIAS': ''
+    'V1':
+      'de': 'Öffnungszeiten'
+    'V2':
+      'de': 'Öffnungszeiten'
+    'TARGET':
+      'BY_IDENT': 'my-vendor'
+    'S_LAYOUT': '-user'
+    'POSITION': 'appendChild'
+    'B_VIS': 0
+    'B_SYS': 1
+    'B_SEARCH': 0
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': ' 	STORNO_ANFRAGE_BEARBEITET'
+    'BESCHREIBUNG': 'Stornoanfrage in Bearbeitung'
+    'V1':
+      'de': 'Stornoanfrage in Bearbeitung'
+    'T1':
+      'de': |
+        Hallo {VORNAME} {NACHNAME}!
+
+        This action is performed by admin on cancel requests items
+
+        {liste}
+
+        Mit freundlichen Grüßen
+        {SITENAME} Team
+
+-
+  'action': 'mailEdit'
+  'parameters':
+    'BACKUP': 'MailBackup/INVOICE_CORRECTION.yml'
+    'SYS_NAME': 'INVOICE_CORRECTION'
+    'T1':
+      'de': |
+        Hallo {VORNAME} {NACHNAME}!
+
+        Es gibt eine erneuerte Rechnung für die Rechnungsnummer {ID_BILLING_INVOICE}.{if INVOICE_MAIL_PDF} Eine Kopie der Rechnung ist in der E-Mail. {endif}
+
+        Rechnungsnummer: {ID_BILLING_INVOICE}
+        Betrag: {topreis(Total_Price)} EUR
+        Zahlung: {todate(STAMP_DUE)}
+
+        Sie können die Rechnung unter folgendem Link ansehen und Bezahlen.
+        {uri_action_full(invoice,{ID_BILLING_INVOICE})}
+
+        Bitte kontrollieren sie die Rechnung und bezahlen Sie sie Zeitnahe.
+
+        Wir bedanken uns für die Partnerschafft.
+
+        Bei fragen wenden Sie sich bitte an unsere Buchhaltung.
+
+        Mit freundlichen Grüßen
+        {SITENAME} Team
+
+-
+  'action': 'lookupAdd'
+  'parameters':
+    'art': 'CANCEL_INVOICE_REASON'
+    'VALUE': 'cancelled_order'
+    'V1':
+      'de': 'Kunde hat Auftrag storniert'
+
+-
+  'action': 'lookupAdd'
+  'parameters':
+    'art': 'CANCEL_INVOICE_REASON'
+    'VALUE': 'not_delivered'
+    'V1':
+      'de': 'Konnte Ware nicht liefern'
+
+-
+  'action': 'lookupAdd'
+  'parameters':
+    'art': 'CANCEL_INVOICE_REASON'
+    'VALUE': 'not_paid'
+    'V1':
+      'de': 'Kunde hat nicht gezahlt'
+
+-
+  'action': 'lookupAdd'
+  'parameters':
+    'art': 'CANCEL_INVOICE_REASON'
+    'VALUE': 'other'
+    'V1':
+      'de': 'sonstig'
+
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'cancel_requests'
+    'ALIAS': ''
+    'V1':
+      'de': 'Stornoanfragen'
+    'V2':
+      'de': 'Stornoanfragen'
+    'S_LAYOUT': ''
+    'POSITION': 'appendAfter'
+    'TARGET':
+          'BY_IDENT': 'billing_billableitem'
+    'B_VIS': 1
+    'ROLES': [ 'Admin' ]
+
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'cancel_request_edit'
+    'ALIAS': ''
+    'V1':
+      'de': 'Edit Cancel Request'
+    'V2':
+      'de': 'Edit Cancel Request'
+    'TARGET':
+      'BY_IDENT': 'buchhaltung'
+    'S_LAYOUT': ''
+    'POSITION': 'appendChild'
+    'B_VIS': 0
+    'B_SYS': 1
+    'ROLES': [ 'Admin' ]
+
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'invoice_cancel'
+    'ALIAS': ''
+    'V1':
+      'de': 'Stornierung beantragen'
+    'V2':
+      'de': 'Stornierung beantragen'
+    'TARGET':
+      'BY_IDENT': 'invoices'
+    'S_LAYOUT': '-user'
+    'POSITION': 'appendChild'
+    'B_VIS': 0
+    'B_SYS': 1
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'billing_billableitem_add'
+    'ALIAS': ''
+    'V1':
+      'de': 'Rechnungsposition hinzufügen'
+    'V2':
+      'de': 'Rechnungsposition hinzufügen'
+    'S_LAYOUT': ''
+    'POSITION': 'appendChild'
+    'TARGET':
+      'BY_IDENT': 'billing_billableitem'
+    'B_VIS': 1
+    'ROLES': [ 'Admin' ]
+-
+  'action': 'filesCopy'
+  'parameters':
+    'source': 'Dateien'
+    'backup': 'DateienBackup'
+-
+  'action': 'designCheck'
+  'parameters':
+    'language': 'de'
+    'backup': 'DateienBackup'
+-
+  'action': 'cacheClear'
+  'parameters':
+    'type': 'step_all'

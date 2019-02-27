@@ -1,0 +1,23 @@
+<h1>[[ translation : marketplace : ratings :: Bewertungen ]]<br />
+	
+</h1>
+<p>[[ translation : marketplace : your.recieved.and.made.ratings :: Ihre erhaltenen und vergebenen Bewertungen ]]</p>
+<p>
+     [[ translation : marketplace : please.rate.your.tradingpartner.after.every.sale.or.buy.stay.fair :: 
+
+	Bitte bewerten Sie nach jedem Verkauf bzw Einkauf Ihren Gesch&auml;ftspartner. <br />
+    Bleiben Sie dabei stets fair! ]]
+</p>
+<ul class="nav nav-tabs userTabsTable">
+	<li {if show_in}class="active"{endif}>
+		<a href="{uri_action(my-ratings,in)}">[[ translation : marketplace : recieved.ratings :: Erhaltene Bewertungen ]]</a>
+	</li>
+	<li {if show_out}class="active"{endif}>
+		<a href="{uri_action(my-ratings,out)}">[[ translation : marketplace : submitted.ratings :: Abgegebene Bewertungen ]]</a>
+	</li>
+</ul>
+
+{if show_in}{subtpl(tpl/{SYS_TPL_LANG}/my-ratings-in.htm)}{endif}
+{if show_out}{subtpl(tpl/{SYS_TPL_LANG}/my-ratings-out.htm)}{endif}
+
+

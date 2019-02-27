@@ -1,0 +1,38 @@
+<tr>
+	<td>{todate(STAMP_BID)}</td>
+	<td>
+		{if AD_STATUS == 1}
+			<a href="{if FK_USER_FROM != ID_USER}{uri_action(my-marktplatz-handeln)}{else}{uri_action(my-marktplatz-handeln,einkauf)}{endif}#ad{FK_AD}" title="[[ translation : marketplace : goto.survey :: Zur Übersicht ]]">
+				{htm(PRODUKTNAME)}{if VARIANT} ({htm(VARIANT)}){endif}
+			</a>
+		{else}
+			<a href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="[[ translation : marketplace : goto.article :: Zum Artikel ]]">
+				{htm(PRODUKTNAME)}{if VARIANT} ({htm(VARIANT)}){endif}
+			</a>
+		{endif}
+	</td>
+	<td>
+		{if FK_USER_FROM != ID_USER}
+			<span class="text-info">[[ translation : marketplace : counter.suggest :: Gegenvorschlag ]]</span>
+		{else}
+			[[ translation : marketplace : suggest.price :: Preisvorschlag ]]
+		{endif}
+	</td>
+	<td class="align-right">
+		{topreis_ex(BID)}&nbsp;{CURRENCY_DEFAULT}
+	</td>
+	<td>
+		{if BID_STATUS_ACTIVE}
+			<span class="text-success">[[ translation : general : active :: Aktiv ]]</span>
+		{endif}
+		{if BID_STATUS_ENDED}
+			<span class="text-info">[[ translation : general : ended :: Beendet ]]</span>
+		{endif}
+		{if BID_STATUS_ACCEPTED}
+			<span class="text-success">[[ translation : general : accepted :: Akzeptiert ]]</span>
+		{endif}
+		{if BID_STATUS_CANCEL}
+			<span class="text-error">[[ translation : marketplace : secluded :: Zurückgezogen ]]</span>
+		{endif}
+	</td>
+</tr>

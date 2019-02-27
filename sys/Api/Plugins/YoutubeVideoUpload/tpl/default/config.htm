@@ -1,0 +1,115 @@
+{if SAVED}
+<h3 class="ok">
+    [[ translation : marketplace : plugin.youbtube.video.upload.config.saved :: Die Konfiguration wurde erfolgreich gespeichert! ]]
+</h3>
+{endif}
+
+<h3>
+    [[ translation : marketplace : plugin.youbtube.video.upload.list.config.oauth.title :: OAuth-Zugangsdaten ]]
+</h3>
+
+<p>
+    [[ translation : marketplace : plugin.youbtube.video.upload.list.config.oauth.help :: 
+        Bitte erstellen Sie unter <a href="https://console.developers.google.com" target="_blank"><b>https://console.developers.google.com</b></a> 
+        eine <b>OAuth-Client-ID</b> (Anwendungstyp "Webanwendung") und tragen Sie die dort aufgeführten Zugangsdaten in das folgende Formular ein.<br />
+        Fügen Sie folgende URL als <b>Autorisierte Weiterleitungs-URIs</b> hinzu: 
+    ]]
+</p>
+<pre>
+    {htm(OAUTH_REDIRECT_URL)}
+</pre>
+
+<table class="liste" cellspacing="0">
+    <tr>
+        <td>
+            <b>Client-ID</b>
+        </td>
+        <td>
+            <input type="text" name="CONFIG[OAUTH_ID]" value="{htm(CONFIG_OAUTH_ID)}" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Clientschlüssel</b>
+        </td>
+        <td>
+            <input type="text" name="CONFIG[OAUTH_KEY]" value="{htm(CONFIG_OAUTH_KEY)}" />
+        </td>
+    </tr>
+</table>
+
+<h3>
+    [[ translation : marketplace : plugin.youbtube.video.upload.list.config.account.title :: Youtube Konfiguration ]]
+</h3>
+<p>
+    [[ translation : marketplace : plugin.youbtube.video.upload.list.config.account.help ::
+        Bitte erstellen Sie unter <a href="https://console.developers.google.com" target="_blank"><b>https://console.developers.google.com</b></a>
+        einen <b>API-Schlüssel</b> (Server-Schlüssel) und tragen Sie die dort aufgeführten Zugangsdaten in das folgende Formular ein.
+    ]]
+</p>
+
+<table class="liste" cellspacing="0">
+    <tr>
+        <td>
+            <b>API-Schlüssel</b>
+        </td>
+        <td>
+            <input type="text" name="CONFIG[ACCOUNT_KEY]" value="{htm(CONFIG_ACCOUNT_KEY)}" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Standard-Kategorie</b>
+        </td>
+        <td>
+            <select name="CONFIG[YOUTUBE_DEFAULT_CATEGORY]">
+                {categoryOptions}
+            </select>
+        </td>
+    </tr>
+</table>
+
+<h3>
+    [[ translation : marketplace : plugin.youbtube.video.upload.list.config.maintenance.title :: Validierung und Wartung ]]
+</h3>
+
+<div>
+    <a id="youtubeAccountValidate" href="#" class="button">Zugangsdaten speichern und überprüfen</a>
+    <a id="youtubeAccountResetAuth" href="#" class="button">Authentifizierung zurücksetzen</a>
+</div>
+
+<div id="youtubeAccountValidateSuccess" class="ok" style="display: none;">
+    <h3 class="ok">Validierung erfolgreich!</h3>
+</div>
+<div id="youtubeAccountValidateError" class="error" style="display: none;"></div>
+
+<script type="text/javascript">
+
+var validateSettings = function(formSettings) {
+    jQuery.post("index.php?page=plugins&do=configAjax&plugin=YoutubeVideoUpload&ajax=youtubeAccountValidate", formSettings.serialize(), function(result) {
+        if (result.success) {
+            jQuery("#youtubeAccountValidateSuccess").show();
+            jQuery("#youtubeAccountValidateError").hide();
+        } else {
+            jQuery("#youtubeAccountValidateSuccess").hide();
+            jQuery("#youtubeAccountValidateError").html(result.error).show();
+        }
+    });
+};
+
+jQuery("#youtubeAccountValidate").click(function(event) {
+    event.preventDefault();
+    var formSettings = jQuery(this).closest("form");
+    validateSettings(formSettings);
+});
+
+jQuery("#youtubeAccountResetAuth").click(function(event) {
+    event.preventDefault();
+    var formSettings = jQuery(this).closest("form");
+    jQuery.post("index.php?page=plugins&do=configAjax&plugin=YoutubeVideoUpload&ajax=youtubeResetAuth", formSettings.serialize(), function(result) {
+        alert("Authentifizierung wurde erfolgreich zurückgesetzt!");
+        validateSettings(formSettings);
+    });
+});
+    
+</script>

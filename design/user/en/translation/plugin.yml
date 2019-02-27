@@ -1,0 +1,23 @@
+search: Suche
+chat.new.ad: 'neue Anfrage{if PLURAL_COUNT!=1}n{endif}'
+chat.new.other: 'neue Nachricht{if PLURAL_COUNT!=1}en{endif}'
+ad.cart.error.quantity: 'Es sind leider nur noch {COUNT} Stück übrig. Bitte reduzieren Sie die gewünschte Menge.'
+ad.qrcode: 'QR-Code anzeigen'
+search.results.show: '({ALL_ADS}) Treffer anzeigen'
+country.group.others: Other
+plugin.user.task.list.heading: 'First Steps'
+shipping.sales.form.provider: 'shipping providers'
+shipping.sales.form.provider.any: '-- all--'
+shipping.settings.title: 'Shipping settings for your products'
+shipping.settings.default: 'Standard Shipping Configuration'
+shipping.groups.empty: 'You have not yet configured any shipping settings.'
+shipping.groups.button.add: New
+shipping.groups.button.edit: Edit
+shipping.groups.button.delete: Delete
+shipping.warning.config.save.custom.as.default: 'Attention! You are about to overwrite the default configuration with a custom configuration for this item. Really move on?'
+shipping.error.config.name.duplicate: 'Please enter a name for the shipping configuration.'
+shipping.groups.provider.delete.confirm: 'Really delete the shipping provider''{NAME}''?'
+shipping.select.provider.count: '{COUNT} / {COUNT_MAX} Supplier selected'
+shipping.select.provider.none: 'No Supplier selected'
+shipping.select.region.count: '{COUNT} / {COUNT_MAX} Regions / Countries selected'
+shipping.select.region.none: 'No regions/countries selected'

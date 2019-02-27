@@ -1,0 +1,11 @@
+{if allow_free || (PRICE>0)}
+<option value="{ID_PACKET_ORDER}" {if ID_PACKET_ORDER == FK_PACKET_ORDER}selected="selected"{endif}">
+		{htm(V1)} [[ translation : general : date.by :: vom ]] {todate(STAMP_START)}
+
+        {if (MAX0==-1)}
+        ([[ translation : marketplace : flatrate :: Flatrate ]])
+        {else}
+        ({FREE0} / {MAX0} [[ translation : marketplace : ads.free :: Anzeigen frei ]])
+        {endif}
+</option>
+{endif}

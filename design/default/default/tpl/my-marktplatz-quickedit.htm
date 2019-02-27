@@ -1,0 +1,64 @@
+<script type="text/javascript">
+    jQuery("#form_ad").submit(function() {
+        var f = jQuery(this);
+        var o = f.serializeArray();
+
+        jQuery.ajax({
+            url: f.attr("action"),
+            data: o,
+            type: 'post',
+            dataType: 'json',
+            success: function(response) {
+                if(response.success == true) {
+                    HideDialog();
+                }
+            }
+        });
+
+        return false;
+    });
+</script>
+
+{if errors}
+<div class="alert alert-danger">
+    {errors}
+</div>
+<br/>
+{endif}
+<style type="text/css">
+    .adTable {
+        border: 1px #d9d9d9 solid;
+        -moz-border-radius: 6px;
+    } .adTable td, .adTable th {
+        padding: 2px 0px 2px 4px;
+        vertical-align: middle;
+    } .adTable input, .adTable select, .adTable textarea {
+        font-size: 12px;
+    } .adTable .topic {
+        font-size: 14px;
+        text-align: center;
+        color: #5093ad;
+        background-color: #f1f1f1;
+        border-bottom: 1px #cccccc solid;
+        padding: 2px 0px 6px 0px;
+    } .adTable .footer td, .adTable .footer th {
+        background-color: #f1f1f1;
+        padding: 10px 0px 3px 0px;
+        border-top: 1px #cccccc solid;
+    }
+</style>
+
+<form id="form_ad" class="form-horizontal" method="post" action="{uri_baseurl(/index.php)}">
+    <input type="hidden" id="DESC_ID_ANZEIGE" name="ID_ANZEIGE" value="{ID_ANZEIGE}" />
+    <input type="hidden" id="DESC_ID_KAT" name="ID_KAT" value="{ID_KAT}" />
+    <input type="hidden" name="page" value="{curpage}" />
+    <input type="hidden" class="field_float" id="LATITUDE" name="LATITUDE" value="{LATITUDE}" />
+    <input type="hidden" class="field_float" id="LONGITUDE" name="LONGITUDE" value="{LONGITUDE}" />
+    <input type="hidden" name="DO" value="SAVE" />
+    <input type="hidden" name="TABLE" value="{TABLE}" />
+    <input type="hidden" name="IS_IMPORT" value="{IS_IMPORT}" />
+
+	{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-quickedit-kat.htm)}
+
+	{input_fields}
+</form>

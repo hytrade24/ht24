@@ -1,0 +1,21 @@
+<tr>
+    <th>YouTube Video Upload</th>
+    <td>
+        <p>
+            <strong>Youtube-Kategorie für Videos innerhalb dieser Marktplatz-Kategorie:</strong>
+            <br />
+            <i>Die Standard-Kategorie kann in den <a href="index.php?lang=de&page=plugins">Plugin-Einstellungen</a> geändert werden.</i>
+        </p>
+
+        <select name="youtubeCategoryId">
+            <option value=""{if categoryDefault} selected{endif}> - Standard-Kategorie - </option>
+            {categoryOptions}
+        </select>
+        <br />
+
+        <label class="error">
+            <input type="checkbox" name="youtubeCategoryRecursive" value="1" />
+            Youtube-Kategorie für alle Unterkategorien übernehmen
+        </label>
+    </td>
+</tr>

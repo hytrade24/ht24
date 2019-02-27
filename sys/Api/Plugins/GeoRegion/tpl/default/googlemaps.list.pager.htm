@@ -1,0 +1,11 @@
+<div class="design-content-box-unstyled text-right">
+  <b>
+    [[ translation : marktplatz : plugin.geoRegion.map.list.pager :: {first} - {last} von {count} ]]
+  </b>
+  <a class="btn btn-default{if first<=1} disabled{endif}" data-action="map-ajax-list-page-btn" data-offset="{offsetPrev}">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+  </a>
+  <a class="btn btn-default{if first>=count} disabled{endif}" data-action="map-ajax-list-page-btn" data-offset="{offsetNext}">
+    <i class="glyphicon glyphicon-chevron-right"></i>
+  </a>
+</div>

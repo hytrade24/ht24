@@ -1,0 +1,74 @@
+{if WARNING_MODERATION}
+<div class="alert alert-info">
+[[ translation : marketplace : vendor.confirm.edit.notice ::
+    <strong>Erneute Prüfung erforderlich!</strong><br>
+    Wenn Sie ihr Anbieterprofil bearbeiten wird dieses nicht mehr öffentlich vefügbar sein,
+    bis ein Administrator es erneut geprüft hat.
+]]
+</div>
+{else}
+    {if VENDOR_MODERATED!=1}
+        {if VENDOR_MODERATED==2}
+        <div class="alert alert-danger">
+        [[ translation : marketplace : vendor.confirm.declined ::
+            <strong>Anbieterprofil wurde vom Administrator abgelehnt!</strong><br>
+            Ihr Anbieterprofil wurde von einem Administrator abgelehnt!
+            {if VENDOR_DECLINE_REASON}
+                Folgendes wurde als Grund angegeben:<br>{text(VENDOR_DECLINE_REASON)}
+            {endif}
+        ]]
+        </div>
+        {else}
+        <div class="alert alert-info">
+        [[ translation : marketplace : vendor.confirm.pending ::
+            <strong>Anbieterprofil wird geprüft...</strong><br>
+            Ihr Anbieterprofil wird in kürze von einem Administrator überprüft. Sobald dieser ihr Profil
+            bestätigt hat ist dieses öffentlich zugänglich.
+        ]]
+        </div>
+        {endif}
+    {endif}
+{endif}
+
+<ul class="nav nav-tabs userTabsTable">
+
+    <li class="{uri_is_active(my-vendor,active,)}">
+        <a href="{uri_action(my-vendor)}">[[ translation : marketplace : vendor :: Anbieter ]]</a>
+    </li>
+    <li class="dropdown visibleOnEnabledVendor {uri_is_active(my-vendor-place,active,)}{uri_is_active(my-vendor-place-update,active,)}{uri_is_active(my-vendor-description,active,)}{uri_is_active(my-vendor-business-hours,active,)}{uri_is_active(my-vendor-searchword-list,active,)}{uri_is_active(my-vendor-gallery,active,)}">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        [[ translation : marketplace : vendor.description :: Beschreibung ]] <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{uri_action(my-vendor-description)}">[[ translation : marketplace : vendor.description :: Beschreibung ]]</a></li>
+            {if VENDOR_FIELDS}
+            <li><a href="{uri_action(my-vendor-details)}">[[ translation : marketplace : vendor.extra.details :: Suchfelder ]]</a></li>
+            {endif}
+            <li><a href="{uri_action(my-vendor-business-hours)}">[[ translation : marketplace : vendor.business.hours :: Öffnungszeiten ]]</a></li>
+            <li><a href="{uri_action(my-vendor-searchword-list)}">[[ translation : marketplace : vendor.keywords :: Schlagworte ]]</a></li>
+            <li><a href="{uri_action(my-vendor-gallery)}">[[ translation : marketplace : vendor.images.and.videos :: Bilder & Videos ]]</a></li>
+            <li><a href="{uri_action(my-vendor-place)}">[[ translation : marketplace : vendor.places :: Standorte ]]</a></li>
+            <li><a href="{uri_action(my-vendor-imprint)}">[[ translation : marketplace : vendor.imprint :: Impressum ]]</a></li>
+        </ul>
+    </li>
+    {if vendorHomepageAvailable}
+    <li class="visibleOnEnabledVendor {uri_is_active(my-vendor-homepage,active,)}">
+        <a href="{uri_action(my-vendor-homepage)}">[[ translation : marketplace : vendor.homepage :: Homepage ]]</a>
+    </li>   
+    {endif}
+    <li class="visibleOnEnabledVendor {uri_is_active(my-vendor-comments,active,)}">
+        <a href="{uri_action(my-vendor-comments)}">[[ translation : marketplace : comments :: Kommentare ]]</a>
+    </li>   
+     <li class="dropdown visibleOnEnabledVendor {uri_is_active(my-vendor-events,active,)}">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        [[ translation : marketplace : calendar.events :: Veranstaltungen ]] <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{uri_action(my-vendor-events)}">[[ translation : marketplace : vendor.calendar.show :: Kalender anzeigen ]]</a></li>
+            <li><a href="{uri_action(my-calendar-events-add,,vendor)}">[[ translation : marketplace : vendor.calendar.add :: Kalendereintrag erstellen ]]</a></li>
+        </ul>
+    </li>
+    <li class="visibleOnEnabledVendor {uri_is_active(my-vendor-stats-profil,active,)}">
+        <a href="{uri_action(my-vendor-stats-profil)}">[[ translation : marketplace : vendor.statistics.access :: Zugriffs-Statistik ]]</a>
+    </li>
+</ul>

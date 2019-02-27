@@ -1,0 +1,36 @@
+<div class="design-content-box-unstyled">
+    <div class="design-geo-regions-map">
+        <div class="design-geo-regions-list">
+            <div data-content="map-ajax-list-pager"></div>
+            <div class="design-row design-row-xs-1 design-row-sm-2" data-content="map-ajax-list">
+                
+            </div>
+            <div data-content="map-ajax-list-pager"></div>
+        </div>
+        <div class="design-geo-regions-map-maximize">
+            <a class="btn btn-info" data-action="map-ajax-maximize">
+                <span class="label-minimize">
+                    <i class="glyphicon glyphicon-resize-small"></i>
+                    Zurück zur Listenansicht
+                </span>
+                <span class="label-maximize">
+                    <i class="glyphicon glyphicon-resize-full"></i>
+                    Karte ansehen
+                </span>
+            </a>
+        </div>
+        <div class="design-geo-regions-map-autorefresh">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" data-action="map-ajax-autorefresh" value="1" checked />
+                    Beim Bewegen der Karte aktualisieren
+                </label>
+            </div>
+        </div>
+        <div class="design-geo-regions-map-canvas" data-display="map-ajax" data-ident="{htm(type)},{htm(category)},{htm(region)},{htm(search)}" data-map-zoom-max="{ZOOM_MAX}"{if search_form} data-search-form="{htm(search_form)}"{endif} style="{if height}height: {height}px;{endif}{endif}">
+        </div>
+    </div>
+
+    {javascript_google_maps()}
+    <script src="{uri_resource(js/map-ajax.js)}"></script>
+</div>

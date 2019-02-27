@@ -1,0 +1,21 @@
+{if !HIDE_TABS}
+<h2>{htm(KAT_V1)}</h2>
+<h3>[[ translation : marketplace : manufacture.select.category.or.manufacture :: Bitte wählen Sie eine Kategorie oder Hersteller aus. ]]</h3>
+<ul class="nav nav-tabs">
+	<li>
+		<a href="{if ID_KAT}{uri_action(marktplatz,{ID_KAT})}{else}{uri_action(marktplatz)}{endif}" title="[[ translation : general : categories :: Kategorien ]]">
+			[[ translation : general : categories.uppercase :: KATEGORIEN ]]
+		</a>
+	</li>
+	<li class="active">
+		<a href="{if ID_KAT}{uri_action(hersteller,{ID_KAT})}{else}{uri_action(hersteller)}{endif}" title="[[ translation : general : manufacturer :: Hersteller ]]">
+			[[ translation : general : manufacturer.uppercase :: HERSTELLER ]]
+		</a>
+	</li>
+</ul>
+{endif}
+
+<div class="design-hersteller-content">
+	{MANUFACTURERS_CONTENT}
+</div>
+

@@ -1,0 +1,45 @@
+<h1>[[ translation : marketplace : ad.create.category.title:: Kategorie-Auswahl ]]</h1>
+<p class="lead">
+	[[ translation : marketplace : ad.create.category.subtitle :: Wählen Sie die Kategorie aus, die den Artikel am besten beschreibt ]]
+</p>
+
+<div>
+	{if FK_KAT}
+	<div class="design-content-box" id="kat_info">
+		<p>
+			[[ translation : marketplace : ad.create.category.preselected :: Folgende Kategorie ist für diesen Artikel bereits ausgewählt, möchten Sie diese Kategorie verwenden? ]]
+		</p>
+
+		<p>
+			<strong>{PRESELECTED_FK_KAT_NAME}</strong>
+		</p>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<a href="#" onclick="jQuery('#kat_select_form').submit(); return false;">[[ translation : marketplace : ad.create.category.select.this.category :: Ja, Kategorie "{PRESELECTED_FK_KAT_NAME}" verwenden ]]</a>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<a href="#" onclick="jQuery('#kat_info').hide();jQuery('#kat_list_container').show(); return false;">[[ translation : marketplace : ad.create.category.select.new.category :: Nein, andere Kategorie auswählen ]]</a>
+			</div>
+		</div>
+	</div>
+	{endif}
+
+	<div id="kat_list_container" class="{if FK_KAT}display-none{endif}">
+		{if !CATEGORIES}
+		<div class="alert alert-info">
+			[[ translation : marketplace : ad.create.category.none.avaiable ::
+				<strong>Keine Kategorien verfügbar!</strong> Für ihre aktuelle Mitgliedschaft/Benutzergruppe ist derzeit leider keine Kategorie verfügbar.
+			]]
+		</div>
+		{else}
+		<div id="kat_list" class="design-row design-row-xs-1 design-row-sm-2 design-row-md-3">
+			{CATEGORIES}
+		</div>
+		{endif}
+	</div>
+	<form id="kat_select_form" class="form-horizontal" onsubmit="SubmitStep(this); return false;">
+		<input type="hidden" name="step" value="{STEP_IDENT}" />
+		<input type="hidden" name="FK_KAT" value="{FK_KAT}" />
+	</form>
+</div>

@@ -1,0 +1,229 @@
+{if ID_IMPORT_PROCESS}
+<script src="{uri_resource(js/import-process-viewer.js)}"></script>
+<script src="{uri_resource(lib/datatables/media/js/jquery.dataTables.min.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_resource(lib/datatables/media/css/jquery.dataTables.css)}">
+
+<script>
+	var ipv = null;
+
+	jQuery(function () {
+		ipv = new ImportProcessViewer("#importProcessViewer", '{ID_IMPORT_PROCESS}');
+		ipv.init();
+		ipv.pollCurrentState(true);
+		ipv.pollLog();
+		ipv.pollMarkerTable(1);
+		ipv.pollMarkerTable(2);
+	});
+
+</script>
+{endif}
+
+{if NEW_IMPORT}
+
+<h1>
+{if ID_IMPORT_SOURCE}
+    Edit source
+{else}
+    Add source
+{endif}
+</h1>
+
+<p>
+    Choose in the following form your import template and enter the following settings.
+        Once you entered the source, you can import your files through it.
+
+
+</p>
+
+<hr>
+
+
+{if !liste_presets}
+<p class="lead">
+	No templates found
+</p>
+<p>
+	You have no
+		<a href="{uri_action(my-import-presets)}">import templates</a> applied. You adjust the structure of your import files with the import template,
+		to import datasets easily in your marketplace.
+		<br><br>
+		<a href="{uri_action(my-import-presets-edit)}?DO=NEW_PRESET">Adjust a new import template now</a>
+
+</p>
+{else}
+
+{if ERR}
+<div class="alert alert-danger">{ERR}</div>
+{endif}
+
+<form action="{uri_baseurl(index.php)}?page=my-import-run&DO=CREATE" method="POST" class="form form-horizontal" id="importPresetEditorTypeForm" enctype="multipart/form-data">
+	{if ID_IMPORT_SOURCE}<input type="hidden" name="ID_IMPORT_SOURCE" value="{ID_IMPORT_SOURCE}" />{endif}
+
+	<div class="form-group">
+		<label class="control-label design-input-label">Import template:</label>
+
+		<div class="design-input-field">
+			<select class="form-control" name="FK_IMPORT_PRESET">
+				{liste_presets}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label design-input-label">Import name</label>
+
+		<div class="design-input-field">
+			<input class="form-control" type="text" name="SOURCE_NAME" value="{htm(SOURCE_NAME)}">
+		</div>
+	</div>
+
+	<hr>
+	
+	{IMPORT_SOURCE_CONFIG_TEMPLATES}
+
+	<br /><br />
+	
+	<div class="form-actions text-right">
+	{if ID_IMPORT_SOURCE}
+		<button type="submit" class="btn btn-primary">Update source</button>
+	{else}
+		<button type="submit" class="btn btn-primary">Add source</button>
+	{endif}
+	</div>
+</form>
+<script type="text/javascript">
+
+    // Process preset changes
+    var presetChanged = function() {
+        var fileRequired = jQuery(this).find("option:selected").attr("data-file");
+        if (fileRequired == "false") {
+            jQuery("[data-file-field]").hide();
+        } else {
+            jQuery("[data-file-field]").show();
+        }
+    };
+    jQuery("select[name=FK_IMPORT_PRESET]").on("change", presetChanged).each(presetChanged);
+
+</script>
+{endif}
+{else}
+
+<h1>Run import</h1>
+
+<p>
+    The import process shows you the current status of your import of the respective step. Please follow the instructions below .
+
+</p>
+
+<hr>
+
+<div id="importProcessViewer">
+	<div id="importProcessBarContainer">
+		<p>
+			<strong>Current status:</strong>
+			<span class="statusPercent"></span>
+			(<span class="statusText">is queried</span>)
+		</p>
+
+		<div class="progress">
+			<div class="progress-bar progress-bar-striped active" style="width: 0%;"></div>
+		</div>
+	</div>
+
+	<p><small>Please do not close the window while the import</small></p>
+
+	<div id="importProcessContentContainer">
+		<ul class="nav nav-tabs">
+			<li class="active">
+				<a href="#log" data-toggle="tab">Log</a>
+			</li>
+			<li>
+				<a href="#errors" data-toggle="tab">Defective datasets</a>
+			</li>
+			<li>
+				<a href="#successdata" data-toggle="tab">Successful datasets</a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<div class="tab-pane active" id="log">
+				<div class="form-group">
+					<label class="control-label design-input-label">Shown loglevel</label>
+
+					<div class="design-input-field">
+						<select class="form-control" name="LOG_LEVEL" onchange="ipv.reloadLog(true);">
+							<option value="1">Fehler</option>
+							<option value="4" selected>Info</option>
+							<option value="5">Debug</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="clearfix"></div>
+
+				<div class=" process-log-pane">
+					<table class="table table-condensed table-striped" id="LOG_TABLE">
+						<thead>
+						<tr>
+							<th>Date</th>
+							<th>Level</th>
+							<th>Message</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr class="log-row-dummy">
+							<td colspan="3">No log messages available</td>
+						</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+			<div class="tab-pane" id="errors">
+
+				<p>
+					<a class="btn btn-default" href="#" onclick="ShowDialog('{uri_baseurl()}index.php?page=my-import-presets-edit&DO=SHOW_TABLE_FIELD_INFO&ID_IMPORT_PRESET={ID_IMPORT_PRESET}', 'Field-description', '900'); return false;">
+						Display field description
+					</a>
+				</p>
+
+				<div id="ERROR_TABLE_CONTAINER" class="process-error-pane">
+					<table id="MARKER_TABLE_2" class="display" cellspacing="0" width="100%">
+						<thead>
+						<tr>
+							<th>#ID</th>
+							<th style="min-width:300px;" class="messageColumn">MESSAGE</th>
+							{MARKER_TABLE_TH}
+						</tr>
+						</thead>
+					</table>
+
+				</div>
+
+			</div>
+			<div class="tab-pane" id="successdata">
+
+				<p>
+					<a class="btn btn-default" href="#" onclick="ShowDialog('{uri_baseurl()}index.php?page=my-import-presets-edit&DO=SHOW_TABLE_FIELD_INFO&ID_IMPORT_PRESET={ID_IMPORT_PRESET}', 'Field-description', '900'); return false;">
+						Display field description
+					</a>
+				</p>
+
+				<div id="SUCCESS_TABLE_CONTAINER" class="process-success-pane">
+					<table id="MARKER_TABLE_1" class="display" cellspacing="0" width="100%">
+						<thead>
+						<tr>
+							<th>#ID</th>
+							<th>MESSAGE</th>
+							{MARKER_TABLE_TH}
+						</tr>
+						</thead>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+{endif}

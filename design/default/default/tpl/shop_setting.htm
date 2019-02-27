@@ -1,0 +1,188 @@
+<link rel="stylesheet" media="screen" type="text/css" href="{uri_baseurl(/js/colorpicker/css/colorpicker.css)}" />
+<script type="text/javascript" src="{uri_baseurl(/js/colorpicker/js/colorpicker.js)}"></script>
+
+<script type="text/javascript">
+	function showprev() {
+		var width = (parseInt($('#frame_w').val())+40);
+		var height = (parseInt($('#frame_h').val())+110);
+		
+		
+		ShowContentDialog('<iframe style="width:{FRAME_W}px; height:{FRAME_H}px;border:0px;" frameborder="0" src="{uri_baseurl(/index.php?page=user_shop&frame=shop&id={HASH})}"></iframe>', 
+						"[[ translation : marketplace : webservice.preview :: Vorschau ]]", width, height);
+		/*
+		jQuery('#prev').dialog({
+			'modal': true,
+			'width': width,
+			'height': height,
+			'title': '[[ translation : marketplace : webservice.preview :: Vorschau ]]',
+			'buttons': {
+				'Schließen': function() {
+					jQuery(this).dialog('destroy');
+				},
+				'Speichern': function() {
+					jQuery('#setts').submit();
+				}
+			}
+		}).html('<iframe style="width:{FRAME_W}px; height:{FRAME_H}px;border:0px;" frameborder="0" src="{uri_baseurl(/index.php?page=user_shop&frame=shop&id={HASH})}"></iframe>');
+		var dialog = jQuery('#prev').parent(); 
+		dialog.find('button').attr("class", "btn");
+		dialog.find('button:last').attr("class", "btn btn-success");
+		*/
+	};
+</script>
+<div id="prev" style="display:none;">
+	
+</div>
+<div>
+	<h1>[[ translation : marketplace : webservice.title :: Meine Artikel auf meiner Homepage ]]</h1>
+	<p>
+	    [[ translation : marketplace : webservice.lead ::
+		    Nutzen Sie diesen Konfiguartor, um Ihre Artikel ganz einfach auch auf Ihrer eigenen Homepage
+		    darzustellen. Es sind keine Programmierkenntnisse nötig!
+        ]]
+	</p>
+	<h3>[[ translation : marketplace : webservice.step.one :: Schritt 1 von 2 ]]</h3>
+	<p>
+		[[ translation : marketplace : webservice.step.one.lead :: Stellen Sie hier ein, wie Ihre Artikel dargestellt werden sollen. ]]
+	</p>
+	<form method="post" id="setts">
+		<input type="hidden" name="ID_USER_SHOP" value="{ID_USER_SHOP}" />
+		<input type="hidden" name="page" value="{curpage}" />
+		<table class="table table-bordered table-condensed design-user-shop-settings">
+        	<tr>
+				<th colspan="2">
+					<h4>[[ translation : marketplace : webservice.ads :: Artikel ]]</h4>
+				</th>
+			</tr>
+			<tr>
+				<th>[[ translation : marketplace : webservice.ads.count :: Anzahl der Artikel in der Artikel-Liste ]]</th>
+				<td>
+                    <div class="input-group">
+                        <select class="form-control" name="PERPAGE">
+                            {perpage}
+                        </select>
+                        <div class="input-group-addon">[[ translation : general : amount :: Anzahl ]]</div>
+                    </div>
+				</td>
+			</tr>
+        	<tr>
+				<th colspan="2">
+					<h4>[[ translation : marketplace : webservice.size :: Größe ]]</h4>
+				</th>
+			</tr>
+			<tr>
+				<th>[[ translation : marketplace : webservice.ads.width :: Breite der Artikel-Liste ]]</th>
+				<td>
+                    <div class="input-group">
+					<input class="form-control" type="text" id="frame_w" name="FRAME_W" value="{htm(FRAME_W)}" size="10" />
+                        <div class="input-group-addon">[[ translation : general : pixel :: Pixel  ]]</div>
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th>[[ translation : marketplace : webservice.ads.height :: Höhe der Artikel-Liste ]]</th>
+				<td>
+                    <div class="input-group">
+					    <input class="form-control" type="text" id="frame_h" name="FRAME_H" value="{htm(FRAME_H)}" size="10" />
+                        <div class="input-group-addon">[[ translation : general : pixel :: Pixel  ]]</div>
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">
+					<h4>[[ translation : marketplace : webservice.colors :: Farben ]]</h4>
+				</th>
+			</tr>
+			<tr>
+				<th>[[ translation : marketplace : webservice.colors.background :: Hintergrundfarbe ]]</th>
+				<td>
+                    <div class="input-group">
+                        <div class="input-group-addon">#</div>
+					    <input class="form-control color" type="text" id="bgcolor" name="BGCOLOR" value="{htm(BGCOLOR)}" size="10" />
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th>[[ translation : marketplace : webservice.colors.text :: Textfarbe ]]</th>
+				<td>
+                    <div class="input-group">
+                        <div class="input-group-addon">#</div>
+                        <input class="form-control color" type="text" id="color" name="COLOR" value="{htm(COLOR)}" size="10" />
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th>[[ translation : marketplace : webservice.colors.link :: Linkfarbe ]]</th>
+				<td>
+                    <div class="input-group">
+                        <div class="input-group-addon">#</div>
+                        <input class="form-control color" type="text" id="linkcolor" name="LINKCOLOR" value="{htm(LINKCOLOR)}" size="10" />
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">
+					<h4>[[ translation : marketplace : webservice.font :: Schrift ]]</h4>
+				</th>
+			</tr>
+			<tr>
+				<th>[[ translation : marketplace : webservice.font.size :: Schriftgröße ]]</th>
+				<td>
+                    <div class="input-group">
+                        <select class="form-control" name="FONTSIZE">
+                            {sizes}
+                        </select>
+                        <div class="input-group-addon">[[ translation : general : pixel :: Pixel ]]</div>
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th>[[ translation : marketplace : webservice.font.type :: Schriftart ]]</th>
+				<td>
+					<select class="form-control" name="FONTFAMILY">
+						{family}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2" style="text-align: right;">
+					{if ID_USER_SHOP}
+						<input type="button" class="btn btn-default" value="[[ translation : marketplace : webservice.preview :: Vorschau ]]" onclick="showprev();" />
+					{endif}
+					<input type="submit" class="btn btn-success" value="[[ translation : marketplace : webservice.save.and.preview :: Speichern & Vorschau ]]" />
+				</th>
+			</tr>
+		</table>
+	</form>
+<div class="design-content-box">
+	<h3>[[ translation : marketplace : webservice.step.two :: Schritt 2 von 2 ]]</h3>
+	<p>
+        [[ translation : marketplace : webservice.step.two.lead ::
+            F&uuml;gen Sie den folgenden Javascript-Code auf Ihrer Homepage ein. Ihre Artikel erscheinen exakt dort, wo
+		    Sie den Code einf&uuml;gen!
+        ]]
+	</p>
+	<p>
+		<textarea onfocus="this.select();" rows="5" class="form-control">{htm(CODE)}</textarea>
+	</p>
+    </div>
+</div>
+{if prev}
+	<script type="text/javascript">
+		showprev();
+	</script>
+{endif}
+<script type="text/javascript">
+	$('.footertab td input').button();
+	$.each($('.color'), function(key, val) {
+		$(val).ColorPicker({
+			color: $(val).val(),
+			onChange: function(hsb, hex, rgb) {
+				$(val).val(hex);
+			}
+		}).bind('keyup', function(){
+				$(this).ColorPickerSetColor(this.value);
+				
+			});
+	});
+</script>

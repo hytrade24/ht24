@@ -1,0 +1,11 @@
+<div class="tab-pane{if IS_ACTIVE} active{endif}" id="usergroupPane{ID_USERGROUP}">
+    {if T1}<p>{T1}</p>{endif}
+
+    {if rows && !NO_PACKETS}
+        <table class="table table- registerMembershipTable" style="width:100%;">
+            {rows}
+        </table>
+    {else}
+        <p><strong>[[ translation : marketplace : memberships.none.found.for.group :: Für diese Benutzergruppe sind zur Zeit keine Mitgliedschaften hinterlegt. ]]</strong></p>
+    {endif}
+</div>

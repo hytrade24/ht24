@@ -1,0 +1,114 @@
+<tr>
+    <td><strong>Hinweis</strong></td>
+    <td valign="top" width="70%">
+        <p>
+            Hiermit erteile ich {htm(SITENAME)} ein SEPA-Lastschriftmandat, um die entstehenden Kosten von meinem Konto abzubuchen. 
+            Abgebucht wird innerhalb 7 – 14 Tagen nach Erstellung der Rechnung. 
+            Sollte infolge falscher Kontoangaben oder Unterdeckung keine Abbuchung möglich sein, 
+            werden mir die dadurch entstehenden Bankgebühren in Rechnung gestellt. 
+            Dieses SEPA-Lastschriftmandat gilt bis auf Widerruf.
+            <br /><br />
+            Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen. 
+            Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.
+            <br /><br />
+            <b>Die Gläubiger-ID von {htm(SITENAME)} ist {CREDITORID}.</b>
+            <br /><br />
+            Die Mandatsreferenznummer wird Ihnen mit der Abbuchung mitgeteilt.
+        </p>
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>Kontoinhaber</strong>
+    </td>
+    <td valign="top">
+        <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[Recipient]"  value="{PAYMENT_ADAPTER_CONFIG_Recipient}" />
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>IBAN</strong>
+    </td>
+    <td valign="top">
+        <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[iban]"  value="{PAYMENT_ADAPTER_CONFIG_iban}" />
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>BIC</strong>
+    </td>
+    <td valign="top">
+        <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[bic]"  value="{PAYMENT_ADAPTER_CONFIG_bic}" />
+    </td>
+</tr>
+<tr>
+    <td>
+        <strong>Bank</strong>
+    </td>
+    <td valign="top">
+        <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[Bank]"  value="{PAYMENT_ADAPTER_CONFIG_Bank}" />
+    </td>
+</tr>
+{if show_verification_part == 1}
+    {if PAYMENT_ADAPTER_CONFIG_Verified}
+        <tr>
+            <td><strong>Account Status</strong></td>
+            <td valign="top">
+                <strong>Verifiziert</strong>
+            </td>
+        </tr>
+    {else}
+        <tr>
+            <td>
+                <strong>Ich erteile {htm(SITENAME)} hiermit das SEPA Lastschriftmandat</strong>
+                <br />
+                Die Zahlungsbedingung Lastschrift muss gesondert verifiziert werden.
+            </td>
+            <td valign="top">
+            {if PAYMENT_ADAPTER_CONFIG_RequestVerification}
+                <span>Verifizierung ihres Kontos steht aus</span>
+                <p>
+                    Sie erhalten in den nächsten Tagen eine Überweisung auf Ihr Konto. 
+                    Bitte geben Sie den im Betreff der Überweisung stehenden Code an dieser Stelle ein um ihr Konto zu verifizieren.
+                </p>
+            {else}
+                <input type="checkbox" name="PAYMENT_ADAPTER_CONFIG[RequestVerification]"  value="1" />
+            {endif}
+            </td>
+        </tr>
+        {if (PAYMENT_ADAPTER_CONFIG_PinCodeRequestedValue != 0) && !PAYMENT_ADAPTER_CONFIG_Verified}
+        <tr>
+            <td>
+                <strong>Bitte Bestätigungscode eingeben</strong>
+            </td>
+            <td valign="top">
+                <input class="form-control" type="text" name="PAYMENT_ADAPTER_CONFIG[PinCodeValue]" />
+            </td>
+        </tr>
+        {endif}
+    {endif}
+{else}
+    {if Block_Account}
+    <tr>
+        <td><strong>Bank Konto</strong></td>
+        <td>
+            <p style="color: red;">
+                Die Zahlung per Lastschrift wurde für ihren Account gesperrt. Dies passiert in der Regel dann, wenn Ihre Kontodaten fehlerhaft sind oder es eine Rücklastschrift gab.<br />
+                Um die Lastschrift-Zahlung wieder freizuschalten, bitte prüfen und korrigieren Sie die Zahlungsdaten in Ihrem Account und kontaktieren Sie anschließend unser Support-Team.
+            </p>
+        </td>
+    </tr>
+    {else}
+    <tr>
+        <td><strong>Zulassen</strong></td>
+        <td valign="top">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" {if PAYMENT_ADAPTER_CONFIG_Verified}checked{endif} name="PAYMENT_ADAPTER_CONFIG[Allow_Deduct]" value="1" />
+                    Hiermit bestätige ich, dass {SITENAME} von mir gebuchte Leistungen automatisch vom angegebenen Konto einziehen darf.
+                </label>
+            </div>
+        </td>
+    </tr>
+    {endif}
+{endif}

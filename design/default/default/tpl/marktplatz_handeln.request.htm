@@ -1,0 +1,23 @@
+<div class="design-ad-row{if (B_TOP&4)==4} top{endif}">
+    <div class="row">
+        <div class="col-xs-4 col-md-3">
+            <div class="design-ad-image">
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" target="_blank" title="[[ translation : marketplace : ad.view :: {htm(PRODUKTNAME)} ansehen ]]">
+                    {if IMPORT_IMAGES}{thumbnail_article_loader(#row-img-{ID_AD_MASTER},{ID_AD_MASTER},165,150,crop)}{endif}
+                    <img src="{if !IMG_DEFAULT_SRC}{uri_resource(/images/marketplace/nopic.jpg)}{else}{thumbnail_article({ID_AD_MASTER},{IMG_DEFAULT_SRC},165,150,crop)}{endif}" id="row-img-{ID_AD_MASTER}" data-watchlist="true" />
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-8 col-md-6">
+            <div class="design-ad-name">
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" target="_blank" title="[[ translation : marketplace : ad.view :: {htm(PRODUKTNAME)} ansehen ]]">
+                    {htm(PRODUKTNAME)}
+                </a>
+            </div>
+                        
+            <div class="design-ad-description">
+                {market_article_description({ID_AD_MASTER})}
+            </div>
+        </div>
+    </div>
+</div>

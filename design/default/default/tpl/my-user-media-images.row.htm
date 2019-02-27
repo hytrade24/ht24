@@ -1,0 +1,35 @@
+<tr id="articleImage{i}">
+    <td>
+        <div class="thumbnail">
+            <a{if SRC} target="_blank" href="{uri_baseurl({SRC})}"{endif} class="galleryImagePreview">
+                {if BASE64}
+                <img src="data:{TYPE};base64,{BASE64}" style="height: 80px;" />
+                {else}
+                <img src="{uri_baseurl({SRC_THUMB})}">
+                {endif}
+            </a>
+        </div>
+    </td>
+    <td>
+        {if IS_DEFAULT==0}
+        <a href="#" onclick="ImageSetDefault({i}); return false;">[[ translation : marketplace : default.image :: Standard-Bild ]]</a><br />
+        {else}
+        <strong>[[ translation : marketplace : default.image :: Standard-Bild ]]</strong><br />
+        {endif}
+        <a href="#"  onclick="ImageDelete({i}); return false;">[[ translation : general : delete :: Löschen ]]</a>
+    </td>
+    <td class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputImageMetaTitle{i}">[[ translation : marketplace : user.media.title :: Titel ]]</label>
+            <div class="design-input-field">
+                <input class="form-control" type="text" id="inputImageMetaTitle{i}" name="META[IMAGES][{i}][TITLE]" value="{htm(META_TITLE)}" placeholder="[[ translation : marketplace : user.media.image.title :: Bildtitel ]]" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputImageMetaSource{i}">[[ translation : marketplace : user.media.source :: Quelle ]]</label>
+            <div class="design-input-field">
+                <input class="form-control" type="text" id="inputImageMetaSource{i}" name="META[IMAGES][{i}][SOURCE]" value="{htm(META_SOURCE)}" placeholder="[[ translation : marketplace : user.media.image.source :: Bildquelle ]]" />
+            </div>
+        </div>
+    </td>
+</tr>

@@ -1,0 +1,219 @@
+{startblock(script)}
+{parentblock()}
+<script type="text/javascript">
+    jQuery(function() {
+
+        dosearch = function() {
+            if(jQuery("#SEARCHURL").val() != "") { location.href = jQuery("#SEARCHURL").val(); }
+        }
+        presearch = function() {
+            if (jQuery('#CITY').val() != '' || jQuery('#ZIP').val() != '') {
+                getLatiLongi("", "", "", "",  "", function() {
+                    dopresearch();
+                });
+            } else {
+                jQuery("#LATITUDE, #LONGITUDE").val('');
+                dopresearch();
+            }
+        }
+        dopresearch = function() {
+            jQuery.ajax({
+                url: jQuery("#presearch").attr("action"),
+                type: 'POST',
+                data: jQuery("#presearch").serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    jQuery('#ASB').val("[[ translation : marketplace : search.results.show : ALL_ADS='"+response["COUNT"]+"' : ({ALL_ADS}) Treffer anzeigen ]]");
+
+                    if (response["COUNT"] > 0) {
+                        $('#SEARCHURL').val('{uri_baseurl(/)}groups,'+$("#FK_KAT").val()+',' + response["HASH"] + '.htm');
+                    }
+                    else {
+                        $('#SEARCHURL').val('');
+                    }
+                }
+            });
+        }
+
+        club_order = function(elm) {
+            window.location.href = elm.value;
+        }
+
+        presearch();
+    })
+
+</script>
+{endblock(script)}
+
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+        {if URI_CURPAGE==1}
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <h1>[[ translation : marketplace : clubs.directory :: Gruppenverzeichnis ]]</h1>
+                <p>Hier finden Sie eine Übersicht aller Interessengruppen unseres Portals. Sie selbst können eine öffentliche oder geschlossene Gruppe zu einem bestimmten Thema erstellen.</p>
+                <p>Starten Sie jetzt Ihre eigene Gruppe</p>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <img src="{uri_resource(images/demo/gruppe.png)}" class="img-responsive-center" />
+            </div>
+        </div>
+
+
+
+        <h2>[[ translation : marketplace : clubs.directory.newpostings :: Aktuelle Beiträge ]]</h2>
+        <p class="lead">
+            [[ translation : marketplace : clubs.directory.NewPostingsLead :: Kürzlich veröffentlichte Forumsbeiträge. ]]
+        </p>
+
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_group_list.htm,COUNT=3,CACHE_LIFETIME=102)}
+        {endif}
+
+
+
+        <div class="advertisement-box">{adserver(,1780,)}</div>
+
+        <p class="lead">
+            {if SHOW_MYGROUPS}
+                [[ translation : marketplace : clubs.directory.my.lead :: Meine Gruppen in der Übersicht ]]
+            {else}
+                [[ translation : marketplace : clubs.directory.lead :: Unsere Gruppen in der Übersicht ]]
+            {endif}
+        </p>
+
+        <div class="text-box design-location">
+
+            <!-- Ariadne/Location and sorting/view -->
+            <div class="row">
+                <div class="col-md-6 col-lg-7 clearfix">
+                    <div class="pull-left">
+                        {kat_ariadne_dynamic({CATEGORY},club)}
+                    </div>
+                    <div class="pull-right">
+                        <span class="text-muted">[[ translation : marketplace : clubs.count :: {ALL_CLUBS} Gruppen ]]</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    <form method="get" action="{uri_baseurl(/index.php)}">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-9 col-md-8 col-xl-9 design-sort">
+                                <select class="form-control" name="ordering" onchange="club_order(this);">
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},STAMP,DESC,{VIEW_TYPE})}" {if CUR_SORT_STAMP_DESC}selected="selected"{endif}>
+                                        [[ translation : marketplace : sort.recent.desc :: Neueste zuerst ]]
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},STAMP,ASC,{VIEW_TYPE})}" {if CUR_SORT_STAMP_ASC}selected="selected"{endif}>
+                                        [[ translation : marketplace : sort.recent.asc :: Älteste zuerst ]]
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},NAME,ASC,{VIEW_TYPE})}" {if CUR_SORT_NAME_ASC}selected="selected"{endif}>
+                                        [[ translation : marketplace : sort.alphabet.asc :: Alphabet aufsteigend ]]
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},NAME,DESC,{VIEW_TYPE})}" {if CUR_SORT_NAME_DESC}selected="selected"{endif}>
+                                        [[ translation : marketplace : sort.alphabet.desc :: Alphabet absteigend ]]
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},MEMBERS,DESC,{VIEW_TYPE})}" {if CUR_SORT_MEMBERS_DESC}selected="selected"{endif}>
+                                        [[ translation : marketplace : sort.members.desc :: Meiste Mitglieder zuerst ]]
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},COMMENTS,DESC,{VIEW_TYPE})}" {if CUR_SORT_COMMENTS_DESC}selected="selected"{endif}>
+                                        [[ translation : marketplace : sort.comments.desc :: Meiste Kommentare zuerst ]]
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},EVENTS,DESC,{VIEW_TYPE})}" {if CUR_SORT_EVENTS_DESC}selected="selected"{endif}>
+                                        [[ translation : marketplace : sort.events.desc :: Meiste Veranstaltungen zuerst ]]
+                                    </option>
+                                    <option value="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},GALLERY,DESC,{VIEW_TYPE})}" {if CUR_SORT_GALLERY_DESC}selected="selected"{endif}>
+                                        [[ translation : marketplace : sort.images.desc :: Meiste Bilder zuerst ]]
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4 col-sm-3 col-md-4 col-xl-3 design-view">
+                                <div class="btn-group">
+                                    <a class="btn btn-default {if VIEW_TYPE_LIST}active{endif}" href="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},1,{SORT},{SORT_DIR},LIST|KAT_NAME={urllabel(V1)})}">
+                                        <span class="glyphicon glyphicon-th-list"></span>
+                                    </a>
+                                    <a class="btn btn-default {if VIEW_TYPE_BOX}active{endif}" href="{uri_action(clubs,{CATEGORY},{URI_SEARCHHASH},1,{SORT},{SORT_DIR},BOX|KAT_NAME={urllabel(V1)})}">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        {if clubs}
+        {if VIEW_TYPE_LIST}
+        {clubs}
+        {else}
+        <div class="row">
+            {clubs}
+        </div>
+        {endif}
+
+        {pager}
+        {else}
+        <p>[[ translation : marketplace : clubs.none.found :: In dieser Kategorie wurden keine Gruppen gefunden. ]]</p>
+        {endif}
+    </div>
+    <div class="design-page-menu">
+        <form onsubmit="dosearch(); return false;" id="presearch" method="post" action="{uri_baseurl(/index.php)}">
+            <input type="hidden" name="page" value="presearch_club_ajax" />
+            <input type="hidden" name="FK_KAT" id="FK_KAT" value="{CATEGORY}" />
+            <input type="hidden" name="frame" value="ajax" />
+            <input type="hidden" name="LATITUDE" value="{LATITUDE}" id="LATITUDE" />
+            <input type="hidden" name="LONGITUDE" value="{LONGITUDE}" id="LONGITUDE" />
+            <input type="hidden" id="SEARCHURL" name="SEARCHURL" value="" />
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">[[ translation : marketplace : category.selection :: Kategorie Auswahl ]]</div>
+
+                <ul class="menu-box" id="clubCategoryTree">
+                    {CATEGORY_TREE}
+                </ul>
+
+                <div class="panel-body">
+                    <a href="{uri_action(clubs)}">[[ translation : marketplace : clubs.show.all :: alle Gruppen anzeigen ]]</a>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">[[ translation : marketplace : clubs.search.filter :: Suchfilter ]]</div>
+
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>[[ translation : general : search :: Suche ]]:</label>
+                        <input type="text" class="form-control" id="SEARCHCLUB" name="SEARCHCLUB" value="{htm(SEARCHCLUB)}" onkeyup="updateInputState(presearch);" onchange="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : search.by.country :: Land ]]:</label>
+                        {select_country(SEARCH_FK_COUNTRY,,,,onchange="presearch();" id="COUNTRY" class="form-control",---)}
+                    </div>
+
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : search.by.zip :: PLZ ]]:</label>
+                        <input type="text" class="form-control" id="ZIP" name="ZIP" value="{htm(SEARCH_PLZ)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : search.by.city :: Ort ]]:</label>
+                        <input type="text" class="form-control" id="CITY" name="CITY" value="{htm(SEARCH_ORT)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>[[ translation : marketplace : search.by.distance :: Im Umkreis von ]]:</label>
+                        {lookup(UMKREIS,,, onchange="presearch();" class="form-control",F_ORDER ASC)}
+                    </div>
+
+                    <div>
+                        <input onclick="dosearch()" class="btn btn-default form-control" type="submit" id="ASB" value="[[ translation : marketplace : search.show.results :: Ergebnisse anzeigen ]]" />
+                        <a href="{uri_action(clubs,,my-groups)}" class="btn btn-default form-control">[[ translation : marketplace : clubs.directory.show.my.clubs :: Meine Gruppen anzeigen ]]</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        {content_page()}
+    </div>
+</div>

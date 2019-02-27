@@ -1,0 +1,81 @@
+
+	{if SENT}
+
+		<p class="alert alert-success">
+            [[ translation : marketplace : ad.violation.sent :: Der Verstoß wurde gemeldet und wird schnellst möglich von uns überprüft. ]]
+		</p>
+	{else}
+
+		<form method="post" action="{uri_baseurl(/index.php)}" id="meldenform" class="form-horizontal design-ad-report-violation">
+			<input type="hidden" name="page" value="anzeige_melden" />
+			<input type="hidden" name="ID_AD" value="{ID_AD}" />
+			<input type="hidden" name="FK_USER" value="{ID_USER}" />
+			<input type="hidden" name="frame" value="ajax" />
+
+            {if err}
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>[[ translation : general : error :: Fehler ]]</strong>
+                <br />
+                <ul>
+                    {if err_user_name}<li>[[ translation : marketplace : report.error.user.name :: Bitte geben Sie ihren Namen an! ]]</li>{endif}
+                    {if err_user_email}<li>[[ translation : marketplace : report.error.user.email :: Bitte geben Sie ihre E-Mail Adresse an! ]]</li>{endif}
+                    {if err_reason}<li>[[ translation : marketplace : report.error.reason :: Bitte geben Sie einen Grund an! ]]</li>{endif}
+                    {if err_secQuestion}<li>[[ translation : marketplace : report.security.question :: Die Sicherheitsfrage wurde leider falsch beantwortet. ]]</li>{endif}
+                </ul>
+            </div>
+            {endif}
+
+            <p>[[ translation : marketplace : ad.violation.intro :: Sollte die Anzeige Ihrer Meinung nach gegen die Richtlinien des Marktplatzes sprechen, können Sie hiermit den Betreiber darüber informieren. ]]</p>
+
+            {if !ID_USER}
+            <div class="form-group">
+                <label class="control-label design-input-label">
+                    [[ translation : marketplace : ad.violation.user.name :: Ihr Name ]]:
+                </label>
+                <div class="design-input-field">
+                    <input type="text" class="form-control" name="NAME" value="{htm(NAME)}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label design-input-label">
+                    [[ translation : marketplace : ad.violation.user.email :: Ihre E-Mail Adresse ]]:
+                </label>
+                <div class="design-input-field">
+                    <input type="email" class="form-control" name="EMAIL" value="{htm(NAME)}" />
+                </div>
+            </div>
+            {endif}
+            <div class="form-group">
+                <label class="control-label design-input-label">
+                    [[ translation : marketplace : ad.violation :: Verstoß ]]:
+                </label>
+                <div class="design-input-field">
+                    <textarea class="form-control" name="GRUND" rows="4">{htm(GRUND)}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label design-input-label">
+                    [[ translation : general : security.question :: Sicherheitsfrage ]]:
+                </label>
+                <div class="design-input-field">
+                    <strong>{question()}</strong>
+                    <br />
+                    <input class="form-control" required="required" style="width: 250px;" tabindex="13" type="text" id="ANSWER" name="ANSWER">
+                </div>
+            </div>
+
+
+            <p>
+                {if ID_USER}{htm(NAME)},{endif}
+                [[ translation : marketplace : ad.violation.warning :: der Mißbrauch dieser Funktion ist nicht gestattet! Aus Sicherheitsgründen wird Ihre IP {IP} gespeichert. ]]
+            </p>
+
+			<p class="text-right">
+				<a onclick="send_verstoss()" class="btn btn-default" title="[[ translation : marketplace : ad.violation.submit :: Jetzt melden ]]">
+                    [[ translation : marketplace : ad.violation.submit :: Jetzt melden ]]
+				</a>
+			</p>
+		</form>
+	{endif}
+</div>

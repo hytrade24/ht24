@@ -1,0 +1,36 @@
+<tr>
+    <td class="design-action-buttons">
+        <a title="[[ translation : marketplace : edit.display :: Diese Anzeige ver&auml;ndern ]]" href="{uri_action(my-marktplatz-neu,{ID_ARTIKEL})}" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+		</a>
+        <a title="[[ translation : marketplace : deactivate.dispay :: Diese Anzeige deaktivieren ]]" onclick="return confirm('[[ translation : marketplace : really.display.deactivate :: Anzeige wirklich deaktivieren ]]?');" href="{uri_action(my-marktplatz,deactivate,{ID_ARTIKEL},{FK_KAT})}" class="btn btn-default">
+            <i class="glyphicon glyphicon-pause"></i>
+		</a>
+        {if TIMELEFT<8}
+        <a onclick="ExtendAd({ID_ARTIKEL},{FK_KAT});" title="[[ translation : marketplace : display.time.improve :: Anzeigenlaufzeit verl&auml;ngern ]]" class="btn btn-default">
+            <i class="glyphicon glyphicon-time"></i>
+        </a>
+        {endif}
+    </td>
+	<td>
+		{ID_AD_MASTER}
+	</td>
+    <td>
+        <a href="{uri_action(marktplatz_anzeige,{ID_ARTIKEL},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" target="_blank">
+        	{htm(PRODUKTNAME)}
+        </a>
+    </td>
+    <td class="align-right">
+        {if VERKAUFSOPTIONEN!=3}
+            {topreis_ex(PREIS)} {CURRENCY_DEFAULT}
+        {else}
+            [[ translation : marketplace : ad.rent.price.per.day :: ab {topreis_ex(PREIS)} {CURRENCY_DEFAULT} / Tag ]]
+        {endif}
+    </td>
+    <td>
+        {if TIMELEFT<8}<strong style="color: #ff0000;">{TIMELEFT} [[ translation : general : day.s :: Tag(e) ]]</strong>
+        {else}
+        {TIMELEFT} [[ translation : general : days :: Tage ]]
+        {endif}
+    </td>
+</tr>

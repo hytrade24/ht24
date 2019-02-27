@@ -1,0 +1,171 @@
+<script type="text/javascript">
+
+    function forum_order(input) {
+        var url = jQuery(input).val();
+        document.location.href = url;
+    }
+
+    function forum_moderation(input) {
+        var url = jQuery(input).val();
+        document.location.href = url;
+    }
+
+</script>
+
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}[[ translation : general : group.forum :: Gruppen Diskussionen ]]</h1>
+{if saved}
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>[[ translation : general : changes.saved :: Änderungen gespeichert ]]!</h4>
+    </div>
+{endif}
+{if errors}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>[[ translation : general : error :: Fehler ]]!</h4>
+        <ul>
+            {errors}
+        </ul>
+    </div>
+{endif}
+
+{if CLUB_ID_CLUB}
+    {subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+
+    {if !HIDE_SORT}
+        <div class="breadcrumb clearfix">
+            <div class="pull-left">
+                <span class="text-muted">{ALL_THREADS} [[ translation : marketplace : club.forum.threads :: Themen ]]</span>
+            </div>
+            <div class="pull-right">
+            </div>
+        </div>
+    {endif}
+    <p>
+        {if NOTICE_CLOSED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>[[ translation : marketplace : club.forum.thread.closed.lead :: Thema geschlossen ]]</strong>
+            [[ translation : marketplace : club.forum.thread.closed :: Es ist nun nicht mehr möglich weitere Antworten zu diesem Thema zu verfassen ]]
+        </div>
+        {endif}
+        {if NOTICE_OPENED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>[[ translation : marketplace : club.forum.thread.opened.lead :: Thema erneut geöffnet ]]</strong>
+            [[ translation : marketplace : club.forum.thread.opened :: Es ist nun wieder möglich Antworten zu diesem Thema zu verfassen ]]
+        </div>
+        {endif}
+        {if NOTICE_SAVED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>[[ translation : marketplace : club.forum.thread.saved.lead :: Änderungen gespeichert ]]</strong>
+            [[ translation : marketplace : club.forum.thread.saved :: Die Änderungen an ihrem Beitrag wurden erfolgreich gespeichert ]]
+        </div>
+        {endif}
+        {if NOTICE_REVIEWED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>[[ translation : marketplace : club.forum.thread.reviewed.lead :: Freigabe erteilt ]]</strong>
+            [[ translation : marketplace : club.forum.reviewed.saved :: Der gewählte Beitrag wurde freigegeben und ist nun sichtbar ]]
+        </div>
+        {endif}
+    </p>
+    <table class="table table-bordered table-striped table-condensed userList">
+        <tr>
+            <th colspan="2">
+                [[ translation : marketplace : club.forum.moderation :: Freigabe ]]:
+            </th>
+            <th colspan="2">
+                [[ translation : marketplace : club.forum.public.filter :: Öffentlich ]]:
+            </th>
+            <th colspan="2">
+                [[ translation : marketplace : club.forum.sorting :: Sortierung ]]:
+            </th>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <form method="get" action="{uri_baseurl(/index.php)}">
+                    <select name="ordering" onchange="forum_moderation(this);" class="form-control">
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},unconfirmed,{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}" {if CUR_FILTER_UNCONFIRMED}selected="selected"{endif}>[[ translation : marketplace : club.forum.not.reviewed :: Nicht freigegeben ]]</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},confirmed,{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}" {if CUR_FILTER_CONFIRMED}selected="selected"{endif}>[[ translation : marketplace : club.forum.reviewed :: Freigegeben ]]</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},all,{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}" {if CUR_FILTER_ALL}selected="selected"{endif}>[[ translation : marketplace : club.forum.all.threads :: Alle Themen ]]</option>
+                    </select>
+                </form>
+            </td>
+            <td colspan="2">
+                <form method="get" action="{uri_baseurl(/index.php)}">
+                    <select name="ordering" onchange="forum_moderation(this);" class="form-control">
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}" {if CUR_PUBLIC_ANY}selected="selected"{endif}>[[ translation : marketplace : club.forum.public.all :: Alle anzeigen ]]</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}?PUBLIC=1" {if CUR_PUBLIC_ONLY}selected="selected"{endif}>[[ translation : marketplace : club.forum.public.show :: Nur öffentliche ]]</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}?PUBLIC=0" {if CUR_PUBLIC_HIDE}selected="selected"{endif}>[[ translation : marketplace : club.forum.public.hide :: Nur private ]]</option>
+                    </select>
+                </form>
+            </td>
+            <td colspan="2">
+                <form method="get" action="{uri_baseurl(/index.php)}">
+                    <select name="ordering" onchange="forum_order(this);" class="form-control">
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},STAMP_UPDATE,DESC)}" {if CUR_SORT_CHANGED_DESC}selected="selected"{endif}>[[ translation : marketplace : newest.first :: Neueste zuerst ]]</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},STAMP_UPDATE,ASC)}" {if CUR_SORT_CHANGED_ASC}selected="selected"{endif}>[[ translation : marketplace : oldest.fist :: Älteste zuerst ]]</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},NAME,ASC)}" {if CUR_SORT_NAME_ASC}selected="selected"{endif}>[[ translation : marketplace : alphabetically.ascending :: Alphabet aufsteigend ]]</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},NAME,DESC)}" {if CUR_SORT_NAME_DESC}selected="selected"{endif}>[[ translation : marketplace : descending.alphabet :: Alphabet absteigend ]]</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},COMMENTS,DESC)}" {if CUR_SORT_COMMENTS_DESC}selected="selected"{endif}>[[ translation : marketplace : most.comments.first :: Meiste Kommentare zuerst ]]</option>
+                    </select>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <th>Aktionen</th>
+            <th colspan="4">Thema</th>
+            <th>Autor</th>
+        </tr>
+        {liste}
+    </table>
+
+    <p>{pager}</p>
+    <div class="design-content-box design-icon-legend">
+        <div class="pull-left">
+            <a class="btn btn-default">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a> = [[ translation : general : edit :: Bearbeiten ]]
+        </div>
+        <div class="pull-left">
+            <a class="btn btn-default">
+                <i class="glyphicon glyphicon-lock"></i>
+            </a>
+            = [[ translation : marketplace : club.forum.close :: Schließen ]]
+        </div>
+        <div class="pull-left">
+            <a class="btn btn-default">
+                <i class="glyphicon glyphicon-asterisk"></i>
+            </a>
+            = [[ translation : marketplace : club.forum.open :: Erneut öffnen ]]
+        </div>
+        <div class="pull-left">
+            <a class="btn btn-danger">
+                <i class="glyphicon glyphicon-remove"></i>
+            </a>
+            = [[ translation : marketplace : club.forum.delete :: Löschen ]]
+        </div>
+        <div class="pull-left">
+            <a class="btn btn-success">
+                <i class="glyphicon glyphicon-ok"></i>
+            </a>
+            = [[ translation : marketplace : club.forum.new.reviewed.label :: Freigabe ]]
+        </div>
+        <br style="clear: left;">
+
+        <div class="pull-left">
+            <i class="glyphicon glyphicon-bullhorn" title="[[ translation : marketplace : club.forum.announcement :: Ankündigung ]]"></i>
+            = [[ translation : marketplace : club.forum.announcement :: Ankündigung ]]
+        </div>
+        <div class="pull-left">
+            <i class="glyphicon glyphicon-warning-sign" title="[[ translation : marketplace : club.forum.sticky :: Wichtig ]]"></i>
+            = [[ translation : marketplace : club.forum.sticky :: Wichtig ]]
+        </div>
+        <div class="pull-left">
+            <span class="label label-warning">123</span> = [[ translation : general : waiting.for.release :: wartend auf
+            Freischaltung ]]
+        </div>
+    </div>
+{endif}

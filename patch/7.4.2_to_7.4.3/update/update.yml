@@ -1,0 +1,38 @@
+-
+  'action': 'systemCheckPhp'
+  'parameters':
+    'version': '5.6'
+-
+  'action': 'sqlRun'
+  'parameters':
+    'file': 'update.sql'
+-
+  'action': 'filesCopy'
+  'parameters':
+    'source': 'Dateien'
+    'backup': 'DateienBackup'
+-
+  'action': 'mailEdit'
+  'parameters':
+    'SYS_NAME': 'NEW_MAIL'
+    'BACKUP': 'MailBackup/REMIND_AD_REMOVED.yml'
+    'T1':
+      'de': |
+        Hallo {NAME},
+        
+        Sie haben eine neue Nachricht mit dem Betreff {SUBJECT} erhalten. Unter folgendem Link können Sie die Nachicht(en) lesen:
+        {if FK_AD>0}
+        {if IS_INITIATOR}{uri_action_full(my-ad-msg,2)}{else}{uri_action_full(my-ad-msg)}{endif}
+        {else}
+        {if IS_INITIATOR}{uri_action_full(my-msg,2)}{else}{uri_action_full(my-msg)}{endif}
+        {endif}
+
+-
+  'action': 'designCheck'
+  'parameters':
+    'language': 'de'
+    'backup': 'DateienBackup'
+-
+  'action': 'cacheClear'
+  'parameters':
+    'type': 'step_all'

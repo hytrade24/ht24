@@ -1,0 +1,94 @@
+<script type="text/javascript">
+
+function ToggleBids(id_ad, id_ad_variant, id_ad_request) {
+	var tr_bid = $("#bids_"+id_ad+"_"+id_ad_variant);
+	var td_bid = $("#bids_"+id_ad+"_"+id_ad_variant+" > td");
+	if (td_bid.html() == "") {
+		// Laden und anzeigen
+		$.get(ebiz_trader_baseurl + "index.php?page=my-marktplatz-handeln-gebote&id_ad="+id_ad+"&id_ad_variant="+id_ad_variant+"&request="+id_ad_request+"&frame=ajax", function(result) {
+			td_bid.html(result);
+			tr_bid.show();
+		});
+	} else {
+		// Ein- oder ausblenden
+		tr_bid.toggle();
+	}
+}
+
+</script>
+
+<h1>
+	Price negotiations<br />
+	<span class="lead">
+		Keep track of your price negotiations!
+	</span>
+</h1>
+<p>
+    {if mode_verkauf}
+    Accepted prices will be put automatically into your sold products.
+    {else}
+    Accepted prices will be put automatically into your bought products.
+    {endif}
+</p>
+
+<ul class="nav nav-tabs userAdsTabs">
+	{if mode_received}
+	<li class="active">
+		<a href="{uri_action(my-marktplatz-handeln,received)}" title="Erhaltene Angebote/Preisanfragen">
+			Erhaltene Angebote/Preisanfragen ({countReceived})
+		</a>
+	</li>
+	<li>
+		<a href="{uri_action(my-marktplatz-handeln,sent)}" title="Abgegebene Angebote/Preisanfragen">
+			Submitted offers/price inquiries ({countSent})
+		</a>
+	</li>
+	{endif}	
+	{if mode_sent}
+	<li>
+		<a href="{uri_action(my-marktplatz-handeln,received)}" title="Erhaltene Angebote/Preisanfragen">
+			Quotations/price requests received ({countReceived})
+		</a>
+	</li>
+	<li class="active">
+		<a href="{uri_action(my-marktplatz-handeln,sent)}" title="Abgegebene Angebote/Preisanfragen">
+			Submitted offers/price inquiries ({countSent})
+		</a>
+	</li>
+	{endif}
+</ul>
+{if liste_handeln}
+	<table class="table table-bordered table-striped table-condensed">
+		{if mode_received}
+		<tr>
+			<th>Actions</th>
+			<th>Last<br />Action</th>
+			<th>Article</th>
+			<th>highest<br />amount</th>
+			<th>highest<br />bidder</th>
+			<th>Number <br />of bidder</th>
+			<th>highest<br />offer</th>
+		</tr>
+		{else}
+		<tr>
+			<th>Actions</th>
+			<th>Last<br />Action</th>
+			<th>Article</th>
+			<th>Seller</th>
+			<th>Own offer</th>
+			<th>Counter offer</th>
+			<th>Status</th>
+		</tr>
+		{endif}
+		{liste_handeln}
+	</table>
+	<p>
+		{pager}
+	</p>
+{else}
+	<p class="text-error">You have currently no bids.</p>
+{endif}
+<div class="design-content-box design-icon-legend">
+    <div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-eye-open"></i></a> = view / details
+	</div>
+</div>

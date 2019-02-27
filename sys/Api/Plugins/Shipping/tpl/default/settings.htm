@@ -1,0 +1,44 @@
+<tr>
+  <th colspan="2">
+    [[ translation : plugin : shipping.settings.title :: Versandeinstellungen für ihre Artikel ]]
+  </th>
+</tr>
+<tr>
+  <th>
+    [[ translation : plugin : shipping.settings.default :: Standard Versandkonfiguration ]]
+  </th>
+  <td>
+      <div id="pluginShippingDetails">
+        
+      </div>
+    
+      <div id="pluginShippingActions">
+    
+        <select class="form-control" name="SHIPPING_GROUP" id="SHIPPING_GROUP"{if !shipping_groups} style="display: none;"{endif}>
+          {shipping_groups}
+        </select>
+        <br />
+      
+        <p class="design-shipping-no-config-available"{if shipping_groups} style="display: none;"{endif}>
+          [[ translation : plugin : shipping.groups.empty :: Sie haben noch keine Versandeinstellungen konfiguriert. ]]
+        </p>
+        
+        <p>
+          <a id="pluginShippingButtonAdd" class="btn btn-success" href="#SHIPPING_GROUP" onclick="return pluginShippingShowConfig('new');">
+            <i class="glyphicon glyphicon-plus"></i>
+            [[ translation : plugin : shipping.groups.button.add :: Neu ]]
+          </a>
+          <a id="pluginShippingButtonEdit" class="btn btn-default" href="#SHIPPING_GROUP" onclick="return pluginShippingShowConfig();">
+            <i class="glyphicon glyphicon-pencil"></i>
+            [[ translation : plugin : shipping.groups.button.edit :: Bearbeiten ]]
+          </a>
+          <a id="pluginShippingButtonDelete" class="btn btn-danger" href="#SHIPPING_GROUP" onclick="return pluginShippingDeleteConfig();">
+            <i class="glyphicon glyphicon-remove"></i>
+            [[ translation : plugin : shipping.groups.button.delete :: Löschen ]]
+          </a>
+        </p>
+      </div>
+  </td>
+</tr>
+
+{SCRIPT}

@@ -1,0 +1,22 @@
+<tr>
+	<td class="span3 design-action-buttons">
+		<a href="{uri_action(my-club-members,{CLUB_ID_CLUB},request_accept)}?ID_CLUB_MEMBER_REQUEST={ID_CLUB_MEMBER_REQUEST}" onclick="return confirm('Möchten Sie die Beitrittsanfrage vom User {USER_NAME} akzeptieren?')" title="Beitrittsanfrage akzeptieren" class="btn btn-default"><i class="glyphicon glyphicon-ok"></i></a>
+		<a href="{uri_action(my-club-members,{CLUB_ID_CLUB},request_decline)}?ID_CLUB_MEMBER_REQUEST={ID_CLUB_MEMBER_REQUEST}" onclick="return confirm('Möchten Sie die Beitrittsanfrage vom User {USER_NAME} ablehnen?')" title="Beitrittsanfrage ablehnen" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+		<a href="{uri_action(my-club-members,{CLUB_ID_CLUB},request_block)}?ID_CLUB_MEMBER_REQUEST={ID_CLUB_MEMBER_REQUEST}" onclick="return confirm('Möchten Sie die Beitrittsanfrage vom User {USER_NAME} ablehnen und für eine erneute Anfrage sperren?')"  class="btn btn-default js-tooltip" title="Beitrittsanfrage dauerhaft ablehnen, sodass eine erneute Anfrage des Users verhindert wird" data-toggle="tooltip"><i class="glyphicon glyphicon-ban-circle"></i></a>
+		<a title="Nachricht schreiben" href="{uri_action(my-neu-msg,{FK_USER})}" class="btn btn-default">
+			<i class="glyphicon glyphicon-envelope"></i>
+		</a>
+	</td>
+	<td class="span2">
+		<a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">{USER_NAME}</a>
+	</td>
+	<td class="span2">
+		{todate(STAMP_CREATE)}
+	</td>
+	<td class="span5">
+		{if SHORT_REASON}<a href="#" class="clubMemberRequestResonLink" onclick="showMemberRequestReason('{ID_CLUB_MEMBER_REQUEST}'); return false;" >{SHORT_REASON}..</a>{endif}
+
+		<div class="hidden" id="clubMemberRequestReason-{ID_CLUB_MEMBER_REQUEST}">{text(REASON)}</div>
+	</td>
+
+</tr>

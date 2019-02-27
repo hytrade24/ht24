@@ -1,0 +1,179 @@
+<style type="text/css">
+    .inputTaskName { min-width: 200px; width: 99%; margin-right: 4px; }
+    #pluginUserTaskList_tasks { width: 100%; }
+    #pluginUserTaskList_tasks tbody tr td { vertical-align: top; }
+    #pluginUserTaskList_tasks tbody tr:last-child .inputTaskDelete { display: none; }
+</style>
+{if SAVED}
+<h3 class="ok">
+    Die Konfiguration wurde erfolgreich gespeichert!
+</h3>
+{endif}
+
+<h3>
+    Allgemein
+</h3>
+
+<table class="liste" cellspacing="0">
+    <tr>
+        <td>
+            <b>Aufgaben pro Zeile (für Tablets)</b>
+        </td>
+        <td>
+            <input type="number" name="CONFIG[COUNT_PER_LINE_SM]" value="{htm(CONFIG_COUNT_PER_LINE_SM)}" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <b>Aufgaben pro Zeile (für PCs/Laptops)</b>
+        </td>
+        <td>
+            <input type="number" name="CONFIG[COUNT_PER_LINE_MD]" value="{htm(CONFIG_COUNT_PER_LINE_MD)}" />
+        </td>
+    </tr>
+</table>
+
+<h3>
+    Benutzer-Aufgaben
+</h3>
+
+<table class="liste" id="pluginUserTaskList_tasks">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Priorität</th>
+            <th>Typ</th>
+            <th>Name der Aufgabe</th>
+            <th>Erledigt wenn der Benutzer ...</th>
+            <th>Zielseite</th>
+            {table_head_roles}
+        </tr>
+    </thead>
+    <tbody>
+        {liste_tasks}
+    </tbody>
+</table>
+
+<script type="text/html" id="pluginUserTaskList_taskTemplate">
+    {table_row}
+</script>
+<script type="text/javascript">
+
+(function() {
+    var template = jQuery("#pluginUserTaskList_taskTemplate").html();
+    var lineFocused = null;
+    var lineFocusedPrev = null;
+    var addLineEvents = function(line) {
+        jQuery(line).find("input,select,textarea").on("blur", function() {
+            lineFocusedPrev = lineFocused;
+            lineFocused = null;
+            window.setTimeout(function() {
+                // This is executed after events (focus event) were handled
+                if (lineFocused === null) {
+                    updateLine(lineFocusedPrev, lineFocused);
+                }
+            });
+        });
+        jQuery(line).find("input,select,textarea").on("focus", function() {
+            lineFocused = line;
+            if (lineFocusedPrev !== null) {
+                updateLine(lineFocusedPrev, lineFocused);
+            }
+        });
+        jQuery(line).find("input.inputTaskRoles").on("change", function() {
+            jQuery(this).parent().children(".inputTaskRolesHidden").val( jQuery(this).is(":checked") ? 1 : 0 );
+        });
+        jQuery(line).find(".inputTaskDelete").on("click", function() {
+            if (confirm('Aufgabe wirklich löschen?\n(Wird erst beim Klick auf "Konfiuration speichern" endgültig übernommen)')) {
+                removeLine(line);
+            }
+        });
+    };
+    // Add new line
+    var addNewLine = function() {
+        jQuery("#pluginUserTaskList_tasks > tbody").append(template);
+        var newLine = jQuery("#pluginUserTaskList_tasks > tbody > tr").last();
+        newLine.find("input,select,textarea").on("change", function() {
+            pluginCheckSettings( jQuery(this).closest("form") );
+        });
+        addLineEvents( newLine );
+    };
+    // Bind existing lines
+    var bindLines = function() {
+        jQuery("#pluginUserTaskList_tasks > tbody > tr").each(function() {
+            addLineEvents( jQuery(this) );
+        });
+    };
+    // Sort lines
+    var sortLines = function() {
+        // Get and detach all filled lines
+        var lines = [];
+        jQuery("#pluginUserTaskList_tasks > tbody > tr").each(function() {
+            var taskPriorityText = jQuery(this).find(".inputTaskPriority").val();
+            if (taskPriorityText != "") {
+                var taskPriorityValue = parseInt(taskPriorityText);
+                lines.push({
+                    priority: taskPriorityValue,
+                    line: jQuery(this).detach()
+                });
+            }
+        });
+        // Sort them
+        lines.sort(function(a, b) {
+            return (a.priority - b.priority);
+        });
+        // Add to table again
+        while (lines.length > 0) {
+            jQuery("#pluginUserTaskList_tasks > tbody").prepend(
+                lines.pop().line
+            );
+        }
+    };
+    // Remove line
+    var removeLine = function(line) {
+        // Do not remove the last row
+        if (jQuery(line).next().length > 0) {
+            var form = jQuery(line).closest("form");
+            // Remove event handlers
+            line.find("input,select,textarea").off("focus").off("blur").off("change");
+            // Remove line
+            lineFocused = null;
+            lineFocusedPrev = null;
+            jQuery(line).remove();
+            // Update configuration status
+            pluginCheckSettings( form );
+        }
+    };
+    // Update line (delete if empty)
+    var updateLine = function(lineBlur, lineFocus) {
+        var isInputFilled = false;
+        jQuery(lineBlur).find("input[type=text],textarea").each(function() {
+            if (jQuery(this).val() != "") {
+                isInputFilled = true;
+            }
+        });
+        if (!isInputFilled && !jQuery(lineBlur).is(lineFocus)) {
+            // Remove line (if not last)
+            removeLine(lineBlur);
+        } else if (isInputFilled && (jQuery(lineBlur).next().length == 0)) {
+            // Set ID for this line (if not yet filled)
+            if (lineBlur.find(".inputTaskId").val() == "") {
+                lineBlur.find(".inputTaskId").val( createId() );
+            }
+            // Add new line at the end
+            addNewLine();
+        }
+        if (lineFocus === null) {
+            sortLines();
+        }
+    };
+    // Util function to create unique ids
+    var createId = function() {
+        return Math.floor((1 + Math.random()) * 0x100000000).toString(16).substring(1);
+    };
+    // Initialize
+    bindLines();
+    addNewLine();
+})();
+
+</script>

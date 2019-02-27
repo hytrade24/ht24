@@ -1,0 +1,12 @@
+search: Suche
+chat.new.ad: 'neue Anfrage{if PLURAL_COUNT!=1}n{endif}'
+chat.new.other: 'neue Nachricht{if PLURAL_COUNT!=1}en{endif}'
+ad.cart.error.quantity: 'Es sind leider nur noch {COUNT} Stück übrig. Bitte reduzieren Sie die gewünschte Menge.'
+ad.qrcode: 'QR-Code anzeigen'
+search.results.show: '({ALL_ADS}) Treffer anzeigen'
+country.group.others: Other
+plugin.user.task.list.heading: 'First Steps'
+statistics.modal.show: 'View Statistics'
+statistics.alle.kunden.modal.show: 'Show all customer statistics'
+price.free.trial: 'Free Trial'
+deactive: Disabled

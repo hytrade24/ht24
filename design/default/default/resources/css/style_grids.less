@@ -1,0 +1,544 @@
+// General: split page layout (menu on the side, content next to it)
+.design-page-with-menu {
+  .design-page-menu {    
+    .make-xs-column(@design-page-menu-xs);
+    .make-xs-column-pull(@design-page-menu-xs-pull);
+    .make-sm-column(@design-page-menu-sm);
+    .make-sm-column-pull(@design-page-menu-sm-pull);
+    .make-md-column(@design-page-menu-md);
+    .make-md-column-pull(@design-page-menu-md-pull);
+  }
+  .design-page-content {
+    .make-xs-column(@design-page-content-xs);
+    .make-xs-column-push(@design-page-content-xs-push);
+    .make-sm-column(@design-page-content-sm);
+    .make-sm-column-push(@design-page-content-sm-push);
+    .make-md-column(@design-page-content-md);
+    .make-md-column-push(@design-page-content-md-push);
+  }
+}
+// General: default grid for input forms within the user area
+.design-user-input-form {
+  // Input field styles
+  .design-input-label {
+    .make-xs-column(12);
+    .make-sm-column(4);
+    .make-md-column(3);
+  }
+  .design-input-field {
+    .make-xs-column(12);
+    .make-sm-column(8);
+    .make-md-column(9);
+  }
+  // Notice text starting where the input fields do
+  .design-input-notice {
+    .design-input-field;
+    .make-sm-column-offset(4);
+    .make-md-column-offset(3);
+  }
+}
+
+// General: register form
+.design-register-profile {
+  .design-register-profile-form {
+    .make-xs-column(12);
+    .make-sm-column(6);
+    // Input field styles
+    .design-input-label {
+      .make-xs-column(12);
+      .make-sm-column(4);
+    }
+    .design-input-field{
+      .make-xs-column(12);
+      .make-sm-column(5);
+    }
+    .design-input-help {
+      .make-xs-column(12);
+      .make-sm-column(3);
+    }
+    // Notice text starting where the input fields do
+    .design-input-notice {
+      .design-input-field;
+      .make-sm-column-offset(4);
+    }
+  }
+  .design-register-profile-terms {
+    .make-xs-column(12);
+    .make-sm-column(6);
+  }
+}
+// Marketplace: create new ad / edit existing ad
+.design-ad-create-form {
+  // Step / content split
+  .design-ad-create-form-steps {
+    .hidden-xs;
+    .make-sm-column(4);
+    .make-lg-column(3);
+  }
+  .design-ad-create-form-content {
+    .make-xs-column(12);
+    .make-sm-column(8);
+    .make-lg-column(9);
+  }
+  // Maximized view without steps list
+  &.maximized {
+    .design-ad-create-form-steps {
+      display: none;
+    }
+    .design-ad-create-form-content {
+      .make-xs-column(12);
+      .make-sm-column(12);
+      .make-lg-column(12);
+    }
+  }
+  // Input field styles
+  .design-input-label {
+    .make-xs-column(12);
+    .make-sm-column(4);
+    .make-md-column(3);
+  }
+  .design-input-field {
+    .make-xs-column(12);
+    .make-sm-column(7);
+    .make-md-column(8);
+    &.design-input-rent-prices {
+      .make-sm-column-offset(4);
+      .make-md-column-offset(3);
+      margin-top: @form-group-margin-bottom;
+      & + .design-input-help {
+        margin-top: @form-group-margin-bottom;
+      }      
+      &:nth-of-type(1) {
+        .make-sm-column-offset(0);
+        .make-md-column-offset(0);
+        margin-top: 0;
+        & + .design-input-help {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+  .design-input-help {
+    .make-xs-column(12);
+    .make-sm-column(1);
+    .make-md-column(1);
+  }
+  // Notice text starting where the input fields do
+  .design-input-notice {
+    .design-input-field;
+    .make-sm-column-offset(4);
+    .make-md-column-offset(3);
+  }
+  // Special sizes
+  .design-input-split {
+    .row;
+    // PLZ / ORT
+    .design-input-zip {
+      .make-xs-column(5);
+    }
+    .design-input-city {
+      .make-xs-column(7);
+    }
+    // Grundpreis / Menge / Einheit
+    .design-input-basispreis-preis {
+      .make-xs-column(5);
+    }
+    .design-input-basispreis-menge {
+      .make-xs-column(4);
+      padding-right: 0;
+    }
+    .design-input-basispreis-einheit {
+      .make-xs-column(3);
+      padding-left: 0;
+    }
+  }
+}
+
+// General: contact form
+.design-contact-form {
+  .design-user-input-form;
+  // Notice text starting where the input fields do
+  .design-input-notice {
+    .design-input-field;
+    .make-sm-column-offset(4);
+    .make-md-column-offset(3);
+  }
+}
+
+// Marketplace: shopping cart
+.design-user-cart {
+  // view split (login/register or order without account)
+  .design-user-cart-register-split {
+    > div {
+      .make-xs-column(12);
+      .make-sm-column(6);
+    }
+  }
+  // view split (invoice-/shipping-address)
+  .design-user-cart-address-split {
+    > div {
+      .make-xs-column(12);
+      .make-sm-column(6);
+    }
+  }
+  // Input field styles
+  .design-input-label {
+    .make-xs-column(12);
+    .make-sm-column(4);
+    .make-md-column(3);
+  }
+  .design-input-field{
+    .make-xs-column(12);
+    .make-sm-column(8);
+    .make-md-column(9);
+  }
+  // Special sizes
+  .design-input-split {
+    .row;
+    .design-input-zip {
+      .make-xs-column(5);
+    }
+    .design-input-city {
+      .make-xs-column(7);
+    }
+  }
+}
+
+// Book advertisement
+.design-user-advertisement {
+  // Special sizes
+  .design-input-date-drop {
+    .row;
+    .clearfix;
+    > select {
+      .make-xs-column(3);
+      .make-lg-column(2);
+    }
+  }
+}
+
+// Marketplace: create new ad / edit existing ad
+.design-user-watchlist {
+  .design-user-input-form;
+}
+
+// Marketplace: create new ad / edit existing ad
+.design-user-trade {
+  .design-user-input-form;
+}
+
+// Marketplace article view
+.content-marktplatz_anzeige .design-page-with-menu {
+  .design-page-menu {    
+    .make-xs-column(12);
+    .make-sm-column(4);
+    .make-sm-column-pull(0);
+    //.make-md-column(3);
+    //.make-md-column-pull(9);
+  }
+  .design-page-content {
+    .make-xs-column(12);
+    .make-sm-column(8);
+    .make-sm-column-push(0);
+    //.make-md-column(9);
+    //.make-md-column-push(3);
+  }
+}
+
+// Sales list search filter
+.design-sales-filter {
+  > div {
+    .make-xs-column(6);
+    .make-md-column(4);
+  }
+  > .design-sales-filter-last-contact {
+    .make-xs-column(12);
+    .make-md-column(8);
+  }
+  .design-sales-filter-submit {
+    .pull-right;
+  }
+  .design-input-notice {
+    margin-top: @line-height-computed + @padding-base-vertical;
+  }
+}
+
+// General: User profile
+.design-user-profile-form {
+  .design-user-profile-form-first-name-label,
+  .design-user-profile-form-last-name-label {
+    width: 20%;
+  }
+  .design-user-profile-form-first-name-input,
+  .design-user-profile-form-last-name-input {
+    width: 30%;
+  }
+}
+
+// General: user messages
+.design-user-message {
+  // Input field styles
+  .design-user-message-logo {
+    .make-xs-column(2);
+    .make-sm-column(2);
+    .make-md-column(1);
+  }
+  .design-user-message-header {
+    .make-xs-column(10);
+    .make-sm-column(7);
+    .make-md-column(8);
+  }
+  .design-user-message-related {
+    .make-xs-column(12);
+    .make-sm-column(3);
+    .make-md-column(3);
+  }
+}
+
+
+// General: user messages
+.design-sale-details-seller {
+  // Input field styles
+  .design-sale-details-seller-base {
+    .make-xs-column(12);
+    .make-sm-column(7);
+  }
+  .design-sale-details-seller-address {
+    .make-xs-column(12);
+    .make-sm-column(5);
+  }
+}
+
+.design-header-search {
+  .row;
+  .design-header-search-logo {
+    .make-xs-column(@design-header-search-logo-xs);
+    .make-sm-column(@design-header-search-logo-sm);
+    .make-md-column(@design-header-search-logo-md);
+  }
+  .design-header-search-form {
+    .make-xs-column(@design-header-search-form-xs);
+    .make-sm-column(@design-header-search-form-sm);
+    .make-md-column(@design-header-search-form-md);
+    .design-header-search-form-inputs {
+      .row;
+      .design-header-search-form-text {
+        .make-xs-column(12);
+        .make-sm-column(9);
+        .make-md-column(10);
+        @media (min-width: @screen-sm-min) {
+          padding-right: 0;
+        }
+      }
+      &.with-category .design-header-search-form-text {
+        .make-xs-column(12);
+        .make-sm-column(5);
+        .make-md-column(6);
+        @media (min-width: @screen-sm-min) {
+          padding-right: 0;
+        }
+      }
+      .design-header-search-form-category {
+        .make-xs-column(12);
+        .make-sm-column(4);
+        .make-md-column(4);
+        @media (min-width: @screen-sm-min) {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+      .design-header-search-form-submit {
+        .make-xs-column(12);
+        .make-sm-column(3);
+        .make-md-column(2);
+        @media (min-width: @screen-sm-min) {
+          padding-left: 0;
+        }
+      }
+    }
+  }
+  .design-header-search-cart {
+    .make-xs-column(@design-header-search-cart-xs);
+    .make-sm-column(@design-header-search-cart-sm);
+    .make-md-column(@design-header-search-cart-md);
+  }
+}
+
+// Requests: contact owner of a request
+.design-request-contact {
+  .design-user-input-form;
+}
+
+.design-ad-report-violation {
+  .design-user-input-form;
+}
+
+.design-ad-recommend {
+  // Input field styles
+  .design-input-label {
+    .make-xs-column(12);
+    .make-sm-column(3);
+    .make-md-column(3);
+  }
+  .design-input-field {
+    .make-xs-column(12);
+    .make-sm-column(9);
+    .make-md-column(9);
+  }
+}
+
+.design-event-recommend {
+  .design-user-input-form;
+}
+
+.design-comment-edit {
+  .design-user-input-form;
+}
+
+.design-event-add-form {
+  .design-user-input-form;
+  .input-step-1 {
+    // Input field styles
+    .design-input-label {
+      .make-xs-column(12);
+      .make-sm-column(2);
+      .make-md-column(2);
+    }
+    .design-input-field {
+      .make-xs-column(12);
+      .make-sm-column(6);
+      .make-md-column(6);
+    }
+  }
+  // Special sizes
+  .design-input-split {
+    .row;
+    .design-input-date {
+      .make-xs-column(5);
+    }
+    .design-input-time {
+      .make-xs-column(7);
+    }
+    .design-input-zip {
+      .make-xs-column(5);
+    }
+    .design-input-city {
+      .make-xs-column(7);
+    }
+  }
+}
+
+
+.design-user-media {
+  // Input field styles
+  .design-input-label {
+    .make-xs-column(12);
+    .make-sm-column(3);
+    .make-md-column(3);
+  }
+  .design-input-field {
+    .make-xs-column(12);
+    .make-sm-column(9);
+    .make-md-column(9);
+  }
+}
+
+.galleryImagePreviewContainer{
+  .row;
+  .design-vendor-media{
+    .make-xs-column(6);
+    .make-sm-column(4);
+    .make-md-column(3);
+  }
+}
+
+.design-watchlist-add {
+  // Input field styles
+  .design-input-label {
+    .make-xs-column(12);
+    .make-sm-column(3);
+    .make-md-column(3);
+  }
+  .design-input-field {
+    .make-xs-column(12);
+    .make-sm-column(9);
+    .make-md-column(9);
+  }
+}
+
+.design-comment-reply {
+  // Input field styles
+  .design-input-label {
+    .make-xs-column(12);
+    .make-sm-column(3);
+    .make-md-column(3);
+  }
+  .design-input-field {
+    .make-xs-column(12);
+    .make-sm-column(9);
+    .make-md-column(9);
+  }
+}
+
+.design-club-join-request {
+  // Input field styles
+  .design-input-label {
+    .make-xs-column(12);
+    .make-sm-column(3);
+    .make-md-column(3);
+  }
+  .design-input-field {
+    .make-xs-column(12);
+    .make-sm-column(9);
+    .make-md-column(9);
+  }
+}
+
+.design-membership-upgrade {
+  // Input field styles
+  .design-input-label {
+    .make-xs-column(12);
+    .make-sm-column(3);
+    .make-md-column(3);
+  }
+  .design-input-field {
+    .make-xs-column(11);
+    .make-sm-column(8);
+    .make-md-column(8);
+  }
+  .design-input-help {
+    .make-xs-column(1);
+    .make-sm-column(1);
+    .make-md-column(1);
+  }
+}
+
+.design-payment-adapter-edit {
+  // Input field styles
+  .design-input-label {
+    .make-xs-column(12);
+    .make-sm-column(3);
+    .make-md-column(3);
+  }
+  .design-input-field {
+    .make-xs-column(12);
+    .make-sm-column(9);
+    .make-md-column(9);
+  }
+}
+
+// Marketplace: importer
+.layout-import {
+  .design-user-input-form;
+  // Page layout (table based)
+  .design-page-content {
+    left: auto;
+    right: auto;
+    width: auto;
+  }
+  .design-page-menu {
+    left: auto;
+    right: auto;
+    min-width: 200px;
+  }
+}

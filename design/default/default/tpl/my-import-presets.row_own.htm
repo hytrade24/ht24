@@ -1,0 +1,24 @@
+<tr>
+	<td>
+		<a href="{uri_action(my-import-run)}?IMPORT_PRESET={ID_IMPORT_PRESET}" class="btn btn-info" title="[[ translation : marketplace : import.preset.button.add.source :: Quelle hinzufügen ]]">
+			<i class="glyphicon glyphicon-plus"></i>
+		</a>
+		<a href="{uri_action(my-import-presets-edit)}?DO=EDIT&ID_IMPORT_PRESET={ID_IMPORT_PRESET}" class="btn btn-default" title="[[ translation : marketplace : import.preset.button.edit :: Vorlage bearbeiten ]]">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+		<a href="{uri_action(my-import-presets-edit)}?DO=COPY&ID_IMPORT_PRESET={ID_IMPORT_PRESET}" class="btn btn-default" title="[[ translation : marketplace : import.preset.button.copy :: Vorlage kopieren ]]">
+			<i class="glyphicon glyphicon-share-alt"></i>
+		</a>
+		<a href="{uri_action(my-import-presets-edit)}?DO=DELETE&ID_IMPORT_PRESET={ID_IMPORT_PRESET}" title="[[ translation : marketplace : import.preset.button.delete :: Vorlage löschen ]]" onclick="return confirm('[[ translation : marketplace : import.presets.delete.confirm :: Möchten Sie die Import Vorlage {htm(PRESET_NAME)} wirklich löschen ? ]]');" class="btn btn-default">
+			<i class="glyphicon glyphicon-remove"></i>
+		</a>
+	</td>
+	<td>{htm(PRESET_NAME)}</td>
+	<td>{htm(PRESET_TYPE)}</td>
+	<td>
+		{if STATUS == 1}[[ translation : marketplace : import.presets.status.enable :: aktiv ]]{endif}
+		{if STATUS == 0}[[ translation : marketplace : import.presets.status.disable :: deaktiviert ]]{endif}
+	</td>
+	<td>{todate(STAMP_CREATE,1)}</td>
+	<td>{todate(STAMP_UPDATE,1)}</td>
+</tr>

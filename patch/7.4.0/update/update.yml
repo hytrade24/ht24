@@ -1,0 +1,616 @@
+-
+  'action': 'systemCheckPhp'
+  'parameters':
+    'version': '5.6'
+-
+  'action': 'sqlRun'
+  'parameters':
+    'file': 'update.sql'
+-
+  'action': 'filesCopy'
+  'parameters':
+    'source': 'Dateien'
+    'backup': 'DateienBackup'
+-
+  'action': 'designCheck'
+  'parameters':
+    'language': 'de'
+    'backup': 'DateienBackup'
+-
+  'action': 'lookupAdd'
+  'parameters':
+    'art': 'INFO_BEREICHE'
+    'VALUE': 'USER-BACKEND'
+    'V1':
+      'de': 'Inhalt - Userbackend'
+-
+  'action': 'lookupAdd'
+  'parameters':
+    'art': 'INFO_BEREICHE'
+    'VALUE': 'RECHNUNG'
+    'V1':
+      'de': 'Rechnung PDF'
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'countries_group'
+    'ALIAS': ''
+    'V1':
+      'de': 'Länder-Gruppen'
+    'V2':
+      'de': 'Länder-Gruppen'
+    'TARGET':
+      'BY_IDENT': 'countries'
+    'S_LAYOUT': ''
+    'POSITION': 'appendChild'
+    'B_VIS': 1
+    'B_SYS': 1
+    'ROLES': [ 'Admin' ]
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'countries_group_edit'
+    'ALIAS': ''
+    'V1':
+      'de': 'Länder-Gruppe hinzufügen'
+    'V2':
+      'de': 'Länder-Gruppe hinzufügen'
+    'TARGET':
+      'BY_IDENT': 'countries_group'
+    'S_LAYOUT': ''
+    'POSITION': 'appendChild'
+    'B_VIS': 0
+    'B_SYS': 1
+    'ROLES': [ 'Admin' ]
+-
+  'action': 'lookupAdd'
+  'parameters':
+    'art': 'VERSAND_ANBIETER'
+    'VALUE': 'DHL'
+    'V1':
+      'de': 'DHL'
+-
+  'action': 'lookupAdd'
+  'parameters':
+    'art': 'VERSAND_ANBIETER'
+    'VALUE': 'UPS'
+    'V1':
+      'de': 'UPS'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-ad-msg'
+    'TARGET':
+      'BY_IDENT': 'my-verkaufen'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-ad-read-msg'
+    'B_VIS': 0
+    
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'INVOICE_CORRECTION'
+    'BESCHREIBUNG': 'Info über eine Korrektur-Rechnung!'
+    'V1':
+      'de': 'Korrektur-Rechnung für Rechnung Nr. {ID_BILLING_INVOICE}'
+    'T1':
+      'de': |
+        Hallo {VORNAME} {NACHNAME}!
+        
+        Es wurde eine Korrektur-Rechnung für die Rechnungsnummer {ID_BILLING_INVOICE} erstellt.{if INVOICE_MAIL_PDF} Eine Kopie der Rechnung hängt dieser E-Mail an.{endif}
+        
+        Rechnungsnummer: {ID_BILLING_INVOICE}
+        Betrag: {topreis(TOTAL_PRICE)} EUR
+        Zahlungsziel: {todate(STAMP_DUE)}
+        
+        Sie können die Rechnung unter folgendem Link einsehen und bezahlen:
+        {uri_action_full(invoice,{ID_BILLING_INVOICE})}
+        
+        Bitte kontrollieren Sie die Rechnung auf Korrektheit und sorgen Sie für einen zeitnahen Ausgleich.
+        
+        Wir bedanken uns für die Zusammenarbeit!
+        
+        Bei Fragen wenden Sie sich bitte an unsere Buchhaltung.
+        
+        Mit freundlichen Grüßen
+        {SITENAME} Team
+
+        
+    
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'INVOICE_CANCEL'
+    'BESCHREIBUNG': 'Info über eine stornierte Rechnung!'
+    'V1':
+      'de': 'Storno für Rechnung Nr. {ID_BILLING_INVOICE}'
+    'T1':
+      'de': |
+        Hallo {VORNAME} {NACHNAME}!
+        
+        Die Rechnung Nr. {ID_BILLING_INVOICE} wurde storniert.{if INVOICE_MAIL_PDF} Eine Kopie der Rechnung hängt dieser E-Mail an.{endif}
+        
+        Rechnungsnummer: {ID_BILLING_INVOICE}
+        Betrag: {topreis(TOTAL_PRICE)} EUR
+        Zahlungsziel: {todate(STAMP_DUE)}
+        
+        Sie können die Rechnung unter folgendem Link einsehen und bezahlen:
+        {uri_action_full(invoice,{ID_BILLING_INVOICE})}
+        
+        Bitte kontrollieren Sie die Rechnung auf Korrektheit und sorgen Sie für einen zeitnahen Ausgleich.
+        
+        Wir bedanken uns für die Zusammenarbeit!
+        
+        Bei Fragen wenden Sie sich bitte an unsere Buchhaltung.
+        
+        Mit freundlichen Grüßen
+        {SITENAME} Team
+
+
+        
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-imports'
+    'TARGET':
+      'BY_IDENT': 'my-verkaufen'
+    'POSITION': 'appendChild'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-exports'
+    'TARGET':
+      'BY_IDENT': 'my-gastro2gastro'
+    'POSITION': 'appendChild'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-exports-kat'
+    'TARGET':
+      'BY_IDENT': 'my-gastro2gastro'
+    'POSITION': 'appendChild'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my_artikel'
+    'TARGET':
+      'BY_IDENT': 'haendler'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor'
+    'TARGET':
+      'BY_IDENT': 'haendler'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'artikel_edit'
+    'B_VIS': 0
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-jobs'
+    'TARGET':
+      'BY_IDENT': 'my-events'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'advertisement_list'
+    'TARGET':
+      'BY_IDENT': 'my-events'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'advertisement'
+    'B_VIS': 0
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-jobs-edit'
+    'B_VIS': 0
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-neu-msg'
+    'B_VIS': 0
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'haendler'
+    'B_VIS': 0
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-merkliste'
+    'TARGET':
+      'BY_IDENT': 'my-verkaufen'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-comments'
+    'TARGET':
+      'BY_IDENT': 'ad_agent'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'BY_LABEL': 'Bewertungen & Kommentare'
+    'TARGET':
+      'BY_IDENT': 'ad_agent'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'BY_LABEL': 'Bewertungen & Kommentare'
+    'TARGET':
+      'BY_IDENT': 'ad_agent'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-comments'
+    'TARGET':
+      'BY_LABEL': 'Bewertungen & Kommentare'
+    'POSITION': 'appendChild'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'packets'
+    'TARGET':
+      'BY_IDENT': 'my-merkliste'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor'
+    'TARGET':
+      'BY_IDENT': 'packets'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'statistik_invoices'
+    'TARGET':
+      'BY_IDENT': 'billing_sales'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'market_advertisement_edit'
+    'TARGET':
+      'BY_IDENT': 'market_advertisement_orders'
+    'POSITION': 'appendChild'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'coupons'
+    'TARGET':
+      'BY_IDENT': 'billing_billableitem'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'geoip'
+    'B_VIS': 0
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': ''
+    'ALIAS': ''
+    'V1':
+      'de': 'SEO'
+    'V2':
+      'de': 'SEO'
+    'TARGET':
+      'BY_IDENT': 'struct'
+    'S_LAYOUT': ''
+    'POSITION': 'appendAfter'
+    'B_VIS': 1
+    'B_SYS': 1
+    'ROLES': [ 'Admin' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'meta_defaults'
+    'TARGET':
+      'BY_LABEL': 'SEO'
+    'POSITION': 'appendChild'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'nav_url'
+    'TARGET':
+      'BY_IDENT': 'meta_defaults'
+    'POSITION': 'appendAfter'
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'importfilter'
+    'B_VIS': 0
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'googlemap'
+    'ALIAS': ''
+    'V1':
+      'de': 'Google-Map'
+    'V2':
+      'de': 'Google-Map'
+    'TARGET':
+      'BY_LABEL': 'Trader'
+    'S_LAYOUT': ''
+    'POSITION': 'appendAfter'
+    'B_VIS': 0
+    'B_SYS': 1
+    'ROLES': [ 'Admin' ]
+-
+  'action': 'infoAdd'
+  'parameters':
+    'TXTTYPE': 'HTML'
+    'V1':
+      'de': 'User - Gutschein'
+    'T1':
+      'de': |
+        <h3>Gutschein einlösen</h3>
+    	<p>Tragen Sie Ihren persönlichen Gutscheincode in das folgende Formular ein</p>
+    	<form class="form form-horizontal design-content-box" action="{uri_action(invoices,1,coupon)}" method="post">
+          <div class="control-group">
+            <label class="control-label"><strong>Gutscheincode eingeben:</strong></label>
+            <div class="controls">
+              <input type="text" name="COUPON_CODE" value="{htm(COUPON_CODE)}" placeholder="Gutscheincode">
+              <input type="submit" class="btn" value="abschicken">
+            </div>
+          </div>
+    	</form>
+-
+  'action': 'infoAdd'
+  'parameters':
+    'V1':
+      'de': 'User - Seite Links'
+    'T1':
+      'de': |
+        {content_page(User - Sonderangebot an Verkäufer)}
+        <hr>
+        {content_page(User - Gutschein)}
+-
+  'action': 'infoAdd'
+  'parameters':
+    'V1':
+      'de': 'User - Sonderangebot an Verkäufer'
+    'T1':
+      'de': |
+        <h3>Sonderangebote Verk&auml;ufer</h3>
+        <p>Jetzt zugreifen</p>
+-
+  'action': 'infoAdd'
+  'parameters':
+    'TXTTYPE': 'HTML'
+    'V1':
+      'de': 'User - Startseite'
+    'T1':
+      'de': |
+        {content_page(User - Startseite Header)}
+        {PLUGIN_INFO}
+        {if userWelcomeFlag}
+            {content_page(User - Welcome)}
+        {endif}
+-
+  'action': 'infoAdd'
+  'parameters':
+    'TXTTYPE': 'HTML'
+    'V1':
+      'de': 'User - Startseite Header'
+    'T1':
+      'de': |
+        <div class="design-ad-box">
+            <div class="row">
+              <div class="col-xs-6 col-md-3 text-center">
+                <a href="{uri_action(my-marktplatz-neu)}">
+                    <img src="{uri_resource(images/add-ad.png)}" class="img-responsive-center js-tooltip" width="30"  data-toggle="tooltip" title="" data-original-title="Anzeige einstellen">
+                </a>
+              </div>
+              <div class="col-xs-6 col-md-3 text-center">
+                <a href="{uri_action(my-profil)}">
+                    <img src="{uri_resource(images/profil.png)}" class="img-responsive-center js-tooltip" width="30"  data-toggle="tooltip" title="" data-original-title="Ihr Profil">
+                </a>
+              </div>
+              <div class="col-xs-6 col-md-3 text-center">
+                <a href="{uri_action(my-ad-msg)}">
+                    <img src="{uri_resource(images/request.png)}" class="img-responsive-center js-tooltip" width="30"  data-toggle="tooltip" title="" data-original-title="Anfragen">
+                </a>
+              </div>
+              <div class="col-xs-6 col-md-3 text-center">
+                <a href="{uri_action(packets)}">
+                    <img src="{uri_resource(images/buy-packets.png)}" class="img-responsive-center js-tooltip"  width="30" data-toggle="tooltip" title="" data-original-title="Anzeigenpaket">
+                </a>
+              </div>
+           </div>
+        </div>
+        <div class="row">
+                <div class="col-xs-8 col-md-8">
+                    <p>
+                      <b>Willkommen {htm(NAME)} </b>, unter - <a href="{uri_action(my-settings)}">"Einstellungen</a> können Sie nun Ihre Einstellungen überprüfen und an Ihre Anforderungen anpassen.
+                    </p>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" hspace="5" align="right" />
+                </div>
+        </div>
+-
+  'action': 'infoAdd'
+  'parameters':
+    'V1':
+      'de': 'User - Welcome'
+    'T1':
+      'de': |
+        <h1>Welcome</h1>
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-place'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-place-update'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-gallery'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-gallery-update'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-searchword'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-description'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-searchword-list'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-comments'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-events'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-stats-profil'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-homepage'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'navEdit'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-imprint'
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]
+-
+  'action': 'infoAdd'
+  'parameters':
+    'TXTTYPE': 'HTML'
+    'V1':
+      'de': 'Registrierung - Infoseite unterhalb AGB'
+    'T1':
+      'de': |
+        <h3><img src="{uri_resource(images/gutschein.png)}" align="left" style="padding-right: 24px;">30 EUR als Dankesch&ouml;n von uns geschenkt</h3>
+        <p>Melden Sie sich jetzt an und sichern Sie sich unser 30 EUR als Guthaben bei uns.
+          Geben Sie rechts folgenden Gutscheincode ein&nbsp;<h3>Gutscheincode: 2FG2KI</h3></p>
+-
+  'action': 'infoAdd'
+  'parameters':
+    'TXTTYPE': 'HTML'
+    'V1':
+      'de': 'User - Welcome'
+    'T1':
+      'de': |
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+                <h3 class="user-heading">Vorgestellt</h3>
+               {subtpl(tpl/{SYS_TPL_LANG}/slider_ads_top.htm,ID_KAT={ID_KAT},MAX_PER_PAGE=1,MAX_PAGES=3,INTERVAL=5000,HIDE_INDICATOR=1)}
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <h3 class="user-heading">Themen im Forum</h3>
+                {subtpl(tpl/{SYS_TPL_LANG}/recent_group_list.htm,ID_KAT={ID_KAT},ID_CLUB={ID_CLUB},COUNT=1,COUNT_PER_ROW=1,CACHE_LIFETIME=102)}
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <h3 class="user-heading">Dies und Das</h3>
+                {subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=2,COUNT_PER_ROW=1,SHOW_PREVIEW_IMAGE=0,SHOW_TYPES,TEMPLATE=row,CACHE_LIFETIME=102)}
+            </div>
+        </div>
+-
+  'action': 'infoAdd'
+  'parameters':
+    'TXTTYPE': 'TXT'
+    'V1':
+      'de': 'Veranstaltungen - Intro-Seite'
+    'T1':
+      'de': |
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_event_list.htm,ID_KAT={ID_KAT},COUNT=1,COUNT_PER_ROW=1,TEMPLATE=row_img2)}
+        
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_event_list.htm,ID_KAT={ID_KAT},COUNT=6,OFFSET=1,COUNT_PER_ROW=3)}
+        
+        {if SHOW_MAP}
+            {subtpl(tpl/{SYS_TPL_LANG}/googlemaps.htm,type=event,ident={MAP_IDENT},height=300)}
+        {endif}
+-
+  'action': 'cacheClear'
+  'parameters':
+    'type': 'step_all'

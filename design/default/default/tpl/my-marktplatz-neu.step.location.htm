@@ -1,0 +1,95 @@
+{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-neu.step.header_article.htm,*)}
+
+<p class="lead">
+	[[ translation : marketplace : ad.create.location.subtitle :: Bitte geben Sie den Standort an, an dem sich der Artikel befindet ]]
+</p>
+
+<form class="form-horizontal" onsubmit="SubmitStep(this); return false;">
+    <input type="hidden" name="step" value="{STEP_IDENT}" />
+
+    <div class="design-content-box">
+        <div id="STREET_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="STREET">
+                <strong>[[ translation : marketplace : street :: Straße ]] <span class="text-error">*</span></strong>
+				<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="[[ translation : marketplace : street.hint.article :: Geben Sie hier die Straße ein, an dem sich der Artikel befindet. ]]"></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[STREET]" value="text">
+                <input type="text" name="STREET" id="STREET" value="{htm(STREET)}" class="form-control" onchange="getLatiLongi(); validateInput(this);"/>
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div id="ZIP_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="ZIP">
+                <strong>[[ translation : marketplace : zip.location :: PLZ & Ort ]] <span class="text-error">*</span></strong>
+				<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="[[ translation : marketplace : loaction.hint.article :: Geben Sie hier den Ort ein, an dem sich der Artikel befindet. ]]"></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" id="FK_GEO_REGION" name="FK_GEO_REGION" value="{FK_GEO_REGION}" />
+                <input type="hidden" id="LATITUDE" name="LATITUDE" value="{LATITUDE}" />
+                <input type="hidden" id="LONGITUDE" name="LONGITUDE" value="{LONGITUDE}" />
+                <input id="ADMINISTRATIVE_AREA_LEVEL_1" type="hidden" name="ADMINISTRATIVE_AREA_LEVEL_1" value="{ADMINISTRATIVE_AREA_LEVEL_1}"/>
+                <div class="design-input-split">
+                    <div class="design-input-zip">
+                        <input type="hidden" name="tmp_type[ZIP]" value="text">
+                        <input type="text" required="required" name="ZIP" id="ZIP" value="{htm(ZIP)}" class="form-control" onchange="getLatiLongi(); validateInput(this);"/>
+                    </div>
+                    <div class="design-input-city">
+                        <input type="hidden" name="tmp_type[CITY]" value="text">
+                        <input type="text" required="required" name="CITY" id="CITY" value="{htm(CITY)}" class="form-control" onchange="getLatiLongi(); validateInput(this);"/>
+                    </div>
+                </div>
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+
+        </div>
+        <div id="FK_COUNTRY_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="FK_COUNTRY">
+                <strong>[[ translation : marketplace : country :: Land ]] <span class="text-error">*</span></strong>
+				<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="[[ translation : marketplace : country.hint.article :: W&auml;hlen Sie hier das Land, in dem sich der Artikel befindet. ]]"></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[FK_COUNTRY]" value="liste">
+                {select_country(,,,, onchange="getLatiLongi(); validateInput(this);" required="required" class="form-control" id="COUNTRY",----)}
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div id="MAP_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="LINK_MAP">
+                <strong>[[ translation : marketplace : sel.from.map :: Auf Karte w&auml;hlen ]]</strong>
+            </label>
+            <div class="design-input-field">
+                <div id="googleMap" class="design-input-map"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="design-content-box">
+        <div class="submit-step">
+        {if STEP_INDEX>0}
+            <input type="button" onclick="ShowStep({calc(STEP_INDEX-1)}); return false;" class="btn btn-default" value="[[ translation : marketplace : ad.create.back :: Zurück ]]" />
+        {endif}
+            <button type="submit" class="btn btn-primary">
+                [[ translation : marketplace : ad.create.submit.step :: Weiter ]]
+            </button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+
+// Map updaten
+var addr_zip = jQuery("#ZIP_INPUT").val();
+var addr_city = jQuery("#CITY_INPUT").val();
+var addr_country = jQuery("#FK_COUNTRY_INPUT").val();
+var addr_street = jQuery("#STREET_INPUT").val();
+getLatiLongi(addr_zip, addr_city, addr_country, addr_street);
+showMap(null, jQuery('#googleMap'));
+jQuery(".js-tooltip").tooltip();
+
+</script>

@@ -1,0 +1,28 @@
+Scs\Common\BillingBundle\Entity\BlzBic:
+    type: entity
+    table: blz_bic
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        blz:
+            type: integer
+        name:
+            type: string
+            length: '58'
+        plz:
+            type: string
+            length: '5'
+        city:
+            type: string
+            length: '35'
+        shortname:
+            type: string
+            length: '27'
+        bic:
+            type: string
+            length: '11'
+    lifecycleCallbacks: {  }
+    repositoryClass: Scs\Common\BillingBundle\Repository\BlzBicRepository

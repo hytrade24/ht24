@@ -1,0 +1,19 @@
+<table class="mytable table table-bordered table-striped table-condensed">
+	<tr>
+		<th title="[[ translation : marketplace : transaction.number :: Transaktions-Id ]]">Trans.-<br />Id</th>
+		<th title="[[ translation : marketplace : article.number :: Artikelnummer ]]">Art.-<br />Nr.</th>
+		<th class="first">[[ translation : general : user :: Benutzer ]]</th>
+		<th>[[ translation : general : date :: Datum ]]</th>
+		<th>[[ translation : marketplace : articel :: Artikel ]]</th>
+		<th>[[ translation : marketplace : rating :: Bewertung ]]</th>
+		<th class="last">[[ translation : marketplace : comment :: Kommentar ]]</th>
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+		<td colspan="8"><div class="alert alert-info">[[ translation : marketplace : no.rating.found :: Keine Bewertungen gefunden. ]]</div></td>
+	{endif}
+	<tr>
+		<td colspan="8" align="text-center">{pager}</td>
+	</tr>
+</table>

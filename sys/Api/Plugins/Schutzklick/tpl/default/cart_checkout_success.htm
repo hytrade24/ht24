@@ -1,0 +1,33 @@
+<script type="text/javascript">
+  
+  var _sdbag = _sdbag || [];
+  
+  _sdbag.push(['orderId', '{ORDER_ID}']);
+  
+  _sdbag.push(['customer', {
+    firstname: "{htm(USER_VORNAME)}",
+    lastname: "{htm(USER_NACHNAME)}",
+    email: "{htm(USER_EMAIL)}",
+    phone: "{htm(USER_TEL)}",
+    street: "{htm(USER_STRASSE_NAME)}",
+    street_number: "{htm(USER_STRASSE_NUMMER)}",
+    zip: "{htm(USER_PLZ)}",
+    city: "{htm(USER_ORT)}",
+    country: "{htm(USER_COUNTRY_CODE)}"
+  }]);
+  
+  _sdbag.push(['partnerId', {CONFIG_PARTNER_ID}]);
+  _sdbag.push(['shopId', {CONFIG_SHOP_ID}]);
+  _sdbag.push(['country', '{CONFIG_COUNTRY}']);
+  _sdbag.push(['init', 'success']);
+  
+  (function() {
+    var ss = document.createElement('script');
+    ss.type = 'text/javascript';
+    ss.async = true;
+    ss.src = (document.location.protocol == 'https:' ? 'https://' : 'http://') + 'www.schutzklick.de/jsapi/sisu-checkout-2.x.min.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ss, s);
+  })();
+  
+</script>

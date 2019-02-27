@@ -1,0 +1,50 @@
+<br><br>
+
+<form method="post" action="https://ipayment.de/merchant/{API_ACCOUNT_ID}/processor/2.0/" class="form-horizontal">
+    <input type="hidden" name="trxuser_id" value="{API_APPLICATION_ID}">
+    <input type="hidden" name="trxpassword" value="{API_APPLICATION_PASSWORD}">
+
+    <input type="hidden" name="trx_amount" value="{TOTAL_PRICE_IN_CURRENCY}">
+    <input type="hidden" name="trx_currency" value="{CURRENCY}">
+
+    <input type="hidden" name="trx_paymenttyp" value="elv">
+
+    <input type="hidden" name="redirect_url" value="{URL_SUCCESS}">
+
+    <input type="hidden" name="silent" value="1">
+    <input type="hidden" name="silent_error_url" value="{URL_CANCEL}">
+    <input type="hidden" name="hidden_trigger_url" value="{URL_HIDDENTRIGGER}">
+
+    {if API_SECURITY_HASH}<input type="hidden" name="trx_securityhash"  value="{API_SECURITY_HASH}">{endif}
+    <input type="hidden" name="shopper_id" value="{INVOICE_ID}">
+    <input type="hidden" name="advanced_strict_id_check" value="1">
+    <input type="hidden" name="invoice_text" value="{INVOICE_DESCRIPTION}">
+
+    <div class="row">
+        <div class="col-xs-8">
+
+            <div class="form-group">
+                <label class="control-label design-input-label align-left"><strong>Kontonummer:</strong></label>
+                <div class="design-input-field">
+                    <input class="form-control" type="text" name="bank_accountnumber" value="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label design-input-label align-left"><strong>BLZ:</strong></label>
+                <div class="design-input-field">
+                    <input class="form-control" type="text" name="bank_code" value="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label design-input-label align-left"><strong>Bank:</strong></label>
+                <div class="design-input-field">
+                    <input class="form-control" type="text" name="bank_name" value="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="submit" name="form_submit" class="btn btn-default"  value="Bezahlen">
+</form>

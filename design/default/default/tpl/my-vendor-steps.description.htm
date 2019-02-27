@@ -1,0 +1,66 @@
+<div id="vendorFormularDescriptionTab">
+  <ul>
+    {languageHeader}
+  </ul>
+  <div class="well">
+    {languageBody}
+  </div>
+</div>
+
+<h2>[[ translation : marketplace : imp :: Impressum ]]</h2>
+<div class="design-content-box">
+    <script type="text/javascript">
+        jQuery(function() {
+            InitializeEditor(true, "IMPRESSUM");
+        })
+    </script>
+    <textarea style="width: 100%; height: 100px" name="IMPRESSUM" id="IMPRESSUM">{htm(IMPRESSUM)}</textarea>
+</div>
+
+<h2>[[ translation : marketplace : agb.for.sold :: AGB für den Verkauf ]]</h2>
+<div class="design-content-box">
+    <textarea style="width: 100%; height: 100px" name="AGB" id="AGB">{htm(AGB)}</textarea>
+</div>
+
+<h2>[[ translation : marketplace : legal.recall :: Widerrufs-/R&uuml;cktrittserkl&auml;rung f&uuml;r den Verkauf ]]</h2>
+<div class="design-content-box">
+    <textarea style="width: 100%; height: 100px" name="WIDERRUF" id="WIDERRUF">{htm(WIDERRUF)}</textarea>
+</div>
+
+<h2>[[ translation : marketplace : legal.payment :: Zahlungsinformationen für den Verkauf ]]</h2>
+<div class="design-content-box">
+    <textarea style="width: 100%; height: 100px" name="ZAHLUNG" id="ZAHLUNG">{htm(ZAHLUNG)}</textarea>
+</div>
+
+<script type="text/javascript">
+jQuery(function() {
+    
+    InitializeEditor(true, "T1_{BITVAL}");
+    
+    jQuery("#vendorFormularDescriptionTab").tabs();
+    
+    // Save changed editors before submitting
+    CallbackSubmitStepAdd(function(form) {
+        var editorSaved = false;
+        jQuery(form).find("textarea").each(function() {
+            // TinyMCE
+            var inputId = jQuery(this).attr("id");
+            var editor = tinyMCE.editors[inputId];
+            if ((typeof editor != "undefined") && editor.isDirty()) {
+                editor.save();
+                editor.isNotDirty = 1;
+                editorSaved = true;
+            }
+        });
+        if (editorSaved) {
+            window.setTimeout(function () {
+                SubmitStep(form);
+            });
+            return false;
+        } else {
+            return true;
+        }
+    });
+    
+});
+</script>

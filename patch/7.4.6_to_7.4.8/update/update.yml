@@ -1,0 +1,107 @@
+-
+  'action': 'systemCheckPhp'
+  'parameters':
+    'version': '5.6'
+-
+  'action': 'sqlRun'
+  'parameters':
+    'file': 'update.sql'
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'AD_AGENT_REMINDER'
+    'BESCHREIBUNG': 'Anzeigenagent läuft in kürze aus'
+    'V1':
+      'de': 'Ihr Anzeigenagent läuft in kürze aus!'
+    'T1':
+      'de': |
+        Hallo Max Mustermann!
+        
+        Einer oder mehrere ihrer Anzeigen-Agenten laufen in kürze aus. Um diese zu verlängern besuchen Sie die folgende URL:
+        {uri_action_full(ad_agent)}
+        
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'LASTSCHRIFT_BANK_KONTO_BLOCK'
+    'BESCHREIBUNG': 'Payments'
+    'V1':
+      'de': 'Lastschrift Bank Konto Block'
+    'T1':
+      'de': |
+        Hallo {NAME},
+
+        die Zahlung per Lastschrift wurde für ihren Account gesperrt. Dies passiert in der Regel dann, wenn ihre Kontodaten fehlerhaft sind oder es eine Rücklastschrift gab.
+
+        Um die Lastschrift-Zahlung wieder freizuschalten, bitte prüfen und korrigieren Sie die Zahlungsdaten in ihrem Account und kontaktieren Sie anschließend unser Support-Team.
+
+        Ihre aktuellen Zahlungsdaten lauten:
+
+        Kontoinhaber: {Recipient}
+        IBAN: {IBAN}
+        BIC:  {BIC}
+
+        Mit freundlichen Grüßen
+        {SITENAME} Team
+
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'LASTSCHRIFT_BANK_KONTO_UNBLOCK'
+    'BESCHREIBUNG': 'Payments'
+    'V1':
+      'de': 'Lastschrift Bank Konto Unblock'
+    'T1':
+      'de': |
+        Hallo {NAME},
+
+        die Zahlung per Lastschrift wurde erneut freigeschaltet und steht ihnen nun wieder zur Verfügung.
+
+        Ihre aktuellen Zahlungsdaten lauten:
+
+        Kontoinhaber: {Recipient}
+        IBAN: {IBAN}
+        BIC:  {BIC}
+
+        Mit freundlichen Grüßen
+        {SITENAME} Team
+
+-
+  'action': 'mailAdd'
+  'parameters':
+    'SYS_NAME': 'LASTSCHRIFT_BANK_KONTO_CHANGED'
+    'BESCHREIBUNG': 'Payments'
+    'V1':
+      'de': 'Lastschrift Bank Konto Ändern'
+    'T1':
+      'de': |
+        Hallo {NAME},
+
+        Sie haben ihre Zahlungsinformationen für Lastschrift-Zahlungen aktualisiert. Die neuen Zahlungsdaten lauten:
+
+
+        Kontoinhaber: {Recipient}
+        IBAN: {IBAN}
+        BIC:  {BIC}
+
+        Mit freundlichen Grüßen
+        {SITENAME} Team
+
+-
+  'action': 'execCode'
+  'parameters':
+    'file': 'update.php'
+-
+  'action': 'filesCopy'
+  'parameters':
+    'source': 'Dateien'
+    'backup': 'DateienBackup'
+-
+  'action': 'designCheck'
+  'parameters':
+    'language': 'de'
+    'backup': 'DateienBackup'
+-
+  'action': 'cacheClear'
+  'parameters':
+    'type': 'step_all'

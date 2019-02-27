@@ -1,0 +1,15 @@
+{if providers}
+<select name="DETAILS[{articleId}]{if variantSet}[{variantId}]{endif}[SHIPPING_PROVIDER]">
+  {providers}
+</select>
+{else}
+<span class="text-danger" data-toggle="tooltip" data-placement="top" 
+      title="Der Versand in das gewählte Land ist leider nicht möglich! Bitte wählen Sie eine andere Lieferadresse.">
+  <i class="glyphicon glyphicon-warning-sign"></i>
+  {if countryId>0}
+  Versand nicht möglich!
+  {else}
+  Bitte Versandadresse wählen!
+  {endif}
+</span>
+{endif}

@@ -1,0 +1,9 @@
+<div class="checkbox">
+    <label>
+        <input type="checkbox" name="ad_payment_adapter[{ID_PAYMENT_ADAPTER}]" value="1" {if !IS_AVAILABLE}disabled="disabled"{endif} {if CHECKED && IS_AVAILABLE}checked="checked"{endif}>
+        <span>{NAME}</span>
+        {if !IS_AVAILABLE}
+        <i class="text-danger">([[ translation : marketplace : ad.create.payment.not.configured :: Nicht konfiguriert ]])</i>
+        {endif}
+    </label>
+</div>

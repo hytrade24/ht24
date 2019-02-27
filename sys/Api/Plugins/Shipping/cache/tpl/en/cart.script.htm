@@ -1,0 +1,20 @@
+<script type="text/javascript">
+jQuery(function() {
+  jQuery("#INVOICE_FK_COUNTRY").on("change", function(event) {
+    if (jQuery("#userVersand_Edit_UseInvoice").is(":checked")) {
+      cartUpdateList();
+    }
+  });
+  jQuery("#VERSAND_FK_COUNTRY").on("change", function(event) {
+    cartUpdateList();
+  });
+  // Hook shipping address selection for registered users
+  if (typeof selectUserVersand == "function") {
+    var selectUserVersandOrg = selectUserVersand;
+    selectUserVersand = function(id_user_versand) {
+      selectUserVersandOrg(id_user_versand);
+      cartUpdateList();
+    };
+  }
+});
+</script>

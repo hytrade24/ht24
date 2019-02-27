@@ -1,0 +1,497 @@
+{if PROCESSING}
+  {startblock(head)}
+    {parentblock()}
+    <!-- Redirect for next step -->
+    <meta http-equiv="refresh" content="1;url={uri_action_full(my-marktplatz-neu-bulk,process)}" />
+  {endblock(head)}
+  <h1>[[ translation : marketplace : ad.create.article.bulk.title :: Mehrere Artikel einstellen ]]</h1>
+  <h2>[[ translation : marketplace : ad.create.article.bulk.title.processing :: Artikel werden eingestellt... ]]</h2>
+  <p>
+  [[ translation : marketplace : ad.create.article.bulk.description.processing :: 
+      Bitte warten Sie während die Artikel eingestellt werden ... ({PROCESS_DONE} von {PROCESS_COUNT} fertig)
+  ]]
+  </p>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{PROCESS_PERCENT}" aria-valuemin="0" aria-valuemax="100"
+         style="min-width: 3em; width: {PROCESS_PERCENT}%;">
+      {PROCESS_PERCENT}%
+    </div>
+  </div>
+  <div class="text-right">
+    <a href="{uri_action(my-marktplatz-neu-bulk,cancel)}" class="btn btn-danger" 
+       onclick="return confirm('[[ translation : marketplace : ad.create.article.bulk.cancel.confirm :: Möchten Sie den Einstell-Prozess wirklich abbrechen? ]]');">
+      [[ translation : marketplace : ad.create.article.bulk.cancel :: Abbrechen ]]
+    </a>
+  </div>
+{else}
+<style type="text/css">
+  
+  #bulk-create-base .bulk-create-step-manufacturer > .design-content-box-nested,
+  #bulk-create-base .bulk-create-step-products > .design-content-box-nested {
+    height: 500px;
+    overflow-y: auto;
+  }
+  
+  #bulk-create-base #bulk-create-product,
+  #bulk-create-base #bulk-create-product-loading,
+  #bulk-create-base #bulk-create-product-hint {
+    height: 445px;
+  }
+  
+  #bulk-create-base #bulk-create-product-actions {
+    margin-top: -21px;
+    height: 56px;
+  }
+  
+  #bulk-create-base a.active {
+    font-weight: bold;
+  } 
+  
+  #bulk-create-product .checkbox > label {
+    width: 100%;
+  }
+  
+  #bulk-create-product-details .marketplaceArticleAttributes > .row > div {
+    width: 100%;
+  }
+  #bulk-create-product-details .productOfferList {
+    display: none;
+  }
+  #bulk-create-product-details h1 {
+    font-size: 18px;
+  }
+  #bulk-create-product-details .hdbProductImage img {
+    max-width: 120px;
+  }
+  
+</style>
+
+<form id="bulk-create-form" method="post" action="{uri_action(my-marktplatz-neu-bulk)}">
+  <h1>[[ translation : marketplace : ad.create.article.bulk.title :: Mehrere Artikel einstellen ]]</h1>
+  
+  <div id="bulk-create-base" class="design-content-base">
+    <div class="row">
+      
+      <div class="col-sm-6 bulk-create-step-manufacturer">
+        <h3>[[ translation : marketplace : ad.create.article.bulk.category :: Produktklasse ]]</h3>
+
+        <input id="bulk-create-categories-search" class="form-control" type="text" placeholder="[[ translation : marketplace : search :: Suchen ]] ..." />
+        <div id="bulk-create-categories" class="design-content-box-nested">
+        {if TABLES}
+          {TABLES}
+        {else}
+          <span class="text-muted">
+            [[ translation : marketplace : ad.create.article.bulk.category.hint :: Es sind aktuell leider keine Produkte verfügbar. ]]
+          </span>
+        {endif}
+        </div>
+      </div>
+      <div class="col-sm-6 bulk-create-step-manufacturer">
+        <h3>[[ translation : marketplace : ad.create.article.bulk.manufacturer :: Hersteller ]]</h3>
+        
+        <input id="bulk-create-manufacturer-search" class="form-control" type="text" placeholder="[[ translation : marketplace : search :: Suchen ]] ..." />
+        <div id="bulk-create-manufacturer" class="design-content-box-nested" style="display: none;">
+        </div>
+        <div id="bulk-create-manufacturer-loading" class="design-content-box-nested text-center" style="display: none;">
+          <img src="{uri_baseurl(gfx/ajax-loader.gif)}" alt="[[ translation : marketplace : loading.pleas.wait :: Wird geladen... Bitte warten Sie. ]]">
+          <div>
+            [[ translation : marketplace : loading.pleas.wait :: Wird geladen... Bitte warten Sie. ]]
+          </div>
+        </div>
+        <div id="bulk-create-manufacturer-hint" class="design-content-box-nested">
+          <span class="text-muted">
+            [[ translation : marketplace : ad.create.article.bulk.manufacturer.hint :: Bitte wählen Sie zunächst eine Produktklasse aus. ]]
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-12 bulk-create-step-products">
+        <h3>[[ translation : marketplace : ad.create.article.bulk.manufacturer.selected :: Produktklasse / Hersteller ]]</h3>
+        
+        <div>
+          <div class="design-content-box-nested">
+            <div class="row">
+              <div class="col-sm-4">
+                <strong>[[ translation : marketplace : ad.create.article.bulk.category :: Produktklasse ]]</strong>
+              </div>
+              <div class="col-sm-8">
+                <span class="bulk-create-value-category">---</span>
+              </div>
+              <div class="col-sm-4">
+                <strong>[[ translation : marketplace : ad.create.article.bulk.manufacturer :: Hersteller ]]</strong>
+              </div>
+              <div class="col-sm-8">
+                <span class="bulk-create-value-manufacturer">---</span>
+              </div>
+              <div class="col-sm-12 text-right">
+                <a href="#bulk-create-base" data-action="back-to-manufacturer" class="btn btn-primary">
+                  [[ translation : marketplace : ad.create.article.bulk.back.to.manufacturers :: Zurück zur Auswahl von Produktklasse / Hersteller ]]
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 bulk-create-step-products">
+        <h3>[[ translation : marketplace : ad.create.article.bulk.products :: Produkte ]]</h3>
+        
+        <input id="bulk-create-product-search" class="form-control" type="text" placeholder="[[ translation : marketplace : search :: Suchen ]] ..." />
+        <div id="bulk-create-product" class="design-content-box-nested" style="display: none;">
+        </div>
+        <div id="bulk-create-product-loading" class="design-content-box-nested text-center" style="display: none;">
+          <img src="{uri_baseurl(gfx/ajax-loader.gif)}" alt="[[ translation : marketplace : loading.pleas.wait :: Wird geladen... Bitte warten Sie. ]]">
+          <div>
+            [[ translation : marketplace : loading.pleas.wait :: Wird geladen... Bitte warten Sie. ]]
+          </div>
+        </div>
+        <div id="bulk-create-product-hint" class="design-content-box-nested">
+          <span class="text-muted">
+            [[ translation : marketplace : ad.create.article.bulk.product.hint :: Bitte wählen Sie zunächst einen Hersteller aus. ]]
+          </span>
+        </div>
+        <div id="bulk-create-product-actions" class="design-content-box-nested">
+          <a href="#products-all" data-action="select-all">
+            <i class="glyphicon glyphicon-ok"></i>
+            [[ translation : marketplace : ad.create.article.bulk.product.select.all.results :: Alle <span class="bulk-create-value-results">0</span> Produkte auswählen ]]
+          </a>
+          <br />
+          <a href="#products-none" data-action="select-none">
+            <i class="glyphicon glyphicon-remove"></i>
+            [[ translation : marketplace : ad.create.article.bulk.product.select.none.results :: Alle <span class="bulk-create-value-results">0</span> Produkte abwählen ]]
+          </a>
+        </div>
+      </div>
+      <div class="col-sm-6 bulk-create-step-products">
+        <h3>[[ translation : marketplace : ad.create.article.bulk.product.details :: Produkt-Details ]]</h3>
+        <div id="bulk-create-product-details">
+        </div>
+        <div id="bulk-create-product-details-notice">
+          <div class="alert alert-info">
+            [[ translation : marketplace : ad.create.article.bulk.product.details.intro ::
+              Klicken Sie auf das <i class="glyphicon glyphicon-info-sign"></i>-Symbol eines Produkts um sich 
+              Detail-Information zu diesem anzeigen zu lassen.
+            ]]
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="text-right">
+    <input id="bulk-create-input" type="hidden" name="PRODUCT_IDS" value="" />
+    <button id="bulk-create-submit" class="btn btn-success">
+      [[ translation : marketplace : ad.create.article.bulk.product.submit.generic :: Artikel einstellen ]]
+    </button>
+  </div>
+</form>
+
+<script type="text/javascript">
+jQuery(function() {
+    var form = jQuery("#bulk-create-form");
+    
+    var tableIdActive = null;
+    var manufacturerIdActive = null;
+    var manufacturerNameActive = null; 
+    
+    var productsByTable = {};
+    var productsByManufacturer = {};
+    var productsSelected = [];
+    var productsPage = 1;
+    var productsPageLoading = false;
+    var productsSearch = "";
+    var productsSearchTimer = null;
+    var productsSearchInterval = 600;
+    
+    var bindActions = function() {
+        jQuery("[data-action=select-all]").off("click").on("click", function(event) {
+            selectProducts(true);
+        });
+        jQuery("[data-action=select-none]").off("click").on("click", function(event) {
+            selectProducts(false);
+        });
+        jQuery("[data-action=back-to-manufacturer]").off("click").on("click", function(event) {
+            setMode("manufacturer");
+        });
+        jQuery("#bulk-create-submit").off("click").on("click", function(event) {
+            var selectedValue = "";
+            for (var tableId in productsByManufacturer) {
+                for (var manufacturerId in productsByManufacturer[tableId]) {
+                    selectedValue += tableId+":"+manufacturerId+":"+productsByManufacturer[tableId][manufacturerId].join(",")+"\n";
+                }
+            }
+            jQuery("#bulk-create-input").val(selectedValue);
+        });
+        if (productsSelected.length > 0) {
+            jQuery("#bulk-create-submit").text( textSubmit(productsSelected.length) ).removeClass("disabled");
+        } else {
+            jQuery("#bulk-create-submit").text( textSubmit(0) ).addClass("disabled");
+        }
+    };    
+    var bindSearchInputs = function() {
+        jQuery("#bulk-create-categories-search").off("keyup change blur").on("keyup change blur", function(event) {
+            updateSearchResult("#bulk-create-categories", jQuery(this).val());
+        });
+        jQuery("#bulk-create-manufacturer-search").off("keyup change blur").on("keyup change blur", function(event) {
+            updateSearchResult("#bulk-create-manufacturer", jQuery(this).val());
+        });
+        jQuery("#bulk-create-product-search").off("keyup change blur").on("keyup change blur", function(event) {
+            if (productsSearchTimer !== null) {
+                window.clearTimeout(productsSearchTimer);
+                productsSearchTimer = null;
+            }
+            productsSearchTimer = window.setTimeout(function() {
+                updateProductSearch( jQuery("#bulk-create-product-search").val() );
+            }, productsSearchInterval);
+        });
+    };
+    var bindTables = function() {
+        jQuery("#bulk-create-categories").find("a[data-id]").off("click").on("click", function(event) {
+            var tableId = jQuery(this).data("id");
+            var tableName = jQuery(this).find(".bulk-create-name").text();
+            updateManufacturers(tableId, tableName);
+            // Active mark
+            jQuery("#bulk-create-categories").find("a[data-id]").removeClass("active");
+            jQuery(this).addClass("active");
+        }).each(function() {
+            var tableId = jQuery(this).data("id");
+            var productCountSelected = getSelectedCountByTable(tableId); 
+            jQuery(this).find(".bulk-create-count span").text( textSelected(productCountSelected) );
+            if (productCountSelected > 0) {
+                jQuery(this).find(".bulk-create-count span").removeClass("text-muted");
+            } else {
+                jQuery(this).find(".bulk-create-count span").addClass("text-muted");
+            }
+        });
+    };
+    var bindManufacturers = function(tableId) {
+        jQuery("#bulk-create-manufacturer").find("a[data-id]").off("click").on("click", function(event) {
+            var manufacturerId = jQuery(this).data("id");
+            var manufacturerName = jQuery(this).find(".bulk-create-name").text();
+            updateProducts(tableId, manufacturerId, manufacturerName);
+            // Active mark
+            jQuery("#bulk-create-manufacturer").find("a[data-id]").removeClass("active");
+            jQuery(this).addClass("active");
+        }).each(function() {
+            var manufacturerId = jQuery(this).data("id");
+            var productCountSelected = getSelectedCountByManufacturer(tableId, manufacturerId); 
+            jQuery(this).find(".bulk-create-count span").text( textSelected(productCountSelected) )
+            if (productCountSelected > 0) {
+                jQuery(this).find(".bulk-create-count span").removeClass("text-muted");
+            } else {
+                jQuery(this).find(".bulk-create-count span").addClass("text-muted");
+            }
+        });
+    };
+    var bindProducts = function(tableId, manufacturerId) {
+        jQuery("#bulk-create-product").find("input").off("change").on("change", function(event) {
+            var productId = jQuery(this).val();
+            updateProductState(tableId, manufacturerId, productId, jQuery(this).prop("checked"));
+            bindTables();
+            bindManufacturers(tableId);
+            bindActions();
+        }).each(function() {
+            var productId = jQuery(this).val();
+            var productOnline = jQuery(this).data("online");
+            jQuery(this).prop("checked", (productsSelected.indexOf(manufacturerId+"."+productId) >= 0) || (productOnline > 0));
+        });
+        jQuery("#bulk-create-product [data-action=productDetail]").off("click").on("click", function(event) {
+            var categoryId = jQuery(this).data("category");
+            var productId = jQuery(this).data("product");
+            showProductDetails(categoryId, productId);
+        });
+        jQuery("#bulk-create-product").on("scroll", function(event) {
+            var elementHeight = jQuery(this).height();
+            var scrollTop = jQuery(this).scrollTop();
+            var scrollBottom = scrollTop + elementHeight;
+            var scrollHeight = this.scrollHeight;
+            if ((scrollHeight - scrollBottom) < 100) {
+                updateProductPage(productsPage + 1);
+            }
+        });
+    };
+    
+    var getSelectedCountByTable = function(tableId) {
+        if (typeof productsByTable[tableId] == "undefined") {
+            return 0;
+        }
+        return productsByTable[tableId].length;
+    };
+    
+    var getSelectedCountByManufacturer = function(tableId, manufacturerId) {
+        if (typeof productsByManufacturer[tableId] == "undefined") {
+            return 0;
+        }
+        if (typeof productsByManufacturer[tableId][manufacturerId] == "undefined") {
+            return 0;
+        }
+        return productsByManufacturer[tableId][manufacturerId].length;
+    };
+    
+    var setMode = function(mode) {
+        if (mode == "manufacturer") {
+            jQuery(".bulk-create-step-manufacturer").show();
+            jQuery(".bulk-create-step-products").hide();
+        }
+        if (mode == "products") {
+            jQuery(".bulk-create-step-manufacturer").hide();
+            jQuery(".bulk-create-step-products").show();
+        }
+    };
+    
+    var showProductDetails = function(categoryId, productId) {
+        jQuery.post(form.attr("action"), "ajax=PRODUCTS_DETAILS&category="+categoryId+"&product="+productId, function(result) {
+            jQuery("#bulk-create-product-details").html(result).show()
+                .find("a").attr("target", "_blank");
+            jQuery("#bulk-create-product-details-notice").hide();
+        });
+    };
+    
+    var updateSearchResult = function(container, query) {
+        if (query == "") {
+            // No search query given
+            jQuery(container).find("[data-id]").show();
+            return;
+        }
+        // Show all results matching the query given
+        query = query.toLowerCase();
+        jQuery(container).find("[data-id]").each(function() {
+            var entryName = jQuery(this).find(".bulk-create-name").text().toLowerCase();
+            if (entryName.indexOf(query) >= 0) {
+                jQuery(this).show();
+            } else {
+                jQuery(this).hide();
+            }
+        });
+    };
+    
+    var updateManufacturers = function(tableId, tableName) {      
+        jQuery("#bulk-create-manufacturer").hide();  
+        jQuery("#bulk-create-manufacturer-hint").hide();
+        jQuery("#bulk-create-manufacturer-loading").show();
+        jQuery(".bulk-create-value-category").html(tableName);
+        jQuery.post(form.attr("action"), "ajax=MANUFACTURERS&table="+tableId, function(result) {
+            jQuery("#bulk-create-manufacturer").html(result).show();
+            jQuery("#bulk-create-manufacturer-loading").hide();
+            jQuery("#bulk-create-product").hide();
+            jQuery("#bulk-create-product-loading").hide();
+            jQuery("#bulk-create-product-hint").show();
+            bindManufacturers(tableId);
+            tableIdActive = tableId;
+            manufacturerIdActive = null;
+        });
+    };
+    var updateProductPage = function(page) {
+        if (productsPageLoading) {
+            return;
+        }
+        updateProducts(tableIdActive, manufacturerIdActive, manufacturerNameActive, productsSearch, page);
+    };
+    var updateProductSearch = function(searchText) {
+        updateProducts(tableIdActive, manufacturerIdActive, manufacturerNameActive, searchText, 1);
+    };
+    var updateProducts = function(tableId, manufacturerId, manufacturerName, searchText, page) {
+        if (typeof searchText == "undefined") {
+            searchText = "";
+        }
+        if (typeof page == "undefined") {
+            page = 1;
+        }
+        productsPage = page;
+        productsPageLoading = true;
+        productsSearch = searchText;
+        if (page == 1) {
+          jQuery("#bulk-create-product").hide();
+          jQuery("#bulk-create-product-hint").hide();
+          jQuery("#bulk-create-product-loading").show();
+        }
+        jQuery(".bulk-create-value-manufacturer").html(manufacturerName);
+        jQuery.post(form.attr("action"), "ajax=PRODUCTS&table="+tableId+"&man="+manufacturerId+"&search="+encodeURIComponent(searchText)+"&npage="+page, function(result) {
+            if (page == 1) {
+              jQuery("#bulk-create-product").html(result.list).show();
+              jQuery("#bulk-create-product").scrollTop(0);
+              jQuery("#bulk-create-product-loading").hide();
+              jQuery(".bulk-create-value-results").html(result.count);
+              jQuery("#bulk-create-product-details").hide();
+              jQuery("#bulk-create-product-details-notice").show();
+            } else {
+              jQuery("#bulk-create-product").append(result.list);
+            }
+            bindProducts(tableId, manufacturerId);
+            tableIdActive = tableId;
+            manufacturerIdActive = manufacturerId;
+            manufacturerNameActive = manufacturerName;
+            setMode("products");
+            if (result != "") {
+                productsPageLoading = false;
+            }
+        });
+    };
+    var updateProductState = function(tableId, manufacturerId, productId, checked) {
+        if (typeof productsByTable[tableId] == "undefined") {
+            productsByTable[tableId] = [];
+        }
+        if (typeof productsByManufacturer[tableId] == "undefined") {
+            productsByManufacturer[tableId] = {};
+        }
+        if (typeof productsByManufacturer[tableId][manufacturerId] == "undefined") {
+            productsByManufacturer[tableId][manufacturerId] = [];
+        }
+        var indexSelected = productsSelected.indexOf(manufacturerId+"."+productId);
+        var indexByTable = productsByTable[tableId].indexOf(productId);
+        var indexByManufacturer = productsByManufacturer[tableId][manufacturerId].indexOf(productId);
+        if (checked) {
+            if (indexSelected == -1) {
+                productsSelected.push(manufacturerId+"."+productId);
+            }
+            if (indexByTable == -1) {
+                productsByTable[tableId].push(productId);
+            }
+            if (indexByManufacturer == -1) {
+                productsByManufacturer[tableId][manufacturerId].push(productId);
+            }
+        } else {
+            if (indexSelected >= 0) {
+                productsSelected.splice(indexSelected, 1);
+            }
+            if (indexByTable >= 0) {
+                productsByTable[tableId].splice(indexByTable, 1);
+            }
+            if (indexByManufacturer >= 0) {
+                productsByManufacturer[tableId][manufacturerId].splice(indexByManufacturer, 1);
+            }
+        }    
+    };
+    
+    var selectProducts = function(selected) {
+        jQuery.post(form.attr("action"), "ajax=PRODUCTS_SELECT&table="+tableIdActive+"&man="+manufacturerIdActive+"&search="+encodeURIComponent(productsSearch), function(result) {
+            for (var resultIndex in result.ids) {
+                var productId = result.ids[resultIndex];
+                updateProductState(tableIdActive, manufacturerIdActive, productId, selected);
+            }
+            bindTables();
+            bindManufacturers(tableIdActive);
+            bindProducts(tableIdActive, manufacturerIdActive);
+            bindActions();
+        });
+    };
+    
+    var textSelected = function(count) {
+        if (count == 0) {
+            return "";
+            //return "[[ translation : marketplace : ad.create.article.bulk.selected.none :: Keine Produkte ausgewählt. ]]";
+        }
+        return "[[ translation : marketplace : ad.create.article.bulk.selected.count : COUNT='"+count+"' : {COUNT} Produkt(e) ausgewählt. ]]";
+    };
+    var textSubmit = function(count) {
+        if (count == 0) {
+            return "[[ translation : marketplace : ad.create.article.bulk.product.submit.generic :: Artikel einstellen ]]";
+        }
+        return "[[ translation : marketplace : ad.create.article.bulk.product.submit.count : COUNT='"+count+"' : {COUNT} Artikel einstellen ]]";
+    };
+    
+    bindActions();
+    bindSearchInputs();
+    bindTables();
+    setMode("manufacturer");
+});  
+</script>
+{endif}

@@ -1,0 +1,41 @@
+{if monat}
+    <h2>{htm(monat)}</h2>
+{endif}
+<div class="marketplaceListItem design-news-archive-row">
+    
+    {if PREVIEW_TYPE}
+        <div class="col-xs-12 col-sm-2">
+            <a href="{URL}" title="Mehr zu {htm(V1)}">
+            {if PREVIEW_TYPE_VIDEO}
+                <img class="img-responsive-center design-user-news-shortlist" src="https://i{PREVIEW_SERVER}.ytimg.com/vi/{PREVIEW_CODE}/default.jpg"/>
+            {else}
+                <img class="img-responsive-center design-user-news-shortlist" src="{thumbnail({PREVIEW_PATH},120,90,crop,Center)}" title="{htm(V1)}" />
+            {endif}
+            </a>
+        </div>
+        <div class="col-xs-12 col-sm-10">
+            <span class="lead">
+                <a href="{URL}" title="Mehr zu {htm(V1)}">{htm(V1)}</a>
+            </span>
+            <p class="text-muted">
+                [[ translation : general : created.at :: eingestellt am ]] {todate(STAMP)}
+            </p>
+            <p>
+                {htm(V2)}
+            </p>
+        </div>
+    {else}
+    <div class="col-xs-12">
+            <span class="lead">
+                <a href="{uri_action({if IDENT}{IDENT}{else}news{endif},{ID_NEWS},{urllabel(V1)})}" title="Mehr zu {htm(V1)}">{htm(V1)}</a>
+            </span>
+        <p class="text-muted">
+            [[ translation : general : created.at :: eingestellt am ]] {todate(STAMP)}
+        </p>
+        <p>
+            {htm(V2)}
+        </p>
+    </div>
+    {endif}
+
+</div>

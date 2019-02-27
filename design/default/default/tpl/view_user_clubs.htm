@@ -1,0 +1,17 @@
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+        <h1>[[ translation : marketplace : group.memberships :: Gruppen-Mitgliedschaften ]]</h1>
+		<p class="lead">[[ translation : marketplace : visit.my.group :: Besuchen Sie auch meine Gruppe(n). ]]</p>
+        {if clubs}
+            <div class="design-row design-row-xs-2 design-row-sm-3 design-row-md-4">
+                {clubs}
+            </div>
+
+            {pager}
+        {endif}
+    </div>
+    <div class="design-page-menu">
+        {subtpl(tpl/{SYS_TPL_LANG}/view_user.info.htm,*)}
+        {content_page()}
+    </div>
+</div>

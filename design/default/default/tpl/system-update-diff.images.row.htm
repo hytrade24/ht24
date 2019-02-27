@@ -1,0 +1,37 @@
+<div id="diff_{DIFF_HASH}" data-file="{htm(FILENAME)}" data-hash="{DIFF_HASH}" data-path-update="{htm(PATH_UPDATE)}" data-path-backup="{htm(PATH_BACKUP)}">
+    <div class="updateDiffEditorHeader{if left} threeWay{endif}">
+    {if left}
+        <div class="left">Original-Version (vor dem Update)</div>
+    {endif}
+        <div class="center">
+            {if SAVED}
+            Aktuelle Version <b class="error important">(Teilweise zusammengeführt!)</b>
+            {else}
+            Neue Version (nach dem Update)
+            {endif}
+        </div>
+        <div class="switch">
+            <a class="button" onclick="updateDiffFileSwitch(); return false;">&lt;--&gt;</a>
+        </div>
+        <div class="right">
+            {if SAVED}
+            Sicherheitskopie (vor dem Update)
+            {else}
+            Aktuelle Version (modifiziert)
+            {endif}
+        </div>
+    </div>
+    <div class="updateDiffImages{if left} threeWay{endif}" id="diff_editor_{DIFF_HASH}">
+    {if left}
+        <div class="left">
+            <img src="{uri_baseurl({left})}" data-source="{htm(left)}">
+        </div>
+    {endif}
+        <div class="center">
+            <img src="{uri_baseurl({center})}" data-source="{htm(center)}">
+        </div>
+        <div class="right">
+            <img src="{uri_baseurl({right})}" data-source="{htm(right)}">
+        </div>
+    </div>
+</div>

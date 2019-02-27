@@ -1,0 +1,29 @@
+<div class="design-row-item">
+    <div class="design-group-box text-center{if IS_MODERATOR} design-group-moderator{endif}">
+    	<div class="design-group-box-logo">
+			<div class="img-polaroid">
+				<a href="{uri_action(view_user,{USERNAME},{FK_USER})}" data-original-title="{USERNAME}">
+					<img src="{uri_baseurl(/cache/users/{USR_CACHE}/{FK_USER}/{FK_USER}.jpg)}" alt="{USER_FIRMA}" border="0" />
+				</a>
+			</div>
+		</div>
+        <div>
+        	<div class="design-group-box-name align-center">
+        		<a href="{uri_action(view_user,{USERNAME},{FK_USER})}" {if USR_UEBER}onmouseover="setBlobText(this, '{htm(USR_UEBER)}', true);" onmouseout="setBlobText(this, '', false);" data-original-title="{USERNAME}" data-placement="left"{endif}>
+        			<i class="glyphicon glyphicon-info-sign"></i>
+					{if USR_FIRMA}
+        				{htm(USR_FIRMA)}		
+        			{else}
+        				{htm(USERNAME)}
+        			{endif}
+        		</a>
+                
+                {if IS_MODERATOR}
+                <a title="[[ translation : marketplace : message.send :: Nachricht schreiben ]]" href="#" onclick="SendMail({FK_USER}, '[[ translation : marketplace : club :: Gruppe ]] {htm(CLUB_NAME)}', 0, 0, 0); return false;">
+                    <i class="glyphicon glyphicon-envelope"></i>
+		        </a>
+                {endif}
+			</div>
+        </div>
+    </div>
+</div>

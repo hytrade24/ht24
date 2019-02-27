@@ -1,0 +1,3 @@
+# Standard robots.txt zum ebiz-trader
+
+Sitemap: {uri_baseurl(cache/sitemap/sitemap.xml)}

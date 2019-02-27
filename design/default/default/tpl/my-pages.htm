@@ -1,0 +1,405 @@
+<style type="text/css">
+    h2 {
+        margin-top:20px;
+    }
+</style>
+<script type="text/javascript" src="{uri_baseurl(/lib/rating.js)}"></script>
+<script type="text/javascript">
+    function bewertung_close(id_sold)
+    {
+        var div = '#details_'+id_sold;
+        $(div).hide();
+        $(div).html('Bitte warten ...');
+    }
+
+    function bewerten(id_sold)
+    {
+        $('#bewerten').css('display', 'table');
+        $.get(ebiz_trader_baseurl + 'my-marktplatz-rating,'+id_sold+'.htm',
+                function(response) {
+                    $('#inhalt').html(response);
+                    var vote_user = new Rating(1,5);
+                    vote_user.SetInput("#RATING");
+                    $('#td_rating').append(vote_user.html);
+                }
+        );
+    }
+    function sendBewertung(id_ad_sold)
+    {
+        $.post(ebiz_trader_baseurl + 'index.php', $('#bewerten_form').serialize(), function(transport)
+                {
+                    $('#rating'+id_ad_sold).attr("src", ebiz_trader_baseurl + 'gfx/lst-btw-erhalten-pic.png');
+                    $('#inhalt').html(transport);
+                    var vote_user = new Rating(1,5);
+                    vote_user.SetInput("RATING");
+                    $('#td_rating').append(vote_user.html);
+                    show_details(id_ad_sold);
+                    show_details(id_ad_sold);
+                }
+        );
+    }
+    function show_kontakt(id_user, id_sold)
+    {
+        $('#kontakt').show();
+        req = new Ajax.Request(
+                ebiz_trader_baseurl + 'index.php?page=show_kontakt&frame=ajax&FK_USER='+id_user+'&FK_SOLD='+id_sold,
+                {
+                    method: 'get',
+                    onSuccess: function(transport)
+                    {
+                        $('#inhalt').html(transport.responseText);
+                    }
+                }
+        );
+    }
+
+    function abschliessen(id_sold)
+    {
+        ask = confirm('[[ translation : marketplace : do.u.want.to.finish :: Soll der Vorgang abgeschlossen werden ]]?');
+        if(ask)
+        {
+            window.location.href= ebiz_trader_baseurl + 'my-marktplatz-einkaeufe,1,'+id_sold+',READY.htm';
+        }
+        return false;
+    }
+
+    function show_details(id_sold)
+    {
+        var div = '#details_'+id_sold;
+        var cur_style = $(div).css("display");
+
+        if (cur_style == 'block')
+        {
+            $(div).hide();
+            $(div).html('[[ translation : marketplace : load.please.wait :: Bitte warten ... ]]');
+        }
+        else
+        {
+            $(div).html('[[ translation : marketplace : load.please.wait :: Bitte warten ... ]]');
+            $(div).show();
+            $.get(
+                    ebiz_trader_baseurl + 'index.php?page=sale_details&frame=ajax&embed=1&FK_SOLD='+id_sold,
+                    function(response) {
+                        $(div).html(response);
+                    }
+            );
+        }
+    }
+
+    function showOrderDetails(orderId) {
+        location.href = '{uri_action(sale_details_seller)}?ID_AD_ORDER='+orderId;
+
+        /*ShowDialog("{uri_action(sale_details_seller)}", "[[ translation : marketplace : order.modal.title : ORDER_ID='"+orderId+"' : Bestellung Nr. {ORDER_ID} ]]", 800, 500, {
+         'close':	function() {
+         var intervalRefresh = false;
+         intervalRefresh = window.setInterval(function() {
+         if (!jQuery("#modalDialog").is(":visible")) {
+         window.clearInterval(intervalRefresh);
+         window.document.location.reload();
+         }
+         }, 500);
+         }
+         }, {
+         'type':		"POST",
+         'data':		{ 'ID_AD_ORDER': orderId }
+         });*/
+    }
+
+    function showBuyerInformation(userId) {
+        ShowDialog("index.php?page=uprofil&SELLER_ID=" + userId + "&frame=ajax", "[[ translation : marketplace : buyer.info :: Käuferinformation ]]");
+    }
+
+    function replyToComment(commentId) {
+        var action = "{uri_action(my-comments,received,reply," + commentId +")}";
+
+        jQuery('#replyForm form').attr('action', action);
+        jQuery('#replyForm form #ID_COMMENT').val(commentId);
+        jQuery('#replyForm').modal('show');
+        return false;
+    };
+
+</script>
+
+{content_page(User - Startseite)}
+
+
+<div class="design-user-notification-list design-row design-row-xs-1 design-row-sm-2 design-row-md-4">
+    {if num_club_invites}
+    <div class="design-row-item">
+        <div class="alert alert-warning alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(my-club)}" title="[[ translation : general : club.invite :: Gruppen-Einladungen ]]">[[ translation : general : club.invite :: Gruppen-Einladungen ]]</a></h4>
+                <p><span class="badge badge-important"><b>{num_club_invites}</b></span></p>
+            </div>
+            <i class="glyphicon glyphicon-envelope"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_club_member_requests}
+    <div class="design-row-item">
+        <div class="alert alert-warning alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(my-club)}" title="[[ translation : marketplace : joining.request :: Beitrittsanfragen ]]">[[ translation : marketplace : joining.request :: Beitrittsanfragen ]]</a></h4>
+                <p><span class="badge badge-important"><b>{num_club_member_requests}</b></span></p>
+            </div>
+            <i class="glyphicon glyphicon-envelope"></i>
+        </div>
+    </div>
+    {endif}
+    {if NEW_MAILS_AD > 0}
+    <div class="design-row-item">
+        <div class="alert alert-danger alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4>
+                    <a href="{uri_action(my-ad-msg)}" title="[[ translation : marketplace : show.all.ad.messages :: Alle Anfragen anzeigen ]]"> [[ translation : marketplace : my.pages.current.ad.messages :: Anfragen ]]</a>
+                </h4>
+                <p><span class="badge badge-important"><b>{NEW_MAILS_AD}</b></span></p>
+            </div>            
+            <i class="glyphicon glyphicon-envelope"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_ad_agents > 0}
+    <div class="design-row-item">
+        <div class="alert alert-info alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(ad_agent)}" title="[[ translation : marketplace : agents :: Agenten ]]"> [[ translation : marketplace : ads.agents.many :: Anzeigen -Agenten ]]</a></h4>
+                <p><span class="badge badge-important"><b>{num_ad_agents}</b></span></p>
+            </div>
+            <i class="glyphicon glyphicon-pushpin"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_ads_going_down > 0}
+    <div class="design-row-item">
+        <div class="alert alert-info alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(my-marktplatz,timeout)}" title="[[ translation : marketplace : ads.timing.out :: Auslaufende Anzeigen ]]">[[ translation : marketplace : ads.timing.out :: Auslaufende Anzeigen ]]</a></h4>
+                <p><span class="badge badge-important"><b>{num_ads_going_down}</b></span></p>
+            </div>
+            <i class="glyphicon glyphicon-warning-sign"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_trades > 0}
+    <div class="design-row-item">
+        <div class="alert alert-warning alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(my-marktplatz-handeln)}" title="[[ translation : marketplace : trades.box.title :: Preis- verhandlungen ]]">[[ translation : marketplace : trades.box.title :: Preis- verhandlungen ]]</a></h4>
+                <p><span class="badge badge-important"><b>{num_trades}</b></span></p>
+            </div>            
+            <i class="glyphicon glyphicon-envelope"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_offers > 0}
+    <div class="design-row-item">
+        <div class="alert alert-warning alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(my-marktplatz)}?VERKAUFSOPTIONEN=5" title="[[ translation : marketplace : offers.box.title :: Angebote zu Gesuchen ]]">[[ translation : marketplace : offers.box.title :: Angebote zu Gesuchen ]]</a></h4>
+                <p><span class="badge badge-important"><b>{num_offers}</b></span></p>
+            </div>            
+            <i class="glyphicon glyphicon-envelope"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_invoices > 0}
+    <div class="design-row-item">
+        <div class="alert alert-danger alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(invoices)}" title="[[ translation : marketplace : open.bills :: Offene Rechnungen ]]">[[ translation : marketplace : open.bills :: Offene Rechnungen ]]</a></h4>
+                <p><span class="badge badge-important"><b>{num_invoices}</b></span></p>
+            </div>            
+            <i class="glyphicon glyphicon-euro"></i>
+        </div>
+    </div>
+    {endif}
+
+</div>
+
+{if liste_verstoss}
+<h2>[[ translation : marketplace : reported.offencens :: Gemeldete Verst&ouml;&szlig;e </h2>
+<div class="alert alert-danger">
+
+    <p>
+        Bitte reagieren Sie umgehend auf Versto&szlig;-Meldungen anderer Benutzer ]]!
+    </p>
+</div>
+<table class="table table-bordered table-striped table-condensed">
+    <tr>
+        <th title="Anzeigen Nummer">
+            [[ translation : general : displays :: Anzeigen ]].Id
+        </th>
+        <th title="[[ translation : marketplace : articel :: Artikel ]]">
+            [[ translation : marketplace : articel :: Artikel ]]
+        </th>
+        <th>
+            [[ translation : general : offence :: Versto&szlig; ]];
+        </th>
+    </tr>
+    {liste_verstoss}
+</table>
+{endif}
+
+
+
+
+
+
+{if liste_sales}
+<h2>
+    [[ translation : marketplace : current.solds :: Aktuelle Verk&auml;ufe ]]
+</h2>
+
+
+<p>[[ translation : marketplace : followed.article.is.sold :: Folgende Artikel wurde verkauft ]]</p>
+<div class="marketplaceSellerOrder">
+    <table class="table table-bordered table-striped table-condensed">
+        <tr>
+            <th></th>
+            <th>[[ translation : marketplace : order.num :: Bestell-Nr. ]]</th>
+            <th>[[ translation : general : date :: Datum ]]</th>
+            <th>[[ translation : marketplace : customer :: Kunde ]]</th>
+            <th>[[ translation : marketplace : shipping.status :: Versandstatus ]]</th>
+            <th>[[ translation : marketplace : payment.status :: Zahlungsstatus ]]</th>
+            <th class="text-right">[[ translation : marketplace : total.amount :: Gesamtbetrag ]]</th>
+        </tr>
+        {liste_sales}
+    </table>
+</div>
+
+<!--
+<div align="right" data-stats="{uri_baseurl(index.php?frame=stats&page=ui_stats&show=my-marktplatz-verkaeufe&w=660&STATUS=1&bg=f9f9f9)}" data-height="300px" class="alert alert-success statistic">
+    [[ translation : marketplace : my.sales.show.statistics :: klicken Sie hier, um Ihre Verkaufsstatistik anzuzeigen ]]
+    <a onclick="return statsLoadIframe(this);" href="#statistic"><img src="{uri_resource(/images/icons/stats-s.png)}" /></a>
+    <div class="stats-container"></div>
+</div>
+-->
+
+
+<p class="text-right">
+    [[ translation : marketplace : no.current.offers :: <a href="{uri_action(my-marktplatz-neu)}" class="btn btn-primary">Artikel verkaufen.</a> <a href="{uri_action(my-marktplatz)}" class="btn btn-success">Meine Produkte ]]</a>
+    <a class="btn btn-info" href="{uri_action(my-marktplatz-verkaeufe)}" title="[[ translation : marketplace : show.all.solds :: Alle Verk&auml;ufe ansehen ]]">
+        [[ translation : marketplace : to.my.solds :: Zu meinen Verk&auml;ufen ]]
+    </a>
+</p>
+{endif}
+
+
+
+{if liste_handeln}
+<h2>[[ translation : marketplace : price.negotiations :: Preisverhandlungen ]]</h2>
+
+<table class="table table-bordered table-striped table-condensed">
+    <tr>
+        <th>[[ translation : general : date :: Datum ]]</th>
+        <th>[[ translation : marketplace : articel :: Artikel ]]</th>
+        <th>[[ translation : marketplace : suggestion :: Vorschlag ]]</th>
+        <th>[[ translation : general : money.amount :: Betrag ]]</th>
+        <th>[[ translation : marketplace : status :: Status ]]</th>
+    </tr>
+    {liste_handeln}
+</table>
+<p class="text-right">
+    <a href="{uri_action(my-marktplatz-handeln)}" class="btn btn-info" title="[[ translation : marketplace : show.all.price.negotiations :: Alle Preisverhandlungen anzeigen ]]">
+        [[ translation : marketplace : to.my.price.negotiations :: Zu meinen Preisverhandlungen ]]
+    </a>
+</p>
+{endif}
+{if liste_shopping}
+<h2>
+    [[ translation : marketplace : current.purchases :: Aktuelle Eink&auml;ufe ]]
+</h2>
+<div class="marketplaceBuyerOrder">
+    <table class="table table-bordered table-striped table-condensed">
+        <tr>
+            <th>[[ translation : marketplace : order.num :: Bestell-Nr. ]]</th>
+            <th>[[ translation : general : date :: Datum ]]</th>
+            <th>[[ translation : marketplace : seller :: Verkäufer ]]</th>
+            <th>[[ translation : marketplace : shipping.status :: Versandstatus ]]</th>
+            <th>[[ translation : marketplace : buy.status :: Zahlungsstatus ]]</th>
+            <th class="align-right">[[ translation : marketplace : total.amount :: Gesamtbetrag ]]</th>
+        </tr>
+        {liste_shopping}
+    </table>
+</div>
+
+<p class="text-right">
+    {if COUNT_UNPAID_ORDERS}
+
+    <a href="{uri_action(my-marktplatz-einkaeufe)}?SEARCH_ORDER_PAYMENT_STATUS=0" class="btn btn-primary">[[ translation : marketplace : pay.my.puchases.now :: Meine Einkäufe jetzt bezahlen ]]</a>
+
+    {endif}
+
+    <a class="btn btn-info" href="{uri_action(my-marktplatz-einkaeufe)}" title="[[ translation : marketplace : show.all.purchases :: Alle Eink&auml;ufe anzeigen ]]">
+        [[ translation : marketplace : to.my.purchases :: Zu meinen Eink&auml;ufen ]]
+    </a>
+
+</p>
+{endif}
+
+
+{if showcomments}
+{if num_comments>0}
+<h2>
+    [[ translation : marketplace : got.comments :: Erhaltene Kommentare ]]
+</h2>
+<p>
+    [[ translation : marketplace : here.are.the.last.ten.comments :: Hier sehen Sie die letzten 10 erhaltene Kommentare ]].
+</p>
+<div>
+    {subtpl(tpl/{SYS_TPL_LANG}/my-comments-list.htm,*,TYPE=ALL,VIEW=MINIMAL,PERPAGE=5)}
+</div>
+<p class="text-right">
+    <a href="{uri_action(my-comments)}" class="btn btn-info" title="[[ translation : marketplace : show.all.comments :: Alle Kommentare anzeigen ]]">[[ translation : marketplace : goto.survey :: Zur Übersicht ]]</a>
+</p>
+{endif}
+{endif}
+
+{if num_events>0}
+<h2>
+    [[ translation : marketplace : unentered.groupevents :: Unbestätigte Gruppenveranstaltungen ]]
+</h2>
+<div>
+    {subtpl(tpl/{SYS_TPL_LANG}/my-calendar-events-list.htm,*,TYPE=ALL,IS_CONFIRMED=0,VIEW=MINIMAL,LIMIT=5)}
+</div>
+<p class="text-right">
+    <a href="{uri_action(my-events)}" class="btn btn-info" title="[[ translation : marketplace : show.all.unterentered.group.events :: Alle unbestätigte Gruppenveranstaltungen anzeigen ]]">[[ translation : marketplace : goto.survey :: Zur Übersicht ]]</a>
+</p>
+{endif}
+
+
+{if invoices}
+<h2>[[ translation : marketplace : open.bills :: Offene Rechnungen ]]</h2>
+
+<table class="table table-bordered table-striped table-condensed">
+    <tr>
+        <th>
+            [[ translation : marketplace : number :: Nr. ]]
+        </th>
+        <th>
+            [[ translation : marketplace : details :: Details ]]
+        </th>
+        <th>
+            [[ translation : general : date :: Datum ]]
+        </th>
+        <th>
+            [[ translation : general : payable.until :: Fällig bis ]]
+        </th>
+        <th>
+            [[ translation : general : bill.status :: Rechnungsstatus ]]
+        </th>
+        <th class="text-right">
+            [[ translation : general : value :: Betrag ]]
+        </th>
+    </tr>
+    {invoices}
+</table>
+<p class="text-right">
+    <a href="{uri_action(invoices)}" class="btn btn-info" title="[[ translation : general : bill.state :: Rechnungs&uuml;bersicht ]]">
+        [[ translation : marketplace : to.my.bills :: Zu meinen Rechnungen ]]
+    </a>
+</p>
+
+{endif}
+<p>&nbsp;</p>

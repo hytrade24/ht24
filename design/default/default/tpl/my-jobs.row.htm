@@ -1,0 +1,42 @@
+<tr class="zeile{even}">
+    {if is_active}
+	 <td class="design-action-buttons">
+	  	<a href="{uri_action(my-jobs-edit,{ID_JOB})}" title="[[ translation : marketplace : edit.job.offer :: Job-Angebot bearbeiten ]]" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+	  	</a>
+	</td>
+    <td class="design-action-buttons">	
+        <a href="{uri_action({curpage},del,{ID_JOB})}" title="[[ translation : marketplace : delete.job.offer :: Job-Angebot löschen ]]" onclick="return confirm('[[ translation : marketplace : do.you.really.want.to.delete.the.job.offer :: Möchten Sie das Jobangebot wirklich löschen? ]]');" class="btn btn-default">
+            <i class="glyphicon glyphicon-remove"></i>
+	  	</a>
+    </td>
+    <td class="design-action-buttons">	  
+      {if OK == 3}
+        <a href="{uri_action(view_user_jobs,{urllabel(NAME)},{ID_USER},{FK_KAT},,{ID_JOB},{urllabel(V1)})}" title="[[ translation : marketplace : show.job.offer :: Job-Angebot lesen ]]" class="btn btn-default" target="_blank">
+            <i class="glyphicon glyphicon-fullscreen"></i>      
+        </a>
+        {endif}
+    </td>
+	<td>
+       {if OK == 0}[[ translation : marketplace : not.ordered :: nicht beantragt ]]{endif}
+       {if OK == 2}[[ translation : marketplace : admin.release :: Adminfreigabe ]]{endif}
+	   {if OK == 1}<span class="text-info">[[ translation : marketplace : will.be.released.shortly :: wird in kürze veröffentlicht... ]]</span>{endif}
+	   
+	</td>
+    {else}
+    <td></td>
+    <td class="design-action-buttons">
+        <a href="{uri_action({curpage},del,{ID_JOB})}" title="[[ translation : marketplace : delete.job.offer :: Job-Angebot löschen ]]" onclick="return confirm('[[ translation : marketplace : do.you.really.want.to.delete.the.job.offer :: Möchten Sie das Jobangebot wirklich löschen? ]]');" class="btn btn-danger">
+            <i class="glyphicon glyphicon-remove"></i>
+        </a>
+    </td>
+     <td></td>
+    	<td>
+      <span class="text-muted">[[ translation : marketplace : run.out :: ausgelaufen ]]</span>
+	</td>
+    {endif}
+
+	<td width="100%">{htm(V1)}</td>
+	<td>{todate(STAMP)}</td>
+	<td nowrap>{langs}</td>
+</tr>

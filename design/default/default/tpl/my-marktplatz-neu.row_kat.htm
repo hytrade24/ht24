@@ -1,0 +1,14 @@
+{if !REMOVED}
+<li name="child{PARENT}" id="row{ID_KAT}">
+	<i class="glyphicon glyphicon-chevron-right"></i>
+	{if kids}
+	    <a class="level1 parent" href="javascript:UpdateKatSelector({ID_KAT}, '{htm(V1)}', {PARENT});" title="[[ translation : general : open :: &Ouml;ffnen ]]">
+	    	{htm(V1)}
+		</a>
+	{else}
+		<a class="level1" href="javascript:UpdateKatSelector({ID_KAT}, '{htm(V1)}', {PARENT}, true);" title="[[ translation : general : select :: Ausw&auml;hlen ]]">
+			{htm(V1)}
+		</a>
+	{endif}	
+</li>
+{endif}

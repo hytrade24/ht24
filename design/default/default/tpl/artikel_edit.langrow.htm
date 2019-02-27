@@ -1,0 +1,16 @@
+<li{if is_current_lang} class="active"{endif}>
+    {if link}
+		<a onclick="return confirm('[[ translation : news : article.language.warning :: Haben sie Ihre Änderungen gespeichert?\nDrücken Sie Abbrechen wenn Sie sich nicht sicher sind! ]]');" href="{uri_action(artikel_edit,{link},{BITVAL})}" title="Sprache {htm(V1)}">
+			<img src="{uri_baseurl(/gfx/lang.{ABBR}.gif)}" />
+			{htm(V1)}
+		</a>
+    {else}
+		<a style="cursor:pointer;" onclick="alert('[[ translation : news : article.language.save.first :: Bitte erst den Artikel speichern um die Sprache zu wechseln! ]]');">
+			<img src="{uri_baseurl(/gfx/lang.{ABBR}.gif)}" />
+			{htm(V1)}
+		</a>
+	{endif}
+	{if is_current_lang}
+		<input type="hidden" name="L_VAL" value="{BITVAL}"> 
+	{endif}
+</li>

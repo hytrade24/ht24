@@ -1,0 +1,29 @@
+<div class="design-request-row {if B_TOP} top{endif}">
+    <div class="row">
+        <div class="col-sm-8 col-md-9 col-lg-10">
+            <div class="design-request-name">
+                <a href="{uri_action(gesuch_anzeigen,{ID_AD_REQUEST},{urllabel(PRODUKTNAME)})}" title="[[ translation : marketplace : ad.view :: {htm(PRODUKTNAME)} ansehen ]]">
+                    <strong>{htm(PRODUKTNAME)}</strong>
+                </a>
+            </div>
+            <p>
+                {htm(BESCHREIBUNG_KURZ)}
+            </p>
+        </div>
+        <div class="col-sm-4 col-md-3 col-lg-2">
+            <dl class="dl-table muted">
+                <dt>[[ translation : general : location.city :: Ort ]]:</dt>
+                <dd>{ZIP} {CITY}</dd>
+
+                <dt>[[ translation : general : date.added :: eingestellt am ]]:</dt>
+                <dd>{todate(STAMP_START)}</dd>
+                <dt>[[ translation : marketplace : category :: Kategorie ]]:</dt>
+                <dd>
+                    <a title="[[ translation : marketplace : category.show.more : KAT=KAT_NAME : Mehr aus der Kategorie {htm(KAT)} ]]" href="{uri_action(ad_request,{FK_KAT},)}">
+                        {htm(KAT_NAME)}
+                    </a>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>

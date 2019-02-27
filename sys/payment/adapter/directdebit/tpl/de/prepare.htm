@@ -1,0 +1,12 @@
+{if USER_CONFIG_Verified}
+    <p>Der offene Betrag i.H.v. <strong>{topreis(INVOICE_REMAINING_PRICE)} {CURRENCY}</strong> wird in den nächsten
+        Tagen automatisch von Ihrem Konto {USER_CONFIG_iban_part}, BIC {USER_CONFIG_bic}, {USER_CONFIG_Bank}
+        abgebucht.
+    </p>
+{else}
+    <div class="alert alert-danger">
+        Sie haben Ihr Konto noch nicht verifiziert. Aus diesem Grund ist eine Abbuchung per Lastschrift nicht möglich.
+        Bitte überweisen Sie den offenen Betrag.<br />
+        Die Details zur Verifizierung finden Sie unter den <a href="{uri_action(my-payment-adapter)}">Zahlungsweisen</a>.
+    </div>
+{endif}

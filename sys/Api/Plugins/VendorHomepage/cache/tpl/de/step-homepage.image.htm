@@ -1,0 +1,5 @@
+imageFile = { name: "{htm(FILENAME)}", size: {int(FILESIZE)}, index: {int(i)}, isDefault: {int(IS_DEFAULT)}, metaTitle: "{htm(META_TITLE)}", metaPosition: {int(META_POSITION)} };
+dropzone.emit("addedfile", imageFile);
+dropzone.emit("thumbnail", imageFile, "{htm(SRC)}");
+dropzone.emit("complete", imageFile);
+

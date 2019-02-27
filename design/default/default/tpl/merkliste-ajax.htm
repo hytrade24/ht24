@@ -1,0 +1,117 @@
+<script type="text/javascript">
+	jQuery(function() {
+		jQuery("#watchlistAddItemFormular").submit(function() {
+
+			var data = jQuery("#watchlistAddItemFormular").serialize();
+			jQuery.ajax({
+				url: jQuery("#watchlistAddItemFormular").attr('action'),
+				type: 'POST',
+				data: data,
+				success: function(result) {
+				    if ( result.success ) {
+				        if ( result.redirect ) {
+				            window.location.reload();
+						}
+					}
+					$('#modalDialog').html(result);
+				}
+			});
+
+
+			return false;
+		});
+	})
+</script>
+
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<form action="{uri_action(merkliste-ajax)}?frame=ajax" method="post" id="watchlistAddItemFormular" class="form-horizontal modal-form design-watchlist-add">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="modalDialogTitle">[[ translation : marketplace : watchlist.add.page.to.watchlist :: Seite zur Merkliste hinzufügen ]]</h3>
+			</div>
+		
+			<div class="modal-body" id="modalDialogContent">
+				<input type="hidden" name="redirect" value="{redirect}">
+		
+				{if saved}
+					<script>
+						jQuery("#modalDialog .modal-footer [type=submit]").detach();
+					</script>
+					<p>
+						[[ translation : marketplace : watchlist.success.page.added.to.watchlist :: Die Seite wurde in Ihre Merkliste eingetragen. ]]
+					</p>
+				{else}
+		
+					{if err_already_in_list}
+						<div class="alert alert-danger">
+							<p><strong>[[ translation : marketplace : error.an.error.occurred :: Es ist ein Fehler aufgetreten! ]]</strong></p>
+		
+							[[ translation : marketplace : watchlist.error.page.already.in.watchlist :: Das Element befindet sich bereits in Ihrer Merkliste ]]
+						</div>
+						<script>
+							jQuery("#modalDialog .modal-footer [type=submit]").detach();
+						</script>
+					{else}
+		
+						{if err}
+							<div class="alert alert-danger">
+								<p><strong>[[ translation : marketplace : error.an.error.occurred :: Es ist ein Fehler aufgetreten! ]]</strong></p>
+		
+								{if err_title}[[ translation : marketplace : watchlist.error.title.empty :: Bitte füllen Sie die Bezeichnung aus. ]]{endif}
+								{if err_other}[[ translation : marketplace : watchlist.error.unknown :: Ein unbekannter Fehler. Bitte versuchen Sie die letzte Aktion erneut. ]]{endif}
+							</div>
+						{endif}
+		
+							<input type="hidden" name="do"  value="add_watchlist" />
+							<input type="hidden" name="FK_REF" value="{FK_REF}">
+							<input type="hidden" name="FK_REF_TYPE" value="{FK_REF_TYPE}">
+							<input type="hidden" name="URL" value="{URL}">
+		
+		
+							<div class="form-group">
+								<label class="control-label design-input-label">[[ translation : marketplace : watchlist.watchlist :: Merkliste ]]:</label>
+		
+								<div class="design-input-field">
+									<select class="form-control" name="FK_WATCHLIST_USER">
+										{watchlist_list}
+									</select>
+									<span class="help-block"><small>[[ translation : marketplace : watchlist.edit.watchlist.names.on.my.merkliste :: Die Bezeichnung der Listen können Sie unter <a href="{uri_action(merkliste)}">Meine Merkliste</a> bearbeiten ]]</small></span>
+								</div>
+							</div>
+		
+							<div class="form-group">
+								<label class="control-label design-input-label">[[ translation : general : url :: Url ]]:</label>
+		
+								<div class="design-input-field">
+									<label class="control-label design-input-label" style="text-align: left; width: 300px;">{LINK}</label>
+								</div>
+							</div>
+		
+							<div class="form-group">
+								<label class="control-label design-input-label">[[ translation : marketplace : watchlist.title :: Bezeichnung ]]: </label>
+		
+								<div class="design-input-field">
+									<input class="form-control" type="text" name="ITEMNAME" value="{ITEMNAME}">
+								</div>
+							</div>
+		
+							<div class="form-group">
+								<label class="control-label design-input-label">[[ translation : marketplace : watchlist.description :: Beschreibung ]]:</label>
+		
+								<div class="design-input-field">
+									<textarea class="form-control" id="REASON" name="DESCRIPTION" rows="4">{htm(DESCRIPTION)}</textarea>
+								</div>
+							</div>
+					{endif}
+				{endif}
+			</div>
+			<div class="modal-footer">
+				<a href="#" onclick="HideDialog(); return false;" class="btn btn-default">[[ translation : general : close :: Schließen ]]</a>
+				<input type="submit" class="btn btn-primary" value="[[ translation : marketplace : watchlist.memorize :: Merken ]]">
+			</div>
+		</form>
+
+	</div>
+</div>

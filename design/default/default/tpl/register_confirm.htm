@@ -1,0 +1,20 @@
+{if fresh}
+<h1>[[ translation : marketplace : thanks.for.your.registration :: Vielen Dank f&uuml;r Ihre Anmeldung ]]</h1>
+<p> [[ translation : marketplace : we.sent.you.an.email.with.your.confirmation.code.
+                                  please.follow.the.link.to.complete.your.registration ::
+
+Wir haben Ihnen eine E-Mail mit Ihrem pers&ouml;nlichen Best&auml;tigungs-Code zugeschickt. 
+Bitte folgen Sie dem angegebenen Link, um Ihre Anmeldung zu vervollst&auml;ndigen. ]]</p>
+{else}
+
+  {if err}
+  <h1>[[ translation : marketplace : registration.confirmed :: Anmeldung best&auml;tigen ]]</h1>
+   <div class="hinweis"><span class="error">{err}</span></div>
+  {endif}
+  {if ready}
+  <h1>[[ translation : general : warm.welcome :: Herzlich willkommen! ]]</h1>
+  <p>[[ translation : marketplace : your.registration.was.successfull :: Ihre Anmeldung wurde erfolgreich abgeschlossen! ]]<br />
+  [[ translation : marketplace : we.send.you.an.email.with.you.access.data.you.can.login.now ::
+  Wir senden Ihnen soeben eine E-Mail mit Ihren Zugangsdaten zu. Sie können sich nun <a href="{uri_action(login)}">einloggen</a>! ]]
+  {endif}
+{endif}

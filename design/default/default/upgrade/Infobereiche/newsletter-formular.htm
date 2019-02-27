@@ -1,0 +1,25 @@
+Zum Newsletter anmelden
+        <br/>
+<form action="{uri_action(newsletter)}" method="post">
+    <div class="input-group">
+        <span class="input-group-addon">@</span>
+        <input name="EMAIL" class="form-control" type="text" value="{htm(EMAIL)}" placeholder="Emailadresse"
+               required="required" type="email"/>
+    </div>
+    
+    <div class="radio">
+        <label>
+            <input checked="checked" name="mode" type="radio" id="optionsRadios1" value="optin"/>
+            Newsletter bestellen
+        </label>
+    </div>
+
+    <div class="radio">
+        <label>
+            <input name="mode" type="radio" id="optionsRadios2" value="optout"/>
+            Newsletter kündigen
+        </label>
+    </div>
+
+    <input type="submit" value="Bestellen" class="btn btn-success"/>
+</form>

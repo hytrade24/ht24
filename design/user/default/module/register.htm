@@ -1,0 +1,597 @@
+{startblock(script)}
+    {parentblock()}
+    <script type="text/javascript">
+    jQuery(function() {
+        
+    
+        {if FK_PACKET_RUNTIME}
+    
+            regShowContainerProfile(null, {PRIVATE}, {FK_USERGROUP});
+    
+            jQuery("#registerMembershipButton-"+jQuery("input[name='FK_RUNTIME'][value='{FK_PACKET_RUNTIME}']").attr("rel")).removeClass("disabled");
+            jQuery(".registerTabs > li:first-child a").tab("show");
+    
+        {else}
+    
+            jQuery(".registerTabs > li:first-child a").tab("show");
+    
+        {endif}
+        {if SELECT_PACKET_RUNTIME}
+            registerSelectPacketSimple({SELECT_PACKET_RUNTIME}, {int(SELECT_PACKET_RUNTIME_SHOW_PACKETS)});
+        {endif}
+    
+        jQuery(".registerRuntimeRadio").change(function() {
+            jQuery(".registerMembershipButton").addClass("disabled");
+            jQuery("#registerMembershipButton-"+jQuery(this).attr("rel")).removeClass("disabled");
+        });
+    });
+    
+    function CheckAll() {
+        CheckField("NAME", "nickname");
+        CheckField("pass1", "password");
+        CheckField("pass2", "password");
+        CheckField("EMAIL", "mail");
+        CheckField("ANSWER", "text");
+        CheckField("lu_anrede", "selectbox");
+        CheckField("FIRMA", "text");
+        CheckField("VORNAME", "text");
+        CheckField("NACHNAME", "text");
+        CheckField("STRASSE", "text");
+        CheckField("PLZ", "text");
+        CheckField("ORT", "text");
+        CheckField("land", "select");
+        CheckField("UST_ID", "text");
+    }
+    
+    function CheckAnredeSelect(input) {
+        /*if (jQuery("#"+input.id).val() == '3') {
+            jQuery("#FIRMA").attr('required', true);
+            CheckField('FIRMA', 'text');
+        }
+        else {
+            jQuery("#FIRMA").attr('required', false);
+            CheckField('FIRMA', 'text');
+            CheckField(input.id, 'selectbox');
+        }*/
+    
+    }
+    
+    function CheckCountrySelect(input) {
+        return CheckField(input.id, 'select');
+    }
+    
+    function CheckValue(name, value, type) {
+        var input = jQuery("#"+name);
+        var required = input.attr("required");
+        if ((value == "") && !required) {
+            // Optionales feld
+            return false;
+        }
+        if (type == "number") {
+            if (isNaN(value)) {
+                return "[[ translation : general : register.error.not.numeric :: Sie müssen eine Zahl angeben. ]]";
+            }
+        }
+        if (type == "password") {
+            if (value.length < 6)
+                return "[[ translation : general : register.error.password.too.short :: Das Passwort muss länger als 5 Zeichen sein. ]]";
+            if ((name == "pass2") && ($("#pass1").val() != value))
+                return "[[ translation : general : register.error.password.repeat :: Die Passwortwiederholung ist nicht korrekt. ]]"
+        }
+        if (type == "nickname") {
+            if (value.length < 3)
+                return "[[ translation : general : register.error.username.too.short :: Der Benutzername muss mindestens 3 Zeichen lang sein. ]]";
+            if (!value.match(/^[a-z0-9_-]+$/i))
+                return "[[ translation : general : register.error.username.invalid :: Der Benutzername enthält ungültige Zeichen. Erlaubt sind Buchstaben, Zahlen und der Unterstrich. ]]";
+        }
+        if (type == "mail") {
+            if (!value.match(/([\._a-z0-9-]+)@([\._a-z0-9-]+)\.([a-z]{2,})$/i))
+                return "[[ translation : general : register.error.email.invalid :: Sie müssen eine gültige E-Mail Adresse angeben. ]]";
+        }
+        if (type == "text") {
+            if (value.length < 1)
+                return "[[ translation : general : register.error.missing.field :: Sie müssen dieses Feld ausfüllen. ]]"
+        }
+        if (type == "select") {
+            var selection = jQuery("#"+name+" option:selected");
+            if (selection.length > 0)  {
+                var value = selection.val();
+                if (value == "") {
+                    return "[[ translation : general : register.error.missing.country :: Sie müssen ein Land auswählen. ]]";
+                }
+            } else {
+                return "[[ translation : general : register.error.missing.country :: Sie müssen ein Land auswählen. ]]";
+            }
+        }
+        if (type == "selectbox") {
+            var selection = jQuery("#"+name+" option:selected");
+            if (selection.length == 0 || selection.val() == "")  {
+                return "[[ translation : general : register.error.missing.selectbox :: Bitte wählen Sie ein Wert aus ]]";
+            }
+        }
+        return false;
+    }
+    
+    function CheckValueAjax(name, value, type) {
+        if (type == "nickname") {
+            jQuery.get(ebiz_trader_baseurl + "index.php?page=register_ajax&frame=ajax&check=NAME&value="+encodeURIComponent(value)+"&EMAIL="+jQuery("#EMAIL").val(), function(obj) {
+                if (obj.used) {
+                    jQuery("#TOOLTIP_"+name).attr("data-content", "Benutzername wird bereits verwendet.");
+                    jQuery("#STATE_"+name).attr("src", ebiz_trader_baseurl + "bilder/stop_check.png");
+                }
+            });
+        }
+        if (type == "mail") {
+            jQuery.get(ebiz_trader_baseurl + "index.php?page=register_ajax&frame=ajax&check=EMAIL&value="+encodeURIComponent(value), function(obj) {
+                if (obj.used) {
+                    jQuery("#TOOLTIP_"+name).attr("data-content", "E-Mail Adresse wird bereits verwendet.");
+                    jQuery("#STATE_"+name).attr("src", ebiz_trader_baseurl + "bilder/stop_check.png");
+                }
+            });
+        }
+    }
+    
+    function CheckField(name, type) {
+        var value = jQuery("#"+name).val();
+        var error = CheckValue(name, value, type);
+    
+        if (error == false) {
+            jQuery("#TOOLTIP_"+name).attr("data-content", "[[ translation : general : register.input.okay :: Eingabe okay! ]]");
+            jQuery("#STATE_"+name).attr("src", ebiz_trader_baseurl + "bilder/ok.png");
+            CheckValueAjax(name, value, type);
+        } else {
+            jQuery("#TOOLTIP_"+name).attr("data-content", error);
+            jQuery("#STATE_"+name).attr("src", ebiz_trader_baseurl + "bilder/stop_check.png");
+        }
+    }
+    
+    </script>
+{endblock(script)}
+
+<div class="design-content-box">
+    {if confirm}
+
+        {if confirm_mail}
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                    <h2>[[ translation : general : register.confirm.mail.title :: Herzlichen Gl&uuml;ckwunsch! ]]</h2>
+                    <p class="lead">
+                        [[ translation : general : register.confirm.mail.lead ::
+                            Ihre Daten wurden erfolgreich gespeichert.
+                        ]]
+                    </p>
+					<p>
+						[[ translation : general : register.confirm.mail.info ::
+							<strong>Ihnen wurde eine Bestätigungscode per E-Mail zugesandt</strong><br />
+							Bitte folgen Sie dem dort angegebenen Link, um Ihre Anmeldung abzuschließen!<br />
+							Ohne die Best&auml;tigung k&ouml;nnen Sie sich nicht anmelden!
+						]]
+					</p>
+                </div>
+            </div>
+        {endif}
+		{if check_admin}
+			<div class="row">
+                <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                    <h2>[[ translation : general : register.confirm.admin.title :: Bestätigung ihres Accounts ]]</h2>
+                    <p class="">
+						[[ translation : general : register.confirm.admin.lead ::
+                            Ein Administrator wird ihren Account in Kürze überprüfen und freischalten.<br>
+						    Sie werden per E-Mail informiert, sobald Ihr Zugang freigeschaltet wurde.
+                        ]]
+					</p>
+                </div>
+            </div>
+		{endif}
+        {if err}
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                    <h2>[[ translation : general : register.error.title :: Bestätigung ihres Accounts ]]</h2>
+                    <p class="lead">
+                        [[ translation : general : register.error.lead ::
+                            Die Bestätigung Ihres Benutzeraccounts ist leider fehlgeschlagen.
+                        ]]
+                    </p>
+
+                    <div class="alert alert-danger">
+                        {err}
+                    </div>
+                </div>
+            </div>
+        {endif}
+    {else}
+        {if welcome}
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                    <h2>[[ translation : general : register.welcome.title :: Herzlich Willkommen {htm(NAME)} als offizielles  Mitglied ]]</h2>
+                    <p class="lead">
+                        [[ translation : general : register.welcome.lead ::
+                            Sie haben sich erfolgreich als User angemeldet.
+						]]
+					</p>
+					<p>
+						[[ translation : general : register.welcome.info ::
+                            Wir freuen uns sehr Sie bei uns bergüßen zu dürfen.<br />
+                            Bitte halten Sie sich an die Regeln und bleiben Sie stets fair.<br />
+                            Sie k&ouml;nnen sich jetzt einloggen.
+                        ]]
+                        <a href="{uri_action(login)}" title="[[ translation : general : to.login :: Zum Login ]]">
+                            [[ translation : general : to.login :: Zum Login ]]
+                        </a>
+                    </p>
+                </div>
+            </div>
+        {else}
+            <h1>[[ translation : general : register.now :: Jetzt registrieren ]]</h1>
+
+            <form name="pers" method="post" action="{uri_action(register)}" class="form-horizontal">
+                <input type="hidden" name="dummy" value="" />
+                <input type="hidden" name="nav" value="{curnav}" />
+                <input type="hidden" name="FK_USERGROUP" value="{FK_USERGROUP}" />
+                <input type="hidden" name="FK_PACKET_RUNTIME" value="{FK_PACKET_RUNTIME}" />
+
+                <div id="registerContainerUsergroup">
+                    <p class="lead">
+                        [[ translation : general : register.usergroup.select :: Bitte wählen Sie eine passende Benutzergruppe aus ]]
+                    </p>
+
+                    <ul class="nav nav-tabs registerTabs">
+                        {usergroups}
+                    </ul>
+
+                    <div class="tab-content registerTabContent">
+                        {usergroups_content}
+
+                        <p class="text-muted">
+                            [[ translation : general : register.abo.notice ::
+                                *) Paketbestandteile im Abo beziehen sich auf die Laufzeit der Mitgliedschaft. Haben Sie in einer Mitgliedschaft beispielsweise
+                                10 Anzeigen im Abo, können Sie stets 10 Anzeigen parallel aktiv haben. Verkaufen Sie eine dieser Anzeigen, können Sie eine neue kostenfrei
+                                einstellen.
+                            ]]
+                        </p>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+
+
+
+                <div id="registerContainerProfile" class="display-none">
+                    <p class="lead">
+                        [[ translation : general : register.please.fill :: Bitte füllen Sie Ihre Benutzerdaten aus ]]:
+                    </p>
+
+                    {if err}
+                        <div class="alert alert-danger">
+                            <h4>
+                                [[ translation : general : error.an.error.occured :: Es ist ein Fehler aufgetreten! ]]
+                            </h4>
+
+                            <p>{err}</p>
+                        </div>
+                    {endif}
+                    {if msg}
+                        <div class="alert alert-info">
+                            {msg}
+                        </div>
+                    {endif}
+
+
+                    <div class="row design-register-profile">
+                        <div class="design-register-profile-form">
+
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : username :: Benutzername ]]*:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control" onchange="CheckField(this.name, 'nickname')" required="required" tabindex="1" type="text" id="NAME" name="NAME" maxlength="20" value="{htm(NAME)}" />
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_NAME" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                            <img class="statusicon" border="0" height="20" id="STATE_NAME" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : email :: E-Mail ]] *:                                    
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control" onchange="CheckField(this.name, 'mail')" required="required" tabindex="2" type="text" name="EMAIL" id="EMAIL" maxlength="255" value="{htm(EMAIL)}" />
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_EMAIL" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                            <img class="statusicon" height="20" id="STATE_EMAIL" src="{uri_baseurl(/bilder/stop_check.png)}">
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : password :: Passwort ]] *:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control" onchange="CheckField(this.name, 'password')" required="required" tabindex="3" type="password" name="pass1" id="pass1" maxlength="64" />
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_pass1" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                            <img class="statusicon" height="20" id="STATE_pass1" src="{uri_baseurl(/bilder/stop_check.png)}">
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation :general : password.repeat.abbr :: Passwort wdhl. ]] *:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control" onchange="CheckField(this.name, 'password')" required="required" tabindex="4" type="password"  name="pass2" id="pass2" maxlength="64" />
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_pass2" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                             <img class="statusicon" height="20" id="STATE_pass2" src="{uri_baseurl(/bilder/stop_check.png)}">
+                                         </a>
+                                    </span>
+                                </div>
+                            </div>
+                            {if REGISTER_SOCIAL_MEDIA || (social_media_login_providers && SOCIAL_MEDIA_LOGIN_ENABLED)}
+                            <div class="form-group">
+                                <div class="design-input-notice">
+                                    {if REGISTER_SOCIAL_MEDIA}
+                                    <p>
+                                        [[ translation : marketplace : register.social.media.login.info :: Ihr Account wird mit <b>{REGISTER_SOCIAL_MEDIA_PROVIDER}</b> verknüpft. Alternativ zur Passworteingabe können Sie sich nach der Registrierung per Social Media Login anmelden. ]]
+                                    </p>
+
+                                    <p>
+                                        <a href="#cancel"
+                                           onclick="socialLoginCancel('REGISTER_PACKET='+jQuery('input[name=FK_PACKET_RUNTIME]').val());">
+                                            <i>
+                                                [[ translation : marketplace : register.social.media.logout.info :: Klicken Sie hier um sich ohne {REGISTER_SOCIAL_MEDIA_PROVIDER}-Login anzumelden. ]]
+                                            </i>
+                                        </a>
+                                    </p>
+                                    {else}
+                                    <div class="loginbox-social-media-login-providers">
+                                        {social_media_login_providers}
+                                    </div>
+                                    {endif}
+                                </div>
+                            </div>
+                            {endif}
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : form.of.address :: Anrede ]]:
+                                </label>
+                                <div class="design-input-field">
+                                    {lookup(anrede,,, class="form-control" onchange="CheckAnredeSelect(this)" tabindex="5",ID_LOOKUP)}
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_lu_anrede" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                            <img class="statusicon" border="0" height="20" id="STATE_lu_anrede" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : company :: Firma ]]:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control" onchange="CheckField(this.name, 'text')"
+                                           type="text" required="required" name="FIRMA" id="FIRMA"
+                                           tabindex="6" maxlength="64" value="{htm(FIRMA)}"
+                                           placeholder="[[ translation : general : company :: Firma ]]" />
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_FIRMA" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                              <img class="statusicon" height="20" id="STATE_FIRMA" src="{uri_baseurl(/bilder/stop_check.png)}">
+                                          </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : name.first :: Vorname ]]<span class="">*</span>:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control" onchange="CheckField(this.name, 'text')" type="text" name="VORNAME" id="VORNAME" class="" tabindex="7" maxlength="64" value="{htm(VORNAME)}" placeholder="Vorname" required="required">
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_VORNAME" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                            <img class="statusicon" border="0" height="20" id="STATE_VORNAME" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : name.last :: Nachname ]]<span class="">*</span>:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control" onchange="CheckField(this.name, 'text')" type="text" name="NACHNAME" id="NACHNAME" class="" tabindex="8" maxlength="64" value="{htm(NACHNAME)}" placeholder="Nachname" required="required">
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_NACHNAME" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                              <img class="statusicon" border="0" height="20" id="STATE_NACHNAME" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                                          </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : street.number :: Straße & Hausnummer ]]<span class="display-none req_paid">*</span>:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control req_paid" onchange="CheckField(this.name, 'text')" type="text" name="STRASSE" id="STRASSE" tabindex="9" maxlength="64" value="{htm(STRASSE)}"  placeholder="Strasse">
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_STRASSE" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                           <img class="statusicon" border="0" height="20" id="STATE_STRASSE" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                                       </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : zip :: PLZ ]]<span class="display-none req_paid">*</span>:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control req_paid" onchange="CheckField(this.name, 'text')" type="text" name="PLZ" id="PLZ" tabindex="10" maxlength="64" value="{htm(PLZ)}"  placeholder="PLZ">
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_PLZ" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                            <img class="statusicon" border="0" height="20" id="STATE_PLZ" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : city :: Ort ]]<span class="display-none req_paid">*</span>:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control req_paid" onchange="CheckField(this.name, 'text')" type="text" name="ORT" id="ORT" tabindex="11" maxlength="64" value="{htm(ORT)}" placeholder="Ort">
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_ORT" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                            <img class="statusicon" border="0" height="20" id="STATE_ORT" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : country :: Land ]]<span class="display-none req_paid">*</span>:
+                                </label>
+                                <div class="design-input-field">
+                                    {select_country(land,,,, class="form-control req_paid" onchange="CheckCountrySelect(this)" tabindex="12",----)}
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_land" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                            <img class="statusicon" border="0" height="20" id="STATE_land" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : vat.id :: Umsatzsteuer ID ]]:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control" onchange="CheckField(this.name, 'text')"
+                                           required="required" type="text" name="UST_ID" id="UST_ID"
+                                           tabindex="13" maxlength="64"
+                                           value="{htm(UST_ID)}" placeholder="[[ translation : general : vat.id :: Umsatzsteuer ID ]]" />
+                                </div>
+                                <div class="design-input-help">
+                                    <span class="help-inline">
+                                        <a id="TOOLTIP_UST_ID" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                            <img class="statusicon" border="0" height="20" id="STATE_UST_ID" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            {if OPTION_COUPON_ENABLED}
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : coupon.register.label :: Gutscheincode ]]:
+                                </label>
+                                <div class="design-input-field">
+                                    <input class="form-control" onchange="CheckField(this.name, 'text')"
+                                           type="text" name="COUPON_CODE" id="COUPON_CODE"
+                                           tabindex="14" value="{htm(COUPON_CODE)}" placeholder="[[ translation : general : coupon.register.placeholder :: Gutscheincode eingeben ]]">
+                                    <p class="help-block">
+                                        [[ translation : general : coupon.register.help :: Wenn Sie einen Gutscheincode besitzen, können Sie diesen hier eingeben ]]
+                                    </p>
+                                </div>
+                            </div>
+                            {endif}
+                            <div class="form-group">
+                                <label class="control-label design-input-label">
+                                    [[ translation : general : register.security.question.short :: Sicherheitsfrage ]]:
+                                </label>
+                                <div class="design-input-field">
+                                    [[ translation : general : register.security.question :: Bitte beantworten Sie folgende Sicherheitsfrage (Spam-Prüfung) ]]:
+                                    <br />
+                                    <label class="control-label">{question()} <span class="display-none req_paid">*</span>:</label>
+                                    <input class="form-control" onchange="CheckField(this.name, 'text')"
+                                           required="required" style="width: 250px;"
+                                           tabindex="15" type="text"
+                                           id="ANSWER" name="ANSWER">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="design-input-notice">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input tabindex="16" type="checkbox" id="AGB" name="AGB" value="ON" required="required">
+                                            [[ translation : general : register.check.tos :: Ich habe die AGB gelesen und akzeptiere diese ]]
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="confirm_private">
+                                <div class="design-input-notice">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input tabindex="17" type="checkbox" id="ACCEPT_PRIVATE" name="ACCEPT_PRIVATE" value="1" required="required">
+                                            [[ translation : general : register.check.private :: Hiermit bestätige ich, dass ich <strong>nicht gewerbsmäßig</strong> handle. ]]
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="confirm_company">
+                                <div class="design-input-notice">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input tabindex="18" type="checkbox" id="ACCEPT_COMPANY" name="ACCEPT_COMPANY" value="1" required="required">
+                                            [[ translation : general : register.check.company :: Hiermit bestätige ich, dass ich <strong>gewerbsmäßig</strong> handle. ]]
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="design-register-profile-terms">
+                            <h4>[[ translation : general : register.tos :: Allgemeine Geschäftsbedingungen ]]</h4>
+
+                            <div class="contentBox" style="background: #FFF;">
+                                <iframe src="{uri_baseurl(/index.php?page=agb&frame=iframe)}" width="100%" height="{if forum_rules}400{else}650px{endif}" style="background: #FFF;" frameborder="0"></iframe>
+                            </div>
+
+                            {content_page(Registrierung - Infoseite unterhalb AGB)}
+
+                            {if forum_rules}
+                            <h4>[[ translation : general : register.forum.rules :: Regeln für das Forum ]]</h4>
+                            <div class="contentBox" style="background: #FFF;">
+                                <div class="forum_rules" style="overflow: auto; height: 160px;" style="background-color: #808080">{forum_rules}</div>
+                            </div>
+                            {endif}
+                        </div>
+                    </div>
+
+
+                    <p class="text-right">
+						<a class="btn btn-default" onclick="regShowContainerUsergroup(this)" id="registerContainerProfileButtonPrev">[[ translation : general : back :: Zurück ]]</a>
+			            <input type="submit" class="btn btn-success" id="registerContainerProfileButtonNextPayed" value="[[ translation : general : register.submit.paid :: Jetzt kostenpflichtig registrieren ]]" />
+			            <input type="submit" class="btn btn-success" style="display: none;" id="registerContainerProfileButtonNextFree" value="[[ translation : general : register.submit.free :: Jetzt kostenlos registrieren ]]" />
+                    </p>
+                </div>
+            </form>
+        {endif}
+    {endif}
+
+</div>

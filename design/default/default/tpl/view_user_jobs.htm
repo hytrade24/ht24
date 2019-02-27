@@ -1,0 +1,73 @@
+{if USER_ID_USER}
+    <div class="row design-page-with-menu">
+        <div class="design-page-content">
+            <div class="text-box design-location">
+                {kat_ariadne_dynamic({FK_KAT},jobs,{V1})}
+            </div>
+            <div class="advertisement-box">{adserver(,1780,)}</div>
+            {if ID_JOB}
+            <div class="page-header">
+                <h1>{htm(V1)}</h1>
+                <div>{todate(STAMP)}</div>
+            </div>
+                <div class="design-job-info " style="">
+                    {if IMG}
+                        <img class="news" src="{uri_baseurl({IMG})}" width="{IMGW}" height="{IMGH}" alt="{htm(V1)}" align="left" />
+                    {endif}
+                    <p>{htm(V2)}</p>
+                    <p>{T1}</p>
+                    {if JOB_CITY}
+                        <div class="panel-footer">
+                            <h4>[[ translation : marketplace : job.location :: Standort ]]</h4>
+                            <p>
+                                {if JOB_STREET}{JOB_STREET}<br>{endif}
+                                {if JOB_CITY}{JOB_ZIP} {JOB_CITY}<br>{endif}
+                                {if JOB_COUNTRY}{JOB_COUNTRY}<br>{endif}
+                            </p>
+                        </div>
+                    {endif}
+                </div>
+            {endif}
+            {if (!ID_JOB || liste)}
+                <h2>{if ID_JOB} [[ translation : marketplace : more.jobs :: Weitere {endif}Jobs ]]</h2>
+                    {if liste}
+                        {liste}
+                        {pager}
+                    {else}
+                    <h2>[[ translation : marketplace : no.jobs.currently :: Derzeit sind keine Jobs eingetragen. ]]</h2>
+                {endif}
+            {endif}
+        </div>
+        <div class="design-page-menu">
+            {subtpl(tpl/{SYS_TPL_LANG}/view_user.info.htm,*)}
+            {content_page()}
+        </div>
+    </div>
+{startblock(script)}
+{parentblock()}
+<script type="application/ld+json">
+    {
+        "@graph": [
+        {
+            "@context":             "http://schema.org",
+            "@type":                "JobPosting",
+            "title":                "{htm(V1)}",
+            "description":          "{T1}",
+            "datePosted":           "{date_format(STAMP,Y-m-d)}",
+            "jobLocation":          {
+                "@type":        "Place",
+                "address":      {
+                    "@type":            "PostalAddress",
+                    "streetAddress":    "{JOB_STREET}",
+                    "addressLocality":  "{JOB_CITY}",
+                    "postalCode":       "{JOB_ZIP}",
+                    "addressCountry":   "{JOB_COUNTRY}"
+                }
+            }
+        },
+        {kat_ariadne_dynamic_json_ld({FK_KAT},jobs,{V1})}
+        ]
+    }
+</script>
+{endblock(script)}
+{endif}

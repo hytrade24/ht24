@@ -1,0 +1,33 @@
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+        <div id="demoLead" class="carousel slide">
+            <div class="carousel-inner">
+                <div class="active item">
+                    <a href="#"><img src="{uri_resource(images/demo/lead1.jpg)}" width="745" height="300" /></a>
+                </div>
+                <div class="item">
+                    <a href="#"><img src="{uri_resource(images/demo/lead2.jpg)}" width="745" height="300" /></a>
+                </div>
+            </div>
+            <a class="carousel-control left" href="#demoLead" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control right" href="#demoLead" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <script type="text/javascript">// <![CDATA[
+        jQuery(function() {
+            $('#demoLead').carousel({
+                interval: 3500 // in milliseconds  
+            })
+        });
+        // ]]>
+        </script>
+    </div>
+    <div class="design-page-menu">
+        {subtpl(tpl/{SYS_TPL_LANG}/kat_left_2.htm,SHOW_AD_COUNT=0,CHILDREN_HOVER=1)}
+    </div>
+</div>

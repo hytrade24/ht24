@@ -1,0 +1,17 @@
+<p id="uploadDocumentNoneYet" class="text-error"{if liste} style="display: none"{endif}>
+    [[ translation : general : no.files.uploaded :: Sie haben noch keine Dokumente hochgeladen. ]]
+</p>
+
+<table id="uploadDocumentTable" class="table table-bordered table-striped table-condensed"{if !liste} style="display: none"{endif}>
+<thead>
+	<tr>
+		<th>[[ translation : general : actions :: Aktionen ]]</th>
+		{if SHOW_PAID_DOCUMENT_DOWNLOAD_OPTION}<th>[[ translation : general : is.paid :: Kostenpflichtig ]]</th>{endif}
+		<th>[[ translation : general : filename :: Dateiname ]]</th>
+		<th>[[ translation : general : filetype :: Dateityp ]]</th>
+	</tr>
+</thead>
+<tbody>
+	{liste}
+</tbody>
+</table>

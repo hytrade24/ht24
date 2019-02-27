@@ -1,0 +1,44 @@
+<style type="text/css">
+    .design-plugin-AdCreatePayment-info .table > tbody > tr > th,
+    .design-plugin-AdCreatePayment-info .table > tbody > tr > td {
+        border-color: rgba(0, 0, 0, 0.2);
+        border-collapse: collapse;
+    }
+</style>
+
+<div class="alert alert-info design-plugin-AdCreatePayment-info" role="alert">
+    <strong>[[ translation : marketplace : plugin.ad.create.payment.title :: Einstellgebühr ]]</strong>
+
+    <p>
+        [[ translation : marketplace : plugin.ad.create.payment.decription.import.info ::
+        Für das Importieren dieser {COUNT} neuen Anzeigen entstehen Kosten in Höhe von <b>{topreis(PREIS_BRUTTO)} {CURRENCY_DEFAULT}</b> inkl. MwSt. ({topreis(PREIS)} {CURRENCY_DEFAULT} Netto)
+        Diese werden ihnen mit Abschluss des Imports in Rechnung gestellt.
+        ]]
+    </p>
+    <p>
+        [[ translation : marketplace : plugin.ad.create.payment.decription.import.price.table ::
+        Die Einstellgebühr für Anzeigen richtet sich nach dem Artikelpreis, beträgt aber mindestens
+        <b>{topreis(PREIS_MIN_BRUTTO)} {CURRENCY_DEFAULT}</b>{if PREIS_MAX} und höchstens <b>{topreis(PREIS_MAX_BRUTTO)} {CURRENCY_DEFAULT}</b>{endif}.
+        ]]
+    </p>
+    <br />
+    <table class="table table-bordered table-condensed">
+        <tr class="info">
+            <th>
+                [[ translation : marketplace : plugin.ad.create.payment.decription.import.price.table.priceMin :: Ab Artikel-Preis ]]
+            </th>
+            {LISTE_PREIS}
+        </tr>
+        <tr class="info">
+            <th>
+                [[ translation : marketplace : plugin.ad.create.payment.decription.import.price.table.pricePercent :: Einstellgebühr in Prozent ]]
+            </th>
+            {LISTE_PROZENT}
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+jQuery(function() {
+    jQuery("#ebayEditSubmit .btn-primary").html("[[ translation : marketplace : plugin.ad.create.payment.decription.import.button.paid :: Kostenpflichtig importieren ]]");
+});
+</script>

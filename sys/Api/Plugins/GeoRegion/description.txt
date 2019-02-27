@@ -1,0 +1,1 @@
+Marktplatz-Anzeigen anhand der Regionen (z.B. Land/Bundesland/Kreis/...) und einer interaktiven Kartenansicht durchsuchbar machen.

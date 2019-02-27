@@ -1,0 +1,25 @@
+<table>
+  <tr>
+    <td align="center">
+      <a href="{uri_action(marktplatz_anzeige,{ID_ARTICLE},{FK_KAT},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)}">
+    	 <img border="0" src="{if SRC_THUMB}{uri_baseurl({SRC_THUMB})}{else}{uri_baseurl(/gfx/nopic.jpg)}{endif}" alt="[[ translation : general : preview :: Vorschau ]]" />
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+    	<a href="{uri_action(marktplatz_anzeige,{ID_ARTICLE},{FK_KAT},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)}">
+    	  {htm(SHORTNAME)}
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      {if VERKAUFSOPTIONEN!=3}
+          {topreis(PREIS)} {CURRENCY_DEFAULT}
+      {else}
+          [[ translation : marketplace : ad.rent.price.per.day :: ab {topreis(PREIS)} {CURRENCY_DEFAULT} / Tag ]]
+      {endif}
+    </td>
+  </tr>
+</table>

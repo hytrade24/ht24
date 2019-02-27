@@ -1,0 +1,22 @@
+search: Suche
+chat.new.ad: 'neue Anfrage{if PLURAL_COUNT!=1}n{endif}'
+chat.new.other: 'neue Nachricht{if PLURAL_COUNT!=1}en{endif}'
+ad.cart.error.quantity: 'Es sind leider nur noch {COUNT} Stück übrig. Bitte reduzieren Sie die gewünschte Menge.'
+ad.qrcode: 'QR-Code anzeigen'
+search.results.show: '({ALL_ADS}) Treffer anzeigen'
+order.modal.title: 'Bestellung Nr. {ORDER_ID}'
+ad.contact.header: 'Stellen Sie eine Frage zu &quot;{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}&quot;'
+pseudoprice: '{topreis_ex(PSEUDOPREIS)} {CURRENCY_DEFAULT}'
+minimum.order.quantity: 'Mindestanfragemenge: {MOQ}'
+shipping.costs: 'Versandkosten: {market_article_shipping(ID_AD,VERSANDKOSTEN)}'
+user.articles.selected: '{COUNT} ausgewählte Artikel'
+ad.counter.viewed: 'Anzeige {adClicks}x angesehen'
+ad.counter.memorized: 'Anzeige {adReminderCount}x gemerkt'
+category.confirm: 'Möchten Sie {NAME} als Kategorie wählen?'
+sales.distribution.intro.sales.codes: 'Registrierungs-Code(s) anlegen und Kunden werben'
+0: 'Eingereichte Stornoanfragen'
+total.orders: Bestellungen
+ad.create.category.confirm: 'Möchten Sie "{NAME}" als Kategorie wählen?'
+min.order.quantity: Mindestanfragemenge
+article.type.show.other.products: '{COUNT} Angebot(e) bei anderen Händlern'
+chat.new.lead: 'neue Anfrage{if PLURAL_COUNT!=1}n{endif} zu Leads'

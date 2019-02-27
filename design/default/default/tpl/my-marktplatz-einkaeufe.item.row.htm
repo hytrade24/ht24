@@ -1,0 +1,109 @@
+<div class="marketplaceOrderItem">
+    <div class="row">
+        <div class="col-xs-12 col-sm-3 marketplaceOrderItemImage">
+			{if AD_ID}
+				<a href="{uri_action(marktplatz_anzeige,{AD_ID},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} [[ translation : marketplace : view.product :: ansehen ]]">
+					<img src="{if AD_SRC}{thumbnail_article({AD_ID},{AD_SRC},80,80,crop)}{else}{uri_resource(/images/marketplace/nopic.jpg)}{endif}" alt="{htm(PRODUKTNAME)}" class="img-responsive" />
+				</a>
+			{endif}
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8">
+					{if AD_ID}
+						<p class="marketplaceOrderItemTitle">
+							<a href="{uri_action(marktplatz_anzeige,{AD_ID},{urllabel(AD_PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(AD_PRODUKTNAME)} [[ translation : marketplace : view.product :: ansehen ]]">
+								<strong>{if MENGE > 1}{MENGE}x {endif}{htm(AD_PRODUKTNAME)}</strong>
+							</a>
+							<br />
+                                {VARIANT}
+                                {if AVAILABILITY}
+                                    <br />
+                                    {if AVAILABILITY_DATE_TO}
+                                        [[ translation : marketplace : availability.span.between : BEGIN=AVAILABILITY_DATE_FROM,END=AVAILABILITY_DATE_TO : Zwischen dem {todate(BEGIN)} und dem {todate(END)} ]]
+                                    {else}
+                                        [[ translation : marketplace : availability.span.until : BEGIN=AVAILABILITY_DATE_FROM,END=AVAILABILITY_DATE_TO : Bis zum {todate(END)} ]]
+                                    {endif}
+                                    {if AVAILABILITY_TIME_FROM}
+                                        [[ translation : marketplace : availability.time.starting : TIME=AVAILABILITY_TIME_FROM : ab {TIME}Uhr ]]
+                                    {endif}
+                                {endif}
+						</p>
+						<p class="marketplaceOrderItemDescription muted">
+							{market_article_description({AD_ID})}
+						</p>
+					{else}
+						<p class="marketplaceOrderItemTitle">
+							{if MENGE > 1}{MENGE}x {endif}{htm(PRODUKTNAME)}
+						</p>
+					{endif}
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <div class="marketplaceOrderItemInfoPrice">
+												<strong>{topreis_ex(PREIS)} {CURRENCY_DEFAULT}</strong><br />
+                        <span class="text-muted">{subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={MWST})}</span>
+                    </div>
+                </div>
+            </div>
+			<div>
+				{if ORDER_ORDER_CONFIRMED}
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 design-action-buttons">
+							{if !RATING_BUYER}
+								<a href="#" onclick="openAdsRatingWindow({ID_AD_SOLD}{if USER_IS_VIRTUAL}, 'user_rating_send'{endif}); return false;" class="btn btn-default">[[ translation : marketplace : rate.product :: Bewerten ]]</a>
+							{else}
+								<span class="marketplaceOrderItemRating" title="[[ translation : marketplace : your.rating :: Ihre Bewertung ]]">[[ translation : marketplace : you :: Sie ]]: <img src="{uri_baseurl(/gfx/stars_{RATING_BUYER}.png)}" /></span>
+							{endif}
+							{if DOWNLOAD_PAID_FILES}
+							{else}
+								{if HAVE_PAID_FILES}
+								<br />
+								<a style="margin-top: 5px;" class="btn btn-default" href="{uri_action(my-marktplatz-einkaeufe,,,,show_digital_downloads)}?highlight={ID_AD_ORDER}">
+									{HAVE_PAID_FILES} [[ translation : marketplace : ad.paid.files :: Bezahlte Produktdateien ]]
+								</a>
+								{endif}
+							{endif}
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							{if !RATING_SELLER}
+
+							{else}
+								<span class="marketplaceOrderItemRating" title="[[ translation : marketplace : seller.rating :: Bewertung des Verkäufers ]]">[[ translation : marketplace : seller :: Verkäufer ]]: <img src="{uri_baseurl(/gfx/stars_{RATING_SELLER}.png)}" /></span>
+							{endif}
+						</div>
+					</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						{if RENOUNCE_REFUND_RIGHT}
+							{if DOWNLOAD_PAID_FILES}
+
+								{DOWNLOAD_PAID_FILES}
+
+								{if DOWNLOAD_ALLOWED}
+									{if REMAINING_TIME}
+									<strong>[[ translation : general : notice :: Hinweis ]]:</strong> {REMAINING_TIME} [[ translation : marketplace : days :: Tage ]] [[ translation : marketplace : days.remaining :: steht Ihnen der Download zur Verfügung. ]]
+									{endif}
+								{else}
+									<strong>[[ translation : general : notice :: Hinweis ]]:</strong> [[ translation : marketplace : download.expire :: Ihre Downloadzeit ist abgelaufen. ]]
+								{endif}
+
+							{endif}
+						{else}
+							<br>
+							<div class="bg-danger">[[ translation : marketplace : renounce.refund.right.hint :: Sie müssen auf Ihr Widerrufs-/Rückgaberecht verzichten, um die Datei(en) herunterladen zu können ]]</div>
+							<br>
+							<form method="post" action="{uri_action(my-marktplatz-einkaeufe,,,,show_digital_downloads)}">
+								<input type="checkbox" name="RENOUNCE_REFUND_RIGHT[{ID_AD_SOLD}]" id="RENOUNCE_REFUND_RIGHT_{ID_AD_SOLD}" value="1"> <label for="RENOUNCE_REFUND_RIGHT_{ID_AD_SOLD}" style="display:inline">[[ translation : marketplace : renounce.refund.right :: Ich stimme der Ausführung des Vertrages vor Ablauf der Widerrufsfrist ausdrücklich zu. Ich habe zur Kenntnis genommen, dass mein Widerrufsrecht mit Beginn der Ausführung des Vertrags erlischt. ]]</label>
+								<input name="button" type="submit" class="btn btn-success" value="[[ translation : general : save :: Speichern ]]">
+							</form>
+						{endif}
+					</div>
+				</div>
+
+				{endif}
+
+			</div>
+        </div>
+    </div>
+</div>

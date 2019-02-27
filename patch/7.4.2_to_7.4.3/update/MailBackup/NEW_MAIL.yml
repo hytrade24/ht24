@@ -1,0 +1,12 @@
+'V1':
+  'de': 'Neue Nachricht erhalten'
+'T1':
+  'de': |
+    Hallo {NAME},
+    
+    Sie haben eine neue Nachricht mit dem Betreff {SUBJECT} erhalten. Unter folgendem Link können Sie die Nachicht(en) lesen:
+    {if FK_AD>0}
+    {uri_action_full(my-ad-msg)}
+    {else}
+    {uri_action_full(my-msg)}
+    {endif}

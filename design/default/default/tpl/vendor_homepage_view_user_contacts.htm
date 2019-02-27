@@ -1,0 +1,20 @@
+
+<div class="row design-page-with-menu">
+    <div class="design-page-content">        
+        <h1>[[ translation : marketplace : contacts :: Kontakte ]]</h1>
+        <p class="lead">[[ translation : marketplace : visit.my.contacts.worth :: Besuchen Sie auch meine Kontakte. Es lohnt sich! ]]</p>
+        {if userContacts}
+            <div class="design-row design-row-xs-2 design-row-sm-4 design-row-md-5">
+                {userContacts}
+            </div>
+
+            {pager}
+        {else}
+            <p>[[ translation : marketplace : no.contacts.yet :: Noch keine Kontakte vorhanden. ]]</p>
+        {endif}
+    </div>
+    <div class="design-page-menu">
+        {subtpl(tpl/{SYS_TPL_LANG}/vendor_homepage_view_user.info.htm,OVERRIDE_USER_ID={USER_ID},*)}
+        {content_page(LINKS - Anbieter-Homepage)}
+    </div>
+</div>

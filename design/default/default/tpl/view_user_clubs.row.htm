@@ -1,0 +1,43 @@
+<div class="marketplaceBoxItem clubBoxItem design-row-item {if IS_MODERATOR}clubBoxItemModerator{endif}{if IS_ADMIN}clubBoxItemAdmin{endif}">
+    <div class="align-center thumbnail">
+    	<div class="clubBoxItemLogo">
+			<a href="{uri_action(club,{urllabel(NAME)},{ID_CLUB})}" title="[[ translation : marketplace : show.group.name :: {htm(NAME)} ansehen ]]">
+			{if LOGO}
+				<img src="{thumbnail(LOGO,196,86)}" />
+			{else}
+				<img src="{uri_resource(/images/marketplace/nopic_club.jpg)}" vspace="5" />
+			{endif}
+			</a>
+		</div>
+        <div>
+        	<div class="clubBoxItemName align-center">
+        		<a href="{uri_action(club,{urllabel(NAME)},{ID_CLUB})}" title="[[ translation : marketplace : show.group.name :: {htm(NAME)} ansehen ]]">
+        			{htm(NAME)} <br />
+        		</a>
+                <div class="clubBoxItemInfo clearfix">
+                    {if MEMBERS}
+                    <a href="{uri_action(group-member,{urllabel(NAME)},{ID_CLUB})}" class="pull-left">
+                        <i class="glyphicon glyphicon-user"></i> [[ translation : marketplace : group.members :: {MEMBERS} Mitglieder ]]
+                    </a>
+                    {endif}
+                    {if COUNT_COMMENTS}
+                    <a href="{uri_action(group,{urllabel(NAME)},{ID_CLUB})}#comments" class="pull-left">
+                        <i class="glyphicon glyphicon-comment"></i> [[ translation : marketplace : count.group.comments :: {COUNT_COMMENTS} Kommentare ]]
+                    </a>
+                    {endif}
+                    {if COUNT_EVENTS}
+                    <a href="{uri_action(group-calendar,{urllabel(NAME)},{ID_CLUB})}" class="pull-left">
+                        <i class="glyphicon glyphicon-calendar"></i> [[ translation : marketplace : count.group.events :: {COUNT_EVENTS} Veranstaltungen ]]
+                    </a>
+                    {endif}
+                    {if COUNT_GALLERY}
+                    <a href="{uri_action(group,{urllabel(NAME)},{ID_CLUB})}#gallery" class="pull-left">
+                        <i class="glyphicon glyphicon-picture"></i> [[ translation : marketplace : count.group.gallery :: {COUNT_GALLERY} Bilder in der Galerie ]]
+                    </a>
+                    {endif}
+                </div>
+                 <!-- <span class="muted">Gegründet:</span>{todate(STAMP)} <span class="muted">Mitglieder:</span> {MEMBERS} -->
+			</div>
+        </div>
+    </div>
+</div>

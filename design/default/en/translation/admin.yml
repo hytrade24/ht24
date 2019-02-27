@@ -1,0 +1,10 @@
+dataTable.pager.first: 'First page'
+dataTable.pager.last: 'Last page'
+dataTable.pager.next: 'Next page'
+dataTable.pager.prev: 'Previous page'
+subtpl.config.cache.notice: |
+  <strong>Important:</strong> The made changes will in some circumstances effective after 
+                          updating the cache!
+subtpl.config.close: Close
+subtpl.config.submit: 'Save configuration'
+subtpl.config.submit.failed: 'Error while updating the configuration!'

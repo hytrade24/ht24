@@ -1,0 +1,1 @@
+Beispiel-Plugin (ohne Funktion) als Grundlage für die Entwicklung eines neuen Plugins.

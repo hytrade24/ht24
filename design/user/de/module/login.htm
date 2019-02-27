@@ -1,0 +1,177 @@
+{if !uid}
+	{if lost}
+        <div class="design-content-box align-center">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="align-center">Passwort vergessen</h2>
+
+
+                    <form method="post" target="_top" action="{uri_action(login,lostpassword)}">
+                        {if psw_sent}
+                            <p>
+                                Ein neues Passwort wurde generiert und an Ihre bei uns gespeicherte Emailadresse gesendet.
+                            </p>
+                            <p><a href="{uri_action(login)}">Zum Login </a></p>
+                        {endif}
+                        {if psw_confirm}
+                            <p>Wir haben ihnen soeben eine Bestätigungsemail zugeschickt. Klicken Sie in dieser bitte auf den Link, um Ihr Passwort zurückzusetzen.</p>
+                        {endif}
+                        {if error}
+                            <div class="alert alert-danger">
+                                Es sind Fehler aufgetreten. Bitte versuchen Sie es erneut.
+                            </div>
+                        {endif}
+                        {if notfound}
+                            <div class="alert alert-danger ">
+                                <p>
+                                Dieser Benutzer ist leider nicht bekannt!
+                                    Bitte überprüfen Sie Ihre Schreibweise!
+
+                                </p>
+                            </div>
+                            <br />
+                        {endif}
+                        {if !psw_sent && !psw_confirm}
+                        <p class="align-center lead">
+                            Geben Sie den Benutzernamen an, dessen Passwort Sie vergessen haben oder Ihre E-Mail Adresse.
+                        </p>
+
+                        <label for="USER">
+                            <strong>Benutzername:</strong>
+                        </label>
+                        <input type="text" name="USER" id="USER" value="{htm(USER)}" />
+
+                        <p class="text-muted">oder</p>
+
+                        <label for="EMAIL">
+                            <strong>E-Mail Adresse:</strong>
+                        </label>
+                        <input type="text" name="EMAIL" id="EMAIL" value="{htm(EMAIL)}" />
+
+                        <div class="align-center">
+                            <p>
+                                <input name="submit" type="submit" class="btn" value="Passwort anfordern" />
+                            </p>
+                            <br />
+                            <p>
+                                Sollten Sie innerhalb der n&auml;chsten 5 Minuten keine Email von uns erhalten haben,
+                                    dann wenden Sie sich bitte an unseren Support.
+
+                            </p>
+                            <p>
+                                <a href="{uri_action(login)}">Zum Login</a>
+                            </p>
+
+                        </div>
+                        {endif}
+                    </form>
+                </div>
+            </div>
+        </div>
+	{endif}
+	{if !lost}		
+		{if err}
+			<div class="alert alert-danger">
+				<h2>
+					Es ist ein Fehler aufgetreten!
+				</h2>
+				 {err}
+			</div>
+		{endif}
+	{endif}
+	{if fail}
+		{if !check_admin}
+			<div class="alert alert-danger align-center">
+				<h3>
+					Login fehlgeschlagen!
+				</h3>
+
+				<p>Bitte überprüfen Sie Benutzernamen und Passwort!</p>
+			</div>
+		{else}
+			<div class="alert alert-info align-center">
+				<h3>Benutzeraccount noch nicht freigegeben</h3>
+
+				<p class="">
+					Ihr Account wurde bislang noch nicht von einem Administrator geprüft und freigegeben.<br>
+					    Sie werden per E-Mail informiert, sobald Ihr Zugang freigeschaltet ist.
+
+				</p>
+			</div>
+		{endif}
+	{endif}
+	{if true}
+        <div class="alert alert-success">
+            <h2>Login erfolgreich!</h2>
+            <p>
+                Sie sind jetzt als Benutzer angemeldet!
+            </p>
+            <p><a href="/logout.php" title="Logout">Logout!</a></p>
+        </div>
+	{else}
+		{if !lost}
+            <div class="design-content-box align-center">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <h2 class="text-center">Als Benutzer anmelden</h2>
+
+                        <p class="text-center lead">
+                            Bitte melden Sie sich mit Ihrem Benutzernamen / E-mail und Ihrem Passwort an.
+                        </p>
+
+                        <form method="post" target="_top" onsubmit="return loginSubmit(this);" action="{uri_baseurl_ssl(/login.php)}" class="">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6 col-md-pull-3 col-md-push-3 col-xs-pull-0 col-xs-push-0">
+                                    <input type="hidden" name="dummy" value="" />
+                                    {if prevpage}
+                                    <input type="hidden" name="redirect" value="{prevpage}" />
+                                    {endif}
+                                    <input type="hidden" name="forward" value="{curpage}" />
+                                    <div class="form-group">
+                                        <label for="loginname">Benutzername/ E-mail:</label>
+                                        <input class="form-control design-input-svg-user" type="text" name="user" id="loginname" maxlength="30" value="{htm(user)}" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="loginpass">Passwort:</label>
+                                        <input class="form-control design-input-svg-locked" type="password" name="pass" id="loginpass" maxlength="64" />
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="stay" value="1"> eingeloggt bleiben?
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-default" type="submit" name="submit">
+                                        Einloggen
+                                    </button>
+                                    <a href="{uri_action(register)}" class="btn btn-default">
+                                        Sind Sie neu?
+                                    </a>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a class="newpw" href="{uri_action(login,lostpassword)}" title="Passwort anfordern" >Passwort vergessen?</a>
+                                        </li>
+                                    </ul>
+                                    {if social_media_login_providers && SOCIAL_MEDIA_LOGIN_ENABLED}
+                                    <div class="loginbox-social-media-login-providers">
+                                        {social_media_login_providers}
+                                    </div>
+                                    {endif}
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+		{endif}
+	{endif}
+{else}
+	<div class="alert alert-success">
+		<h2>Login erfolgreich!</h2>
+		<p>
+            Bitte melden Sie sich mit Ihrem Benutzernamen / E-mail und Ihrem Passwort an.
+        </p>
+		<p><a href="/logout.php" title="Logout">Logout!</a></p>
+	</div>
+{endif}

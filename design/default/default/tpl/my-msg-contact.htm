@@ -1,0 +1,38 @@
+{if CONTACT_ID_CHAT_USER_VIRTUAL}
+  <!-- Anonymer Benutzer -->
+  <p>
+      [[ translation : marketplace : email :: E-Mail ]]:
+      <a href="mailto:{htm(CONTACT_EMAIL)}">{htm(CONTACT_EMAIL)}</a>
+  </p>
+{else}
+  <!-- Registrierter Benutzer -->
+  <div class="pull-right text-right">
+    {if CONTACT_IS_VENDOR}
+      <a href="{uri_action(view_user_vendor,{urllabel(CONTACT_NAME)},{CONTACT_ID_USER})}" target="_blank">
+        <img class="img-responsive" src="{thumbnail(/cache/users/{CONTACT_CACHE}/{CONTACT_ID_USER}/{CONTACT_ID_USER}.jpg,100,100)}" />
+        <i class="glyphicon glyphicon-share"></i>
+        [[ translation : marketplace : business :: Unternehmen ]]
+      </a>
+    {else}
+      <a href="{uri_action(view_user,{urllabel(CONTACT_NAME)},{CONTACT_ID_USER})}" target="_blank">
+        <img class="img-responsive" src="{thumbnail(/cache/users/{CONTACT_CACHE}/{CONTACT_ID_USER}/{CONTACT_ID_USER}.jpg,100,100)}" />
+        <i class="glyphicon glyphicon-share"></i>
+        [[ translation : marketplace : profile :: Profil ]]
+      </a>
+    {endif}
+  </div>
+  <p>
+      {if CONTACT_FIRMA}
+        <b>{htm(CONTACT_FIRMA)}</b>
+      {endif}
+      {htm(CONTACT_STRASSE)}<br />
+      {htm(CONTACT_PLZ)}, {htm(CONTACT_ORT)}<br/>
+      {print_fk(country,CONTACT_FK_COUNTRY)}
+  </p>
+  <div>
+    {if CONTACT_TEL}[[ translation : general : phone :: Telefon ]]: {htm(CONTACT_TEL)}<br/>{endif}
+    {if CONTACT_FAX}[[ translation : general : fax :: Fax ]]: {htm(CONTACT_FAX)}<br/>{endif}
+    {if CONTACT_MOBIL}[[ translation : general : mobile :: Mobil ]]: {htm(CONTACT_MOBIL)}<br />{endif}
+    [[ translation : marketplace : email :: E-Mail ]]: <a href="mailto:{htm(CONTACT_EMAIL)}">{htm(CONTACT_EMAIL)}</a>
+  </div>
+{endif}

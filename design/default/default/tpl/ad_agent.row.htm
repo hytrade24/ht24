@@ -1,0 +1,23 @@
+<tr>
+    <td class="design-action-buttons">
+        <a class="btn btn-default" title="[[ translation : marketplace : adagent.del :: Diesen Agenten l&ouml;schen ]]" onclick="return confirm('[[ translation : marketplace : adagent.del.confirm :: Möchten Sie den Agenten löschen? ]]');"
+		   href="{uri_action(ad_agent,del,{ID_AD_AGENT})}">
+			<i class="glyphicon glyphicon-remove"></i>
+		</a>
+		<a class="btn btn-default" href="{uri_action(marktplatz,{SEARCH_KAT},Suchergebniss,{SEARCH_HASH})}" title="[[ translation : general : execute.now :: Jetzt ausf&uuml;hren ]]">
+			<i class="glyphicon glyphicon-play"></i>
+		</a>
+		<a class="btn btn-default white-text {if STATUS == 1}btn-green{else}btn-red{endif}" title="pause" onclick="pause_anzeige_agent( '{uri_action(ad_agent,pause,{ID_AD_AGENT})}', this );" href="javascript:;">
+			<i class="glyphicon glyphicon-pause"></i>
+		</a>
+    </td>
+	<td title="[[ translation : marketplace : adagent.new.results.last_run :: Beim letzten Lauf wurden {LAST_RUN} Ergebnisse gefunden ]]">
+		{LAST_RUN}
+	</td>
+    <td>
+        {htm(SEARCH_NAME)}
+    </td>
+    <td>
+    	{SEARCH_PARAMS}
+    </td>
+</tr>

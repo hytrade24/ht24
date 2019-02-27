@@ -1,0 +1,19 @@
+<div class="alert alert-info">
+    <img src="{uri_resource(/images/icons/info.png)}" width="67" height="65" align="right" hspace="5" alt="Anmelden" />
+  <p class="lead">Neue Gruppe starten</p>
+  <p>Starten Sie jetzt Ihre eigene Gruppe.</p>
+  <p>{if ID_USER}
+    <a href="{uri_action(my-group)}" target="_blank">Hier klicken, um eine eigene Gruppe zu erstellen.</a></p>  
+  {else}
+    <a href="{uri_action(register)}" target="_blank">Freunde und gleichgesinnte treffen</a></p>  
+  {endif}
+</div>
+
+<div class="advertisement-box">{adserver(,1783,)}</div>
+
+<div class="panel panel-primary"> 
+  <div class="panel-heading">Unsere Seite empfehlen</div>
+  <div class="panel-body">
+	{content_page(SOCIAL-MEDIA)}
+  </div>
+</div>

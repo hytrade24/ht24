@@ -1,0 +1,44 @@
+<h1>[[ translation : marketplace : ad.create.packet.title:: Anzeigenpaket ]]</h1>
+<p class="lead">
+    [[ translation : marketplace : ad.create.packet.subtitle :: Bitte wählen Sie die das Anzeigenpaket das Sie zum Einstellen verwenden möchten ]]
+</p>
+
+<div class="design-content-box">
+    {if liste}
+    <div id="packet_selection">
+        <strong class="control-label">[[ translation : marketplace : ad.create.packet.lead :: Bitte Anzeigenpaket wählen ]]:</strong>
+        <div class="controls">
+            <ul style="list-style-type: none;">
+                {liste}
+            </ul>
+        </div>
+    </div>
+    <form id="packet_select_form" class="form-horizontal" onsubmit="SubmitStep(this); return false;">
+        <input type="hidden" name="step" value="{STEP_IDENT}" />
+        <input type="hidden" name="FK_PACKET_ORDER" value="{FK_PACKET_ORDER}" />
+    </form>
+    {else}
+    <div id="packet_not_available" class="text-error">
+        <p>
+            [[ translation : marketplace : ad.create.packet.not.available ::
+                <strong>Keine Anzeigenpakete verfügbar!</strong>
+            ]]
+            {if !liste_unpaid}
+            [[ translation : marketplace : ad.create.packet.not.available.buy ::
+                Um neue Anzeigen zu schalten müssen Sie ein
+                <a href="{uri_action(packets)}">Anzeigenpaket kaufen</a>.
+            ]]
+            {endif}
+        </p>
+        {if liste_unpaid}
+        <p>
+            <strong>[[ translation : marketplace : ad.create.packet.unpaid :: Sie haben noch folgende unbezahlte Anzeigenpakete: ]]</strong>
+
+        <ul>
+            {liste_unpaid}
+        </ul>
+        </p>
+        {endif}
+    </div>
+    {endif}
+</div>

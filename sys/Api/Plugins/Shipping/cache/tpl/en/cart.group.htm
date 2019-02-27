@@ -1,0 +1,8 @@
+Product from seller <a href="{uri_action(view_user,{urllabel(ANBIETER_NAME)},{ANBIETER_ID_USER})}">{ANBIETER_NAME}</a>
+{if PAYMENT_ADAPTER}
+  with the payment method '{htm(PAYMENT_ADAPTER)}'
+{endif}
+<br />
+<small class="text-muted">
+  Versand mit {htm(SHIPPING_PROVIDER)}
+</small>

@@ -1,0 +1,1 @@
+Import-Tool um die Möglichkeit erweitern Daten in die Produkt-Datenbank zu importieren. (Nur für Admin-Benutzer sichtbar!)

@@ -1,0 +1,184 @@
+{if SAVED}
+<h3 class="ok">
+    [[ translation : marketplace : plugin.ad.create.payment.config.saved :: Die Konfiguration wurde erfolgreich gespeichert! ]]
+</h3>
+{endif}
+
+<h3>
+    [[ translation : marketplace : plugin.ad.create.payment.config.title :: Staffelung der Einstellgebühren ]]
+</h3>
+
+<table class="liste" id="pluginAdCreatePayment_priceList">
+    <thead>
+        <tr>
+            <th>Ab Artikelpreis</th>
+            <th>Einstellgebühr in %</th>
+        </tr>
+    </thead>
+    <tbody>
+        {liste_prices}
+    </tbody>
+</table>
+
+<h3>
+    [[ translation : marketplace : plugin.ad.create.payment.config.tax.title :: Mehrwertsteuersatz ]]
+</h3>
+
+<select name="CONFIG[TAX_ID]" id="pluginAdCreatePayment_taxInput">
+    {liste_tax}
+</select>
+
+<h3>
+    [[ translation : marketplace : plugin.ad.create.payment.config.cap.title :: Deckelung ]]
+</h3>
+
+<table style="min-width: 600px;">
+    <tr>
+        <th>
+            [[ translation : marketplace : plugin.ad.create.payment.config.cap.min :: Mindestgebühr ]]:
+        </th>
+        <th>
+            [[ translation : marketplace : plugin.ad.create.payment.config.cap.max :: Maximalgebühr ]]:
+        </th>
+    </tr>
+    <tr>
+        <td>
+            <p>
+                <input data-value="PRICE_NETTO" name="CONFIG[CAP_MIN]" type="text" value="{CONFIG_CAP_MIN}" />
+                [[ translation : marketplace : plugin.ad.create.payment.config.cap.min.netto :: {CURRENCY_DEFAULT} Netto ]]
+            </p>
+            <p>
+                <input data-value="PRICE_BRUTTO" type="text" value="{topreis(CONFIG_CAP_MIN_BRUTTO)}" />
+                [[ translation : marketplace : plugin.ad.create.payment.config.cap.min.brutto :: {CURRENCY_DEFAULT} Brutto ]]
+            </p>
+        </td>
+        <td>
+            <p>
+                <input data-value="PRICE_NETTO" name="CONFIG[CAP_MAX]" type="text" value="{CONFIG_CAP_MAX}" />
+                [[ translation : marketplace : plugin.ad.create.payment.config.cap.max.netto :: {CURRENCY_DEFAULT} Netto ]]
+            </p>
+            <p>
+                <input data-value="PRICE_BRUTTO" type="text" value="{topreis(CONFIG_CAP_MAX_BRUTTO)}" />
+                [[ translation : marketplace : plugin.ad.create.payment.config.cap.max.brutto :: {CURRENCY_DEFAULT} Brutto ]]
+            </p>
+        </td>
+    </tr>
+</table>
+
+<script type="text/html" id="pluginAdCreatePayment_priceTemplate">
+    <tr>
+        <td>
+            <input type="text" class="inputPriceMin" name="CONFIG[STEPS][PRICE_MIN][]" placeholder="Ab Artikelpreis" />
+        </td>
+        <td>
+            <input type="text" class="inputPricePercent" name="CONFIG[STEPS][PRICE_PERCENT][]" placeholder="Gebühr in %" />
+        </td>
+    </tr>
+</script>
+<script type="text/javascript">
+
+(function() {
+    var template = jQuery("#pluginAdCreatePayment_priceTemplate").html();
+    var lineFocused = null;
+    var lineFocusedPrev = null;
+    var addLineEvents = function(line) {
+        jQuery(line).find("input").on("blur", function() {
+            lineFocusedPrev = lineFocused;
+            lineFocused = null;
+            window.setTimeout(function() {
+                // This is executed after events (focus event) were handled
+                if (lineFocused === null) {
+                    updateLine(lineFocusedPrev, lineFocused);
+                }
+            });
+        });
+        jQuery(line).find("input").on("focus", function() {
+            lineFocused = line;
+            if (lineFocusedPrev !== null) {
+                updateLine(lineFocusedPrev, lineFocused);
+            }
+        });
+    };
+    // Add new line
+    var addNewLine = function() {
+        jQuery("#pluginAdCreatePayment_priceList > tbody").append(template);
+        addLineEvents( jQuery("#pluginAdCreatePayment_priceList > tbody > tr").last() );
+    };
+    // Bind existing lines
+    var bindLines = function() {
+        jQuery("#pluginAdCreatePayment_priceList > tbody > tr").each(function() {
+            addLineEvents( jQuery(this) );
+        });
+    };
+    // Sort lines
+    var sortLines = function() {
+        // Get and detach all filled lines
+        var lines = [];
+        jQuery("#pluginAdCreatePayment_priceList > tbody > tr").each(function() {
+            var priceMinText = jQuery(this).find(".inputPriceMin").val().replace(",", ".");
+            if (priceMinText != "") {
+                var priceMinValue = parseFloat(priceMinText);
+                lines.push({
+                    priceMin: priceMinValue,
+                    line: jQuery(this).detach()
+                });
+            }
+        });
+        // Sort them
+        lines.sort(function(a, b) {
+            return (a.priceMin - b.priceMin);
+        });
+        // Add to table again
+        while (lines.length > 0) {
+            jQuery("#pluginAdCreatePayment_priceList > tbody").prepend(
+                lines.pop().line
+            );
+        }
+    };
+    // Update line (delete if empty)
+    var updateLine = function(lineBlur, lineFocus) {
+        var isInputFilled = false;
+        jQuery(lineBlur).find("input").each(function() {
+            if (jQuery(this).val() != "") {
+                isInputFilled = true;
+            }
+        });
+        if (!isInputFilled && !jQuery(lineBlur).is(lineFocus)) {
+            // Do not remove the last row
+            if (jQuery(lineBlur).next().length > 0) {
+                // Remove line
+                jQuery(lineBlur).remove();
+            }
+        } else if (jQuery(lineBlur).next().length == 0) {
+            // Add new line at the end
+            addNewLine();
+        }
+        if (lineFocus === null) {
+            sortLines();
+        }
+    };
+    // Initialize
+    bindLines();
+    addNewLine();
+    // On tax change
+    jQuery("#pluginAdCreatePayment_taxInput").change(function() {
+        jQuery("input[data-value=PRICE_NETTO]").trigger("change");
+    });
+    jQuery("input[data-value^=PRICE_]").on("change", function() {
+        var value = jQuery(this).val().replace(",", ".");
+        if (value != "") {
+            var taxValue = parseFloat(jQuery("#pluginAdCreatePayment_taxInput option:selected").attr("data-value"));
+            if (jQuery(this).is("[data-value=PRICE_NETTO]")) {
+                var brutto = value * (100 + taxValue) / 100;
+                brutto = Math.round(brutto * 100) / 100;    // Round
+                jQuery(this).closest("td").find("[data-value=PRICE_BRUTTO]").val(brutto);
+            } else if (jQuery(this).is("[data-value=PRICE_BRUTTO]")) {
+                var netto = value * 100 / (100 + taxValue);
+                netto = Math.round(netto * 10000) / 10000
+                jQuery(this).closest("td").find("[data-value=PRICE_NETTO]").val(netto);
+            }
+        }
+    });
+})();
+
+</script>

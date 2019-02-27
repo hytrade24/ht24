@@ -1,0 +1,59 @@
+<h1>[[ translation : marketplace : your.adverts :: Ihre Stellenanzeigen ]]</h1>
+<p>
+    [[ translation : marketplace : here.you.find.all.adverts.you.made.your.adverts.get.a.publish.date.after.you.unlock.them ::
+        Hier finden Sie alle Stellenanzeigen, die Sie bisher verfasst haben!<br />
+        Ihre Stellenanzeigen bekommen erst ein ver&ouml;ffentlichungsdatum, wenn Sie selbst eine Freigabe gesetzt haben!
+    ]]
+</p>
+<p>
+    [[ translation : marketplace : the.adverts.are.for :: Die Stellenanzeige sind für ]] <b>{jobruntime}
+    [[ translation : general : days :: Tage ]]</b>
+    [[ translation : marketplace : online :: online. ]]
+</p>
+<p align="right">
+    <a href="{uri_action(my-jobs-edit)}" class="btn btn-info">
+        <i class="glyphicon glyphicon-pencil"></i> [[ translation : marketplace : add.new.job :: Neuen Job hinzufügen ]]
+    </a>
+</p>
+{if err}
+<div class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert">×</button>
+	{err}
+</div>
+{endif}
+<table class="table table-bordered table-striped table-condensed">
+	<tr>
+		<th colspan="3">[[ translation : general : action :: Aktion ]]</th>
+		<th>[[ translation : marketplace : release :: Freigabe ]]</th>
+		<th>[[ translation : marketplace : article :: Artikel ]]</th>
+		<th>[[ translation : general : date :: Datum ]]</th>
+		<th></th>
+	</tr>
+{if liste}
+	{liste}
+{else}
+	<tr>
+		<td colspan="7" align="center">
+			<span class="error">[[ translation : marketplace : no articles :: Keine Artikel ]]</span>
+		</td>
+	</tr>
+	{endif}
+</table>
+
+ <div class="design-content-box design-icon-legend">
+	<div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = [[ translation : marketplace : edit :: Bearbeiten ]]
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>  = [[ translation : marketplace : delete.if.not.released :: löschen (wenn noch nicht veröffentlicht) ]]
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-fullscreen"></i></a> = [[ translation : marketplace : watch.online :: Online ansehen ]]
+	</div>
+	<div class="pull-left clearfix">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-retweet"></i></a> = [[ translation : marketplace : comment.available :: Kommentare vorhanden ]]
+	</div>
+</div>
+<p>
+{pager}
+</p>

@@ -1,0 +1,43 @@
+<tr class="">
+	<td>
+		{subtpl(tpl/{SYS_TPL_LANG}/my-import-presets-edit.fieldmappingrenderer.partial.buttons.htm,*)}
+	</td>
+	<td><b>[[ translation : marketplace : import.mapping.function :: Funktion ]]</b></td>
+	<td>
+		<script>
+
+			function TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_changeType(me) {
+
+				if(confirm('[[ translation : marketplace : import.mapping.function.change.warning :: Möchten Sie den Funktionstyp wirklich ändern? Bereits gespeicherte Wertzuordnungen gehen dabei verloren ]]')) {
+					ipe.saveMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', {POS});
+				} else {
+					jQuery(me).val('{CURRENT_FUNCTION_CLASS}');
+				}
+			}
+
+
+		</script>
+
+
+		<div>
+			<select class="form-control" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}][FUNCTION]" id="TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_select" onchange="return TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_changeType(this);">
+				<option value="">[[ translation : marketplace : import.mapping.function.please.choose :: Bitte Funktion auswählen ]]</option>
+				{SELECT_FUNCTION}
+			</select>
+		</div>
+
+		<p><small class="">[[ translation : marketplace : import.mapping.explode.description :: Mit der Funktion Zerteilen trennen Sie eine Zeichenkette anhand des Trennzeichens auf ]]</small></p>
+
+		<div class="form-group">
+			<div class="col-xs-12">
+				<label class="control-label">[[ translation : marketplace : import.mapping.explode.delimiter :: Trennzeichen ]]:</label>
+				<div class="input-group">
+					<input class="form-control" type="text" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}][CONFIG][DELIMITER]" value="{htm(EXPLODE_DELIMITER)}" onkeypress="jQuery('#TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_{POS}').attr('disabled', false);">
+					<div class="input-group-btn">
+						<input type="button" class="btn btn-default" onclick="ipe.saveMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', {POS}); return false;" value="[[ translation : marketplace : import.save :: Speichern ]]" id="TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_{POS}" disabled>
+					</div>
+				</div>
+			</div>
+		</div>
+	</td>
+</tr>

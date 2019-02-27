@@ -1,0 +1,216 @@
+{startblock(script)}
+    {parentblock()}
+	<script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+	<script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+	<script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+	<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+	<script type="text/javascript">
+	
+	function neuerKommentar(button) {
+		mydiv = document.getElementById('new_comment');
+		if (mydiv.style.display != 'none') {
+			button.style.display = ""; 
+			neu = 'none';  
+		} else {
+			button.style.display = "none";
+			neu = 'block';
+		}
+		mydiv.style.display = neu;
+	} // neuer Kommentar
+		
+	</script>
+{if artikel_show}
+    {javascript_google_maps()}
+    <script type="text/javascript">
+        ebizGoogleMapCallback(function() {
+            // Google Maps
+            {if VIEW_ADDRESS == 2 && LATITUDE}
+                var bounds = new google.maps.LatLngBounds();
+
+                var latlng = new google.maps.LatLng({LATITUDE}, {LONGITUDE});
+                bounds.extend(latlng);
+
+                var myOptions = {
+                    zoom: 13,
+                    center: latlng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+
+                var map = new google.maps.Map(document.getElementById("eventMap"), myOptions);
+
+                // Marker
+                var marker = new Array();
+                var infowindow = new Array();
+
+                marker[0] = new google.maps.Marker({
+                    position: latlng,
+                    map: map
+                });
+            {endif}
+        });
+    </script>
+{endif}
+{endblock(script)}
+
+{if artikel_show}
+	{if V1}
+	<div class="design-news-article">
+		<div class="text-box design-location">
+			{kat_ariadne_dynamic({ID_KAT},news,{V1})}
+		</div>
+
+		<h1>{htm(V1)}</h1>
+		<p class="text-muted">
+			{todate(STAMP)} - <a href="{uri_action(view_user_vendor,{AUTORUNAME},{FK_AUTOR})}">{htm(AUTORUNAME)}</a>
+		</p>
+
+		{if IMG}<img src="{uri_baseurl({IMG})}" width="{IMGW}" height="{IMGH}" style="float:{IMGFLOAT};margin-right:4px;margin-bottom:2px;" />{endif}
+		<span class="lead">{V2}</span>
+		{T1}
+    {if VIEW_ADDRESS != 0 && (TITLE || LOCATION || STREET || ZIP || CITY || COUNTRY || PHONE || MOBILE || FAX || EMAIL)}
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                        <div class="row">
+                            {if VIEW_ADDRESS == 2 && LATITUDE}
+                                <div id="map_container" class="col-xs-12 col-md-6 design-news-details-map">
+                                    <div id="eventMap" style="height:200px;"></div>
+                                </div>
+                            {endif}
+                            <div class="{if VIEW_ADDRESS == 2 && LATITUDE}hidden-xs col-xs-12 col-md-6{else}col-md-12{endif}">
+                                <h3>{htm(TITLE)}</h3>
+                                <p>
+                                    {if LOCATION}{htm(LOCATION)}<br>{endif}
+                                    {if STREET}{htm(STREET)}<br>{endif}
+                                    {if ZIP || CITY}{htm(ZIP)} {htm(CITY)}<br>{endif}
+                                    {if ZIP}{print_fk(country)}<br>{endif}
+                                    {if PHONE || MOBILE || FAX || EMAIL}
+                                        <br>
+                                        {if PHONE}{htm(PHONE)}<br>{endif}
+                                        {if MOBILE}{htm(MOBILE)}<br>{endif}
+                                        {if FAX}{htm(FAX)}<br>{endif}
+                                        {if EMAIL}{htm(EMAIL)}<br>{endif}
+                                    {endif}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {endif}
+	</div>
+
+		{if verwandt || LINKS}
+			<div class="row">
+				{if verwandt}
+				<div class="col-xs-12 {if LINKS}col-md-6{else}col-md-12{endif}">
+					<div class="panel panel-primary">
+						<div class="panel-heading">[[ translation : news : related.topics :: Verwandte Beiträge ]]</div>
+
+						<div class="panel-body">
+							<ul class="list-unstyled">{verwandt}</ul>
+						</div>
+					</div>
+				</div>
+				{endif}
+				{if LINKS}
+				<div class="col-xs-12 {if LINKS}col-md-6{else}col-md-12{endif}">
+					<div class="panel panel-primary">
+						<div class="panel-heading">[[ translation : news : links.to.article :: Links zum Artikel ]]</div>
+
+						<div class="panel-body">
+							<ul class="list-unstyled">{LINKS}</ul>
+						</div>
+					</div>
+				</div>
+				{endif}
+			</div>
+		{endif}
+		{if comments_enabled}
+			<div class="generic-box-margin-bottom">
+				{subtpl(tpl/de/comment_list.htm,TABLE=news,FK={ID_NEWS})}
+				{subtpl(tpl/de/comment.htm,ID_USER,TABLE=news,FK={ID_NEWS})}
+			</div>
+		{endif}
+
+		{if liste}
+			<div class="tabbable">
+				<ul class="nav nav-tabs">
+					<li class="active"><a>[[ translation : news : more.articles :: Weitere Beiträge ]]</a></li>
+				</ul>
+			</div>
+			<div class="design-row design-row-xs-1 design-row-sm-2">
+				{liste}
+			</div>
+
+			{pager}
+		{endif}
+	{else}
+		<h1>[[ translation : news : news :: News ]]</h1>
+		<p>[[ translation : news : category.empty :: Zurzeit befinden sich in dieser Kategorie keine News ]]</p>
+	{endif}
+{else}
+	<h1>{if MODULNAVNAME}{MODULNAVNAME}{else}[[ translation : news : news.title.general :: Aktuelles ]]{if KATNAME} - {KATNAME}{endif}{endif}</h1>
+	<p class="lead">
+        [[ translation : news : read.lead :: Lesen Sie alle Neuigkeiten rund um die Branche und unseren Marktplatz ]]
+    </p>
+
+<div class="row">
+    <div class="col-xs-12 col-md-8">
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=1,COUNT_PER_ROW=1,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES=0,TEMPLATE=row_big,CACHE_LIFETIME=102)}
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <h3>Mehr ...</h3>
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=6,COUNT_PER_ROW=1,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES=0,TEMPLATE=row_list,CACHE_LIFETIME=102)}
+    </div>
+</div>
+
+	<div class="text-box design-location">
+		<div class="design-ariande design-ariande-news">
+			<div class="row">
+				<div class="col-xs-8">
+					{kat_ariadne_dynamic({ID_KAT},news)}
+				</div>
+				<div class="col-xs-4 text-right text-muted">
+					{all} [[ translation : news : news :: News ]]
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="design-row design-row-xs-1 design-row-sm-2">
+		{liste}
+	</div>
+	{pager}
+{endif}
+{startblock(script)}
+{parentblock()}
+<script type="application/ld+json">
+		{kat_ariadne_dynamic_json_ld({ID_KAT},news,{V1})}
+</script>
+{if artikel_show}
+<script type="application/ld+json">
+		{
+			"@context": 		"http://schema.org",
+			"@type":			"NewsArticle",
+			"mainEntityOfPage": {
+				"@type":		"WebPage",
+				"@id":			"{siteurl}{REQUEST_URI}"
+			},
+			"headline": 		"{V1}",
+			"datePublished": 	"{STAMP}",
+			"dateModified":		"{STAMP}",
+			"author":			{
+				"@type":			"Person",
+				"name":				"{htm(AUTORUNAME)}"
+			},
+			"publisher":		{organization_data_json_ld()},
+			{if IMG}
+			"image":			{image_data_json_ld({IMG},1)}
+			{endif}
+		}
+</script>
+{endif}
+{endblock(script)}

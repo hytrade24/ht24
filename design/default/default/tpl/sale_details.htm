@@ -1,0 +1,223 @@
+<script type="text/javascript">
+	
+	function ShowDetails{ID_AD_SOLD}() {
+		$('#details_trans_{ID_AD_SOLD}').show();
+		$('#details_btn_{ID_AD_SOLD}').addClass("active");
+		
+		$('#mails_trans_{ID_AD_SOLD}').hide();
+		$('#mails_btn_{ID_AD_SOLD}').removeClass("active");
+	}
+	
+	function ShowMails{ID_AD_SOLD}() {
+		$('#mails_trans_{ID_AD_SOLD}').show();
+		$('#mails_btn_{ID_AD_SOLD}').addClass("active");
+		
+		$('#details_trans_{ID_AD_SOLD}').hide();
+		$('#details_btn_{ID_AD_SOLD}').removeClass("active");
+	}
+
+</script>
+{if !dialog}
+<div class="">
+	<a class="close" onclick="show_details({ID_AD_SOLD});" title="Details ausblenden">x</a>
+</div>
+{endif}
+<ul class="nav nav-tabs userAdsTabs">
+    <li id="details_btn_{ID_AD_SOLD}" class="active">
+        <a onclick="ShowDetails{ID_AD_SOLD}();">
+			[[ translation : marketplace : transaction.details :: Details zu Transaktion ]] {ID_AD_SOLD}
+		</a>
+    </li>
+    <li id="mails_btn_{ID_AD_SOLD}">
+        <a onclick="ShowMails{ID_AD_SOLD}();">
+			[[ translation : marketplace : transaction.emails :: E-Mails zur Transaktion ]] {ID_AD_SOLD}
+		</a>
+    </li>
+</ul>
+<table id="mails_trans_{ID_AD_SOLD}" class="table table-bordered table-striped table-condensed" style="display: none;">
+{if liste_mails}
+	{liste_mails}
+{else}
+	<tr>
+		<th class="text-error">
+			[[ translation : marketplace : no.email.found :: Keine E-Mails gefunden. ]]
+		</th>
+	</tr>
+{endif}
+</table>
+<table id="details_trans_{ID_AD_SOLD}" class="table table-bordered table-striped table-condensed">
+	<tr class="nohover">
+		<td valign="top" width="33%">
+		
+			<h3>
+				[[ translation : marketplace : bought.product :: gekauftes Produkt ]]
+			</h3>
+			<table>
+				<tr class="nohover">
+					<td>[[ translation : marketplace : aricle.number :: Artikelnummer ]]:</td>
+					<td>
+						<a target="_blank" title="[[ translation : marketplace : open.advert.in.new.window :: Anzeige in einem neuen Fenster öffnen ]]" href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+							{FK_AD}
+						</a>
+					</td>
+				</tr>
+				<tr class="nohover">
+					<td>
+						[[ translation : marketplace : article :: Artikel ]]:
+					</td>
+					<td>
+						<a target="_blank" title="[[ translation : marketplace : open.advert.in.new.window :: Anzeige in einem neuen Fenster öffnen ]]" href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+							{htm(PRODUKTNAME)}
+						</a>
+					</td>
+				</tr>
+				{VARIANTS}
+				<tr class="nohover">
+					<td>
+						[[ translation : marketplace : amount :: Menge ]]:
+					</td>
+					<td>
+						{MENGE}
+					</td>
+				</tr>
+                <tr class="nohover">
+						<td>
+							[[ translation : marketplace : delivery.charges :: Versandkosten ]]
+						</td>
+		           {if VERSANDOPTIONEN==3}
+						<td>
+							{market_article_shipping(ID_AD,VERSANDKOSTEN)}
+						</td>
+		           {else}
+						{if VERSANDOPTIONEN==0}<td class="text-success">[[ translation : marketplace : ad.shipping.free :: Versandkostenfrei ]]</td>{endif}
+						{if VERSANDOPTIONEN==1}<td class="text-error">[[ translation : marketplace : ad.shipping.pick_up :: Nur Selbstabholung ]]</td>{endif}
+						{if VERSANDOPTIONEN==2}<td class="text-error">[[ translation : marketplace : ad.shipping.on_request :: Versandkosten auf Anfrage ]]</td>{endif}
+		           {endif}
+				</tr>
+		        {if VERSANDKOSTEN_INFO}
+				<tr class="nohover">
+						<td>
+							[[ translation : marketplace :  delivery.charges.hint ::
+                            Versandkosten-
+							Hinweis: ]]
+						</td>
+						<td>
+							{htm(VERSANDKOSTEN_INFO)}
+						</td>
+				</tr>
+		        {endif}	
+				<tr class="nohover">
+                    <td>[[ translation : marketplace : price :: Preis ]] {if VERSANDKOSTEN} [[ translation : marketplace : plus.shipping :: zzgl. Versand ]]{endif}:</td>
+                    <td>{topreis_ex(PREIS_NOSHIP)} {CURRENCY_DEFAULT}</td>
+				</tr>
+                <tr class="nohover">
+					<td>
+					   [[ translation : marketplace : recieved.rating ::
+                            Erhaltene<br />
+                            <a href="{uri_action(my-ratings)}" title="Alle Bewertungen">
+							    Bewertung
+                            </a>
+                       ]]:
+					</td>
+					<td>
+						{if RATING_OWN}
+							<img src="{uri_baseurl(/gfx/stars_{RATING_OWN}.png)}" /><br />
+							{htm(COMMENT_OWN)}
+						{endif}
+					</td>
+				</tr>
+				<tr class="nohover">
+                       
+					<td colspan="2">&nbsp<br />
+						<a href="{uri_baseurl(/index.php?frame=print&page=sale_details&FK_SOLD={ID_AD_SOLD})}" target="_blank"><img src="{uri_baseurl(/bilder/print.png)}" /></a> <strong>DRUCKEN</strong>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td valign="top" width="33%">
+			<h3>
+				<img src="{uri_baseurl(/cache/users/{CACHE}/{FK_USER_VK}/{FK_USER_VK}_s.jpg)}" alt="" border="0" hspace="5" align="left" />
+				[[ translation : marketplace : contact.data.to.vendor :: Kontaktdaten zum Verk&auml;ufer: ]]
+				<a target="_blank" href="{uri_action(view_user,{urllabel(USER)},{FK_USER_VK})}" title="Profil in einem neuen Fenster &ouml;ffnen">
+					{htm(USER)}
+				</a>
+			</h3>
+		{if CONFIRMED==1}
+			<p>
+				{if FIRMA}{htm(FIRMA)}<br />{endif}
+				{htm(VORNAME)} {htm(NACHNAME)}<br />
+				{htm(STRASSE)}
+			</p>
+			<p>
+				{htm(PLZ)}, {htm(ORT)}<br />
+				{htm(LAND)}
+			</p>
+			<p>
+				{if TEL}[[ translation : general : phone :: Telefon ]]: {htm(TEL)}{endif}
+				{if FAX}<br />[[ translation : general : fax :: Fax ]]: {htm(FAX)}{endif}
+				{if MOBIL}[[ translation : general : mobile :: Mobil ]]: {htm(MOBIL)}{endif}
+			</p>
+			<p>
+				[[ translation : marketplace : email :: E-Mail ]]:
+				<a href="mailto:{htm(EMAIL)}">{htm(EMAIL)}</a>
+			</p>
+			<p>
+				<img src="{uri_baseurl(/bilder/new-mail.gif)}" width="23" height="18" alt="" border="0" />
+				<a onclick="SendMail({FK_USER_VK},'{SUBJECT}',{FK_AD},{ID_AD_SOLD});"title="[[ translation : marketplace : private.message.to :: Private Nachricht an ]] {htm(USER)}" style="font-weight:bold;">
+					[[ translation : marketplace : write.new.message :: Neue Nachricht schreiben ]]
+				</a>	
+			</p>
+		{else}
+			<p>
+			    [[ translation : marketplace : vendor.contact.data.visible.once.sale.is.confirmed.by.vendor.you.recieve.an.email.once.that.happened ::
+                    Die Kontaktdaten des Verk&auml;ufers sind erst sichtbar sobald dieser den Verkauf best&auml;tigt hat.
+				    Sie erhalten eine E-Mail sobald dies geschehen ist.
+                ]]
+			</p>
+			<p>
+				<img src="{uri_baseurl(/bilder/new-mail.gif)}" width="23" height="18" alt="" border="0" />
+				<a onclick="SendMail({FK_USER_VK},'{SUBJECT}',{FK_AD},{ID_AD_SOLD});"title="[[ translation : marketplace : private.message.to :: Private Nachricht an ]] {htm(USER)}" style="font-weight:bold;">
+					[[ translation : marketplace : write.new.message :: Neue Nachricht schreiben ]]
+				</a>	
+			</p>
+		{endif}
+			<h3>[[ translation : marketplace : payment.information :: Zahlungsinformationen ]]</h3>
+			<p>
+
+			{if CONFIRMED==1}
+				{htm(ZAHLUNG)}
+			{else}
+			    [[ translation : marketplace : vendor.payment.data.visible.once.sale.is.confirmed.by.vendor.you.recieve.an.email.once.that.happened ::
+				    Die Zahlungsinformationen des Verk&auml;ufers sind erst sichtbar sobald dieser den Verkauf best&auml;tigt hat.
+				    Sie erhalten eine E-Mail sobald dies geschehen ist.
+                ]]
+			{endif}
+			</p>
+		</td>
+		<td valign="top" width="33%">
+		{if CONFIRMED==1}
+			{if ABGESCHLOSSEN<>1}
+	  			<img src="{uri_baseurl(/bilder/bt_achtung.png)}"  align="left"/>
+				<h3>[[ translation : marketplace : close.proccess :: Vorgang schlie&szlig;en ]]</h3>
+	        	<p>[[ translation : marketplace : please.close.the.process.here.if.you.finished.everything ::
+                Wenn Sie alles erledigt haben, dann schlie&szlig;en Sie bitte den Vorgang hier ab. ]]</p>
+	        	<input type="button" value="Vorgang abschlie&szlig;en" onclick="abschliessen({ID_AD_SOLD});" class="btn" />
+	        	<br /><br />
+			{endif}
+        	<img src="{uri_baseurl(/bilder/bt_bewerten.png)}" align="left" /><h3>Verk&auml;ufer bewerten</h3>
+        	<p>[[ translation : marketplace : please.regard.a.fair.rating :: Bitte achten Sie auf eine faire Bewertung!! ]]</p>
+			{if RATING_SEND}
+				<img src="{uri_baseurl(/gfx/stars_{RATING_SEND}.png)}" /><br />
+				{htm(COMMENT_SEND)}
+			{else}
+				<input type="button" value="[[ translation : marketplace : rate.now :: Jetzt Bewerten ]]" onclick="openAdsRatingWindow({ID_AD_SOLD});" class="btn" />
+			{endif}
+		{else}
+  			<img src="{uri_baseurl(/bilder/bt_achtung.png)}"  align="left"/>
+  			<h3>[[ translation : marketplace : not.confirmed.yet :: Noch nicht best&auml;tigt ]]</h3>
+  			<p>[[ translation : marketplace :  vendor.didnt.confirm.the.sale.yet.you.recieve.an.email.once.he.did ::
+              Der Verk&auml;ufer hat den Verkauf (noch) nicht best&auml;tigt. Sie erhalten eine E-Mail sobald dies geschehen ist. ]]</p>
+		{endif}
+        </td>
+	</tr>
+</table>

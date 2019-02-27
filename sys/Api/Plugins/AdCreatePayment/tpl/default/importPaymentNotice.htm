@@ -1,0 +1,15 @@
+<strong>[[ translation : marketplace : plugin.ad.create.payment.title :: Einstellgebühr ]]</strong>
+
+<p>
+{if TEST_MODE}
+[[ translation : marketplace : plugin.ad.create.payment.decription.import.test ::
+    Für das Importieren dieser {COUNT} neuen Anzeigen entstehen Kosten in Höhe von <b>{topreis(PREIS_BRUTTO)} {CURRENCY_DEFAULT}</b> inkl. MwSt. ({topreis(PREIS)} {CURRENCY_DEFAULT} Netto)
+    Diese werden ihnen in Rechnung gestellt, sobald Sie den Import (ohne Testmodus) durchführen.
+]]
+{else}
+[[ translation : marketplace : plugin.ad.create.payment.decription.import.live ::
+    Für das Importieren dieser {COUNT} neuen Anzeigen entstehen Kosten in Höhe von <b>{topreis(PREIS_BRUTTO)} {CURRENCY_DEFAULT}</b> inkl. MwSt. ({topreis(PREIS)} {CURRENCY_DEFAULT} Netto)
+    Diese wurden ihnen mit Abschluss des Imports in Rechnung gestellt.
+]]
+{endif}
+</p>

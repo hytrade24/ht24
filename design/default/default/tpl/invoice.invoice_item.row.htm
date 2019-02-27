@@ -1,0 +1,15 @@
+<tr data-invoice-billing-item="{ID_BILLING_INVOICE_ITEM}">
+	<td>
+		{if ID_BILLING_CANCEL}
+		<span title="[[ translation : marketplace : invoice.include.cancel.requests :: Beinhaltet Strornoanfragen ]]" class="btn btn-default btn-sm" style="color: blue;">
+					<strong>!</strong>
+		</span>
+		{endif}
+		<span>{POS}</span>
+	</td>
+	<td>{text(DESCRIPTION)}</td>
+	<td class="text-right">{QUANTITY}</td>
+    <td class="text-right">{topreis_ex(PRICE)} {CURRENCY_DEFAULT}</td>
+	<td class="text-right">{TAX_VALUE} %</td>
+	<td class="text-right">{topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT}</td>
+</tr>

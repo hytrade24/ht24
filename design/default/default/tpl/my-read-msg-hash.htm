@@ -1,0 +1,45 @@
+{if err}
+<div class="alert alert-danger">
+    {if err_notfound}
+   [[ translation : marketplace : cant.find.message :: Die Nachricht konnte nicht gefunden werden! ]]
+    {endif}
+    {if err_reply}
+		{err}
+    {endif}
+</div>
+{endif}
+{if !err_notfound}
+
+
+<table class="table table-bordered table-striped table-condensed">
+<tr>
+    <th class="first">
+       [[ translation : marketplace : conversation ::  Konversation: ]] {if SUBJECT}{htm(SUBJECT)}{else}[[ translation : marketplace : no.subject:: kein Betreff ]]{endif}
+    </th>
+</tr>
+<tr>
+    <td>
+        <div class="chat-container" >
+            {if liste}
+                {liste}
+            {else}
+                <p>[[ translation : marketplace : no.messages.available :: Keine Nachrichten vorhanden ]]</p>
+            {endif}
+        </div>
+    </td>
+<tr>
+    <th>
+        <form action="{uri_action(my-read-msg-hash,{HASH})}" method="post">
+            <input type="hidden" name="HASH" value="{HASH}" />
+            <input type="hidden" name="DO" value="REPLY" />
+
+            <textarea id="BODY" name="BODY" style="width:99%; height: 90px;"></textarea>
+            <br />
+            <input type="submit" class="btn" value="[[ translation : marketplace : answer :: Antworten ]]" />
+
+        </form>
+    </th>
+</tr>
+</table>
+
+{endif}

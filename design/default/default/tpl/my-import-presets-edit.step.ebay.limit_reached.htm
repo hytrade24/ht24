@@ -1,0 +1,16 @@
+<h3>[[ translation : marketpace : import.preset.limit_reached.ebay.title :: eBay Import - Import-Limit erreicht ]]</h3>
+
+<p>
+{if USER_LIMIT}
+    Sehr geehrter Kunde,<br />
+    Sie haben leider die täglich erlaubte Anzahl an Imports (maximal {USER_LIMIT_MAX} pro Tag) erreicht.<br />  
+    Weitere imports sind leider erst Morgen wieder möglich. Bitte versuchen Sie es dann erneut.
+  ]]
+{else}
+  [[ translation : marketpace : import.preset.limit_reached.ebay.description :: 
+    Sehr geehrter Kunde,<br />
+    die mögliche Anzahl der Imports aus ebay für den heutigen Tag wurde erreicht.<br />
+    Weitere imports sind leider erst Morgen wieder möglich. Bitte versuchen Sie es dann erneut.
+  ]]
+{endif}
+</p>

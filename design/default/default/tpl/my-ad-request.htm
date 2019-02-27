@@ -1,0 +1,73 @@
+<h1>[[ translation : marketplace : my.search.results :: Meine Gesuche ]]</h1>
+<span class="lead">[[ translation : marketplace : marketplace.insert.search :: Im Marktplatz eingestellte Gesuche ]]</span>
+
+{if deleted}
+<div class="alert alert-success">
+	<h2>
+		[[ translation : marketplace : advert.deleted :: Eine Anzeige wurde gelöscht! ]]
+	</h2>
+</div>
+{endif}
+
+
+<p class="clearfix">
+	[[ translation : marketplace : all.inserted.searchs.in.marketplace :: 
+        Hier finden Sie alle von Ihnen eingestellte Gesuche auf dem Marktplatz.
+        Um ein neues Gesuch zu schalten
+    ]]
+	<a href="{uri_action(my-ad-request-neu)}" title="[[ translation : marketplace : new.search.insert :: jetzt Gesuch einstellen ]]">
+		[[ translation : general : click.here :: klicken Sie bitte hier ]]
+	</a>.<br/>
+    <br/>
+    <a href="{uri_action(my-ad-request-neu)}" class="btn btn-success pull-right" title="[[ translation : marketplace : new.search.insert :: jetzt Gesuch einstellen ]]">
+        <i class="glyphicon glyphicon-plus"></i>
+        [[ translation : marketplace : add.new.search :: Neues Gesuch hinzufügen ]]
+    </a>
+</p>
+
+
+<ul class="nav nav-tabs userAdsTabs">
+	<li class="active">
+		<a href="{uri_action(my-gesuche)}" title="[[ translation : marketplace : my.search.results :: Meine Gesuche ]]">[[ translation : marketplace : my.search.results :: Meine Gesuche ]]</a>
+	</li>
+</ul>
+<table class="table table-bordered table-striped table-condensed userList">
+    <tr>
+        <th colspan="2">
+            [[ translation : general : actions :: Aktionen ]]
+        </th>
+		<th title="Gesuch Numer">
+			[[ translation : marketplace : search.number :: Gesuch-Nr. ]]
+		</th>
+          <th>
+              [[ translation : general : date :: Datum ]]
+          </th>
+          <th>
+              [[ translation : general : category :: Kategorie ]]
+          </th>
+        <th width="300px">
+            [[ translation : marketplace : productname :: Produktname ]]
+        </th>
+    </tr>
+
+    {if liste}
+    	{liste}
+    {else}
+    <tr>
+        <td colspan="8" class="error">
+            [[ translation : marketplace : no.searchs :: Sie haben derzeit keine Gesuche eingestellt. ]]
+        </td>
+    </tr>
+    {endif}
+</table>
+
+<p>{pager}</p>
+
+<div class="design-content-box design-icon-legend">
+    <div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = [[ translation : general : edit :: Bearbeiten ]]
+    </div>
+    <div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a> = [[ translation : general : delete :: Löschen ]]
+    </div>
+</div>

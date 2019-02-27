@@ -1,0 +1,28 @@
+<div class="design-content-box">
+    <legend>[[ translation : marketplace : legal.info :: Rechtliche Angaben ]]</legend>
+
+    <div id="AD_AGB_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="AD_AGB">
+            <strong> [[ translation : marketplace : article.enter.terms :: AGB ]]</strong>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[AD_AGB]" value="text">
+            <textarea onchange="validateInput(this);" id="AD_AGB" name="AD_AGB" class="form-control">{htm(AD_AGB)}</textarea>
+        </div>
+        <div class="design-input-help">
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    <div id="AD_WIDERRUF_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="AD_WIDERRUF">
+            <strong>[[ translation : marketplace : return.police :: Widerrufs- oder R&uuml;ckgabebelehrung ]]</strong>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[AD_WIDERRUF]" value="text">
+            <textarea onchange="validateInput(this);" id="AD_WIDERRUF" name="AD_WIDERRUF" class="form-control">{htm(AD_WIDERRUF)}</textarea>
+        </div>
+        <div class="design-input-help">
+            <span class="help-inline"></span>
+        </div>
+    </div>
+</div>

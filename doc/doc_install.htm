@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head lang="de">
+  <meta charset="UTF-8">
+  <title>ebiz-trader Installationsanleitung</title>
+  
+  <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+  
+  <link rel="stylesheet" href="{DOC_PATH}/doc_style.css" type="text/css" />
+</head>
+<body>
+
+  <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">
+      <h2>Installation der ebiz-trader Software {VERSION_TO}</h2>
+      
+      <p>Folgende Schritte beschreiben, wie Sie ebiz-trader {VERSION_TO} auf einem Webserver installieren.</p>
+      
+      <h3><b>Vorbereitungen</b></h3>
+      
+      <p>
+        <u>MySQL-Datenbank</u>
+        <br/>
+			ebiz-trader benötigt eine mySQL Datenbank. Diese sollte bereits vor der Installation vorhanden sein.
+			Sollten Sie diese noch nicht angelegt haben, so legen Sie diese bitte jetzt.	
+      </p>
+      
+      <p>
+		<u>Domain</u>
+		<br>
+			Der Domainname muss auf folgendes Root-Verzeichnis zeigen.
+		<br><br>
+			<i>z.b. /HTML/ebiz-trader/</i>
+		<br><br>
+			Diese Einstellung kann in der Regel über die Managementkonsolen Ihres Providers eingestellt
+			werden.<br>
+			Selbstverständlich können Sie unseren Marktplatz auch in einem Unterverzeichnis einer bestehenden
+			Webseite installieren. Hierfür geben Sie dann bitte den kompletten Pfad wir folgt an.
+		<br><br>
+			<i>z.b. /HTML/ihre/webseite/ebiz-trader/</i>
+		<br><br>
+			Sollten Sie einen anderen Verzeichnis-Namen bevorzugen, so können Sie dieses gerne nach Ihren
+			Vorstellungen anpassen. In unsere Dokumentation gehen wir jedoch von einer Installation im „ebiztrader“-Verzeichnis
+			aus.
+      </p>
+      
+      <div align="center">
+			<img src="{DOC_PATH}/inscreenshot01.PNG" width="350" />
+      </div>
+      
+      <h3>Installation:</h3>
+      
+      <b>Für User mit SSH-Zugang</b>
+      
+      <p>
+		<ol>
+			<li>Laden Sie die gepackte Version in das Root-Verzeichnis Ihres Webserver. 
+				<br> 	z.b. /HTML/	</li>
+			<li> Entpacken Sie die Datei mit folgendem Befehl.
+				<br> Durch das entpacken wird ein neues Unterverzeichnis mit dem Namen ebiz-trader angelegt.
+				<br> tar -xzf ebiz-trader_{VERSION_TO}tar.gz </li>
+			<li> Ändern Sie die Gruppen und Besitzer für alle Dateien auf den Webbesitzer
+				<br> z.b. chown web54:web54 * -R </li>
+		</ol>
+      </p>
+      
+   </div>
+    {PAGE_FOOTER}
+  </div>
+      
+      
+      
+      
+   <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">   
+      
+      <p><b>Per FTP-Upload</b></p>
+      
+		<p>
+			<ol>
+				<li> Entpacken sie alle Dateien sowie Verzeichnisse auf Ihrer lokalen Festplatte</li>
+				<li> Kopieren Sie die Dateien sowie Verzeichnisse auf den FTP-Server</li>
+			</ol>
+			
+			Unsere Grafik zeigt alle Hauptverzeichnisse die Sie jetzt bereits per FTP-Client sehen sollte
+		</p>
+		
+		<div align="center">
+			<img src="{DOC_PATH}/inscreenshot02.PNG" width="260" />
+		</div>
+		
+		<h3> <b>Installationsprogramm ausführen</b> </h3>
+		
+		<p>
+			Rufen Sie über Ihren Browser ihre Domain auf, auf der sich die Installation des ebiz-traders befindet.
+			Wenn ebiz-trader im Rootverzeichnis installiert wurde, dann führen Sie folgende URL aus <br>
+			z.b. http://www.ihrewebseite.de <br><br>
+			Sollten Sie ebiz-trader in einem Unterverzeichnis installieren wollen. Dann geben Sie bitte
+			http://www.ihrewebseite.de/marktplatz/ in Ihrem Browser ein. <br><br>
+			Sie sollten dann folgenden Bildschirm sehen: <br>
+				
+				<div align="center">
+					<img src="{DOC_PATH}/inscreenshot03.PNG" width="310" />
+				</div>
+				
+			<br> Folgen Sie den Anweisungen auf dem Bildschirm
+		</p>
+      
+      
+      
+      
+      
+    </div>    
+    {PAGE_FOOTER}
+  </div>
+
+
+   <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">   
+      
+		<h3>Portaldetails eintragen</h3>
+		
+		<p> Geben Sie in der folgenden Maske die Details zu Ihrer Webseite ein.
+			
+			<div align="center">
+				<img src="{DOC_PATH}/inscreenshot04.PNG" width="310" />
+			</div>
+			
+		
+		Seitenname: &nbsp;&nbsp; Geben Sie hier den Projekt Name an. z.B. „benola Marktplatz“ <br>
+		Projekt-Url: &nbsp;&nbsp; Unter welcher URl soll Ihr Projekt erreichbar sein. Z.b. http://www.benola.de <br>
+		Base-Url: &nbsp;&nbsp; Geben sie das Unterverzeichnis an in dem ebiz-trader später laufen soll <br>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+					Wird der Marktplatz auf der Hauptdomain betrieben, so lass Sie bitte „/“ stehen <br>
+		Admin-Password : &nbsp;&nbsp; Geben Sie hier das Password für den Administrator ein <br>
+		Admin-Emailadresse: &nbsp;&nbsp; Geben Sie hier die E-Mail-Adresse des Administrators ein <br>
+		
+		</p>
+      
+		<h3> Einrichtung der mySQL-Datenbank</h3>
+		
+		<p> Die Zugangsdaten zu Ihrem mySQL-Datenbank-Server sollten Sie von Ihrem Provider erhalten haben. <br>
+			
+			<div align="center">
+				<img src="{DOC_PATH}/inscreenshot05.PNG" width="310" />
+			</div>
+		</p>
+      
+    
+      
+    </div>    
+    {PAGE_FOOTER}
+  </div>
+
+
+   <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">   
+      
+      
+      <p> Wenn Sie alles richtig gemacht haben, sollten Sie folgenden Bildschirm sehen.</p>
+			
+			<div align="center">
+				<img src="{DOC_PATH}/inscreenshot06.PNG" width="350" />
+			</div>
+      
+      <h3> Cronjob installieren</h3>
+      
+      <p> 
+			ebiz-trader führt viele Aktionen im Hintergrund aus. Aus diesem Grund benötigen wir einen Cronjob
+			der im Idealfall minütlich ausgeführt werden sollte. <br><br>
+			Tragen Sei folgenden Befehl in die Cron-Tab ein. <br><br>
+			/usr/bin/php5 /var/www/web60/html/ebiz-trader/cron/cronjob.php > /dev/null 2>&1 <br><br>
+			<span style="color:red;"> Achten Sie auf die richtigen Pfadangaben!! </span> <br><br>
+			Ihr Marktplatz ist jetzt eingerichtet
+	</p>
+      
+      
+    </div>    
+    {PAGE_FOOTER}
+  </div>
+
+
+   <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">   
+      
+			<div align="center">
+				<img src="{DOC_PATH}/inscreenshot07.PNG" width="370" />
+			</div>
+      
+    </div>    
+    {PAGE_FOOTER}
+  </div>
+  
+  
+   <div class="page">
+    {PAGE_HEADER}    
+    <div class="page-content">   
+      
+		<p>
+			Nachdem Sie das Installationsverzeichnis gelöscht haben, können Sie mit der Konfiguration des
+			Marktplatzes beginnen. <br><br>
+			Melden Sie sich hierzu als Administrator auf dem Marktplatz an. <br><br>
+			Die Administrationsoberfläche finden Sie unter <span style="color:blue;">www.ihredomain.de/admin/</span> bzw <br>
+			<span style="color:blue;">www.ihredomain.de/marktplatz/admin/ </span> <br><br>
+			Verwenden Sie als Login Name „admin“ sowie das von Ihnen vergebene Password <br><br>
+			Wir wünschen Ihnen viel Erfolg mit Ihrem Marktplatz. <br>
+			Bei Rückfragen stehen wir Ihnen gerne zur Verfügung.
+		</p>
+      
+    </div>    
+    {PAGE_FOOTER}
+  </div>
+
+
+
+</body>
+</html>

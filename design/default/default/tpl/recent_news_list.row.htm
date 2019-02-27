@@ -1,0 +1,39 @@
+<li class="design-row-item clearfix">
+    <div class="design-box-list-date green pull-left">
+        <span class="day">{date_format(STAMP,d)}</span>
+        <span class="month">{date_format(STAMP,M)}</span>
+    </div>
+
+    <h3>
+        <a href="{URL}">{htm(V1)}</a>
+    </h3>
+    <p class="recent-list-block text-muted">
+        <small>{htm(KATNAME)} - {htm(AUTOR)}</small>
+    </p>
+    
+    {if SHOW_PREVIEW_IMAGE}
+        {if PREVIEW_TYPE_VIDEO}
+        <div class="design-user-news-small-image pull-left thumbnail-video">
+            <a href="{URL}">
+                <img class="img-responsive-center" src="https://i{PREVIEW_SERVER}.ytimg.com/vi/{PREVIEW_CODE}/default.jpg"/>
+            </a>
+            <div class="video_play">
+                <a href="{URL}">
+                    <img src="{uri_baseurl(/bilder/play.png)}"/>
+                </a>
+            </div>
+        </div>
+        {endif}
+        {if PREVIEW_TYPE_IMAGE}
+        <div class="design-user-news-small-image pull-left">
+            <a href="{URL}">
+                <img class="img-responsive" src="{thumbnail({PREVIEW_PATH},120,80,crop,Center)}" title="{htm(V1)}" />
+            </a>
+        </div>
+        {endif}
+    {endif}
+
+    <p class="recent-list-block">
+        {htm(V2)}
+    </p>
+</li>

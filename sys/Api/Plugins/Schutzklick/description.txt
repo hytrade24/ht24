@@ -1,0 +1,1 @@
+Einbindung der Schutzklick-Versicherung in den Bestellprozess.

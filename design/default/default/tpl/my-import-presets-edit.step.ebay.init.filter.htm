@@ -1,0 +1,17 @@
+<form data-action="filter-apply">
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="text" class="form-control" data-filter="search" id="ebayArticleSearch" placeholder="[[ translation : marketpace : import.preset.init.ebay.search :: Suchen ]] ...">
+        </div>
+        <div class="col-sm-4">
+            <select class="form-control" data-filter="searchMode" id="ebayArticleSearchMode">
+                <option value="title">[[ translation : marketpace : import.preset.init.ebay.search.mode.title :: im Anzeigentitel ]]</option>
+                <option value="full">[[ translation : marketpace : import.preset.init.ebay.search.mode.full :: in Anzeigentitel/-Beschreibung/-Kategorie (Achtung: Langsam!) ]]</option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <button type="submit" data-action="filter-apply" class="btn btn-primary">[[ translation : marketpace : import.preset.init.ebay.search :: Suchen ]]</button>
+            <button type="reset" data-action="filter-reset" class="btn btn-default">[[ translation : marketpace : import.preset.init.ebay.search.reset :: Alle anzeigen ]]</button>
+        </div>
+    </div>
+</form>

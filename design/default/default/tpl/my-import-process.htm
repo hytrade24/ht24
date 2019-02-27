@@ -1,0 +1,217 @@
+<h1>[[ translation : marketplace : import.process.header :: Meine Imports: {htm(SOURCE_NAME)} ]]</h1>
+<p class="lead">[[ translation : marketplace : import.process.header.sub :: Importieren Sie neue Datensätze oder aktualisieren Sie Ihren Bestand ]]</p>
+
+<p>
+	[[
+		translation : marketplace : import.process.intro ::
+		In der unten stehenden Tabelle werden Ihnen alle bereits getätigten Imports aus der Quelle '{htm(SOURCE_NAME)}' aufgelistet. 
+		Sie können diese jederzeit erneut einsehen, um beispielsweise das Import Protokoll zu prüfen. <br>
+		Einen neuen Import starten Sie über den Reiter "Neuen Import hinzufügen".
+		<br><br>
+		<em>Hinweis: Die Protokolle der Imports werden für 30 Tage gespeichert und anschließend gelöscht</em>
+	]]
+</p>
+
+{if SOURCE_AD_COUNT>0}
+<p>
+	<a href="{uri_action(my-import-process,{SOURCE_ID})}?do=deleteAds" class="btn btn-danger" 
+		 onclick="return confirm('Möchten Sie die {SOURCE_AD_COUNT} Anzeigen aus dieser Quelle wirklich endgültig löschen?');">
+		<i class="glyphicon glyphicon-trash"></i>
+		[[ translation : marketplace : import.source.delete.ads :: Alle Anzeigen aus dieser Quelle löschen ({SOURCE_AD_COUNT}) ]]
+	</a>
+</p>
+{endif}
+
+{if MESSAGE}
+	<div class="alert alert-info">{htm(MESSAGE)}</div>
+{endif}
+
+{if MESSAGE_ERROR}
+	<div class="alert alert-danger">{htm(MESSAGE_ERROR)}</div>
+{endif}
+
+<div>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="{if !SHOW_UPLOAD_TAB}active{endif}">
+			<a href="#import-list" aria-controls="import-list" role="tab" data-toggle="tab">
+				[[ translation : marketplace : import.source.list.processes :: Vergangene Imports ]]
+			</a>
+		</li>
+		<li role="presentation" class="{if SHOW_UPLOAD_TAB}active{endif}">
+			<a href="#import-new" aria-controls="import-new" role="tab" data-toggle="tab">
+				[[ translation : marketplace : import.source.create.process :: Neuen Import hinzufügen ]]
+			</a>
+		</li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content" style="margin-top: 0;">
+    <div role="tabpanel" class="tab-pane{if !SHOW_UPLOAD_TAB} active{endif}" id="import-list">
+			
+			<table class="table table-striped table-condensed">
+				<thead>
+				<th></th>
+				<th>[[ translation : marketplace : import.process.name :: Bezeichnung ]]</th>
+				<th>[[ translation : marketplace : import.process.status :: Status ]]</th>
+				<th>[[ translation : marketplace : import.process.stats :: Statistik ]]</th>
+				<th>[[ translation : marketplace : import.process.datecreate :: Datum Erstellung ]]</th>
+				<th>[[ translation : marketplace : import.process.dateupdate :: letzte Änderung ]]</th>
+				</thead>
+				{if liste}
+				{liste}
+				{else}
+				<tr>
+					<td colspan="6">[[ translation : marketplace : import.process.no.presets.found :: Sie haben bislang noch keine
+						Imports angelegt ]]
+					</td>
+				</tr>
+				{endif}
+			</table>
+
+			{pager}
+
+			<div class="design-content-box design-icon-legend">
+				<div class="pull-left clearfix"><a class="btn btn-default">
+					<i class="glyphicon glyphicon-edit"></i></a> = 
+					[[ translation : marketplace : my.import.process.edit :: Ansehen / Fortführen ]]
+				</div>
+				<div class="pull-left clearfix"><a class="btn btn-default">
+					<i class="glyphicon glyphicon-remove"></i></a> = 
+					[[ translation : marketplace : my.import.process.delete :: löschen ]]
+				</div>
+			</div>
+			
+		</div>
+    <div role="tabpanel" class="tab-pane{if SHOW_UPLOAD_TAB} active{endif}" id="import-new">
+			
+			<form id="importSourceUploadNew" method="POST" enctype="multipart/form-data">
+            {if FILE_REQUIRED}
+				<div class="form-group clearfix">
+					<label class="control-label design-input-label">[[ translation : marketplace : import.preset.file :: Vorlagen Datei ]]:</label>
+			
+					<div class="design-input-field">
+						<p class="text-muted">[[ translation : marketplace : import.via.file.upload :: per Datei Upload ]] (max {filesize({UPLOAD_MAX_FILESIZE})})</p>
+			
+						<p><input type="file" name="PRESET_FILE"></p>
+			
+						<p><strong>[[ translation : marketplace : import.or :: oder ]]</strong></p>
+			
+						<p class="text-muted">[[ translation : marketplace : import.via.url :: per Url ]]</p>
+			
+						<input class="form-control" type="text" name="PRESET_FILE_URL" value="{PRESET_FILE_URL}" placeholder="[[ translation : marketplace : import.via.url.placeholder :: http://www.example.com/ihredatei.csv ]]">
+					</div>
+				</div>
+			
+				<hr>
+			{endif}
+				<div class="form-group clearfix">
+					<label class="control-label design-input-label">[[ translation : marketplace : import.settings :: Einstellungen ]]:</label>
+			
+					<div class="design-input-field">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="SETTINGS[testMode]" value="1" {if SETTINGS_FLATTEN_testMode_1}checked{endif}> [[ translation : marketplace : import.run.settings.testmode :: Testmodus (Prüft und arbeitet die Datei vollständig durch, importiert aber keine Datensätze in das Livesystem) ]]
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="text-right">
+					<button type="submit" name="SUBMIT" value="1" class="btn btn-default">[[ translation : marketplace : import.process.btn-new :: Daten importieren ]]</button>
+				</div>
+			</form>
+			
+		</div>
+  </div>
+
+	<div id="importSourceUploadModal" class="modal fade">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3>[[ translation : marketplace : import.process.modal.download.status :: Artikel-Daten werden heruntergeladen ... ]]</h3>
+				</div>
+				<div class="modal-body">
+					<p>
+						<strong>Laufzeit: </strong><span class="download-duration">0 Minuten</span>
+						<br />
+						<strong>Aktueller Fortschritt: </strong><span class="download-amount">0 Bytes</span>
+						<br />
+						<strong>Aktuelle Geschwindigkeit: </strong><span class="download-speed">0 Bytes/Sekunde</span>
+					</p>
+					<div class="progress">
+						<div class="progress-bar progress-bar-info progress-bar-striped active" style="width: 100%;"></div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="#" class="btn btn-danger">Abbrechen</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<script type="text/javascript">
+	function getReadableSizeString(fileSizeInBytes) {
+		var i = -1;
+		var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+		do {
+			fileSizeInBytes = fileSizeInBytes / 1024;
+			i++;
+		} while (fileSizeInBytes > 1024);
+
+		return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
+	}
+	function getReadableTimeString(millisec) {
+		var seconds = (millisec / 1000).toFixed(1);
+		var minutes = (millisec / (1000 * 60)).toFixed(1);
+		var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
+		var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
+		if (seconds < 60) {
+			return seconds + " Sek";
+		} else if (minutes < 60) {
+			return minutes + " Min";
+		} else if (hours < 24) {
+			return hours + " Std";
+		} else {
+			return days + " Tage"
+		}
+	}
+	
+	function updateUploadProgress(showModal) {
+		if (typeof showModal != "undefined") {
+			jQuery("#importSourceUploadModal").modal({ backdrop: "static", show: true });
+		}
+		jQuery.post(document.location.href, "do=getUploadStatus", function(result) {
+			jQuery("#importSourceUploadModal .download-duration").text(getReadableTimeString(result.downloadDuration * 1000));
+			jQuery("#importSourceUploadModal .download-amount").text(getReadableSizeString(result.bytesDownloaded));
+			jQuery("#importSourceUploadModal .download-speed").text(getReadableSizeString(result.bytesPerSecond)+" pro Sekunde");
+			window.setTimeout(function() {
+				updateUploadProgress();
+			}, 1000);
+		});
+	}
+	
+	jQuery(function() {		
+		var downloadRequest = false;
+		jQuery("#importSourceUploadNew").submit(function(event) {
+			var uploadFile = jQuery(this).find("input[name=PRESET_FILE]");
+			var uploadUrl = jQuery(this).find("input[name=PRESET_FILE_URL]");
+			if ((uploadFile[0].files.length == 0) && (uploadUrl.val() != "")) {
+				event.preventDefault();
+				event.stopPropagation();
+				downloadRequest = jQuery.post(document.location.href, jQuery(this).serialize(), function(result) {
+					if (result.success) {
+						document.location.href = result.url;
+					}
+				});
+				updateUploadProgress(true);
+			}
+		});
+		jQuery("#importSourceUploadModal .btn.btn-danger").click(function() {
+			jQuery("#importSourceUploadModal").modal("hide");
+			if (downloadRequest !== false) {
+				downloadRequest.abort();
+			}
+		});
+	});
+</script>

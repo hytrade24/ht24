@@ -1,0 +1,165 @@
+<script type="text/javascript">
+    jQuery(function() {
+    	function setClubFormular(d) {
+            if(d) {
+                jQuery(".visibleOnEnabledClub").show();
+            } else {
+                jQuery(".visibleOnEnabledClub").hide();
+            }
+        }
+
+        jQuery("#clubFormular input[name=STATUS]").change(function(){ setClubFormular(this.checked); })
+
+        setClubFormular({if CLUB_STATUS}true{else}false{endif});
+    });
+
+	function showMemberRequestReason(clubMemberRequestId) {
+		ShowContentDialog(jQuery("#clubMemberRequestReason-" + clubMemberRequestId).html(), "[[ translation : news : club.member.request.reason :: Beitrittsbegründung ]]");
+	}
+    
+function ToggleStats(link) {
+	if ($("#stats iframe").attr("src") == "about:blank") {
+		// Not loaded yet
+    jQuery("#stats iframe").attr("src", "{uri_baseurl(index.php?frame=stats&page=ui_stats&show=user_anmeldungen)}&club={CLUB_ID_CLUB}");
+	}
+	$("#stats iframe").toggle();
+}
+</script>
+
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}[[ translation : general : group.index :: Gruppenverzeichnis ]]</h1>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-club-members.modal.htm,*)}
+
+{if saved | added | kicked | uninvited | promoted | request_declined | request_accepted | request_blocked}
+<div class="alert alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	{if saved}<h4>[[ translation : general : changes.saved :: Änderungen gespeichert ]]!</h4>{endif}
+	{if added}<h4>[[ translation : marketplace : invite.user :: Benutzer eingeladen ]]!</h4>{endif}
+	{if kicked}<h4>[[ translation : marketplace : delete.user :: Benutzer wurde aus der Gruppe entfernt ]]!</h4>{endif}
+	{if uninvited}<h4>[[ translation : marketplace : invite.deleted.succesfully :: Einladung erfolgreich widerrufen ]]!</h4>{endif}
+	{if promoted}<h4>[[ translation : marketplace : group.leadership.commited :: Gruppenleitung erfolgreich übergeben ]]!</h4>{endif}
+	{if mod_added}<h4>[[ translation : marketplace : member.promoted.to.moderator :: Mitglied erfolgreich zum Moderator ernannt ]]!</h4>{endif}
+	{if mod_removed}<h4>[[ translation : marketplace : mod.removed :: Dem Mitglied wurden die Moderations-Rechte entzogen ]]!</h4>{endif}
+	{if request_accepted}<h4>[[ translation : marketplace : request.accepted :: Die Beitrittsanfrage wurde akzeptiert ]].</h4>{endif}
+	{if request_declined}<h4>[[ translation : marketplace : request.declined :: Die Beitrittsanfrage wurde abgelehnt ]].</h4>{endif}
+	{if request_blocked}<h4>[[ translation : marketplace : request.blocked :: Die Beitrittsanfrage wurde abgelehnt und der User blockiert ]]</h4>{endif}
+
+
+</div>
+{endif}
+{if saved}
+<div class="alert alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+
+</div>
+{endif}
+{if errors}
+<div class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4>Fehler!</h4>
+	<ul>
+		{errors}
+	</ul>
+</div>
+{endif}
+
+{if CLUB_ID_CLUB || CLUB_NEW}
+	{subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+
+	{if liste_requests}
+		<h3>[[ translation : marketplace : joining.request :: Beitrittsanfragen ]]</h3>
+		<p>[[ translation : marketplace : joining.request.long :: Sie haben {count_member_requests} Beitrittsanfragen für diese Gruppe. Die Beitrittsbedingungen können Sie in den <a href="{uri_action(my-group,{CLUB_ID_CLUB},view)}">Gruppeneinstellungen</a> konfigurieren ]].</a> </p>
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th>[[ translation : marketplace : actions :: Aktionen ]]</th>
+					<th>[[ translation : marketplace : username :: Benutzername ]]</th>
+					<th>[[ translation : marketplace : request.at :: Anfrage am ]]</th>
+					<th>[[ translation : marketplace : reason :: Begründung ]]</th>
+				</tr>
+			</thead>
+			<tbody>
+				{liste_requests}
+			</tbody>
+		</table>
+
+		{if count_member_requests > 1 && !request_view}
+			<p><a href="{uri_action(my-group-members,{CLUB_ID_CLUB},request_view)}">[[ translation : marketplace : show.all.joining.request :: alle Beitrittsanfragen anzeigen ]]</a></p>
+		{endif}
+
+		{if request_view}
+			<p class="pager">{pager}</p>
+		{endif}
+	{endif}
+
+	{if !hide_members}
+		<p>
+			[[ translation : marketplace : group.have.this.members :: Die Gruppe {htm(CLUB_NAME)} besteht derzeit aus folgenden Mitgliedern ]]:
+		</p>
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th colspan="2">[[ translation : general : actions :: Aktionen ]]</th>
+					<th>[[ translation : general : username :: Benutzername ]]</th>
+					<th>[[ translation : general : realname :: Klarname ]]</th>
+					<th>[[ translation : general : member.since :: Mitglied seit ]]</th>
+					<th>[[ translation : general : online :: Online ]]</th>
+				</tr>
+			</thead>
+			<tbody>
+				{liste}
+			</tbody>
+		</table>
+
+		<p class="pager">{pager}</p>
+
+		{if CLUB_MODERATOR}
+		<p class="btn-group" style="float: right;">
+			<a class="btn btn-success" onclick="addUser();">
+				<i class="icon icon-plus icon-white"></i>
+				[[ translation : marketplace : add.new.member :: Neues Mitglied hinzufügen ]]
+			</a>
+		</p>
+	{endif}
+	<br style="clear: both;" />
+
+<div id="stats" class="alert alert-success">
+	[[ translation : marketplace : click.for.stats :: Klicken Sie hier, um Ihre Memberstatistik anzuzeigen ]]
+	<a href="#statistics" onclick="return ToggleStats(this);">
+		<img src="{uri_resource(/images/icons/stats-s.png)}" />
+	</a>
+	<iframe src="about:blank" frameborder="0" style="width: 100%; height: 240px; display: none;"></iframe>
+</div>
+
+	{endif}
+	<div class="design-content-box design-icon-legend">
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-envelope"></i></a> = [[ translation : general : write.message :: Nachricht schreiben ]]
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-share-alt"></i></a> = [[ translation : general : group.leadership.commited :: Gruppenleitung übergeben ]]
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-star"></i></a> = [[ translation : marketplace : give.moderator.rights :: Moderationsrechte erteilen ]]
+		</div>
+		<br style="clear: left;" />
+
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-star-empty"></i></a> = [[ translation : marketplace : take.moderator.rights :: Moderationsrechte entziehen ]]
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-danger"><i class="glyphicon glyphicon-trash icon-white"></i></a> = [[ translation : marketplace : delete.meber :: Mitglied entfernen ]]
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-danger"><i class="glyphicon glyphicon-remove icon-white"></i></a> = [[ translation : general : delete.invite :: Einladung widerrufen ]]
+		</div>
+		<br style="clear: left;" />
+
+		<div class="pull-left clearfix">
+			<i class="glyphicon glyphicon-star"></i> = [[ translation : general : is.group.leader :: ist Gruppen-Leiter ]]
+		</div>
+		<div class="pull-left clearfix">
+			<i class="glyphicon glyphicon-bullhorn"></i> = [[ translation : general : moderator :: Moderator ]]
+		</div>
+	</div>
+{endif}

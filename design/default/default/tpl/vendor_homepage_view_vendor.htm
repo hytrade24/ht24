@@ -1,0 +1,163 @@
+{javascript_google_maps()}
+
+<script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+<script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+
+<script type="text/javascript">
+    ebizGoogleMapCallback(function() {
+        {if VENDOR_LATITUDE || VENDOR_PLACES}
+            jQuery(".vendorMapContainer").height(jQuery('.vendorInfo').height() + 'px');
+            // Google Maps
+            var bounds = new google.maps.LatLngBounds();
+
+            var latlng = new google.maps.LatLng({VENDOR_LATITUDE}, {VENDOR_LONGITUDE});
+            bounds.extend(latlng);
+
+            var myOptions = {
+                zoom: 13,
+                zoomMax:15,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+
+            var map = new google.maps.Map(document.getElementById("vendorMap"), myOptions);
+
+            // Marker
+            var marker = new Array();
+            var infowindow = new Array();
+
+            marker[0] = new google.maps.Marker({
+                position: latlng,
+                map: map
+            });
+            infowindow[0] = new google.maps.InfoWindow({
+                content: "<p><strong>{VENDOR_FIRMA}</strong><br />{VENDOR_STRASSE}, {VENDOR_PLZ} {VENDOR_ORT}, {VENDOR_COUNTRY}</p>"
+            });
+
+            google.maps.event.addListener(marker[0], 'click', function() {
+                infowindow[0].open(map,marker[0]);
+            });
+
+            {if JSON_VENDOR_PLACES}var vendorPlaces = {JSON_VENDOR_PLACES};{endif}
+
+
+
+            jQuery.each(vendorPlaces, function(key, value) {
+                var p = new google.maps.LatLng(value.LATITUDE, value.LONGITUDE);
+
+                marker[key+1] = new google.maps.Marker({
+                    position: p,
+                    map: map,
+                    zIndex: key+1
+                });
+
+                infowindow[key+1] = new google.maps.InfoWindow({
+                    content: "<p><strong>"+value.NAME+"</strong><br />"+value.STRASSE+", "+value.PLZ+" "+value.ORT+"</p>"
+                });
+
+                google.maps.event.addListener(marker[key+1], 'click', function() {
+                    infowindow[key+1].open(map,marker[key+1]);
+                });
+
+                bounds.extend(p);
+            });
+
+            if(vendorPlaces.length > 0) {
+                map.fitBounds(bounds);
+            }
+        {endif}
+    });
+
+</script>
+{if USER_ID_USER}
+    <div class="row design-page-with-menu">
+        <div class="design-page-content">
+            <h1>{VENDOR_FIRMA}</h1>
+            <div class="row">
+                <div class="col-xs-12 col-md-6 vendorInfo">
+                    <div class="design-content-box">
+                        <dl class="dl-table-horizontal">
+                            <dt>[[ translation : marketplace : company :: Firma ]]:</dt>
+                            <dd class="separator">{VENDOR_FIRMA}</dd>
+
+                            <dt>[[ translation : marketplace : address.name :: Anschrift ]]:</dt>
+                            <dd>
+                                <p>{VENDOR_STRASSE}<br />{VENDOR_PLZ} {VENDOR_ORT}, {VENDOR_COUNTRY}</p>
+
+                                {if VENDOR_PLACES}{VENDOR_PLACES}{endif}
+                            </dd>
+
+                            {if VENDOR_TEL}
+                            <dt>[[ translation : marketplace : phone :: Telefon ]]:</dt>
+                            <dd>{VENDOR_TEL}</dd>
+                            {endif}
+                            {if VENDOR_FAX}
+                            <dt>[[ translation : marketplace : fax :: Fax ]]:</dt>
+                            <dd>{VENDOR_FAX}</dd>
+                            {endif}
+                            {if VENDOR_URL}
+                            <dt>[[ translation : marketplace : web :: Web ]]:</dt>
+                            <dd><a href="{VENDOR_URL}" target="_blank">{VENDOR_URL}</a></dd>
+                            {endif}
+
+                            <dt></dt><dd class="separator"></dd>
+
+                            {if VENDOR_CATEGORIES}
+                            <dt>[[ translation : marketplace : categories :: Kategorien ]]:</dt>
+                            <dd>{VENDOR_CATEGORIES}</dd>
+                            {endif}
+                            {if VENDOR_KEYWORDS}
+                            <dt>[[ translation : marketplace : tags :: Schlagworte ]]:</dt>
+                            <dd>
+                                <div class="design-btn-small">
+                                    {VENDOR_KEYWORDS}
+                                </div>
+                            </dd>
+                            {endif}
+                        </dl>
+                    </div>
+                </div>
+                <div id="map_container" class="col-xs-12 col-md-6">
+                    {if VENDOR_LATITUDE || VENDOR_PLACES}
+                    <div id="vendorMap" class="vendorMapContainer">
+
+                    </div>
+                    {endif}
+                </div>
+            </div>
+            {if VENDOR_DESCRIPTION}
+            <h3>[[ translation : marketplace : vendor.description :: Beschreibung ]]:</h3>
+                <div class="vendorDescription">
+                    <div class="design-content-box">
+                        {VENDOR_DESCRIPTION}
+                    </div>
+                </div>
+            {endif}
+            {if VENDOR_GALLERY || VENDOR_GALLERY_VIDEO}
+                <a name="gallery"></a>
+                <h3>[[ translation : marketplace : gallery :: Galerie ]]:</h3>
+                <div class="galleryImagePreviewContainer">
+                    {if VENDOR_GALLERY_VIDEO}
+                        {VENDOR_GALLERY_VIDEO}
+                    {endif}
+                    {if VENDOR_GALLERY}
+                        {VENDOR_GALLERY}
+                    {endif}
+                </div>
+            {endif}
+            {if VENDOR_ALLOW_COMMENTS}
+                {if comments_enabled}
+                    <a name="comments"></a>
+                    {subtpl(tpl/{SYS_TPL_LANG}/comment_list.htm,TABLE=vendor,FK={VENDOR_ID_VENDOR})}
+                {endif}
+            {endif}
+        </div>
+        <div class="design-page-menu">
+            {subtpl(tpl/{SYS_TPL_LANG}/vendor_homepage_view_user.info.htm,*)}
+            {content_page(LINKS - Anbieter-Homepage)}
+        </div>
+    </div>
+{endif}

@@ -1,0 +1,222 @@
+{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+<script type="text/javascript">
+    function sendKontakt() {
+        var data = jQuery("#kform").serialize();
+        jQuery.ajax({
+            url: jQuery("#kform").attr('action'),
+            type: 'POST',
+            data: data,
+            success: function(result) {
+                jQuery("#sendContactButton").detach();
+                $('#modalDialogContent').html(result);
+            }
+        });
+
+        return false;
+    }
+	
+	jQuery(function() {
+		jQuery("#MODAL_CONTACT_RENT_DATE").datepicker({
+				clearBtn: true,
+				keepEmptyValues: true,
+				format: 'dd.mm.yyyy',
+				startDate: '{todate(DATE_MIN)}'
+		});
+	});
+</script>
+
+{if ERR_AD_NOT_FOUND}
+	<div class="alert alert-danger">
+		<h2>[[ translation : general : error.occurred :: Fehler aufgetreten! ]]</h2>
+		<p>[[ translation : marketplace : ad.contact.error.ad.not.found :: Die Anzeige konnte nicht gefunden werden. ]]</p>
+	</div>
+{else}
+
+	<form action="{uri_baseurl(/index.php)}" method="post" id="kform" class="form-horizontal">
+		<input type="hidden" name="page" value="marktplatz_kontakt" />
+		<input type="hidden" name="frame" value="ajax" />
+		<input type="hidden" name="ID_AD" value="{ID_AD}" />
+		<input type="hidden" name="ID_KAT" value="{FK_KAT}" />
+		<input type="hidden" name="FK_USER" value="{FK_USER}" />
+
+		{if SENDED}
+			<script type="text/javascript">
+				jQuery(function () {
+					jQuery(".modal-footer").remove();
+				});
+			</script>
+
+			<p>
+				[[ translation : marketplace : ad.contact.success.message.delivered :: Ihre Nachricht wurde erfolgreich zugestellt! ]]
+			</p>
+			<p>
+				<a href="#" class="btn btn-default" onclick="HideDialog(); return false;">[[ translation : general : close.window:: Fenster schließen ]]</a>
+			</p>
+		{else}
+			{if err}
+				<div class="alert alert-danger">
+					<h3>[[ translation : general : error.occurred :: Fehler aufgetreten! ]]</h3>
+					<p>
+						{err}
+					</p>
+				</div>
+			{endif}
+			<script type="text/javascript">
+				jQuery(function() {
+					if (jQuery("#modalDialog .modal-footer").length > 0) {
+						jQuery("#modalDialog .modal-footer").html( jQuery("#modalFooterContainer .modal-footer").html() );
+					} else {
+						jQuery("#modalDialog").append( jQuery("#modalFooterContainer").html() );
+					}
+				});
+			</script>
+
+			{if !ID_USER}
+				<p>[[ translation : marketplace : ad.contact.not.logged.in.please.provide.email :: Sie sind nicht als Benutzer angemeldet. Bitte geben Sie Ihren Namen und Ihre Emailadresse an! ]]</p>
+
+				<div class="control-group">
+					<label class="control-label">[[ translation : general : your.name :: Ihr Name ]]:</label>
+
+					<div class="controls">
+						<input class="form-control" type="text" name="SENDER" value="{htm(SENDER)}"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">[[ translation : general : your.email :: Ihre E-Mail Adresse ]]:</label>
+
+					<div class="controls">
+						<input class="form-control" type="email" name="SENDER_MAIL" value="{htm(SENDER_MAIL)}" required />
+					</div>
+				</div>
+				{endif}
+
+				<div class="control-group">
+					<label class="control-label">[[ translation : general : message.subject :: Betreff ]]:</label>
+
+					<div class="controls">
+						<input class="form-control" type="text" name="SUBJECT" value="{htm(SUBJECT)}"/>
+					</div>
+				</div>
+				{if VERKAUFSOPTIONEN==3}
+        <div class="control-group">
+            <label class="control-label">[[ translation : general : message.rent.range :: Miet-Zeitraum ]]:</label>
+    
+            <div class="controls">
+                <div class="input-group input-daterange" id="MODAL_CONTACT_RENT_DATE">
+                  <input class="form-control" type="text" id="MODAL_CONTACT_RENT_DATE_FROM" name="RENT_FROM" value="{htm(RENT_FROM)}" />
+                  <span class="input-group-addon">[[ translation : marketplace : search.placeholder.max :: Bis ]]</span>
+                  <input class="form-control" type="text" id="MODAL_CONTACT_RENT_DATE_TO" name="RENT_TO" value="{htm(RENT_TO)}" />
+                </div>
+            </div>
+        </div>
+				{endif}
+
+				{if VERKAUFSOPTIONEN==5}
+				<div class="control-group">
+					<label class="control-label">[[ translation : general : message.offer.article :: Artikel ]]:</label>
+
+					<div class="controls">
+						<input type="hidden" id="OFFER_ARTICLE_ID" name="OFFER_ARTICLE_ID" value="{htm(OFFER_ARTICLE_ID)}" />
+						<input class="form-control" type="text" id="OFFER_ARTICLE" name="OFFER_ARTICLE" value="{htm(OFFER_ARTICLE)}" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="control-group">
+							<label class="control-label">[[ translation : general : message.offer.article.amount :: Menge ]]:</label>
+		
+							<div class="controls">
+								<input class="form-control" type="text" id="OFFER_ARTICLE_QUANTITY" name="OFFER_ARTICLE_QUANTITY" value="{htm(OFFER_ARTICLE_QUANTITY)}" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="control-group">
+							<label class="control-label">[[ translation : general : message.offer.article.price :: Preis ]]:</label>
+		
+							<div class="controls">
+								<input class="form-control" type="text" id="OFFER_ARTICLE_PRICE" name="OFFER_ARTICLE_PRICE" value="{htm(OFFER_ARTICLE_PRICE)}" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<script type="text/javascript">
+					jQuery("#OFFER_ARTICLE").on("change", function(event) {
+						jQuery("#OFFER_ARTICLE_ID").val("");
+						jQuery("#OFFER_ARTICLE_QUANTITY").val("");
+						jQuery("#OFFER_ARTICLE_PRICE").val("");
+						//debugger;
+					});
+					jQuery("#OFFER_ARTICLE").easyAutocomplete({
+
+						url: function (phrase) {
+							return "{uri_baseurl(/index.php)}";
+						},
+						getValue: function (element) {
+							return element.PRODUKTNAME;
+						},
+						template: {
+							type: "iconLeft",
+							fields: {
+								iconSrc: "IMG_DEFAULT_SRC"
+							}
+						},
+						adjustWidth: false,
+						ajaxSettings: {
+							dataType: "json",
+							method: "POST",
+							data: {
+								page: "marktplatz_kontakt",
+								ajax: "autocompleteArticle",
+								dataType: "json"
+							}
+						},
+						preparePostData: function (data) {
+							data.phrase = $("#OFFER_ARTICLE").val();
+							return data;
+						},
+						requestDelay: 400,
+						list: {
+							onChooseEvent: function() {
+                var selection = jQuery("#OFFER_ARTICLE").getSelectedItemData();
+								if (typeof selection == "object") {
+									jQuery("#OFFER_ARTICLE_ID").val(selection.ID_AD_MASTER);
+									jQuery("#OFFER_ARTICLE_QUANTITY").val(selection.MENGE < {int(REQUEST_QTY)} ? selection.MENGE : {int(REQUEST_QTY)});
+									jQuery("#OFFER_ARTICLE_PRICE").val(selection.PREIS);
+								}
+							}
+						}
+					});
+				</script>
+				{endif}
+
+				<div class="control-group">
+					<label class="control-label">[[ translation : general : your.message :: Ihre Nachricht ]]:</label>
+
+					<div class="controls">
+						<textarea class="form-control" id="BODY" name="BODY" rows="5">{htm(BODY)}</textarea>
+					</div>
+				</div>
+
+
+				{if !ID_USER}
+				<p><strong>[[ translation : marketplace : please.answer.captcha :: Bitte beantworten Sie die Sicherheitsfrage ]]:</strong></p>
+
+				<div class="control-group">
+					<label class="control-label">{question()}:</label>
+
+					<div class="controls">
+						<input class="form-control" type="text" name="ANSWER"/>
+					</div>
+				</div>
+				{endif}
+		{endif}
+	</form>
+{endif}
+
+<div class="hide" id="modalFooterContainer">
+    <div class="modal-footer">
+        <a href="#" onclick="HideDialog(); return false;" class="btn btn-default">[[ translation : general : close.window:: Fenster schließen ]]</a>
+        <a href="#" onclick="sendKontakt(); return false;" id="sendContactButton" class="btn btn-primary">[[ translation : marketplace : ad.contact.send.message:: Nachicht abschicken ]]</a>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<div style="margin-bottom: 8px;margin-top: 10px;">
+	{if IMG}
+		<img class="news" src="{uri_baseurl({IMG})}" width="{IMGW}" height="{IMGH}" alt="{htm(V1)}" align="left" />
+	{endif}
+	
+    <h3>{htm(V1)}</h3>
+	<div class="date"><font size="-1">{todate(STAMP)}</font></div>
+    <p>{htm(V2)}</p>
+	<a href="{uri_action(view_user_jobs,{urllabel(NAME)},{ID_USER},{FK_KAT},{npage},{ID_JOB},{urllabel(V1)})}" title="{htm(V1)}">[mehr]</a><br />
+</div>

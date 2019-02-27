@@ -1,0 +1,6 @@
+<div class="design-row-item">
+	<a href="{if ID_KAT}{uri_action(hersteller_details,{ID_MAN},{ID_KAT})}{else}{uri_action(hersteller_details,{ID_MAN})}{endif}" 
+		 title="[[ translation : marketplace : manufacture.search.for.products.by.manufacture :: Suche nach Produkten von {htm(NAME)} ]]">
+		{htm(NAME)} {if AD_COUNT>0}<strong>({AD_COUNT})</strong>{endif}
+	</a>
+</div>

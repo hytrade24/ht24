@@ -1,0 +1,1 @@
+Import-Tool um die Möglichkeit erweitern Affiliate-Anzeigen zu importieren. (Nur für Admin-Benutzer sichtbar!)

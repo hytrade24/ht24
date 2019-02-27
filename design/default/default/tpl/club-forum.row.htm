@@ -1,0 +1,53 @@
+<div class="design-forum-thread-row{if ANNOUNCE} sticky{endif}">
+    <div class="row">
+        <div class="col-xs-12 col-md-8">
+            <a name="{ID_CLUB_DISCUSSION}"></a>
+
+            {if PUBLIC}<i class="glyphicon glyphicon-globe" title="[[ translation : marketplace : club.forum.public :: Öffentlich ]]"></i>{endif}
+            {if ANNOUNCE}<i class="glyphicon glyphicon-bullhorn" title="[[ translation : marketplace : club.forum.announcement :: Ankündigung ]]"></i>{endif}
+            {if STICKY}<i class="glyphicon glyphicon-warning-sign" title="[[ translation : marketplace : club.forum.sticky :: Wichtig ]]"></i>{endif}
+            {if CLOSED}<i class="glyphicon glyphicon-lock" title="[[ translation : marketplace : club.forum.closed :: Geschlossen ]]"></i>{endif}
+
+            <a href="{uri_action(club-forum-view,{urllabel(NAME)},{ID_CLUB_DISCUSSION})}">
+                {htm(NAME)}
+            </a>
+            <br />
+            <div class="author text-muted small">
+                [[ translation : marketplace : club.forum.author :: Autor ]]:
+                {if FK_USER>0}
+                <a href="{uri_action(view_user,{USER_NAME},{FK_USER})}">
+                    {htm(USER_NAME)}
+                </a>
+                {else}
+                <strong>{htm(USER_NAME)}</strong>
+                {endif}
+
+                [[ translation : marketplace : club.forum.last.reply :: Letzter Beitrag ]]:
+                {if STAMP_REPLY}
+                    {todate(STAMP_REPLY,1)} von <a href="{uri_action(view_user,{USER_REPLY_NAME},{FK_USER_REPLY})}">{htm(USER_REPLY_NAME)}</a>
+                {else}
+                    {todate(STAMP_UPDATE,1)} von <a href="{uri_action(view_user,{USER_NAME},{FK_USER})}">{htm(USER_NAME)}</a>
+                {endif}
+                <a href="{uri_action(club-forum-view,{urllabel(NAME)},{ID_CLUB_DISCUSSION},{LAST_PAGE})}" title="[[ translation : marketplace : club.forum.last.reply :: Letzter Beitrag ]]">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div class="design-group-forum-counter row">
+                <div class="col-xs-6">
+                    <div class="design-group-forum-counter-views">
+                        <div class="design-group-forum-counter-label">Views</div>
+                        <div class="design-group-forum-counter-value">{VIEWS}</div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="design-group-forum-counter-comment">
+                        <div class="design-group-forum-counter-label">Kommentare</div>
+                        <div class="design-group-forum-counter-value">{COMMENTS}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

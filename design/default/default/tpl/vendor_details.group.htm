@@ -1,0 +1,14 @@
+{if liste}
+<fieldset class="fieldGroup{ID_FIELD_GROUP}">
+	<legend>
+		{if !V1}
+			[[ translation : marketplace : general.information.view :: Allgemeine Angaben ]]
+		{else}
+			{htm(V1)}
+		{endif}
+	</legend>
+	<dl class="dl-horizontal">
+		{liste}
+	</dl>
+</fieldset>
+{endif}

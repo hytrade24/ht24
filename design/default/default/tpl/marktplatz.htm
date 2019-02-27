@@ -1,0 +1,19 @@
+{if not_found}
+    <div class="alert alert-danger">
+        <h1>[[ translation : marketplace : category.not.found :: Kategorie wurde nicht gefunden! ]]</h1>
+        <p>[[ translation : marketplace : category.not.current :: Möglicherweise ist die gewünschte Kategorie nicht mehr aktuell. ]]</p>
+    </div>
+{else}
+    {if LU_KATART_STANDARD}
+        <!-- Standard Ansicht -->
+        {subtpl(tpl/{SYS_TPL_LANG}/marktplatz.articles.htm,*)}
+    {endif}
+    {if LU_KATART_UEBERSICHT}
+        <!-- Kategorie Ansicht -->
+        {subtpl(tpl/{SYS_TPL_LANG}/marktplatz.categories.htm,SHOW_AD_COUNT_KAT=1,HIDE_EMPTY=0,FK_INFOSEITE={FK_INFOSEITE})}
+    {endif}
+    {if LU_KATART_CMS}
+        <!-- Kategorie-Infobereich -->
+        {subtpl(cache/info/{SYS_TPL_LANG}.{FK_INFOSEITE}.htm,*)}
+    {endif}
+{endif}

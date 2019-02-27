@@ -1,0 +1,91 @@
+<script type="text/javascript" src="{uri_resource(lib/modernizr/modernizr.js)}"></script>
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery("#lead_create").submit(function(event) {
+            event.preventDefault();
+            var form = this;
+            var data = jQuery(form).serialize();
+            jQuery.ajax({
+                url: jQuery(form).attr('action'),
+                type: 'POST',
+                data: data,
+                success: function(result) {
+                    if (result.success) {
+                        jQuery(form).find(".text-danger").hide();
+                        jQuery(form).find(".text-success").show();
+                        jQuery(form).find(".design-contact-form-content").hide();
+                    } else {
+                        jQuery(form).find(".text-success").hide();
+                        jQuery(form).find(".text-danger").html(result.error).show();
+                    }
+                }
+            });
+        });
+        if (!Modernizr.inputtypes.date) {
+            jQuery("#LEAD_DATE_DUE").datepicker({
+                dateFormat: 'dd.mm.yy',
+                numberOfMonths: 2
+            });
+        }
+    });
+</script>
+
+{if ERR_AD_NOT_FOUND}
+<div class="alert alert-danger">
+    <h2>[[ translation : general : error.occurred :: Fehler aufgetreten! ]]</h2>
+    <p>[[ translation : marketplace : ad.contact.error.ad.not.found :: Die Anzeige konnte nicht gefunden werden. ]]</p>
+</div>
+{else}
+
+<form action="{uri_baseurl(/index.php?pluginAjax=Leads&pluginAjaxAction=article_lead)}" method="post" id="lead_create" class="form-horizontal">
+    <input type="hidden" name="ID_AD" value="{ID_AD}" />
+    <input type="hidden" name="RETURN" value="json" />
+    
+    <div class="design-contact-form-content">
+    
+        <div class="control-group">
+            <label class="control-label">[[ translation : general : lead.quantity :: Menge ]]:</label>
+    
+            <div class="controls">
+                <input class="form-control" type="text" name="QUANTITY" value="{htm(QUANTITY)}"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">[[ translation : marketplace : lead.due.date :: Fälligkeit ]]:</label>
+    
+            <div class="controls">
+                <input class="form-control" type="date" min="{date_format(,Y-m-d)}" id="LEAD_DATE_DUE" name="DATE_DUE" value="{htm(DATE_DUE)}"/>
+            </div>
+        </div>
+    
+        <div class="control-group">
+            <label class="control-label">[[ translation : general : lead.description :: Ihre Nachricht ]]:</label>
+    
+            <div class="controls">
+                <textarea class="form-control" id="LEAD_DESCRIPTION" name="DESCRIPTION" rows="5">{htm(DESCRIPTION)}</textarea>
+            </div>
+        </div>
+    
+    
+        {if !ID_USER}
+        <p><strong>[[ translation : marketplace : please.answer.captcha :: Bitte beantworten Sie die Sicherheitsfrage ]]:</strong></p>
+    
+        <div class="control-group">
+            <label class="control-label">{question()}:</label>
+    
+            <div class="controls">
+                <input class="form-control" type="text" name="ANSWER"/>
+            </div>
+        </div>
+        {endif}
+        {endif}
+        <div class="control-group">
+            <div class="control-label">
+                <button type="submit" class="btn btn-primary btn-anfrage-submit">
+                    [[ translation : marketplace : lead.submit :: Anfrage abschicken ]]
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+{endif}

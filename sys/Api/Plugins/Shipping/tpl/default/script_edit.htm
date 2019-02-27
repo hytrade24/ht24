@@ -1,0 +1,658 @@
+
+<style type="text/css">
+  #pluginShippingGroupPriceList {
+    overflow: auto;
+    max-height: 320px;
+  }
+  #pluginShippingGroupPriceTable {
+    margin-bottom: 0;
+  }
+  #pluginShippingGroupPriceTable th {
+    white-space: nowrap;
+  }
+  #pluginShippingGroupPriceTable th .tooltip {
+    white-space: normal;
+  }
+  #pluginShippingGroupPriceTable input[type=text] {
+    min-width: 80px;
+  }
+</style>
+
+<script type="text/javascript">  
+    var pluginShippingCurrentProviders = "";
+    var pluginShippingCurrentRegions = "";
+    var pluginShippingCurrentPrices = "";
+    var pluginShippingCurrentGlobal = "";
+  
+    /*
+     * Get parameter query for current input
+     */  
+    function pluginShippingGetParams_Reset() {
+      var configName = jQuery("#pluginShippingGroupName").val().trim();
+      pluginShippingCurrentProviders = pluginShippingGetParams_Providers();
+      pluginShippingCurrentRegions = pluginShippingGetParams_Regions();
+      pluginShippingCurrentPrices = pluginShippingGetParams_PriceTable();
+      pluginShippingCurrentGlobal = configName+"|"+pluginShippingCurrentProviders+"|"+pluginShippingCurrentRegions+"|"+pluginShippingCurrentPrices;
+      jQuery("#pluginShippingGroupDirty").hide();
+      jQuery("#pluginShippingGroupDirtyGlobal").hide();
+    }
+    
+    function pluginShippingUpdateDirty() {
+      // Providers and regions
+      var isDirty = false;
+      if (pluginShippingGetParams_ProvidersDirty()) {
+        isDirty = true;
+      }
+      if (pluginShippingGetParams_RegionsDirty()) {
+        isDirty = true;
+      }
+      // Get price configuration
+      if (isDirty && !pluginShippingGetParams_PriceTableModified()) {
+        // No prices defined yet, automaticly update table.
+        pluginShippingUpdateProvidersAndRegions();
+        isDirty = false;
+      }
+      if (isDirty) {
+        jQuery("#pluginShippingGroupDirty").show();
+      } else {
+        jQuery("#pluginShippingGroupDirty").hide();
+      }
+      // All settings
+      var configName = jQuery("#pluginShippingGroupName").val().trim();
+      var globalCurrent = configName+"|"+pluginShippingGetParams_Providers()+"|"+pluginShippingGetParams_Regions()+"|"+pluginShippingGetParams_PriceTable();
+      console.log("global", 1, globalCurrent);
+      console.log("global", 2, pluginShippingCurrentGlobal);
+      if (globalCurrent != pluginShippingCurrentGlobal) {
+        jQuery("#pluginShippingGroupDirtyGlobal").show();
+      } else {
+        jQuery("#pluginShippingGroupDirtyGlobal").hide();
+      }
+    }
+    
+    function pluginShippingGetParams_Providers() {
+      var providerSelection = jQuery("#pluginShippingGroupProvider").val();
+      var parameters = [];
+      if (providerSelection !== null) {
+        for (var providerIndex = 0; providerIndex < providerSelection.length; providerIndex++) {
+          parameters.push("selected[]="+encodeURIComponent(providerSelection[providerIndex]));
+        }
+      }
+      return parameters.join("&");
+    }
+    
+    function pluginShippingGetParams_ProvidersDirty() {
+      var parameters = pluginShippingGetParams_Providers();
+      console.log("providers", 1, parameters);
+      console.log("providers", 2, pluginShippingCurrentProviders);
+      return (parameters != pluginShippingCurrentProviders);
+    }
+    
+    function pluginShippingGetParams_Regions() {
+      var parameters = [];
+      jQuery("#pluginShippingGroupRegion option:selected").each(function() {
+        parameters.push(jQuery(this).attr("data-type")+"[]="+jQuery(this).val());
+      });
+      return parameters.join("&");
+    }
+    
+    function pluginShippingGetParams_RegionsDirty() {
+      var parameters = pluginShippingGetParams_Regions();
+      console.log("regions", 1, parameters);
+      console.log("regions", 2, pluginShippingCurrentRegions);
+      return (parameters != pluginShippingCurrentRegions);
+    }
+    
+    function pluginShippingGetParams_PriceTable() {
+      var parameters = [];
+      jQuery("#pluginShippingGroupPriceTable").find("input[type=checkbox][data-provider]").each(function() {
+        if (jQuery(this).prop("checked")) {
+          parameters.push( jQuery(this).attr("name")+"="+encodeURIComponent(jQuery(this).val()) );
+        }
+      });
+      jQuery("#pluginShippingGroupPriceTable").find("input[type=text][data-provider]").each(function() {
+        var valueText = jQuery(this).val().trim();
+        if (valueText != "") {
+          parameters.push( jQuery(this).attr("name")+"="+encodeURIComponent(valueText) );
+        }
+      });
+      return parameters.join("&");
+    }
+    
+    function pluginShippingGetParams_PriceTableModified() {
+      var disabledRegions = jQuery("#pluginShippingGroupPriceTable input[type=checkbox][data-provider]:not(:checked)");
+      if (disabledRegions.length > 0) {
+        return true;
+      }
+      var inputFields = jQuery("#pluginShippingGroupPriceTable input[type=text][data-provider]");
+      for (var inputIndex = 0; inputIndex < inputFields.length; inputIndex++) {
+        if (jQuery(inputFields[inputIndex]).val().trim() != "") {
+          return true;
+        }
+      }
+      return false;
+    }
+    
+    function pluginShippingGetParams_PriceTableDirty() {
+      var parameters = pluginShippingGetParams_PriceTable();
+      return (parameters != pluginShippingCurrentPrices);
+    }
+    
+    /*
+     * Configuration management
+     */
+    
+    function pluginShippingAddConfig() {
+      pluginShippingUpdateConfig("ident=new");
+    }
+  
+    function pluginShippingShowConfig(ident) {
+      if (typeof ident == "undefined") {
+        ident = jQuery("#SHIPPING_GROUP").val();
+      }
+      pluginShippingUpdateConfig("ident="+encodeURIComponent(ident), function() {
+        jQuery("#pluginShippingDetails").show();
+        jQuery("#pluginShippingActions").hide();
+        pluginShippingGetParams_Reset();
+      });
+      return false;
+    }
+    
+    function pluginShippingDeleteConfig(ident, callback) {
+      if (typeof ident == "undefined") {
+        ident = jQuery("#SHIPPING_GROUP").val();
+      }
+      jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=config_delete", "ident="+encodeURIComponent(ident), function(result) {
+        if (result.success) {
+          // Execute callback if present
+          if (typeof callback == "function") {
+            callback();
+          }          
+          // Close the config
+          jQuery("#pluginShippingDetails").hide();
+          jQuery("#pluginShippingActions").show();
+          // Refresh the option list
+          pluginShippingUpdate();
+        }
+      });
+    }
+    
+    function pluginShippingLoad(ident, callback) {
+      pluginShippingUpdateConfig("ident="+encodeURIComponent(ident), callback);
+    }
+    
+    function pluginShippingSave(mode, callback) {
+      if (typeof mode == "undefined") {
+        mode = "default";
+      }
+      var isCustom = jQuery("#pluginShippingDetails").is("[data-custom]");
+      if (isCustom && (mode == "default") && !confirm("[[ translation : plugin : shipping.warning.config.save.custom.as.default :: Achtung! Sie sind im Begriff die Standard-Konfiguration mit einer benutzerdefinierten Konfiguration für diesen Artikel zu überschreiben. Wirklich fortfahren? ]]")) {
+        return false;
+      }
+      var configName = jQuery("#pluginShippingGroupName").val().trim();
+      if (configName == "") {
+        jQuery("#pluginShippingGroupName").closest(".form-group").addClass("has-error");
+        alert("[[ translation : plugin : shipping.error.config.name.duplicate :: Bitte geben Sie einen Namen für die Versandkonfiguration an. ]]");
+        return false;
+      } else {
+        jQuery("#pluginShippingGroupName").closest(".form-group").removeClass("has-error");
+      }
+      var parameters = "name="+encodeURIComponent(configName)+"&mode="+mode+"&"+pluginShippingGetParams_PriceTable();
+      jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=config_save", parameters, function(result) {
+        if (result.success) {
+          // Execute callback if present
+          if (typeof callback == "function") {
+            callback();
+          }          
+          // Close the config
+          jQuery("#pluginShippingDetails").hide();
+          jQuery("#pluginShippingActions").show();
+          // Refresh the option list
+          pluginShippingUpdate(result.ident);
+        } else {
+          alert(result.error);
+        }
+      });
+      return false;
+    }
+    
+    /*
+     * Save configuration elements
+     */
+    
+    function pluginShippingUpdatePriceTableValues(callback) {
+      var parameters = pluginShippingGetParams_PriceTable();
+      if (parameters == pluginShippingCurrentPrices) {
+        // No changes!
+        if (typeof callback == "function") {
+          callback();
+        }
+        return;
+      }
+      jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=prices_save", parameters, function(result) {
+        if (result.success) {
+          pluginShippingCurrentPrices = parameters;
+          if (typeof callback == "function") {
+            callback();
+          }
+        }
+      })
+    }
+    
+    
+    function pluginShippingUpdateProvidersAndRegions(callback) {
+      pluginShippingUpdateProviders(function() {
+        pluginShippingUpdateRegions(callback);
+      });
+    }
+    
+    function pluginShippingUpdateRegions(callback) {
+      pluginShippingUpdatePriceTableValues(function() {
+        var parameters = pluginShippingGetParams_Regions();
+        if (parameters == pluginShippingCurrentRegions) {
+          // No changes!
+          if (typeof callback == "function") {
+            callback();
+          }
+          return;
+        }
+        jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=regions_update", parameters, function(result) {
+          if (result.success) {
+            pluginShippingUpdateConfigPrices();
+            pluginShippingCurrentRegions = parameters;
+            pluginShippingUpdateDirty();
+            if (typeof callback == "function") {
+              callback();
+            }
+          }
+        });        
+      });
+    }
+    
+    function pluginShippingUpdateProviders(callback) {
+      pluginShippingUpdatePriceTableValues(function() {
+        var parameters = pluginShippingGetParams_Providers();
+        if (parameters == pluginShippingCurrentProviders) {
+          // No changes!
+          if (typeof callback == "function") {
+            callback();
+          }
+          return;
+        }
+        jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=provider_update", parameters, function(result) {
+          if (result.success) {
+            jQuery("#pluginShippingGroupProvider").closest(".input-group").removeClass("has-error");
+            pluginShippingUpdateConfigPrices();
+            pluginShippingCurrentProviders = parameters;
+            pluginShippingUpdateDirty();
+            if (typeof callback == "function") {
+              callback();
+            }
+          } else {
+            jQuery("#pluginShippingGroupProvider").closest(".input-group").addClass("has-error");
+            alert(result.error);
+          }
+        });
+      });
+    }
+    
+    function pluginShippingDefaultProvider(link) {
+      var providerIdent = jQuery(link).attr("data-ident");
+      var providerName = jQuery(link).attr("data-name");
+      pluginShippingUpdatePriceTableValues(function() {
+        jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=provider_default", "ident="+encodeURIComponent(providerIdent), function(result) {
+          if (result.success) {
+            pluginShippingUpdateConfigPrices();
+          } else {
+            alert(result.error);
+          }
+        });
+      }); 
+    }
+    
+    function pluginShippingDeleteProvider(link) {
+      var providerIdent = jQuery(link).attr("data-ident");
+      var providerName = jQuery(link).attr("data-name");
+      if (!confirm("[[ translation : plugin : shipping.groups.provider.delete.confirm : NAME='"+providerName+"' : Den Versand-Anbieter '{NAME}' wirklich löschen? ]]")) {
+        return;
+      }
+      pluginShippingUpdatePriceTableValues(function() {
+        jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=provider_del", "ident="+encodeURIComponent(providerIdent), function(result) {
+          if (result.success) {
+            pluginShippingUpdateConfigPrices();
+          } else {
+            alert(result.error);
+          }
+        });
+      }); 
+    }
+    
+    /*
+     * Provider selection
+     */
+    
+    function pluginShippingChangeProvider(option, newValue, oldValue) {
+      pluginShippingUpdateDirty();
+    }
+    
+    /*
+     * Region selection
+     */
+    
+    function pluginShippingDeselectRegionParents(option) {
+      // Deselect parent regions
+      var optionPrev = option;
+      var levelMax = parseInt(jQuery(option).attr("data-level")) - 1; 
+      var levelCur = levelMax;
+      do {
+        optionPrev = optionPrev.prev();
+        levelCur = optionPrev.attr("data-level");
+        if (levelCur <= levelMax) {
+          levelMax = levelCur - 1;
+          optionPrev.prop("selected", false);
+        }
+      } while ((optionPrev.length > 0) && (levelCur > 1));
+    }
+    
+    function pluginShippingDeselectRegionChilds(option) {
+        // Deselect child regions
+        var optionNext = option.next();
+        var levelMin = parseInt(jQuery(option).attr("data-level")) + 1; 
+        var levelCur = optionNext.attr("data-level");
+        while ((optionNext.length > 0) && (levelCur >= levelMin)) {
+          levelMax = levelCur;
+          optionNext.prop("selected", false);
+          optionNext = optionNext.next();
+          levelCur = optionNext.attr("data-level");
+        }
+    }
+    
+    function pluginShippingSelectRegionChilds(option) {
+        // Select child regions
+        var optionNext = option.next();
+        var levelMin = parseInt(jQuery(option).attr("data-level")) + 1; 
+        var levelCur = optionNext.attr("data-level");
+        while ((optionNext.length > 0) && (levelCur >= levelMin)) {
+          optionNext.prop("selected", true);
+          optionNext = optionNext.next();
+          levelCur = optionNext.attr("data-level");
+        }
+    }
+    
+    function pluginShippingChangeRegion(option, newValue, oldValue) {
+      if (newValue === false) {
+        pluginShippingDeselectRegionParents(option);
+        pluginShippingDeselectRegionChilds(option);
+      } else {
+        pluginShippingSelectRegionChilds(option);
+      }
+      jQuery("#pluginShippingGroupRegion").selectpicker('refresh');
+      pluginShippingChangeRegions();
+    }
+    
+    function pluginShippingChangeRegions() {
+      var levelSelected = false;
+      // Deselect country groups that are not completely selected
+      jQuery("#pluginShippingGroupRegion option").each(function() {
+        if (!jQuery(this).prop("selected")) {
+          pluginShippingDeselectRegionParents(jQuery(this));
+        }
+      });
+      jQuery("#pluginShippingGroupRegion").selectpicker('refresh');
+      pluginShippingUpdateDirty();
+    }
+    
+    /*
+     * Price table user interface
+     */
+    
+    function pluginShippingBindPriceTable() {
+      jQuery("#pluginShippingGroupPriceTable .js-tooltip").tooltip();
+      jQuery("#pluginShippingGroupPriceTable input[type=checkbox]").on("change", function(event) {
+        if (jQuery(this).prop("checked")) {
+          // Enabled region
+          pluginShippingUpdatePriceTable_EnableParents(jQuery(this));
+          pluginShippingUpdatePriceTable_EnableChilds(jQuery(this));
+        } else {
+          pluginShippingUpdatePriceTable_DisableChilds(jQuery(this));
+        }
+        pluginShippingUpdatePriceTableEnabled();
+        pluginShippingUpdateDirty();
+      });
+      jQuery("#pluginShippingGroupPriceTable input[type=text]").on("keyup", function(event) {
+        pluginShippingUpdatePriceTableFallbacks();
+        pluginShippingUpdateDirty();
+      });
+      pluginShippingUpdatePriceTableEnabled();
+      pluginShippingUpdatePriceTableFallbacks();
+    }
+    
+    function pluginShippingUpdatePriceTable_EnableParents(option) {
+      var provider = jQuery(option).attr("data-provider");
+      var row = jQuery(option).closest("tr");
+      // Deselect parent regions
+      var rowPrev = row;
+      var levelMax = parseInt(jQuery(row).attr("data-level")) - 1; 
+      var levelCur = levelMax;
+      do {
+        rowPrev = rowPrev.prev();
+        levelCur = rowPrev.attr("data-level");
+        if (levelCur <= levelMax) {
+          levelMax = levelCur - 1;
+          rowPrev.find("input[type=checkbox][data-provider="+provider+"]").prop("checked", true);
+        }
+      } while ((rowPrev.length > 0) && (levelCur > 1));
+    }
+    
+    function pluginShippingUpdatePriceTable_EnableChilds(option) {
+      pluginShippingUpdatePriceTable_SetChilds(option, true);
+    }
+    
+    function pluginShippingUpdatePriceTable_DisableChilds(option) {
+      pluginShippingUpdatePriceTable_SetChilds(option, false);
+    }
+    
+    function pluginShippingUpdatePriceTable_SetChilds(option, checked) {
+      var provider = jQuery(option).attr("data-provider");
+      var row = jQuery(option).closest("tr");
+      // Select child regions
+      var rowNext = row.next();
+      var levelMin = parseInt(jQuery(row).attr("data-level")) + 1; 
+      var levelCur = rowNext.attr("data-level");
+      while ((rowNext.length > 0) && (levelCur >= levelMin)) {
+        rowNext.find("input[type=checkbox][data-provider="+provider+"]").prop("checked", checked);
+        rowNext = rowNext.next();
+        levelCur = rowNext.attr("data-level");
+      }
+    }
+    
+    function pluginShippingUpdatePriceTableEnabled() {
+      jQuery("#pluginShippingGroupPriceTable tbody tr").each(function() {
+        jQuery(this).find("input[type=checkbox][data-provider]").each(function() {
+          if (jQuery(this).prop("checked")) {
+            // Region enabled
+            jQuery(this).closest("td").find("input[type=text]").prop("disabled", false);
+          } else {
+            // Region disabled
+            jQuery(this).closest("td").find("input[type=text]").prop("disabled", true);
+          }
+        });
+      });
+    }
+    
+    function pluginShippingUpdatePriceTableFallbacks() {
+      var fallbackStack = {};
+      jQuery("#pluginShippingGroupPriceTable tbody tr").each(function() {
+        var row = jQuery(this);
+        var level = row.attr("data-level");
+        jQuery(this).find("input[type=text][data-provider]").each(function() {
+          var provider = jQuery(this).attr("data-provider");
+          // Update fallback stack
+          if (typeof fallbackStack[provider] == "undefined") {
+            fallbackStack[provider] = [""];
+          }
+          if (fallbackStack[provider].length > level) {
+            fallbackStack[provider].splice(level);
+          }
+          var fallbackText = fallbackStack[provider][level-1];
+          // Update current inputs fallback
+          jQuery(this).attr("placeholder", fallbackText);
+          // Get value for current input
+          var value = null;
+          var valueText = jQuery(this).val().trim();
+          if (valueText != "") {
+            var value = parseFloat(valueText);
+            if (!isNaN(value) && (value >= 0)) {
+              jQuery(this).closest("td").removeClass("has-error");
+            } else {
+              valueText = fallbackText;
+              jQuery(this).closest("td").addClass("has-error");
+            }
+          } else {
+            valueText = fallbackText;
+          }
+          // Remember current input as fallback
+          fallbackStack[provider].push(valueText);
+        });
+      });
+    }
+  
+    function pluginShippingUpdateConfigPrices(callback) {
+      jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=config_table", function(result) {
+        if (result.success) {
+          jQuery("#pluginShippingGroupPriceTable").replaceWith(result.table);
+          pluginShippingBindPriceTable();
+          if (typeof callback == "function") {
+            callback();
+          }
+        }
+      });
+    }
+  
+    function pluginShippingUpdateConfig(parameters, callback) {
+    {if articleEdit}
+      parameters += "&article=1";
+    {endif}
+      jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=config", parameters, function(result) {
+        if (result.success) {
+          jQuery("#pluginShippingDetails").replaceWith(result.body);
+          // Enable bootstrap select for provider select box
+          jQuery("#pluginShippingGroupProvider").selectpicker({
+            liveSearch: true,
+            countSelectedText: function(countSel, countMax) {
+              return "[[ translation : plugin : shipping.select.provider.count : COUNT='"+countSel+"',COUNT_MAX='"+countMax+"' : {COUNT} / {COUNT_MAX} Anbieter gewählt ]]"
+            },
+            noneSelectedText: "[[ translation : plugin : shipping.select.provider.none :: Kein Anbieter gewählt ]]"
+          }).on('changed.bs.select', function(event, clickedIndex, newValue, oldValue) {
+            var option = jQuery("#pluginShippingGroupProvider option").eq(clickedIndex);
+            pluginShippingChangeProvider(option, newValue, oldValue);
+          });;
+          // Enable bootstrap select for region select box
+          jQuery("#pluginShippingGroupRegion").selectpicker({
+            liveSearch: true,
+            countSelectedText: function(countSel, countMax) {
+              return "[[ translation : plugin : shipping.select.region.count : COUNT='"+countSel+"',COUNT_MAX='"+countMax+"' : {COUNT} / {COUNT_MAX} Regionen/Länder gewählt ]]"
+            },
+            noneSelectedText: "[[ translation : plugin : shipping.select.region.none :: Keine Regionen/Länder gewählt ]]"
+          }).on('changed.bs.select', function(event, clickedIndex, newValue, oldValue) {
+            var option = jQuery("#pluginShippingGroupRegion option").eq(clickedIndex);
+            pluginShippingChangeRegion(option, newValue, oldValue);
+          });
+          pluginShippingChangeRegions();
+          // Bind button events
+          jQuery("#pluginShippingDetails [data-action=config-close]").off("click").click(function(event) {
+            event.preventDefault();
+            jQuery("#pluginShippingDetails").hide();
+            jQuery("#pluginShippingActions").show();
+          });
+          jQuery("#pluginShippingDetails [data-action=config-add]").off("click").click(function(event) {
+            event.preventDefault();
+            pluginShippingAddConfig();
+          });
+          jQuery("#pluginShippingDetails [data-action=config-region-provider-update]").off("click").click(function(event) {
+            event.preventDefault();
+            pluginShippingUpdateProvidersAndRegions();
+          });
+          jQuery("#pluginShippingDetails [data-action=config-provider-update]").off("click").click(function(event) {
+            event.preventDefault();
+            pluginShippingUpdateProviders();
+          });
+          jQuery("#pluginShippingDetails [data-action=config-region-update]").off("click").click(function(event) {
+            event.preventDefault();
+            pluginShippingUpdateRegions();
+          });
+          jQuery("#pluginShippingDetails [data-action=config-load]").off("click").click(function(event) {
+            event.preventDefault();
+            pluginShippingLoad( jQuery(this).attr("data-ident") );
+          });
+          jQuery("#pluginShippingDetails [data-action=config-save]").off("click").click(function(event) {
+            event.preventDefault();
+            pluginShippingSave();
+          });
+          jQuery("#pluginShippingDetails [data-action=config-save-new]").off("click").click(function(event) {
+            event.preventDefault();
+            pluginShippingSave("new");
+          });
+          jQuery("#pluginShippingDetails [data-action=config-save-custom]").off("click").click(function(event) {
+            event.preventDefault();
+            pluginShippingSave("custom");
+          });
+          // Bind price table events
+          pluginShippingBindPriceTable();
+          // Execute callback if present
+          if (typeof callback == "function") {
+            callback();
+          }
+        }
+      });
+      return false;
+    }
+    
+    function pluginShippingUpdate(selection, callback) {
+      if (typeof selection == "undefined") {
+        selection = "";
+      }
+      jQuery.post("{uri_baseurl(index.php)}?pluginAjax=Shipping&pluginAjaxAction=options", function(result) {
+        if (result.success) {
+          jQuery("#SHIPPING_GROUP").html(result.options);
+          if (selection != "") {
+            jQuery("#SHIPPING_GROUP").val(selection);
+          }
+          if (result.options != "") {
+            jQuery("#SHIPPING_GROUP").show();
+            jQuery(".design-shipping-no-config-available").hide();
+          } else {
+            jQuery("#SHIPPING_GROUP").hide();
+            jQuery(".design-shipping-no-config-available").show();
+          }
+          if (typeof callback == "function") {
+            callback();
+          }
+        }
+      });
+    }
+    
+    function updateVersand() {
+        if ($("input[name=VERSANDOPTIONEN]:checked").val() != 3) {
+            // Selbstabholung / Auf Anfrage / ...
+            $(".design-plugin-shipping-disabled").show();
+            $(".design-plugin-shipping-enabled").hide();
+        } else {
+            // Versandkosten: Preis
+            $(".design-plugin-shipping-disabled").hide();
+            $(".design-plugin-shipping-enabled").show();
+        }
+        if ($("input[name=VERSANDOPTIONEN]:checked").val() != 1) {
+            // Selbstabholung
+            $("#LIEFERTERMIN").attr("disabled", false);
+            $("#LIEFERTERMIN").prop("required", true);
+        } else {
+            // Versandkostenfrei / Auf Anfrage / Preis
+            $("#LIEFERTERMIN").attr("disabled", true);
+            $("#LIEFERTERMIN").prop("required", false);
+        }
+    }
+  
+    jQuery(function() {
+        updateVersand();
+    });
+</script>

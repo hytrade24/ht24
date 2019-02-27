@@ -1,0 +1,12 @@
+<li class="design-row-item clearfix">
+    <div class="icon-holder-events pull-left">
+        <i class="fa fa-calendar"></i>
+    </div>
+    
+    <h3><a href="{uri_action(calendar_events_view,{urllabel(TITLE)},{ID_CALENDAR_EVENT})}">{htm(TITLE)}</a></h3>
+    <p class="recent-list-block text-muted">
+        <small>{todate(STAMP_START)} {if STAMP_START_DATE != STAMP_END_DATE}[[ translation : general : to :: bis ]] {todate(STAMP_END)}{endif} <br>{COUNTRY} {htm(CITY)}</small>
+    </p>
+
+    <p class="recent-list-block">{shorten({DESCRIPTION},120,1)}</p>
+</li>

@@ -1,0 +1,17 @@
+<td>
+  <div class="input-group">
+    {if ID_COUNTRY}
+      <div class="input-group-addon">
+        <input type="checkbox" data-provider="{IDENT}" name="ENABLED[COUNTRY][{ID_COUNTRY}][{IDENT}]" value="1"{if !DISABLED} checked{endif} />
+      </div>
+      <input type="text" data-provider="{IDENT}" class="form-control" name="PRICES[COUNTRY][{ID_COUNTRY}][{IDENT}]"{if !DISABLED} value="{htm(PRICE)}"{endif} />
+    {endif}
+    {if ID_COUNTRY_GROUP}
+      <div class="input-group-addon">
+        <input type="checkbox" data-provider="{IDENT}" name="ENABLED[COUNTRY_GROUP][{ID_COUNTRY_GROUP}][{IDENT}]" value="1"{if !DISABLED} checked{endif} />
+      </div>
+      <input type="text" data-provider="{IDENT}" class="form-control" name="PRICES[COUNTRY_GROUP][{ID_COUNTRY_GROUP}][{IDENT}]"{if !DISABLED} value="{htm(PRICE)}"{endif} />
+    {endif}
+    <div class="input-group-addon">{CURRENCY_DEFAULT}</div>
+  </div>
+</td>

@@ -1,0 +1,347 @@
+{startblock(script)}
+    {parentblock()}
+	<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+	<script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+	<script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+	<script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+	{javascript_google_maps()}
+	<script type="text/javascript">
+		function empfehlen()
+		{
+			ShowDialog(ebiz_trader_baseurl + "index.php?page=marktplatz_anzeige_empfehlen&_URL={uri_action(marktplatz_anzeige,{ID_AD},{urllabel(AD_TITLE)}|KAT_PATH={market_kat_path_url({FK_KAT})})}&frame=ajax", "[[ translation : marketplace : ad.recommend :: Anzeige Empfehlen ]]", "auto", "auto");
+			return false;
+		}
+	
+		function em_submit()
+		{
+			$.ajax({
+				url: 			'{uri_base(index.php)}',
+				type: 		'POST',
+				data:			$('#sEmp').serialize(),
+				success: 	function(result) {
+					var footer = jQuery('#modalDialogContent').html(result).find("#modalFooterContainer");
+					if (footer.length > 0) {
+						jQuery('#modalDialog .modal-footer').replaceWith(footer.html());
+					}
+				}
+			});
+		}
+	
+		function open_verstoss()
+		{
+			ShowDialog(ebiz_trader_baseurl + 'index.php?page=anzeige_melden&ID_AD={ID_AD}&frame=ajax', "[[ translation : marketplace : ad.violation.report :: Verstoß melden ]]", 550, 400);
+			return false;
+		}
+	
+		function send_verstoss()
+		{
+			$.ajax({
+				url: 		'{uri_baseurl(/index.php)}',
+				type: 		'POST',
+				data:		$('#meldenform').serialize(),
+				success: 	function(result) {
+					$('#modalDialogContent').html(result);
+				}
+			});
+		}
+	
+		function initMapTab() {
+			{if AD_LATITUDE && AD_LONGITUDE}
+			var container = $('#map_container');
+			if (container.html() == '') {
+				container.css("width", "100%");
+				container.css("height", "300px");
+	
+				var latlng = new google.maps.LatLng({AD_LATITUDE}, {AD_LONGITUDE});
+	
+				var myOptions = {
+					zoom:13,
+                    zoomMax:15,
+					center:latlng,
+					mapTypeId:google.maps.MapTypeId.ROADMAP
+				};
+				map = new google.maps.Map(document.getElementById(container.attr("id")), myOptions);
+	
+	
+				marker = new google.maps.Marker({
+					position:latlng,
+					map:map
+				});
+	
+				var infowindow = new google.maps.InfoWindow({
+	
+					content: "{htm(AD_STREET)} <br>" +
+							 "{htm(AD_ZIP)} " +
+							 "{htm(AD_CITY)}<br>" +
+							 "{htm(AD_COUNTRY)}"
+	
+				});
+	
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.open(map, this);
+				});
+	
+				infowindow.open(map, marker);
+	
+			}
+			{endif}
+		}
+	
+		function updateVariants() {
+			jQuery.ajax({
+				url: 		'{uri_baseurl(/index.php)}?page=marktplatz_anzeige&ajax=variant_details&ID_ANZEIGE={ID_AD}',
+				type: 		'POST',
+				data:		jQuery('#form_buy').serialize(),
+				success: 	function(result) {
+					if (result.ID_AD_VARIANT > 0) {
+						jQuery(".marketplaceArticleVisibleWhenAvailable").show();
+						jQuery(".marketplaceArticleVisibleWhenNotAvailable").hide();
+						// Variante, Preis und Menge updaten
+						jQuery("#CART_VARIANT").val(result.ID_AD_VARIANT);
+						jQuery("#marketplaceArticlePriceValue").html(result.PREIS);
+						jQuery("#marketplaceArticleQuanitityValue").html(result.MENGE);
+						// Buttons updaten
+						jQuery("#marketplaceArticleBuy").attr("href", result.LINK_BUY);
+						jQuery("#marketplaceArticleTrade").attr("href", result.LINK_TRADE);
+					} else {
+						jQuery(".marketplaceArticleVisibleWhenAvailable").hide();
+						jQuery(".marketplaceArticleVisibleWhenNotAvailable").show();
+						// Variante, Preis und Menge updaten
+						jQuery("#CART_VARIANT").val(0);
+						jQuery("#marketplaceArticlePriceValue").html((result.PREIS > 0 ? result.PREIS : "--.--"));
+						jQuery("#marketplaceArticleQuanitityValue").html(0);
+					}
+					jQuery("#tab_images").html(result.IMAGES);
+					swiperGalleryAutoload("#tab_images .design-ad-details-images-big, #tab_images .marketplaceArticleImagePreview");
+				}
+			});
+		}
+	
+		function addArticleToCartWrapper(jsSource) {
+			{if AVAILABILITY}
+			jQuery('#modalAddCartWithAvailability input[name=quantity]').val( jQuery('#CART_QUANTITY').val() );
+			jQuery('#modalAddCartWithAvailability').modal('show');
+			{else}
+			CartAddArticle('{ID_AD}', jQuery('#CART_QUANTITY').val(), jQuery('#CART_VARIANT').val());
+			{endif}
+		}
+	
+	{if USER_IS_ADMIN}
+		function UnlockAd() {
+			jQuery.post("{uri_action(marktplatz_anzeige,{ID_AD})}", "ajax=unlockAd", function() {
+				var isPopup = (document.referrer.match(/\/admin\/index.php[\?$]/) != null ? true : false);
+				if (isPopup) {
+					window.opener.UnlockSuccess();
+					window.close();
+				} else {
+					document.location.href = "{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(AD_TITLE)},unlocked)}";
+				}
+			});
+		}
+	
+		function UnlockDecline(id_ad, title) {
+			var isPopup = (document.referrer.match(/\/admin\/index.php[\?$]/) != null ? true : false);
+			if (isPopup) {
+				window.opener.UnlockDecline(id_ad, title);
+				window.close();
+			} else {
+				jQuery("#modalAdDecline").modal();
+			}
+		}
+	{endif}
+	
+		$(function() {
+			getAdLikeButton('{ID_AD}', ".adLikeButton");
+			$(".adLikeButton").click(function() {
+				toggleAdLike('{ID_AD}', function(response) {
+					getAdLikeButton('{ID_AD}', ".adLikeButton");
+					getAdLikeCount('{ID_AD}', function(response) {
+						$(".adLikeCount").html(response.count + 'x');
+					})
+	
+				});
+	
+				return false;
+			});
+			AdReminderLoad('{ID_AD}', 'adReminderLabel-{ID_AD}', '[[ translation : marketplace : ad.reminder.added :: Produkt bereits gemerkt ]]', '[[ translation : marketplace : ad.reminder.add :: Produkt merken ]]');
+	
+			{if kontaktnow}
+				sendAdContactMessage({ID_AD}, {ID_KAT}, jQuery("#CART_VARIANT").val(), "[[ translation : marketplace : ad.contact.header : MANUFACTURER=AD_MANUFACTURER,PRODUKTNAME=AD_TITLE : Stellen Sie eine Frage zu &quot;{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}&quot; ]]");
+			{endif}
+	
+			$('a[data-toggle="tab"][href="#tab_map"]').on('shown.bs.tab', function (e) {
+				initMapTab();
+			});
+	
+			jQuery('a[data-toggle="tab"][href="#marketplaceArticleAvailability"]').on('shown.bs.tab', function (e) {
+				jQuery('#availability .calendar').fullCalendar('render');
+			});
+				
+			jQuery('.design-social-share a').click(function(e) {
+				e.preventDefault();
+				var width = (jQuery(this).is("[data-width]") ? jQuery(this).attr("data-width") : 650);
+				var height = (jQuery(this).is("[data-height]") ? jQuery(this).attr("data-height") : 485);
+				var sbars = "no";
+				var rsize = "no";
+				var url = jQuery(this).attr("href");
+				var win_name = width + height;
+				var win_attr = "menubar=no,location=no,directories=no,toolbar=no,screenX=0,screenY=0";
+				win_attr += ",width=" + width + ",height=" + height + ",scrollbars=" + sbars + ",resizable=" + rsize;
+				var popupWindow = open(url, win_name, win_attr);
+				if (popupWindow != null) popupWindow.focus();
+			});
+				
+			{if VARIANTS}
+				updateVariants();
+			{endif}
+		});
+	</script>
+{endblock(script)}
+
+{if not_found}
+	<div class="alert alert-danger">
+		[[
+			translation : marketplace : ad.status.notfoundinfotext ::
+			<h2>Anzeige wurde nicht gefunden!</h2>
+			<p>Möglicherweise ist die gewünschte Anzeige nicht mehr aktuell.</p>
+		]]
+	</div>
+	<script type="text/javascript">
+	
+		jQuery(function() {
+			if (typeof window.opener.callbackAdNotAvailable == "function") {
+				window.opener.callbackAdNotAvailable();
+				window.close();
+			}
+		});
+	
+	</script>
+{else}
+
+{if USER_IS_ADMIN}
+<div id="modalAdDecline" class="modal hide fade">
+    <form method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Freigabe ablehnen</h3>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="page" value="{curpage}" />
+            <input type="hidden" name="decline" value="{ID_AD}" />
+            <h4>
+                Freigabe der Anzeige <b id="modalAdDeclineTitle">{htm(AD_TITLE)}</b> ablehnen
+            </h4>
+            <table width="100%">
+                <tr>
+                    <th align="left" valign="top">Begründung:</th>
+                    <td>
+                        <textarea name="REASON" style="height: 200px; width: 95%;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <a href="#" data-dismiss="modal" class="btn">Abbrechen</a>
+            <a href="#" onclick="jQuery(this).closest('form').submit();" class="btn btn-danger">Ablehnen</a>
+        </div>
+    </form>
+</div>
+{endif}
+
+{if AD_AVAILABILITY}
+	<div id="modalAddCartWithAvailability" class="modal hide fade">
+		<form class="form-horizontal" action="{uri_action(cart)}">
+			<input type="hidden" name="variant" value="{ID_AD_VARIANT}" />
+			<input type="hidden" name="FK_AD" value="{ID_AD}" />
+
+			<div class="modal-header">
+				<h3>[[ translation : marketplace : ad.cart.addarticletocart :: Artikel in den Warenkorb legen ]]</h3>
+			</div>
+			<div id="confirm_content" class="modal-body">
+				<div class="control-group">
+					<label class="control-label">[[ translation : marketplace : ad.quantity :: Menge ]]</label>
+					<div class="controls">
+						<input name="quantity" type="text" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">[[ translation : general : date.from :: Von ]]</label>
+					<div class="controls controls-date">
+						<input type="text" name="date_from" class="input-small input-date" value="" placeholder="[[ translation : general : date.datefrom :: Datum von ]]">
+						[[ translation : general : time.from :: ab ]]
+						<input type="time" name="time_from" class="input-small" placeholder="00:00" />
+						[[ translation : general : time.clock :: Uhr ]]
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">[[ translation : general : date.until :: Bis ]]</label>
+					<div class="controls controls-date">
+						<input type="text" name="date_to" class="input-small input-date" value="" placeholder="[[ translation : general : date.dateuntil :: Datum bis ]]">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#input_top" onclick="AvailabilityRequestCancel(this);" class="btn btn-new btn-edit">[[ translation : general : button.cancel :: Abbrechen ]]</a>
+				<a href="#input_top" onclick="AvailabilityRequestSubmit(this);" class="btn btn-new btn-success">[[ translation : marketplace : ad.cart.addtocart :: In den Warenkorb ]]</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript">
+	jQuery(function() {
+		jQuery("#modalAddCartWithAvailability .controls-date input.input-date").datepicker(
+			{ format: 'dd.mm.yyyy' }
+		).keypress(function(e) {
+			if ( e.which == 13 ) {
+				e.preventDefault();
+				AvailabilityRequestSubmit(this);
+				return false;
+			}
+	    });
+	});
+	</script>
+{endif}
+
+	<div class="text-box design-location">
+		<div class="design-ariande design-ariande-marketplace">
+			{kat_ariadne_dynamic({ID_KAT},marketplace,{AD_TITLE})}
+		</div>
+	</div>
+
+	<div class="design-ad-details-title">
+		<h1>{htm(AD_TITLE)}</h1>
+	</div>
+
+	^if !(CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0))°
+		<div class="alert alert-danger text-left">
+			[[
+				translation : marketplace : ad.status.b2binfotext ::
+				<strong>Achtung!</strong><br>
+				Dieses Angebot richtet sich ausschließlich an <strong>Gewerbetreibende</strong>.
+				<br>
+				Loggen Sie sich bitte als Händler ein, um alle Produktinformationen angezeigt
+				zu bekommen.
+			]]
+		</div>
+	^endif°
+
+    <div class="row design-ad-details design-page-with-menu">
+		<div class="design-page-content">
+			
+			{subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.notifications.htm,*)}
+			
+
+			{subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.details.htm,*)}
+		</div>
+		<div class="design-page-menu">
+		{if AD_VERKAUFSOPTIONEN == 5}
+			<!-- Gesuch -->
+			{subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.actions_request.htm,*,OVERRIDE_USER_ID={AD_FK_USER})}
+		{else}
+			<!-- Angebot -->
+			{subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.actions.htm,*,OVERRIDE_USER_ID={AD_FK_USER})}
+		{endif}
+            {content_page()}
+		</div>
+    </div>
+{endif}
+

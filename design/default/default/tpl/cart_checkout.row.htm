@@ -1,0 +1,140 @@
+<div class="row" id="cartArticleRow-{ID_AD}">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-4 pull-left">
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="[[ translation : marketplace : ad.view :: {htm(PRODUKTNAME)} ansehen ]]">
+                    <img src="{if SRC}{thumbnail_article({ID_AD},{SRC},80,80,crop)}{else}{thumbnail({uri_resource(/images/marketplace/nopic.jpg)},80,80,crop)}{endif}" alt="{htm(PRODUKTNAME)}" />
+                </a>
+            </div>
+            <div class="col-md-8">
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="[[ translation : marketplace : ad.view :: {htm(PRODUKTNAME)} ansehen ]]">
+                    <strong>{htm(PRODUKTNAME)}</strong>
+                </a>
+                <div class="hidden-xs">
+                    <p>
+                        {VARIANT_TEXT}
+                        {if AVAILABILITY}
+                            <br />
+                            {if AVAILABILITY_DATE_TO}
+                                [[ translation : marketplace : availability.span.between : BEGIN=AVAILABILITY_DATE_FROM,END=AVAILABILITY_DATE_TO : Zwischen dem {todate(BEGIN)} und dem {todate(END)} ]]
+                            {else}
+                                [[ translation : marketplace : availability.span.until : BEGIN=AVAILABILITY_DATE_FROM,END=AVAILABILITY_DATE_TO : Bis zum {todate(END)} ]]
+                            {endif}
+                            {if AVAILABILITY_TIME_FROM}
+                                [[ translation : marketplace : availability.time.starting : TIME=AVAILABILITY_TIME_FROM : ab {TIME}Uhr ]]
+                            {endif}
+                        {endif}
+                    </p>
+                    <p class="text-muted">
+                        {market_article_description({ID_AD})}
+                    </p>
+                </div>
+                <div class="visible-xs">
+                    <p>
+                        <br />
+                        <b>[[ translation : marketplace : ad.seller :: Verkäufer ]]:</b>
+                        <br />
+                        <a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">{USER_NAME}</a>
+                    </p>
+                </div>
+            
+                {if PAYMENT_ADAPTER}
+                    <strong>[[ translation : marketplace : ad.cart.payment :: Zahlungsweise ]]: </strong>{htm(PAYMENT_ADAPTER)}
+                {endif}
+                
+                <div id="cartAgb-{ID_AD}" class="hidden">
+                    <h5>[[ translation : marketplace : ad.cart.responsible :: Rechtlich Verantwortlicher ]]</h5>
+                    <p>
+                        {if ANBIETER_FIRMA}{htm(ANBIETER_FIRMA)}<br />{endif}
+                        {htm(ANBIETER_VORNAME)} {htm(ANBIETER_NACHNAME)}<br />
+                        {htm(ANBIETER_STRASSE)}<br />
+                        {htm(ANBIETER_PLZ)}, {htm(ANBIETER_ORT)}<br />
+                        <br />
+                        {htm(ANBIETER_LAND)}
+                    </p>
+                    {if ANBIETER_UMSTG}
+                        <p>
+                            [[ translation : general : vat.id :: Umsatzsteuer ID ]]: {htm(ANBIETER_UMSTG)}
+                        </p>
+                    {endif}
+        
+                    {if AD_AGB}
+                    <h5>[[ translation : marketplace : ad.cart.gtc :: AGB des Anbieters ]]</h5>
+                    {text(AD_AGB)}
+                    {endif}
+        
+                    {if AD_WIDERRUF}
+                    <h5>[[ translation : marketplace : ad.cart.cancelation.terms :: Widerrufsbelehrung ]]</h5>
+                    {text(AD_WIDERRUF)}
+                    {endif}
+                </div>
+          
+                <p>
+                {if AD_AGB || AD_WIDERRUF}
+                  <div class="checkbox">
+                      <label>
+                          <input required="required" type="checkbox" name="AGB[{ID_AD}][{ID_AD_VARIANT}]" {if IS_AGB_CHECKED}checked="checked"{endif}>
+                          <strong>
+                              [[ translation : marketplace : ad.cart.gtc.and.cancelation.checkbox ::
+                                  Ich habe die <a href="#" onclick="showAgb({ID_AD}); return false;">AGB und die Widerrufsbelehrung</a> gelesen und verstanden
+                              ]]
+                          </strong>
+                      </label>
+                  </div>
+                {else}
+                  <input type="hidden" name="AGB[{ID_AD}][{ID_AD_VARIANT}]" value="1" />
+                {endif}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="row">
+            <div class="col-sm-6 col-sm-push-6 text-right">
+                <div class="visible-xs visible-sm">
+                    <b>[[ translation : marketplace : ad.count :: Anzahl ]]:</b>
+                </div>
+                {CART_QUANTITY} [[ translation : marketplace : ad.cart.pieces :: Stück ]]
+            </div>
+            <div class="col-sm-6 col-sm-pull-6 text-right hidden-xs">
+                <div class="visible-sm">
+                    <b>[[ translation : marketplace : ad.seller :: Verkäufer ]]:</b>
+                </div>
+                <a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">{USER_NAME}</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="row">
+            <div class="col-xs-6 text-right">
+                <div class="visible-xs visible-sm">
+                    <b>[[ translation : marketplace : ad.price.per.piece :: Stückpreis ]]:</b>
+                </div>
+                <strong>{topreis_ex(PREIS)} {CURRENCY_DEFAULT}</strong><br>
+                <span class="text-muted">({subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={MWST})})</span>
+            </div>
+            <div class="col-xs-6 text-right">
+                <div class="visible-xs visible-sm">
+                    <b>[[ translation : marketplace : ad.price.overall :: Gesamtpreis ]]:</b>
+                </div>
+                <strong>{topreis_ex(CART_TOTAL_PRICE)} {CURRENCY_DEFAULT}</strong><br>
+                <span class="text-muted">({subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={MWST})})</span>
+                <p>
+                   {if VERSANDOPTIONEN==3}
+        				        <span class="text-muted">
+                            [[ translation : marketplace : ad.shipping.addition :: zzgl. Versandkosten ]]:
+                            {market_article_shipping(ID_AD,VERSANDKOSTEN,ID_AD_VARIANT,,VERSAND_FK_COUNTRY,options_shippingProvider)}
+                        </span>
+                   {else}
+                        {if VERSANDOPTIONEN==0}<span class="text-success">[[ translation : marketplace : ad.shipping.free :: Versandkostenfrei ]]</span>{endif}
+                        {if VERSANDOPTIONEN==1}<span class="text-error">[[ translation : marketplace : ad.shipping.pick_up :: Nur Selbstabholung ]]</span>{endif}
+                        {if VERSANDOPTIONEN==2}<span class="text-error">[[ translation : marketplace : ad.shipping.on_request :: Versandkosten auf Anfrage ]]</span>{endif}
+                   {endif}
+                   {if VERSANDKOSTEN_INFO}
+                   		<span class="text-muted">[[ translation : marketplace : ad.shipping.notice :: Versandkostenhinweis ]]: {htm(VERSANDKOSTEN_INFO)}</span>
+                   {endif}	
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

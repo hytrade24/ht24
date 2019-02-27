@@ -1,0 +1,137 @@
+{startblock(script)}
+{parentblock()}
+
+<script src="{uri_resource(/js/jqcloud/jqcloud.min.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_resource(/css/jqcloud/jqcloud.min.css)}">
+
+<script type="text/javascript">
+    jQuery(function() {
+
+        var words = {vendors_keywords};
+
+        //tag-cloud-keywords
+        $('.tag-cloud-keywords').jQCloud( words, {
+            //classPattern: null,
+            colors: ["#800026", "#bd0026", "#e31a1c", "#fc4e2a", "#a55922", "#feb24c", "#736fe8", "#47d172", "#3bafae"],
+            /*fontSize: {
+             from: 0.9,
+             to: 0.01
+             }*/
+            autoResize: true
+        } );
+
+        vendor_order = function(elm) {
+            window.location.href = elm.value;
+        }
+
+    })
+
+</script>
+{endblock(script)}
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+        <h1>[[ translation : marketplace : business.directory :: Branchenbuch ]]</h1>
+        <p class="lead">[[ translation : marketplace : our.provider.in.the.overview :: Unsere Anbieter in der Übersicht ]]</p>
+        {if SHOW_MAP}
+        {subtpl(tpl/{SYS_TPL_LANG}/googlemaps.htm,type=vendor,ident={MAP_IDENT},height=300)}
+        {endif}
+
+        <div class="advertisement-box">{adserver(,1780,)}</div>
+
+
+        <div class="text-box design-location">
+            <!-- Ariadne/Location and sorting/view -->
+            <div class="row">
+                <div class="col-md-6 col-lg-7 clearfix">
+                    <div class="pull-left">
+                        {kat_ariadne_dynamic({CATEGORY},vendor)}
+                    </div>
+                    <div class="pull-right">
+                        <span class="text-muted">{ALL_VENDORS} [[ translation : marketplace : vendor :: Anbieter ]]</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    <form method="get" action="{uri_baseurl(/index.php)}">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-9 col-md-8 col-xl-9 design-sort">
+                                <select class="form-control" name="ordering" onchange="vendor_order(this);">
+                                    <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},STANDARD,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_STANDARD_DESC}selected="selected"{endif}>[[ translation : general : standard :: Standard ]]</option>
+                                    <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},CHANGED,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_CHANGED_DESC}selected="selected"{endif}>[[ translation : marketplace : newest.first :: Neueste zuerst ]]</option>
+                                    <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},CHANGED,ASC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_CHANGED_ASC}selected="selected"{endif}>[[ translation : marketplace : oldest.fist :: Älteste zuerst ]]</option>
+                                    <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},NAME,ASC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_NAME_ASC}selected="selected"{endif}>[[ translation : marketplace : alphabetically.ascending :: Alphabet aufsteigend ]]</option>
+                                    <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},NAME,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_NAME_DESC}selected="selected"{endif}>[[ translation : marketplace : descending.alphabet :: Alphabet absteigend ]]</option>
+                                    <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},COMMENTS,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_COMMENTS_DESC}selected="selected"{endif}>[[ translation : marketplace : most.comments.first :: Meiste Kommentare zuerst ]]</option>
+                                    <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},EVENTS,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_EVENTS_DESC}selected="selected"{endif}>[[ translation : marketplace : most.events.fist :: Meiste Veranstaltungen zuerst ]]</option>
+                                    <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},GALLERY,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_GALLERY_DESC}selected="selected"{endif}>[[ translation : marketplace : most.pictures.first :: Meiste Bilder zuerst ]]</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4 col-sm-3 col-md-4 col-xl-3 design-view">
+                                <div class="btn-group">
+                                    <a class="btn btn-default {if VIEW_TYPE_LIST}active{endif}" href="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},1,{SORT},{SORT_DIR},LIST|KAT_NAME={urllabel(V1)})}">
+                                        <span class="glyphicon glyphicon-th-list"></span>
+                                    </a>
+                                    <a class="btn btn-default {if VIEW_TYPE_BOX}active{endif}" href="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},1,{SORT},{SORT_DIR},BOX|KAT_NAME={urllabel(V1)})}">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        {if NO_SEARCH_RESULTS}
+            <p>[[ translation : marketplace : vendor.no.search.results :: Zu ihrer Suche wurden keine Anbieter gefunden. ]]</p>
+        {else}
+            {if vendors}
+                {if VIEW_TYPE_LIST}
+                    {vendors}
+                {else}
+                    <div class="row">
+                        {vendors}
+                    </div>
+                {endif}
+                {pager}
+            {else}
+                <p>[[ translation : marketplace : no.vendor.in.this.categorie :: In dieser Kategorie wurden keine Anbieter gefunden. ]]</p>
+            {endif}
+        {endif}
+    </div>
+    <div class="design-page-menu">
+        {if CATEGORY_676}
+            {subtpl(tpl/{SYS_TPL_LANG}/vendor_search.htm,ID_KAT=676,ROW_COUNT_GROUPS=1,*)}
+        {else}
+            {subtpl(tpl/{SYS_TPL_LANG}/vendor_search.htm,ID_KAT={CATEGORY},ROW_COUNT_GROUPS=1,*)}
+        {endif}
+        <form onsubmit="dosearch(); return false;" id="presearch" method="post" action="{uri_baseurl(/index.php)}">
+            <input type="hidden" name="page" value="presearch_vendor_ajax" />
+            <input type="hidden" name="FK_KAT" id="FK_KAT" value="{CATEGORY}" />
+            <input type="hidden" name="frame" value="ajax" />
+            <input type="hidden" name="LATITUDE" value="{LATITUDE}" id="LATITUDE" />
+            <input type="hidden" name="LONGITUDE" value="{LONGITUDE}" id="LONGITUDE" />
+            <input type="hidden" id="SEARCHURL" name="SEARCHURL" value="" />
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">[[ translation : marketplace : categorie.list :: Kategorie Auswahl ]]</div>
+
+                <ul class="menu-box menu-box-striped" id="vendorCategoryTree">
+                    {CATEGORY_TREE}
+                </ul>
+
+                <div class="panel-body">
+                    <a href="{uri_action(anbieter)}">[[ translation : marketplace : show.all.vendor :: alle Anbieter anzeigen ]]</a>
+                </div>
+            </div>
+        </form>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">[[ translation : marketplace : keyword.cloud :: Keywords ]]</div>
+            <div class="panel-body">
+                <div class="tag-cloud-keywords" style="width: 100%; min-height: 200px; max-height: 400px;"></div>
+            </div>
+        </div>
+
+        {content_page()}
+    </div>
+</div>

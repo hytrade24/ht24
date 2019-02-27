@@ -1,0 +1,60 @@
+		<tr>
+			<td>
+				{htm(NAME)}<br />
+				{if RECURRING}([[ translation : marketplace : packet.recurring :: Abo ]]){endif}
+			</td>
+			<td>
+				{if ACTIVE}
+					<span class="text-success">Aktiv</span>
+				{else}
+					{if INVOICE_COUNT>0}
+						<a href="{uri_action(invoices)}" class="text-error">
+                            {INVOICE_COUNT}
+                            {if INVOICE_COUNT==1}
+                                [[ translation : marketplace : packet.invoices.open.one :: offene Rechnung ]]
+                            {else}
+                                [[ translation : marketplace : packet.invoices.open.multiple : PLURAL_COUNT=INVOICE_COUNT : offene Rechnungen ]]
+                            {endif}
+						</a>
+					{else}
+						<span class="text-error">[[ translation : marketplace : packet.consumed :: Ausgelaufen/Verbraucht ]]</span>
+					{endif}
+				{endif}
+			</td>
+			<td> 
+				{text(CONTENTS)}
+			</td>
+			<td>
+				{if FK_INVOICE}
+					<a href="{uri_action(invoice,{FK_INVOICE})}" title="[[ translation : marketplace : invoice.view.invoice :: Rechnung ansehen ]]">{todate(STAMP)}</a>
+				{else}
+					{todate(STAMP_START)}
+				{endif}
+			</td>
+			<td nowrap="nowrap">
+			{if RECURRING && ACTIVE}
+				{if (STAMP_NEXT)}
+                    [[ translation : marketplace : packet.extends.by :: Verlängert sich zum {todate(STAMP_NEXT)} ]]
+					<br />
+					{if CANCEL_ENABLED}
+						<a class="btn btn-danger" onclick="return confirm('[[ translation : marketplace : packet.recurring.cancel.question :: Sind Sie sicher das Sie dieses Abo kündigen möchten? ]]');" href="{uri_action(packets,cancel,{ID_PACKET_ORDER})}">
+							[[ translation : marketplace : packet.recurring.cancel :: Kündigen ]]
+						</a>
+                        <br />
+						[[ translation : marketplace : packet.recurring.cancel.deadline :: (mögl. bis {todate(STAMP_CANCEL_UNTIL)}) ]]
+					{else}
+						<span class="text-warning">
+                            [[ translation : marketplace : packet.recurring.cancel.deadline.readonly :: Kündigungsfrist: {todate(STAMP_CANCEL_UNTIL)} ]]
+                        </span>
+					{endif}
+				{else}
+                    [[ translation : marketplace : packet.recurring.canceled ::
+                        Gekündigt am {todate(STAMP_CANCEL_UNTIL)}<br />
+                        Gekündigt zum {todate(STAMP_END)}
+                    ]]
+				{endif}
+			{else}
+				---
+			{endif}
+			</td>
+		</tr>

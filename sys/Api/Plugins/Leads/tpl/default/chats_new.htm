@@ -1,0 +1,7 @@
+{if COUNT>0}
+<a href="{uri_baseurl(/leads/user/dashboard)}">
+    <span class="badge badge-important">{COUNT}</span>
+    [[ translation : marketplace : chat.new.lead : PLURAL_COUNT=COUNT : neue Anfrage{if PLURAL_COUNT!=1}n{endif} zu Leads ]]
+    <br />
+</a>
+{endif}

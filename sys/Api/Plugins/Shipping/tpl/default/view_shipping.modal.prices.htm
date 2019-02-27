@@ -1,0 +1,21 @@
+<table class="table table-condensed table-striped table-bordered">
+{if head_providers}
+  <thead>
+    <tr>
+      <th>[[ translation : plugin : shipping.groups.config.form.prices.region :: Land / Region ]]</th>
+      {head_providers}
+    </tr>
+  </thead>
+  <tbody>
+    {body}
+  </tbody>
+{else}
+  <tbody>
+    <tr>
+      <td>
+        [[ translation : plugin : shipping.groups.config.form.prices.providers.emptry :: Bitte definieren Sie einen Versand-Anbieter. ]]
+      </td>
+    </tr>
+  </tbody>
+{endif}
+</table>

@@ -1,0 +1,29 @@
+<ul class="nav nav-tabs userTabs">
+	<li class="{if FILTER_STATUS_ACTIVE}active{endif}">
+		<a href="{uri_action(my-marktplatz,active)}" title="[[ translation : marketplace : my.ads :: Meine Anzeigen ]]">
+            [[ translation : marketplace : my.ads :: Meine Anzeigen ]] ({COUNT_ACTIVE})
+        </a>
+	</li>
+	<li class="{if FILTER_STATUS_TIMEOUT}active{endif}">
+		<a href="{uri_action(my-marktplatz,timeout)}" title="[[ translation : marketplace : ads.end.soon :: Anzeigen, die bald auslaufen ]]">
+            [[ translation : marketplace : soon.end :: Bald endend ]] ({COUNT_TIMEOUT_SOON})
+        </a>
+	</li>
+  {if SETTINGS_MODERATE_ADS}
+    <li class="{if FILTER_STATUS_DECLINED}active{endif}">
+        <a href="{uri_action(my-marktplatz,declined)}" title="[[ translation : marketplace : moderated.ads :: Wird überprüft ]]">
+            [[ translation : marketplace : moderated.ads.declined :: Abgelehnt ]] ({COUNT_DECLINED})
+        </a>
+    </li>
+  {endif}
+    <li class="{if FILTER_STATUS_DISABLED}active{endif}">
+        <a href="{uri_action(my-marktplatz,disabled)}" title="[[ translation : marketplace : expired.ads :: Ausgelaufene Anzeigen ]]">
+            [[ translation : marketplace : expired.or.deaktivated.ads :: Ausgelaufen / Deaktiviert ]] ({COUNT_DISABLED})
+        </a>
+    </li>
+	<li class="{uri_is_active(my-marktplatz-comments,active,)}">
+		<a href="{uri_action(my-marktplatz-comments)}" title="[[ translation : marketplace : my.ad.comments :: Kommentare zu ihren Anzeigen ]]">
+            [[ translation : marketplace : comments :: Kommentare ]] ({COUNT_COMMENTS})
+        </a>
+	</li>
+</ul>

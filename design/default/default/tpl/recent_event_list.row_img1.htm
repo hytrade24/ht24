@@ -1,0 +1,40 @@
+<li class="design-row-item clearfix">
+    <div class="design-event-image1">
+        <a href="{uri_action(calendar_events_view,{urllabel(TITLE)},{ID_CALENDAR_EVENT})}" title="{htm(TITLE)}">
+            <div class="design-event-background">
+            {if IMAGE_SRC}
+                <img src="{thumbnail({IMAGE_SRC},400,200,crop)}" />
+            {else}
+                <i class="glyphicon glyphicon-calendar"></i>
+            {endif}
+            </div>
+            <div class="design-event-date">
+                <span class="day">{date_format(STAMP_START,d)}</span>
+                <br />
+                <span class="month">{date_format(STAMP_START,F)}</span>
+                <br />
+                <span class="year">{date_format(STAMP_START,Y)}</span>
+            </div>
+        </a>
+        <div class="design-event-detail">
+            <a href="{uri_action(calendar_events_view,{urllabel(TITLE)},{ID_CALENDAR_EVENT})}" title="{htm(TITLE)}">
+                <h3>{htm(TITLE)}</h3>
+            </a>
+            
+            <div class="design-event-detail-description">
+                <p>
+                    <img src="{uri_baseurl(/bilder/flags/{lower(COUNTRY_CODE)}.png)}" alt="{htm(COUNTRY)}"/>
+                    {htm(CITY)}<br />
+                    {date_format(STAMP_START,d. M)} {if STAMP_START_DATE != STAMP_END_DATE}- {date_format(STAMP_END,d. M)}{endif}
+                </p>
+            </div>
+        </div>
+        <div class="design-event-counter">
+            <a href="{uri_action(calendar_events_view,{urllabel(TITLE)},{ID_CALENDAR_EVENT})}#comment_list_calendar_event_{ID_CALENDAR_EVENT}" title="{htm(TITLE)}">
+                <i class="glyphicon glyphicon-comment"></i>
+                <br />
+                {int(COMMENTS)}
+            </a>
+        </div>
+    </div>
+</li>

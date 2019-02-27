@@ -1,0 +1,150 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 design-ad-details-vendor-logo">
+        {if USER_IS_VENDOR}
+            {if VENDOR_LOGO}
+                <a href="{uri_action(view_user_vendor,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                    <img src="{thumbnail(VENDOR_LOGO,195,300)}" />
+                </a>
+            {else}
+                <a href="{uri_action(view_user_vendor,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                    <img src="{uri_resource(/images/marketplace/nopic_vendor.jpg)}" />
+                </a>
+            {endif}
+        {else}
+            <img src="{thumbnail(/cache/users/{USER_CACHE}/{USER_ID_USER}/{USER_ID_USER}.jpg,195,300)}" />
+        {endif}
+        <div class="userBoxRating">
+            {if USER_TOP_USER}
+            <img class="userBoxIconTopUser js-tooltip" src="{uri_resource(/images/icons/award_star_gold_3.png)}" data-toggle="tooltip" data-placement="bottom" title="[[ translation : marketplace : top.vendor :: TOP Anbieter ]]" />
+            {endif}
+            {if USER_TOP_SELLER}
+            <img class="userBoxIconTopSeller js-tooltip"  src="{uri_resource(/images/icons/rainbow.png)}" data-toggle="tooltip" data-placement="bottom" title="[[ translation : marketplace : top.seller :: TOP Seller ]]" />
+            {endif}
+            {if USER_PROOFED}
+            <img class="userBoxIconProofed js-tooltip" src="{uri_resource(/images/icons/shield.png)}" data-toggle="tooltip" data-placement="bottom" title="[[ translation : marketplace : approved.vendor :: geprüfter Anbieter ]]" />
+            {endif}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 design-ad-details-vendor-details">
+        <h4 class="heading">
+            <a href="{uri_action(view_user_vendor,{urllabel(USER_NAME)},{USER_ID_USER})}">
+            {if showcontact || VENDOR_FIRMA}
+                {if VENDOR_FIRMA}
+                    {htm(VENDOR_FIRMA)}
+                {else}
+                    {if USER_FIRMA}
+                        {USER_FIRMA}
+                    {else}
+                        {USER_VORNAME} {USER_NACHNAME}
+                    {endif}
+                {endif}
+            {else}
+                {htm(USER_NAME)}
+            {endif}
+            </a>
+        </h4>
+        
+        <div class="userBoxRating">
+            {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=vendor,FK={VENDOR_ID_VENDOR},TEMPLATE=small)}
+        </div>
+    </div>
+    <div class="col-xs-12 design-ad-details-vendor-menu">        
+        <ul class="design-row design-row-xs-2">
+            {if USER_IS_VENDOR}
+            <li class="design-row-item {if active_vendor}active{endif}">
+                <a href="{uri_action(view_user_vendor,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                    <i class="glyphicon glyphicon-home"></i>
+                    <span>[[ translation : marketplace : business :: Unternehmen ]]</span>
+                </a>
+            </li>
+            {endif}
+            {if USER_HAS_CLUBS}
+            <li class="design-row-item {if active_club}active{endif}">
+                <a href="{uri_action(view_user_clubs,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                    <i class="glyphicon glyphicon-tag"></i>
+                    <span>[[ translation : marketplace : member.count.groups :: Mitglied in {USER_CLUB_COUNT} Gruppe{if USER_CLUB_COUNT>1}n{endif} ]]</span>
+                </a>
+            </li>
+            {endif}
+            <li class="design-row-item {if active_shop}active{endif}">
+                <a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                    <i class="glyphicon glyphicon-shopping-cart"></i>
+                    <span>[[ translation : marketplace : store :: Shop ]]</span>
+                </a>
+            </li>
+            {if USER_HAS_JOBS}
+            <li class="design-row-item {if active_jobs}active{endif}">
+                <a href="{uri_action(view_user_jobs,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                    <i class="glyphicon glyphicon-briefcase"></i>
+                    <span>[[ translation : marketplace : jobs :: Jobs ]]</span>
+                </a>
+            </li>
+            {endif}
+            {if USER_HAS_EVENTS}
+            <li class="design-row-item {uri_is_active(view_user_events,active,)}">
+                <a href="{uri_action(view_user_events,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                    <span>[[ translation : marketplace : events :: Veranstaltungen ]]</span>
+                </a>
+            </li>
+            {endif}
+            <li class="design-row-item {if active_rating}active{endif}">
+                <a href="{uri_action(view_user_rating,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                    <i class="glyphicon glyphicon-star"></i>
+                    <span>[[ translation : marketplace : reviews :: Bewertungen ]]</span>
+                </a>
+            </li>
+            {if USER_HAS_IMPRESSUM}
+            <li class="design-row-item {if active_impressum}active{endif}">
+                <a href="{uri_action(view_user_impressum,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                    <i class="glyphicon glyphicon-info-sign"></i>
+                    <span>[[ translation : marketplace : imprint :: Impressum ]]</span>
+                </a>
+            </li>
+            {endif}
+        </ul>
+        <ul class="design-row design-row-xs-1">
+            {if USER_HAS_NEWS}
+            <li class="design-row-item {if active_news}active{endif}">
+                <a href="{uri_action(view_user_news,{urllabel(USER_NAME)},{USER_ID_USER})}">
+                    <i class="fa fa-newspaper-o"></i>
+                    <span>[[ translation : marketplace : press.releases :: Pressemitteilungen ]]</span>
+                </a>
+            </li>
+            {endif}
+            {if VENDOR_ORT}
+            <li class="design-row-item">
+                <i class="fa fa-map-marker"></i>
+                <span class="address-span">
+                    {VENDOR_STRASSE}{if VENDOR_PLZ}, {VENDOR_PLZ}{endif}{if VENDOR_ORT}, {VENDOR_ORT}{endif}
+                </span>
+            </li>
+            {endif}
+            {if VENDOR_TEL}
+            <li class="design-row-item">
+                <i class="fa fa-phone"></i>
+                <span>{VENDOR_TEL}</span>
+            </li>
+            {endif}
+            {if VENDOR_FAX}
+            <li class="design-row-item">
+                <i class="fa fa-fax"></i>
+                <span>{VENDOR_FAX}</span>
+            </li>
+            {endif}
+            {if VENDOR_EMAIL}
+            <li class="design-row-item">
+                <i class="fa fa-envelope-o"></i>
+                <span>{VENDOR_EMAIL}</span>
+            </li>
+            {endif}
+            {if VENDOR_URL}
+            <li class="design-row-item">
+                <i class="fa fa-globe"></i>
+                <span>{VENDOR_URL}</span>
+            </li>
+            {endif}
+        </ul>
+        <a class="btn btn-default btn-shop" href="{uri_action(view_user,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}">[[ translation : marketplace : show.all.products :: Alle Produkte anzeigen ]]</a>
+    </div>
+</div>

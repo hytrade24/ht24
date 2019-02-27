@@ -1,0 +1,21 @@
+	<tr class="zeile{even}">
+		<td>{ID_AD_SOLD}</td>
+		<td>{FK_AD}</td>
+		<td class="first">
+			<a target="_blank" title="[[ translation : marketplace : open.profile.in.new.window :: Profil in einem neuen Fenster öffnen ]]" href="{uri_action(view_user,{urllabel(USERNAME_FROM)},{FK_USER_FROM})}">{htm(USERNAME_FROM)}</a>
+		</td>
+		<td>
+			{todate(STAMP_BOUGHT)}
+		</td>
+		<td>
+			<a title="[[ translation : marketplace : open.advert.in.new.window :: Anzeige in einem neuen Fenster öffnen ]]" target="_blank" href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+				{htm(PRODUKTNAME)}
+			</a>
+		</td>
+		<td>
+			<img src="{uri_baseurl(/gfx/stars_{if RATING>0}{RATING}{else}removed{endif}.png)}">
+		</td>
+		<td class="last">
+			{htm(COMMENT)}
+		</td>
+	</tr>

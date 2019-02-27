@@ -1,0 +1,21 @@
+<tr>
+	<td>
+		<a href="{uri_action(my-import-run)}?ID_IMPORT_PROCESS={ID_IMPORT_PROCESS}" class="btn btn-default" title="[[ translation : marketplace : import.process.button.protocol :: Prozess Protokoll ansehen ]]"><i class="glyphicon glyphicon-edit"></i></a>
+		<a href="{uri_action(my-import-run)}?DO=DELETE&ID_IMPORT_PROCESS={ID_IMPORT_PROCESS}" onclick="return confirm('[[ translation : marketplace : import.process.delete.confirm :: Möchten Sie den Import {htm(PROCESS_NAME)} wirklich löschen ? Bitte beachten Sie, dass dadurch nicht bereits importierte Datensätze gelöscht werden. ]]');" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+	</td>
+	<td>{htm(PROCESS_NAME)}</td>
+	<td>
+		{if STATUS > 0 && STATUS < 100}[[ translation : marketplace : import.process.status.in.process :: in Verarbeitung ]]{endif}
+		{if STATUS == 1000}[[ translation : marketplace : import.process.status.finished :: fertiggestellt ]]{endif}
+		{if STATUS == 500}[[ translation : marketplace : import.process.status.error :: Fehler ]]{endif}
+	</td>
+	<td>
+		{if STATS_NEW}<span class="badge badge-success js-tooltip" title="[[ translation : marketplace : import.process.stats.new :: {STATS_NEW} neue Datensätze importiert ]]">{STATS_NEW}</span>{endif}
+		{if STATS_UPDATED}<span class="badge badge-warning js-tooltip" title="[[ translation : marketplace : import.process.stats.updated :: {STATS_UPDATED} Datensätze aktualisiert ]]">{STATS_UPDATED}</span>{endif}
+		{if STATS_DELETED}<span class="badge badge-important js-tooltip" title="[[ translation : marketplace : import.process.stats.deleted :: {STATS_DELETED} Datensätze gelöscht ]]">{STATS_DELETED}</span>{endif}
+		{if STATS_PAUSED}<span class="badge badge-info js-tooltip" title="[[ translation : marketplace : import.process.stats.paused :: {STATS_PAUSED} Datensätze pausiert ]]">{STATS_PAUSED}</span>{endif}
+		{if STATS_STARTED}<span class="badge badge-info js-tooltip" title="[[ translation : marketplace : import.process.stats.started :: {STATS_STARTED} Datensätze wieder aktiviert ]]">{STATS_STARTED}</span>{endif}
+	</td>
+	<td>{todate(STAMP_CREATE,1)}</td>
+	<td>{todate(STAMP_UPDATE,1)}</td>
+</tr>

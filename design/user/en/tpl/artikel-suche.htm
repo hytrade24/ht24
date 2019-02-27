@@ -1,0 +1,65 @@
+<script type="text/javascript">
+
+function loadProducts(id_man, id_product) {
+		$.ajax({
+			url: 		ebiz_trader_baseurl + ebiz_trader_baseurl + "index.php?page=artikel-suche&GET_PRODUCTS="+id_man+"&select="+id_product,
+			type: 		'GET',
+			dataType:	'json',
+			success: 	function(obj) {
+				  $("#search_products").html(obj.code);
+				  $("#search_products").show();
+			}
+		});
+	}
+
+	{if USE_PRODUCT_DB}
+	// run presearch
+	onload = function(){
+		loadProducts(0{FK_MAN}, 0{FK_PRODUCT});
+		//getLatiLongi();
+	};
+	{endif}
+
+function umkreis_head(){
+    if ($('#pplz').val() != '' || $('#port').val() != '') {
+
+        getLatiLongi($('#pplz').val(), $('#port').val(), 'Deutschland', {
+            latitude: 'lati',
+            logitude: 'longi'
+        });
+    } else {
+        $("#longi,#lati").val(0);
+    }
+}
+</script>
+<div class="row design-page-with-menu">
+    <div class="design-page-menu">
+        {subtpl(tpl/{SYS_TPL_LANG}/kat_left_2.htm,*)}
+        {content_page()}
+    </div>
+    <div class="design-page-content">
+        <div class="breadcrumb">
+            <span class="text-muted">{all} search results</span>
+        </div>
+
+        <h1>Advert search</h1>
+
+        {if NO_ERGS}
+        	<p>
+                Your search has not found any results!<br />
+                    Please try different searchwords.
+
+        	</p>
+        {endif}
+
+        {if liste}
+        	{liste}
+        {else}
+        	<p>
+                No advertisements has been found
+        	</p>
+        {endif}
+
+        {pager}
+    </div>
+</div>

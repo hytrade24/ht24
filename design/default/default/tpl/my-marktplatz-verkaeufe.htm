@@ -1,0 +1,227 @@
+{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+<script>
+	function showOrderDetails(orderId) {
+		location.href = '{uri_action(sale_details_seller)}?ID_AD_ORDER='+orderId;
+	}
+
+	function showBuyerInformation(userId) {
+		ShowDialog("index.php?page=uprofil&SELLER_ID=" + userId + "&frame=ajax", "Käuferinformation");
+	}
+  
+  function searchBuyer(userName) {
+    jQuery("input[name=NAMEBUYER]").val(userName);
+    jQuery(".userSearchForm").submit();
+  }
+
+    function downloadOrder(type) {
+        jQuery("#inputExportType").val(type).closest("form").submit();
+        return false;
+    }
+
+    jQuery(function() {
+        jQuery("button[name=doExport]").tooltip();
+        // Initialize datepickers
+        var stampFrom = jQuery("#STAMP_CREATE_FROM");
+        var stampTo = jQuery("#STAMP_CREATE_TO");
+        jQuery(".userSearchForm").datepicker({
+          clearBtn: true,
+          keepEmptyValues: true,
+          format: 'dd.mm.yyyy',
+          inputs: [ stampFrom, stampTo ]
+        });
+    });
+</script>
+
+<h1>[[ translation : marketplace : my.sales.title :: Meine Verkäufe ]]</h1>
+
+<span class="lead">
+    [[ translation : marketplace : my.sales.lead :: Von Ihnen verkaufte Artikel ]]
+</span>
+<p>
+    [[ translation : marketplace : my.sales.info ::
+        Hier finden Sie alle von Ihnen verkaufte Artikel. Bei Kommunikation mit dem K&auml;ufer oder dem
+        Support bitte immer die Bestell-Nr. angeben.
+    ]]
+</p>
+
+<ul class="nav nav-tabs userTabsTable">
+	<li {if show_open}class="active"{endif}>
+		<a href="{uri_action(my-marktplatz-verkaeufe)}">[[ translation : marketplace : my.sales.open :: Offene Verk&auml;ufe ]]</a>
+	</li>
+	<li {if show_done}class="active"{endif}>
+		<a href="{uri_action(my-marktplatz-verkaeufe,,,,show_done)}">[[ translation : marketplace : my.sales.archived :: Archivierte Verk&auml;ufe ]]</a>
+	</li>
+</ul>
+
+	<form class="userSearchForm" method="get" action="{if show_done}{uri_action(my-marktplatz-verkaeufe,,,,show_done)}{else}{uri_action(my-marktplatz-verkaeufe)}{endif}">
+        <input type="hidden" id="inputExportType" name="doExport" value="" />
+		<div class="design-content-box">
+			<h4><strong>[[ translation : marketplace : search.seller :: Suche nach Verkäufen ]]</strong></h4>
+
+      <div class="design-row design-row-xs-4">
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">[[ translation : marketplace : order.num :: Bestell-Nr. ]]</label>
+                <input type="text" name="ID_AD_ORDER" value="{ID_AD_ORDER}" class="form-control" />
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">[[ translation : marketplace : buyer :: Käufer ]]</label>
+                <input type="text" name="NAMEBUYER" value="{NAMEBUYER}" class="form-control" />
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">[[ translation : marketplace : date.from :: Datum von ]]</label>
+                <input type="text" class="form-control" id="STAMP_CREATE_FROM" name="STAMP_CREATE_FROM" value="{STAMP_CREATE_FROM}" placeholder="[[ translation : general : date.datefrom :: Datum von ]]" />
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">[[ translation : marketplace : date.to :: Datum bis ]]</label>
+                <input type="text" class="form-control" id="STAMP_CREATE_TO" name="STAMP_CREATE_TO" value="{STAMP_CREATE_TO}" placeholder="[[ translation : general : date.dateuntil :: Datum bis ]]" />
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">[[ translation : general : confirmation :: Bestätigung ]]</label>
+                <select name="SEARCH_ORDER_CONFIRMATION_STATUS" class="form-control">
+                    <option value="-1">[[ translation : marketplace : payment.all :: -- alle -- ]]</option>
+                    <option value="0" {if SEARCH_ORDER_CONFIRMATION_STATUS == 0}selected="selected"{endif}>[[ translation : marketplace : payment.open.short :: offen ]]</option>
+                    <option value="1" {if SEARCH_ORDER_CONFIRMATION_STATUS == 1}selected="selected"{endif}>[[ translation : marketplace : confirmed :: bestätigt ]]</option>
+                    <option value="2" {if SEARCH_ORDER_CONFIRMATION_STATUS == 2}selected="selected"{endif}>[[ translation : marketplace : rejected :: abgelehnt ]]</option>
+                </select>
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">[[ translation : marketplace : payment :: Zahlung ]]</label>
+                <select name="SEARCH_ORDER_PAYMENT_STATUS" class="form-control">
+                    <option value="-1">[[ translation : marketplace : payment.all :: -- alle -- ]]</option>
+                    <option value="0" {if SEARCH_ORDER_PAYMENT_STATUS == 0}selected="selected"{endif}>[[ translation : marketplace : payment.open.short :: offen ]]</option>
+                    <option value="3" {if SEARCH_ORDER_PAYMENT_STATUS == 3}selected="selected"{endif}>[[ translation : marketplace : pending :: schwebend ]]</option>
+                    <option value="1" {if SEARCH_ORDER_PAYMENT_STATUS == 1}selected="selected"{endif}>[[ translation : marketplace : payment.paid.short :: bezahlt ]]</option>
+                </select>
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">[[ translation : marketplace : shipping.status :: Versandstatus ]]</label>
+                <select name="SEARCH_ORDER_SHIPPING_STATUS" class="form-control">
+                    <option value="-1">[[ translation : marketplace : payment.all :: -- alle -- ]]</option>
+                    <option value="0" {if SEARCH_ORDER_SHIPPING_STATUS == 0}selected="selected"{endif}>[[ translation : marketplace : payment.open.short :: offen ]]</option>
+                    <option value="1" {if SEARCH_ORDER_SHIPPING_STATUS == 1}selected="selected"{endif}>[[ translation : marketplace : in.progress :: in Bearbeitung ]]</option>
+                    <option value="2" {if SEARCH_ORDER_SHIPPING_STATUS == 2}selected="selected"{endif}>[[ translation : marketplace : sent :: versandt ]]</option>
+                </select>
+            </div>
+        </div>
+        {PLUGIN_HTML}
+				<div class="design-row-item pull-right">
+            <div class="form-group design-form-group-search">
+                <div class="dropdown pull-left">
+                    <a id="buttonDownloadOrders" class="btn btn-info dropdown-toggle" data-toggle="dropdown" data-toggle="tooltip" href="#" title="[[ translation : marketplace : save.sales.generic :: Verkäufer herunterladen (nur bestätigte Verkäufe!) ]]">
+                        <i class="glyphicon glyphicon-download-alt"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-left" role="menu" aria-labelledby="buttonDownloadOrders" style="right: 0; left: auto;">
+                        <li class="dropdown-submenu">
+                            <a tabindex="-1" href="#">
+                                [[ translation : marketplace : save.sales.xml :: Als XML-Datei ]]
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#" onclick="return downloadOrder('xml_jtl');">
+                                        [[ translation : marketplace : save.sales.xml.jtl :: Für die JTL Warenwirtschaft ]]
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"  onclick="return downloadOrder('csv');">
+                                [[ translation : marketplace : save.sales.csv :: Als CSV-Datei ]]
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <input type="submit" value="[[ translation : general : search.submit :: Suchen ]]" class="btn btn-primary">
+            </div>
+        </div>
+      </div>
+			<br>
+		</div>
+	</form>
+
+{if COUNT_UNCONFIRMED_ORDERS}
+<div class="alert alert-info">
+    <p><strong>[[ translation : general : notice :: Hinweis ]]:</strong></p>
+    [[ translation : marketplace : my.sales.notice.unconfirmed.sales ::
+        Sie haben noch {COUNT_UNCONFIRMED_ORDERS} <a href="{uri_action(my-marktplatz-verkaeufe)}?SEARCH_ORDER_CONFIRMATION_STATUS=0">unbestätigte Verkäufe</a>.
+        Bitte prüfen Sie diese und akzeptieren oder lehnen Sie diese ab.
+	]]
+</div>
+{endif}
+
+<div class="marketplaceSellerOrder">
+
+	<table class="table table-bordered table-striped table-condensed userList">
+		<thead>
+			<tr>
+				<th></th>
+				<th>[[ translation : marketplace : order.num :: Bestell-Nr. ]]</th>
+				<th>[[ translation : general : date :: Datum ]]</th>
+				<th>[[ translation : marketplace : customer :: Kunde ]]</th>
+				<th>[[ translation : marketplace : shipping.status :: Versandstatus ]]</th>
+				<th>[[ translation : marketplace : payment.status :: Zahlungsstatus ]]</th>
+				<th>[[ translation : marketplace : article.count :: Artikel ]]</th>
+				<th class="text-right">[[ translation : marketplace : total.amount :: Gesamtbetrag ]]</th>
+
+				{if use_prov}
+					<th class="text-right">
+						[[ translation : marketplace : provisoin :: Prov. ]]
+					</th>
+				{endif}
+			</tr>
+		</thead>
+		{if orders}
+			{orders}
+		{else}
+		<tr>
+			<td colspan="8">
+				[[ translation : marketplace : no.item.match :: Keine passenden Verk&auml;ufe gefunden. ]]
+			</td>
+		</tr>
+		{endif}
+	</table>
+
+	{pager}
+
+</div>
+
+<a class="btn btn-info" href="#statistics" onclick="return statsLoadModal(this);"
+   data-stats="{uri_baseurl(index.php?frame=stats&page=ui_stats&show=bestellwert_rechnugen)}" data-title="Rechnungs-Statistik" data-height="300">
+    <i class="glyphicon glyphicon-stats"></i>
+    [[ translation : general : statistics.modal.show :: Statistik anzeigen ]]
+</a>
+
+
+<h5>[[ translation : marketplace : my.sales.help.title :: Hilfe ]]</h5>
+
+<p>
+    [[ translation : marketplace : my.sales.help.button.show ::
+        Auf dieser Seite finden Sie eine Übersicht aller bei Ihnen getätigten Verkäufe. Klicken Sie auf
+        den Button <i class="glyphicon glyphicon-eye-open"></i> um nähere Informationen zu einem Verkauf, dem Käufer und
+        den bestellten Artikeln zu erhalten.
+    ]]
+</p>
+<p>
+    [[ translation : marketplace : my.sales.help.status ::
+        Die Spalte Status zeigt Ihnen die aktuelle Position eines Verkaufs im Bestellprozess an.
+        Sie können Verkäufe als <strong>bezahlt / unbezahlt</strong> und den Versand als <strong>offen / in Bearbeitung / versandt</strong> markieren.
+        Über jede Änderung wird Ihr Kunde per E-Mail informiert.
+    ]]
+</p>
+
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-eye-open"></i></a> = [[ translation : marketplace : my.sales.show :: ansehen ]]</div>
+	<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-print"></i></a> = [[ translation : marketplace : my.sales.print :: drucken ]]</div>
+</div>

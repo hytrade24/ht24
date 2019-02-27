@@ -1,0 +1,29 @@
+<div class="panel panel-default design-plugin-geo-regions">
+  <div class="panel-body">
+    <h3>
+        [[ translation : marktplatz : plugin.geoRegion.title :: Regionen{if CURRENT_NAME} in {htm(CURRENT_NAME)}{endif} ]]
+    </h3>
+    
+    {if URL_PARENT}
+    <p>
+      <a href="{URL_PARENT}">
+        <b>
+        {if PARENT_NAME}
+          [[ translation : marktplatz : plugin.geoRegion.back :: Zurück zu {htm(PARENT_NAME)} ]]
+        {else}
+          [[ translation : marktplatz : plugin.geoRegion.back.root :: Zurück zur Länder-Übersicht ]]
+        {endif}
+        </b>
+      </a>
+    </p>
+    {endif}
+
+    {if liste}
+    <div class="design-row design-row-xs-1 design-row-sm-3">
+      {liste}
+    </div>
+    {else}
+    <p>[[ translation : marktplatz : plugin.geoRegion.none.found :: Keine Regionen innerhalb von {htm(CURRENT_NAME)} gefunden. ]]</p>
+    {endif}
+  </div>
+</div>

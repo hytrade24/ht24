@@ -1,0 +1,11 @@
+<div class="alert alert-info">
+  <p class="lead">Veröffentlichen Sie Ihre Firmenevents</p>
+  <p>Ob Messetermine, Ausstellungen oder Märkte. Hier können Sie Ihren Termin publizieren</p>
+  <p>{if ID_USER}
+    <a href="{uri_action(my-group)}" target="_blank">Termin erstellen</a></p>  
+  {else}
+    <a href="{uri_action(register)}" target="_blank">Jetzt Anmelden</a></p>  
+  {endif}
+</div>
+
+<div class="advertisement-box">{adserver(,1783,)}</div>

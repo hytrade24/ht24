@@ -1,0 +1,378 @@
+<span class="lead">
+    Promote your company and your offers on your own homepage.
+</span>    
+{if HOMEPAGE_FK_USER}
+    <input type="hidden" name="ID_VENDOR_HOMEPAGE" value="{int(HOMEPAGE_ID_VENDOR_HOMEPAGE)}" />
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>(Sub-)Domain</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td  nowrap="nowrap">
+                {if !HOMEPAGE_ACTIVE}
+                    <b>Checking...</b>
+                {else}
+                    {if HOMEPAGE_ACTIVE==1}
+                        Active
+                    {endif}
+                    {if HOMEPAGE_ACTIVE==2}
+                        <b class="text-danger">Declined</b>
+                    {endif}
+                    {if HOMEPAGE_ACTIVE==3}
+                        <b class="text-danger">Unavailable</b>
+                    {endif}
+                {endif}
+                </td>
+                <td>
+                {if HOMEPAGE_DOMAIN_SUB}
+                    <input type="hidden" name="DOMAIN_TYPE" value="SUBDOMAIN" />
+                    <div class="input-group">
+                        <span class="input-group-addon">http://</span>
+                        <input type="text" name="DOMAIN_SUB" class="form-control" placeholder="ihr-name" value="{htm(HOMEPAGE_DOMAIN_SUB)}" aria-describedby="vendor-homepage-domain-sub" />
+                        <span class="input-group-addon" id="vendor-homepage-domain-sub">{MARKETPLACE_HOST}</span>
+                    </div>
+                {else}
+                    <input type="hidden" name="DOMAIN_TYPE" value="DOMAIN_EXISTING" />
+                    <div class="input-group">
+                        <span class="input-group-addon">http://</span>
+                        <input type="text" name="DOMAIN_FULL" class="form-control" placeholder="ihr-name" value="{htm(HOMEPAGE_DOMAIN_FULL)}" />
+                    </div>
+                {endif}
+                </td>
+                <td nowrap="nowrap">
+                {if HOMEPAGE_ACTIVE==2}
+                    <button data-action="update" class="btn btn-success">
+                        Make a new request
+                    </button>
+                {else}
+                    {if HOMEPAGE_DOMAIN_SUB}
+                        <a href="http://{HOMEPAGE_DOMAIN_SUB}.{MARKETPLACE_HOST}" target="_blank" class="btn btn-default">Open link</a>
+                    {else}
+                        <a href="http://{HOMEPAGE_DOMAIN_FULL}"  target="_blank"  class="btn btn-default">Open link</a>
+                    {endif}
+                    <button data-action="update" class="btn btn-success">
+                        Save changes
+                    </button>
+                {endif}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    {if HOMEPAGE_ACTIVE==1}
+        <h3>Upload banner</h3>
+        
+        <div id="IMAGE_DROPZONE" class="dropzone dz-clickable{if IMAGES} dz-started{endif}">
+          
+          <div class="dz-message" data-dz-message>
+            <span>
+              Klicken Sie hier oder ziehen Sie eine Bilddatei in diesen Bereich um neue Bilder hochzuladen
+            </span>
+          </div>
+            
+            <div class="dz-header form-group">
+                <div class="col-sm-3">
+                    <b>Preview</b>
+                </div>
+                <div class="col-sm-2">
+                    <b>Actions</b>
+                </div>
+                <div class="col-sm-3">
+                    <b>Title</b>            
+                </div>
+                <div class="col-sm-4">
+                    <b>Position</b>
+                </div>
+            </div>
+    
+        </div>
+
+        <h3>user.css bearbeiten</h3>
+        <p>
+            <strong>Bitte &uuml;berpr&uuml;fen Sie jede &Auml;nderung auf das Genaueste!</strong>
+        </p>
+    
+        <div class="codeMirrorEditor panel panel-primary">
+            <textarea id="USER_CSS" name="USER_CSS">{htm(USER_CSS)}</textarea>
+    
+            <script type="text/javascript">
+            jQuery(function() {
+    
+                var textarea = document.getElementById("USER_CSS")
+                textarea.codeMirror = CodeMirror.fromTextArea(textarea, {
+                    mode: "text/css",
+                    lineNumbers: true,
+                    fixedGutter: true
+                });
+            });
+            </script>
+        </div>
+    
+    
+        <h3>Footer HTML bearbeiten</h3>
+        <p>
+            <strong>Bitte &uuml;berpr&uuml;fen Sie jede &Auml;nderung auf das Genaueste!</strong>
+        </p>
+    
+        <script type="text/javascript">
+            jQuery(function() {
+                InitializeEditor(true, "USER_FOOTER");
+            })
+        </script>
+        <textarea name="USER_FOOTER" id="USER_FOOTER">{htm(USER_FOOTER)}</textarea>
+        
+    {endif}
+{else}
+    <input type="hidden" name="DOMAIN_TYPE" value="SUBDOMAIN" />
+    <!--
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Type of domain</label>
+
+        <div class="col-sm-9">
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="vendor-homepage-domain-type-sub" name="DOMAIN_TYPE" value="SUBDOMAIN" checked>
+                    Install homepage on sub-domain (e.g. www.your-name.{MARKETPLACE_HOST})
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="vendor-homepage-domain-type-full-new" name="DOMAIN_TYPE" value="DOMAIN_NEW" checked>
+                    Install homepage on a new domain (e.g. www.your-name.com)<br />
+                    <span class="text-muted">
+                        Choose this option if you want to register a new domain for your homepage.
+                    </span>
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="vendor-homepage-domain-type-full-existing" name="DOMAIN_TYPE" value="DOMAIN_EXISTING" checked>
+                    Install homepage on existing domain (e.g. www.your-name.com)<br />
+                    <span class="text-muted">
+                        Choose this option if you have already a domain.
+                    </span>
+                    
+                </label>
+            </div>
+        </div>
+    </div>
+    -->
+    <div class="form-group" data-type="SUBDOMAIN">
+        <label for="vendor-homepage-domain-sub" class="col-sm-3 control-label">Name of the sub-domain</label>
+
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-addon">http://</span>
+                <input id="vendor-homepage-domain-sub" type="text" name="DOMAIN_SUB" class="form-control" placeholder="ihr-name" value="{htm(HOMEPAGE_DOMAIN_SUB)}" />
+                <span class="input-group-addon">{MARKETPLACE_HOST}</span>
+            </div>
+        </div>
+    </div>
+    <!--
+    <div class="form-group" data-type="DOMAIN">
+        <label for="vendor-homepage-domain-full" class="col-sm-3 control-label">Name of the domain</label>
+
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-addon">http://</span>
+                <input id="vendor-homepage-domain-full" type="text" name="DOMAIN_FULL" class="form-control" placeholder="ihr-name" value="{htm(HOMEPAGE_DOMAIN_SUB)}" />
+            </div>
+        </div>
+    </div>
+    -->
+    <div class="form-group" data-type="DOMAIN">
+        <div class="col-sm-9 col-sm-offset-3">
+            <button data-action="request" class="btn btn-success pull-right">
+                Request installation
+            </button>
+        </div>
+    </div>
+{endif}
+
+<script type="text/html" id="tplImagePreview">
+    <div data-filename="" class="form-group">
+        <div class="col-sm-3">
+            <img class="img-responsive" data-dz-thumbnail />
+            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+        </div>
+        <div class="col-sm-2">
+            <div data-action="image-default">
+                <a href="#">Default image</a>
+            </div>
+            <div data-status="image-default">
+                <strong>Default image</strong>
+            </div>
+            <a data-action="image-delete" data-dz-remove class="dz-remove">Delete</a>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" type="text" data-source="META_TITLE" data-input="META[IMAGES][##index##][TITLE]" placeholder="Image title" />
+        </div>
+        <div class="col-sm-4">
+            <select class="form-control" type="text" data-source="META_POSITION" data-input="META[IMAGES][##index##][POSITION]">
+                <option value="1">Header / Kopfzeile (1140 x 240)</option>
+            </select>
+        </div>
+    </div>
+</script>
+<script type="text/javascript">
+jQuery(function() {
+    
+    jQuery("#StepContent form button[data-action=request]").on("click", function(event) {
+        event.preventDefault();
+        SubmitStep( jQuery(this).closest("form"), "homepage=request" );
+    });
+    
+    jQuery("#StepContent form button[data-action=update]").on("click", function(event) {
+        event.preventDefault();
+        SubmitStep( jQuery(this).closest("form"), "homepage=update" );
+    });
+    
+    // Save changed editors before submitting
+    CallbackSubmitStepAdd(function(form) {
+        var editorSaved = false;
+        jQuery(form).find("textarea").each(function() {
+            if (typeof this.codeMirror != "undefined") {
+                // CodeMirror
+                this.codeMirror.save();
+            } else {
+                // TinyMCE
+                var inputId = jQuery(this).attr("id");
+                var editor = tinyMCE.editors[inputId];
+                if ((typeof editor != "undefined") && editor.isDirty()) {
+                    editor.save();
+                    editor.isNotDirty = 1;
+                    editorSaved = true;
+                }
+            }
+        });
+        if (editorSaved) {
+            window.setTimeout(function () {
+                SubmitStep(form);
+            });
+            return false;
+        } else {
+            return true;
+        }
+    });
+    
+    var stepReadyStatus = true;
+    
+    var stepReady = function(isReady) {
+        stepReadyStatus = isReady;
+        if (isReady) {
+            jQuery("#StepContent form button[type=submit]").removeClass("disabled");
+        } else {
+            jQuery("#StepContent form button[type=submit]").addClass("disabled");
+        }
+    };
+    
+{if HOMEPAGE_ACTIVE==1}
+    var imageSetDefault = function(element, filename) {
+        SubmitStep( jQuery(element).closest("form"), "homepage=imageDefault&image="+encodeURIComponent(filename), function(result) {
+            if (result.success) {
+                jQuery("#IMAGE_DROPZONE").find("[data-action=image-default]").show();
+                jQuery("#IMAGE_DROPZONE").find("[data-status=image-default]").hide();
+                jQuery(element).find("[data-action=image-default]").hide();
+                jQuery(element).find("[data-status=image-default]").show();
+            }
+        });
+    };
+    
+    var imageRemove = function(element, filename) {
+        SubmitStep( jQuery(element).closest("form"), "homepage=imageDelete&image="+encodeURIComponent(filename), function(result) {
+            if (result.success) {
+                jQuery("#IMAGE_DROPZONE").find("[data-filename]").each(function() {
+                    var fileName = jQuery(this).data("filename");
+                    var fileIndex = result.images[fileName];
+                    if (typeof fileIndex != "undefined") {
+                        imageBindPreviewUpdate(this, fileIndex);
+                    }
+                });
+            }
+        } );
+    };
+    
+    var imageBindPreview = function(element, filename) {
+        jQuery(element).data("filename", filename);
+        jQuery(element).find("[data-action=image-default]").hide();
+        jQuery(element).find("[data-status=image-default]").hide();
+        jQuery(element).find("[data-action=image-default]").on("click", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            imageSetDefault(element, filename);
+        });
+    };
+    
+    var imageBindPreviewUpdate = function(element, index, isDefault, metaTitle, metaPosition) {
+        jQuery(element).data("index", index);
+        jQuery(element).find("[data-input]").each(function() {
+            var inputName = jQuery(this).data("input");
+            jQuery(this).attr("name", RenderJavascriptTemplate(inputName, { index: index }))
+            if (isDefault) {
+                jQuery(element).find("[data-action=image-default]").hide();
+                jQuery(element).find("[data-status=image-default]").show();
+            } else {
+                jQuery(element).find("[data-action=image-default]").show();
+                jQuery(element).find("[data-status=image-default]").hide();
+            }
+        });
+        if (typeof metaTitle != "undefined") {
+            jQuery(element).find("[data-source=META_TITLE]").val(metaTitle);
+        }
+        if (typeof metaPosition != "undefined") {
+            jQuery(element).find("[data-source=META_POSITION]").val(metaPosition);
+        }
+    };
+   
+    var dropzone = jQuery("#IMAGE_DROPZONE").dropzone({
+        // Options
+        url: stepUrl,
+        params: {
+            ajax: 1, action: "submit", step: "homepage"
+        },
+        maxFiles: 5,
+        thumbnailWidth: 160,
+        thumbnailHeight: 100,
+        thumbnailMethod: "contain",
+        // Templates
+        previewTemplate: jQuery("#tplImagePreview").html(),
+        // Translations
+        dictCancelUpload: "Upload abbrechen",
+        dictCancelUploadConfirmation: "Upload wirklich abbrechen?",
+        dictRemoveFile: "Bild löschen"
+    })[0].dropzone;
+    // Events
+    dropzone.on("addedfile", function (file) {
+        imageBindPreview(file.previewElement, file.name);
+    });
+    dropzone.on("removedfile", function (file) {
+        imageRemove(file.previewElement, file.name);
+    });
+    dropzone.on("sending", function (file) {
+        stepReady(false);
+    });
+    dropzone.on("complete", function (file) {
+        if (typeof file.xhr != "undefined") {
+            // Upload
+            var response = JSON.parse( file.xhr.responseText );
+            imageBindPreviewUpdate(file.previewElement, response.index, response.isDefault);
+        } else {
+            // Existing file
+            imageBindPreviewUpdate(file.previewElement, file.index, file.isDefault, file.metaTitle, file.metaPosition);
+        }
+        stepReady(true);
+    });
+    // Initial file(s)
+    var imageFile = {};
+    {if IMAGES}
+        {IMAGES}
+    {endif}
+{endif}
+
+});
+</script>

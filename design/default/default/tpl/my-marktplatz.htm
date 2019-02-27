@@ -1,0 +1,311 @@
+<h1>[[ translation : marketplace : my.products :: Meine Produkte ]]</h1>
+<span class="lead">[[ translation : marketplace : products.in.market :: Im Marktplatz eingestellte Produkte ]]</span>
+{if deleted}
+	<div class="alert alert-success">
+		<h2>
+			[[ translation : marketplace : ad.deleted :: Eine Anzeige wurde gelöscht! ]]
+		</h2>
+	</div>
+{endif}
+{if deakt}
+	<div class="alert alert-success">
+		<h2>
+			[[ translation : marketplace : ad.deactivated :: Eine Anzeige wurde deaktiviert! ]]
+		</h2>
+		<p>
+			<a href="{uri_action(my-marktplatz-disabled)}" style="font-weight:bold;">
+				[[ translation : marketplace : ad.all.inactive :: Alle inaktiven anzeigen ]]
+			</a>
+		</p>
+	</div>
+{endif}
+{if extended}
+	<div class="alert alert-success">
+		<h2>
+			[[ translation : marketplace : ad.was.extended :: Anzeige(n) erfolgreich verlängert! ]]
+		</h2>
+		<p>
+			<a href="{uri_action(my-marktplatz-timeout)}" style="font-weight:bold;">
+				[[ translation : marketplace : soon.ended.products :: Bald endende produkte anzeigen ]]
+			</a>
+		</p>
+	</div>
+{endif}
+<p>
+	[[ translation : marketplace : ad.all.add.new :: 
+		Hier finden Sie alle von Ihnen eingestellte Anzeigen auf dem Marktplatz.
+		Um eine neue Anzeige zu schalten,
+		<a href="{uri_action(my-marktplatz-neu)}" title="jetzt Produkt verkaufen">
+			klicken Sie bitte hier
+		</a>.
+	]]
+</p>
+{if error_extend}
+	{if error_extend_noads}
+		<div class="alert alert-danger">
+			<h2>
+				[[ translation : general : error :: Fehler ]]!
+			</h2>
+			<p>
+				[[ translation : marketplace : error.no.ad.free :: 
+					Sie haben keine weiteren Anzeigen frei. Bitte kaufen Sie ein neues Anzeigenpaket um
+					ihre Anzeige zu verl&auml;ngern.
+				]]
+			</p>
+		</div>
+	{else}
+        <div class="alert alert-danger">
+            <h2>
+				[[ translation : general : error :: Fehler ]]!
+			</h2>
+			<p>
+				[[ translation : marketplace : error.extend.ad :: 
+					Beim verl&auml;ngern der Anzeige ist ein unerwarteter Fehler aufgetreten.
+					Bitte wenden Sie sich an den Support.
+				]]
+			</p>
+		</div>
+	{endif}
+{endif}
+<div id="AdExtend" width="100%" height="100%" style="display: none; position: fixed; left: 0px; top: 0px; right: 0px; z-index: 80;"></div>
+
+	{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-nav.htm,*)}
+
+	<form id="article_search" class="userSearchForm" method="get" action="{uri_action(my-marktplatz,{FILTER_STATUS})}">
+        <input type="hidden" name="filter" value="{htm(FILTER_STATUS)}" />
+		<div class="design-content-box">
+			<h4><strong>[[ translation : marketplace : search.my.ads :: Suche nach meinen Anzeigen ]]</strong></h4>
+
+			<div class="row">
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">[[ translation : marketplace : art.number :: Art.Nr ]]</label>
+                        <input type="text" name="ID_AD_MASTER" value="{if ID_AD_MASTER > 0}{htm(ID_AD_MASTER)}{endif}" tabindex="10"  class="form-control" />
+                    </div>
+				</div>
+				<div class="col-xs-3">
+                    {if SETTINGS_USE_HERSTELLER_DB}
+                    <div class="form-group">
+                        <label class="control-label">[[ translation : marketplace : product.manufacturer :: Hersteller ]]</label>
+                        <input type="text" name="HERSTELLER" value="{HERSTELLER}" tabindex="11" class="form-control" />
+                    </div>
+                    {endif}
+				</div>
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">[[ translation : marketplace : product.name :: Produktname ]]</label>
+                        <input type="text" name="PRODUKTNAME" value="{PRODUKTNAME}" tabindex="12"  class="form-control" />
+                    </div>
+				</div>
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">[[ translation : marketplace : category :: Kategorie ]]</label>
+                        <select name="FK_KAT" class="form-control" tabindex="13" >
+                            <option value="">[[ translation : marketplace : all.categories :: alle Kategorien ]]</option>
+                            {marketplace_categories}
+                        </select>
+                    </div>
+				</div>
+			</div>
+            <div class="row">
+                <div class="col-xs-3">
+										<div class="form-group">
+												<label class="control-label">[[ translation : marketplace : product.sales.type :: Verkaufsart ]]</label>
+												<select name="VERKAUFSOPTIONEN" class="form-control">
+														<option value="">[[ translation : marketplace : ad.sales.any :: alle Verkaufsarten ]]</option>
+														<option value="1"{if VERKAUFSOPTIONEN==1} selected{endif}>[[ translation : marketplace : ad.sales.request.plus.price :: Preis darstellen ohne Verkaufsfunktion ]]</option>
+														<option value="2"{if VERKAUFSOPTIONEN==2} selected{endif}>[[ translation : marketplace : ad.sales.request :: Preis auf Anfrage ]]</option>
+														<option value="3"{if VERKAUFSOPTIONEN==3} selected{endif}>[[ translation : marketplace : ad.sales.rent :: Vermieten ]]</option>
+														<option value="4"{if VERKAUFSOPTIONEN==4} selected{endif}>[[ translation : marketplace : ad.sales.none :: Inserat ]]</option>
+														<option value="5"{if VERKAUFSOPTIONEN==5} selected{endif}>[[ translation : marketplace : ad.sales.article.request :: Gesuch ]]</option>
+												</select>
+										</div>
+                </div>
+                <div class="col-xs-3">
+										{if importSources}
+										<div class="form-group">
+											 <label class="control-label">[[ translation : marketplace : product.import.source.label :: Import-Quelle ]]</label>
+											 <select name="FK_IMPORT_SOURCE" class="form-control" tabindex="22" >
+												 	<option>[[ translation : marketplace : product.import.source.none :: alle Anzeigen ]]</option>
+													{importSources}
+											 </select>
+										</div>
+										{endif}
+                </div>
+                <div class="col-xs-3">
+										<div class="form-group">
+											 <label class="control-label">[[ translation : marketplace : product.order.by :: Sortieren nach ]]</label>
+											 <select name="SORT" class="form-control" tabindex="23" >
+													 <option value="STAMP:DESC"{if ORDER_BY_STAMP_DESC} selected="selected"{endif}>[[ translation : marketplace : product.order.by.stamp.desc :: Neuste zuerst ]]</option>
+													 <option value="STAMP:ASC"{if ORDER_BY_STAMP_ASC} selected="selected"{endif}>[[ translation : marketplace : product.order.by.stamp.asc :: Älteste zuerst ]]</option>
+													 <option value="B_TOP:DESC"{if ORDER_BY_B_TOP_DESC} selected="selected"{endif}>[[ translation : marketplace : product.order.by.top.desc :: Top-Anzeigen zuerst ]]</option>
+													 <option value="B_TOP:ASC"{if ORDER_BY_B_TOP_ASC} selected="selected"{endif}>[[ translation : marketplace : product.order.by.top.asc :: Top-Anzeigen zuletzt ]]</option>
+											 </select>
+									 	</div>
+                </div>
+                <div class="col-xs-3 design-form-group-search text-right">
+                    <a href="{uri_action(my-exports)}" class="btn btn-info js-tooltip" name="doExport"  data-toggle="tooltip" title="[[ translation : marketplace : export.my.ads :: Meine Anzeigen als CSV-Datei speichern ]]">
+                        <i class="glyphicon glyphicon-download-alt"></i>
+                    </a>
+                    {if !FILTER_STATUS_ACTIVE}
+                    <a href="#extend" onclick="ExtendSearchResults(this);" class="btn btn-default js-tooltip" name="doExtend" data-toggle="tooltip" title="[[ translation : marketplace : extend.my.ads :: Anzeigen im Suchergebnis verlängern ]]">
+                        <i class="glyphicon glyphicon-time"></i>
+                    </a>
+                    {endif}
+                    <input type="submit" name="do" value="[[ translation : general : search.submit :: Suchen ]]" tabindex="8"  class="btn btn-primary">
+                </div>
+            </div>
+			<br>
+		</div>
+	</form>
+
+
+<form action="{uri_action(my-marktplatz,{ACTION},{NPAGE},{PERPAGE})}{ADDITIONAL_PARAMS}" method="POST">
+	{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz.table.{TABLE_TEMPLATE}.htm,*)}
+
+	<p>{pager}</p>
+
+	{HIDDEN_INPUT_SELECTED}
+	<div class="userArticlesSelected well well-small">
+		<div class="userArticlesSelectedStatus">
+			<div class="userArticlesSelectedText">[[ translation : marketplace : my.ads.none.selected :: Keine Artikel ausgewählt ]]</div>
+		</div>
+		<div class="userArticlesSelectedActions">
+			<button name="action" value="extend" class="btn btn-mini btn-success filterSelection disabled">
+				<i class="glyphicon glyphicon-time"></i> [[ translation : marketplace : extend :: Verlängern ]]
+			</button>
+			<button name="action" value="enable" class="btn btn-mini btn-success filterEnabled disabled">
+				<i class="glyphicon glyphicon-play"></i> [[ translation : general : enable :: Aktivieren ]]
+			</button>
+			<button name="action" value="disable" class="btn btn-mini btn-danger filterDisabled disabled">
+				<i class="glyphicon glyphicon-pause"></i> [[ translation : general : deactivate :: Deaktivieren ]]
+			</button>
+			<button name="action" value="delete" class="btn btn-mini btn-danger filterSelection disabled">
+				<i class="glyphicon glyphicon-remove"></i> [[ translation : general : delete :: Löschen ]]
+			</button>
+			<button name="action" value="all" class="btn btn-mini btn-default">
+				<i class="glyphicon glyphicon-ok"></i> [[ translation : general : selection.all :: Alle auswählen ]]
+			</button>
+			<button name="action" value="clear" class="btn btn-mini btn-default filterSelection disabled">
+				<i class="glyphicon glyphicon-remove"></i> [[ translation : general : selection.clear :: Auswahl aufheben ]]
+			</button>
+		</div>
+	</div>
+</form>
+
+
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = [[ translation : general : edit :: Bearbeiten ]]
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-share"></i></a> = [[ translation : general : duplicate :: Duplizieren ]]
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-pause"></i></a> = [[ translation : general : deactivate :: Deaktivieren ]]
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a> = [[ translation : general : delete :: Löschen ]]
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-time"></i></a> = [[ translation : marketplace : extend :: Verlängern ]]
+	</div>
+    <div class="pull-left">
+    	<a class="btn btn-default"><i class="glyphicon glyphicon-star-empty"></i></a> = [[ translation : marketplace : rent.top.ad :: Top-Anzeige buchen ]]
+	</div>
+	<div class="pull-left">
+		<i class="glyphicon glyphicon-star"></i> = [[ translation : marketplace : is.top :: ist Top ]]
+	</div>
+    <br style="clear: left;" />
+	<div class="pull-left">
+		<a class="btn btn-default btn-info"><i class="glyphicon glyphicon-comment icon-white"></i></a> = [[ translation : marketplace : comments.allowed :: Kommentare erlaubt ]]
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-comment"></i></a> = [[ translation : marketplace : comments.deaktivated :: Kommentare deaktiviert ]]
+	</div>
+</div>
+
+
+<!-- Multi Anzeigen Search & Replace -->
+<script type="text/javascript">
+	{if SHOW_REPLACE}
+    function showMultiSearchReplace() {
+        ShowDialog("/my-marktplatz-multisearchreplace.htm", "[[ translation : marketplace : in.ads.and.replace :: In Anzeigen und Ersetzen ]]", 600, 320, {
+            close: function(event, ui) {
+            	$("#article_search").submit();
+            }
+        }, {
+            data: { 'rows': {SEARCHREPLACE_AD_ID}},
+            type: 'POST'
+        });
+    }
+	{endif}
+		
+    
+		function getSelectedArticles() {
+      return jQuery("form .checkboxArticleSelected:checked,form .hiddenArticleSelected");
+  }
+  
+  function updateSelectedArticles(checkboxChanged, setAll) {
+      if (typeof setAll != "undefined") {
+          jQuery(".checkboxArticleSelected").prop("checked", setAll);
+      }
+      var selectText = "[[ translation : marketplace : user.articles.selected.none :: Keine Artikel ausgewählt ]]"
+      var jqCheckedArticles = getSelectedArticles();
+      if (jqCheckedArticles.length > 0) {
+          var countDisabled = jqCheckedArticles.filter("[data-disabled]").length;
+          // Enable actions
+          selectText = "[[ translation : marketplace : user.articles.selected : COUNT='"+jqCheckedArticles.length+"' : {COUNT} ausgewählte Artikel ]]";
+          jQuery(".userArticlesSelectedActions .btn").removeClass("disabled");
+      } else {
+          // Disable actions
+          jQuery(".userArticlesSelectedActions .btn.filterSelection").addClass("disabled");
+      }
+      // Update labeled buttons (For references outside the form)
+      jQuery(".userArticlesSelectedActions .btn[id]").each(function() {
+          var buttonId = jQuery(this).attr("id");
+          if (!jQuery(this).is(".disabled")) {
+              jQuery("label[for="+buttonId+"]").removeClass("disabled");
+          } else {
+              jQuery("label[for="+buttonId+"]").addClass("disabled");
+          }
+      });
+      jQuery(".userArticlesSelectedText").html(selectText);
+      //console.log("debug: "+jqCheckedArticles.length);
+  }
+  
+  function updateVisiblePage(pagerLink, event) {
+      event.preventDefault();
+      var listForm = jQuery(pagerLink).parents("form").first();
+      jQuery(listForm).attr("action", jQuery(pagerLink).attr("href")).submit();
+  }
+
+	function ToggleBids(id_ad) {
+		var tr_bid = $("#bids_"+id_ad);
+		var td_bid = $("#bids_"+id_ad+" > td");
+		if (td_bid.html() == "") {
+			// Laden und anzeigen
+			$.get(ebiz_trader_baseurl + "index.php?page=my-marktplatz-handeln-gebote&id_ad="+id_ad+"&frame=ajax", function(result) {
+				td_bid.html(result);
+				tr_bid.show();
+			});
+		} else {
+			// Ein- oder ausblenden
+			tr_bid.toggle();
+		}
+	}
+
+    $(function() {
+        {if SHOW_REPLACE}
+        showMultiSearchReplace();
+        {endif}
+					
+				jQuery(".pagination a").click(function (event) {
+					updateVisiblePage(this, event);
+				});
+					
+        jQuery("[data-toggle=tooltip]").tooltip();
+					
+				updateSelectedArticles();
+    });
+</script>

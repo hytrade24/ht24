@@ -1,0 +1,40 @@
+-
+  'action': 'systemCheckPhp'
+  'parameters':
+    'version': '5.6'
+-
+  'action': 'sqlRun'
+  'parameters':
+    'file': 'update.sql'
+-
+  'action': 'stringAdd'
+  'parameters':
+    'TABLE': 'payment_adapter'
+    'STATUS': 0
+    'STATUS_USER': 1
+    'ADAPTER_NAME': 'Bar'
+    'V1':
+      'de': 'Barzahlung'
+    'V2':
+      'de': 'Barzahlung'
+-
+  'action': 'manualStep'
+  'parameters':
+    'description': |
+      Bitte bearbeiten Sie den Infobereich "header scripts" und löschen Sie den Inhalt vollständig.
+      Wenn Sie eigene Skripte in dieser Datei hinzugefügt haben, dann löschen Sie alles ausser den von ihnen
+      neu hinzugefügten Skripten.
+-
+  'action': 'filesCopy'
+  'parameters':
+    'source': 'Dateien'
+    'backup': 'DateienBackup'
+-
+  'action': 'designCheck'
+  'parameters':
+    'language': 'de'
+    'backup': 'DateienBackup'
+-
+  'action': 'cacheClear'
+  'parameters':
+    'type': 'step_all'

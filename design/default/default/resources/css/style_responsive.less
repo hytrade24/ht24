@@ -1,0 +1,37 @@
+/************************************
+ *        Responsive styles         *
+ * -------------------------------- *
+ * z.B. Hintergrund, Links, Listen  *
+ ************************************/
+
+
+#headerMenline {
+  // Hide brand for mobile devices
+  .navbar-brand {
+    display: none;
+  }
+  @media (min-width: @screen-sm) {
+    .navbar-brand {
+      display: block;
+    }
+  }
+}
+// Werbung auf mobilen Geräten ausblenden
+.advertisement,
+.advertisement-box {
+  display: none;
+  // Bei mobilen Geräten ausblenden
+  @media (min-width: @screen-sm) {
+    display: block;
+  }
+}
+
+// Obere Navigationsleiste nur bei hohen Auflösungen fixieren
+.navbar-fixed-top, .navbar-fixed-bottom {
+  // Small display version
+  position: static;
+  // Big display version
+  @media (min-width: @screen-sm) {
+    position: fixed;
+  }
+}

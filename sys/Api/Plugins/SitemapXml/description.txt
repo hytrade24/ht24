@@ -1,0 +1,1 @@
+Plugin zur Erstellung einer XML-Sitemap für Artikel, Veranstaltungen, News und allgemeine Inhaltsseiten.

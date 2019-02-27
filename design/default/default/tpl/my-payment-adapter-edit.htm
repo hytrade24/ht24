@@ -1,0 +1,95 @@
+<script type="text/javascript">
+    jQuery(function() {
+		jQuery("#paymentAdapterEditFormular").submit(function() {
+
+			var data = jQuery("#paymentAdapterEditFormular").serialize();
+			jQuery.ajax({
+				url: jQuery("#paymentAdapterEditFormular").attr('action'),
+				type: 'POST',
+				data: data,
+				success: function(result) {
+					$('#modalDialog').html(result);
+				}
+			});
+
+
+			return false;
+		});
+	})
+</script>
+
+<div class="modal-dialog">
+  <div class="modal-content">
+	<form action="{uri_baseurl(/index.php)}" method="post" id="paymentAdapterEditFormular" class="form-horizontal modal-form design-payment-adapter-edit">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="modalDialogTitle">[[ translation : marketplace : edit.pay.style :: Zahlungsweise bearbeiten ]]</h3>
+		</div>
+	
+		<div class="modal-body" id="modalDialogContent">
+	
+			{if ok}
+				<script>
+					jQuery("#modalDialog .modal-footer [type=submit]").detach();
+				</script>
+				<p>
+					[[ translation : marketplace : settings.saved.succesfull :: Ihre Einstellungen wurden erfolgreich gespeichert ]]
+				</p>
+			{else}
+	
+				<input type="hidden" name="page" value="my-payment-adapter-edit" />
+				<input type="hidden" name="frame" value="ajax" />
+				<input type="hidden" name="do" value="save" />
+				<input type="hidden" name="ID_PAYMENT_ADAPTER" value="{ID_PAYMENT_ADAPTER}" />
+	
+				<p>[[ translation : marketplace : edit.pay.config :: Sie bearbeiten die Konfiguration der Zahlungsweise ]] <strong>{USER_PAYMENT_ADAPTER_NAME}</strong>.</p>
+	
+				{if err}
+					<div class="alert alert-danger">
+						<h3>[[ translation : general : error.occured :: Fehler aufgetreten ]]!</h3>
+						<p>
+							{err}
+						</p>
+					</div>
+				{endif}
+	
+				<div class="form-group">
+					<label class="control-label design-input-label">[[ translation : marketplace : pay.style.accepted :: Zahlungsweise akzeptieren ]]:</label>
+	
+					<div class="design-input-field">
+						<div class="radio">
+							<label><input type="radio" value="1" name="USER_STATUS" {if USER_STATUS}checked="checked"{endif}> [[ translation : general : yes :: Ja ]]</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" value="0" name="USER_STATUS" {if !USER_STATUS}checked="checked"{endif}> [[ translation : general : no :: Nein ]]</label>
+						</div>
+					</div>
+				</div>
+	
+				<div class="form-group">
+					<label class="control-label design-input-label">
+						<i class="icon-info-sign js-tooltip" data-toggle="tooltip" title="[[ translation : marketplace : do.u.want.net.pay.style :: Soll diese Zahlungsweise beim Neueinstellen von Artikeln vorausgewählt werden ]]?"></i>
+						[[ translation : marketplace : auto.choose :: automatisch vorausgewählt ]]:
+					</label>
+	
+					<div class="design-input-field">
+						<div class="radio">
+							<label><input type="radio" value="1" name="USER_AUTOCHECK" {if USER_AUTOCHECK}checked="checked"{endif}> [[ translation : general : yes :: Ja ]]</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" value="0" name="USER_AUTOCHECK" {if !USER_AUTOCHECK}checked="checked"{endif}> [[ translation : general : no :: Nein ]]</label>
+						</div>
+					</div>
+				</div>
+	
+				{PAYMENT_ADAPTER_SELLER_CONFIG}
+	
+			{endif}
+		</div>
+		<div class="modal-footer">
+			<a href="#" onclick="HideDialog(); return false;" class="btn btn-default">[[ translation : marketplace : close.window :: Fenster schließen ]]</a>
+			<input type="submit" class="btn btn-primary" value="[[ translation : general : save :: Speichern ]]">
+		</div>
+	</form>
+  </div>
+</div>

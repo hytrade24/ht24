@@ -1,0 +1,20 @@
+
+<div class="text-box design-location">
+    <div class="design-ariande design-ariande-news">
+        <ol class="breadcrumb">
+            <li>
+                <a href="{uri_action({curpage})}">[[ translation : news : archive :: Nachrichten-Archiv ]]</a>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<h1>[[ translation : news : archive :: Nachrichten-Archiv ]]</h1>
+<p>[[ translation : news : archive.lead :: Alle Nachrichten, die auf unserem Portal veröffentlicht wurden. ]]</p>
+
+{if liste}
+    {liste}
+    {browse}
+{else}
+    <p>[[ translation : news : articles.none.found :: Es wurden leider keine Artikel gefunden ]]</p>
+{endif}

@@ -1,0 +1,370 @@
+<script type="text/javascript">
+jQuery(function() {
+
+    {if FK_USERGROUP>0 && FK_PACKET_RUNTIME>0}
+        regShowContainerProfile(null, {PRIVATE}, {FK_USERGROUP});
+
+        jQuery("#registerMembershipButton-"+jQuery("input[name='FK_RUNTIME'][value='{FK_PACKET_RUNTIME}']").attr("rel")).removeClass("disabled");
+        jQuery(".registerTabs > li:first-child a").tab("show");
+    {else}
+        jQuery(".registerTabs > li:first-child a").tab("show");
+    {endif}
+
+    jQuery(".registerRuntimeRadio").change(function() {
+        jQuery(".registerMembershipButton").addClass("disabled");
+        jQuery("#registerMembershipButton-"+jQuery(this).attr("rel")).removeClass("disabled");
+    });
+});
+
+function CheckAll() {
+	CheckField("VORNAME", "text");
+	CheckField("NACHNAME", "text");
+	CheckField("STRASSE", "text");
+	CheckField("PLZ", "text");
+	CheckField("ORT", "text");
+	CheckField("land", "select");
+}
+
+function CheckCountry(input) {
+	CheckField("land", 'select');
+}
+
+function CheckValue(name, value, type) {
+	var input = jQuery("#"+name);
+	var required = input.attr("required");
+	if ((value == "") && !required) {
+		// Optionales feld
+		return false;
+	}
+	if (type == "number") {
+		if (isNaN(value)) {
+			return "[[ translation : marketplace : you.have.to.state.a.number :: Sie müssen eine Zahl angeben. ]]";
+		}
+	}
+	if (type == "password") {
+		if (value.length < 6)
+			return "[[ translation : marketplace : password.must.be.at.least.longer.than.five.characters :: Das Passwort muss länger als 5 Zeichen sein. ]]";
+		if ((name == "pass2") && ($("#pass1").val() != value))
+			return "[[ translation : marketplace : password.repeat.not.correct :: Die Passwortwiederholung ist nicht korrekt. ]]"
+	}
+	if (type == "nickname") {
+		if (value.length < 3)
+			return "[[ translation : marketplace : username.must.be.at.least.three.characters.long :: Der Benutzername muss mindestens 3 Zeichen lang sein. ]]";
+		if (!value.match(/^[a-z][a-z0-9_-]*$/i))
+			return "[[ translation : marketplace : username.contains.invalid.characters :: Der Benutzername enth&auml;lt ung&uuml;ltige Zeichen. ]]"+
+				"[[ translation : marketplace : only.letters.number.and.underline.are allowed :: Erlaubt sind Buchstaben, Zahlen und der Unterstrich. ]]";
+	}
+	if (type == "mail") {
+		if (!value.match(/([\._a-z0-9-]+)+@([\._a-z0-9-]+)+$/i))
+			return "[[ translation : marketplace : you.have.to.enter.valid.email.address :: Sie müssen eine gültige E-Mail Adresse angeben. ]]";
+	}
+	if (type == "text") {
+		if (value.length < 1)
+			return "[[ translation : marketplace : you.habe.to.fill.this.field :: Sie müssen dieses Feld ausfüllen. ]]"
+	}
+	if (type == "select") {
+		var selection = jQuery("#"+name+" option:selected");
+		if (selection.length > 0)  {
+			var value = selection.val();
+			if (value == "") {
+				return "[[ translation : marketplace : you.have.to.choose.a.country :: Sie müssen ein Land auswählen. ]]";
+			}
+		} else {
+			return "[[ translation : marketplace : you.have.to.choose.a.country :: Sie müssen ein Land auswählen. ]]";
+		}
+	}
+	return false;
+}
+
+function CheckValueAjax(name, value, type) {
+	if (type == "nickname") {
+		jQuery.get(ebiz_trader_baseurl + "index.php?page=register_ajax&frame=ajax&check=NAME&value="+encodeURIComponent(value), function(obj) {
+			if (obj.used) {
+				jQuery("#TOOLTIP_"+name).attr("data-content", "[[ translation : marketplace : username.already.used :: Benutzername wird bereits verwendet. ]]");
+				jQuery("#STATE_"+name).attr("src", ebiz_trader_baseurl + "bilder/stop_check.png");
+			}
+		});
+	}
+	if (type == "mail") {
+		jQuery.get(ebiz_trader_baseurl + "index.php?page=register_ajax&frame=ajax&check=EMAIL&value="+encodeURIComponent(value), function(obj) {
+			if (obj.used) {
+				jQuery("#TOOLTIP_"+name).attr("data-content", "[[ translation : marketplace : email.already.used :: E-Mail Adresse wird bereits verwendet. ]]");
+				jQuery("#STATE_"+name).attr("src", ebiz_trader_baseurl + "bilder/stop_check.png");
+			}
+		});
+	}
+}
+
+function CheckField(name, type) {
+	var value = jQuery("#"+name).val();
+	var error = CheckValue(name, value, type);
+	if (error == false) {
+		jQuery("#TOOLTIP_"+name).attr("data-content", "Eingabe okay!");
+		jQuery("#STATE_"+name).attr("src", ebiz_trader_baseurl + "bilder/ok.png");
+		CheckValueAjax(name, value, type);
+	} else {
+		jQuery("#TOOLTIP_"+name).attr("data-content", error);
+		jQuery("#STATE_"+name).attr("src", ebiz_trader_baseurl + "bilder/stop_check.png");
+	}
+}
+
+</script>
+
+<h1>[[ translation : marketplace : change.membership :: Mitgliedschaft wechseln ]]</h1>
+<span class="lead">[[ translation : marketplace : choose.new.membership :: Wählen Sie bitte eine neue Mitgliedschaft ]]</span>
+
+{if (success || error)}
+	{if success}
+		<div class="alert alert-block alert-success">
+		{if result==1}
+			<h4>[[ translation : marketplace : order.successfull :: Bestellung erfolgreich ]]!</h4>
+		{else}
+			<h4>[[ translation : marketplace : order.successfull :: Bestellung erfolgreich ]]!</h4>
+			[[ translation : marketplace : an.admin.will.treat.your.request.soon.you.will.recieve.an.email.with.the.bill.when.its.finished::
+            Ein Administrator wird ihre Anfrage in Kürze bearbeiten. Sobald dies geschehen ist
+			werden Sie per E-Mail darüber Informiert und erhalten die dazugeöhrige Rechnung. ]]
+			<br />
+		{endif}
+		{if !TODO_pay_on_demand}
+		    [[ translation : marketplace : you.can.use.thenew.membership.features.after.the.bill.is.payed ::
+			Die neue Mitgliedschaft und deren Features stehen ihnen zur Verfügung sobald Sie die
+			Rechnung beglichen haben. ]]
+		{else}
+		    [[ translation : marketplace :you.can.use.the.new.membership.features.now ::
+			Die neue Mitgliedschaft und deren Features steht ihnen ab sofort zur Verfügung. ]]
+		{endif}
+		</div>
+	{endif}
+	{if error}
+		<div class="alert alert-block alert-danger">
+			<h4>[[ translation : marketplace : upgrade.error :: Upgrade fehlgeschlagen! ]]</h4>
+			[[ translation : marketplace : upgrade.of.your.advertpackage.failed.if.it.happens.again.please.contact.the.admin ::
+			Das Upgrade ihres Anzeigenpakets ist leider Fehlgeschlagen! Sollte dieses Problem wiederholt
+			auftreten kontaktieren Sie bitte den Administrator. ]]
+		</div>                                      
+	{endif}
+{else}
+<div class="design-content-box">
+  <form name="pers" method="post" action="{uri_action(packets_membership_upgrade)}" class="form-horizontal design-membership-upgrade">
+      <input type="hidden" name="dummy" value="" />
+      <input type="hidden" name="nav" value="{curnav}" />
+      <input type="hidden" name="FK_USERGROUP" value="{FK_USERGROUP}" />
+      <input type="hidden" name="FK_PACKET_RUNTIME" value="{FK_PACKET_RUNTIME}" />
+
+      <div id="registerContainerUsergroup">
+          <p class="lead">[[ translation : marketplace : please.choose.right.usergroup :: Bitte wählen Sie eine passende Benutzergruppe aus ]] </p>
+
+          <ul class="nav nav-tabs registerTabs">
+              {usergroups}
+          </ul>
+
+          <div class="tab-content registerTabContent">
+              {usergroups_content}
+
+              <p class="text-muted">
+                     [[ translation : marketplace : parts.of.the.packets.in.the.subscription.refer.to.the.terms.of.the.membership.
+                     if.you.have.for.example.ten.adverts.in.your.subscription.you.can.have.ten.adverts.parallel.active.if.you.sell.one.advert.you.can.make.a.free.new.one ::
+    
+                  *) Paketbestandteile im Abo beziehen sich auf die Laufzeit der Mitgliedschaft. Haben Sie in einer Mitgliedschaft beispielsweise
+                      10 Anzeigen im Abo, können Sie stets 10 Anzeigen parallel aktiv haben. Verkaufen Sie eine dieser Anzeigen, können Sie eine neue kostenfrei
+                      einstellen. ]]
+              </p>
+          </div>
+
+          <div class="clearfix"></div>
+      </div>
+
+
+
+      <div id="registerContainerProfile" class="display-none">
+          <p class="lead">[[ translation : marketplace : please.fill.you.userdata :: Bitte füllen Sie Ihre Benutzerdaten aus: ]]</p>
+
+          {if err}
+              <div class="alert alert-danger">
+                  <h4>
+                      [[ translation : marketplace : error.occured :: Es ist ein Fehler aufgetreten! ]]
+                  </h4>
+
+                  <p>{err}</p>
+              </div>
+          {endif}
+          {if msg}
+              <div class="alert alert-info">
+                  {msg}
+              </div>
+          {endif}
+
+
+          <div>
+              <div>
+                  <div class="form-group">
+                    <label class="control-label design-input-label"><strong>[[ translation : marketplace : company :: Firma ]]:</strong></label>
+                    <div class="design-input-field">
+                        <input class="form-control" type="text" name="FIRMA" id="firma" tabindex="5" maxlength="64" value="{htm(FIRMA)}" placeholder="Firma"/>
+                    </div>
+                    <div class="design-input-help">
+                        <span class="help-inline">
+                            <a id="TOOLTIP_firma" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                  <img class="statusicon" height="20" id="STATE_firma" src="{uri_baseurl(/bilder/ok.png)}"/>
+                              </a>
+                        </span>
+                    </div>
+                </div>
+
+                  <div class="form-group">
+                    <label class="control-label design-input-label"><strong>[[ translation : marketplace : forename :: Vorname ]]<span class="hidden req_paid">*</span>:</strong></label>
+                    <div class="design-input-field">
+                        <input class="form-control req_paid" onchange="CheckField(this.name, 'text')" type="text" name="VORNAME" id="VORNAME" tabindex="6" maxlength="64" value="{htm(VORNAME)}" placeholder="[[ translation : marketplace : forename :: Vorname ]]">
+                    </div>
+                    <div class="design-input-help">
+                        <span class="help-inline">
+                            <a id="TOOLTIP_VORNAME" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                              <img class="statusicon" border="0" height="20" id="STATE_VORNAME" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                          </a>
+                        </span>
+                    </div>
+                </div>
+
+                  <div class="form-group">
+                    <label class="control-label design-input-label"><strong>[[ translation : marketplace : surname :: Nachname ]] <span class="hidden req_paid">*</span>:</strong></label>
+                    <div class="design-input-field">
+                        <input class="form-control req_paid" onchange="CheckField(this.name, 'text')" type="text" name="NACHNAME" id="NACHNAME" tabindex="7" maxlength="64" value="{htm(NACHNAME)}" placeholder="[[ translation : marketplace : surname :: Nachname ]]">
+                    </div>
+                    <div class="design-input-help">
+                        <span class="help-inline">
+                            <a id="TOOLTIP_NACHNAME" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                  <img class="statusicon" border="0" height="20" id="STATE_NACHNAME" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                              </a>
+                        </span>
+                    </div>
+                </div>
+
+                  <div class="form-group">
+                   <label class="control-label design-input-label"><strong>[[ translation : marketplace :street ::Straße ]] <span class="hidden req_paid">*</span>:</strong></label>
+                   <div class="design-input-field">
+                       <input class="form-control req_paid" onchange="CheckField(this.name, 'text')" type="text" name="STRASSE" id="STRASSE" tabindex="8" maxlength="64" value="{htm(STRASSE)}"  placeholder="[[ translation : marketplace : street :: Straße ]]">
+                   </div>
+                   <div class="design-input-help">
+                       <span class="help-inline">
+                           <a id="TOOLTIP_STRASSE" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                              <img class="statusicon" border="0" height="20" id="STATE_STRASSE" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                          </a>
+                       </span>
+                   </div>
+               </div>
+
+                  <div class="form-group">
+                      <label class="control-label design-input-label"><strong>[[ translation : marketplace : postcode :: Postleitzahl ]] <span class="hidden req_paid">*</span>:</strong></label>
+                      <div class="design-input-field">
+                          <input class="form-control req_paid" onchange="CheckField(this.name, 'text')" type="text" name="PLZ" id="PLZ" tabindex="9" maxlength="64" value="{htm(PLZ)}"  placeholder="[[ translation : marketplace : postcode.abbr :: PLZ ]]">
+                      </div>
+                      <div class="design-input-help">
+                          <span class="help-inline">
+                              <a id="TOOLTIP_PLZ" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                  <img class="statusicon" border="0" height="20" id="STATE_PLZ" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                              </a>
+                          </span>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label class="control-label design-input-label"><strong>[[ translation : marketplace : place :: Ort ]]<span class="hidden req_paid">*</span>:</strong></label>
+                      <div class="design-input-field">
+                          <input class="form-control req_paid" onchange="CheckField(this.name, 'text')" type="text" name="ORT" id="ORT" tabindex="10" maxlength="64" value="{htm(ORT)}" placeholder="[[ translation : marketplace : place :: Ort ]]">
+                      </div>
+                      <div class="design-input-help">
+                          <span class="help-inline">
+                              <a id="TOOLTIP_ORT" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                  <img class="statusicon" border="0" height="20" id="STATE_ORT" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                              </a>
+                          </span>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label class="control-label design-input-label"><strong>[[ translation : marketplace : country :: Land ]]<span class="hidden req_paid">*</span>:</strong></label>
+                      <div class="design-input-field">
+                          {select_country(land,,,, class="form-control req_paid" onchange="CheckCountry(this)" tabindex="11",----)}
+                      </div>
+                      <div class="design-input-help">
+                          <span class="help-inline">
+                              <a id="TOOLTIP_land" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+                                  <img class="statusicon" border="0" height="20" id="STATE_land" src="{uri_baseurl(/bilder/stop_check.png)}" />
+                              </a>
+                          </span>
+                      </div>
+                  </div>
+
+                {if OPTION_COUPON_ENABLED}
+                <div class="form-group">
+                    <label class="control-label design-input-label">
+                      <strong>[[ translation : general : coupon.register.label :: Gutscheincode ]]:</strong>
+                    </label>
+                    <div class="design-input-field">
+                      <input class="form-control" onchange="CheckField(this.name, 'text')" type="text" name="COUPON_CODE" id="COUPON_CODE"  tabindex="14" value="{htm(COUPON_CODE)}" placeholder="[[ translation : general : coupon.register.placeholder :: Gutscheincode eingeben ]]">
+                      <span class="help-block">
+                          [[ translation : general : coupon.register.help :: Wenn Sie einen Gutscheincode besitzen, können Sie diesen hier eingeben ]]
+                      </span>
+                    </div>
+                </div>
+                {endif}
+
+				<div>
+				    <h4>[[ translation : marketplace : terms.of.service :: Allgemeine Geschäftsbedingungen ]]</h4>
+				
+				    <div class="contentBox" style="background: #FFF;">
+				        <iframe src="{uri_baseurl(/index.php?page=agb&frame=iframe)}" width="100%" height="180" style="background: #FFF;" frameborder="0"></iframe>
+				    </div>
+				</div>
+
+                  <div class="form-group">
+                      <strong class="control-label design-input-label">[[ translation : marketplace : tos :: AGB ]]<span class="hidden req_paid">*</span>:</strong>
+                      <div class="design-input-field">
+                          <div class="checkbox">
+                              <label>
+                                  <input tabindex="13" type="checkbox" id="AGB" name="AGB" value="ON" required="required">
+                                  [[ translation : marketplace : i.read.the.terms.of.service.and.agree ::
+                                  Ich habe die AGB gelesen und akzeptiere diese ]]
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="form-group" id="confirm_private">
+                      <label class="control-label design-input-label"></label>
+                      <div class="design-input-field">
+                          <div class="checkbox">
+                              <label>
+                                  <input tabindex="13" type="checkbox" id="ACCEPT_PRIVATE" name="ACCEPT_PRIVATE" value="1" required="required">
+                                  [[ translation : marketplace : i.confirm.that.i.dont.trade.commercially ::
+                                  Hiermit bestätige ich, dass ich <strong>nicht gewerbsmäßig</strong> handle. ]]
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="form-group" id="confirm_company">
+                      <label class="control-label design-input-label"></label>
+                      <div class="design-input-field">
+                          <div class="checkbox">
+                              <label>
+                                  <input tabindex="13" type="checkbox" id="ACCEPT_COMPANY" name="ACCEPT_COMPANY" value="1" required="required">
+                                [[ translation : marketplace : i.confirm.that.i.trade.commercially ::
+                                  Hiermit bestätige ich, dass ich <strong>gewerbsmäßig</strong> handle. ]]
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+          <p class="pull-right">
+              <a class="btn btn-default" onclick="regShowContainerUsergroup(this)" id="registerContainerProfileButtonPrev">[[ translation : general : back :: Zurück ]]</a>
+              <input type="submit" class="btn btn-success" id="registerContainerProfileButtonNextPayed" value="Jetzt kostenpflichtig bestellen" />
+              <input type="submit" class="btn btn-success" style="display: none;" id="registerContainerProfileButtonNextFree" value="[[ translation : marketplace : order.free.now :: Jetzt kostenlos bestellen ]]" />
+          </p>
+          <br class="clearfix" />
+      </div>
+  </form>
+</div>
+{endif}
