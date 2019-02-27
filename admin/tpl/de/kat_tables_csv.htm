@@ -1,0 +1,49 @@
+<h1>Kategorie-Tabellen</h1>
+
+<h2>Exportieren</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Ident</th>
+        <th>Kategorien</th>
+        <th>Felder</th>
+        <th>Export</th>
+    </tr>
+    </thead>
+    <tbody>
+    {liste}
+    </tbody>
+</table>
+
+<h2>Importieren</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="DO" value="IMPORT" />
+    <table class="liste" cellpadding="0" cellspacing="0">
+        <tr class="zeile1">
+            <td>CSV-Datei:</td>
+            <td>
+                <input type="file" name="CSV" id="CSV"  />
+            </td>
+        </tr>
+        <tr class="zeile0">
+            <td>CSV-Trennzeichen:</td>
+            <td>
+                <input type="text" name="CSV_SEPERATOR" style="text-align: center;" size="1" value="{if CSV_SEPERATOR}{htm(CSV_SEPERATOR)}{else},{endif}" />
+            </td>
+        </tr>
+        <tr class="zeile0">
+            <td>Listen-Trennzeichen:</td>
+            <td>
+                <input type="text" name="LIST_SEPERATOR" style="text-align: center;" size="1" value="{if LIST_SEPERATOR}{htm(LIST_SEPERATOR)}{else}/{endif}" />
+            </td>
+        </tr>
+        <tr class="footer">
+            <th colspan="2" style="text-align: right;">
+                <input type="submit" value="CSV-Import starten" />
+            </th>
+        </tr>
+    </table>
+</form>

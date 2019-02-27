@@ -1,0 +1,36 @@
+
+	<tr class="zeile{even}">
+		<td>
+			<input id="code{ID_ADVERTISEMENT_USER}" type="hidden" value="{htm(CODE)}" />
+			<a onclick="return confirm('Möchten Sie diese Anfrage wirklich endgültig löschen?');" href="index.php?page=market_advertisement_orders&mode={mode}&delete={ID_ADVERTISEMENT_USER}" title="Löschen">
+				<img src="gfx/btn.del.gif" />
+			</a>
+			<a onclick="ToggleEdit({ID_ADVERTISEMENT_USER});" title="Bearbeiten">
+				<img src="gfx/btn.edit.gif" />
+			</a>
+			<a onclick="PreviewCode({ID_ADVERTISEMENT_USER});" title="Vorschau anzeigen">
+				<img border="0" src="gfx/btn.detail.gif" />
+			</a>
+			<img border="0" src="gfx/isonline.{ISONLINE}.png" alt="Bannerstatus" />
+		</td>
+		<td>
+			<a href="index.php?page=user_edit&ID_USER={FK_USER}" title="Benutzerprofil bearbeiten">
+				{print_fk(user,FK_USER,NAME)}
+			</a>
+		</td>
+		<td>{htm(AD_NAME)}</td>
+		<td>{NUM_KATS}</td>
+		<td>{todate(STAMP_START)}</td>
+		<td>{todate(STAMP_END)}</td>
+		<td>{topreis(PRICE_SUM)} {CURRENCY_DEFAULT}</td>
+		<td>{if ISONLINE}	<a onclick="ToggleStats({ID_ADVERTISEMENT_USER});">
+				<img border="0" src="gfx/stats-s.png" />
+			</a>{endif}
+            </td>
+	</tr>
+        <tr class="zeile{even}">
+        <td colspan="8" align="right"><div style="padding: 15px;">{CODE}</div></td>
+    </tr>
+	<tr class="zeile{even}" id="edit_{ID_ADVERTISEMENT_USER}" style="display: none;">
+		<td colspan="8" id="edit_content_{ID_ADVERTISEMENT_USER}"></td>
+	</tr>

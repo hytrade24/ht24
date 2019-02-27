@@ -1,0 +1,18 @@
+    <tr>
+    <td title="Anzahl">
+        <input type="hidden" name="ID_PACKET[{i}]" value="{ID_PACKET}" />
+        <input type="hidden" name="FK_TARGET[{i}]" value="{FK_TARGET}" />
+        <input type="hidden" name="{LAUFZEIT_VAR}[{i}]" value="{LAUFZEIT_VAL}" />
+        {COUNT}
+    </td>
+    <td title="{htm(RUNTIME_TXT)} {htm(T1)}">
+        {htm(RUNTIME_TXT)} {htm(V1)}
+        {if TARGET}<br>
+            Für
+           {htm(TARGET)}
+        {endif}
+    </td>
+    <td>{topreis_ex(PRICE)} {CURRENCY_DEFAULT} / Tag</td>
+    <td>{topreis_ex(PRICE_ALL)} {CURRENCY_DEFAULT}</td>
+    <td>{topreis_ex(PRICE_ALL_BRUTTO)} {CURRENCY_DEFAULT}</td>
+</tr>

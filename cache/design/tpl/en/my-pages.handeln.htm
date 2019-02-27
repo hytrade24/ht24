@@ -1,0 +1,38 @@
+<tr>
+	<td>{todate(STAMP_BID)}</td>
+	<td>
+		{if AD_STATUS == 1}
+			<a href="{if FK_USER_FROM != ID_USER}{uri_action(my-marktplatz-handeln)}{else}{uri_action(my-marktplatz-handeln,einkauf)}{endif}#ad{FK_AD}" title="Go to overview">
+				{htm(PRODUKTNAME)}{if VARIANT} ({htm(VARIANT)}){endif}
+			</a>
+		{else}
+			<a href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Go to article">
+				{htm(PRODUKTNAME)}{if VARIANT} ({htm(VARIANT)}){endif}
+			</a>
+		{endif}
+	</td>
+	<td>
+		{if FK_USER_FROM != ID_USER}
+			<span class="text-info">Counter suggest</span>
+		{else}
+			Price proposal
+		{endif}
+	</td>
+	<td class="align-right">
+		{topreis_ex(BID)}&nbsp;{CURRENCY_DEFAULT}
+	</td>
+	<td>
+		{if BID_STATUS_ACTIVE}
+			<span class="text-success">Active</span>
+		{endif}
+		{if BID_STATUS_ENDED}
+			<span class="text-info">Ended</span>
+		{endif}
+		{if BID_STATUS_ACCEPTED}
+			<span class="text-success">Accepted</span>
+		{endif}
+		{if BID_STATUS_CANCEL}
+			<span class="text-error">Secluded</span>
+		{endif}
+	</td>
+</tr>

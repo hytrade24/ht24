@@ -1,0 +1,91 @@
+<h1>Galerie Modul</h1>
+<p>Hier sehen Sie eine &Uuml;bersicht Ihrer bereits erstellten Galerieseiten.</p>
+
+<table border="0" cellspacing="5">
+	<tr>
+		<td valign="top" width="50%">
+
+{if liste}
+<h2>Bereits zugeordneten Seiten</h2>
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktionen</th>
+  <th>Vorschau</th>
+ </tr>
+{liste}
+</table>
+{else}
+<h2>Dieses Modul wurde noch keiner Seite zugeordnet!</h2>
+<p>Um Dieses Modul nutzen zu können, müssen Sie einer Seite das Modul zugeordnet haben!</p>
+<p>
+<b>Vorhandene Seiten (öffentlich)</b><br>
+Bitte wählen Sie die Seite aus, die als Galerie dienen soll.</p>
+<form name="baum">
+<div style="padding:10px; margin-top:4px; width:100%; height:250px; overflow:auto">
+<table class="pathtab" cellpadding="0" cellspacing="0" border="0" height="17"><tr>
+  <td style="height:17px;" colspan="3"><input id="radio0" type="radio" name="trg" {if !trg}checked {endif}value="{ID_NAV_ROOT}" class="nob" /></td>
+  <td>
+   <table class="pathtab" cellpadding="0" cellspacing="0" border="0">
+    <tr height="17">
+      <td width="19" height="17"><img src="gfx/path.{if baum}66{else}64{endif}.png" width="19" height="17" /></td>
+      <td nowrap>&nbsp;<label for="radio0"><b>Root</b></label></td>
+   </tr>
+  </table></td>
+</tr>{baum}</table>
+</div>
+</form>
+<script type="text/javascript">
+ function changeButton()
+ {
+   var selected = false;
+   var radio = document.baum.trg;
+   var chButton = document.getElementById('chButton');
+   if(chButton.value == 'Neu Laden')
+   {
+     window.location.reload();
+	 return true;
+   }
+   if(radio)
+   {
+     for(i=0; i<document.getElementsByName('trg').length; i++)
+	 {
+	   //alert(document.baum.trg[i].value);
+	   if(document.baum.trg[i].checked)
+	   {
+	      selected = document.baum.trg[i].value;
+		  //alert(selected);
+		  break;
+	   }
+     }
+	 if(!selected)
+	 {
+	   alert('Fehler!\nBitte wählen sie eine Seite aus!');
+	   return false;
+	 }
+	 else
+	 {
+	   popupfkt('page_edit&ID_NAV='+selected+'&setroot=1','500','400');
+	   chButton.value="Neu Laden";
+	 }
+   }
+   else
+     alert('Unbekannter Fehler!\nFormular zur Seitenauswahl nicht gefunden!');
+ }
+</script>
+<input type="button" onclick="changeButton();" value="Zuweisen" id="chButton">
+{endif}
+</td>
+<td valign="top">
+<h2><strong>Weitere Links zum Galerie-Modul </strong></h2>
+<table cellspacing="2" cellpadding="2" border="0">
+<tr>
+    <td><img src="gfx/neu_32.gif" width="32" height="32" alt="neue Seite erstellen" border="0"></td>
+    <td><a href="#" onclick="popupfkt('page_edit&setroot=1&FK_MODUL={IDM}','700','480');" title="Neue Galerie Seite erstellen"><b>Neue Seite mit diesem Modul erstellen</b></a>
+    <br>
+    Erstellen Sie eine neue Seite mit dem Galerie-Modul</td>
+</tr>
+
+</table>
+		</td>
+	</tr>
+</table>

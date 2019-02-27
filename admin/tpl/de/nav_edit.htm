@@ -1,0 +1,153 @@
+{loadperm(edit_syspages)}
+
+{loadperm(admin_pageperm)}
+<script src="../misc.js" type="text/javascript"></script>
+{if modhead}
+<script language="JavaScript" type="text/javascript">
+window.toggle_search = function(ID_NAV, B_SEARCH) {
+  var link = document.getElementById("search_link"+ID_NAV);
+  var img = document.getElementById("search_img"+ID_NAV);
+	link.href = "javascript:toggle_search("+ID_NAV+","+(1-B_SEARCH)+");";
+	if (B_SEARCH == 1)
+	  img.src = "gfx/spider.png";
+  else
+	  img.src = "gfx/nospider.png";	
+  ajaxSubmit('','index.php?frame=ajax&page=nav_edit_ajax&nav_root={ROOT}'+
+	 '&lang={slang}&nav_id='+ID_NAV+'&B_SEARCH='+B_SEARCH,1,false,'event_ajax');  
+}
+
+function toggle_ssl(link) {
+    var id = jQuery(link).attr("data-id");
+    var state = jQuery(link).attr("data-status");
+    if (state == 2) {
+        state = 0;
+    } else if (state == 1) {
+        state = 0;
+    } else if (state == 0) {
+        state = 2;
+    }
+    var url = "index.php?frage=ajax&page=nav_edit_ajax&nav_root={ROOT}&lang={slang}&"+
+            "nav_id="+id+"&B_SSL="+state;
+    jQuery.post(url, function(result) {
+        if (result.success) {
+            jQuery(link).attr("data-status", state);
+            var imageIcon = jQuery(link).find("img");
+            if (state == 0) {
+                imageIcon.attr("src", "gfx/btn.lock0.gif");
+                imageIcon.css("opacity", 1);
+                jQuery(link).attr("title", "SSL-Verschlüsselung deaktiviert (immer)");
+            } else {
+                imageIcon.attr("src", "gfx/btn.lock1.gif");
+                if (state == 1) {
+                    imageIcon.css("opacity", 0.33);
+                    jQuery(link).attr("title", "SSL-Verschlüsselung aktiviert (optional)");
+                } else {
+                    imageIcon.css("opacity", 1);
+                    jQuery(link).attr("title", "SSL-Verschlüsselung aktiviert (immer)");
+                }
+            }
+        }
+    });
+}
+
+<!--
+var recurse = false;
+{jskids}
+function checkpageperm(ident, role, el, recurseOld, event)
+{
+    if (!event.ctrlKey) {
+        return true;
+    }
+    var rowTarget = jQuery(el).closest("tr[data-id]");
+    var targetId = parseInt(rowTarget.attr("data-id"));
+    var targetLevel = parseInt(rowTarget.attr("data-level"));
+    var targetState = el.checked;
+    var tbody = rowTarget.parent();
+    var rowIsChild = false;
+    tbody.children("tr[data-id]").each(function(rowIndex) {
+        var navId = parseInt(jQuery(this).attr("data-id"));
+        var navLevel = parseInt(jQuery(this).attr("data-level"));
+        if (navId == targetId) {
+            rowIsChild = true;
+        } else if (navLevel <= targetLevel) {
+            rowIsChild = false;
+        }
+        if (rowIsChild) {
+            var checkbox = jQuery(this).find("input[name^=mod\\["+role+"\\]]");
+            checkbox.prop("checked", targetState);
+        }
+    });
+    return true;
+/*
+//alert (ident +','+ role +','+ el.name+';'+recurse);
+  var ar = document.getElementsByName('mod['+role+']['+ident+']');
+  if (recurse)
+    var alle = document.getElementsByTagName('input');
+//alert(el.name+':'+ar.length+':'+alle.length+'::'+el.lft+'/'+el.rgt);
+  for (i=0; i<ar.length; i++) // if ('checkbox'==ar[i].type)
+  {
+    ar[i].checked = el.checked;
+    if (recurse)
+      for (k=0; k<alle.length; k++)
+        if ('checkbox'==alle[k].type
+          && 0<=alle[k].name.indexOf('d['+role+'][')
+          && parseInt(el.lft)<parseInt(alle[k].lft) && parseInt(el.rgt)>parseInt(alle[k].rgt)
+        )
+          alle[k].checked = el.checked;
+  }
+*/
+}
+//-->
+</script>{endif}
+<div id="event_ajax"></div>
+{if msg}
+<div class="hinweis"><span class="error">{msg}</span></div>{endif}
+<h1>Navigation bearbeiten</h1>
+<p><b>ACHTUNG</b>: Änderungen sind endgültig. <br>
+Bei komplexen Strukturen kann der Aufbau der Seite einen Augenblick dauern.</p>
+<div {if ROOT ==1}class="reiterAktiv"{else}class="reiterPassiv"{endif}>
+  <a href="index.php?page={curpagealias}&ROOT=1">Standard Navigation</a>
+</div>
+<div {if ROOT ==2}class="reiterAktiv"{else}class="reiterPassiv"{endif}>
+  <a href="index.php?page={curpagealias}&ROOT=2">Administrator Navigation</a>
+</div>
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="page" value="{htm(curpagealias)}" />
+  <input type="hidden" name="do" value="mod" />
+<table border="0" cellspacing="0" cellpadding="0" class="liste">
+  <tr>
+    <td>
+      <table class="pathtab" cellpadding="0" cellspacing="0" border="0">
+	    <tr>
+          <th colspan="{if let_move}13{else}9{endif}"  style="border-bottom:none;padding-bottom:0px">{if wrn}<div class="hinweis"><span class="error">{wrn}</span></div>{else}&nbsp;{endif}</th>
+		  {if perm_admin_pageperm}
+          <th colspan="{3+modcount}" style="border-bottom:none;padding-bottom:0px" class="borderleft">Zugriffsrechte</th>
+		  {endif}
+        </tr>
+	    <tr valign="bottom">
+          <th colspan="4">&nbsp;Aktionen&nbsp;</th>
+          <th style="text-align:left;vertical-align:bottom;padding-bottom:0px;"><img src="gfx/path.{if navtree}66{else}64{endif}.png" width="19" height="17" align="left">&nbsp;root</th>
+          <th>Modul</th>
+	      <th>Info<br />Bereich</th>
+	      <th>File / Skin</th>
+          <th>&nbsp;Alias&nbsp;</th>
+		  {if let_move}
+          <th colspan="4">Verschieben</th>
+		  {endif}{if perm_admin_pageperm}{modhead}
+          <!-- <th colspan="3" title="Ausnahmen" align="center">Ausnahmen</th>-->
+		  {endif}
+        </tr>
+	    {baum}
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td align="right" class="footer">
+	  {if modhead && perm_admin_pageperm_E}
+      &nbsp;<input type="submit" class="button" value="Rechte &auml;ndern" />
+	  {else}&nbsp;{endif}
+    </td>
+  </tr>
+</table>
+<br />
+

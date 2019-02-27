@@ -1,0 +1,11 @@
+{if !ready}
+	<h1>Konvertierung der Daten l&auml;uft ...</h1>
+	<p>
+		{data} verbleibende Datens&auml;tze.
+	</p>
+	<script type="text/javascript">
+		window.setTimeout("window.location.href='index.php?page={curpage}'", 2000);
+	</script>
+{else}
+	<h1 class="error">Konvertierung abgeschlossen</h1>
+{endif}

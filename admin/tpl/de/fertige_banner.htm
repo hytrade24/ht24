@@ -1,0 +1,14 @@
+<h1>Fertige Bilder</h1>
+<p>Hier sehen Sie all Ihre gespeicherten Bilder. Um ein Bild zu löschen, klicken Sie auf den entsprechenden Button (<img src="gfx/btn.del.gif" alt="DEL" />). Es werden
+dann das Bild selbst (in /uploads/bildergenerator/vorlagen/), als auch die in der Datenbank gespeicherten Layer und Informationen zu dem Bild
+gelöscht. Ein Mal gelöschte Bilder können <b>nicht</b> wiederhergestellt werden.<br />
+Sollten Sie zwischenzeitlich Änderungen an den Bildern vorgenommen (und gespeichert) haben, werden diese Änderungen hier allerdings 
+noch nicht angezeigt, dann müssen Sie die Seite aktualisieren, da die alte Bildversion noch in Ihrem Browsercache liegt.</p>
+
+{geloescht}
+
+{if output_images}
+  {output_images}
+{else}
+  <div class="hinweis">Keine fertigen Bilder vorhanden!</div>
+{endif}

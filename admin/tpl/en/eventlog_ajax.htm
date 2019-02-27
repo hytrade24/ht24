@@ -1,0 +1,25 @@
+<div {if EVENT_all}class="reiterAktiv"{else}class="reiterPassiv"{endif}>
+<a style="cursor:pointer" onclick="ch_event('all');">Alle</a>
+</div>
+<div {if EVENT_info}class="reiterAktiv"{else}class="reiterPassiv"{endif}>
+<a style="cursor:pointer" onclick="ch_event('info');">Info</a>
+</div>
+<div {if EVENT_warning}class="reiterAktiv"{else}class="reiterPassiv"{endif}>
+<a style="cursor:pointer" onclick="ch_event('warning');">Warning</a>
+</div>
+<div {if EVENT_error}class="reiterAktiv"{else}class="reiterPassiv"{endif}>
+<a style="cursor:pointer" onclick="ch_event('error');">Error</a>
+</div>
+<table class="liste" cellspacing="0" width="100%">
+  <tr>
+   <th>Typ</th>
+   <th>Meldung</th>  
+  </tr>
+  {if liste}
+  {liste}
+  {else}
+  <tr>
+   <td colspan="2" align="center" class="error">Keine Logs gefunden</td>
+  </tr>
+  {endif}
+ </table>

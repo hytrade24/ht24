@@ -1,0 +1,23 @@
+<tr>
+	<td>
+		{if IMPORT_IMAGES}
+			<a href="{thumbnail({IMPORT_IMAGES},800,600)}" rel="lightbox-gallery galleryImagePreview">
+				<img src="{thumbnail({IMPORT_IMAGES},32,32,crop)}">
+			</a>
+		{endif}
+	</td>
+	<td>
+		{htm(FULL_PRODUKTNAME)}
+	</td>
+	{if USE_EAN}
+	<td>
+		{htm(EAN)}
+	</td>
+	{endif}
+	<td>
+		{CATEGORY_NAME}
+	</td>
+	<td>
+		<a class="btn btn-default pull-right" href="#" onclick="selectProduct('{ID_HDB_PRODUCT}', '{HDB_TABLE}', true); return false;">Produkt verwenden</a>
+	</td>
+</tr>

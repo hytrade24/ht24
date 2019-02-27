@@ -1,0 +1,31 @@
+<h1>{if ID_QUESTION}Sicherheitsfrage bearbeiten{else}Neue Sicherheitsfrage erstellen{endif}</h1>
+<p>Bitte erstellen Sie nur Fragen, zu denen die Antworten möglichst genau sind. Bedenken Sie auch die Übersetzung in andere
+ Sprachen!</p>
+{if OK}
+ <h2 class="ok">Erfolgreich gespeichert!</h2>
+{endif}
+{if err}
+ <h2 class="error">Fehler aufgetreten!</h2>
+ <p class="error">{err}</p>
+{endif}
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}" />
+<input type="hidden" name="ID_QUESTION" value="{ID_QUESTION}" />
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th>Ihre Frage:</th>
+   <td><input type="text" name="V1" value="{htm(V1)}" size="80" /></td>
+  <tr>
+  <tr>
+   <th>Ihre Antwort:</th>
+   <td><input type="text" name="V2" value="{htm(V2)}" size="80" /></td>
+  </tr>
+  <tr>
+   <th>Frage verwenden?</th>
+   <td><input type="checkbox" name="B_VIS" value="1" class="nob" {if B_VIS} checked{endif} /> ja, &ouml;ffentlich verwenden</td>
+  </tr>
+  <tr class="footer">
+   <td colspan="2" align="right"><input type="submit" value="Speichern" class="button" /></td>
+  </tr>
+ </table>
+</form>

@@ -1,0 +1,16 @@
+<tr class="zeile{even}" valign="top">
+ <td valign="top"><a href="index.php?page=modul_{IDENT}"><img src="gfx/modul_{IDENT}.gif" width="32" height="16" alt="{LABEL}" border="0"></a></td>
+ <td><a href="index.php?page=modul_{IDENT}"><h3>{LABEL}</h3></a>{infotext}
+  {if modulzeile}
+  <b>Zusatzinfo:</b>
+  <table>
+   <tr>
+    <th align="left">Info</th>
+    <th align="left">Wert</th>
+   </tr>
+   {modulzeile}
+  </table>
+  <br>
+  {endif}
+ </td>
+</tr>

@@ -1,0 +1,55 @@
+<div class="design-header design-header-vendor design-container-highlight">
+    <nav class="navbar navbar-default" role="navigation" id="headerMenuMain">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapseMain">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarCollapseMain">
+                <ul class="nav navbar-nav">
+                {if USER_IS_VENDOR}
+                    <li class="{if active_vendor}active{endif}"><a href="{uri_action(view_user_vendor,{urllabel(USER_NAME)},{USER_ID_USER})}">Business</a></li>
+                {endif}
+                {if USER_HAS_CLUBS}
+                    <li class="{if active_club}active{endif}">
+                    	<a href="{uri_action(view_user_clubs,{urllabel(USER_NAME)},{USER_ID_USER})}">Member of {USER_CLUB_COUNT} Group{if USER_CLUB_COUNT>1}s{endif}</a>
+                    </li>
+                {endif}
+                    <li class="{if active_shop}active{endif}">
+                        <a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">Store</a>
+                    </li>
+                {if USER_HAS_NEWS}
+                    <li class="{if active_news}active{endif}">
+                        <a href="{uri_action(view_user_news,{urllabel(USER_NAME)},{USER_ID_USER})}">Press releases</a>
+                    </li>
+                {endif}
+                {if USER_HAS_JOBS}
+                    <li class="{if active_jobs}active{endif}">
+                        <a href="{uri_action(view_user_jobs,{urllabel(USER_NAME)},{USER_ID_USER})}">Jobs</a>
+                    </li>
+                {endif}
+                {if USER_HAS_EVENTS}
+                    <li class="{uri_is_active(view_user_events,active,)}">
+                        <a href="{uri_action(view_user_events,{urllabel(USER_NAME)},{USER_ID_USER})}">Events</a>
+                    </li>
+                {endif}
+                    <li class="{if active_rating}active{endif}">
+                        <a href="{uri_action(view_user_rating,{urllabel(USER_NAME)},{USER_ID_USER})}">Reviews</a>
+                    </li>
+                    <li class="{if active_contact}active{endif}">
+                        <a href="{uri_action(view_user_contacts,{urllabel(USER_NAME)},{USER_ID_USER})}">Contacts</a>
+                    </li>
+                {if USER_HAS_IMPRESSUM}
+                    <li class="{if active_impressum}active{endif}">
+                        <a href="{uri_action(view_user_impressum,{urllabel(USER_NAME)},{USER_ID_USER})}">Site notice</a>
+                    </li>
+                {endif}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>

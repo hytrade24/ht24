@@ -1,0 +1,133 @@
+{if buy}
+	{if error_noaddress}
+		<div class="alert alert-danger">
+			<h2>Hinweis</h2>
+			<p>
+			Bitte erg&auml;nzen sie folgende folgende Angaben in ihrem <a href="{uri_action(my-profil)}"> Profil</a> bevor sie etwas kaufen
+			<ul>
+				{if error_addr_first}<li>Vorname</li>{endif}
+				{if error_addr_last}<li>Nachname</li>{endif}
+				{if error_addr_street}<li>Straße</li>{endif}
+				{if error_addr_zip}<li>Postleitzahl</li>{endif}
+				{if error_addr_city}<li>Wohnort</li>{endif}
+			</ul>
+			</p>
+		</div>
+	{else}
+		<h1>
+            Bestellvorgang<br />
+            <span>Bitte beachten Sie die enstehenden Kosten</span>
+		</h1>
+		<p>
+            Nach Pr&uuml;fung Ihrer Auswahl k&ouml;nnen Sie die gew&auml;hlten Pakete
+                kaufen.
+		</p>
+		<form method="post" action="{uri_action(packet_buy)}">
+			<h2>Kosten</h2>
+			<table class="table">
+				<tr>
+					<th class="align-left">Anzahl</th>
+					<th class="align-left">Posten</th>
+					<th class="align-left">Stückpreis (Netto)</th>
+					<th class="align-left">Netto-Preis</th>
+					<th class="align-left">Brutto-Preis</th>
+				</tr>
+				{liste}
+				<tr>
+					<th>&nbsp;</th>
+					<th>Gesamtkosten</th>
+					<th>&nbsp;</th>
+					<th>{topreis_ex(PRICE)} {CURRENCY_DEFAULT}</th>
+					<th>{topreis_ex(PRICE_BRUTTO)} {CURRENCY_DEFAULT}</th>
+				</tr>
+			</table>
+
+			<br />
+
+			<div class="row">
+				{if OPTION_COUPON_ENABLED}
+				<div class="col-xs-8">
+					{subtpl(tpl/{SYS_TPL_LANG}/coupon_widget.htm,*)}
+				</div>
+				{endif}
+				<div class="col-xs-4 pull-right">
+					<input class="btn btn-success pull-right" type="submit" value="Bestellung abschließen" />
+				</div>
+			</div>
+
+		</form>
+	{endif}
+{else}
+<h1>
+	Pakete kaufen<br />
+	<span class="lead">
+		Anzeigen- oder Bilderpakete erwerben
+	</span>
+</h1>
+	{if FREE_ADS}
+		<p>
+			Das einstellen von Anzeigen ist derzeit kostenlos, es ist daher nicht n&ouml;tig Anzeigenpakete
+			zu kaufen.
+		</p>
+	{else}
+		<p>
+			Sollte Ihr Anzeigenkontingent ausgesch&ouml;pft sein, k&ouml;nnen Sie hier weitere Pakete 
+			hinzukaufen.
+		</p>
+		
+		{if error_not_found}
+	      <div class="text-error">
+	        <p>
+	          Die gew&auml;hlte Bestellung konnt leider nicht gefunden werden. Bitte versuchen Sie es erneut
+	          oder kontaktieren Sie den technischen Support.
+	        </p>
+	      </div>
+		{endif}
+	    {if error_no_order}
+	      <div class="text-error">
+	        <p>
+	          Sie haben kein(e) Paket(e) gew&auml;hlt. Bitte tragen Sie vor dem gew&uuml;nschten Paket
+	          die Anzahl der Pakete ein die Sie erwerben m&ouml;chten.
+	        </p>
+	      </div>
+	    {endif}
+
+		{if liste}
+			<form method="post" class="form-inline">
+                <table class="table" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <th>Anzeigenpaket</th>
+                            <th>Inhalt</th>
+                            <th>Preise / Laufzeiten</th>
+                        </tr>
+                        {liste}
+                    </tbody>
+                </table>
+				<input class="btn btn-success pull-right" type="submit" value="Paket bestellen" />
+			</form>
+		{else}
+			<p class="alert alert-danger">Zur Zeit werden keine Anzeigenpakete angeboten.</p>
+		{endif}
+		{if liste_user}
+		<h1 style="margin-top:10px;">
+			Ihre erworbenen Pakete<br />
+			<span  class="lead">Liste aller Ihrer Pakete</span>
+		</h1>
+		<table class="table table-bordered table-striped table-condensed userSalesList">
+			<tr>
+				<th>Paketname</th>
+				<th>Status</th>
+				<th>Inhalt (verfügbar)</th>
+				<th>Bestätigt</th>
+				<th class="last">Optionen</th>
+			</tr>
+			{liste_user}
+		</table>
+		<p>
+			{pager}
+		</p>
+		{endif}
+	{endif}
+{endif}
+

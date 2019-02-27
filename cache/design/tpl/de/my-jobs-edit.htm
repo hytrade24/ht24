@@ -1,0 +1,168 @@
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+<script type="text/javascript">
+var bilder = new Array();
+
+jQuery(function() {
+    jQuery("#STREET, #CITY, #ZIP, #fk_country").change(function() {
+        if(jQuery("#STREET").val() != "" && jQuery("#ZIP").val() != "" && jQuery("#CITY").val() != "") {
+            getLatiLongi();
+        }
+    });
+	// Initialisierung Javascript
+	jQuery("#article_head").tabs();
+	jQuery("#article_body").tabs();
+});
+
+function UpdateSelection_Packet(id_packet, label) {
+	jQuery("#FK_PACKET_ORDER").val(id_packet);
+	jQuery("#article_editor").show();
+	jQuery("#packet_select").hide();
+	jQuery("#packet_current").html(label).show();
+}
+
+function checkLength(obj) {
+	jQuery('#zz').html(obj.value.length);
+	if((obj.value.length) > 255) {
+		jQuery('#zz').css("color", "red");
+		jQuery('#zz').css("font-weight", "bold");
+	} else {
+		jQuery('#zz').css("color", "black");
+		jQuery('#zz').css("font-weight", "normal");
+	}
+}
+
+function UpdateKat(id_kat) {
+	jQuery("select[name=FK_KAT]").val(id_kat);
+    if (bilder[id_kat]) 
+        code = '<img src="' + ebiz_trader_baseurl + 'uploads/images/kat/' + bilder[id_kat] + '">';
+    else 
+        code = '';
+	jQuery("div.header_themen").html(code);
+}
+</script>
+
+{if error_noaddress}
+	<div class="alert alert-danger">
+		<h2>Hinweis</h2>
+		<p>
+		Bitte ergänzen Sie folgende Angaben in Ihrem
+        <a href="{uri_action(my-profil)}">Profil</a>
+         bevor Sie etwas veröffentlichen:<br />
+		<ul>
+			{if error_addr_first}<li>Vorname</li>{endif}
+			{if error_addr_last}<li>Nachname</li>{endif}
+			{if error_addr_street}<li>Straße</li>{endif}
+			{if error_addr_zip}<li>Postleitzahl</li>{endif}
+			{if error_addr_city}<li>Wohnort</li>{endif}
+		</ul>
+		</p>
+	</div>
+{else}
+
+	{if errors}
+	<div class="alert alert-block alert-danger">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		<h4>Fehler!</h4>
+		{text(errors)}
+	</div>
+	{endif}
+
+
+	{if !FK_PACKET_ORDER && !FREE_JOBS}
+        <h1>Stellenanzeige schalten</h1>
+		<h2>Ihre Anzeigenpaket</h2>
+        <div id="article_packet" {if !liste_packets}class="alert alert-info"{endif}>
+			<div id="packet_select">
+			{if liste_packets}
+                <p>Bitte wählen Sie das Paket aus, zu dem die Stellenanzeige zugeordnet werden soll</p>
+			<ul>
+				{liste_packets}
+			</ul>
+			{else}
+                Sie haben kein Anzeigenpaket mit Stellenanzeige &uuml;brig.<br>
+                <a href="{uri_action(packets)}" class="">Klicken Sie hier, um ein ein entsprechendes Paket zu erwerben.</a>
+			{endif}
+			</div>
+			<h3 id="packet_current" style="display: none;"></h3>
+		</div>
+	{endif}
+	<div id="article_editor"{if !FK_PACKET_ORDER && !FREE_JOBS} style="display: none;"{endif}>
+		<form name="ARTIKEL" method="post" action="{uri_action({curpage}/{curpage},{ID_JOB})}">
+			<h1>{if ID_JOB}
+            Job-Angebot bearbeiten{else}Job-Angebot schreiben{endif}</h1>
+			<span class="lead">Veröffentlichen Sie Ihre Jobangebote auf unserem Portal</span>
+			{if ID_JOB}<input type="hidden" name="ID_JOB" value="{ID_JOB}" />{endif}
+			<input type="hidden" name="FK_USER" value="{ID_USER}" />
+			<input type="hidden" id="FK_PACKET_ORDER" name="FK_PACKET_ORDER" value="{FK_PACKET_ORDER}" />
+
+            <input type="hidden" id="LATITUDE" name="LATITUDE" value="{LATITUDE}" />
+            <input type="hidden" id="LONGITUDE" name="LONGITUDE" value="{LONGITUDE}" />
+
+			<div id="article_head" style="margin-bottom: 8px;">
+				<ul>
+					{liste_header_link}
+				</ul>
+				<p>Bitte füllen Sie das folgende Formular möglichst vollständig aus</p>
+				{liste_header_content}
+			</div>
+
+			<div id="article_unlock" class="ui-tabs">
+				<div class="ui-tabs-panel">
+					<table class="table table-bordered table-striped table-condensed">
+                        <tr>
+                            <td>Straße:</td>
+                            <td>
+                                <input class="form-control" type="text" name="STREET" id="STREET" value="{STREET}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>PLZ:</td>
+                            <td>
+                                <input class="form-control" type="text" name="ZIP" id="ZIP" value="{ZIP}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ort:</td>
+                            <td>
+                                <input class="form-control" type="text" name="CITY" id="CITY" value="{CITY}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Land:</td>
+                            <td>
+                                {select_country(,,,, class="form-control" onchange="" id="COUNTRY",----)}
+                            </td>
+                        </tr>
+						<tr>
+							<td width="200">Freigabe beantragen</td>
+							<td>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="FREIGABE" value="1" {if FREIGABE==1 || FREIGABE==3} checked{endif} />
+										Bitte das Job-Angebot freigeben.
+									</label>
+								</div>
+								<p>
+                                    Es dürfen nur Job-Angebote eingestellt werden, die frei von Rechten Dritter sind.
+									<strong>Der Autor haftet für die von eingestellte Inhalte.</strong>
+								</p>
+							</td>
+						</tr>
+						{if FREIGABE2}
+						<tr>
+							<td colspan="2" style="padding-top: 10px; padding-bottom: 10px;">
+								<span style="color: #990000; font-weight: bold;">Achtung</span>
+								Ihr Artikel wurde bereits administrativ freigegeben.
+                                    Wenn Sie Ihn jetzt bearbeten, wird diese Freigabe wieder entfernt!
+							</td>
+						</tr>
+						{endif}
+					</table>
+				</div>
+			</div>
+			<div class="text-right">
+				<input class="btn btn-success" type="submit" value="Job speichern" />
+			</div>
+		</form>
+	</div>
+{endif}

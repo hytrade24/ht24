@@ -1,0 +1,61 @@
+<table class="formTable">
+	<tr>
+	 <td colspan="2">
+	  <script type="text/javascript" src="sys/tooltip.js"></script>
+	  <script type="text/javascript">
+       function ch_event(what)
+	   {
+	     ajaxSubmit('','index.php?frame=ajax&page=eventlog_ajax&SHOW='+what,1,false,'event_ajax');
+	   }
+	   ajaxSubmit('','index.php?frame=ajax&page=eventlog_ajax',1,false,'event_ajax');		 
+	  </script>
+	  <div id="event_ajax">
+        Bitte warten ...
+      </div>
+	  <p align="right"><a href="index.php?page=eventlogs" title="Zur Gesamt&uuml;bersicht!">alle anzeigen</a></p>	 
+	 </td>
+	</tr>
+</table><br />
+<table class="liste" width="95%">
+	<tr><th colspan="2">Letzte Ausführung:</th></tr>
+	<tr>
+	  <td colspan="2">
+	    {LAST_CRON_EXEC}
+	  </td>
+	</tr>
+	<tr><th colspan="2">Letzter Erfolg:</th></tr>
+	<tr>
+	  <td colspan="2">
+	    {LAST_CRON_DONE}
+	  </td>
+	</tr>
+	<tr><th colspan="2">Nächste Ausführung:</th></tr>
+	<tr>
+	  <td colspan="2">
+	    <font {if NEXT_CRON_SECS > 60}color="red"{endif}>
+		  {NEXT_CRON_EXEC}<br />
+		  <a title="{NEXT_CRON_SECS}" href="javascript:document.location.reload();" id="NEXT_CRON">(in {NEXT_CRON_SECS} Sekunden)</a>
+		</font>
+		<script>
+		  window.UpdateNext = function() {
+		    var secs = Number(document.getElementById("NEXT_CRON").title)-1;
+			if (secs > 0) {
+		      document.getElementById("NEXT_CRON").innerHTML = "(in "+secs+" Sekunden)";
+			} else {
+			  if (secs < -10) { secs = 60 + secs; }
+		      document.getElementById("NEXT_CRON").innerHTML = "<strong><font color='green'>Cron gestartet!</font></strong>";
+			}
+			document.getElementById("NEXT_CRON").title = secs;
+		  }
+		  window.setInterval('UpdateNext();', 999);
+		</script>
+	  </td>
+	</tr>
+	{if LAST_CRON_FAIL}
+	<tr>
+	  <td colspan="2">
+	    <h2 class="error">ACHTUNG!<br />Die Cronjobs werden scheinbar nicht korrekt ausgeführt!</h2>
+	  </td>
+	</tr>
+	{endif}
+</table>

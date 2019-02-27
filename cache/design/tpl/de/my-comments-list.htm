@@ -1,0 +1,364 @@
+{if !HIDE_SCRIPTS}
+<script>
+
+curPage = {npage};
+
+function replyToComment(commentId) {
+		var action = "{uri_action(my-comments,received,reply," + commentId +")}";
+
+		jQuery('#replyForm form').attr('action', action);
+		jQuery('#replyForm form #ID_COMMENT').val(commentId);
+		jQuery('#replyForm').modal('show');
+		return false;
+};
+
+function CommentAction(link, confirmText) {
+	if (typeof confirmText != "undefined") {
+		if (!confirm(confirmText)) return;
+	}
+	var url = jQuery(link).attr("href");
+	jQuery("#commentList .result-message").hide();
+	jQuery.get(url, function(result) {
+		if (result.success) {
+			var message = jQuery(link).attr("data-message-success")
+			if (typeof message !== "undefined") {
+				jQuery("#"+message).show();
+			}
+			CommentSearchSubmit(jQuery("#commentList .form-inline"));
+		} else {
+			var message = jQuery(link).attr("data-message-error")
+			if (typeof message !== "undefined") {
+				jQuery("#"+message).show();
+			}
+		}
+	});
+	return false;
+}
+
+function CommentLoadPage(page) {
+	var form = jQuery("#commentList");
+	CommentSearchSubmit(form, page);
+}
+
+function CommentLoadSort(sortBy, sortDir) {
+	if (typeof sortOrder == "undefined") {
+		// Convert single parameter call (e.g.: "STAMP,DESC") into 2 parameters
+		var sortParams = sortBy.split(",");
+		if (sortParams.length != 2)
+			return false;
+		sortBy = sortParams[0];
+		sortDir = sortParams[1];
+	}
+	var form = jQuery("#commentList .form-inline");
+	CommentSearchSubmit(form, {int(npage)}, sortBy, sortDir);
+}
+
+function CommentSearch(button, page, sortBy, sortDir) {
+	var form = jQuery(button).closest("form");
+	CommentSearchSubmit(form, page, sortBy, sortDir);
+}
+
+function CommentSearchSubmit(form, page, sortBy, sortDir) {
+	var viewCurrent = jQuery("#commentList").attr("data-view");
+	var type = "{TYPE}";
+	var fk = "{FK}";
+	var searchText = "{SEARCH}";
+	var isReviewed = "{IS_REVIEWED}";
+	var isPublic = "{IS_PUBLIC}";
+	var isIdSearch = "{SEARCH_FOR_ID}";
+	var sortBy = "{SORT_BY}";
+	var sortDir = "{SORT_DIR}";
+	if (typeof form == "undefined") {
+		form = jQuery("#commentList");
+	}
+	if (typeof page == "undefined") {
+		page = curPage;
+	} else {
+		curPage = page;
+	}
+	if (jQuery("#CE_SORTING").length > 0) {
+		var sortSelected = jQuery("#CE_SORTING").val().split(",");
+		if (typeof sortBy == "undefined") {
+			sortBy = sortSelected[0];
+		}
+		if (typeof sortDir == "undefined") {
+			sortDir = sortSelected[1];
+		}
+	}
+	if (jQuery(form).find("input[name=FK]").length > 0) {
+		fk = jQuery(form).find("input[name=FK]").val();
+	}
+	if (jQuery(form).find("select[name=TYPE]").length > 0) {
+		type = jQuery(form).find("select[name=TYPE]").val();
+	}
+	if (jQuery(form).find("select[name=SEARCHCOMMENTS]").length > 0) {
+		searchText = jQuery(form).find("select[name=SEARCHCOMMENTS]").val();
+	}
+	if (jQuery(form).find("select[name=IS_REVIEWED]").length > 0) {
+		isReviewed = jQuery(form).find("select[name=IS_REVIEWED]").val();
+	}
+	if (jQuery(form).find("select[name=IS_PUBLIC]").length > 0) {
+		isPublic = jQuery(form).find("select[name=IS_PUBLIC]").val();
+	}
+	jQuery.post("{uri_action(my-comments,1,{SHOW},AJAX_LIST)}", {
+		PAGE:				page,
+		PERPAGE:			{int(perpage)},
+		SORT_BY:			sortBy,
+		SORT_DIR:			sortDir,
+		FK:					fk,
+		TYPE:				type,
+		TYPE_LOCKED:		(jQuery(form).find("select[name=TYPE]").is(":disabled") ? 1 : 0),
+		SEARCH_FOR_ID:		isIdSearch,
+		SEARCH:				searchText,
+		IS_REVIEWED:		isReviewed,
+		IS_PUBLIC:			isPublic,
+		VIEW:				viewCurrent
+	}, function(result) {
+		jQuery("#commentList").replaceWith(result);
+		CommentInitializeList();
+		location.hash = "#anchorTop";
+	});
+}
+
+function CommentReplySubmit(form) {
+	var url = jQuery(form).attr("action");
+	jQuery.post(url, jQuery(form).serialize(), function(result) {
+		if (result.success) {
+			jQuery("#content > div.alert").hide();
+			jQuery("#replyForm").modal("hide");
+			jQuery("#reply_success").show();
+			CommentSearchSubmit();
+		} else {
+			alert(result.error);
+		}
+	});
+}
+
+function CommentUpdatePage() {
+	var idList = "#commentList";
+	var divList = jQuery(idList);
+	if (divList.length > 0) {
+		location.hash = "";
+		divList.find('.pagination a').click(function(link) {
+			var page = jQuery(this).attr('data-page');
+			CommentLoadPage(page);
+			return false;
+		});
+	}
+}
+
+function CommentInitializeList() {
+	CommentUpdatePage();
+}
+
+jQuery(function() {
+	CommentInitializeList();
+});
+
+</script>
+
+<div id="anchorTop"></div>
+
+<div id="delete_success" class="alert alert-success" style="display: none;">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h3>Kommentar gelöscht</h3>
+	Der Kommentar wurde erfolgreich gelöscht.
+</div>
+<div id="reply_success" class="alert alert-success" style="display: none;">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h3>Kommentar beantwortet</h3>
+	Ihre Anwort wurde erfolgreich abgeschickt.
+</div>
+{endif}
+
+<div id="commentList" data-view="{htm(VIEW)}">
+	{if !HIDE_SORT}
+	<div class="breadcrumb clearfix">
+		<div class="pull-left">
+            <span class="text-muted">{ALL_COMMENTS} Kommentare</span>
+		</div>
+        <div class="pull-right">
+            <form method="get" action="{uri_baseurl(/index.php)}">
+                <select id="CE_SORTING" onchange="CommentLoadSort(this.value);" class="form-control">
+                    <option value="STAMP_START,ASC" {if SORT_BY_STAMP_START_ASC}selected="selected"{endif}>Früheste zuerst</option>
+                    <option value="STAMP_START,DESC" {if SORT_BY_STAMP_START_DESC}selected="selected"{endif}>Späteste zuerst</option>
+                    <option value="IS_REVIEWED,ASC" {if SORT_BY_IS_REVIEWED_ASC}selected="selected"{endif}>Unbestätigte zuerst</option>
+                    <option value="IS_REVIEWED,DESC" {if SORT_BY_IS_REVIEWED_DESC}selected="selected"{endif}>Bestätigte zuerst</option>
+                </select>
+            </form>
+        </div>
+	</div>
+	{endif}
+	
+	<form method="POST">
+		<table class="table table-bordered table-striped table-condensed userList design-user-comments">
+		{if !HIDE_SEARCH}
+			<tr>
+				<td colspan="6" class="design-form-input-rows">
+					<div class="row">
+						{if TYPE && SEARCH_FOR_ID}
+						<div class="col-xs-2">
+							<label for="FK">
+								<b>
+								{if TYPE_ALL}Nummer:{endif}
+								{if TYPE_VENDOR}Firmen-Nr.:{endif}
+								{if TYPE_AD}Anzeigen-Nr.:{endif}
+								{if TYPE_NEWS}News-Nr.:{endif}
+								{if TYPE_GROUPS}Gruppen-Nr.:{endif}
+								</b>
+							</label>
+						</div>
+						<div class="col-xs-3">
+							<input type="hidden" id="TYPE" name="TYPE" value="{htm(TYPE)}" />
+							<input type="text" class="form-control" id="FK" name="FK" value="{htm(FK)}" />
+						</div>
+						{else}
+						<div class="col-xs-2">
+							<label for="TYPE">
+								<b>Typ:</b>
+							</label>
+						</div>
+						<div class="col-xs-3">
+							<select id="TYPE" name="TYPE" class="form-control"{if TYPE_LOCKED} disabled="disabled"{endif}>
+								<optgroup label="Alle">
+									<option value="ALL"{if TYPE_ALL} selected="selected"{endif}>Erhaltene Kommentare</option>
+									<option value="SENT"{if TYPE_SENT} selected="selected"{endif}>Abgegebene Kommentare</option>
+								</optgroup>
+								<optgroup label="Firma / Anbieter">
+									<option value="VENDOR"{if TYPE_VENDOR} selected="selected"{endif}>Kommentare zur Firma</option>
+								</optgroup>
+								<optgroup label="Anzeigen">
+									<option value="AD"{if TYPE_AD} selected="selected"{endif}>Kommentare zu Anzeigen</option>
+								</optgroup>
+								<optgroup label="Artikel / News">
+									<option value="NEWS"{if TYPE_NEWS} selected="selected"{endif}>Kommentare zu Artikeln</option>
+								</optgroup>
+								{if options_groups}
+								<optgroup label="Gruppen">
+									<option value="GROUPS"{if TYPE_GROUPS} selected="selected"{endif}>Kommentare zu meinen Gruppen</option>
+									{options_groups}
+								</optgroup>
+								{endif}
+                                <optgroup label="Veranstaltungen">
+                                    <option value="EVENTS_GROUP"{if TYPE_EVENTS_GROUP} selected="selected"{endif}>Kommentare zu Gruppen-Veranstaltungen</option>
+                                    <option value="EVENTS_VENDOR"{if TYPE_EVENTS_VENDOR} selected="selected"{endif}>Kommentare zu Firmen-Veranstaltungen</option>
+                                </optgroup>
+							</select>
+						</div>
+						{endif}
+						<div class="col-xs-2">
+							<label for="SEARCHCOMMENTS">
+								<b>Titel/Stichworte:</b>
+							</label>
+						</div>
+						<div class="col-xs-5">
+							<input type="text" id="SEARCHCOMMENTS" name="SEARCHCOMMENTS" class="form-control" placeholder="Textsuche in Titel und Stichworten..." value="{htm(SEARCH)}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2">
+							<label for="STAMP_END_GT">
+								<b>Freischaltung:</b>
+							</label>
+						</div>
+						<div class="col-xs-3">
+							<select name="IS_REVIEWED" class="form-control">
+								<option value="all">Alle anzeigen</option>
+								<option value="0"{if IS_REVIEWED==0} selected="selected"{endif}>Nicht freigeschaltet</option>
+								<option value="1"{if IS_REVIEWED==1} selected="selected"{endif}>Nur freigeschaltete</option>
+							</select>
+						</div>
+						<div class="col-xs-2">
+							<label for="STAMP_END_GT">
+								<b>Sichtbarkeit:</b>
+							</label>
+						</div>
+						<div class="col-xs-3">
+							<select name="IS_PUBLIC" class="form-control">
+								<option value="all">Alle anzeigen</option>
+								<option value="0"{if IS_PUBLIC==0} selected="selected"{endif}>Deaktivierte anzeigen</option>
+								<option value="1"{if IS_PUBLIC==1} selected="selected"{endif}>Sichtbare anzeigen</option>
+							</select>
+						</div>
+						<div class="col-xs-2">
+							<button class="btn btn-primary" onclick="CommentSearch(this); return false;">Suche starten</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		{endif}
+			<tr>
+				<th>Aktionen</th>
+				<th>Betreff</th>
+				<th>Benutzer</th>
+				<th>Kommentar</th>
+			</tr>
+	
+			{if liste}
+				{liste}
+			{else}
+			<tr>
+				<td colspan="4" class="text-error">
+					Sie haben noch keine Kommentare erhalten.
+				</td>
+			</tr>
+			{endif}
+		</table>
+	</form>
+
+    {if !HIDE_PAGER}
+	<p>{pager}</p>
+    {endif}
+
+	{if !HIDE_LEGEND}
+	<div class="design-content-box design-icon-legend">
+		<div class="pull-left">
+	        <a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a> = löschen
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-eye-close"></i></a> = nicht sichtbar
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-info"><i class="glyphicon glyphicon-eye-open"></i></a> = sichtbar
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-retweet"></i></a> = antworten
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-lock"></i></a> = gesperrt
+		</div>
+		<div class="pull-left">
+            <a class="btn btn-default"><i class="glyphicon glyphicon-ok"></i></a> = freigabe erteilt
+		</div>
+	</div>
+	{endif}
+</div>
+
+<div id="replyForm" class="modal fade design-comment-reply">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-horizontal modal-form" method="post" onsubmit="CommentReplySubmit(this); return false;" action="{uri_action(my-comments,{npage},received,reply,{ID_COMMENT})}">
+				<input type="hidden" id="ACTION" name="ACTION" value="reply">
+				<input type="hidden" id="ID_COMMENT" name="ID_COMMENT">
+				<div class="modal-header">
+					<h3>Auf den Kommentar antworten</h3>
+				</div>
+				<div id="confirm_content" class="modal-body">
+					<div class="form-group">
+						<label class="control-label design-input-label">
+							Kommentar<br>
+							mindestens 10 Zeichen
+						</label>
+						<div class="controls design-input-field">
+							<textarea name="COMMENT" required="required" class="form-control"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a href="#" onclick="jQuery('#replyForm').modal('hide'); return false;" class="btn btn-default btn-new btn-edit">Abbrechen</a>
+					<input type="submit" value="Senden" class="btn btn-success">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

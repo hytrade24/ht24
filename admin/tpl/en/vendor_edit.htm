@@ -1,0 +1,151 @@
+<h1>Anbieter : {VENDOR_FIRMA} {if VENDOR_FK_USER}<br /><a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_FK_USER})}" target="_blank">zur öffentlichen Ansicht des Anbieters wechseln</a>{endif}</h1>
+
+{if saved}
+<div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Änderungen gespeichert!</h4>
+</div>
+{endif}
+{if errors}
+<div class="alert alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Fehler!</h4>
+    <ul>
+        {errors}
+    </ul>
+</div>
+{endif}
+
+{if VENDOR_ID_VENDOR || VENDOR_NEW}
+    <div class="nav nav-tabs userTabsTable">
+        <div class="active reiterAktiv">
+            <a href="index.php?page=vendor_edit&ID_VENDOR={VENDOR_ID_VENDOR}">Anbieter</a>
+        </div>
+        {if !VENDOR_NEW}
+        <div class="reiterPassiv">
+            <a href="index.php?page=vendor_edit_desc&ID_VENDOR={VENDOR_ID_VENDOR}">Beschreibung</a>
+        </div>
+        {endif}
+    </div>
+    {if VENDOR_EDITABLE}
+        <form method="post" id="VendorFormular" enctype="multipart/form-data">
+            <input type="hidden" name="page" value="{curpage}"/>
+            <input type="hidden" name="do" value="save" />
+            <input type="hidden" name="CHANGED" value="{CHANGEDATE}" />
+            {if VENDOR_ID_VENDOR}<input type="hidden" name="ID_VENDOR" value="{VENDOR_ID_VENDOR}" />{endif}
+
+            <table class="mytable table table-bordered table-striped table-condensed liste">
+                <tr>
+                    <td style="width: 200px;"><b>Anbieter öffentlich darstellen:</b></td>
+                    <td>
+                        <input type="checkbox" name="STATUS" {if VENDOR_STATUS}checked="checked"{endif} value="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td>
+                        <input type="text" name="NAME" id="NAME" value="{VENDOR_FIRMA}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Straße:</td>
+                    <td>
+                        <input type="text" name="STRASSE" id="STREET" value="{VENDOR_STRASSE}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>PLZ:</td>
+                    <td>
+                        <input type="text" name="PLZ" id="ZIP" value="{VENDOR_PLZ}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ort:</td>
+                    <td>
+                        <input type="text" name="ORT" id="CITY" value="{VENDOR_ORT}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Land:</td>
+                    <td>
+                        {select(country,,,,, onchange="" id="COUNTRY",----)}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Telefon:</td>
+                    <td>
+                        <input type="text" name="TEL" id="TEL" value="{VENDOR_TEL}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Fax:</td>
+                    <td>
+                        <input type="text" name="FAX" id="FAX" value="{VENDOR_FAX}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Web:</td>
+                    <td>
+                        <input type="text" name="URL" id="URL" value="{VENDOR_URL}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;">Logo:</td>
+                    <td>
+                        {if VENDOR_LOGO}
+                            <img src="{thumbnail(VENDOR_LOGO,100,100)}" />
+                            <br />
+                            <input type="checkbox" name="DELETE_LOGO" value="1" /> Logo l&ouml;schen
+                        {else}
+                            <input type="file" name="LOGO" id="LOGO"  />
+                        {endif}
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" value="Anbieter speichern" class="btn btn-success pull-right" />
+        </form>
+    {else}
+        <table class="mytable table table-bordered table-striped table-condensed">
+            <tr>
+                <td>Name:</td>
+                <td>{htm(VENDOR_FIRMA)}</td>
+            </tr>
+            <tr>
+                <td>Straße:</td>
+                <td>{htm(VENDOR_STRASSE)}</td>
+            </tr>
+
+            <tr>
+                <td>PLZ:</td>
+                <td>{htm(VENDOR_PLZ)}</td>
+            </tr>
+            <tr>
+                <td>Ort:</td>
+                <td>{htm(VENDOR_ORT)}</td>
+            </tr>
+            <tr>
+                <td>Land:</td>
+                <td>{print_fk(country,VENDOR_FK_COUNTRY)}</td>
+            </tr>
+            <tr>
+                <td>Telefon:</td>
+                <td>{htm(VENDOR_TEL)}</td>
+            </tr>
+            <tr>
+                <td>Fax:</td>
+                <td>{htm(VENDOR_FAX)}</td>
+            </tr>
+            <tr>
+                <td>Web:</td>
+                <td>{htm(VENDOR_URL)}</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;">Logo:</td>
+                <td>
+                    <img src="{thumbnail(VENDOR_LOGO,100,100)}" />
+                </td>
+            </tr>
+        </table>
+    {endif}
+{endif}

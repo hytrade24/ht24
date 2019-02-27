@@ -1,0 +1,17 @@
+				{if (TYPE_BASE && !HIDE_PACKETS_ONCE) || (TYPE_BASE_ABO && !HIDE_PACKETS_ABO)}
+					<tr class="zeile{even} {if TYPE_BASE}content_once{else}content_abo{endif}">
+						<td>
+							<input type="number"{if COUNT!=-1} class="enabled"{endif} style="width:100px;" id="edit{ID_PACKET}" name="COUNT[{ID_PACKET}]" value="{COUNT}"{if COUNT==-1} disabled="disabled"{endif} />
+							<label>
+								<input type="checkbox" id="flat{ID_PACKET}" name="COUNT[{ID_PACKET}]" onclick="UpdateFlat({ID_PACKET});" value="-1"{if COUNT==-1} checked="checked"{endif} />
+								Flatrate
+							</label>
+						</td>
+						<td>
+							{htm(V2)}
+						</td>
+						<td>
+							{COUNT_USED}
+						</td>
+					</tr>
+				{endif}

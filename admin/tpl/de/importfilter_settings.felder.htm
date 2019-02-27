@@ -1,0 +1,11 @@
+<tr>
+	<td id="feld{ID_FIELD_DEF}">
+		{if !selected}
+			<a onclick="zuordnen({ID_FIELD_DEF});" title="Dieses Feld zuordnen">{htm(V1)}</a>
+		{else}
+			<span title="Bereits in Verwendung" style="color:#CCC;">
+				{htm(V1)}
+			</span>
+		{endif}
+	</td>
+</tr>

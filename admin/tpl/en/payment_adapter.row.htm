@@ -1,0 +1,20 @@
+<tr class="zeile{even}" >
+    <td>
+        <a href="index.php?page=payment_adapter_edit&ID_PAYMENT_ADAPTER={ID_PAYMENT_ADAPTER}" title="Adapter ansehen">
+            <img src="{uri_baseurl(/gfx/btn.edit.gif)}" alt="view" />
+        </a>
+        {if STATUS}
+            <a href="index.php?page=payment_adapter_edit&ID_PAYMENT_ADAPTER={ID_PAYMENT_ADAPTER}&action=hide" class="mv">
+                <img src="gfx/mv{even}.v1.gif" width="16" height="16" border="0" alt="unsichtbar machen">
+            </a>
+        {else}
+            <a href="index.php?page=payment_adapter_edit&ID_PAYMENT_ADAPTER={ID_PAYMENT_ADAPTER}&action=visible" class="mv">
+                <img src="gfx/mv{even}.v0.gif" width="16" height="16" border="0" alt="sichtbar machen">
+            </a>
+        {endif}
+    </td>
+    <td>{ID_PAYMENT_ADAPTER}</td>
+    <td>{ADAPTER_NAME}</td>
+    <td>{NAME}</td>
+    <td>{if STATUS}aktiv{else}inaktiv{endif}</td>
+</tr>

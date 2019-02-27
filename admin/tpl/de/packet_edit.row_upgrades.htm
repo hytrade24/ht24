@@ -1,0 +1,5 @@
+<tr>
+    <td>{V1}</td>
+    <td><input type="checkbox" name="MEMBERSHIP_UPGRADE[{ID_PACKET}][ABLE]" value="1" class="membershipUpgradeableCheckbox" rel="{ID_PACKET}" {if IS_ABLE}checked="checked"{endif}></td>
+    <td><input type="checkbox" name="MEMBERSHIP_UPGRADE[{ID_PACKET}][UNLOCK_MANUAL]" value="1" id="MEMBERSHIPUPGRADE_UNLOCK_MANUAL-{ID_PACKET}" {if IS_UNLOCK_MANUAL}checked="checked"{endif} {if !IS_ABLE}disabled="disabled"{endif}></td>
+</tr>

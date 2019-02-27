@@ -1,0 +1,181 @@
+{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+<div class="row design-page-with-menu design-group-details">
+    <div class="design-page-content">
+        
+        <h1>Veranstaltungskalender</h1>
+
+        <p class="lead">
+            Finden Sie interessante Veranstaltungen und Events
+        </p>
+        
+    {startblock(script)}
+        {parentblock()}
+        <script type="text/javascript">
+            jQuery(function() {
+        
+                dosearch = function() {
+                    if(jQuery("#SEARCHURL").val() != "") { location.href = jQuery("#SEARCHURL").val(); }
+                }
+                presearch = function() {
+                    if (jQuery('#CITY').val() != '' || jQuery('#ZIP').val() != '') {
+                        getLatiLongi("", "", "", "",  "", function() {
+                            dopresearch();
+                        });
+                    } else {
+                        jQuery("#LATITUDE, #LONGITUDE").val('');
+                        dopresearch();
+                    }
+                }
+                dopresearch = function() {
+                    jQuery.ajax({
+                        url: jQuery("#presearch").attr("action"),
+                        type: 'POST',
+                        data: jQuery("#presearch").serialize(),
+                        dataType: 'json',
+                        success: function(response) {
+                            jQuery('#ASB').val('(' + response["COUNT"] + ') Treffer anzeigen');
+                            if (response["COUNT"] > 0) {
+                                $('#SEARCHURL').val('{uri_baseurl(/)}calendar_events,'+$("#FK_KAT").val()+',' + response["HASH"] + '.htm');
+                            } else {
+                                $('#SEARCHURL').val('');
+                            }
+                        }
+                    });
+                }
+        
+                calendarEvent_order = function(elm) {
+                    window.location.href = elm.value;
+                }
+        
+                presearch();
+
+                jQuery("#STAMP_RANGE").datepicker({
+                    clearBtn: true,
+                    keepEmptyValues: true,
+                    format: 'dd.mm.yyyy'
+                }).find("input").on("changeDate change", function(event) {
+                    presearch();
+                });
+        
+            });
+        
+        </script>
+    {endblock(script)}
+        
+    {if !HIDE_INTRO && !SEARCH_HASH && !SEARCH_CATEGORY}
+        {content_page(Veranstaltungen - Intro-Seite)}
+    {else}
+        
+        {if SHOW_MAP}
+        {subtpl(tpl/{SYS_TPL_LANG}/googlemaps.htm,type=event,ident={MAP_IDENT},height=300)}
+        {endif}
+
+        <div class="advertisement-box">{adserver(,1780,)}</div>
+
+
+        <div class="text-box design-location">
+
+            <!-- Ariadne/Location and sorting/view -->
+            <div class="row">
+                <div class="col-md-6 col-lg-7 clearfix">
+                    <span class="text-muted">
+                        {if VIEW_TYPE_LIST}
+                            <span id="calendarEventResultCount">{ALL_CALENDAR_EVENTS}</span>
+                              Veranstaltungen
+                        {else}
+                              Veranstaltungskalender
+                        {endif}
+                    </span>
+                </div>
+                <div class="col-md-6 col-lg-5 text-right">
+                    <div class="btn-group">
+                        <a class="btn btn-default {if VIEW_TYPE_LIST}active{endif}" href="{uri_action(calendar_events,{SEARCH_CATEGORY},{SEARCH_HASH},1,{SORT},{SORT_DIR},LIST)}">
+                            <span class="glyphicon glyphicon-th-list"></span>
+                        </a>
+                        <a class="btn btn-default {if VIEW_TYPE_BOX}active{endif}" href="{uri_action(calendar_events,{SEARCH_CATEGORY},{SEARCH_HASH},1,{SORT},{SORT_DIR},BOX)}">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {if VIEW_TYPE_LIST}
+        {subtpl(tpl/{SYS_TPL_LANG}/calendar_events_list.htm,SEARCH_*)}
+        {else}
+        {subtpl(tpl/{SYS_TPL_LANG}/calendar_events_cal.htm,SEARCH_*)}
+        {endif}
+    {endif}
+    </div>
+    <div class="design-page-menu">
+        <form onsubmit="dosearch(); return false;" id="presearch" method="post" action="{uri_baseurl(/index.php)}">
+            <input type="hidden" name="page" value="presearch_calendar_ajax" />
+            <input type="hidden" name="FK_KAT" id="FK_KAT" value="{SEARCH_CATEGORY}" />
+            <input type="hidden" name="frame" value="ajax" />
+            <input type="hidden" name="start" value="" />
+            <input type="hidden" name="LATITUDE" value="{SEARCH_LATITUDE}" id="LATITUDE" />
+            <input type="hidden" name="LONGITUDE" value="{SEARCH_LONGITUDE}" id="LONGITUDE" />
+            <input type="hidden" id="SEARCHURL" name="SEARCHURL" value="" />
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">Kategorie Auswahl</div>
+
+                <ul class="menu-box" id="calendarEventCategoryTree">
+                    {CATEGORY_TREE}
+                </ul>
+
+                <div class="panel-body">
+                    <p>
+                        <a href="{uri_action(calendar_events,list)}">
+                            alle Veranstaltungen anzeigen
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">Suchfilter</div>
+
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Suche:</label>
+                        <input type="text" class="form-control" id="SEARCHCALENDAREVENT" name="SEARCHCALENDAREVENT" value="{htm(SEARCH_SEARCHCALENDAREVENT)}" onkeyup="updateInputState(presearch);" onchange="updateInputState(presearch);" />
+                    </div>
+                    <div class="form-group">
+                        <label>Land:</label>
+                        {select_country(,,,,onchange="presearch();" id="COUNTRY" class="form-control")}
+                    </div>
+                    <div class="form-group">
+                        <label>PLZ:</label>
+                        <input type="text" class="form-control" id="ZIP" name="ZIP" value="{htm(SEARCH_ZIP)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+                    <div class="form-group">
+                        <label>Ort:</label>
+                        <input type="text" class="form-control" id="CITY" name="CITY" value="{htm(SEARCH_CITY)}" onkeyup="updateInputState(presearch);" />
+                    </div>
+                    <div class="form-group">
+                        <label>Im Umkreis von:</label>
+                        {lookup(UMKREIS,,, onchange="presearch();" class="form-control",F_ORDER ASC)}
+                    </div>
+                    {if VIEW_TYPE_LIST}
+                    <div class="form-group">
+                        <label>Datum:</label>
+                
+                        <div class="input-group input-daterange" id="STAMP_RANGE">
+                          <input class="form-control" type="text" id="STAMP_END_GT" name="STAMP_END_GT" value="{if SEARCH_STAMP_END_GT}{date_format(SEARCH_STAMP_END_GT,d.m.Y)}{endif}" />
+                          <span class="input-group-addon">Bis</span>
+                          <input class="form-control" type="text" id="STAMP_START_LT" name="STAMP_START_LT" value="{if SEARCH_STAMP_START_LT}{date_format(SEARCH_STAMP_START_LT,d.m.Y)}{endif}" />
+                        </div>
+                    </div>
+                    {endif}
+
+                    <p class="text-right">
+                        <input class="btn btn-default" type="submit" id="ASB" value="Ergebnisse anzeigen" />
+                    </p>
+                </div>
+            </div>
+        </form>
+        {content_page()}
+    </div>
+</div>

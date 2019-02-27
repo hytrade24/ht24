@@ -1,0 +1,23 @@
+
+    <div class="row design-page-with-menu">
+        <div class="design-page-content">
+			<div class="text-box design-location">
+				<div class="design-ariande design-ariande-club">
+					{kat_ariadne_dynamic({ID_KAT},club)}
+				</div>
+			</div>
+			
+			<h1>{htm(CLUB_NAME)} - Memberlist</h1>
+				
+			<p class="lead">List of all members of the group</p>
+			<div class="advertisement-box">{adserver(,1780,)}</div>
+			<div class="design-row design-row-xs-1 design-row-sm-3">
+				{liste}
+			</div>
+			{pager}
+		</div>
+        <div class="design-page-menu">
+			{subtpl(tpl/{SYS_TPL_LANG}/club.info.htm,*)}
+   			{content_page()}
+		</div>
+	</div>

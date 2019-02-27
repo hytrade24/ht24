@@ -1,0 +1,39 @@
+{if err}
+ <h1 class="error">Fehler!</h1>
+ <p class="error">{err}</p>
+{else}<div align="center"><img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0"></div>
+<table class="formTable" cellspacing="0" width="100%">
+ <tr>
+  <th>Username</th>
+  <td>{if !STAT}<img src="gfx/locked.gif" width="16" height="16" alt="gesperrt" border="0">{endif} {if STAT == 2}<img title="Nicht best&auml;tigt" src="gfx/not_confirmed.gif" width="16" height="16" alt="gesperrt" border="0">{endif}{NAME}</td>
+ </tr>
+ <tr>
+  <th>Rollen</th>
+  <td>{if liste}{liste}{else}<span class="error">keine Rollen zugewiesen</span>{endif}</td>
+ </tr>
+ <tr>
+  <th>Name</th>
+  <td>{htm(VORNAME)} {htm(NACHNAME)}</td>
+ </tr>
+ <tr>
+  <th>Email</th>
+  <td>{htm(EMAIL)}</td>
+ </tr>
+ <tr>
+  <th>Angemeldet seit</th>
+  <td>{todate(STAMP_REG)}</td>
+ </tr>
+  <tr>
+  <th>Letze Aktion</th>
+  <td>{todate(LASTACTIV,1)}</td>
+ </tr>
+  <tr>
+  <th>Geburtsdatum</th>
+  <td>{todate(GEBDAT)} ({age})</td>
+ </tr>
+ <tr>
+  <th>Adresse</th>
+  <td>{htm(PLZ)}, {htm(ORT)}<br />{print_fk(country)}</td>
+ </tr>
+</table>
+{endif}

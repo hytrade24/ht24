@@ -1,0 +1,6 @@
+<tr class="zeile{even}">
+ <td><a onclick="return confirm('Sicher dass die Meldung verworfen werden soll?');" href="index.php?page=deadlinks&del={ID_SCRIPT}" title="Deadlinkmeldung verwerfen"><img src="gfx/btn.del.gif" width="32" height="16" /></a></td>
+ <td><a href="index.php?page=script_edit&ID_SCRIPT={ID_SCRIPT}" title="Script bearbeiten">{htm(V1)}</a></td>
+ <td><a href="{LINK_DSC}" target="_blank">{LINK_DSC}</a></td>
+ <td><a href="{LINK_DL}" target="_blank">{LINK_DL}</a>&nbsp;{if LINK_DL}<a href="index.php?page=deadlinks&del={ID_SCRIPT}&kickDL=tru" title="Downloadlink löschen" onclick="return confirm('Downloadlink löschen?');"><img src="gfx/btn.del.gif" width="32" height="16" /></a>{endif}</td> 
+</tr>

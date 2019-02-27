@@ -1,0 +1,33 @@
+<style type="text/css">
+.line {border-top:1px solid black;}
+.uline {border-bottom:1px solid black;}
+.bold {font-weight:bold;width:50px;}
+</style>
+<h1>Details zur Umfrage:<br /> {question}</h1>
+<h3>Allgemeines</h3>
+<table>
+	<tr><td class="bold">Frage:</td><td>{question}</td></tr>
+	<tr><td class="bold">Datum:</td><td>{todate(date)}</td></tr>
+	<tr><td class="bold">Status:</td><td>{if status}aktiv{else}inaktiv{endif}</td></tr>
+</table>
+
+
+<h3>Ergebnis in einer Tabelle</h3>
+<table>
+	<tr>
+		<td class="uline">Antwort</td>
+		<td class="uline">Votes</td>
+	</tr>
+	{liste}
+	<tr>
+		<td class="line">Gesamt</td>
+		<td class="line" style="text-align:right;">{sumVotes}</td>
+	</tr>
+</table>
+<br>
+<h3>Ergebnis als Diagramm</h3>
+
+<img src='{cakepath}'>
+<br>
+<a href="javascript:window.history.back()" target="_self">Zurück</a>
+

@@ -1,0 +1,227 @@
+<script type="text/javascript" src="{uri_baseurl(/js/jquery.js)}"></script>
+<script type="text/javascript" src="{uri_baseurl(/js/marktplatz_neu.js)}"></script>
+<script type="text/javascript" src="{uri_baseurl(/lib/fkt.prototype.js)}"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+
+function UpdateKatSelector(id_kat, name_current, root_kat, b_done, b_collapsing) {	  
+    if (!b_done) {
+    	var url = "/index.php?page=marktplatz_neu_kat&mode=ajax&do=kats&paid=1&root="+id_kat;
+    	jQuery.get(url, function(result) {
+    		var html_result = result.tree;
+    		jQuery("#kat_list").html(html_result);
+    		jQuery("#form_FK_KAT").val(id_kat);
+    		jQuery(".katrow > a").removeClass("active");
+    	});
+    } else {
+      var id_current = jQuery("#form_FK_KAT");
+      var selection = jQuery("#row"+id_kat);
+      var submit_button = jQuery("#form_SUBMIT");
+      id_current.val(id_kat);
+      if (id_current.val() > 0) {
+  		jQuery("#kat_list a.active").removeClass("active");
+    	jQuery("#row"+id_kat+" > a").addClass("active");
+		jQuery("#form_FK_KAT").val(id_kat);
+      }
+    }
+  }
+  
+  function PreviewImages(id, elem) {
+    var image_preview = jQuery('#image_preview'+id); 
+    if (image_preview.html() == '') {
+		image_preview.html('<div style="color: red; font-weight: bold; padding: 4px;">Bilder werden geladen...</div>');
+		jQuery.get("index.php?page=articles_images&frame=ajax&ID_AD=" + id, function(result) {
+			image_preview.html(result);
+			var height = image_preview.height();
+			var elemPos = jQuery(elem).position();
+			image_preview.css({ top: elemPos.top + 16, left: elemPos.left + 16 })
+		});
+    } else {
+		// image_preview.style.display = '';
+		var height = image_preview.height();
+		image_preview.css({ top: elemPos.top, left: elemPos.left })
+    }
+  }
+  function HideImages(id) {
+    // $('image_preview'+id).style.display = 'none';
+  }
+
+  function SaveEdit(id_ad) {
+	  var form = jQuery("#ad_edit_"+id_ad+"_form");
+	  jQuery.post("index.php?page=articles&do=quickedit", form.serialize(), function(result) {
+		  if (result.okay) {
+			  alert("Änderung gespeichert");
+		  } else {
+			  alert(result.error);
+		  }
+	  });
+  }
+</script>
+
+<style type="text/css">
+  a:hover + div.preview {
+    display: block;
+  } 
+  a + div.preview {
+    display: none;
+  } 
+</style>
+
+<h1>Eingestellte Anzeigen</h1>
+<p>Hier finden Sie alle eingestellten Anzeigen</p>
+
+<form method="post" action="index.php">
+  <input type="hidden" name="page" value="{curpage}" />
+  <input type="hidden" id="form_FK_KAT" name="ID_KAT" value="{ID_KAT}" />
+
+				<table class="formTable" cellspacing="0" style="float: left;">
+					<tr>
+						<th colspan="5" style="border-bottom:1px #000099 solid;">Nach Anzeigen suchen</th>
+                    </tr>
+					<tr>
+						<th valign="top">Anzeigentitel</th>
+						<td>
+							<input type="text" name="TITLE" value="{htm(TITLE)}" size="45" />
+						</td>
+                        <td colspan="2">&nbsp;</td>
+                        <th style="min-width: 280px;" rowspan="5">
+                          <a style="cursor: pointer" onclick="UpdateKatSelector(1, 'Root', -1);">Alle Kategorien durchsuchen</a>
+                          <div class="stdBox" style="height: 140px; overflow: auto;">
+                            <ul id="kat_list" style="list-style-type: none;" class="katleft adminkat">
+                            	{if ID_KAT > 0}
+                            	<li id="kat_back_to_root">
+    								<a href="javascript:UpdateKatSelector('{PARENT_ID}', '{htm(PARENT_NAME)}', -1);">
+    									Zur&uuml;ck zu {htm(PARENT_NAME)}
+    								</a>
+    							</li>
+    							{endif}
+								{kat_selector}
+                            </ul>
+                          </div>
+                        </th>
+					</tr>
+                    <tr>
+                        <th valign="top">Artikelnummer</th>
+                        <td>
+                          <input type="text" name="ART_ID" value="{htm(ART_ID)}" size="20" />
+                        </td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <th valign="top">User</th>
+                      <td>
+                        <input type="text" name="NAME_" value="{htm(NAME_)}" readonly="readonly" />
+                        <input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" />
+                        <a style="cursor:pointer" onclick="popupfkt('users&frompopup=1','650','500');" title="User ausw&auml;hlen">
+                          <img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+                        </a>
+                      </td>
+                      <td colspan="2"></td>
+                    </tr>
+					<tr>
+						<th valign="top">Sortieren nach</th>
+						<td colspan="3">
+							<select name="ORDERBY">
+								{orders}
+							</select>
+							<br />
+							<input type="radio" id="SORT_UP" name="UPDOWN" value="0" class="nob" {if !UPDOWN} checked{endif} />
+                              <label for="SORT_UP">aufsteigend</label>
+							<input type="radio" id="SORT_DOWN" name="UPDOWN" value="1" class="nob" {if UPDOWN} checked{endif} />
+                              <label for="SORT_DOWN">absteigend</label>
+                            <br />
+						</td>
+					</tr>
+					<tr>
+						<th>Status</th>
+						<td>
+							<input type="checkbox" id="B_TOP" name="B_TOP" value="1" class="nob" {if B_TOP} checked{endif} />
+                              <label for="B_TOP"> Nur&nbsp;Top-Anzeigen </label>
+                            <br />
+							<input type="radio" id="STAT_ACT" name="STAT" value="1" class="nob" {if (STAT == 1)}checked{endif} /> 
+                              <label for="STAT_ACT"> nur&nbsp;aktive </label>
+							<input type="radio" id="STAT_ALL" name="STAT" value="0" class="nob" {if !STAT || (STAT < 1)}checked{endif} />
+                              <label for="STAT_ALL"> alle </label>
+							<input type="radio" id="STAT_OLD" name="STAT" value="2" class="nob" {if STAT == 2}checked{endif} />
+                              <label for="STAT_OLD"> nur&nbsp;ausgelaufene </label>
+						</td>
+						<td colspan="2">&nbsp;</td>
+					</tr>
+					<tr>
+                        <td class="footer"><a style="cursor: pointer;" onclick="popupfkt('articles_stats','600','250');" title="Statistik">
+							<img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38"></a></td>
+						<td align="right" colspan="4" class="footer">
+							<a href="index.php?page={curpage}" title="Alle Anzeigen anzeigen">Alle anzeigen</a>
+							<input type="submit" value="Suchen" class="button" />
+						</td>
+					</tr>
+				</table>
+                {if SHOW_PIE}<div style="float: left;"><iframe id="katframe" src="index.php?frame=iframe&page=stats&show=anzeigen_aktuell&w=300" width="300" height="200" frameborder="0"></iframe></div>{endif}
+
+</form>
+<br style="clear: both;" /><br />
+{if (delete_ok || cache_ok || deactivate_ok || activate_ok)}
+<div class="hinweis">
+  {if delete_ok}
+  <h2>L&ouml;schen erfolgreich</h2>
+  {endif}
+  {if activate_ok}
+  <h2>Anzeige wurde aktiviert.</h2>
+  {endif}
+  {if deactivate_ok}
+  <h2>Anzeige wurde deaktiviert.</h2>
+  {endif}
+  {if cache_ok}
+  <h2>Anzeige wird in kï¿½rze neu gecached. (max. 1Min)</h2>
+  {endif}
+</div>
+{endif}
+<table cellspacing="0" class="liste">
+{if pager}
+<tr>
+<td colspan="10">{pager}</td>
+</tr>
+{endif}
+  <tr>
+  	<th>&nbsp;</th>
+    <th>Aktionen</th>
+	<th>
+		Art.-<br />Nr.
+	</th>
+    <th>Eingetragen seit</th>
+    <th>Artikelbezeichnung</th>
+    <th>Kategorie</th>
+    <th>Angeboten von</th>
+    <th>Preis</th>
+    <th>
+    	<img src="gfx/ed_image.gif" alt="Bilder" title="Bilder" />
+    </th>
+    <th>
+    	<img src="gfx/btn.get.gif" alt="Dateien" title="Dateien" />
+    </th>
+    <th>
+    	<img src="gfx/btn.cash.png" alt="Dateien" title="Transaktionen" />
+    </th>
+  </tr>
+{liste}
+{if pager}
+<tr>
+<td colspan="11">{pager}</td>
+</tr>
+{endif}
+</table>
+
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+        var id_kat = $('form_FK_KAT').value;
+        if (id_kat > 0) {
+            if (root_kat > 0) {
+              UpdateKatSelector(id_kat, "", root_kat, false);
+            } else {
+              UpdateKatSelector(id_kat, "", id_kat, true);
+            }
+        }
+      });
+</script>
+<p>&nbsp;</p>

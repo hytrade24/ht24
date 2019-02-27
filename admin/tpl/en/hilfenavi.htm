@@ -1,0 +1,59 @@
+<img src="gfx/hilfe.gif" width="64" height="64" alt="hilfe" border="0" align="left"><h1>Online-Hilfe zu ebiz-today</h1>
+{if !do}
+Bitte w&auml;hlen Sie eine Seite aus zu der Sie den Hilfetext lesen m&ouml;chten.<br>&nbsp;
+<table border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td valign="top">
+
+						<div style="padding:10px; margin-top:4px; height:350px; width:290px; overflow:auto; border: 1px solid #999999;" >
+						<table class="pathtab" cellpadding="0" cellspacing="0" border="0" height="300">
+						<tr>
+						  <td>
+						  
+									   <table class="pathtab" cellpadding="0" cellspacing="0" border="0">
+									    <tr height="17">
+									      <td width="19" height="17"><img src="gfx/path.{if baum}66{else}64{endif}.png" width="19" height="17" /></td>
+									      <td nowrap>&nbsp;<label for="radio0"><b>Root</b></label></td>
+									   </tr>
+									  </table>
+						  </td>
+						</tr>
+						{if frompopup}
+						{subtpl(../cache/helpnavi1.php)}
+						{else}
+						{subtpl(../cache/helpnavi.php)}
+						{endif}
+						</table>
+						</div>
+                        
+                                <p><strong>Aktuelle Update-Hinweise unter </strong></p>
+    <table align="center">
+            <tr>
+                <td><a rel="nofollow" href="http://www.facebook.com/ebizconsult" target="_blank"><img src="gfx/facebook.png" alt="besuchen Sie uns auf Facebook" width="30" height="30"></a></td>
+                <td><a href="http://twitter.com/ebiz_consult" title="twitter" target="_blank" rel="nofollow"><img src="gfx/twitter.png" /></a></td>
+                <td><a style="text-decoration:none;" rel="nofollow" href="https://plus.google.com/116121863112545414498?prsrc=3" target="_blank"><img style="border: 0; width: 32px; height: 32px;" src="https://ssl.gstatic.com/images/icons/gplus-32.png" alt=""></a></td>
+            </tr>
+        </table>
+
+    </td>
+	<td valign="top" style="padding-left:10px;" width="100%">
+		{if helptext}<h1>Hilfe zur Seite: {forpage}</h1><hr size="1" noshade color="#999999">{helptext}{else}Für diese Seite (<b>{forpage}</b>) wurde kein Hilfetext eingegeben! Sie können die Hilfe bearbeiten und einen Text hinzufügen.{endif}	
+<hr size="1" noshade color="#999999">
+<a href="index.php?page=hilfenavi&IDENT={IDENT}&ID_HILFE={ID_HILFE}&do=edit{if frompopup}&frompopup=1&frame=popup{endif}"><img src="gfx/html_48x16.gif" width="48" height="16" alt="Hilfe editieren" border="0"></a><br><font class="notizSmall">Erweitern Sie Ihre pers&ouml;nliche Onlinehilfe</font>
+    </td>
+	
+  </tr>
+</table>
+{else}
+Erweiteren Sie den Hilfetext f&uuml;r die Seite <b>{forpage}</b> nach Ihren W&uuml;nschen.<br>&nbsp;
+<form method="post" action="index.php">
+<input type="hidden" name="ID_HILFE" value="{ID_HILFE}" />
+<input type="hidden" name="IDENT" value="{IDENT}" />
+<input type="hidden" name="page" value="{curpage}" />
+<input type="hidden" name="do" value="edit" />
+<input type="hidden" name="frompopup" value="{frompopup}" />
+{editor(helptext,100%,400px)}
+<input type="submit" value="Hilfetext Speichern" />
+{endif}
+
+<br>&nbsp;

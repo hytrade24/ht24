@@ -1,0 +1,28 @@
+<tr{if !(i&1)} bgcolor="#FFFFFF"{endif}>
+
+<td>
+ {if FK_USER==CLUB_FK_USER}
+        Clubleiter
+    {else}
+        {if IS_MODERATOR}
+            Moderator
+        {else}
+            
+        {endif}
+    {endif}
+
+</td>
+<td><a href="mailto:{USR_EMAIL}"><img src="gfx/mail.gif" /></a> <a href="/index.php?page=user_edit&ID_USER={FK_USER}">{USERNAME}</a></td>
+<td>	{if !FK_USER}
+						{htm(NAME)}
+					{else}
+						{htm(USR_VORNAME)} {htm(USR_NACHNAME)}
+					{endif}
+</td>
+<td>			{if IS_MEMBER}
+						{todate(STAMP_JOIN)}
+					{else}
+						<span class="muted">Eingeladen am {todate(STAMP_JOIN)}</span>
+					{endif}</td>
+<td>{todate(USR_LASTACTIV)}</td>
+</tr>

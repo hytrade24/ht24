@@ -1,0 +1,527 @@
+<script type="text/javascript">
+	function confHersteller(nummer)
+	{
+		req = new Ajax.Request('index.php?frame=ajax&page=set_hersteller&ID_MAN='+nummer,
+		{
+			method: 'get',
+			onSuccess: function(transport)
+			{
+				$('hersteller_'+nummer).replace(transport.responseText);
+			}
+		})
+	}
+</script>
+<style type="text/css">
+    th {
+        text-align: left;
+    }
+
+
+    #base_info h3 {
+        margin: 0px;
+        padding: 10px 0px 10px 3px;
+        background-repeat: repeat-y;
+        background-color: #aaaeb1;
+        color: #ffffff;
+        font-size: 16px;
+    }
+    #base_info h2 {
+        font-size: 14px;
+    }
+
+	#base_info td {
+		background-position:0px 27px;
+		background-repeat:repeat-x;
+	    border: 1px #9A9A9A solid;
+        vertical-align: top;
+
+    }
+    #base_info .liste td
+    {
+        background-position:0px 27px;
+        background-repeat:repeat-x;
+        border: 0px #9A9A9A solid;
+    }
+
+    #base_info table.liste {
+        border-spacing: 0;
+    }
+</style>
+
+{if ebizTools}
+<table  cellspacing="15" id="base_info" border="0" width="900px">
+   	<tr>
+   		<td colspan="3">
+   			{subtpl(tpl/de/ebiz-tools.htm)}
+   		</td>
+   	</tr>
+</table>
+{endif}
+
+{if SERVER_CONFIG}
+<table cellspacing="15" id="base_info" border="0" width="900px">
+    <tr>
+        <td>
+            {SERVER_CONFIG}
+        </td>
+    </tr>
+</table>
+{endif}
+
+<table  cellspacing="15" id="base_info" border="0" style="max-width: 1630px">
+    <tr>
+        <td width="33%" style="background-color: #f3f3f3;">
+            <h3>
+                Wichtige Informationen
+            </h3>
+            <p>Bitte bearbeiten Sie folgende Meldungen!!</p>
+            <table class="liste" width="100%"  style="border: 0px;">
+                {if TODO_LIST}
+                    {TODO_LIST}
+                {endif}
+                {if freischalten}
+                <tr>
+                    <td><img border="0" src="gfx/users_16.gif" /></td>
+                    <td>					<a href="index.php?page=users&SHOW_STAT=unconfirmed" title="User anzeigen">
+                        {freischalten} User warten auf <strong>Freischaltung</strong>
+                    </a></td>
+                </tr>
+                {endif}
+                {if freischalten_ads}
+                <tr>
+                    <td><img border="0" src="gfx/btn.detail.gif" /></td>
+                    <td>					<a href="index.php?page=articles&STATUS=79" title="Anzeigen">
+                        {freischalten_ads} Anzeigen warten auf <strong>Freischaltung</strong>
+                    </a></td>
+                </tr>
+                {endif}
+                {if freischalten_events}
+                <tr>
+                    <td><img border="0" src="gfx/insert_table.gif" /></td>
+                    <td>					<a href="index.php?page=veranstaltung&MODERATED=0" title="Anzeigen">
+                        {freischalten_events} Veranstaltungen warten auf <strong>Freischaltung</strong>
+                    </a></td>
+                </tr>
+                {endif}
+                {if freischalten_vendors}
+                <tr>
+                    <td><img border="0" src="gfx/content_16.gif" /></td>
+                    <td>					<a href="index.php?page=vendor&SEARCH=1&MODERATED=0&STATUS=1" title="Anzeigen">
+                        {freischalten_vendors} Anbieter warten auf <strong>Freischaltung</strong>
+                    </a></td>
+                </tr>
+                {endif}
+                {if upgrade}
+                <tr>
+                    <td><img border="0" src="gfx/users_16.gif" /></td>
+                    <td>					<a href="index.php?lang=de&page=user_unlock" title="Mitgliedschafts-Upgrades">
+                        {upgrade} User warten auf ein <strong>Mitgliedschafts-Upgrade</strong>
+                    </a></td>
+                </tr>
+                {endif}
+                {if chat}
+                <tr>
+                    <td><img border="0" src="gfx/btn.mail.gif" /></td>
+                    <td>					<a href="index.php?page=chat" title="Anfragen anzeigen">
+                        {chat} ungepr&uuml;fte <strong>Kontaktanfragen</strong> vorhanden
+                    </a></td>
+                </tr>
+                {endif}
+                {if advertisements}
+                <tr>
+                    <td><img border="0" src="gfx/stats.png" /></td>
+                    <td>		<a href="index.php?page=market_advertisement_orders" title="Werbeanfragen anzeigen">
+
+                        {advertisements} unbest&auml;tigte <strong>Werbeanfrage(n)</strong>
+                    </a></td>
+                </tr>
+                {endif}
+                {if pending_stornos}
+                <tr>
+                    <td><img src="gfx/sale_pending.gif" width="16" height="16" alt="warten" /></td>
+                    <td>	<a href="index.php?page=pending_stornos" title="Stornos anzeigen">
+                        {pending_stornos} <strong>Verkaufs-Stornos</strong> warten auf Best&auml;tigung
+                    </a></td>
+                </tr>
+                {endif}
+                {if newjobs}
+                <tr>
+                    <td><img src="gfx/job_waiting.png" /></td>
+                    <td>	<a href="index.php?page=modul_news_adv_jobliste" title="jobs anzeigen">
+                        {newjobs} <strong>Jobs</strong> warten auf Best&auml;tigung
+                    </a></td>
+                </tr>
+                {endif}
+                {if newnews}
+                <tr>
+                    <td><img src="gfx/blog.png" /></td>
+                    <td>	<a href="index.php?page=modul_news_adv_artikelliste" title="News anzeigen">
+                        {newnews} <strong>News</strong> warten auf Best&auml;tigung
+                    </a></td>
+                </tr>
+                {endif}
+
+                {if freischaltenMan}
+                <tr>
+                    <td><img src="gfx/warnung.png" /></td>
+                    <td>	<a href="index.php?page=manufacturer_db&unconfirmed=1" title="Hersteller anzeigen">
+                        {freischaltenMan} <strong>Hersteller in der Produktdatenbank</strong> warten auf Best&auml;tigung
+                    </a></td>
+                </tr>
+                {endif}
+                {if freischaltenProd}
+                <tr>
+                    <td><img src="gfx/warnung.png" /></td>
+                    <td>	<a href="index.php?page=hdb_products" title="Produktdatenbank anzeigen">
+                        {freischaltenProd} <strong>Produkte in der Produktdatenbank</strong> warten auf Best&auml;tigung
+                    </a></td>
+                </tr>
+                {endif}
+
+                {if freischaltenProdUpdate}
+                <tr>
+                    <td><img src="gfx/warnung.png" /></td>
+                    <td>	<a href="index.php?page=hdb_products" title="Produktdatenbank anzeigen">
+                        {freischaltenProdUpdate} <strong>Uservorschläge für Produkte</strong> warten auf Kontrolle
+                    </a></td>
+                </tr>
+                {endif}
+                {if vendor_homepage}
+                <tr>
+                    <td><img src="gfx/warnung.png" /></td>
+                    <td>	<a href="index.php?page=vendor-homepages&ACTIVE=0" title="Anbieter-Homepages/-Domains anzeigen">
+                        {vendor_homepage} <strong>Anbieter-Homepages/-Domains</strong> warten auf Kontrolle
+                    </a></td>
+                </tr>
+                {endif}
+                {if request_for_bank_account_verification}
+                <tr>
+                    <td><img src="gfx/achtung.gif" /></td>
+                    <td>
+                        <a href="index.php?page=lastschrift_check_export">{request_for_bank_account_verification} <strong>requests</strong> for Bank account verification</a>
+                    </td>
+                </tr>
+                {endif}
+                {if cancel_request_for_invoice_item_or_biilableitem}
+                <tr>
+                    <td><img src="gfx/achtung.gif" /></td>
+                    <td>
+                        <a href="index.php?page=cancel_requests">{cancel_request_for_invoice_item_or_biilableitem} <strong>Offen rechnungsposition stornieren</strong></a>
+                    </td>
+                </tr>
+                {endif}
+                {if cancel_request_for_invoice_item_or_biilableitem_shelve}
+                <tr>
+                    <td><img src="gfx/achtung.gif" /></td>
+                    <td>
+                        <a href="index.php?page=cancel_requests&STATUS=shelve">{cancel_request_for_invoice_item_or_biilableitem_shelve} <strong>Zurückgestellt rechnungsposition stornieren</strong></a>
+                    </td>
+                </tr>
+                {endif}
+                {if verstossliste}
+                <tr>
+                    <td style="background-color: #ffbfbf;"><img src="gfx/ico_stop.gif" /></td>
+                    <td style="background-color: #ffbfbf;">
+                        <a title="Meldungen jetzt bearbeiten" href="index.php?page=ad_warnings">
+                            {verstossliste} <strong>Verstoss-Meldungen</strong> liegen vor
+                        </a>
+                    </td>
+                </tr>
+                {else}
+                <tr>
+                    <td></td>
+                    <td>Keine Meldungen</td>
+                </tr>
+                {endif}
+            </table>
+
+        </td>
+        <td width="33%">
+            <h3>News</h3>
+            <iframe src="https://www.ebiz-trader.de/extnews.htm" width="100%" scrolling="auto" border="0" frameborder="0"></iframe>
+        </td>
+        {if ERROR_LIST}
+        <td width="33%" class="left_alert">
+            <h3 style="background-color: #f76464;color:#fff">System</h3>
+            <img src="gfx/stop.png" align="right">
+            <p>
+                <b>Diese Einstellungen sollten Sie nicht im Produktiveinsatz gesetzt haben</b>
+            </p>
+            <p>
+                <ul>
+                    {ERROR_LIST}
+                </ul>
+            </p>
+        </td>
+        {else}
+        <td width="33%">
+        <h3>Systemmeldungen</h3>
+            <p>Keine Meldungen vorhanden</p>
+        </td>
+        {endif}
+    </tr>
+    <tr>
+        <td><h3>Neuanmeldungen summiert (<a href="index.php?page=users">anzeigen</a>)</h3><iframe id="katframe" src="index.php?frame=iframe&page=stats&show=user_anmeldungen&w=400&get_range=DAY" width="100%" height="200" frameborder="0"></iframe>
+            <table class="liste" border="0" width="100%" style="border: 0px;">
+                <tr>
+                    <th></th>
+                    <th>Login</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+                {users}
+            </table>
+        </td>
+        <td><h3>Bestellungen (<a href="index.php?page=transactions">anzeigen</a>)</h3><iframe id="katframe" src="index.php?lang=de&amp;frame=iframe&amp;page=stats&amp;show=transaktion_sold&amp;get_range=DAY" width="100%" height="200" frameborder="0"></iframe>
+            <table class="liste" border="0" width="100%" style="border: 0px;">
+                <tr>
+                    <th>Bestell-Nr.</th>
+                    <th>Datum</th>
+                    <th>Gesamtpreis</th>
+                    <th>Verkäufer</th>
+                    <th>Käufer</th>
+                    <th>Status</th>
+                </tr>
+                {transactions}
+            </table>
+
+            <p align="left"><img src="gfx/btn.rt.gif" width="11" height="7" /> <a href="index.php?page=transactions">Alle Transaktionen anzeigen</a></p>
+
+        </td>
+        <td><h3>Buchhaltung (<a href="index.php?page=buchhaltung">anzeigen</a>)</h3><iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_overall&w=400" width="100%" height="200" frameborder="0"></iframe>
+
+
+
+            <table width="100%" border="0" >
+                <tr>
+                    <td valign="top" width="50%" style="border: 0px;">
+                        <h2>
+                            Offene Posten
+                        </h2>
+                        <p>Unbezahlte Rechnungen Ihrer User an Sie</p>
+                        {if OFFEN}
+                        <table class="liste" width="100%">
+                            <tr>
+                                <td>Summe offener Posten</td>
+                                <td align="right">
+                                    <a href="index.php?page=buchhaltung&STATUS=0" title="Offene Rechnungen anzeigen">
+                                        {topreis(OFFEN)} {CURRENCY_DEFAULT}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Anzahl offener Rechnungen</td>
+                                <td align="right">
+                                    <a href="index.php?page=buchhaltung&STATUS=0" title="Offene Rechnungen anzeigen">
+                                        {C_OFFEN}
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        {else}
+                        <p class="error">
+                            Keine offenen Posten
+                        </p>
+                        {endif}
+                        <p>
+                            <a style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_offen&w=550','400','400');" title="Statistik">
+                                <img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38" align="right" /></a>
+                        </p>
+                        <p align="left"><img src="gfx/btn.rt.gif" width="11" height="7" /> <a href="index.php?page=buchhaltung">zur Buchhaltung</a></p>
+                    </td>
+                    <td valign="top" width="50%" style="border: 0px;">
+                        <h2>Umsatz des Marktplatzes</h2>
+                        <p>
+                            Umsatz zwischen Ihnen und den Marktplatz-Benutzern
+                        </p>
+                        <table class="liste" width="100%">
+                            <tr>
+                                <td>
+                                    Heute
+                                </td>
+                                <td align="right">
+                                    {topreis(UMSATZ_HEUTE)} {CURRENCY_DEFAULT}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Diesen Monat
+                                </td>
+                                <td align="right">
+                                    {topreis(UMSATZ_MONTH)} {CURRENCY_DEFAULT}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Gesamt
+                                </td>
+                                <td align="right">
+                                    {topreis(UMSATZ_GESAMT)} {CURRENCY_DEFAULT}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top" width="50%" style="border: 0px;">
+                        <h2>Anzeigen</h2>
+                        <p>Geschaltete Anzeigen</p>
+                        <table class="liste" width="100%">
+                            <tr>
+                                <td>
+                                    Aktive Anzeigen im Markt:
+                                </td>
+                                <td align="right">
+                                    {C_ADS_MARKET}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Anzeigen von heute:
+                                </td>
+                                <td align="right">
+                                    {C_ADS_MARKET_TODAY}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Warenwert im Markt:
+                                </td>
+                                <td align="right">
+                                    {htm(WARENWERT)} {CURRENCY_DEFAULT}
+                                </td>
+                            </tr>
+                        </table>
+                        <p><img src="gfx/btn.rt.gif" width="11" height="7" /> <a href="index.php?page=articles">Artikel anzeigen</a></p>
+                    </td>
+                    <td valign="top" width="50%" style="border: 0px;">
+
+                        <h2>Transaktionen</h2>
+                        <p>
+                            Verkaufsaktivit&auml;ten zwischen den Usern Ihres Marktplatzes
+                        </p>
+                        <table class="liste" width="100%">
+                            <tr>
+                                <td>
+                                    Transaktionen (heute):
+                                </td>
+                                <td align="right">
+                                    {SALES_TODAY} / {topreis(SUM_TODAY)} {CURRENCY_DEFAULT}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Transaktionen (aktueller Monat):
+                                </td>
+                                <td align="right">
+                                    {SALES_MONTH} / {topreis(SUM_MONTH)} {CURRENCY_DEFAULT}
+                                </td>
+                            </tr>
+                        </table>
+                        <p>
+                            <a style="cursor: pointer;" onclick="popupfkt('stats&show=transaktion_sold&w=550','600','250');" title="Statistik">
+                                <img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38" align="right" /></a>
+                        </p>
+                        <p align="left"><img src="gfx/btn.rt.gif" width="11" height="7" /> <a href="index.php?page=transactions">Transaktionen anzeigen</a></p>
+                    </td>
+
+                </tr>
+            </table>
+
+
+
+        </td>
+    </tr>
+<!-- NEXT -->
+    <tr>
+        <td>
+            <h3>Neue Produkte (<a href="index.php?page=articles">anzeigen</a>)</h3>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=neue_artikel&w=400" width="100%" height="200" frameborder="0"></iframe>
+
+            <table class="liste" border="0" width="100%" style="border: 0px;">
+                <tr>
+                    <th>Art-Nr.</th>
+                    <th>Datum</th>
+                    <th>Artikelbezeichnung</th>
+                    <th>Kateogrie</th>
+                    <th colspan="2">Angeboten von</th>
+                </tr>
+                {articles}
+            </table>
+            <p><img src="gfx/btn.rt.gif" width="11" height="7" /> <a href="index.php?page=articles">Alle Artikel anzeigen</a></p>
+
+        </td>
+        <td>
+            <h3>Branchenbucheinträge (<a href="index.php?page=vendor">anzeigen</a>)</h3>
+            <iframe id="katframe" src="index.php?lang=de&amp;lang=de&amp;frame=iframe&amp;page=stats&amp;show=vendor&amp;" width="100%" height="200" frameborder="0"></iframe>
+            <table class="liste" width="100%" style="border: 0px;">
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>geändert</th>
+                </tr>
+                {VENDORS}
+            </table>
+            <img src="gfx/btn.rt.gif" width="11" height="7" /> <a href="index.php?page=vendor"> Alle Anbieter anzeigen</a>
+        </td>
+        <td>
+            <h3>Kommentare (<a href="index.php?page=comments">anzeigen</a>)</h3>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=comments&w=400" width="100%" height="200" frameborder="0"></iframe>
+
+            <table class="liste" border="0" width="100%" style="border: 0px;">
+                <tr>
+                    <th>Datum</th>
+                    <th>Kommentar (gekürzt)</th>
+                    <th>Autor</th>
+                    <th>Typ</th>
+                    <th>Id</th>
+                </tr>
+                {comments}
+            </table>
+            <p><img src="gfx/btn.rt.gif" width="11" height="7" /> <a href="index.php?page=comments">Alle Kommentare anzeigen</a></p>
+
+        </td>
+    </tr>
+
+
+    <tr>
+        <td valign="top" width="33%">
+            <h3>Blogeinträge (<a href="index.php?page=modul_news_adv_artikelliste">anzeigen</a>)</h3>
+            <iframe id="katframe" src="index.php?lang=de&amp;lang=de&amp;frame=iframe&amp;page=stats&amp;show=blog&amp;w=400" width="100%" height="200" frameborder="0"></iframe>
+        </td>
+        <td valign="top"  width="33%">
+
+            <h3>Veranstaltungen (<a href="index.php?page=veranstaltung">anzeigen</a>)</h3>
+            <iframe id="katframe" src="index.php?lang=de&frame=iframe&page=stats&show=veranstaltung&w=400&get_range=DAY" width="100%" height="200" frameborder="0"></iframe>
+            <table class="liste" width="100%" style="border: 0px;">
+                <tr>
+                    <th>Typ</th>
+                    <th>Termin</th>
+                    <th>Titel</th>
+                </tr>
+                {EVENTS}
+            </table>
+            <img src="gfx/btn.rt.gif" width="11" height="7" />  <a href="index.php?page=veranstaltung"> Alle Termine anzeigen</a>
+        </td>
+        <td valign="top"  width="33%">
+            <h3>Gruppen (<a href="index.php?page=clubs">anzeigen</a>)</h3>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=clubs&;w=400&;get_range=DAY" width="100%" height="200" frameborder="0"></iframe>
+            <table class="liste" width="100%" style="border: 0px;">
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>geändert</th>
+                </tr>
+                {GROUPS}
+            </table>
+            <img src="gfx/btn.rt.gif" width="11" height="7" />  <a href="index.php?page=clubs"> Alle Gruppen anzeigen</a>
+        </td>
+    </tr>
+</table>
+
+
+
+
+<p style="clear: both;">&nbsp;</p>
+<p>&nbsp;</p>
+{subtpl(tpl/de/js_userbox.htm,*)}

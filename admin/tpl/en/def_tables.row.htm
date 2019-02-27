@@ -1,0 +1,31 @@
+<tr class="zeile{even}">
+	<td>
+		<a href="index.php?page=table_edit&table={ID_TABLE_DEF}" title="Tabelle ver&auml;ndern" style="cursor:pointer;"><img src="gfx/btn.edit.gif" width="32" height="16" alt="edit" /></a>
+		{if ID_TABLE_DEF!=1 && T_NAME_vendor_master!=1}
+			{if CATEGORIES_COUNT==0}
+			<a href="index.php?page={curpage}&del={ID_TABLE_DEF}" title="Tabelle löschen?" onclick="return confirm('sind Sie sicher dass Sie die Tabelle löschen möchten?');">
+				<img src="gfx/btn.del.gif" alt="del" width="32" height="16" />
+			</a>
+			{else}
+			<a href="#delete_categories_first" onclick="return alert('Bitte loeschen Sie zunächst alle Kategorien, die diese Tabelle verwenden!');">
+				<img src="gfx/btn.rmx.gif" alt="del" width="32" height="16" />
+			</a>
+			{endif}
+		{endif}
+	</td>
+	<td>{htm(T_NAME)}</td>
+	<td>{htm(V1)}</td>
+	<td align="right">{C_FIELDS}</td>
+	<td align="right" style="padding-right:10px">{Rows}</td>
+	<td style="padding-right:10px">{todate(STAMP_CREATE)}</td>
+	<td>{todate(STAMP_UPDATE)}</td>
+	<td>
+		{if CATEGORIES_COUNT>0}
+		<a onmouseover="setBlobText(this, '{js(CATEGORIES)}', true);" onmouseout="setBlobText(this, '', false);" style="cursor:pointer;">
+			{CATEGORIES_COUNT} Kategorien
+		</a>
+		{else}
+		----
+		{endif}
+	</td>
+</tr>

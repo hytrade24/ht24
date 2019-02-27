@@ -1,0 +1,43 @@
+<h1>Category-selection</h1>
+<p class="lead">
+	Pick the category, which describes your product the best
+</p>
+
+<div>
+	{if FK_KAT}
+	<div class="design-content-box" id="kat_info">
+		<p>
+			The following category has been set for this product already, do you want to keep this category?
+		</p>
+
+		<p>
+			<strong>{PRESELECTED_FK_KAT_NAME}</strong>
+		</p>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<a href="#" onclick="jQuery('#kat_select_form').submit(); return false;">Yes, use category "{PRESELECTED_FK_KAT_NAME}" </a>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<a href="#" onclick="jQuery('#kat_info').hide();jQuery('#kat_list_container').show(); return false;">No, choose different category</a>
+			</div>
+		</div>
+	</div>
+	{endif}
+
+	<div id="kat_list_container" class="{if FK_KAT}display-none{endif}">
+		{if !CATEGORIES}
+		<div class="alert alert-info">
+			<strong>No categories available!</strong> There are no categories available for this membership/user-group.
+		</div>
+		{else}
+		<div id="kat_list" class="design-row design-row-xs-1 design-row-sm-2 design-row-md-3">
+			{CATEGORIES}
+		</div>
+		{endif}
+	</div>
+	<form id="kat_select_form" class="form-horizontal" onsubmit="SubmitStep(this); return false;">
+		<input type="hidden" name="step" value="{STEP_IDENT}" />
+		<input type="hidden" name="FK_KAT" value="{FK_KAT}" />
+	</form>
+</div>

@@ -1,0 +1,119 @@
+<h1>Attribut {if ID_ATTR}bearbeiten{else}erstellen{endif}</h1>
+{if err}<div class="error">{err}</div><br />{endif}
+<table  border="0" cellspacing="0" cellpadding="4" class="reiter">
+  <tr>
+    <th id="R1" class="reiterPassiv"><a href="javascript:reiterwechsel(1)">Typ, Name, Beschreibung</a> </th>
+{if ID_ATTR}{if div2}
+    <th id="R2" class="reiterPassiv"><a href="javascript:reiterwechsel(2)">sonstigeParameter</a> </th>{endif}
+{if div3}
+    <th id="R3" class="reiterPassiv"><a href="javascript:reiterwechsel(3)">{if typ_INT || typ_FLT}Bereiche{else}Optionen{endif}</a> </th>
+{endif}{endif}
+  </tr>
+</table>
+<div class="formTable">
+<form method="post" action="index.php" style=display:inline;">
+  <input type="hidden" name="page" value="attr_edit">
+  <input type="hidden" name="step" value="{step}">
+  <input type="hidden" name="ID_ATTR" value="{ID_ATTR}">
+
+<div id="reiter1" style="display:none;">
+<h2>Typ, Name, Beschreibung</h2>
+<table class="formTable"><tr>
+  <td><strong><label for="lu_type">Typ</label></strong></td>
+  <td>{if ID_ATTR}{print_lu(attr_type,LU_TYPE)}{else}{lookup(attr_type,LU_TYPE,,onChange="setFlag(true)")}{endif}</td>
+</tr><tr>
+  <td nowrap><strong><label for="v1">Label (Anzeigename)</label></strong></td>
+  <td><input type="text" id="v1" name="V1" value="{htm(V1)}" class="inputfull" maxlength="64" onChange="setFlag(true)" /></td>
+</tr><tr valign="top">
+  <td><strong><label for="t1">Beschreibung / Hilfetext</label></strong></td>
+  <td><textarea id="t1" name="T1" class="inputfull" cols="42" rows="5" onChange="setFlag(true)">{htm(T1)}</textarea></td>
+</tr></table>
+<br />{if 1 || !ID_ATTR || !(div2 || div3)}
+  <input type="submit" class="button" value="Speichern" />
+{endif}{if ID_ATTR && (div2 || div3)}
+  <input type="button" class="button" onClick="reiterwechsel({if div2}2{else}3{endif})" value="Weiter" />{else}
+</form>{endif}
+</div>
+
+<div id="reiter2" style="display:none;">
+<h2>sonstigeParameter</h2>{if ID_ATTR}
+{print_lu(attr_type,LU_TYPE)} <b>{htm(V1)}</b><br /><br />
+{if div2}
+<table class="formTable">{if typ_FLT}<tr>
+  <td><strong><label for="decimals">Anzahl der Nachkommastellen</label></strong> (1..10)</td>
+  <td><input type="text" id="decimals" name="param[decimals]" value="{htm(param_decimals)}" maxlength="2" onChange="setFlag(true)" /></td>
+</tr>{endif}{if typ_VA || typ_TXT}<tr>
+  <td><strong><label for="maxlen">maximale L&auml;nge</label></strong> (1..{if typ_VA}255{else}65535{endif})</td>
+  <td><input type="text" id="maxlen" name="param[maxlen]" value="{htm(param_maxlen)}" maxlength="{if typ_VA}3{else}5{endif}" onChange="setFlag(true)" /></td>
+</tr>{endif}{if typ_INT || typ_FLT}<tr>
+  <td><strong><label for="v2">Einheit</label> (&euro;, qm etc.)</strong></td>
+  <td><input type="text" id="v2" name="V2" value="{htm(V2)}" maxlength="32" onChange="setFlag(true)" /></td>
+</tr>{endif}</table>
+<br />
+  <input type="button" class="button" onClick="reiterwechsel(1)" value="Zur&uuml;ck" />
+  <input type="submit" class="button" value="Speichern" />{if div3}
+  <input type="button" class="button" onClick="reiterwechsel(3)" value="Weiter" />{else}
+</form>{endif}
+{else}
+  Dieser Typ ben&ouml;tigt keine weiteren Angaben.<br /><br />
+{endif}
+{else}
+  Das Attribut muss erst angelegt werden.<br /><br />
+{endif}
+</div>
+
+<div id="reiter3" style="display:none">
+<h2>{if typ_INT || typ_FLT}Bereiche definieren{else}Optionen definieren{endif}</h2>
+{print_lu(attr_type,LU_TYPE)} <b>{htm(V1)}</b><br /><br />{if typ_INT||typ_FLT}<div class="hinweis">
+Sind keine Bereiche definiert, werden Besuchern zur Einschr&auml;nkung zwei Eingabefelder f&uuml;r VON- und BIS-Wert zur Verf&uuml;gung gestellt.
+<!-- Sind keine Bereiche definiert, werden alle vorhandenen Werte zur Einschr&auml;nkung akzeptiert.
+Dies erfordert zus&auml;tzliche Rechenzeit bei jeder Ausgabe des Einschr&auml;nkungs-Formulars der betroffenen Kategorien! -->
+</div>{endif}
+{if ID_ATTR}{if div3} <!-- Auswahl-Optionen -->
+<table border="0"><tr valign="top"><td>
+
+<table class="liste"><tr>
+  <th>Aktionen</th>
+  <th>Wert</th>
+  <th>Label</th>
+</tr><tr class="zeile1">
+  <td><a href="index.php?page=attr_edit&ID_ATTR={ID_ATTR}&ID_ATTR_OPTION=0" onClick="return checkFlag();"><img src="gfx/btn.ins.gif" width="13" height="12" alt="neu anlegen" border="0"></a></td>
+  <td colspan="2">{if typ_INT || typ_FLT}neuen Bereich anlegen{else}neue Option anlegen{endif}</td>
+</tr>{opts}</table>
+
+</td><td>
+{if ID_ATTR_OPTION}
+<input type="hidden" name="ID_ATTR_OPTION" value="{ID_ATTR_OPTION}" />{endif}
+{if typ_INT || typ_FLT}<table class="formTable"><tr>
+  <th colspan="2">{if ID_ATTR_OPTION}Bereich bearbeiten{else}neuer Bereich{endif}</th>
+</tr><tr>
+  <td><strong>Maximal-Wert</strong></td>
+  <td><input type="text" name="newval" value="{htm(newval)}" onChange="setFlag(true)" /></td>
+</tr><tr>
+  <td><strong>Text</strong></td>
+  <td><input type="text" name="newtext" value="{htm(newtext)}" onChange="setFlag(true)" /></td>
+</tr></table>{else}<table class="formTable" align="right"><tr>
+  <th colspan="2">{if ID_ATTR_OPTION}Option bearbeiten{else}neue Option{endif}</th>
+</tr><tr>
+  <td><strong>Wert</strong></td>{if ID_ATTR_OPTION}
+  <td>{htm(newval)}</td>{else}
+  <td><input type="text" name="newval" value="{htm(newval)}" onChange="setFlag(true)" /></td>{endif}
+</tr><tr>
+  <td><strong>Text</strong></td>
+  <td><input type="text" name="newtext" value="{htm(newtext)}" onChange="setFlag(true)" /></td>
+</tr></table>{endif}
+
+</td></tr></table>
+<br /><br />
+  <input type="button" class="button" onClick="reiterwechsel({if div2}2{else}1{endif})" value="Zur&uuml;ck" />
+  <input type="submit" class="button" value="Speichern" />
+</form>
+{else}Das Attribut muss erst angelegt werden.<br /><br />
+{endif}{else}Dieser Attribut-Typ beinhaltet keine Optionen.<br /><br />
+{endif}</div>
+
+</div><script type="text/javascript">
+<!--
+  reiterwechsel({if ID_ATTR && (div2||div3)}{if div3}3{else}2{endif}{else}1{endif});
+//-->
+</script>

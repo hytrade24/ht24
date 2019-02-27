@@ -1,0 +1,20 @@
+<tr class="zeile{even}">
+
+	<td colspan="2">
+		<p align="right">{todate(STAMP,1)} <a href="index.php?page=kommentar_view&id_comment={ID_KOMMENTAR_NEWS}&fk={FK}&table=news&frame=popup" title="Kommentar Ansehen"><img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0"></a></p>
+	</td>
+</tr>
+<tr class="zeile{even}">
+	<td valign="top" align="center">
+		<small>
+				<img src="{uri_baseurl(/cache/users/{CACHE}/{FK_USER}/{FK_USER}_s.jpg)}" /><br />		
+			{NAME}          
+            <br />
+			Registriert:
+			{todate(STAMP_REG)}
+		</small>
+	</td>
+	<td valign="top" width="100%">
+		{nl2br(KOMMENTAR_PARSED)}
+	</td>
+</tr>

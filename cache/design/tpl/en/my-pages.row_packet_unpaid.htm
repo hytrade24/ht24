@@ -1,0 +1,11 @@
+{if !PAID}
+<li>
+    <strong>
+        {htm(V1)}
+    </strong>
+
+    {if FK_INVOICE>0}
+        <a href="{uri_action(invoice,{FK_INVOICE})}">Bill number. {FK_INVOICE}</a>
+    {endif}
+</li>
+{endif}

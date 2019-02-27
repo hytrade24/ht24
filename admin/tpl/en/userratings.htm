@@ -1,0 +1,56 @@
+<h1>Bewertung suchen</h1>
+
+<form action="index.php" method="post">
+	<input type="hidden" name="page" value="{curpage}" />
+	<table cellpadding="0" cellspacing="0" class="liste">
+		<tr>
+			<th>Bewertung von</th>
+			<th>Bewertung an</th>
+		</tr>
+		<tr>
+			<td>
+				<a style="cursor:pointer" onclick="popupfktex('users&frompopup=1','650','500',$('user'),$('username'));" title="User ausw&auml;hlen">
+					<img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+				</a>
+				<input type="text" id="username" name="username" value="{htm(username)}" readonly="readonly" />
+    		<input type="hidden" id="user" name="user" value="{user}" />
+			</td>
+			<td>
+				<a style="cursor:pointer" onclick="popupfktex('users&frompopup=1','650','500',$('user_from'),$('username_from'));" title="User ausw&auml;hlen">
+					<img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+				</a>
+				<input type="text" id="username_from" name="username_from" value="{htm(username)}" readonly="readonly" />
+    		<input type="hidden" id="user_from" name="user_from" value="{user}" />
+			</td>
+		</tr>
+		<tr>
+			<th colspan="2">
+				<input type="submit" value="Suche starten" />
+			</th>
+		</tr>
+	</table>
+</form>
+
+<h1>Bewertungen</h1>
+
+<table cellpadding="0" cellspacing="0" class="liste">
+	<tr>
+		<th class="first">Aktion</th>
+		<th>Datum</th>
+		<th>Von</th>
+		<th>An</th>
+		<th>Artikel</th>
+		<th>Bewertung</th>
+		<th class="last">Kommentar</th>
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+		<strong>Keine Bewertungen gefunden.</strong>
+	{endif}
+	<tr>
+		<th class="first last" colspan="7">
+			{if pager}{pager}{endif}
+		</th>
+	</tr>
+</table>

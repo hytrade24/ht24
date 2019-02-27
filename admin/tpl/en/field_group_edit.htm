@@ -1,0 +1,56 @@
+<div id="FGROUP">
+	{if ID_FIELD_GROUP}
+		<h1>Feldgruppe {htm(V1)} bearbeiten</h1>
+	{else}
+		<h1>Neue Feldruppe anlegen</h1>
+	{endif}
+	{if err}
+		<h2 class="error">Fehler aufgetreten!</h2>
+		<p class="error">
+			{err}
+		</p>
+	{endif}
+	{if ok}
+		<h2 class="ok">Gespeichert!</h2>
+	{endif}
+	<p>
+		Bitte beachten Sie dass Name und Beschreibung der Gruppe auf der Webseite dargestellt werden!
+	</p>
+	<form method="post" action="index.php" id="fgroup">
+		<input type="hidden" name="FK_TABLE_DEF" value="{FK_TABLE_DEF}" />
+		<input type="hidden" name="ID_FIELD_GROUP" value="{ID_FIELD_GROUP}" />
+		<input type="hidden" name="frame" value="ajax" />
+		<input type="hidden" name="page" value="{curpage}" />
+		<table class="formTable" cellspacing="0" cellpadding="0" width="100%">
+			<tr>
+				<th>
+					Name der Gruppe
+				</th>
+				<td>
+					<input type="text" name="V1" value="{htm(V1)}" size="35" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					Kurzbeschreibung (optional)
+				</th>
+				<td>
+					<input type="text" name="V2" value="{htm(V2)}" size="35" />
+				</td>
+			</tr>
+			{if ID_FIELD_GROUP}
+				<tr>
+					<th style="vertical-align:top;">Feld-Auswahl:</th>
+					<td>
+						{f_list}
+					</td>
+				</tr>
+			{endif}
+			<tr class="footer">
+				<td colspan="2" align="right">
+					<input type="button" value="Speichern" class="button" onclick="save_group();" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>

@@ -1,0 +1,23 @@
+		<tr class="zeile{even}">
+			<td>
+				<a href="index.php?page=market_advertisement_edit&ID_ADVERTISEMENT={ID_ADVERTISEMENT}" title="Bearbeiten">
+					<img border="0" src="gfx/btn.edit.gif" />
+				</a>
+				<a onclick="return confirm('Sind Sie sich sicher das Sie dieses Werbemittel löschen wollen? Bitte stellen Sie umbedingt zuvor sicher das es nicht mehr in Verwendung ist!');" href="index.php?page=market_advertisement&delete={ID_ADVERTISEMENT}" title="Löschen">
+					<img border="0" src="gfx/btn.del.gif" />
+				</a>
+				<!-- todo: Löschen -->
+			</td>
+			<td>{htm(V1)}<br />{htm(T1)}</td>
+			<td style="font-weight: bold;">
+			{if ENABLED}
+				Ja
+			{else}
+				Nein
+			{endif}
+			</td>
+			<td>
+				<input value="&#123;advertisement({ID_ADVERTISEMENT})&#125;" />
+			</td>
+            <td align="center">{BANNER}</td>
+		</tr>

@@ -1,0 +1,12 @@
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}Gruppenverzeichnis</h1>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+
+<p>
+	Hier finden Sie eine Übersicht über alle Kommentare die zu ihrer Gruppe.<br />
+    {if CLUB_OWNER}
+        Unter <a href="{uri_action(my-settings)}">Einstellungen</a> können Sie angeben, ob erhaltenen Kommentare automatisch oder manuell freigeschaltet werden müssen.
+    {endif}
+</p>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-comments-list.htm,*,TYPE={GROUP_CLUB_ID_CLUB},TYPE_LOCKED=1)}

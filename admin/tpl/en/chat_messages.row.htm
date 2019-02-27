@@ -1,0 +1,48 @@
+<tr class="zeile{even} {if !APPROVED}unapproved{endif}">
+    <td style="vertical-align: top">
+        <a onclick="return confirm('Möchten Sie diese Mitteilung wirklich löschen?')" href="index.php?page={curpage}&DO=delete&ID_CHAT={FK_CHAT}&ID_CHAT_MESSAGE={ID_CHAT_MESSAGE}&npage={npage}">
+            <img border="0" src="gfx/btn.del.gif">
+        </a>
+        {if APPROVED}
+            <img border="0" src="gfx/ad_unlocked.png" alt="freigegeben">
+        {else}
+        <a onclick="return confirm('Soll diese Mitteilung bestätigt werden?')" href="index.php?page={curpage}&DO=approve&ID_CHAT={FK_CHAT}&ID_CHAT_MESSAGE={ID_CHAT_MESSAGE}&npage={npage}">
+            <img border="0" src="gfx/ad_locked.png" alt="nicht freigegeben">
+        </a>
+        <a onclick="editChatMessage({ID_CHAT_MESSAGE}); return false;" href="#">
+            <img border="0" src="gfx/btn.edit.gif" alt="Bearbeiten">
+        </a>
+        {endif}
+    </td>
+    <td style="vertical-align: top">{todate(STAMP_CREATE,1)}</td>
+
+    {if !SENDER_IS_USER_0}<td></td>{endif}
+    <td style="vertical-align: top">
+        {if !SENDER_TYPE}
+            <a href="index.php?page=user_edit&ID_USER={SENDER_ID}">{htm(SENDER_NAME)}</a>
+            <a href="mailto:{SENDER_EMAIL}?subject={url(SUBJECT)}"><img src="gfx/mail.gif" /></a>
+        {else}
+            {SENDER_EMAIL} <a href="mailto:{SENDER_EMAIL}?subject={url(SUBJECT)}"><img src="gfx/mail.gif" /></a>
+        {endif}
+    </td>
+    {if SENDER_IS_USER_0}<td></td>{endif}
+
+
+    <td style="vertical-align: top">
+        {if MESSAGE_INTRO}
+            <div id="chat_messages_intro_{ID_CHAT_MESSAGE}">
+                {nl2br(MESSAGE_INTRO)}
+                <br /><br />
+                <a href="#chat_messages_full_{ID_CHAT_MESSAGE}" class="chat_message-expand">Gesamte Nachricht anzeigen</a>
+            </div>
+            <div id="chat_messages_full_{ID_CHAT_MESSAGE}"  style="display: none">
+                {nl2br(MESSAGE)}
+                <br /><br />
+                <a href="#chat_messages_intro_{ID_CHAT_MESSAGE}" class="chat_message-collapse">Gesamte Nachricht ausblenden</a>
+
+            </div>
+        {else}
+            {nl2br(MESSAGE)}
+        {endif}
+    </td>
+</tr>

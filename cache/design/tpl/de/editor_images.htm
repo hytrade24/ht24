@@ -1,0 +1,162 @@
+<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/jqueryui/css/theme/jqueryui.css)}" />
+<link rel="stylesheet" type="text/css" href="{uri_resource(/css/design.css)}" />
+<link rel="stylesheet" type="text/css" href="{uri_resource(/css/user.css)}" />
+<style>
+
+.align-center {
+    text-align: center;
+}
+
+#list_images > .pull-left {
+    float: left;
+    margin-right: 6px;
+}
+
+#list_images > .alert {
+    float: left;
+    height: 96px;
+    width: 96px;
+    margin-right: 6px;
+}
+
+#list_images > .img-polaroid {
+    height: 96px;
+}
+    
+</style>
+<script type="text/javascript" src="{uri_resource(/lib/jquery/jquery.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/lib/bootstrap/js/bootstrap.min.js)}"></script>
+<script type="text/javascript" src="{uri_baseurl(/tinymce/jscripts/tiny_mce/tiny_mce_popup.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/load-image.min.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.ui.widget.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.iframe-transport.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-process.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-image.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-audio.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-video.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-validate.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-ui.js)}"></script>
+<script type="text/javascript">
+jQuery(function() {
+
+    jQuery('#editor_images_file').fileupload({
+        url: "{uri_action(editor_images)}",
+        autoUpload: true,
+        dataType: 'json',
+        disableImageResize: true,
+        maxFileSize: 5000000,
+        acceptFileTypes: /Android(?!.*Chrome)|Opera/
+                .test(window.navigator.userAgent),
+        filesContainer: jQuery('#list_images'),
+        uploadTemplate: function (o) {
+            jQuery("#uploadImageNoneYet").hide();
+            var imageIndex = jQuery("#list_images > div").length;
+            var rows = jQuery();
+            jQuery.each(o.files, function (index, file) {
+                var image = { IMAGE_INDEX: imageIndex, IMAGE_TYPE: file.type, IMAGE_DATA: '', IMAGE_DEFAULT: false };
+                var templateSource = jQuery("#templateImageUpload").html();
+                // Replace variables
+                jQuery.each(image, function (name, value) {
+                    templateSource = templateSource.replace(eval('/#'+name+'#/g'), value);
+                });
+                var row = jQuery(templateSource);
+                rows = rows.add(row);
+            });
+            return rows;
+        },
+        downloadTemplate: function (o) {
+            var rows = jQuery();
+            jQuery.each(o.files, function (index, image) {
+                if (typeof image.ERRORS == "undefined") {
+                    var templateSource = jQuery("#templateImageDownload").html();
+                    // Replace variables
+                    jQuery.each(image, function (name, value) {
+                        templateSource = templateSource.replace(eval('/#'+name+'#/g'), value);
+                    });
+                    // Add preview
+                    var row = jQuery(templateSource);
+                    row.find(".galleryImagePreview").append( jQuery(image.preview).addClass('img-polaroid') );
+                    // Set default state
+                    if (image.IMAGE_DEFAULT) {
+                        row.find("a.default").addClass("active");
+                    } else {
+                        row.find("a.default").removeClass("active");
+                    }
+                    rows = rows.add(row);
+                } else {
+                    var templateSource = jQuery("#templateError").html();
+                    // Replace variables
+                    templateSource = templateSource.replace(eval('/#ERRORS#/g'), image.ERRORS.join("<br>\n"));
+                    var row = jQuery(templateSource);
+                    rows = rows.add(row);
+                }
+            });
+            return rows;
+        }
+    }).prop('disabled', !jQuery.support.fileInput).parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
+});
+
+function ImageUse(url) {
+    var element = tinyMCEPopup.getWindowArg("element");
+    element.val(url);
+    tinyMCEPopup.close();
+}
+
+function ImageDelete(link, file) {
+    if (!confirm("Möchten Sie dieses Bild wirklich löschen?")) return;
+    jQuery.post("{uri_baseurl(index.php)}?page=editor_images", "delete="+encodeURIComponent(file), function(result) {
+        if (result.success) {
+            var element = jQuery(link).closest(".pull-left");
+            element.remove();
+        }
+    });
+}
+
+</script>
+
+<form method="post" action="{uri_action(editor_images)}" enctype="multipart/form-data">
+    <h3>Neues Bild hochladen</h3>
+    <p>
+        Wählen Sie in dem folgendem Formular ein Bild von ihrem Computer aus um dieses hochzuladen.
+    </p>
+    <input type="file" id="editor_images_file" name="UPLOAD_FILE" multiple />
+</form>
+<div>
+    <h3>Bereits hochgeladenes Bild wiederverwenden</h3>
+
+    <div id="list_images">
+    {liste}
+    </div>
+</div>
+
+
+<script id="templateImageUpload" type="text/html">
+    <div class="pull-left align-center">
+        <div class="thumbnail galleryImagePreview">
+            <strong>Bitte warten...</strong>
+            <br />
+            Wird hochgeladen...
+            <div class="progress">
+                <div class="progress-bar progress-bar-success"></div>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="templateImageDownload" type="text/html">
+    <div class="pull-left align-center">
+        <a href="#" onclick="ImageUse('{uri_baseurl(/)}#FILE_REL#'); return false;" class="galleryImagePreview">
+            <div class="thumbnail">
+                <img src="#FILE_THMB#" style="height: 96px;" />
+            </div>
+        </a>
+        <a href="#" onclick="ImageDelete(this, '#FILE_NAME#'); return false;">Löschen</a>
+    </div>
+</script>
+<script id="templateError" type="text/html">
+    <div class="text-center alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Fehler!</strong>
+        #ERRORS#
+    </div>
+</script>

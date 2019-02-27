@@ -1,0 +1,62 @@
+<p class="lead">Product search</p>
+
+{if !err}
+
+	{if liste}
+
+		<p>We have found {ALL} results for the search query <strong>{if SEARCH_EAN}EAN {htm(SEARCH_EAN)}{else}{if SEARCH_PRODUCT}Produkt {htm(SEARCH_PRODUCT)}{endif}{endif}</strong>
+				Please select your desired product.
+
+		</p>
+
+		<table class="table table-striped table-condensed">
+			<thead>
+				<tr>
+					<th class="span1"></th>
+					<th class="span4">Product</th>
+					{if USE_EAN}<th>EAN</th>{endif}
+					<th>Category</th>
+					<th></th>
+				</tr>
+			</thead>
+			{liste}
+		</table>
+
+		<div class="hdb-resulttable-pager">
+			{pager}
+		</div>
+
+		<div class="alert alert-warning">
+			<p>
+			You have not found the product in our database?
+			<br>
+			Please check if for possible typos. If you are sure that you gave us the
+			correct information, click on the following link to continue.<br><br>
+			<a href="#" onclick="selectProduct(); return false;">I want to put a different product in</a>
+
+			</p>
+		</div>
+	{else}
+		<div class="alert alert-info ">
+			<p>
+		  <strong>No suitable product has been found</strong>
+				<br>
+				The combination of manufacturer and product-Description which you were giving are currently unknown to us.
+				Please check for possible typos. If you are sure that you gave us the
+				correct information, click on the following button to continue.
+			</p>
+			<a href="#" onclick="selectProduct(); return false;" class="btn btn-default">Create product {SEARCH_PRODUCT}</a>
+
+		</div>
+
+	{endif}
+
+	<script>
+		swiperGalleryAutoload("a[rel^=lightbox-gallery]");
+
+	</script>
+{else}
+	{if err_too_short}<p class="text-error">Please enter at least 3 characters for the search query</p>{endif}
+
+	<p><a href="#" onclick="selectProduct(); return false;">I want to put my product by myself in instead of using the product-database</a></p>
+{endif}

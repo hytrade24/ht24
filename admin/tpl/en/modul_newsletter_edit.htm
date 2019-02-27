@@ -1,0 +1,31 @@
+<h1>{if ID_NL}<img src="gfx/modul_edit_64.gif" width="64" height="64" alt="" border="0" align="left"> Newsletter &quot;{htm(V1)}&quot; bearbeiten{else}<img src="gfx/modul_neu_64.gif" width="64" height="64" alt="" border="0"  align="left">Neuen Newsletter anlegen{endif}</h1>
+<p>&Uuml;ber dieses Tool versendete Newsletter werden automatisch im HTML- Modus verschickt. Daher k&ouml;nnen Sie auch hier den grafischen Editor zum Verfassen Ihrer Newsletter nutzen.</p>
+<p>Entscheiden Sie sich bei &quot;Versandliste&quot; f&uuml;r die Option &quot;alle Newsletter Empf&auml;nger&quot;, wird der Newsletter beim Versenden an alle Benutzer versendet, welche sich in Ihren Newsletter eingetragen haben. Die Option &quot;Alle Benutzer im System&quot; nimmt auf die W&uuml;nsche der Benutzer kein R&uuml;cksicht. Jeder bekannte Benutzer wird diesen Newsletter bekommen. Sie sollten diese Option nur nutzen, wenn es sich bei Ihrem Newsletter um eine wichtige Nachricht handelt, da Sie sonst Gefahr laufen Ihre Benutzer zu ver&auml;rgern! </p>
+<p>Bitte beachten Sie, dass der Newsletter noch nicht versendet wird, wenn Sie ihn speichern. Details hierzu finden sie unter <a href="index.php?page=sendeberichte" title="Sendeberichte">Sendeberichte</a></p>
+{if err}
+<div class="hinweis"><span class="error">{err}</span></div>
+{endif}
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="modul_newsletter_edit">
+<input type="hidden" name="ID_NL" value="{ID_NL}">
+<table class="formTable" cellspacing="0">
+ <tr>
+  <td><strong>Versandliste</strong></td>
+  <td>
+  <input type="radio" name="VERSAND" value="1" {if !VERSAND || VERSAND == 1}checked{endif} class="nob"> An alle Newsletter Empf&auml;nger<br />
+  <input type="radio" name="VERSAND" value="2" {if VERSAND == 2}checked{endif} class="nob"> An alle Benutzer im System 
+  </td>
+ </tr>
+ <tr>
+  <td><strong>Betreff</strong></td>
+  <td><input type="text" name="V1" value="{htm(V1)}" size="40"></td>
+ </tr>
+ <tr>
+  <td valign="top"><strong>Mailtext</strong></td>
+  <td>{editor(T1,650px,400px,nocss)}</td>
+ </tr>
+ <tr class="footer">
+  <td colspan="2" align="right"><input type="submit" value="Speichern" class="button"></td>
+ </tr>
+</table>
+</form>

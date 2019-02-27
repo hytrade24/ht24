@@ -1,0 +1,10 @@
+<tr height="17" class="zeile{if is_current}x{else}{even}{endif}" nowrap>
+  <td>
+    <a onClick="return checkFlag();" title="bearbeiten" href="index.php?page={htm(curpagealias)}&ID_ATTR_GROUP={ID_ATTR_GROUP}"><img src="gfx/btn.edit.gif" width="32" height="16" border="0"></a>{if !assign}
+    <a onClick="return (confirm('Wirklich l&ouml;schen?') && checkFlag());" title="Gruppe l&ouml;schen{if haskids} (Untergruppen werden verschoben){endif}" href="index.php?page={htm(curpagealias)}&ID_ATTR_GROUP={ID_ATTR_GROUP}&do=rm"><img src="gfx/btn.rm.gif" width="16" height="16" border="0"></a>{endif}
+  </td>
+  <td style="padding:0px"><table class="pathtab" cellpadding="0" cellspacing="0" border="0"><tr height="17">{path}
+    <td nowrap>&nbsp;{if is_current}{htm(V1)}{else}<a onClick="return checkFlag();" href="index.php?page={htm(curpagealias)}&ID_ATTR_GROUP={ID_ATTR_GROUP}">{htm(V1)}</a>{endif}</td>
+  </tr></table></td>
+  <td>{assign:--}</td>
+</tr>

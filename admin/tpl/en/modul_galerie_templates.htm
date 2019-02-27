@@ -1,0 +1,15 @@
+<h1><img src="gfx/html_64.gif" width="64" height="64" alt="" border="0">Templates des Galerie- Moduls</h1>
+<p>Folgende Module bestimmen das Aussehen Der Galerien auf Ihrer Internetseite. <br>
+Änderungen sind unmittelbar sichtbar</p>
+{if templates}
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Edit</th>
+  <th>Name &amp; Beschreibung</th>
+ </tr>
+{templates}
+</table>
+{else}
+<h3 class="error">Modul Templates nicht gefunden!</h3>
+{endif}
+{subtpl(tpl/de/modul_templates_warning.htm)}

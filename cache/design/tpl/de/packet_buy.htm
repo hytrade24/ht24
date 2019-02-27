@@ -1,0 +1,78 @@
+{if done}
+	<h1>
+		Bestellung erfolgreich<br />
+		<span>Vielen Dank f&uuml;r Ihr Vertrauen!</span>
+	</h1>
+	
+	<p>
+		Die Bestellung des Pakets wurde erfolgreich abgeschlossen.<br />
+		{if PREPAID}
+			Sie können das Paket nutzen sobald die Zahlung bestätigt wurde.
+		{else}
+			Sie können das Paket ab sofort nutzen.
+		{endif}
+		<br />
+	</p>
+	<h2>
+		Ihre n&auml;chsten M&ouml;glichkeiten
+	</h2>
+	<ul>
+        {if FK_INVOICE>0}
+        <li>
+            <a href="{uri_action(invoice,{FK_INVOICE},pay)}">
+                Rechnung jetzt bezahlen.
+            </a>
+        </li>
+        {endif}
+		<li>
+			<a href="{uri_action(my-marktplatz-neu)}" title="Jetzt Produkt verkaufen">
+				Neue Anzeige schalten
+			</a>
+		</li>
+		<li>
+			<a href="{uri_action(marktplatz)}" title="Zum Marktplatz">
+				Zum Marktplatz
+			</a>
+		</li>
+		<li>
+			<a href="{uri_action(invoices)}" title="Meine Rechnungen">
+				Meine Rechnungen
+			</a>
+		</li>
+	</ul>
+{else}
+	<h1>Fehler!</h1>
+	<p>
+		Bezahlvorgang fehlgeschlagen!
+		{if error_noaddress}
+		<div class="stdBox">
+			<h1 class="error">Hinweis</h1>
+			 Bitte erg&auml;nzen Sie folgende Angaben in ihrem
+             <a href="{uri_action(my-profil)}">
+             Profil
+             </a>
+             bevor Sie ein Anzeigenpaket bestellen:
+             <br />
+			<ul>
+				{if error_addr_first}<li>Vorname</li>{endif}
+				{if error_addr_last}<li>Nachname</li>{endif}
+				{if error_addr_street}<li>Straße</li>{endif}
+				{if error_addr_zip}<li>Postleitzahl</li>{endif}
+				{if error_addr_city}<li>Wohnort</li>{endif}
+			</ul>
+		</div>
+		{else}
+		Bitte versuchen Sie es erneut oder wenden Sie sich an den Support.
+		{endif}
+		{if error_payment_paypal}
+		<br />
+		<br />
+		<strong>Fehlermeldung von PayPal:</strong> {htm(error_payment_paypal)}
+		{endif}
+		{if error_coupon}
+			<br><br><strong>{error_coupon}</strong>
+		{endif}
+	</p>
+
+	<p><a href="#" onclick="history.back();">Zurück zur Bestellung</a> </p>
+{endif}

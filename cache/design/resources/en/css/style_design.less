@@ -1,0 +1,310 @@
+/************************************
+ *  Allgemeines Design ("Rahmen")   *
+ * -------------------------------- *
+ * z.B. Header, Footer, Menüs, etc. *
+ ************************************/
+
+.display-inline {
+  display: inline;
+}
+.display-inline-block {
+  display: inline-block;
+}
+
+.design-area-regular {
+  background: @design-background;
+  color: @design-text-color;
+  a:not([class]) {
+    color: @design-link-color;
+  }
+  a:not([class]):hover {
+    color: @design-link-hover-color;
+  }
+}
+
+.design-area-highlight {
+  background: @design-highlight-background;
+  color: @design-highlight-text-color;
+  a:not([class]) {
+    color: @design-highlight-link-color;
+  }
+  a:not([class]):hover {
+    color: @design-highlight-link-hover-color;
+  }
+}
+
+.design-area-contrast {
+  background: @design-contrast-background;
+  color: @design-contrast-text-color;
+  a:not([class]) {
+    color: @design-contrast-link-color;
+  }
+  a:not([class]):hover {
+    color: @design-contrast-link-hover-color;
+  }
+}
+
+.design-area-footer {
+  background: @design-footer-background;
+  color: @design-footer-text-color;
+  a:not([class]) {
+    color: @design-footer-link-color;
+  }
+  a:not([class]):hover {
+    color: @design-footer-link-hover-color;
+  }
+}
+
+.design-bars {
+  display: inline-block;
+  margin: 3px 0px;
+  .icon-bar {
+    background-color: @gray-light;
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    + .icon-bar {
+      margin-top: 4px;
+    }
+  }
+}
+
+.design-view {
+  text-align: right;
+}
+
+.design-header {
+  background: @design-header-background;
+  color: @design-header-text-color;
+  a:not([class]) {
+    color: @design-header-link-color;
+  }
+  a:not([class]):hover {
+    color: @design-header-link-hover-color;
+  }
+
+  margin-bottom: @padding-large-vertical;
+  // Spacing for fixed menu bar
+  @media (min-width: @screen-sm-min) {
+    margin-top: @margin-page-top-sm;
+  }
+  @media (min-width: @screen-md-min) {
+    margin-top: @margin-page-top-md;
+  }
+  @media (min-width: @screen-lg-min) {
+    margin-top: @margin-page-top-lg;
+  }
+  // Disable spacing for vendor layout
+  &.design-header-vendor {
+    @media (min-width: @screen-sm-min) {
+      margin-top: 0;
+    }
+    @media (min-width: @screen-md-min) {
+      margin-top: 0;
+    }
+    @media (min-width: @screen-lg-min) {
+      margin-top: 0;
+    }
+  }
+}
+
+// Menu within the user backend
+.design-user-menu {
+  // Links mit icons nicht unterstrichen
+  .heading a:hover {
+    text-decoration: none;
+    // Nur den text innerhalb des links
+    span {
+      text-decoration: underline;
+    }
+  }
+}
+
+.carousel {
+  .carousel-control {
+    // Remove background gradient
+    &.left, &.right {
+      background-image: none;
+      // Add dark circle background
+      .glyphicon {
+        &:after {
+          display: block;
+          width: 16px;
+          content: '';
+          height: 16px;
+          border: 15px solid black;
+          border-radius: 20px;
+          margin-top: -25px;
+          @media (min-width: @screen-sm-min) {
+            border: 20px solid black;
+            margin-top: -33px;
+            margin-left: -5px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Fixed top menu
+#headerMenline {
+  background: @design-menline-background;
+  border-color: @design-menline-border;
+  color: @design-menline-text-color;
+  margin-bottom: 0;
+  // Brand label
+  .navbar-brand {
+    color: @design-menline-brand-color;
+    &:hover {
+      color: @design-menline-brand-hover-color;
+    }
+  }
+  // Checkbox and link properties
+  .navbar-nav > li > a,
+  .navbar-nav > li > .checkbox {
+    color: @design-menline-link-color;
+    text-decoration: none;
+    margin-left: 0;
+    @media (min-width: @screen-xs-max) {
+      margin-left: @padding-base-horizontal;
+    }
+  }
+  .navbar-nav > .open > a,
+  .navbar-nav > li > a:hover,
+  .navbar-nav > li > a:focus {
+    color: @design-menline-link-hover-color;
+  }
+  // Dropdown menu background/text color/padding
+  .dropdown-menu {
+    .design-area-contrast;
+    padding: @padding-large;
+  }
+  // Smaller input fields in menline for desktop devices
+  @media (min-width: 768px) {
+    input[type=text],
+    input[type=password] {
+      width: 160px;
+    }
+  }
+  // Prevent vertical scrolling on mobile devices
+  .navbar-fixed-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse {
+    max-height: none;
+  }
+}
+
+#headerMenuMain {
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  // Colors
+  & when (@design-nav-main-style=full) {
+    background-color: @design-nav-main-background;
+    border-color: @design-nav-main-border;
+  }
+  & when (@design-nav-main-style=limited) {
+    background: none;
+    border: none;
+    .navbar-collapse {
+      background-color: @design-nav-main-background;
+      border-color: @design-nav-main-border;
+    }
+  }
+  color: @design-nav-main-text-color;
+  // Sub menus on hover/mouse over
+  @media (min-width: @screen-md-min) {
+    li.dropdown:hover > .dropdown-menu,
+    li.dropdown-submenu:hover > .dropdown-menu {
+      display: block;
+    }
+  }
+
+  li.dropdown-submenu > .dropdown-menu {
+    box-shadow: none;
+    top: auto;
+    left: 100%;
+    margin-top: 0 - (@line-height-computed + @padding-base-vertical);
+  }
+  ul.nav {
+    @media (min-width: @screen-sm-min) {
+      width: auto;
+    }
+    // Embedded category menu
+    > li.design-marketplace-categories-embed {
+      width: percentage((@design-page-menu-xs / @grid-columns));
+      @media (min-width: @screen-sm-min) {
+        width: percentage((@design-page-menu-sm / @grid-columns));
+      }
+      @media (min-width: @screen-md-min) {
+        width: percentage((@design-page-menu-md / @grid-columns));
+      }
+      // Spacing
+      @media (min-width: @screen-sm-min) {
+        padding-right: @grid-gutter-width;
+      }
+      // Menu link
+      > a {
+        background: @design-nav-main-category-background;
+        color: @design-nav-main-category-text-color;
+        // Spacing
+        @media (min-width: @screen-sm-min) {
+          margin-left: -@navbar-padding-horizontal;
+        }
+      }
+      &:hover > a {
+        background-color: @design-nav-main-category-hover-background;
+        color: @design-nav-main-category-hover-text-color;
+      }
+      // Dropdown categories
+      > .dropdown-menu {
+        position: absolute;
+        left: -@navbar-padding-horizontal;
+        right: @grid-gutter-width;
+      }
+    }
+    // Regular menu entries
+    > li {
+      & > a {
+        color: @design-nav-main-text-color;
+      }
+      &.active > a {
+        color: @design-nav-main-active-text-color;
+        background-color: @design-nav-main-active-background;
+      }
+      &:hover > a {
+        color: @design-nav-main-hover-text-color;
+        background-color: @design-nav-main-hover-background;
+      }
+      // Main nav dropdown colors
+      .dropdown-menu {
+        background-color: @design-nav-main-dropdown-background;
+        border-color: @design-nav-main-dropdown-border;
+        color: @design-nav-main-dropdown-text-color;
+        > li {
+          & > a {
+            color: @design-nav-main-dropdown-text-color;
+          }
+          &.active > a {
+            color: @design-nav-main-dropdown-active-text-color;
+            background-color: @design-nav-main-dropdown-active-background;
+          }
+          &:hover > a {
+            color: @design-nav-main-dropdown-hover-text-color;
+            background-color: @design-nav-main-dropdown-hover-background;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Footer
+#footer {
+  .design-area-footer;
+  // General CSS properties
+  margin-top: @line-height-computed;
+  // Footer sub elements
+  > .container {
+    padding: @padding-base-vertical @padding-base-horizontal;
+  }
+}

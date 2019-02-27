@@ -1,0 +1,8 @@
+<tr class="zeile{even}">
+ <td>{htm(DSC)}</td>
+ <td align="center">{if ERLEDIGT}<span class="ok" title="erledigt am {todate(LAST,1)}">&radic;</span>{else}<span class="error">x</span>{endif}</td>
+ <td>{htm(DATEI)}&nbsp;</td>
+ <td><a style="color:#000000;" title="{text(CODE)}">{htm(shorttext)} ...</a></td>
+ <td>{if LAST}{todate(LAST,1)}{else}<span class="error">noch nicht</span>{endif}</td>
+ <td>{todate(FIRST,1)}</td>
+</tr>

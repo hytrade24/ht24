@@ -1,0 +1,20 @@
+<h1>Umfragen &Uuml;bersicht</h1>
+{if err}<br />
+<span class="error">{err}</span>{endif}
+{if delete}
+<p class="ok">Die Umfrage wurde erfolgreich gelöscht.</p>{endif}
+{if active}
+<p class="ok">Aktivität wurde erfolgreich geändert.</p>
+{endif}
+<p>{anzahl} Umfragen wurden gefunden.</p>
+{if liste}
+<table class="liste">
+<tr>
+  <th>Aktionen</th>
+  <th>Umfrage</th>
+	<th>Teilnehmer</th>
+  <th>Erstell Datum</th>
+</tr>
+{liste}
+</table>
+{endif}

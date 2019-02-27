@@ -1,0 +1,91 @@
+
+{if ID_USER>1}
+    <div style="background-color: #ffffff;width: 240px;" align="center">
+        <a href="index.php?page=user_buchhaltung&ID_USER={ID_USER}">Umsatz:</a><br />
+        <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_overall&w=400&get_range=MONTHE&ID_USER={ID_USER}" width="100%" height="200" frameborder="0">
+        </iframe>
+
+    </div>
+
+    <div class="left_dark">
+            <a target="userlogin" class="button" href="{uri_baseurl(login.php?user={ID_USER}&sig={SIG})}" title="Als dieser Benutzer einloggen">
+                <img src="gfx/btn.put.gif" width="16" height="16" alt="einloggen" border="0" />
+                Als dieser Benutzer einloggen
+            </a>
+    </div>
+
+
+    {if OPEN || UMSATZ}
+    <div class="left_alert">
+            <h1>Umsätze</h1>
+        {if OPEN}
+            <p>&uuml;berf&auml;llige Posten: {topreis(OPEN)} {CURRENCY_DEFAULT}</p>
+        {endif}
+        {if UMSATZ}
+            <p>Umsatz: {topreis(UMSATZ)} {CURRENCY_DEFAULT}</p>
+        {endif}
+
+            <a class="button" href="index.php?page=user_buchhaltung&FK_USER={ID_USER}" title="Buchhaltung f&uuml;r diesen Benutzer">
+                Zur Buchhaltung
+            </a>
+    </div>
+    {endif}
+
+    {if ACTIVE_ADS}
+        <div class="left_alert">
+            <h1>Anzeigen im Markt</h1>
+
+            <p>Aktive Anzeigen im Markt: {ACTIVE_ADS}</p>
+
+                <a class="button" href="index.php?page=articles&FK_AUTOR={ID_USER}&NAME_={url(NAME)}" title="Anzeigen&uuml;bersicht des Users">
+                    Alle anzeigen
+                </a>
+        </div>
+    {endif}
+
+    {if sales}
+        <div class="left_alert">
+            <h1>Verkäufe</h1>
+
+            <p>
+                Verk&auml;ufe: {sales}<br>
+                Umsatz: {topreis(sales_sum)} {CURRENCY_DEFAULT}
+            </p>
+
+                <a class="button" href="index.php?page=user_transaktion&ID_USER={ID_USER}&what=1" title="Alle Verk&auml;ufe anzeigen"> Alle ansehen </a>
+
+        </div>
+    {endif}
+
+    {if shopping}
+        <div class="left_alert">
+                <h1>Einkäufe</h1>
+
+            <p>
+                Eink&auml;ufe {shopping}<br />
+                Umsatz: {topreis(shopping_sum)} {CURRENCY_DEFAULT}
+            </p>
+
+                <a class="button" href="index.php?page=user_transaktion&ID_USER={ID_USER}&what=2" title="Alle K&auml;ufe anzeigen"> Alle ansehen </a>
+        </div>
+    {endif}
+
+{if clubs}
+<div class="left_info">
+    <h1>Mitglied in Gruppen</h1>
+    <table  cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="padding: 4px;">
+                {clubs}
+            </td>
+        </tr>
+        </table>
+</div>
+{endif}
+
+    <div class="left_info">
+        <h1>Bewertung</h1>
+        <img src="{uri_baseurl(/gfx/stars_{RATING}.png)}" alt="">
+    </div>
+
+{endif}

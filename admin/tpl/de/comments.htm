@@ -1,0 +1,131 @@
+<script type="text/javascript">
+
+function deleteComment(idComment) {
+	if (confirm('Möchten Sie diesen Kommentar wirklich löschen?')) {
+		jQuery.get('index.php?page=comments&delete='+idComment, function(result) {
+			document.location.reload();
+		});
+	}
+}
+
+function unlockComment(idComment) {
+	jQuery.get('index.php?page=comments&unlock='+idComment, function(result) {
+			document.location.reload();
+		});
+}
+
+function lockComment(idComment) {
+	jQuery.get('index.php?page=comments&lock='+idComment, function(result) {
+			document.location.reload();
+		});
+}
+
+function toggleCommentPublic(idComment) {
+	jQuery.get('index.php?page=comments&toggle='+idComment, function(result) {
+		document.location.reload();
+	});
+}
+
+</script>
+
+<h1>Kommentare administrieren</h1>
+
+<form action="index.php" method="get">
+	<input type="hidden" name="frame" value="content" />
+	<input type="hidden" name="npage" value="{npage}">
+	<input type="hidden" name="nav" value="{curnav}" />
+
+	<table class="formTable" cellspacing="0">
+		<tr>
+			<th>Sichtbarkeit</th>
+			<td>
+				<select name="IS_PUBLIC">
+					<option value="">Alle</option>
+					<option value="1"{if IS_PUBLIC==1} selected="selected"{endif}>Nur sichtbare</option>
+					<option value="0"{if IS_PUBLIC==0} selected="selected"{endif}>Nur unsichtbare</option>
+				</select>
+			</td>
+			<th>Suche nach User</th>
+			<td nowrap="nowrap">
+				<a href="#" onclick="popupfkt('users&frompopup=1','850','500');">
+					<img src="gfx/users_16.gif" width="16" height="16" alt="user suchen" border="0">
+				</a>
+				<input type="text" name="NAME_" value="{htm(NAME_)}" />
+				<input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" />
+			</td>
+		</tr>
+		<tr>
+			<th>Suchbegriff</th>
+			<td>
+				<input type="text" name="SEARCH" value="{htm(SEARCH)}" size="30" placeholder="Suchtext" />
+			</td>
+			<th>Suche nach</th>
+			<td>
+				<select name="TABLE">
+					<option value="">----</option>
+					{liste_tables}
+				</select>
+				<input type="text" name="FK" value="{htm(FK)}" size="20" placeholder="ID" />
+			</td>
+		</tr>
+		<tr>
+			<th>Bewertung</th>
+			<td>
+				<input type="text" name="RATING_MIN" value="{htm(RATING_MIN)}" size="12" placeholder="von" />
+				bis
+				<input type="text" name="RATING_MAX" value="{htm(RATING_MAX)}" size="12" placeholder="bis" />
+			</td>
+			<th>Freigeschaltet</th>
+			<td>
+				<select name="IS_REVIEWED">
+					<option value="">Alle Anzeigen</option>
+					<option value="1"{if IS_REVIEWED==1} selected="selected"{endif}>Freigeschaltet</option>
+					<option value="2"{if IS_REVIEWED==2} selected="selected"{endif}>Nicht freigeschaltet</option>
+				</select>
+			</td>
+		</tr>
+		<tr class="footer">
+			<td colspan="6" align="right">
+				<a href="index.php?page=comments" class="button">Alle anzeigen</a>
+				<input type="submit" value="Suchen" class="button" />
+			</td>
+		</tr>
+	</table>
+</form>
+<br />
+
+<table class="liste" cellpadding="0" cellspacing="0">
+    {if !SEARCH_RESULT && (npage < 2)}
+    <tr>
+        <td colspan="8">
+            <iframe id="katframe" src="index.php?lang=de&lang=de&frame=iframe&page=stats&show=comments&w=400" width="100%" height="200" frameborder="0"></iframe>
+        </td>
+    </tr>
+    {endif}
+	<tr>
+		<th>Aktion</th>
+		<th>Datum</th>
+		<th style="width: 540px;">Kommentar (gek&uuml;rzt)</th>
+		<th>Antwort?</th>
+		<th>Antwort Datum</th>
+		<th width="75">Autor</th>
+        <th>Type</th>
+		<th>#ID Title</th>
+	</tr>
+	{if liste}
+	{liste}
+	{else}
+	<tr>
+		<td colspan="8" align="center" class="error">keine Kommentare gefunden</td>
+	</tr>
+	{endif}
+	{if pager}
+	<tr>
+		<td colspan="8">{pager}</td>
+	</tr>
+	{endif}
+</table>
+<br />
+<div>
+	{subtpl(tpl/de/js_userbox.htm,*)}
+</div>

@@ -1,0 +1,13 @@
+<div class="row">
+    <div class="col-sm-{if COL1_GRID}{COL1_GRID}{else}4{endif}">
+        <div class="text-nowrap">
+            {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=vendor,FK={FK},FK_STR={FK_STR},CACHE_LIFETIME=102,TEMPLATE=big,SHOW_EMPTY_BARS=1)}
+        </div>
+        {content_page(Bewertungen)}
+    </div>
+    <div class="col-sm-{if COL2_GRID}{COL2_GRID}{else}8{endif}">
+        <h4>Bewertung für <b>{htm(LABEL)}</b> abgeben</h4>
+        {subtpl(tpl/{SYS_TPL_LANG}/comment.htm,ID_USER,TABLE,FK)}
+        {subtpl(tpl/{SYS_TPL_LANG}/comment_list.htm,TABLE,FK)}
+    </div>
+</div>

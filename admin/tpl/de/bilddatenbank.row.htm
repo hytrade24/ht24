@@ -1,0 +1,49 @@
+{if k == 1}
+ <tr> 
+{endif}
+  <td  style="border:1px #CCCCCC solid;" valign="top">
+   <table cellpadding="2" cellspacing="0">
+   	<tr bgcolor="#E1E1E1">
+	<td><b>Filename</b></td>
+	<td>{pfilename}</td>
+	</tr>
+    <tr>
+	 <td colspan="2">
+	   <a name="{ID_IMG}"></a>
+	   <p style="margin:10px;text-align:center">
+	   {if !SRC_T}
+     <a href="../{SRC}" target="_blank" style="font-weight:bold" title="Bild ansehen">keine Vorschau<br />verf&uuml;gbar</a>
+	   {else}
+	   <a href="../{SRC}" target="_blank"><img src="../{SRC_T}" width="{WIDTH_T}" height="{HEIGHT_T}" alt="{htm(ALT)}"></a>
+	   {endif}
+     {if ALT}<br><strong>{htm(ALT)}</strong>{endif}</td>
+     </p>
+  </tr>
+
+	 </td>
+	</tr>
+	<tr>
+	 <td>Aktionen&nbsp;</td>
+	 <td>
+	  <a href="#{ID_IMG}" onclick="popupfkt('bildupload&ID_IMG={ID_IMG}&edit={ID_IMG}&frompopup=1&saveclose=1',720,460);" title="Bild bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16"></a>
+	  <a {if !generator}href="index.php?page=bilddatenbank&del={ID_IMG}&npage={npage}"{else}style="cursor:pointer;"{endif} title="Dieses Bild l&ouml;schen" onClick="{if !generator}return confirm('Das Bild endgültig löschen?');{else}alert('Dieses Bild wird als Vorlage im Bildergenerator aktiv genutzt. Löschen nicht möglich.'){endif}"><img src="gfx/btn.del.gif" width="32" height="16"></a>
+	 </td>
+	</tr>
+	<tr>
+	 <td>Galerie&nbsp;</td>
+	 <td>{if GALLERY}<a href="index.php?page=modul_galerie_details&id={FK_GALERIE}" title="Galerie {htm(GALLERY)}">{htm(GALLERY)}</a>{else}<em>Keine</em>{endif}</td>
+	</tr>
+	<tr>
+	 <td>Besitzer&nbsp;</td>
+	 <td>{if OWNER}<a href="#{ID_IMG}" onclick="popupfkt('user_edit&ID_USER={FK_USER}', 720, 450);" title="Details zu {htm(OWNER)}">{htm(OWNER)}</a>
+	     {else}<em>kein Besitzer</em>{endif}</td>
+	</tr>
+	<tr>
+	  <td>Pfad</td>
+	  <td><input type="text" value="/{SRC}" /></td>
+	</tr>
+   </table>
+  </td>
+{if k == 4 || end}
+ </tr>
+{endif}

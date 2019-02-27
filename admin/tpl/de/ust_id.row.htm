@@ -1,0 +1,11 @@
+<tr class="zeile{even}">
+    <td>{CODE}&nbsp;</td>
+    <td>{htm(V1)}&nbsp;</td>
+    <td>
+		<select name="USTID_OPTION[{ID_COUNTRY}]">
+			<option value="0" {if USTID_OPTION == 0}selected="selected"{endif}>immer mit USt. abrechnen</option>
+			<option value="1" {if USTID_OPTION == 1}selected="selected"{endif}>innergemeinschaftliche Lieferung (ohne USt. sofern USt.-Id.)</option>
+			<option value="2" {if USTID_OPTION == 2}selected="selected"{endif}>immer ohne USt. abrechnen</option>
+		</select>
+    </td>
+</tr>

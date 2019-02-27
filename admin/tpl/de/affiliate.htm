@@ -1,0 +1,58 @@
+{if err}
+<div class="hinweis">
+    <span class="error">{err}</span>
+</div>
+{endif}
+
+<h1>Affiliate Links</h1>
+
+{if SETTINGS_AFFILIATE}
+	<form method="get" action="index.php">
+		<input type="hidden" name="page" value="affiliate">
+
+	<table border="0" cellspacing="0" cellpadding="4" class="liste">
+		<tr>
+			<th colspan="6">
+				<label>
+					Nr.:
+					<input type="text" name="ID_AFFILIATE" value="{ID_AFFILIATE}" />
+				</label>
+				<label>
+					Bezeichnung:
+					<input type="text" name="TEXT" value="{htm(TEXT)}" />
+				</label>
+				<input type="submit" name="SEARCH" value="Suchen" />
+			</th>
+		</tr>
+		<tr>
+			<th>Aktionen</th>
+			<th>Nr.</th>
+			<th>Bezeichnung</th>
+			<th>Status</th>
+			<th>Interval</th>
+			<th>letzte Aktualisierung</th>
+			<th>Adapter</th>
+			<th>#Anzeigen</th>
+		</tr>
+		{liste}
+		<tr>
+			<td colspan="5">
+				{pager}
+			</td>
+		</tr>
+	</table>
+	</form>
+	<p>
+		Anzahl der Affiliates : <b>{all}</b>
+	</p>
+{else}
+	<div class="error">
+		Mit unserem "Affiliate Plugin" können Sie kinderleicht Produktdaten aus Partnerprogrammen in Ihren Marktplatz integrieren.
+		Diese erscheinen als reguläre Artikel in Ihrem Marktplatz und verweisen bei Interesse des Kunden auf den Original Händler Shop. Sie erhalten
+		je nach Partnerprogramm Provision für Verkäufe oder Klicks.
+		<br><br>
+		Nähere Informationen zu dem Affiliate Plugin finden Sie unter <a href="http://www.ebiz-trader.de" target="_blank">ebiz-trader.de</a>.
+		<br><br>
+		Sofern Sie bereits einen Lizenzschlüssel für das Affiliate Programm besitzen, können Sie in den <a href="index.php?page=options&selectplugin=PLUGIN">erweiterten Einstellungen</a> das Plugin aktivieren.
+	</div>
+{endif}

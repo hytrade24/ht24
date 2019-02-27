@@ -1,0 +1,112 @@
+<h2>Informationen zur Bestellung</h2>
+
+<dl class="dl-horizontal">
+	<dt>Bestellnummer:</dt>
+	<dd>{ORDER_ID_AD_ORDER}</dd>
+
+	<dt>Bestelldatum:</dt>
+	<dd class="separator">{todate(ORDER_STAMP_CREATE,1)}</dd>
+</dl>
+
+<div class="row">
+	<div class="col-xs-6">
+		<dl class="dl-horizontal">
+			<dt>Gesamtkosten:</dt>
+			<dd class="text-error"><strong>{topreis_ex(ORDER_TOTAL_PRICE)} {CURRENCY_DEFAULT}</strong></dd>
+
+			<dt>Versandkosten:</dt>
+			<dd>{topreis_ex(ORDER_SHIPPING_PRICE)} {CURRENCY_DEFAULT}</dd>
+
+			<dt>Artikelbetrag:</dt>
+			<dd class="separator">{topreis_ex(ORDER_ITEM_PRICE)} {CURRENCY_DEFAULT}</dd>
+
+			{if PAYMENT_ADAPTER_NAME}
+			<dt>Zahlungsweise:</dt>
+			<dd>{PAYMENT_ADAPTER_NAME} </dd>
+			{endif}
+
+			{if ORDER_TRANSACTION_ID}
+			<dt>Transaktions-Id:</dt>
+			<dd class="separator">{ORDER_TRANSACTION_ID} </dd>
+			{endif}
+		</dl>
+	</div>
+	<div class="col-xs-6">
+		<dl class="dl-horizontal">
+
+			<dt>Verkauf:</dt>
+			<dd>
+				{if ORDER_ORDER_CONFIRMED}<span class="label label-success">bestätigt</span>{endif}
+				{if ORDER_ORDER_CONFIRMATION_OPEN}<span class="label label-warning">unbestätigt</span>{endif}
+				{if ORDER_ORDER_DECLINED}<span class="label label-error">abgelehnt</span>{endif}
+
+				{if !ORDER_ORDER_CONFIRMED && ORDER_ORDER_PARTIAL_CONFIRMED}<span class="label label-success">teilweise bestätigt</span>{endif}
+				{if !ORDER_ORDER_CONFIRMATION_OPEN && ORDER_ORDER_CONFIRMATION_PARTIAL_OPEN}<span class="label label-warning">teilweise unbestätigt</span>{endif}
+				{if !ORDER_ORDER_DECLINED && ORDER_ORDER_PARTIAL_DESCLINED}<span class="label label-error">teilweise abgelehnt</span>{endif}
+
+			</dd>
+
+			<dt>Zahlung:</dt>
+			<dd>
+				{if ORDER_STATUS_PAYMENT == 0}<span class="label">offen</span>{endif}
+				{if ORDER_STATUS_PAYMENT == 1}<span class="label label-success">bezahlt</span>{endif}
+			</dd>
+
+			<dt>Versand:</dt>
+			<dd>
+				{if ORDER_STATUS_SHIPPING == 0}<span class="label ">offen</span>{endif}
+				{if ORDER_STATUS_SHIPPING == 1}<span class="label label-info">in Bearbeitung</span>{endif}
+				{if ORDER_STATUS_SHIPPING == 2}<span class="label label-success">versandt</span>{endif}
+			</dd>
+		</dl>
+	</div>
+</div>
+
+{if ORDER_ORDER_CONFIRMED}
+<div class="row">
+	<div class="col-xs-6">
+		<h4>Rechnungsanschrift</h4>
+
+		<p>
+			{htm(ORDER_ADDRESS_INVOICE_FIRMA)}<br>
+			{htm(ORDER_ADDRESS_INVOICE_VORNAME)} {htm(ORDER_ADDRESS_INVOICE_NACHNAME)}<br>
+			{htm(ORDER_ADDRESS_INVOICE_STRASSE)}<br>
+			{htm(ORDER_ADDRESS_INVOICE_PLZ)} {htm(ORDER_ADDRESS_INVOICE_ORT)}<br>
+			{htm(ORDER_ADDRESS_INVOICE_LAND)}
+		</p>
+	</div>
+
+	<div class="col-xs-6">
+		<h4>Lieferanschrift</h4>
+
+		<p>
+			{htm(ORDER_ADDRESS_VERSAND_FIRMA)}<br>
+			{htm(ORDER_ADDRESS_VERSAND_VORNAME)} {htm(ORDER_ADDRESS_VERSAND_NACHNAME)}<br>
+			{htm(ORDER_ADDRESS_VERSAND_STRASSE)}<br>
+			{htm(ORDER_ADDRESS_VERSAND_PLZ)} {htm(ORDER_ADDRESS_VERSAND_ORT)}<br>
+			{htm(ORDER_ADDRESS_VERSAND_LAND)}
+		</p>
+	</div>
+</div>
+{endif}
+
+<h4>Artikelübersicht</h4>
+
+<table class="table table-condensed table-striped table-bordered">
+	<thead>
+		<tr>
+			<th>Artikel</th>
+			<th>Artikelnummer</th>
+			<th>Menge</th>
+			<th class="align-right">EP</th>
+			<th class="align-right">Gesamt</th>
+		</tr>
+	</thead>
+	{if orderItems}
+		{orderItems}
+	{else}
+		<tr>
+			<td colspan="6">In dieser Bestellung befinden sich keine Artikel</td>
+		</tr>
+	{endif}
+</table>

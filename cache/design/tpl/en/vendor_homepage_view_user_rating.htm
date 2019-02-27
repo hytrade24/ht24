@@ -1,0 +1,46 @@
+{if USER_ID_USER}
+    <div class="row design-page-with-menu">
+        <div class="design-page-content">
+            <h1>Raitings</h1>
+
+            <p>Overall: <img src="{uri_baseurl(/gfx/stars_{adRatingAverageValue}.png)}" title="Average rating" style=""/> {adRatingAverageValue} of 5 stars ({adRatingCount} {if adRatingCount > 0}rating{else}ratings{endif})</p>
+            {urllabel(adRatingTest.a.x)}
+
+            <ul class="nav nav-tabs">
+                <li {if !useViewSeller & !useViewBuyer}class="active"{endif}>
+                    <a href="{uri_action(view_user_rating,{urllabel(USER_NAME)},{USER_ID_USER})}">All ratings</a>
+                </li>
+                <li {if useViewBuyer}class="active"{endif}>
+                    <a href="{uri_action(view_user_rating,{urllabel(USER_NAME)},{USER_ID_USER},kaeufer)}">Ratings as buyer</a>
+                </li>
+                <li {if useViewSeller}class="active"{endif}>
+                    <a href="{uri_action(view_user_rating,{urllabel(USER_NAME)},{USER_ID_USER},verkaeufer)}">Rating as seller</a>
+                </li>
+            </ul>
+            <table class="table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>Review</th>
+                        <th>Comment</th>
+                        <th>of</th>
+                        <th>Date</th>
+                        <th>Advert</th>
+                    </tr>
+                </thead>
+                {if adRatings}
+                    {adRatings}
+                {else}
+                    <tr>
+                        <td colspan="5">No ratings available</td>
+                    </tr>
+                {endif}
+            </table>
+
+            {pager}
+        </div>
+        <div class="design-page-menu">
+            {subtpl(tpl/{SYS_TPL_LANG}/vendor_homepage_view_user.info.htm,*)}
+            {content_page(LINKS - Anbieter-Homepage)}
+        </div>
+    </div>
+{endif}

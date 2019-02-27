@@ -1,0 +1,61 @@
+<tr class="zeile{even} {if !STATUS}unapproved{endif}">
+    <td>
+        <a href="index.php?page=vendor_edit&ID_VENDOR={ID_VENDOR}">
+            <img src="gfx/btn.edit.gif" width="32" height="16" alt="Bearbeiten">
+        </a>
+        {if !STATUS}
+        <a onclick="return confirm('Soll der Anbieter aktiviert werden?')" href="index.php?page=vendor_edit&ajax=enable&ID_VENDOR={ID_VENDOR}">
+            <img border="0" src="gfx/ad_locked.png" alt="gesperrt">
+        </a>
+        {else}
+        <a onclick="return confirm('Soll der Anbieter deaktiviert werden?')" href="index.php?page=vendor_edit&ajax=disable&ID_VENDOR={ID_VENDOR}">
+            <img border="0" src="gfx/ad_unlocked.png" alt="freigeschaltet">
+        </a>
+        {endif}
+    </td>
+    <td><img src="gfx/TOP_USER.{USER_TOP_USER}.png" width="16" height="16" alt="Top User" /> {ID_VENDOR}
+    </td>
+    {if MODERATE_VENDORS}
+    <td>
+        {if MODERATED==0}<a style="font-weight: bold;" href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}" target="_blank">Nicht geprüft</a>{endif}
+        {if MODERATED==1}<span class="ok">Freigegeben</span>{endif}
+        {if MODERATED==2}<span class="error">Abgelehnt</span>{endif}
+    </td>
+    <td align="right">
+        {if MODERATED!=1}
+        <a title="Veranstaltung freigeben" onclick="UnlockAccept({ID_VENDOR}, '{htm(VENDOR_FIRMA)}', {USER_ID_USER}, '{htm(USER_NAME)}');">
+            <img border="0" height="16" src="gfx/btn.important2.png">
+        </a>
+        {endif}
+    </td>
+    <td align="left">
+        {if MODERATED!=2}
+        <a title="Freigabe ablehenen/entziehen" onclick="UnlockDecline({ID_VENDOR}, '{htm(VENDOR_FIRMA)}', {USER_ID_USER}, '{htm(USER_NAME)}');">
+            <img border="0" height="16" src="gfx/btn.cancel.gif">
+        </a>
+        {endif}
+    </td>
+    {endif}
+    <td>{todate(CHANGED)}</td>
+    <td>
+        <a href="index.php?page=user_edit&ID_USER={USER_ID_USER}">{htm(USER_NAME)}</a>
+    </td>
+    <td>{if STATUS}
+        <b><a class="button" href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}" target="_blank">{htm(VENDOR_FIRMA)}</a></b>
+        {endif}
+
+<p>
+        {if LOGO}
+        <img src="{thumbnail(LOGO,100,100)}" />
+        {endif}
+</p>
+
+    </td>
+    <td>{htm(VENDOR_ORT)}</td>
+    <td>
+        <a style="cursor: pointer;" onclick="popupfkt('stats&amp;show=user_views&amp;w=550&amp;ID_USER={USER_ID_USER}','600','350');" title="Statistik">
+            <img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38" align="left"></a>
+
+
+    </td>
+</tr>

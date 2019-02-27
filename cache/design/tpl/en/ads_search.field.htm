@@ -1,0 +1,113 @@
+<div class="form-group">
+{if F_TYP_MULTICHECKBOX || F_TYP_MULTICHECKBOX_AND || F_TYP_CHECKBOX || F_TYP_VARIANT}
+    {if T2_HELP}
+        <i class="glyphicon glyphicon-question-sign js-tooltip pull-right" data-placement="left" title="{htm(T2_HELP)}"></i>
+    {endif}
+    <label for="adSearchForm_{F_NAME}">
+    {if !V2}
+        <span class="design-search-field-label">{htm(V1)}:</span>
+    {else}
+        <span class="design-search-field-label">
+            {htm(V1)}
+            <span class="design-search-field-unit">({htm(V2)})</span>:
+        </span>
+    {endif}
+    </label>
+    
+    {if F_TYP_MULTICHECKBOX || F_TYP_MULTICHECKBOX_AND || F_TYP_VARIANT}
+        <div class="design-search-field-multicheck">
+            {select_multicheck({FK_LISTE},{F_NAME},,1)}
+        </div>
+    {endif}
+    {if F_TYP_CHECKBOX}
+        <div class="design-search-field-checkbox">
+            <input id="adSearchForm_{F_NAME}" type="checkbox" name="{F_NAME}" value="1" ^if {F_NAME}°checked="checked"^endif° />
+            {htm(V1)}
+        </div>
+    {endif}
+{else}     
+    {if T2_HELP}
+        <i class="glyphicon glyphicon-question-sign js-tooltip pull-right" data-placement="left" title="{htm(T2_HELP)}"></i>
+    {endif}
+    <label for="adSearchForm_{F_NAME}" title="{htm(V1)}{if V2} ({htm(V2)}){endif}">
+    {if !V2}
+        <span class="marketSearchFieldLabel">{htm(V1)}:</span>
+    {else}
+        <span class="marketSearchFieldLabel">{htm(V1)}</span>
+        <span class="marketSearchFieldUnit">({htm(V2)})</span>:
+    {endif}
+    </label>   
+
+    {if F_TYP_LIST}
+        {select_liste({FK_LISTE},{F_NAME}, class="form-control",1)}
+    {endif}
+    {if F_TYP_TEXT || F_TYP_LONGTEXT || F_TYP_INT}
+        {if B_SEARCH==1}
+        <input class="form-control" type="text" id="adSearchForm_{F_NAME}" name="{F_NAME}" value="^htm({F_NAME})°" title="{htm(V1)}" />
+        {else}
+        <div class="input-search-range">
+            <div class="input-group">
+                <span class="input-group-addon">To</span>
+                <input class="form-control" type="text" id="adSearchForm_{F_NAME}" name="{F_NAME}[VON]" value="^htm({F_NAME}_VON)°" title="{htm(V1)}"
+                    placeholder="To" />
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">From</span>
+                <input class="form-control" type="text" id="adSearchForm_{F_NAME}_max" name="{F_NAME}[BIS]" value="^htm({F_NAME}_BIS)°" title="{htm(V1)}"
+                    placeholder="From" />
+            </div>
+        </div>
+        {endif}
+    {endif}
+    {if F_TYP_FLOAT}
+        <div class="input-search-range">
+            <div class="input-group">
+                <span class="input-group-addon">To</span>
+                <input class="form-control" type="text" id="adSearchForm_{F_NAME}" name="{F_NAME}[VON]" value="^htm({F_NAME}_VON)°" title="{htm(V1)}"
+                    placeholder="To" />
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">From</span>
+                <input class="form-control" type="text" id="adSearchForm_{F_NAME}_max" name="{F_NAME}[BIS]" value="^htm({F_NAME}_BIS)°" title="{htm(V1)}"
+                    placeholder="From" />
+            </div>
+        </div>
+    {endif}
+    {if F_TYP_DATE}
+        <div class="input-search-range">
+            <div class="input-group">
+                <span class="input-group-addon">To</span>
+                <input class="form-control" type="text" id="adSearchForm_{F_NAME}" name="{F_NAME}[VON]" value="^htm({F_NAME}_VON)°" title="{htm(V1)}"
+                    placeholder="To" />
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">From</span>
+                <input class="form-control" type="text" id="adSearchForm_{F_NAME}_max" name="{F_NAME}[BIS]" value="^htm({F_NAME}_BIS)°" title="{htm(V1)}"
+                    placeholder="From" />
+            </div>
+        </div>
+        <script type="application/javascript">
+        jQuery(function() {
+            var dateFrom = jQuery("#adSearchForm_{F_NAME}");
+            var dateTo = jQuery("#adSearchForm_{F_NAME}_max");
+            dateFrom.datepicker({
+                dateFormat: 'dd.mm.yy',
+                maxDate: dateTo.val(),
+                numberOfMonths: 3,
+                onClose: function(dateStart) {
+                    dateTo.datepicker("option", "minDate", dateStart);
+                }
+            });
+            dateTo.datepicker({
+                dateFormat: 'dd.mm.yy',
+                minDate: dateFrom.val(),
+                numberOfMonths: 3,
+                onClose: function(dateEnd) {
+                    dateFrom.datepicker("option", "maxDate", dateEnd);
+                }
+            });
+        })
+        </script>
+    {endif}
+{endif}
+</div>

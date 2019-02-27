@@ -1,0 +1,175 @@
+<div class="design-content-box form-horizontal">
+  <div class="form-group">
+    <label for="STATUS" class="col-sm-3">
+      Anbieteransicht aktivieren
+    </label>
+    <div class="col-sm-9">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" id="STATUS" name="STATUS" {if STATUS}checked="checked" {endif} value="1"/>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="copy-from-user" class="col-sm-3">
+      Aus Benutzerprofil importieren
+    </label>
+    <div class="col-sm-9">
+      <button data-action="copy-from-user" id="copy-from-user" type="button" class="btn btn-danger">
+        Eingaben übernehmen
+      </button>
+    </div>
+  </div>
+  <div class="form-group has-feedback">
+    <label for="NAME" class="col-sm-3">
+      Firma*
+    </label>
+    <div class="col-sm-9">
+      <input class="form-control" type="text" name="NAME" id="NAME" value="{htm(NAME)}"/>
+      <span class="form-control-feedback" aria-hidden="true">
+        <i class="glyphicon"></i>
+      </span>
+      <span class="help-block"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="STREET" class="col-sm-3">
+      Straße
+    </label>
+    <div class="col-sm-9">
+      <input class="form-control" type="text" name="STRASSE" id="STREET" value="{htm(STRASSE)}"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="ZIP" class="col-sm-3">
+      PLZ
+    </label>
+    <div class="col-sm-9">
+      <input class="form-control" type="text" name="PLZ" id="ZIP" value="{htm(PLZ)}"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="CITY" class="col-sm-3">
+      Ort
+    </label>
+    <div class="col-sm-9">
+      <input class="form-control" type="text" name="ORT" id="CITY" value="{htm(ORT)}"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="FK_COUNTRY" class="col-sm-3">
+      Land
+    </label>
+    <div class="col-sm-9">
+      {select_country(,,,, class="form-control",----)}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="TEL" class="col-sm-3">
+      Telefon
+    </label>
+    <div class="col-sm-9">
+      <input class="form-control" type="text" name="TEL" id="TEL" value="{htm(TEL)}"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="FAX" class="col-sm-3">
+      Fax
+    </label>
+    <div class="col-sm-9">
+      <input class="form-control" type="text" name="FAX" id="FAX" value="{htm(FAX)}"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="URL" class="col-sm-3">
+      Web
+    </label>
+    <div class="col-sm-9">
+      <input class="form-control" type="text" name="URL" id="URL" value="{htm(URL)}"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="LOGO_DROPZONE" class="col-sm-3">
+      Firmenlogo
+    </label>
+    <div class="col-sm-9">
+      <input type="hidden" id="DELETE_LOGO" name="DELETE_LOGO" value="0" />
+      <div id="LOGO_DROPZONE" class="dropzone">
+        
+        <div class="dz-message" data-dz-message>
+          <span>
+            Klicken Sie hier oder ziehen Sie eine Bilddatei in diesen Bereich um ein Firmenlogo hochzuladen
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+jQuery(function() {
+    
+    var stepReadyStatus = true;
+    
+    var stepReady = function(isReady) {
+        stepReadyStatus = isReady;
+        if (isReady) {
+            jQuery("#StepContent form button[type=submit]").removeClass("disabled");
+        } else {
+            jQuery("#StepContent form button[type=submit]").addClass("disabled");
+        }
+    };
+    
+    jQuery("#StepContent form").on("submit", function(event) {
+        if (!stepReadyStatus) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    });
+    jQuery("#StepContent form button[data-action=copy-from-user]").on("click", function(event) {
+        event.preventDefault();
+        if (confirm("Wirklich die Eingaben des Benutzerprofils in das Firmenprofil übernehmen? Dabei können zuvor gemachte Eingaben überschrieben werden!")) {
+            var locationIndex = jQuery(this).data("index");
+            SubmitStep( jQuery(this).closest("form"), "info=copy-from-user" );  
+        }
+    });
+    
+    var dropzone = jQuery("#LOGO_DROPZONE").dropzone({
+        // Options
+        url: stepUrl,
+        params: {
+            ajax: 1, action: "submit", step: "base"
+        },
+        addRemoveLinks: true,
+        maxFiles: 1,
+        thumbnailWidth: 160,
+        thumbnailHeight: 100,
+        thumbnailMethod: "contain",
+        // Translations
+        dictCancelUpload: "Upload abbrechen",
+        dictCancelUploadConfirmation: "Upload wirklich abbrechen?",
+        dictRemoveFile: "Firmenlogo löschen",
+        dictMaxFilesExceeded: "Bitte löschen Sie das vorherige Logo, bevor Sie ein neues hochladen."
+    })[0].dropzone;
+    // Events
+    dropzone.on("removedfile", function (file) {
+        jQuery("#DELETE_LOGO").val(1);
+    });
+    dropzone.on("sending", function (file) {
+        jQuery("#DELETE_LOGO").val(0);
+        stepReady(false);
+    });
+    dropzone.on("complete", function (file) {
+        stepReady(true);
+    });
+    // Initial file(s)
+    {if LOGO}
+    var logoFile = { name: "{LOGO_NAME}", size: {int(LOGO_SIZE)} };
+    dropzone.options.addedfile.call(dropzone, logoFile);
+    dropzone.options.thumbnail.call(dropzone, logoFile, "{htm(LOGO)}");
+    {endif}
+    
+});
+</script>

@@ -1,0 +1,36 @@
+<div class="accordion-group">
+   <div class="accordion-heading">
+     <a class="accordion-toggle" data-toggle="collapse" data-parent="#detailMappingContainer" href="#detailMappingTableDef{TABLE_DEF}">
+		 <strong> {htm(TABLE_DEF_NAME)}</strong>
+		 <small>{if IS_USED_BY_KAT}(Diese Artikelgruppe wird in Ihrer Kategoriezuordnung verwendet){endif}</small>
+
+		 <em class="pull-right">Zum Öffnen bitte anklicken</em>
+
+     </a>
+   </div>
+   <div id="detailMappingTableDef{TABLE_DEF}" class="accordion-body collapse">
+     <div class="accordion-inner">
+		 <table class="table table-striped">
+			<thead>
+				<tr>
+					<th class="span4">
+						Feld / Artikeleigenschaft des Marktplatzes
+					</th>
+					<th>
+						Ihre Zuordnungen aus der Quelldatei
+					</th>
+				</tr>
+			</thead>
+			{if TABLE_FIELD_OUTPUT}
+				{TABLE_FIELD_OUTPUT}
+			{else}
+			<tr>
+				<td colspan="2">
+					Es wurden keine Artikeleigenschaften gefunden.
+				</td>
+			</tr>
+			{endif}
+		</table>
+     </div>
+   </div>
+ </div>

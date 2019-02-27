@@ -1,0 +1,17 @@
+{if fresh}
+<h1>Thank you for your registration</h1>
+<p> We sent you an E-Mail with your confirmation code. 
+Please follow the link to complete the registration.
+</p>
+{else}
+
+  {if err}
+  <h1>Confirm registration</h1>
+   <div class="hinweis"><span class="error">{err}</span></div>
+  {endif}
+  {if ready}
+  <h1>Welcome!</h1>
+  <p>Your registration was successfull!<br />
+  We will send you an E-Mail with your access data. You are now able to <a href="{uri_action(login)}">login</a>!
+  {endif}
+{endif}

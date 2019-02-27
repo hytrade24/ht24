@@ -1,0 +1,48 @@
+{if done && frame_popup}
+Upload erfolgreich.
+<script language="JavaScript" type="text/javascript">
+<!--
+  window.opener{if parent_modal}.document.frames["IMGPICK"]{endif}.location.href=window.opener{if parent_modal}.document.frames["IMGPICK"]{endif}.location;
+  window.close();
+//-->
+</script>
+{else}
+<table width="100%">
+<form method="post" action="index.php" style="display:inline;" enctype="multipart/form-data">
+  <input type="hidden" name="MAX_FILE_SIZE" value="{sys_MAXIMGFILESIZE:81920}" />
+  <input type="hidden" name="frame" value="popup" />
+  <input type="hidden" name="nav" value="{curnav}" />{if ID_IMG}
+  <input type="hidden" name="ID_IMG" value="{ID_IMG}" />{else}
+  <tr><td>
+<h2>Klicken Sie auf "Durchsuchen" und w&auml;hlen Sie eine Bilddatei von Ihrem Computer.</h2>
+  {if err}<span>{err}</span>{endif}
+<ul>
+  <li>Datei muss vom Typ gif, jpeg oder png sein.</li>
+  <li>max. {if sys_MAXIMGFILESIZE}{tokb(sys_MAXIMGFILESIZE)}{else}80Kb{endif} gro&szlig;</li>
+  <li>Bitte achten Sie auf sinnvolle Bildma&szlig;e; das Bild wird auf der Website in
+    Originalgr&ouml;&szlig;e angezeigt!</li>
+</ul>{endif}
+<table><tr>
+  <th>Bild</th>
+  <td>{if ID_IMG}{if frame_popup}{img(ID_IMG,330,153)}{else}{img(ID_IMG)}{endif}{else}<input type="file" name="imgfile" style="width:330px;" maxlength="{sys_MAXIMGFILESIZE:81920}" accept="image/*">{endif}</td>
+</tr><tr>
+  <th>Alternativtext:</th>
+  <td><input type="text" name="ALT" style="width:330px;" value="{htm(ALT)}" /></td>
+ </tr>
+ <tr>
+  <td>FSK 18</td>
+  <td><input type="hidden" name="FSK18" class="nob" value="0"{if !FSK18} checked{endif} />
+  nein <input type="radio" name="FSK18" class="nob" value="1"{if FSK18} checked{endif} /> ja
+ </tr>
+ <tr>
+  <th>kurze Beschreibung (title-Attribut)</th>
+  <td><textarea name="TITLE" rows="4" style="width:330px;">{htm(TITLE)}</textarea></td>
+</tr><tr>
+  <th>&nbsp;</th>
+  <td>
+    <input type="submit" value="{if ID_IMG}&Auml;nderungen speichern{else}Bild eintragen{endif}" />
+    <input type="reset" value="Abbruch" onClick="{if frame_popup}window.close(){else}history.back(){endif};" />
+  </td>
+</tr></table>
+</td></tr><tr><td >&nbsp;</td></tr></form></table>
+{endif}

@@ -1,0 +1,15 @@
+{if FIELDS}
+	<h3>Tabelle vorkonfigurieren</h3>
+	<p>Bitte entscheiden Sie welche der Tabellenfelder Sie &uuml;bernehmen m&ouml;chten.<br />
+	<span class="ok">Masterfelder</span> werden in jedem Fall &uuml;bernommen!</p>
+	<table class="liste" cellspacing="0">
+		<tr>
+			<th>Auswahl</th>
+			<th>Feldname</th>
+			<th>DB Name</th>
+		</tr>
+		{FIELDS}
+	</table>
+{else}
+	<p>Bitte w&auml;hlen Sie eine Tabelle aus!</p>
+{endif}

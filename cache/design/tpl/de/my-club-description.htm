@@ -1,0 +1,75 @@
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+
+<script type="text/javascript">
+    jQuery(function() {
+    	function setClubFormular(d) {
+            if(d) {
+                jQuery(".visibleOnEnabledClub").show();
+            } else {
+                jQuery(".visibleOnEnabledClub").hide();
+            }
+        }
+
+        jQuery("#clubFormularDescriptionTab").tabs();
+
+        setClubFormular({if CLUB_STATUS}true{else}false{endif});
+    });
+</script>
+
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}Gruppenverzeichnis</h1>
+
+{if saved}
+<div class="alert alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4>Änderungen gespeichert!</h4>
+</div>
+{endif}
+{if errors}
+<div class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4>Fehler!</h4>
+	<ul>
+		{errors}
+	</ul>
+</div>
+{endif}
+
+{if CLUB_ID_CLUB}
+	{subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+	{if CLUB_MODERATOR}
+	<form method="post" action="{uri_baseurl(/index.php)}" id="vendorFormular" enctype="multipart/form-data">
+	    <input type="hidden" name="page" value="{curpage}"/>
+	    <input type="hidden" name="do" value="save" />
+	    <input type="hidden" name="ID_CLUB" value="{CLUB_ID_CLUB}"/>
+
+		<p>
+			Bitte geben Sie hier eine Beschreibung ihrer Gruppe ein. Diese wird öffentlich dargestellt.
+		</p>
+
+	    <div class="visibleOnEnabledClub">
+	        <div id="clubFormularDescriptionTab">
+	            <ul>
+	                {languageHeader}
+	            </ul>
+	            <div class="well">
+	            {languageBody}
+	            </div>
+	        </div>
+	    </div>
+
+	    <input type="submit" value="Club-Beschreibung speichern" class="btn btn-success pull-right visibleOnEnabledClub"/>
+	</form>
+	{else}
+	    <div class="visibleOnEnabledClub">
+	        <div id="clubFormularDescriptionTab">
+	            <ul>
+	                {languageHeader}
+	            </ul>
+	            <div class="design-content-box">
+	            {languageBody}
+	            </div>
+	        </div>
+	    </div>
+	{endif}
+{endif}

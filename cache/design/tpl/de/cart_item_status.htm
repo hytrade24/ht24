@@ -1,0 +1,76 @@
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery("#modalDialog").append(jQuery("#cartItemStatusModelFooter").html());
+    })
+</script>
+
+{if err}
+    <strong>
+        Fehler aufgetreten!
+        Bitte versuchen Sie es erneut. Sollten Sie weiterhin Probleme haben bitten wenden Sie sich an unseren Support.
+    </strong>
+{else}
+    <div class="row">
+        <div class="col-xs-2 hidden-xs">
+            <img class="img-responsive" src="{if SRC}{thumbnail_article({ID_AD},{SRC},100,100,crop)}{else}{thumbnail({uri_resource(/images/marketplace/nopic.jpg)},100,100,crop)}{endif}" alt="{htm(PRODUKTNAME)}" />
+        </div>
+
+        <div class="col-xs-10 col-sm-5">
+            <div class="visible-xs pull-left" style="margin-right: 10px;">
+                <img class="img-responsive" src="{if SRC}{thumbnail_article({ID_AD},{SRC},100,100,crop)}{else}{thumbnail({uri_resource(/images/marketplace/nopic.jpg)},100,100,crop)}{endif}" alt="{htm(PRODUKTNAME)}" />
+            </div>
+            <p>
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+                    <strong>{htm(PRODUKTNAME)}</strong>
+                </a>
+                <br />
+                {VARIANT_TEXT}
+                {if AVAILABILITY}
+                <br />
+                {if AVAILABILITY_DATE_FROM}
+                Zwischen dem {todate(AVAILABILITY_DATE_FROM)} und dem {todate(AVAILABILITY_DATE_TO)}
+                {else}
+                Bis zum {todate(AVAILABILITY_DATE_TO)}
+                {endif}
+                {if AVAILABILITY_TIME_FROM}
+                ab {AVAILABILITY_TIME_FROM}Uhr
+                {endif}
+                {endif}
+            </p>
+            <p class="muted">
+                {market_article_description({ID_AD})}
+            </p>
+        </div>
+        <div class="col-xs-6 col-sm-2">
+            <strong>Menge:</strong> {CART_QUANTITY}
+			Stückpreis: {topreis_ex(PREIS)} {CURRENCY_DEFAULT}
+        </div>
+
+        <div class="col-xs-6 col-sm-3 text-right">
+            <strong>{topreis_ex(CART_TOTAL_PRICE)} {CURRENCY_DEFAULT}</strong><br>
+            <span class="text-muted">({subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={MWST})})</span>
+            <p>
+            {if VERSANDOPTIONEN==3}
+				<span class="text-muted">
+                    Versandkosten:
+                    {market_article_shipping(ID_AD,VERSANDKOSTEN)}
+                </span>
+            {else}
+                {if VERSANDOPTIONEN==0}<span class="text-success">Versandkostenfrei</span>{endif}
+                {if VERSANDOPTIONEN==1}<span class="text-error">Nur Selbstabholung</span>{endif}
+                {if VERSANDOPTIONEN==2}<span class="text-error">Versandkosten auf Anfrage</span>{endif}
+            {endif}
+            {if VERSANDKOSTEN_INFO}
+                <span class="text-muted">Versandkostenhinweis: {htm(VERSANDKOSTEN_INFO)}</span>
+            {endif}
+            </p>
+        </div>
+    </div>
+{endif}
+
+<div id="modalFooterContainer">
+    <div class="modal-footer">
+        <a href="#" onclick="HideDialog(); return false;" class="btn btn-default">Weiter einkaufen</a>
+        <a href="{uri_action(cart)}" class="btn btn-primary pull-right">Warenkorb ansehen</a>
+    </div>
+</div>

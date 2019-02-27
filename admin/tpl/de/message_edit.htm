@@ -1,0 +1,47 @@
+<script type="text/javascript">
+function chFKT(val)
+{
+ document.getElementById('fkt').value = val.value;
+}
+</script>
+<h1>{if ID_MESSAGE}Meldung bearbeiten{else}Neue Meldung anlegen{endif}</h1>
+<p>Nutzen Sie dieses Formular um Meldungen im System anzugelen, zu bearbeiten und zu &uuml;bersetzen!</p>
+
+{if _ERR}
+ <h2 class="error">Fehler aufgetreten!</h2>
+ <p class="error">{_ERR}</p>
+{endif}
+{if ok}
+ <h2 class="ok">Speichervorgang erfolgreich!</h2>
+{endif}
+
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+<input type="hidden" name="ID_MESSAGE" value="{ID_MESSAGE}">
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th valign="top">Funktion</th>
+   <td valign="top" colspan="2"><select name0"FKT_SELECT" onchange="chFKT(this)">{liste_fkt}</select>&nbsp;&nbsp;<input id="fkt" type="text" name="FKT" value="{htm(FKT)}" size="35"></td>
+  </tr>
+  <tr>
+   <td>&nbsp;</td>
+   <td colspan="2"><span style="font-weight:normal;">Bestehende Funktion ausw&auml;hlen oder neue anlegen</span></td>
+  </tr>
+  <tr>
+   <th>Ident</th>
+   <td colspan="2"><input type="text" name="ERR" value="{htm(ERR)}" size="35"> <em><strong>z.B. ERR_NO_USERNAME</strong></em></td>
+  </tr>
+  <tr>
+   <td>&nbsp;</td>
+   <td colspan="2">Der Ident ist eine eundeutige Kennung, anhand dessen der die Meldung passend &uuml;bersetzt
+	ausgegeben wird.</td>
+  </tr>
+  <tr>
+   <th valign="top">Meldungstext</th>
+   <td colspan="2"><textarea name="V1" rows="4" cols="35">{htm(V1)}</textarea></td>
+  </tr>
+  <tr class="footer">
+   <td colspan="3" align="right"><input type="submit" value="Speichern" class="button"></td>
+  </tr>
+ </table>
+</form>

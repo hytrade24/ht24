@@ -1,0 +1,16 @@
+error	PHP Debug-Info	/sys/Legacy/MySQLConnection.php:26	Fatal error: Uncaught PDOException: SQLSTATE[HY000] [2002] No such file or directory in /html/hytrade24/sys/Legacy/MySQLConnection.php:26
+Stack trace:
+#0 /html/hytrade24/sys/Legacy/MySQLConnection.php(26): PDO->__construct('mysql:host=loca...', 'p498931d1', '1m_4L1v3_BuT_D3...')
+#1 /html/hytrade24/inc.legacy.php(14): Legacy_MySQLConnection::connect('localhost', 'p498931d1', '1m_4L1v3_BuT_D3...', false, 128)
+#2 /html/hytrade24/sys/lib.db.mysql.php(62): mysql_connect('localhost', 'p498931d1', '1m_4L1v3_BuT_D3...', false, 128)
+#3 /html/hytrade24/index.php(50): ebiz_db->ebiz_db('usr_p498931_1', 'localhost', 'p498931d1', '1m_4L1v3_BuT_D3...')
+#4 {main}
+  thrown
+error	keine Datenbank verfügbar	/sys/Legacy/MySQLConnection.php:26	Fatal error: Uncaught PDOException: SQLSTATE[HY000] [2002] No such file or directory in /html/hytrade24/sys/Legacy/MySQLConnection.php:26
+Stack trace:
+#0 /html/hytrade24/sys/Legacy/MySQLConnection.php(26): PDO->__construct('mysql:host=loca...', 'p498931d1', '1m_4L1v3_BuT_D3...')
+#1 /html/hytrade24/inc.legacy.php(14): Legacy_MySQLConnection::connect('localhost', 'p498931d1', '1m_4L1v3_BuT_D3...', false, 128)
+#2 /html/hytrade24/sys/lib.db.mysql.php(62): mysql_connect('localhost', 'p498931d1', '1m_4L1v3_BuT_D3...', false, 128)
+#3 /html/hytrade24/index.php(50): ebiz_db->ebiz_db('usr_p498931_1', 'localhost', 'p498931d1', '1m_4L1v3_BuT_D3...')
+#4 {main}
+  thrown

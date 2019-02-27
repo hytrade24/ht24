@@ -1,0 +1,107 @@
+<style type="text/css">
+
+.plugin-configuration {
+    background-color: #E5F0F7;
+    margin-left: 40px;
+    padding: 8px;
+}
+
+</style>
+
+<h1>Plugins</h1>
+
+<p>Hier können Sie die verfügbaren Plugins aktivieren, deaktivieren oder deren Einstellungen anpassen</p>
+
+<div class="reiterPassiv">
+    <a href="index.php?page=market_settings" title="Marktplatz Einstellungen">Marktplatz Einstellungen</a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=options" title="Erweiterte Einstellungen">Erweiterte Systemeinstellungen</a>
+</div>
+<div class="reiterAktiv">
+    <a href="#" title="Plugin-Einstellungen">Plugin-Einstellungen</a>
+</div>
+<br style="clear: both;" />
+<table class="liste" cellpadding="0" cellspacing="0" style="min-width: 700px;">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Plugin-Name</th>
+            <th>Beschreibung</th>
+            <th colspan="2">Aktion</th>
+        </tr>
+    </thead>
+    <tbody>
+    {if liste}
+        {liste}
+    {else}
+        <tr>
+            <td colspan="5">
+                Keine Plugins verfügbar
+            </td>
+        </tr>
+    {endif}
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    
+jQuery(function() {
+    var hashRegexp = new RegExp(/^#plugin-(.+)-config$/i);
+    var hashMatch = hashRegexp.exec(document.location.hash);
+    if (hashMatch !== null) {
+        pluginToggleSettings(hashMatch[0]+' form');
+    }
+});
+        
+function pluginToggleSettings(form) {
+    jQuery(form).closest("tr").toggle();
+    pluginCheckSettings(form);
+}
+
+function pluginSaveSettings(form) {
+    jQuery.post("index.php?page=plugins&do=configSave", jQuery(form).serialize(), function(result) {
+        jQuery(form).find(".plugin-configuration-content").html(result);
+        jQuery(form)[0].originalFormValues = undefined;
+        pluginCheckSettings(form);
+    });
+}
+    
+function pluginCheckSettings(form) {
+    var isDirty = false;
+    var jqForm = jQuery(form);
+    if (jqForm.length > 0) {
+        var jsForm = jqForm[0];
+        if (typeof jsForm.originalFormValues == "undefined") {
+            jsForm.originalFormValues = jqForm.serialize();
+            jqForm.find("input,select,textarea").on("change", function() {
+                pluginCheckSettings(form);
+            });
+        } else {
+            var currentFormValues = jqForm.serialize();
+            isDirty = (jsForm.originalFormValues != currentFormValues ? true : false);
+            jqForm.attr("data-dirty", isDirty);
+        }
+        if (isDirty) {
+            jqForm.find(".pluginUnsavedChanges").show();
+        } else {
+            jqForm.find(".pluginUnsavedChanges").hide();
+        }
+    }
+}
+    
+function pluginSetDirty(form, isDirty) {
+    var jqForm = jQuery(form);
+    if (jqForm.length > 0) {
+        var jsForm = jqForm[0];
+        jqForm.attr("data-dirty", isDirty);
+        if (isDirty) {
+            jqForm.find(".pluginUnsavedChanges").show();
+        } else {
+            jsForm.originalFormValues = jqForm.serialize();
+            jqForm.find(".pluginUnsavedChanges").hide();
+        }
+    }
+}
+
+</script>

@@ -1,0 +1,11 @@
+<li {if is_inpath}class="active{if is_current} current{endif}"{endif}>
+ <a title="{if V2}{htm(V2)}{else}{htm(V1)}{endif}" href="{href}">
+  {if is_inpath}<img src="skin/navi-orange-aktiv.gif" width="11" height="7" /> {endif}
+  {htm(LABEL)}
+ </a>
+ {if sub}
+ <ul class="nav1">
+  {sub}
+ </ul>
+ {endif}
+</li>

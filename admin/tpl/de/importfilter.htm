@@ -1,0 +1,30 @@
+<h1>Importfilter f&uuml;r Anzeigen aus anderen Portalen und Anwendungen</h1>
+<p>
+	Im Folgenden sehen Sie alle bereits angelegten Filter. Die Importfilter werden im Benutzermenü
+	unter <em>Anzeigen Importieren</em> angezeigt, wenn sie als <span class="ok">aktiv</span> markiert werden.
+	<br />Unter Umst&auml;nden sind die Navigationspunkte versteckt geschaltet. Um dieses zu ver&auml;ndern,
+	<a href="index.php?page=nav_edit" title="Navigation bearbeiten">&auml;ndern Sie bitte die Naviagtion</a>
+	<br />
+	Um einen weiteren Filter hinzuzuf&uuml;gen, klicken Sie bitte
+	<a href="index.php?page=importfilter_edit" title="neuen Filter anlegen">hier.</a> 
+</p>
+
+<table class="liste" cellspacing="0" width="760">
+	<tr>
+		<th>&nbsp;</th>
+		<th>Angezeigter Name</th>
+		<th>Aktiv</th>
+		<th title="Technischer name - IDENT">Tech. Name</th>
+		<th>Breschreibung f&uuml;r den Anwender</th>
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+		<tr>
+			<td colspan="4" class="error">
+				noch keine Filter angelegt!
+			</td>
+		</tr>
+	{endif}
+</table>
+<p>&nbsp;</p>

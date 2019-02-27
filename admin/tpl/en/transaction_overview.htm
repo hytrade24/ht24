@@ -1,0 +1,25 @@
+<h1><img src="gfx/icon_fehlt_64.gif" width="64" height="64" alt="" border="0" align="left"> Transaktions &Uuml;bersicht</h1>
+<p>Hier erhalten Sie eine &Uuml;bersicht aller Transaktionen.<br>
+Wenn ein Benutzer Ihrer Webseite Coins kauft oder Artikel mit Coins kauft, so wird ein Transaktionseintrag vorgenommen.</p>
+
+<table class="liste" cellspacing="0" style="width: 100%;">
+	<tr>
+		<th>Trans.-Id</th>
+		<th>PayPal-Id</th>
+		<th>Benutzer</th>
+		<th>Verwendungszweck</th>
+		<th style="text-align: right;">Anzahl Coins</th>
+		<th>Type</th>
+		<th>Datum/Uhrzeit</th>
+		<th>Status</th>
+	</tr>
+	{if list}
+		{list}
+	{else}
+		<tr>
+			<td colspan="6" style="text-align: center;"><i>Es hat noch keine Transaktion stattgefunden.</i></td>
+		</tr>
+	{endif}
+</table>
+<p style="width: 100%;">{if pager}{pager}{endif}</p>
+

@@ -1,0 +1,77 @@
+<h1>Anfrage bearbeiten</h1>
+{if err || msg}
+<div class="hinweis">
+<span class="error">{err}</span>
+<span class="ok">{msg}</span>
+</div>
+{endif}
+<form method="post" action="index.php" style="display:inline;">
+<input type="hidden" name="page" value="{curpagealias}" />
+<input type="hidden" name="id" value="{ID_ANFRAGE}" />
+<input type="hidden" name="ID_ANFRAGE" value="{ID_ANFRAGE}" />
+
+<table border="0" cellspacing="1" cellpadding="4" class="formTable" style="border:1px #9A9A9A solid">
+<tr>
+	<th><strong>Status</strong><br /></th>
+	<td>{lookup(STATUS)}
+	<a href="#" onclick="popupfkt('cms_lookupneu&art=STATUS',850,450);" title="Neues Lookup anlegen">-Neuen Status anlegen</a>
+	</td>
+    <th><strong>Bemerkung</strong></th>
+</tr>
+<tr>
+	<th><strong>Name</strong><br /></th>
+	<td>{htm(KUNDENAME)}</td>
+    <td rowspan="12" valign="top"><textarea cols="45" rows="8" name="BEMERKUNG">{BEMERKUNG}</textarea></td>
+</tr>
+<tr>
+	<th><strong>Email</strong><br /></th>
+	<td><a href="mailto:{KUNDEEMAIL}" title="Email schreiben">{KUNDEEMAIL}</a></td>
+    </tr>
+<tr>
+  <th><strong>Webseite</strong></th>
+  <td>{if KUNDEURL}<a href="http://{KUNDEURL}" target="_blank" title="Webseite in neuem Fenster &ouml;ffnen">{KUNDEURL}</a>
+  {else}Keine Angabe{endif}</td>
+  </tr>
+<tr>
+	<th><strong>Straße</strong><br /></th>
+	<td>{htm(KUNDESTRASSE)}</td>
+    </tr>
+<tr>
+	<th><strong>PLZ</strong><br /></th>
+	<td>{htm(KUNDEPLZ)}</td>
+    </tr>
+<tr>
+	<th><strong>Ort</strong><br /></th>
+	<td>{htm(KUNDEORT)}</td>
+    </tr>
+<tr>
+	<th><strong>Telefon</strong><br /></th>
+	<td>{htm(KUNDETELEFON)}</td>
+    </tr>
+<tr>
+	<th><strong>Ausrichtung</strong><br /></th>
+	<td>{htm(AUSRICHTUNG)}</td>
+    </tr>
+<tr>
+ <th>Paketwunsch</th>
+ <td>{PAKET}</td>
+</tr>
+<tr>
+  <th>Preis</th>
+  <td>{htm(KUNDEPREIS)}</td>
+</tr>
+<tr>
+  <th valign="top">Fragen</th>
+  <td>{text(KUNDEHINWEISE)}</td>
+</tr>
+<tr>
+	<th><strong>Datum</strong><br /></th>
+	<td>{todate(DATUM)}</td>
+    </tr>
+<tr class="footer">
+    <td align="right" colspan="3"><input name="button" type="submit" class="button" tabindex="116" value="Speichern" />
+	<input name="reset" type="reset" class="button" tabindex="117" value="Reset" /></td>
+</tr>
+</table>
+</form>
+<p>&nbsp;</p>

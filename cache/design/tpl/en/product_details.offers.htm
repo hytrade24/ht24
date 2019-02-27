@@ -1,0 +1,60 @@
+{if liste}
+<form onsubmit="openLeadCreateWindowMultiByForm(this); return false;">
+	<h3>Angebote zu diesem Produkt</h3>
+	
+	<table class="table table-bordered table-condensed table-striped">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Bild</th>
+				<th>Anbieter</th>
+				<th>Standort</th>
+				<th>Mindestanfragemenge</th>
+				<th>Details</th>
+			</tr>
+		</thead>
+		<tbody>
+			{liste}
+		</tbody>
+	</table>
+	
+	<div class="text-right">
+    <button data-action="select" class="btn btn-default">
+      <i class="glyphicon glyphicon-ok"></i> Select all
+    </button>
+    <button data-action="clear" class="btn btn-default">
+      <i class="glyphicon glyphicon-remove"></i> Clear selection
+    </button>
+		<button type="submit" class="btn btn-success disabled">
+			Ausgewählte Anbieter anfragen
+		</button>
+	</div>
+</form>
+<script type="text/javascript">
+    jQuery( document ).ready(function() {
+        jQuery("input[name='ID_AD[]']").change(function () {
+            if (jQuery("input[name='ID_AD[]']:checked").length > 0) {
+                jQuery("form button.btn.btn-success").removeClass("disabled");
+            } else {
+                jQuery("form button.btn.btn-success").addClass("disabled");
+            }
+        });
+        jQuery("button[data-action=select]").click(function(e) {
+            e.preventDefault();
+            jQuery("input[name='ID_AD[]']").prop("checked", true);
+            jQuery("form button.btn.btn-success").removeClass("disabled");
+        });
+        jQuery("button[data-action=clear]").click(function(e) {
+            e.preventDefault();
+            jQuery("input[name='ID_AD[]']").prop("checked", false);
+            jQuery("form button.btn.btn-success").addClass("disabled");
+        });
+    });
+</script>
+{else}
+	<h3>Angebote zu diesem Produkt</h3>
+
+	<div class="alert alert-info">
+		Es sind aktuell leider keine Angebote zu diesem Produkt verfügbar.
+	</div>
+{endif}

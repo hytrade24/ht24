@@ -1,0 +1,7 @@
+{if POS>1}
+ <img src="shim.gif" width="20" height="7" />
+{endif}
+ <img src="skin/navi-{if is_inpath}orange{if !kidanz}-aktiv{endif}{else}weiss{endif}.gif" width="11" height="7" />
+ <a href="index.php?{PAGE}" onClick="return checkFlag()"{if is_inpath} style="font-weight:bold"{endif}>
+  {htm(LABEL)}
+ </a>

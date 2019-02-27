@@ -1,0 +1,19 @@
+
+<tr class="zeile{even}">
+  <td nowrap><a href="index.php?page=modul_tutorial_edit&ID_TUTORIAL={ID_TUTORIAL}" title="Tutorial bearbeiten"><img src="gfx/btn.edit.gif" alt="bearbeiten" border="0" width="32" height="16"></a> 
+  {if ONLINE == 3}<a href="index.php?page={curpage}&KICK={ID_TUTORIAL}&npage={npage}&ID_S={ID_S}" onclick="return confirm('Dieses Tutorial aus der öffentlichen Ansicht löschen?');" title="Tutorial deaktivieren"><img src="gfx/btn.del.gif" alt="löschen" border="0" width="32" height="16"></a>{endif}</td>
+  <td>{todate(STAMP_UPDATE)}</td>
+  <td><a href="index.php?page=user_edit&ID_USER={FK_USER}" id="b{NUMMER}" style="cursor:help;" name="{NAME}">{NAME}</a></td>
+  <td>{V1}</td>
+  <td>{titel}</td>
+  <td align="center"><input type="hidden" class="nob" name="Okall[]"  value="{ID_TUTORIAL}" />
+    <input type="checkbox" class="nob" name="OK1[]" {if OK1}checked  {endif}value="{ID_TUTORIAL}" /></td>
+  <td align="center"><input type="checkbox" class="nob" name="OK2[]" {if OK2}checked {endif}value="{ID_TUTORIAL}" /></td>
+  <td align="center" class="ok">{if ONLINE == 3}&radic;{else}&nbsp;{endif}</td>
+  <td align="center">{if PCOUNT}<a  style="cursor:pointer;" onclick="popupfkt('kommentare&FK={ID_TUTORIAL}&KOMM=tutorial', 760, 550);" title="{ckomm} Kommentare anzeigen">{PCOUNT}</a>{endif}
+    <div id="pb{NUMMER}" class="preview">
+  </td>
+  <td>
+   {todate(LAST_COMMENT)}
+  </td>
+</tr>

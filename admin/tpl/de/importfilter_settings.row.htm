@@ -1,0 +1,35 @@
+<tr class="zeile{even)}" id="tr_{NO}"> 
+	<td style="font-weight:bold;">
+		<a onclick="change_field({NO});" style="text-decoration:none;" title="Zuordnung erstellen/&aumlndern">
+			{htm(COL)}
+		</a>
+	</td>
+	<td>
+		<input type="hidden" name="CSV_COLNAME[{NO}]" value="{htm(COL)}" />
+		<input type="hidden" name="SER_EX_DATA[{NO}]" value="{SER_DATA}" />
+		<div id="daten_{NO}" style="display:none;">
+			{text(EXAMPLE_DATA)}
+		</div>
+		{if EXAMPLE_DATA}
+			<a onclick="exData({NO},'{htm(COL)}');" title="Beispiel daten aus der CSV Datei anzeigen">Bsp. Daten</a>
+		{endif}
+	</td>
+	<td id="td_{NO}" style="padding-left:20px;">
+		<input id="hidden_{NO}" type="hidden" name="FK_FIELD_DEF[{NO}]" value="{FK_FIELD_DEF}" />
+		{if !FK_FIELD_DEF}
+			<a onclick="change_field({NO});" style="text-decoration:none;" title="Zuordnung erstellen/&aumlndern">
+				<img src="gfx/btn.edit.gif" /> <em style="color:#ccc;">nicht verwendet</em>
+			</a>
+		{else}
+			<a onclick="change_field({NO});" style="text-decoration:none;" title="Zuordnung erstellen/&aumlndern">
+				<img src="gfx/btn.edit.gif" /> {if FK_FIELD_DEF == -1}Bild Import{else}{htm(V1)}{endif}
+			</a>
+		{endif}
+	</td>
+	<td style="padding-left:20px;">
+		<select name="fkt[{NO}]">
+			<option value="">Keine Funktion verwenden</option>
+			{options}
+		</select>
+	</td>
+</tr>

@@ -1,0 +1,84 @@
+<script type="text/javascript">
+	function s_inv(id_i)
+	{
+		$('s_page').value = 'buchhaltung';
+		$('s_id').name = 'ID_INVOICE';
+		$('s_id').value = id_i;
+		$('s_go').submit();
+	}
+</script>
+<h1><img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />Buchhaltung f&uuml;r User '{NAME}'  / #{ID_USER}
+</h1>
+<p>
+    Alle Gutschriften im Überblick
+</p>
+<p style="clear:left;margin:0px;">&nbsp;</p>
+
+{subtpl(tpl/de/user_edit.nav.htm,*)}
+<div style="float:left;clear:left;">
+    {if new}<p class="ok">Neue Gutschrift wurde hinzugefügt</p>{endif}
+    {if del}<p class="ok">Gutschrift wurde entfernt</p>{endif}
+    {if err}<p class="error">Es ist ein Fehler beim Hinzufügen der Gutschrift aufgetreten</p>{endif}
+
+    <form action="index.php" method="post">
+        <input type="hidden" name="page" value="{curpage}">
+        <input type="hidden" name="do" value="add">
+        <input type="hidden" name="ID_USER" value="{ID_USER}">
+
+        <table class="formTable">
+            <tr>
+                <th colspan="6" style="border-bottom:1px #000099 solid;">
+                    Neue Gutschrift hinzufügen<br />
+                    <p class="error">
+                        Gutschriften werden mit künftigen Rechnungen verrechnet. Der Benutzer kann sich diese nicht ausbezahlen lassen!
+                    </p>
+                </th>
+            </tr>
+            <tr>
+                <th>Datum</th>
+                <td>{datedrop()}</td>
+                <th>Wert (netto)</th>
+                <td><input type="text" name="PRICE"> {CURRENCY_DEFAULT}</td>
+                <th>Steuer</th>
+                <td>
+                    {select(tax,FK_TAX,TXT)}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <strong>Beschreibung:</strong><br>
+                    <textarea rows="3" style="width: 98%" name="DESCRIPTION"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" style="text-align: right;" class="footer">
+                    <input type="submit" value="Hinzufügen">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br>
+
+	<table class="liste" cellspacing="0">
+
+		<tr>
+            <th></th>
+			<th title="Gutschrift-Nr.">Nr.</th>
+            <th>Datum</th>
+            <th>Beschreibung</th>
+			<th>Status</th>
+            <th>Betrag</th>
+            <th>Restbetrag</th>
+		</tr>
+		{if liste}
+			{liste}
+		{else}
+			<tr>
+				<td colspan="7" align="center" class="error">
+					Der Benutzer hat bisher keine Gutschriften
+				</td>
+			</tr>
+		{endif}
+	</table>
+	<p>{pager}</p>
+</div>

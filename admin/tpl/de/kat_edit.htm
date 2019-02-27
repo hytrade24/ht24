@@ -1,0 +1,91 @@
+<h1>{if !neu}Kategorien bearbeiten{else}Kategorie anlegen{endif}</h1>
+
+<p>Hier finden Sie die Kategorien für die jeweiligen  Unterseiten. Die Bezeichnungen sind multilingual.</p>
+{if err}
+<div class="error">{err}</div><br />{endif}
+{if msg}
+<span class="error">{msg}</span><br /><br />
+{endif}
+{if neu || LFT>1}<table width="40%" class="liste" cellpadding="0" cellspacing="0" border="0"><tr height="17">
+  <td><table class="pathtab" width="100%" cellpadding="0" cellspacing="0" border="0"><tr height="17">
+    <td width="19" height="17"><img src="gfx/path.{if baum}66{else}64{endif}.png" width="19" height="17" /></td>
+    <td nowrap>&nbsp;<a onClick="return checkFlag()" href="index.php?page=kat_edit">Root</label></td>
+  </tr></table></td>
+</tr>{ahnen}</table><br />{endif}
+
+<!-- <div class="reiter{if ROOT==1}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&ROOT=1">Anzeigen</a></div>-->
+<div class="reiter{if ROOT==2}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&ROOT=2">Blog</a></div>
+<div class="reiter{if ROOT==3}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&ROOT=3">Adserver</a></div>
+<div class="reiter{if ROOT==4}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&ROOT=4">Anbieter</a></div>
+<div class="reiter{if ROOT==5}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&ROOT=5">Gesuche</a></div>
+<div class="reiter{if ROOT==6}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&ROOT=6">Jobs</a></div>
+<div class="reiter{if ROOT==7}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&ROOT=7">Kalender</a></div>
+<div class="reiter{if ROOT==8}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&ROOT=8">Gruppen</a></div>
+<table cellpadding="2" cellspacing="0" border="0" class="liste"><tr><td style="padding:none;" nowrap>
+
+<form method="post" action="index.php" style="display:inline" enctype="multipart/form-data">
+  <input type="hidden" name="page" value="{htm(curpagealias)}" />
+  <input type="hidden" name="ID_KAT" value="{ID_KAT}" />
+  <input type="hidden" name="do" value="{if neu}ins{else}sv{endif}" />
+  <input type="hidden" id="tabno" name="tabno" value="" />
+<table border="0"><tr>
+  <td style="padding-right:10px;">{subtpl(tpl/de/kat_edit.props.htm,*)}</td>{if !neu}
+  <td valign="top" style="padding-left:10px;padding-right:10px;padding-bottom:15px;">{subtpl(tpl/de/kat_edit.perms.htm,*)}</td>{endif}
+</tr>
+
+</table>
+<br />
+</td>
+</tr>
+<tr class="footer" align="right">
+ <td>{if neu && !lock_ok}<button class="error">Baum {if lock_user} von {lock_user} {endif}gelockt. Das Einf&uuml;gen eines Knotens ist derzeit nicht m&ouml;glich.</button>{else}<input type="submit" value="{if neu}Kategorie erstellen{else}&Auml;nderungen speichern{endif}" class="button" />{endif}</td>
+</tr>
+<tr>
+<td><a href="{pageref(kategorien)}&frame=popup" target="eakpop" onClick="popup(640,480).location.href='{pageref(kat_list)}&frame=popup&noedit=1';return false;">Gesamten Kategoriebaum anzeigen</a></td>
+</tr>
+</table>
+</form>
+<br />
+<table class="liste" width="40%" cellpadding="0" cellspacing="0" border="0">{if !neu}<tr>
+  <td style="padding:0px">
+  <table class="pathtab" cellpadding="0" cellspacing="0" border="0"><tr height="17" class="zeile0">{if level}
+    <td><img width="{calc(level*19)}" height="17" src="shim.gif" /></td>{endif}
+    <td><img width="19" height="17" src="gfx/path.{if kinder}11{else}9{endif}.png" /></td>
+    <td><img width="19" height="17" src="gfx/path.148.png" /></td>
+    <td nowrap>&nbsp;<a onClick="return checkFlag()" href="index.php?page=kat_edit&ID_KAT={ID_KAT}&do=ins"><b>neue Kind-Kategorie erstellen</b></a></td>
+  </tr></table></td>
+</tr>{endif}{kinder}</table></td></tr></table>
+<script type="text/javascript">
+function checkArt()
+{
+ if(document.forms[0].LU_KATART.value)
+ {
+  if(!document.forms[0].LU_KATART)
+    return false;
+  val = document.forms[0].LU_KATART.value;
+  if(val == 20)
+    dis = 'block';
+  else
+  {
+    dis = 'none';
+  }
+  document.getElementById('trKatArt').style.display = dis;
+ }
+}
+checkArt();
+function editInfo(neu)
+{
+ if(neu)
+   var fenster=window.open('index.php?frame=popup&page=infoseiten_edit','neu','width=800,height=550,resizable=yes');
+ else
+ {
+   id_info = document.forms[0].FK_INFOSEITE.value;
+   if(id_info > 0)
+     var fenster=window.open('index.php?page=infoseiten_edit&frame=popup&ID_INFOSEITE='+id_info,'neu','width=800,height=550,resizable=yes');
+   else
+     alert('Keine Seite gewï¿½hlt!');
+ }
+ if(fenster)
+   fenster.focus();
+}
+</script>

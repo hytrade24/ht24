@@ -1,0 +1,113 @@
+{javascript_google_maps()}
+
+<div class="design-ads-location-map design-subtpl">
+    <div class="design-ads-location-map-content">
+        <div id="ads-location-map-{POI_HASH}"></div>
+        <script type="application/javascript">
+        jQuery(function() {
+
+            var getMapPinIconLocal = function(ident, width, height) {
+                if (typeof width == "undefined") {
+                    width = 32;
+                }
+                if (typeof height == "undefined") {
+                    height = 32;
+                }
+                return {
+                    scaledSize: { width: width, height: height },
+                    url: ebiz_trader_baseurl+"cache/design/resources/de/images/mapIcons/"+ident+".png"
+                };
+            };
+
+            var mapIcons = {
+                default: getMapPinIconLocal("haus_std", 34.5, 48),
+                top: getMapPinIconLocal("haus_top", 34.5, 48),
+                active: getMapPinIconLocal("haus_hover", 34.5, 48)
+            };
+            var mapPoiList = {POI_JSON};
+            var url = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/lodging.png';
+            // Get map container
+            var container = jQuery('#ads-location-map-{POI_HASH}');
+            if (container.html() == '') {
+                container.css("width", "100%");
+                container.css("height", "300px");
+                // Create LatLng object for the center marker
+                var latlng = new google.maps.LatLng({LATITUDE}, {LONGITUDE});
+                // General map options
+                var myOptions = {
+                    zoom:12,
+                    zoomMax:15,
+                    center:latlng,
+                    mapTypeId:google.maps.MapTypeId.ROADMAP
+                };
+                // Initialize map object
+                map = new google.maps.Map(container[0], myOptions);
+
+                // Create center marker
+                marker = new google.maps.Marker({
+                    position:latlng,
+                    map:map,
+                    zIndex: 10
+                });
+
+                // Create info window for center marker
+                // TODO: Implement a method for settings the marker description via subtemplate
+                var infowindow = new google.maps.InfoWindow({
+                    content: "{DESCRIPTION}"
+
+                });
+                // Bind click event for center marker
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.open(map, this);
+                });
+                // Add poi markers
+                var bounds = new google.maps.LatLngBounds;
+                var infowindowMarker = new google.maps.InfoWindow({ content: "Loading ..." });
+                for (var markerIndex in mapPoiList) {
+                    var poiMarker = mapPoiList[markerIndex];
+                    var poiMarkerTop = (poiMarker.B_TOP & 8) == 8;
+                    var poiMarkerIcon = (poiMarkerTop ? mapIcons.top : mapIcons.default);
+                    var mapMarker = new google.maps.Marker({
+                        position:  new google.maps.LatLng(
+                                poiMarker.LATITUDE,
+                                poiMarker.LONGITUDE
+                        ),
+                        poi: poiMarker,
+
+                        //icon: url,
+
+                        // TODO
+                        icon: poiMarkerIcon,
+                        iconDefault: poiMarkerIcon,
+
+                        map:map,
+                        zIndex: (poiMarkerTop ? 2 : 1),
+                        zIndexDefault: (poiMarkerTop ? 2 : 1)
+                    });
+
+                    map.fitBounds(bounds.extend(mapMarker.position));
+                    google.maps.event.addListener(mapMarker, 'click', function() {
+                        infowindowMarker.open(map, this);
+                        infowindowMarker.setContent(
+                                this.poi.PRODUKTNAME + "<br>" +
+                                this.poi.ZIP + " " + this.poi.CITY + "<br>" +
+                                "<a target=\"_blank\" href=\"" + this.poi.URL + "\">Mehr Informationen..</a>"
+                        );
+                    });
+                    google.maps.event.addListener(mapMarker, 'mouseover', function() {
+                        this.setIcon(mapIcons.active);
+                        this.setZIndex(20);
+                    });
+                    google.maps.event.addListener(mapMarker, 'mouseout', function() {
+                        this.setIcon(this.iconDefault);
+                        this.setZIndex(this.zIndexDefault);
+                    });
+                }
+                // Initially display center markers info window
+                //infowindow.open(map, marker);
+            }
+        });
+        </script>
+    </div>
+    ^SUBTPL_ADMIN°
+</div>

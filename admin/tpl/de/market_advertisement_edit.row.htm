@@ -1,0 +1,16 @@
+				<div style="float: left; width: 160px;">
+				{if LEVEL>0}
+					<span>{LEVEL}. Kategorie-Ebene</span>
+				{else}
+					<span>Grundpreis</span>
+				{endif}
+				</div>
+				<div style="float: left; margin-right: 20px;">
+					<input style="width: 60px;" type="text" id="PRICE{LEVEL}" onchange="priceToBrutto('PRICE{LEVEL}', {TAX_PERCENT});" name="PRICE[]" value="{topreis(PREIS,4)}" />
+					{CURRENCY_DEFAULT} / Tag
+				</div>
+				<div style="float: left; margin-right: 20px;">
+					<input style="width: 60px;" type="text" id="PRICE{LEVEL}_BRUTTO" onchange="priceToNetto('PRICE{LEVEL}', {TAX_PERCENT});" name="PRICE_BRUTTO[]" value="{topreis(PREIS_BRUTTO)}" />
+					{CURRENCY_DEFAULT} / Tag
+				</div>
+				<br style="clear: both;" />

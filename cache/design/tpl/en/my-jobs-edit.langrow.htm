@@ -1,0 +1,17 @@
+<div {if is_current_lang}id="cLang" class="myreiterAktiv"{else}class="myreiterPassiv"{endif}>
+ <table>
+  <tr>
+   <td><img src="{uri_baseurl(/gfx/lang.{ABBR}.gif)}"></td>
+   <td>
+    {if link}
+	 <a onclick="return confirm('Did you save your changes?\nPress cancel if you are unsure!');" href="{uri_action(artikel_edit,{link},{BITVAL})}" title="[[ translation : general : language :: Sprache {htm(V1)}">{htm(V1)}</a>
+    {else}
+	 <a style="cursor:pointer;" onclick="alert('Bitte erst den Artikel speichern um die Sprache zu wechseln!');">{htm(V1)}</a>
+	{endif}
+	{if is_current_lang}
+	 <input type="hidden" name="L_VAL" value="{BITVAL}"> 
+	{endif}   
+   </td>
+  </tr>
+ </table>
+</div>

@@ -1,0 +1,332 @@
+<style type="text/css">
+    .mceButton.mceButtonEnabled.mce_image:after { content: 'Add/edit image' }
+    a.browse span:after { content: 'Select'; }
+</style>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+<script type="text/javascript">
+var bilder = new Array();
+
+jQuery(function() {
+	// Initialisierung Javascript
+	jQuery("#article_head").tabs();
+	jQuery("#article_body").tabs();
+});
+
+function ArticleSetMediaPreview(mediaLink) {
+    jQuery(mediaLink).closest(".design-news-media-list").find(".design-news-media-active").removeClass("design-news-media-active");
+    jQuery(mediaLink).closest(".design-news-media").addClass("design-news-media-active");
+    jQuery(mediaLink).find("input[type=radio]").prop('checked', true);
+}
+
+function UpdateSelection_Packet(id_packet, label) {
+	jQuery("#FK_PACKET_ORDER").val(id_packet);
+	jQuery("#article_editor").show();
+	jQuery("#packet_select").hide();
+	jQuery("#packet_current").html(label).show();
+}
+
+function checkLength(obj) {
+    jQuery('#zz').html(obj.value.length);
+    if((obj.value.length) > 255) {
+        jQuery('#zz').css("color", "red");
+        jQuery('#zz').css("font-weight", "bold");
+    } else {
+        jQuery('#zz').css("color", "black");
+        jQuery('#zz').css("font-weight", "normal");
+    }
+}
+
+function UpdateKat(id_kat) {
+	jQuery("select[name=FK_KAT]").val(id_kat);
+    if (bilder[id_kat]) 
+        code = '<img src="' + ebiz_trader_baseurl + 'uploads/images/kat/' + bilder[id_kat] + '">';
+    else 
+        code = '';
+	jQuery("div.header_themen").html(code);
+}
+</script>
+
+
+{if error_noaddress}
+	<div class="alert alert-danger">
+        <h2>Notice</h2>
+        <p>
+            Please add the following details on your <a href="{uri_action(my-profil)}">profile</a> before you publish something:<br />
+            <br />
+            <ul>
+                {if error_addr_first}<li>Forename</li>{endif}
+                {if error_addr_last}<li>Surname</li>{endif}
+                {if error_addr_street}<li>Street</li>{endif}
+                {if error_addr_zip}<li>ZIP</li>{endif}
+                {if error_addr_city}<li>City</li>{endif}
+            </ul>
+        </p>
+	</div>
+{else}
+
+
+	{if errors}
+	<div class="alert alert-danger">
+			<h2>Error while saving the article!</h2>
+			{text(errors)}
+	</div>
+	{endif}
+
+	<form name="ARTIKEL" method="post" action="{uri_action({curpage},{ID_NEWS})}">
+		<h1>
+            {if ID_NEWS}
+                Edit article
+            {else}
+                Write article
+            {endif}
+        </h1>
+		<p>
+            Write a newsentry and draw attention for your products or services.
+        </p>
+		{if ID_NEWS}<input type="hidden" name="ID_NEWS" value="{ID_NEWS}" />{endif}
+		<input type="hidden" name="FK_USER" value="{ID_USER}" />
+		<input type="hidden" id="FK_PACKET_ORDER" name="FK_PACKET_ORDER" value="{FK_PACKET_ORDER}" />
+
+		{if !FK_PACKET_ORDER && !FREE_NEWS && !ID_NEWS}
+		<h2>Your advertpackages</h2>
+		<div id="article_packet" {if !liste_packets}class="alert alert-info"{endif}>
+			<div id="packet_select">
+			{if liste_packets}
+                <p>
+                    Please the select the package, to which the article should be assigned to
+                </p>
+			<ul>
+				{liste_packets}
+			</ul>
+			{else}
+                You have no advertpackage with news left.<br>
+                    <a href="{uri_action(packets)}" class="">Click here to acquire the package for your needs.</a>
+
+			{endif}
+			</div>
+			<h3 id="packet_current" style="display: none;"></h3>
+		</div>
+		{endif}
+
+		<div id="article_editor"{if !FK_PACKET_ORDER && !FREE_NEWS} style="display: none;"{endif}>
+			<div id="article_head" style="margin-bottom: 8px;">
+				<ul>
+					{liste_header_link}
+				</ul>
+
+                    {liste_header_content}
+
+					{liste_body_content}
+
+                <div class="ui-tabs-virtual">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <tr>
+                            <td width="200" colspan="2">
+                                <span class="lead">
+                                    Additional links
+                                </span>
+                                <p>
+                                    Here you have the option to link URLs for your article,
+                                        so visitors are able to attain further/detailed information about the article.
+
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Lead-address
+                            </th>
+                            <th>
+                                Link-text / Label
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="URL" class="form-control" name="links[0][href]" value="{LINK_0_HREF}" 
+                                   placeholder="Lead-address (e.g. http://www.example.com)">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="links[0][label]" value="{LINK_0_LABEL}"
+                                   placeholder="Link-text / Label">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="URL" class="form-control" name="links[1][href]" value="{LINK_1_HREF}"
+                                   placeholder="Lead-address (e.g. http://www.example.com)">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="links[1][label]" value="{LINK_1_LABEL}"
+                                   placeholder="Link-text / Label">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="URL" class="form-control" name="links[2][href]" value="{LINK_2_HREF}"
+                                   placeholder="Lead-address (e.g. http://www.example.com)">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="links[2][label]" value="{LINK_2_LABEL}"
+                                   placeholder="Link-text / Label">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="URL" class="form-control" name="links[3][href]" value="{LINK_3_HREF}"
+                                   placeholder="Lead-address (e.g. http://www.example.com)">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="links[3][label]" value="{LINK_3_LABEL}"
+                                   placeholder="Link-text / Label">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="URL" class="form-control" name="links[4][href]" value="{LINK_4_HREF}"
+                                   placeholder="Lead-address (e.g. http://www.example.com)">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="links[4][label]" value="{LINK_4_LABEL}"
+                                   placeholder="Link-text / Label">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="ui-tabs-virtual">
+                    <div class="design-content-box form-horizontal">
+                        <p class="lead">Standort</p>
+                        <div id="VIEW_ADDRESS" class="form-group">
+                            <label class="control-label design-input-label col-md-2" for="VIEW_ADDRESS">
+                                <strong>Darstellung</strong>
+                            </label>
+                            <div class="design-input-field col-md-10">
+                                <select name="VIEW_ADDRESS" class="form-control">
+                                    <option value="0"{if VIEW_ADDRESS==0} selected="selected"{endif}>nicht darstellen</option>
+                                    <option value="1"{if VIEW_ADDRESS==1} selected="selected"{endif}>Text</option>
+                                    <option value="2"{if VIEW_ADDRESS==2 || !VIEW_ADDRESS} selected="selected"{endif}>Text und Karte</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="TITLE_INPUT" class="form-group">
+                            <label class="control-label design-input-label col-md-2" for="TITLE">
+                                <strong>Titel</strong>
+                            </label>
+                            <div class="design-input-field col-md-10">
+                                <input type="text" name="TITLE" id="TITLE" value="{htm(TITLE)}" placeholder="z.B. IAA 2017" class="form-control" />
+                            </div>
+                        </div>
+                        <div id="LOCATION_INPUT" class="form-group">
+                            <label class="control-label design-input-label col-md-2" for="LOCATION">
+                                <strong>Lokation</strong>
+                            </label>
+                            <div class="design-input-field col-md-10">
+                                <input type="text" name="LOCATION" id="LOCATION" value="{htm(LOCATION)}" placeholder="z.B. Messe Frankfurt" class="form-control" />
+                            </div>
+                        </div>
+                        <div id="STREET_INPUT" class="form-group">
+                            <label class="control-label design-input-label col-md-2" for="STREET">
+                                <strong>Street</strong>
+                            </label>
+                            <div class="design-input-field col-md-10">
+                                <input type="text" name="STREET" id="STREET" value="{htm(STREET)}" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div id="ZIP_INPUT" class="form-group">
+                            <label class="control-label design-input-label col-md-2" for="ZIP">
+                                <strong>ZIP & place</strong>
+                            </label>
+                            <div class="design-input-field col-md-5">
+                                <input type="text" name="ZIP" id="ZIP" value="{htm(ZIP)}" class="form-control" />
+                            </div>
+                            <div class="design-input-field col-md-5">
+                                <input type="text" name="CITY" id="CITY" value="{htm(CITY)}" class="form-control" />
+                            </div>
+
+                        </div>
+                        <div id="FK_COUNTRY_INPUT" class="form-group">
+                            <label class="control-label design-input-label col-md-2" for="FK_COUNTRY">
+                                <strong>Country</strong>
+                            </label>
+                            <div class="design-input-field col-md-10">
+                                {select_country(,,,, class="form-control" id="COUNTRY",----)}
+                            </div>
+                        </div>
+                        <div id="PHONE_INPUT" class="form-group">
+                            <label class="control-label design-input-label col-md-2" for="PHONE">
+                                <strong>Phone</strong>
+                            </label>
+                            <div class="design-input-field col-md-10">
+                                <input type="text" name="PHONE" id="PHONE" value="{htm(PHONE)}" class="form-control" />
+                            </div>
+                        </div>
+                        <div id="MOBILE_INPUT" class="form-group">
+                            <label class="control-label design-input-label col-md-2" for="MOBILE">
+                                <strong>Handy</strong>
+                            </label>
+                            <div class="design-input-field col-md-10">
+                                <input type="text" name="MOBILE" id="MOBILE" value="{htm(MOBILE)}" class="form-control" />
+                            </div>
+                        </div>
+                        <div id="FAX_INPUT" class="form-group">
+                            <label class="control-label design-input-label col-md-2" for="FAX">
+                                <strong>Fax</strong>
+                            </label>
+                            <div class="design-input-field col-md-10">
+                                <input type="text" name="FAX" id="FAX" value="{htm(FAX)}" class="form-control" />
+                            </div>
+                        </div>
+                        <div id="EMAIL_INPUT" class="form-group">
+                            <label class="control-label design-input-label col-md-2" for="EMAIL">
+                                <strong>E-Mail</strong>
+                            </label>
+                            <div class="design-input-field col-md-10">
+                                <input type="text" name="EMAIL" id="EMAIL" value="{htm(EMAIL)}" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+			<div id="article_unlock" class="alert alert-info">
+				<table cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td width="200">
+                            Request unlocking
+                        </td>
+						<td>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="FREIGABE" value="1" {if FREIGABE==1 || FREIGABE==3} checked{endif} />
+                                     Please unlock the article.
+                                </label>
+                            </div>
+							<p>
+                                You can only input article, that are free from third-party rights.<br />
+                                    <strong>The author is responsible for the content he uploads.</strong>
+
+							</p>
+						</td>
+					</tr>
+					{if FREIGABE2}
+					<tr>
+						<td colspan="2" style="padding-top: 10px; padding-bottom: 10px;">
+							<span style="color: #990000; font-weight: bold;">Warning!</span>
+                            Your article has been unlocked administratively.
+                                The unlocking will be removed, if you edit it!
+
+						</td>
+					</tr>
+					{endif}
+				</table>
+
+			</div>
+            <div class="text-right">
+                <input class="btn btn-info" type="submit" value="Save article" />
+            </div>
+
+		</div>
+	</form>
+{endif}

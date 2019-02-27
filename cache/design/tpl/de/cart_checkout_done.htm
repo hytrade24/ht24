@@ -1,0 +1,29 @@
+<h1>
+    Vielen Dank für Ihren Einkauf
+	<p class="lead">Bestätigung Ihres Einkaufs</p>
+</h1>
+
+<p>
+    <p>Wir danken Ihnen für Ihren Einkauf auf unserem Marktplatz. Sie haben eine Bestätigungsemail zugeschickt bekommen, in der noch einmal
+        die wichtigsten Informationen zusammengefasst sind.
+        <br>
+        <strong class="text-danger">Sobald die Verkäufer ihren Kauf bestätigt haben, erhalten Sie eine E-Mail mit den Kontakt- und Zahlungsinformationen.</strong></p>
+</p>
+
+{PLUGIN_HTML}
+
+{if ID_USER}
+<h5>
+    Eine Übersicht Ihrer bisherigen Einkäufe finden Sie hier
+</h5>
+
+<a href="{uri_action(my-marktplatz-einkaeufe)}" class="btn btn-success">
+    Zu meinen Eink&auml;ufen
+</a>
+{else}
+<h5>
+    Sie erhalten in kürze eine E-Mail mit einem Link, über den Sie ihre bisherigen Einkäufe einsehen und bezahlen können.
+</h5>
+{endif}
+
+{content_page(DankeNACHKaufen)}

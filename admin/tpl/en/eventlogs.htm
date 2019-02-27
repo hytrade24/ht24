@@ -1,0 +1,38 @@
+{subtpl(tpl/de/js_userbox.htm,*)}
+<h1>Eventlog<br />
+Informationen &uuml;ber automatische Prozesse</h1>
+<p>Eventlogs werden nach 7 Tagen automatisch gel&ouml;scht. Sollte die Datenbank beim Schreiben eines 
+ Logs nicht verf&uugbar sein, wird der Log in der Datei <strong>/cache/LOG.txt</strong> abgelegt. <br />
+ In der Hilfe finden Sie zusätzliche Informationen.</p>
+
+<form metho="get" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+<input type="hidden" name="npage" value="1">
+ <table class="formTable" cellspacing="0">
+  <tr>
+    <th>Zeige nur</th>
+    <td><select name="SHOW"><option value="">Alle</option>{liste_show}</select></td>
+  </tr>
+  <tr class="footer">
+   <td align="right" colspan="2"><input class="button" type="submit" value="löschen" name="do" onclick="return confirm('Wirklich löschen?');" />  <input class="button" type="submit" value="Aktualisieren" /> </td>
+  </tr>
+ </table>
+</form> 
+ 
+ <table class="liste" cellspacing="0">
+  <tr>
+   <th>Typ</th>
+   <th>Datum/Uhrzeit</th>
+   <th>Meldung</th>  
+   <th>User</th> 
+  </tr>
+  {if liste}
+  {liste}
+  {else}
+  <tr>
+   <td colspan="4" align="center" class="error">Keine Logs gefunden</td>
+  </tr>
+  {endif}
+ </table>
+ {pager}
+ <p>&nbsp;</p>

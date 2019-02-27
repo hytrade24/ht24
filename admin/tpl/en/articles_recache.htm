@@ -1,0 +1,12 @@
+<h1>Alle Artikel neu cachen</h1>
+
+<div class="hinweis">
+	<strong>!! ACHTUNG !!</strong><br />
+	Dieser Vorgang kann längere Zeit in Anspruch nehmen und den Server stark belasten.
+</div>
+
+{if done}
+<strong>Anzeigen werden innerhalb der nächsten Minute neu gecached.</strong>
+{else}
+<a href="index.php?page={curpage}&do=now">Jetzt alle Anzeigen neu cachen</a>
+{endif}

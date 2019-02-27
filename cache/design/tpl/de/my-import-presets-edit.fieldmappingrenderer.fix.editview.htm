@@ -1,0 +1,18 @@
+<tr class="">
+	<td>
+		{subtpl(tpl/{SYS_TPL_LANG}/my-import-presets-edit.fieldmappingrenderer.partial.buttons.htm,*)}
+	</td>
+	<td><b>Fester Wert</b></td>
+	<td>
+		<textarea class="form-control" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}]" rows="3" class="" onkeypress="jQuery('#TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_{POS}').attr('disabled', false);">{DATA_VALUE}</textarea>
+		<input type="button" class="btn btn-default" onclick="ipe.saveMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', {POS}); return false;" value="Speichern" id="TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_{POS}" disabled>
+
+		{if !DATA_VALUE}
+			<br>
+			<small>
+				Geben Sie einen Wert in dem Textfeld an, das in dieser Artikeleigenschaft des Marktplatzes für alle importierten Produkte
+					verwendet werden soll.
+			</small>
+		{endif}
+	</td>
+</tr>

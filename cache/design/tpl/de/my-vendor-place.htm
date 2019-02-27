@@ -1,0 +1,42 @@
+<h1>Anbieterverzeichnis</h1>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-vendor-nav.htm,*)}
+<span class="lead">
+    Geben Sie hier weitere Standorte ein. Diese werden u.a. auf der google-map angezeigt.
+</span>
+<table class="mytable table table-bordered table-striped table-condensed">
+	<tr>
+	    <th></th>
+	    <th>Bezeichnung</th>
+	    <th>Straße</th>
+	    <th>PLZ / Ort</th>
+	    <th>Land</th>
+	</tr>
+{if VENDOR_STRASSE}
+	<tr>
+	    <td></td>
+	    <td>{VENDOR_FIRMA}</td>
+	    <td>{VENDOR_STRASSE}</td>
+	    <td>{VENDOR_PLZ} {VENDOR_ORT}</td>
+	    <td>{VENDOR_COUNTRY}</td>
+	</tr>
+{endif}
+{if liste}
+	{liste}
+{else}
+	<tr>
+        <td colspan="5">Noch keine Standorte vorhanden</td>
+    </tr>
+{endif}
+</table>
+
+<a href="{uri_action(my-vendor-place-update)}" class="btn btn-success pull-right" >
+    Standort hinzufügen
+</a>
+<br style="clear: both;" /><br />
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Bearbeiten
+	</div>
+	<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a> = Löschen
+	</div>
+</div>

@@ -1,0 +1,41 @@
+<tr id="TABLE_FIELD_MAPPING_ROW_{tableDef}_{fieldName}">
+	<td>
+		<strong>{htm(displayName)}</strong>
+		{if ERRORS}
+			<a class="label label-important" title="Error while importing &quot;{htm(ERRORS_PROCESS)}&quot;" data-toggle="popover" data-html="true" data-content="{htm(ERRORS)}">
+				Show {ERRORS_COUNT} errors
+			</a>
+			<script type="text/javascript">
+				jQuery('#TABLE_FIELD_MAPPING_ROW_{tableDef}_{fieldName} a[data-toggle=popover]').popover();
+			</script>
+		{endif}
+		<br>
+		<small class="text-muted">
+			Type: {htm(type)}, 
+			Desc: {htm(fieldName)}
+		</small>
+	{if isRequired}
+		<br>
+		<span class="label label-danger">
+			Required field
+		</span>
+	{endif}
+	{if importDescription}
+		<div class="alert alert-info">
+			<strong>Info:</strong>
+			{htm(importDescription)}
+		</div>
+	{endif}
+		<br>
+		<small>
+			<a href="#" onclick="ShowDialog('{uri_baseurl()}index.php?page=my-import-presets-edit&DO=SHOW_TABLE_FIELD_INFO&JUMPTO_FIELD={htm(fieldName)}', 'Field-description', '900'); return false;" class="">
+				Display field description
+			</a>
+		</small>
+
+	</td>
+	<td>
+		{FIELD_MAPPING_RENDERED_DISPLAY}
+		{FIELD_MAPPING_RENDERED_EDIT}
+	</td>
+</tr>

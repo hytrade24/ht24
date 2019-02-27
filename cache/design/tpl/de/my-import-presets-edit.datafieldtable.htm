@@ -1,0 +1,40 @@
+<script src="{uri_resource(lib/datatables/media/js/jquery.dataTables.min.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_resource(lib/datatables/media/css/jquery.dataTables.css)}">
+
+<script>
+	jQuery(function() {
+
+
+		var table = jQuery('#DATAFIELDTABLE').DataTable({
+				"processing": true,
+				"serverSide": true,
+				"scrollY": 500,
+				"scrollX": 900,
+				"ordering": false,
+				searching: false,
+				lengthChange: false,
+				pageLength: 50,
+				"ajax":  {
+					url: ebiz_trader_baseurl + 'index.php?page=my-import-presets-edit&DO=GET_DATAFIELD_TABLE_DATASETS',
+					type: 'POST'
+				},
+				"autoWidth": false,
+				"rowCallback": function( row, data ) {
+
+					{if MARKER_COL}
+						jQuery('td:eq({MARKER_COL})', row).css('background-color', 'yellow');
+					{endif}
+				}
+
+			});
+	})
+</script>
+
+<table id="DATAFIELDTABLE" class="display" cellspacing="0" width="100%">
+	<thead>
+	<tr>
+		<th>#ID</th>
+		{MARKER_TABLE_TH}
+	</tr>
+	</thead>
+</table>

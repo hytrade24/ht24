@@ -1,0 +1,58 @@
+<script type="application/javascript" src="{uri_baseurl(/lib/rating.js)}"></script>
+
+<script type="application/javascript">
+    jQuery(function() {
+        var vote_user = new Rating(1, 5);
+        vote_user.SetInput("#RATING");
+        jQuery('#td_rating').append(vote_user.html);
+        console.log( vote_user.html );
+    });
+</script>
+
+<h1>Bewertung bearbeiten</h1>
+<!--action="index.php?page=edit_userratings&action=edit&rating={ID_AD_SOLD_RATING}"-->
+<form method="post">
+
+    <input type="hidden" value="{ID_AD_SOLD_RATING}" name="ID_AD_SOLD_RATING" />
+    <table cellspacing="0" class="formTable">
+        <tbody>
+        <tr>
+            <th valign="top">Trans.-Id</th>
+            <td valign="top">{FK_AD_SOLD}</td>
+        </tr>
+        <tr>
+            <th valign="top">Datum</th>
+            <td valign="top">{todate(STAMP_RATED)}</td>
+        </tr>
+        <tr>
+            <th valign="top">Von</th>
+            <td valign="top">{VON}</td>
+        </tr>
+        <tr>
+            <th valign="top">An</th>
+            <td valign="top">{AN}</td>
+        </tr>
+        <tr>
+            <th valign="top">Artikel</th>
+            <td valign="top">{PRODUKTNAME}</td>
+        </tr>
+        <tr>
+            <th valign="top">Bewertung</th>
+            <td valign="top" id="td_rating">
+                <input name="RATING" id="RATING" value="{if RATING}{RATING}{else}-1{endif}" type="hidden" />
+            </td>
+        </tr>
+        <tr>
+            <th valign="top">Kommentar</th>
+            <td valign="top">
+                <textarea name="COMMENT" style="width: 350px; height: 200px;">{COMMENT}</textarea>
+            </td>
+        </tr>
+        <tr class="footer">
+            <td colspan="3" align="right">
+                <input value="Speichern" class="button" type="submit" />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>

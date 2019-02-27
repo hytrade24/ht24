@@ -1,0 +1,286 @@
+<style type="text/css">@import url(/lib/jscalendar/skins/aqua/theme.css);</style>
+<script type="text/javascript" src="{uri_baseurl(/lib/jscalendar/calendar.js)}"></script>
+<script type="text/javascript" src="{uri_baseurl(/lib/jscalendar/lang/calendar-de.js)}"></script>
+<script type="text/javascript" src="{uri_baseurl(/lib/jscalendar/calendar-setup.js)}"></script>
+<script src="{uri_baseurl(/sys/ajax/JsHttpRequest.js)}"></script>
+<script src="{uri_baseurl(/sys/ajax/kernel.js)}"></script>
+
+<script type="text/javascript">
+ function ajaxOnOk()
+ {
+   alert('voller Erfolg');
+ }
+ 
+ onload = function()
+ {
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax{if FK_KAT}&ID_KAT={FK_KAT}&table=job{endif}',0,false,'kat_ajax');
+ };
+
+ function kat_auswahl(kat)
+ {
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax&ID_KAT='+kat+'&table=job',0,false,'kat_ajax');
+   if(kat)
+    document.getElementById('fkkat').value = kat;
+ } // kat_auswahl()
+ 
+ function blender(part)
+ {
+   div = document.getElementById(part);
+   neu = 'block';
+   if(div.style.display != 'none')
+     neu = 'none';
+   div.style.display = neu;
+ } //
+ 
+ function openAll()
+ {
+   for(i=0; i<ausblenden.length; i++)
+   {
+     dname = ausblenden[i];
+	 //alert(dname);
+	 div = document.getElementById(dname);
+	 div.style.display='block';
+   }	 
+ } // openAll
+  
+ function dropdownBlender(param)
+ {
+   var p = param.split("|");
+   var selectfield = document.getElementById(p[2]);
+
+   for (i=0; i<selectfield.length; i++)
+   {
+     if(document.getElementById(p[1]+'_'+selectfield.options[i].value))
+       document.getElementById(p[1]+'_'+selectfield.options[i].value).style.display = 'none';
+   }
+   //******** HomeOffice
+   if(document.getElementById(p[1]+'_'+p[0]))
+     document.getElementById(p[1]+'_'+p[0]).style.display = 'block';
+   
+ } // 
+ function updateBegin(value) {
+   if (value == 1) {
+     document.getElementById("WANN_de").disabled = false;
+   } else {
+     document.getElementById("WANN_de").disabled = true;
+   }
+ }
+ 
+ function updateWorkwere(value) {
+   if (value != 68) {
+     document.getElementById("ANMERKUNG").disabled = false;
+     document.getElementById("fk_country").disabled = true;
+     document.getElementById("plz").disabled = true;
+   } else {
+     document.getElementById("ANMERKUNG").disabled = true;
+     document.getElementById("fk_country").disabled = false;
+     document.getElementById("plz").disabled = false;
+   }
+ }
+ 
+ function updatePrice(value) {
+   if (value == 61) {
+     document.getElementById("PRICE_NUM").disabled = false;
+     document.getElementById("PRICE_MUST").disabled = false;
+   } else {
+     document.getElementById("PRICE_NUM").disabled = true;
+     document.getElementById("PRICE_MUST").disabled = true;
+   }
+ }
+</script>
+<form method="post" action="index.php" enctype="multipart/form-data" id="scrform{ID_JOB}">
+<input type="hidden" name="ID_JOB" value="{ID_JOB}" />
+<input type="hidden" name="FK_KAT" value="{FK_KAT}" id="fkkat" />
+<input type="hidden" name="what" value="job">
+<input type="hidden" name="page" value="job_edit_full">
+<h1>Job editieren</h1>
+{if DELPDF}
+ <h3 class="ok">PDF wurde vom Server gelöscht!</h3>
+{endif}
+{if err}
+ <div class="error"><h2>Fehler aufgetreten!</h2><p>{err}</p></div>
+{endif}
+{if SAVED}
+ <h2 class="ok">Job wurde gespeichert!</h2>
+{endif}
+<table>
+ <tr>
+  <td valign="top">
+<table border="0" class="formTable">
+ <tr>
+  <th>Freigabe</th>
+	<td>User:
+      <input type="checkbox" class="nob" name="OK[]" {if OK&1}checked {endif}value="1"  />
+Admin:
+<input type="checkbox" class="nob" name="OK[]" {if OK&2}checked {endif}value="2"  /></td>
+  <td rowspan="10" valign="top">
+	 <div id="kat_ajax" style="width:300px; height:240px; overflow:auto;">Bitte warten - die Kategorien werden geladen ...</div>
+	</td>
+ </tr>
+
+ {if ONLINE == 3}
+ <tr>
+  <th>Online Version</th>
+	<td><a href="{uri_baseurl(/jobs/job,{ID_JOB},{urllabel(JOBTITLE)}.htm)}" target="_blank">Job ansehen</a></td>
+  </tr>
+ <tr>
+   <th>Datum</th>
+   <td>{datedrop(STAMP)}</td>
+   </tr>
+ <tr>
+   <th>Enddatum</th>
+   <td>{datedrop(STAMP_END)}</td>
+   </tr>
+ <tr>
+ {endif}
+  <th>Titel des Jobs</th>
+  <td><input type="text" name="JOBTITLE" value="{htm(JOBTITLE)}" size="50" /></td>
+  </tr>
+  <tr>
+	<th valign="top">Bereich</th>
+	<td valign="top">{lookup(JOBART,LU_JOBART,,,,-Bitte wählen-)} </td>
+  </tr>
+ <tr>
+  <th valign="top">Kurzbeschreibung</th>
+  <td><textarea name="DSC" rows="5" cols="47">{htm(DSC)}</textarea> </td>
+  </tr>
+ <tr>
+  <th valign="top">Auftragsbegin</th>
+  <td><select name="FLAG_START" id="FLAG_START" onchange="updateBegin(this.value);">
+        <option value="0" {if FLAG_START==0}selected{endif}>beliebig</option>
+		<option value="1" {if FLAG_START==1}selected{endif}>Fixdatum</option>
+		<option value="2" {if FLAG_START==2}selected{endif}>Sofort</option>
+	  </select></td>
+  </tr>
+ <tr>
+  <th valign="top">Auftragsbegin</th>
+  <td><input type="hidden" name="WANN" id="WANN" value="{WANN}" />
+      <input type="text" value="{todate(WANN)}" size="12" readonly="readonly" id="WANN_de" name="WANN_de" onclick="showCalendar();" /> <img src="{uri_baseurl(/bilder/kalender.png)}" style="cursor: pointer;" id="trigger" align="absmiddle"/>
+  
+  <script type="text/javascript">
+function catcalc(cal) {
+        var date = cal.date;
+        var time = date.getTime()
+        // use the _other_ field
+        var field = document.getElementById("WANN");
+        var date2 = new Date(time);
+        field.value = date2.print("%Y-%m-%d");
+    }
+
+     Calendar.setup(
+      {
+        inputField  : "WANN_de",         // ID of the input field
+        ifFormat    : "%d.%m.%Y",    // the date format
+	    singleClick : false,			// fenster schließt sich erst nach einem doppelklick, mit x oder wenn man außerhalb des fensters klickt
+     	onUpdate    : catcalc
+
+	  });
+
+	  Calendar.setup(
+      {
+        inputField  : "WANN_de",         // ID of the input field
+        ifFormat    : "%d.%m.%Y",    // the date format
+		button      : "trigger",      // ID of the button
+	    singleClick : false,			// fenster schließt sich erst nach einem doppelklick, mit x oder wenn man außerhalb des fensters klickt
+      	onUpdate    : catcalc
+
+	  });
+    </script>
+	</td>
+  </tr>
+ <tr>
+	<th width="200">Erf&uuml;llungsort</th>
+	<td>{lookup(WORKWERE,LU_WORKWERE,, onchange="updateWorkwere(this.value);",,)}</td>
+  </tr>
+ <tr>
+  <th>Land</th>
+  <td>{select(country,,,,,id="land",---)}</td>
+  </tr>
+<tr>
+  <th>PLZ</th>
+  <td><input id="plz" type="text" name="PLZ" value="{htm(PLZ)}" size="15" /></td>
+  </tr>
+  <tr>
+	<th width="200">Anmerkung</th>
+	<td><input type="text" id="ANMERKUNG" name="ANMERKUNG" value="{htm(ANMERKUNG)}" size="50" /></td>
+  </tr>
+  {if FK_KAT == 13}
+  <tr>
+	<th width="200">Verg&uuml;tung</th>
+	<td>
+	 {lookup(VERGUETUNG,LU_VERGUETUNG,,onchange="updatePrice(this.value);",ID_LOOKUP,)}
+	</td>
+  </tr>
+	  <tr>
+		<th width="200">Preisvorstellung (in {CURRENCY_DEFAULT})</th>
+		<td><input type="text" name="PRICE_NUM" id="PRICE_NUM" value="{PRICE_NUM}"  size="6" /></td>
+	  </tr>
+	  <tr>
+		<th>Angebote erlauben</th>
+		<td><input type="checkbox" name="PRICE_MUST" id="PRICE_MUST"{if PRICE_MUST} checked="checked"{endif} value="1" /></td>
+	  </tr>
+  {endif}
+ <tr>
+  <th valign="top">Volltext</th>
+  <td colspan="4">{editor(LONGTEXT,100%, 400)}</td>
+ </tr>
+ {if liste}
+ <tr>
+  <td colspan="3">
+   <h3>PDF Dokumente</h3>
+	  <table class="liste" cellspacing="0">
+		 <tr>
+		  <th>Aktion</th>
+			<th>Dokument</th>
+		 </tr>
+		{liste}
+		</table>	 </td>
+ </tr> 
+ {endif}
+ <tr class="footer">
+  <td align="right" colspan="3"><input type="submit" class="button" value="Speichern"></td>
+ </tr>
+</table>
+  </td>
+  <td valign="top">
+	 <h3>Auftragsstatus</h3>
+	 <table class="formTable" cellspacing="0">
+	  <tr>
+		 <th>Status</th>
+		 <td>{if !STAMP_ABSCHLUSS}OFFEN{else}Abgeschlossen am {todate(STAMP_ABSCHLUSS)}{endif}</td>
+		</tr>
+		{if STAMP_ABSCHLUSS}
+		<tr>
+		 <th>Endpreis</th>
+		 <td>{topreis(ENDPREIS)}.-</td>
+		</tr>
+		{endif}	
+		{if FK_USER2}
+		<tr>
+		 <th>Auftragnehmer</th>
+		 <td><a style="cursor:pointer;" title="User anzeigen" onclick="popupfkt('user_edit&ID_USER={FK_USER2}', 700, 500);">{htm(WINNER)}</a></td>
+		</tr>
+		<tr>
+		 <th>Gebot</th>
+		 <td>{topreis(GEBOT)}.-</td>
+		</tr>		
+		{endif} 
+	 </table>
+	 <div id="details{ID_JOB}" style="height:200px; overflow:auto;">
+	  ... bitte warten
+	 </div>	 
+	</td>
+ </tr>
+</table>
+
+</form>
+
+<script type="text/javascript">
+updateBegin({FLAG_START});
+updateWorkwere({LU_WORKWERE});
+{if FK_KAT == 13}
+  updatePrice({LU_VERGUETUNG});
+{endif}
+
+ajaxSubmit(null,'index.php?frame=ajax&page=job_bewerbungen&ID_JOB={ID_JOB}',0,false,'details{ID_JOB}'); 
+</script>

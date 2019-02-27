@@ -1,0 +1,152 @@
+<style type="text/css">
+    .unapproved { background: #e9b4b4 !important; }
+</style>
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery(".chat_message-expand, .chat_message-collapse").click(function() {
+            jQuery(this).parent().hide();
+            jQuery(jQuery(this).attr("href")).show();
+            return false;
+        })
+
+        editChatMessage = function(id, saved) {console.log(id, saved);
+            jQuery.get('index.php?frame=ajax&page=chat_messages_ediit&DO=load&ID_CHAT_MESSAGE='+id+"&saved="+saved, function(data) {
+                jQuery("#dialog").html(data);
+                //jQuery("#dialog").dialog("close");
+                jQuery("#dialog").dialog({ title: "Nachricht bearbeiten", width: 800, height: 320 });
+            });
+            if ( saved ) {
+                return true;
+            }
+            return false;
+        }
+
+        saveChatMessage = function(id) {
+            var form = jQuery('#chatMessageEditor-'+id+' form');
+            jQuery.post('index.php?frame=ajax&page=chat_messages_ediit&DO=save', form.serialize(), function(data) {
+                if (data.success) {
+                    if ( editChatMessage(id, 1) ) {
+                        window.location.reload();
+                    }
+                }
+            });
+            return false;
+        }
+    })
+</script>
+
+<h1>Konversation: {SUBJECT}</h1>
+
+
+<table class="formTable" cellspacing="0" style="width: 500px">
+    <tr>
+        <th colspan="2" style="border-bottom:1px #000099 solid;">Konversation Informationen</th>
+    </tr>
+    <tr>
+        <th>Konversation ID</th>
+        <td>
+            {ID_CHAT}
+        </td>
+    </tr>
+    <tr>
+        <th>Betreff</th>
+        <td>
+            {SUBJECT}
+        </td>
+    </tr>
+    <tr>
+        <th>Erstellungsdatum</th>
+        <td>
+            {todate(STAMP_CREATE)}
+        </td>
+    </tr>
+    <tr>
+        <th>User A</th>
+        <td>
+            {if !USER_0_TYPE}
+                <a href="index.php?page=user_edit&ID_USER={USER_0_ID}">{htm(USER_0_NAME)}</a>
+                <a href="mailto:{USER_0_EMAIL}?subject={url(SUBJECT)}"><img src="gfx/mail.gif" /></a>
+            {else}
+                {USER_0_EMAIL} <a href="mailto:{USER_0_EMAIL}?subject={url(SUBJECT)}"><img src="gfx/mail.gif" /></a>
+            {endif}
+        </td>
+    </tr>
+    <tr>
+        <th>User B</th>
+        <td>
+            {if !USER_1_TYPE}
+                <a href="index.php?page=user_edit&ID_USER={USER_1_ID}">{htm(USER_1_NAME)}</a>
+                <a href="mailto:{USER_1_EMAIL}?subject={url(SUBJECT)}"><img src="gfx/mail.gif" /></a>
+            {else}
+                {USER_1_EMAIL} <a href="mailto:{USER_1_EMAIL}?subject={url(SUBJECT)}"><img src="gfx/mail.gif" /></a>
+            {endif}
+        </td>
+    </tr>
+    <tr>
+        <th>Anzeige</th>
+        <td>{if FK_AD}<a href="#" onclick="showAd({FK_AD});">{FK_AD_NAME}</a>{endif}</td>
+    </tr>
+    <tr>
+        <th>Transaktion</th>
+        <td>{FK_TRANS}</td>
+    </tr>
+    <tr>
+        <th>Gesuch</th>
+        <td>{if FK_AD_REQUEST}<a href="index.php?page=ad_request&ID_AD_REQUEST={FK_AD_REQUEST}">{FK_AD_REQUEST_NAME}</a>{endif}</td>
+
+    </tr>
+    <tr>
+        <th>Aktionen</th>
+        <td>
+            <a onclick="return confirm('Konversation wirklich endgültig löschen?')" href="index.php?page=chat&DO=delete&ID_CHAT={ID_CHAT}&npage={npage}&returnto=message">
+                <img border="0" src="gfx/btn.del.gif">
+            </a>
+            {if AUTO_APPROVE}
+            <a onclick="return confirm('Soll diese Konversation nicht mehr automatisch bestätigt werden?')" href="index.php?page=chat&DO=unsetautoapprove&ID_CHAT={ID_CHAT}&npage={npage}&returnto=message">
+                <img border="0" src="gfx/ad_unlocked.png" alt="automatisch bestätigt">
+            </a>
+            {else}
+            <a onclick="return confirm('Soll diese Konversation automatisch bestätigt werden?')" href="index.php?page=chat&DO=autoapprove&ID_CHAT={ID_CHAT}&npage={npage}&returnto=message">
+                <img border="0" src="gfx/ad_locked.png" alt="nicht automatisch bestätigt">
+            </a>
+            {endif}
+        </td>
+    </tr>
+    <tr>
+        <th>Lesen Status</th>
+        <td>{IS_MSG_READ}
+            {if IS_MSG_READ}
+            lesen
+            {else}
+            unlesen
+            {endif}
+        </td>
+    </tr>
+    <tr>
+        <td align="right" colspan="2" class="footer">
+           <br />
+        </td>
+    </tr>
+</table>
+
+
+<br />
+
+
+<table border="0" cellspacing="0" cellpadding="4" class="liste" >
+
+	<tr>
+        <th style="width: 80px">Aktionen</th>
+		<th style="width: 130px">Datum</th>
+        <th style="width: 260px" colspan="2">Autor</th>
+        <th style="width: 600px;">Mitteilung</th>
+	</tr>
+	{liste}
+	<tr>
+		<td colspan="5">
+			{pager}
+		</td>
+	</tr>
+</table>
+
+<div id="dialog" style="display: none;"></div>

@@ -1,0 +1,114 @@
+{if IS_KAT && (SEARCH_TYPE==1)}
+{startblock(script)}
+{parentblock()}
+<script type="text/javascript">
+    function trim(zeichenkette){
+        zeichenkette = zeichenkette.replace(/^\n+/, '').replace(/\n+$/, '');
+        return zeichenkette.replace(/^\s+/, '').replace(/\s+$/, '');
+    }
+    var changed = 0;
+    var running = false;
+    var ajax_running = false;
+    function filterCategory(fkKat) {
+        jQuery("#presearch [name='FK_KAT']").val(fkKat);
+        changed = 1;
+        dosearch();
+
+        return false;
+    }
+
+    function loadProducts(id_man, id_product) {
+        $.ajax({
+            url: 		ebiz_trader_baseurl + ebiz_trader_baseurl + "index.php?page=artikel-suche&GET_PRODUCTS="+id_man+"&select="+id_product,
+            type: 		'GET',
+            dataType:	'json',
+            success: 	function(obj) {
+                $("#search_products").html(obj.code);
+                $("#search_products").show();
+            }
+        });
+    }
+
+    {if USE_PRODUCT_DB}
+    // run presearch
+    onload = function(){
+        loadProducts(0{FK_MAN}, 0{FK_PRODUCT});
+        //getLatiLongi();
+    };
+    {endif}
+    {if IS_SEARCH_RESULT || FK_KAT == 1}
+    jQuery(function() {
+        jQuery(".design-search-market-form").ebizSearch("presearch");
+    });
+    {endif}
+</script>
+{endblock(script)}
+{endif}
+
+{if SEARCH_TYPE==1}
+{subtpl(tpl/{SYS_TPL_LANG}/ads_search_special.htm,ROW_COUNT_GROUPS=1,*)}
+{endif}
+
+{if kats}
+<div class="panel panel-primary design-subtpl design-marketplace-categories-side">
+    <div class="panel-heading">Kategorien</div>
+    <ul id="katMenuLeft" class="menu-box menu-box-striped{if SPECIAL_MENU} menu-box-special{endif}">
+        {kats}
+    </ul>
+    <div class="panel-body">
+        <p>
+            <a href="{uri_action(marktplatz)}" title="Zur Marktplatzübersicht">
+                Alle Kategorien
+            </a>
+        </p>
+
+        {if SPECIAL_MENU}
+        <script type="application/javascript">
+            jQuery(function() {
+
+                var leaveMenuTimeout = false;
+                jQuery("#katMenuLeft").menuAim({
+                    activate: function(item) {
+                        jQuery(item).addClass("hover").addClass("hoverRecent");
+                    },
+                    deactivate: function(item) {
+                        jQuery(item).removeClass("hover").removeClass("hoverRecent");
+                    },
+                    enter: function(item) {
+                        if (leaveMenuTimeout !== false) {
+                            window.clearTimeout(leaveMenuTimeout);
+                            leaveMenuTimeout = false;
+                        }
+                        // Workaround for bug when deactivating a menu entry
+                        if (jQuery(item).hasClass("hoverRecent")) {
+                            jQuery(item).addClass("hover");
+                        }
+                    },
+                    exitMenu: function(menu) {
+                        if (leaveMenuTimeout !== false) {
+                            window.clearTimeout(leaveMenuTimeout);
+                            leaveMenuTimeout = false;
+                        }
+                        leaveMenuTimeout = window.setTimeout(function() {
+                            jQuery(menu).find(".hover").removeClass("hover");
+                            leaveMenuTimeout = false;
+                        }, 2000);
+                    }
+                });
+                // Menü schließen wenn der Benutzer auf etwas anderes klickt
+                jQuery(document).on("click", function(event) {
+                    jQuery("#katMenuLeft").find(".hover").removeClass("hover");
+                });
+
+            });
+        </script>
+        {if SHOW_AD_COUNT && FK_KAT == 1}
+        <p class="muted">
+            Anzeigen im Marktplatz: {ARTICLE_COUNT}
+        </p>
+        {endif}
+        {endif}
+    </div>
+    ^SUBTPL_ADMIN°
+</div>
+{endif}

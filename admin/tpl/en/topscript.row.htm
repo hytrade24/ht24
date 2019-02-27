@@ -1,0 +1,8 @@
+<tr class="zeile{even}">
+ <td><a href="index.php?page=topscript&delkw={KW}&delyear={JAHR}&npage={npage}" title="Script aus der Liste löschen"><img src="gfx/btn.del.gif" width="32" height="16" alt="del" /></a></td>
+ <td>{htm(JAHR)}</td>
+ <td>{htm(KW)}</td>
+ <td>{todate(VON)} bis {todate(BIS)}</td>
+ <td><a href="index.php?page=script_edit&ID_SCRIPT={FK_SCRIPT}" title="Script bearbeiten">{htm(V1)}</a></td>
+ <td><a style="cursor:pointer;" title="User bearbeiten!" onclick="popupfkt('user_edit&ID_USER={FK_USER}',700,500);">{htm(UNAME)}</a></td>
+</tr>

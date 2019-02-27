@@ -1,0 +1,69 @@
+<h1><img src="gfx/modul_64_painter.gif" width="64" height="64" alt="" border="0" align="left">Texte bearbeiten</h1>
+<p>Hier können Sie Ihrem vorher ausgewählten Bild Text hinzufügen. Sie können mehrere Texte unabhänging voneinander platzieren, indem
+Sie mehrere Layer (Ebenen) erstellen. Für jeden Layer können Sie individuell Schriftart (aus den installierten), Schriftgröße,
+Schriftfarbe und Textposition angeben.</p>
+
+{if image_selected!=0}
+<table cellpadding="0" cellspacing="0">
+<form method="post" action="index.php">
+  <input type="hidden" name="layer" value="{layer}">
+    <input type="hidden" name="page" value="texte_bearbeiten">
+<tr>
+  <td></td>
+  <td><img src="index.php?page=banner_scale&x={fmt0}"></td>
+</tr><tr>
+  <td><img src="index.php?page=banner_scale&y={fmt1}"></td>
+  <td><input type="image" id="preview" name="ofs" src="index.php?page=banner_preview" border="0"></td>
+  <td style="vertical-align:middle;">&nbsp;{dir}px</td>
+</tr><tr>
+  <td></td>
+</tr></form></table>
+In das Bild klicken, um den aktuellen Text zu positionieren.<br /><br />
+
+
+
+<table border="0">
+<form method="post" action="index.php">
+<input type="hidden" name="savedb" value="1" />
+<input type="hidden" name="page" value="texte_bearbeiten" />
+<tr>
+  <th>Bild Speichern:&nbsp;</th>
+  <td><input type="text" name="trgfile" value="{htm(trgfile)}"> <input type="submit" value="Speichern"></td>
+</tr>
+<tr>
+  <td colspan="3">
+     F&uuml;r den Bildnamen sind nur folgende Zeichen erlaubt: a-z, 0-9, Bindestrich und Unterstrich. Alle Buchstaben werden automatisch in Kleinschreibung umgewandelt.<br />
+	(Achtung! Falls Sie einen Namen angeben, der bereits existiert, werden für dieses Bild alle vorigen Einstellungen überschrieben.)</td>
+  </td>
+</tr>
+</form>
+</table>
+<br />
+<table style="background-color:#EEEEEE; border:1px solid; border-color:#9A9A9A">
+<tr>
+  <td colspan="3">
+    <a style="float:left;" href="index.php?page=texte_bearbeiten&n={anz}&do=mk#t{anz}">
+	  <img src="gfx/new.gif" /> Neuer Text
+	</a>
+  </td>
+  <td colspan="4">
+    <a style="float:right;" onClick="return confirm(\'Wollen Sie wirklich ALLE Texte löschen?\');" href="index.php?page=texte_bearbeiten&do=reset">
+	  <img src="gfx/btn.rmx.gif" /> Alle Texte löschen
+	</a>
+  </td>
+</tr>
+<tr>
+  <th style="border-bottom:1px solid #9A9A9A;">#</th>
+  <th style="border-bottom:1px solid #9A9A9A;">Aktionen</th>
+  <th style="border-bottom:1px solid #9A9A9A;">Farbe</th>
+  <th style="border-bottom:1px solid #9A9A9A;">Text</th>
+  <th style="border-bottom:1px solid #9A9A9A;">X</th>
+  <th style="border-bottom:1px solid #9A9A9A;">Y</th>
+  <th style="border-bottom:1px solid #9A9A9A;">Gr&ouml;&szlig;e / Schriftart</th>
+</tr>
+<tr>
+  {for_anz}
+</table>
+{else}
+	<div class="hinweis">Sie haben noch kein Bild zum Bearbeiten ausgewählt. Wählen Sie ein Bild aus, um es bearbeiten zu können.</div>
+{endif}

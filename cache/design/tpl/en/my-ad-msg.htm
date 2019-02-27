@@ -1,0 +1,98 @@
+<h1>
+		My requests
+		<p class="lead">View and reply to requests</p>
+	</h1>
+
+
+<ul class="nav nav-tabs userTabs">
+    <li class="{if modus <= 1}active{endif}">
+        <a href="{uri_action(my-ad-msg,1)}" title="Received requests">
+			Received requests
+		</a>
+    </li>
+    <li class="{if modus == 2}active{endif}">
+        <a href="{uri_action(my-ad-msg,2)}" title="Sent requests">
+			Sent requests
+		</a>
+    </li>
+</ul>
+<form action="{uri_action(my-ad-msg,{modus})}"  method="get" id="msgs">
+
+	<div class="design-content-box">
+		<h4><strong>Search messages</strong></h4>
+
+		<div class="row">
+			<div class="col-xs-6">
+                <div class="form-group">
+                    <label class="control-label">Content</label>
+                    <input type="text" name="SEARCH_CONTENT" value="{SEARCH_CONTENT}" class="form-control" />
+                </div>
+			</div>
+			<div class="col-xs-3">
+                <div class="form-group">
+                    <label class="control-label">Sender/receiver</label>
+				    <input type="text" name="SEARCH_USER" value="{SEARCH_USER}" class="form-control" />
+                </div>
+			</div>
+			<div class="col-xs-3">
+                <div class="form-group">
+                    <label class="control-label">Article-Nr.</label>
+				    <input type="text" name="SEARCH_FK_CONTENT" value="{SEARCH_FK_CONTENT}" class="form-control" />
+                </div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 text-right">
+				<input type="submit" value="Search" class="btn btn-primary">
+			</div>
+		</div>
+		<br>
+	</div>
+
+	<div class="breadcrumb">
+        <div class="pull-left">
+            <span class="text-muted">{all} Messages</span>
+        </div>
+        <div class="pull-right">
+
+        </div>
+        <br class="clearfix">
+    </div>
+
+	{if liste}
+		<div class="design-chat-message-list">
+			{liste}
+		</div>
+	{else}
+		<div class="design-content-box">
+			You have no messages.
+		</div>
+	{endif}
+
+    <p>
+    	{pager}
+    </p>
+</form>
+{if SHOW_CONTACT}
+<script type="text/javascript">
+jQuery(function() {
+	jQuery(".design-user-message").each(function() {
+		var contactName = jQuery(this).find(".design-user-message-contact").attr("data-name");
+		var contactHtml = jQuery(this).find(".design-user-message-contact").html();
+		var contactLink = jQuery(this).find(".chatMessageItemSender a");
+		contactLink.popover({
+			html: true, title: contactName, placement: "bottom", trigger: "click", content: contactHtml
+		}).on("show.bs.popover", function(event) {
+			jQuery(".design-user-message .chatMessageItemSender a").not(contactLink).popover("hide");
+		});
+		//debugger;
+	});
+	// Hide popover when clicking outside it
+	jQuery('body').on('click', function (e) {
+		if (jQuery(e.target).data('toggle') !== 'popover' && jQuery(e.target).parents('.popover.in').length === 0) {
+			jQuery(".design-user-message .chatMessageItemSender a").popover('hide');
+		}
+	});
+});
+</script>
+{endif}

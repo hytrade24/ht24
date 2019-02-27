@@ -1,0 +1,57 @@
+<h1>Kategorie Export</h1>
+
+<p>
+    Sie können Ihre Anzeigen als CSV exportieren. Wählen Sie hierzu die geünschten Filter Regeln aus und drücken Sie auf
+    <em>Anzeigen exportieren</em>.
+</p>
+
+<form method="post" action="{uri_baseurl(/index.php)}" id="exportFormular">
+    <input type="hidden" name="page" value="{curpage}"/>
+    <input type="hidden" name="FK_KAT" id="FORM_FK_KAT" value ="" />
+    <input type="hidden" name="DO" value="EXPORT" />
+
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr>
+            <td style="vertical-align: top; padding-top: 10px; ">Kategorie Tabelle:</td>
+            <td>
+                <select class="form-control" name="KAT_TABLE">
+                    <option value="ad_master">Master Tabelle</option>
+                    {TABLES}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Anzeigenstatus:</td>
+            <td>
+                <select class="form-control" name="STATUS">
+                    <option value="">alle Anzeigen</option>
+                    <option value="1">aktive Anzeigen</option>
+                    <option value="2">ausgelaufene Anzeigen</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Filter:</td>
+            <td>
+                <select class="form-control" name="FILTER">
+                    <option value="">kein Filter anwenden</option>
+                    {FILTER}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Spaltenbezeichnung:</td>
+            <td>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="FIRST_LINE_COLUMN_NAMES" />
+                        Spaltenbezeichnung exportieren
+                    </label>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="text-right">
+        <input type="submit" value="Anzeigen exportieren" class="btn btn-success"/>
+    </div>
+</form>

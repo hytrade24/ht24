@@ -1,0 +1,7 @@
+{if listmode_qry}<h3>Suche nach "{htm(qry)}" in Tabelle `{result_table}`</h3>
+<a href="javascript:reiterwechsel(2);">zur&uuml;ck zur Ergebnis-&Uuml;bersicht</a>
+{else}<h3>alle Datens&auml;tze in Tabelle `{result_table}`</h3>
+<a href="javascript:reiterwechsel(1);">zur&uuml;ck zur &Uuml;bersicht</a>
+{endif} - {if 0}<a href="javascript:listresults(mark_id, last_do, last_tbl);">Liste aktualisieren</a><br /><br />
+{else}<a href="javascript:listreload();">Liste aktualisieren</a><br /><br />
+{endif}{results}

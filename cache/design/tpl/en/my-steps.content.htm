@@ -1,0 +1,27 @@
+<h1>{htm(STEP_TITLE)}</h1>
+
+<form action="{uri_action({URL_IDENT})}" method="post" class="form-horizontal" onsubmit="SubmitStep(this); return false;" enctype="multipart/form-data">
+  <input type="hidden" name="step" value="{STEP_IDENT}"/>
+  
+  {CONTENT}
+  
+  <div class="design-content-box">
+    <div class="submit-step">
+      {if STEP_PREV_IDENT}
+      <button type="button" onclick="ShowStep('{STEP_PREV_IDENT}'); return false;" class="btn btn-danger">
+        Back
+      </button>
+      {endif}
+      {if STEP_FINISH}
+      <button data-action="finish" type="button" class="btn btn-primary">
+        Speichern und abschließen
+      </button>
+      {endif}
+      {if STEP_NEXT_IDENT}
+      <button type="submit" class="btn btn-primary">
+        Next
+      </button>
+      {endif}
+    </div>
+  </div>
+</form>

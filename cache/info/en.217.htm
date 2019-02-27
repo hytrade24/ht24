@@ -1,0 +1,10 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="217"{endif}>
+    <h3>Redeem voucher</h3>
+<p>Please enter your personal voucher code in the following form</p>
+<form class="form form-horizontal design-content-box" action="{uri_action(invoices,1,coupon)}" method="post">
+<div class="control-group"><label class="control-label"><strong>Enter voucher code:</strong></label>
+<div class="controls"><input type="text" name="COUPON_CODE" value="{htm(COUPON_CODE)}" placeholder="Voucher code" /> <input type="submit" class="btn" value="send" /></div>
+</div>
+</form>
+</div>

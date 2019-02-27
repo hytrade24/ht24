@@ -1,0 +1,16 @@
+for (var i = 0; i < {MARKER_NAME}.length; i++) {
+    var marker = new google.maps.Marker({
+            'position': new google.maps.LatLng({MARKER_NAME}[i].LATITUDE, {MARKER_NAME}[i].LONGITUDE),
+            'ID': {MARKER_NAME}[i].ID,
+            'TYPE': '{type}',
+    });
+
+    google.maps.event.addListener(marker, 'mouseover', function() {
+		var me = this;
+        getContent('singlemarker', this, function(content) {
+			setMapInfo(content, me);
+		});
+    });
+
+    markers.push(marker);
+}

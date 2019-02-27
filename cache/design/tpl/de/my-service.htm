@@ -1,0 +1,47 @@
+<h1>{htm(title)}</h1>
+<h2>
+	Bestellvorgang<br />
+	<span class="lead">Bitte beachten Sie die enstehenden Kosten</span>
+</h2>
+<p>
+	Nach Pr&uuml;fung Ihrer Auswahl k&ouml;nnen Sie die 
+	gew&auml;hlten Leistungen kaufen.
+</p>
+
+{if error_coupon}<div class="alert alert-danger">{error_coupon}</div>{endif}
+
+<form method="post" action="{uri_action(my-service)}">
+	<input type="hidden" name="success" value="{htm(success)}" />
+		<h2>Kosten</h2>
+		<table class="table table-condensed table-striped">
+            <thead>
+			<tr>
+				<th>Anzahl</th>
+				<th>Posten</th>
+				<th>Stückpreis (Netto)</th>
+				<th>Netto-Preis</th>
+				<th>Brutto-Preis</th>
+			</tr>
+            </thead>
+			{liste}
+			<tr>
+				<td style="border-top: 3px double black; font-weight: bold; text-decoration: underline;">&nbsp;</td>
+				<td style="border-top: 3px double black; font-weight: bold; text-decoration: underline;">Gesamtkosten</td>
+				<td style="border-top: 3px double black; font-weight: bold; text-decoration: underline;">&nbsp;</td>
+				<td style="border-top: 3px double black; font-weight: bold; text-decoration: underline;">{topreis_ex(PRICE)} {CURRENCY_DEFAULT}</td>
+				<td style="border-top: 3px double black; font-weight: bold; text-decoration: underline;">{topreis_ex(PRICE_BRUTTO)} {CURRENCY_DEFAULT}</td>
+			</tr>
+		</table>
+	<br />
+
+	<div class="row">
+		{if OPTION_COUPON_ENABLED}
+		<div class="col-xs-8">
+			{subtpl(tpl/{SYS_TPL_LANG}/coupon_widget.htm,*)}
+		</div>
+		{endif}
+		<div class="col-xs-4 pull-right">
+			<input type="submit" name="finish" class="btn btn-success pull-right" value="Bestellung kostenpflichtig abschließen" />
+		</div>
+	</div>
+</form>

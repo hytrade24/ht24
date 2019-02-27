@@ -1,0 +1,68 @@
+<h1>
+	Kommentar zu {htm(TABLE_DESC)}:
+	<a href="{TARGET_LINK}" style="font-size: 18px;">{htm(TITLE)}</a>
+</h1>
+
+
+{if success}
+<p class="ok">
+	Ihre Änderungen am Kommentar wurden erfolgreich gepeichert.
+</p>
+{endif}
+<p>
+	<strong>
+		{todate(STAMP,1)} von Benutzer
+		{if FK_USER > 0}
+		<a href="index.php?page=user_edit&ID_USER={FK_USER}" name="{USER_NAME}">{USER_NAME}</a>
+		{else}
+		<a href="mailto:{USER_MAIL}" name="{USER_NAME}">{USER_NAME}</a>
+		{endif}
+	</strong>
+</p>
+
+<form method="post">
+	<div>
+		<b>Bewertung:</b>
+		<br />
+		<select name="RATING">
+			{if ALLOW_RATING}
+			<option value="">Keine Bewertung</option>
+			<option value="1"{if RATING==1} selected="selected"{endif}>1 Stern</option>
+			<option value="2"{if RATING==2} selected="selected"{endif}>2 Sterne</option>
+			<option value="3"{if RATING==3} selected="selected"{endif}>3 Sterne</option>
+			<option value="4"{if RATING==4} selected="selected"{endif}>4 Sterne</option>
+			<option value="5"{if RATING==5} selected="selected"{endif}>5 Sterne</option>
+			{else}
+			<option value="" selected="selected">Keine Bewertung</option>
+			{endif}
+		</select>
+	</div>
+	<br />
+	
+	<input type="hidden" name="ID_COMMENT" value="{ID_COMMENT}" />
+	<textarea style="width: 100%; height: 240px;" name="COMMENT">{htm(COMMENT)}</textarea>
+	<br />
+	{if ANSWER_COMMENT}
+	<br>
+	<br>
+	<strong>
+		{todate(ANSWER_STAMP,1)} Antwort von Benutzer
+		{if FK_USER_OWNER > 0}
+		<a href="index.php?page=user_edit&ID_USER={FK_USER_OWNER}" name="{ANSWER_USER_NAME}">{ANSWER_USER_NAME}</a>
+		{else}
+		<a href="mailto:{USER_MAIL}" name="{ANSWER_USER_NAME}">{ANSWER_USER_NAME}</a>
+		{endif}
+	</strong>
+	<br>
+	<textarea style="width: 100%; height: 240px;" name="ANSWER_COMMENT">{htm(ANSWER_COMMENT)}</textarea>
+	{else}
+	<br>
+	<br>
+	<strong>
+		keine Antwort vorhanden.
+	</strong>
+	{endif}
+	<div style="text-align: right;">
+		<input type="submit" value="Speichern" />
+	</div>
+</form>

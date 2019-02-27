@@ -1,0 +1,482 @@
+abort: Abbrechen
+accept: annehmen
+accepted: Akzeptiert
+accepted.lower: akzeptiert
+access.denied: 'Zugriff verweigert'
+action: Aktion
+actions: Aktionen
+active: Aktiv
+active.lower: aktiv
+ad.cart.error.quantity: 'Es sind leider nur noch {COUNT} Stück übrig. Bitte reduzieren Sie die gewünschte Menge.'
+ad.qrcode: 'QR-Code anzeigen'
+add.new.address: 'Neue Adresse hinzufügen'
+add.searchword: 'Schlagwort hinzufügen'
+address: Anschrift
+again: Wiederholung
+agreed: Zugesagt
+all: Alle
+amount: Anzahl
+an.error.occurred: 'Es ist ein Fehler aufgetreten!'
+and.this: 'und dem'
+answers: Antworten
+are.perform.this.action: 'Möchten Sie diese Aktion wirklich ausführen?'
+attention: Achtung!
+back: Zurück
+between.this: 'Zwischen dem'
+bill.state: Rechnungsübersicht
+bill.status: Rechnungsstatus
+birthdate: Geburtsdatum
+blog: Blog
+broadcast: Rundmail
+broadcast.mail: Rundmail
+button.cancel: Abbrechen
+calendar: Kalender
+calendar.event.add.category: Kategorie
+cancel: Abbrechen
+cancle: Abbrechen
+categories: Kategorien
+categories.uppercase: KATEGORIEN
+category: Kategorie
+change: Ändern
+change.saved: '&Auml;nderung erfolgreich gespeichert!'
+change.setting: 'Einstellung ändern'
+changes.saved: 'Änderungen gespeichert'
+characters: Zeichen
+chat.new.ad: 'neue Anfrage{if PLURAL_COUNT!=1}n{endif}'
+chat.new.other: 'neue Nachricht{if PLURAL_COUNT!=1}en{endif}'
+check: '(wird geprüft)'
+choose: 'Ausw&auml;hlen'
+choose.all: 'Alle ausw&auml;hlen'
+choose.category: 'Kategorien gewählt'
+city: Ort
+click.here: 'klicken Sie bitte hier'
+close: Schließen
+close.window: 'Fenster schließen'
+club: Club
+club.invite: Gruppen-Einladungen
+club.invite.notification: 'Sie haben eine Einladung erhalten um folgenden Clubs beizutreten'
+comment: Kommentar
+comments: Kommentare
+comments.activated: 'Kommentare aktiviert'
+comments.deactivated: 'Kommentare deaktiviert'
+comments.for.invite: 'Ihre Anmerkungen zur Einladung'
+comments.here: 'Kommentare vorhanden'
+comments.show.with.count: '{int(COUNT)} Kommentare anzeigen'
+comments.to.invite: 'Ihre Anmerkungen zur Einladung'
+company: Firma
+confirmation: Bestätigung
+contact.form.email: 'Ihre Email'
+contact.form.error.missing.fields: 'Folgende Felder wurden nicht oder nur unvollst&auml;ndig ausgef&uuml;llt:'
+contact.form.message: 'Ihre Nachricht'
+contact.form.name: 'Ihr Name'
+contact.form.phone: 'Ihre Telefonnummer'
+contact.form.security.question: 'Bitte beantworten Sie folgende Frage'
+contact.form.subject: Betreff
+contact.form.submit: Abschicken
+contact.form.success.lead: |
+  Ihre Nachricht wurde erfolgreich zugestellt.<br />
+          Wir werden uns in Kürze bei Ihnen melden!
+contact.form.success.title: 'Vielen Dank!'
+continue: Weiter
+cookie.notice: |
+  verwendet Cookies, um ihnen die bestmögliche Leistung zu gewährleisten. 
+              Wenn Sie weiterhin auf der Seite surfen stimmen Sie der <a href="{uri_action(datenschutzerklaerung)}">Cookie-Nutzung</a> zu.
+cookie.notice.close: x
+country: Land
+country.group.others: Sonstige
+coupon.register.help: 'Wenn Sie einen Gutscheincode besitzen, können Sie diesen hier eingeben'
+coupon.register.label: Gutscheincode
+coupon.register.placeholder: 'Gutscheincode eingeben'
+create.calendar.record: 'Kalendereintrag erstellen'
+created.at: 'eingestellt am'
+created.from: 'Erstellt von'
+cycle.once: Einmalig
+date: Datum
+date.added: 'eingestellt am'
+date.at: Am
+date.by: vom
+date.datefrom: 'Datum von'
+date.dateuntil: 'Datum bis'
+date.day: Tag
+date.days: Tage
+date.from: Von
+date.from.long: 'Datum von'
+date.month: Monat
+date.months: Monate
+date.names.days.friday: Freitag
+date.names.days.monday: Montag
+date.names.days.saturday: Samstag
+date.names.days.sunday: Sonntag
+date.names.days.thursday: Donnerstag
+date.names.days.tuesday: Dienstag
+date.names.days.wednesday: Mittwoch
+date.names.months.april: April
+date.names.months.august: August
+date.names.months.december: Dezember
+date.names.months.february: Februar
+date.names.months.january: Januar
+date.names.months.july: Juli
+date.names.months.june: Juni
+date.names.months.march: März
+date.names.months.may: Mai
+date.names.months.november: November
+date.names.months.october: Oktober
+date.names.months.september: September
+date.quarter: Quartal
+date.quarters: Quartale
+date.span: '{todate(BEGIN)} bis {todate(END)}'
+date.starting.at: 'Ab dem'
+date.until: Bis
+date.until.between: bis
+date.week: Woche
+date.weeks: Wochen
+date.when: Wann
+date.year: Jahr
+date.years: Jahre
+datetime.span: '{todate(BEGIN,1)} bis {todate(END,1)}'
+day.s: Tag(e)
+day.s.n: Tag(en)
+days: Tage
+deactivate: Deaktivieren
+deactive: Deaktiviert
+declined: ablehnen
+delete: Löschen
+delete.import.and.ads: 'Löschen Sie den Import und die Anzeigen'
+delete.invite: 'Einladung widerrufen'
+delete.logo: 'Logo l&ouml;schen'
+delete.only.import: 'Löschen Sie nur den Import'
+delete.options: 'Optionen löschen'
+delete.two: löschen
+delete.video: 'Video löschen'
+delivered.comments: 'Abgegebene Kommentare'
+description: Beschreibung
+deselect.all: 'Alle abw&auml;hlen'
+disagreed: Abgesagt
+displays: Anzeigen
+do.u.want: 'Möchten Sie'
+do.u.want.invite: 'Möchten Sie die Einladung von'
+domicile: Wohnort
+duplicate: Duplizieren
+edit: Bearbeiten
+edit.address: 'Adresse bearbeiten'
+edit.two: bearbeiten
+editor.image.browse.label: Auswählen
+editor.image.insert.label: Auswählen
+email: 'E-Mail Adresse'
+enable: Aktivieren
+ended: Beendet
+ended.lower: beendet
+error: Fehler
+error.an.error.occured: 'Es ist ein Fehler aufgetreten!'
+error.an.error.occurred: 'Es ist ein Fehler aufgetreten!'
+error.occured: 'Fehler aufgetreten'
+error.occurred: 'Fehler aufgetreten!'
+event: Veranstaltung
+eventcalendar: Veranstaltungkalender
+events: Veranstaltungen
+events.from: 'Veranstaltungen von'
+execute: Ausführen
+execute.now: 'Jetzt ausf&uuml;hren'
+explenation.cancel.invoice: '= Anfrage für Rechnung stornieren'
+explenation.print: '= Drucken'
+explenation.view: '= Ansehen'
+fax: Fax
+file: Datei
+filename: Dateiname
+filetype: Dateityp
+filter: Filter
+firm: Firma
+firm.number: Firmen-Nr.
+firm.vendor: 'Firma / Anbieter'
+first.and.last.name: Vor-/Nachname
+first.name: Vorname
+firstname: Vorname
+for.example: 'z.B.: Max Mustermann'
+for.example.mail: 'z.B.: Max.Mustermann@gmx.de'
+from: von
+gallery.slider.back: 'Vorheriges Bild'
+gallery.slider.close: Schließen
+gallery.slider.forward: 'Nächstes Bild'
+got.comments: 'Erhaltene Kommentare'
+group: Gruppe
+group.directory.long: |
+  Hier finden Sie eine Übersicht über alle Kommentare die zu ihrer Gruppe.<br />
+      {if CLUB_OWNER}
+          Unter <a href="{uri_action(my-settings)}">Einstellungen</a> können Sie angeben, ob erhaltenen Kommentare automatisch oder manuell freigeschaltet werden müssen.
+group.forum: 'Gruppen Diskussionen'
+group.index: Gruppenverzeichnis
+group.index.long: 'Sie können mit Hilfe von Gruppen eine Interessengemeinschaft gründen. Bitte vergewissern Sie sich, ob nicht bereits eine ähnliche Interessengemeinschaft existiert.'
+group.leader: Gruppen-Leiter
+group.leadership.commited: 'Gruppenleitung übergeben'
+group.number: Gruppen-Nr.
+group.solve: 'Gruppe auflösen'
+group.solve.long: 'Achtung, das löschen der Gruppe kann nicht rückgängig gemacht werden'
+group.solve.now: 'Gruppe jetzt auflösen'
+groups: Gruppen
+gtc.and.cancelation: 'AGB und Widerrufsbelehrung'
+help.captcha: 'Hilfe zum Sicherheits-Code'
+help.captcha.long: |
+  Mit Hilfe dieser zus&auml;tzlichen Sicherheits&uuml;berpr&uuml;fung verhindern wir die so genannte &bdquo;automatische Anmeldungen&ldquo;,
+          sowie eine betr&uuml;gerische Verwendung des Kontakt Formulars. Der Verifizierungscode ist weder mit Ihrem Passwort noch mit anderen pers&ouml;nlichen Daten identisch.<br />
+          <br />
+          Wenn Sie Schwierigkeiten beim Entziffern des im Bild verborgenen Codes haben, versuchen Sie die Seite neu zu laden, da so ein neuer Sicherheits-Code generiert wird.<br />
+          <br />
+          Ohne die richtig Eingabe des Codes wird es Ihnen nicht m&ouml;glich sein das Formular abzuschicken.<br />
+hint: Hinweis
+homepage: Homepage
+image.notfound: 'Kein Bild gefunden'
+indexes.number: Anzeigen-Nr.
+invite.member: 'Mitglied einladen'
+is.group.leader: 'ist Gruppen-Leiter'
+is.paid: Kostenpflichtig
+job.location.city: Ort
+keywords: Schlagworte
+label: Bezeichnung
+language: Sprache
+last.comment: 'Letzter Kommentar am'
+last.name: Nachname
+lastname: Nachname
+layout.logo.alt: '{site_name}'
+lead.description: 'Ihre Nachricht'
+lead.quantity: Menge
+leave.group: 'Gruppe verlassen'
+leave.group.now: 'Gruppe jetzt verlassen'
+legend: Legende
+load.please.wait: 'Bitte warten...'
+loading.please.wait: 'Bitte warten ...'
+location: Ort
+location.city: Ort
+location.country: Land
+location.where: Wo
+location.zip.city: 'PLZ / Ort:'
+locked: gesperrt
+logged.in: Angemeldet
+logged.out: Abgemeldet
+login.lost.password: 'Passwort vergessen'
+login.lost.password.title: 'Passwort anfordern'
+login.remember: 'eingeloggt bleiben?'
+login.submit: Einloggen
+mail: E-Mail
+manufacturer: Hersteller
+manufacturer.categories.lead: 'Bitte wählen Sie eine Produktkategorie des Herstellers, um eine Liste der verfügbaren Produkte zu erhalten.'
+manufacturer.products.category.title: 'Produkte vom Hersteller &quot;{htm(MAN_NAME)}&quot; aus der Kategorie <a href="{uri_action(marktplatz,{ID_KAT})}">&quot;{htm(KAT_V1)}&quot;</a>'
+manufacturer.products.name: Produktbezeichnung
+manufacturer.products.offers: Angebote
+manufacturer.products.offers.none: 'Keine Angebote vorhanden'
+manufacturer.products.offers.single: Angebot
+manufacturer.products.search.result: 'Alle {SEARCH_COUNT} Angebote zu diesem Hersteller anzeigen'
+manufacturer.products.title: 'Produkte vom Hersteller &quot;{htm(MAN_NAME)}&quot;'
+manufacturer.products.top: Top-Angebote
+manufacturer.uppercase: HERSTELLER
+member.since: 'Mitglied seit'
+members: Mitglieder
+message: Nachricht
+message.delivered: 'Ihre Nachricht wurde erfolgreich zugestellt!'
+message.offer.article: Artikel
+message.offer.article.amount: Menge
+message.offer.article.price: Preis
+message.offer.article.search: 'Artikel suchen...'
+message.rent.from: Start
+message.rent.range: Miet-Zeitraum
+message.rent.to: Rückgabe
+message.subject: Betreff
+mobile: Mobil
+moderator: Moderator
+money.amount: Betrag
+month: Monat
+my.events: 'Meine Veranstaltungen'
+my.pages.club.invite.accept: Akzeptieren
+my.pages.club.invite.actions: Aktionen
+my.pages.club.invite.club.name: Club-Name
+my.pages.club.invite.date: 'Datum der Einladung'
+my.pages.club.invite.decline: Ablehnen
+my.participations: 'Meine Teilnahmen'
+my.profil.social.media.status: aktiv
+my.searchwords: 'Meine Schlagw&ouml;rter'
+name: Name
+name.first: Vorname
+name.last: Nachname
+new.pic: 'Neues Bild einf&uuml;gen'
+news.media.is.preview: Vorschau
+news.number: News-Nr
+newsletter.confirm.notice: |
+  Sie erhalten in den nächsten Minuten eine E-Mail mit einem Link,
+              über den Sie Ihre Bestellung bestätigen können.<br>
+              Sollten Sie sich anders entscheiden, unterlassen Sie einfach die Bestätigung;
+              Ihre Bestellung wird dann nach einiger Zeit gelöscht.
+newsletter.confirmation: 'Wir haben Ihre Bestellung zu unserem Newsletter unter der E-Mail-Adresse ''{EMAIL}'' erhalten.'
+newsletter.confirmed.notice.unsubscribe: 'Sie können sich über unser Portal jederzeit aus unserer Mailing-Liste austragen.'
+newsletter.confirmed.title: 'Vielen Dank für die Bestätigung Ihrer Newsletter-Bestellung.'
+newsletter.removed.notice.subscribe: 'Sie können unseren Newsletter jederzeit wieder abonnieren.'
+newsletter.removed.title: 'Ihre Adresse wurde aus unserer Mailing-Liste entfernt..'
+next: Weiter
+'no': Nein
+no.files.uploaded: 'Sie haben noch keine Dokumente hochgeladen.'
+no.rating.found: 'Keine Bewertungen gefunden.'
+no.searchwords.there: 'Noch keine Schlagw&ouml;rter vorhanden'
+not.created.events: 'Sie haben derzeit keine Veranstaltungen eingestellt.'
+not.entered: 'Noch nicht bestätigt'
+not.signedin.events: 'Sie sind derzeit bei keinen Veranstaltungen angemeldet.'
+not.stated: 'Nicht angegeben'
+not.yet.saved.pages: 'Noch keine gemerkten Seiten'
+notice: Hinweis
+number: Nummer
+offence: Verstoß
+on.the.site: 'auf Seite unterwegs...'
+online: Online
+open: '&Ouml;ffnen'
+open.shortly: 'wird in kürze veröffentlicht..'
+options: Optionen
+own.events: 'Eigene Veranstaltungen'
+page.error.403: 'Die gew&uuml;nschte Seite kann nicht angezeigt werden.'
+page.error.403.long: |
+  Sie sind nicht berechtigt, die gewünschte Seite aufzurufen.<br />
+          Bei weiteren Problemen wenden Sie sich bitte an den Administrator.
+page.error.404: 'Die gew&uuml;nschte Seite / Angebot {if fnfpage}({fnfpage}) {endif}kann nicht angezeigt werden.'
+participations: Teilnehmer
+password: Passwort
+payable.until: 'Fällig bis'
+payment.adapter: Zahlungsweise
+personal: 'Pers&ouml;nliches'
+phone: Telefon
+pic.delete: 'Bild löschen'
+pics.and.videos: 'Bilder und Videos'
+pixel: Pixel
+pls.enter.description: 'Bitte geben Sie eine Beschreibung ein.'
+plugin.user.task.list.heading: 'Erste Schritte'
+plugin.user.task.list.intro: 'Die folgenden Schritten sollten Sie noch durchgehen, um Ihren Account zu vervollständigen:'
+plus.taxes: 'zzgl. {TAX_PERCENT}% MwSt'
+postcode: PLZ
+powered.by: 'powered by <a href="{LINK}">{htm(NAME)}</a>'
+presenter: Moderator
+president: Vorsitzender
+preview: Vorschau
+price: Preis
+price.free: Kostenlos
+price.free.trial: 'Kostenloser Testzeitraum'
+privacy: Privatsphäre
+profil: 'Profil von'
+public: Öffentlich
+publish: veröffentlicht
+quantity: Menge
+range.until: bis
+rating.average: 'Durchschnittliche Bewertung'
+read.more: 'mehr erfahren'
+realname: Klarname
+receiver: Empfänger
+release.the.article: 'geben Sie den Artikel frei'
+remarks: Anmerkungen
+reset: Reset
+responsible: ZUSTÄNDIG
+result.not.successful: 'Nicht erfolgreich!'
+salutation: Anrede
+save: Speichern
+save.address: 'Adresse speichern'
+search: Suche
+search.by.date: Datum
+search.results.show: '({ALL_ADS}) Treffer anzeigen'
+search.submit: Suchen
+searchwords: Schlagworte
+security.question: Sicherheitsfrage
+select: 'Ausw&auml;hlen'
+select.all: 'Alle ausw&auml;hlen'
+select.package: 'Paket auswählen'
+selection.all: 'Alle auswählen'
+selection.clear: 'Auswahl aufheben'
+selection.toggle: 'Alle aus-/abwählen'
+send: Senden
+send.invite: 'Einladung verschicken'
+settings.saved: 'Ihre Einstellungen wurden erfolgreich gespeichert'
+shipping.costs: Versandkosten
+shipping.use.invoice.address: 'Rechnungsadresse verwenden'
+shipping.use.invoice.address.checkbox: 'Die Rechnungsadresse auch für den Versand verwenden'
+show.all: 'Alle anzeigen'
+show.comments: 'Kommentare anzeigen'
+side.structure: 'Unsere Seitenstruktur'
+sign: Zeichen
+slider.next: Next
+slider.prev: Previous
+social.newsletter.order: 'Newsletter bestellen'
+social.newsletter.order.email: Emailadresse
+social.newsletter.order.lead: 'Jetzt anmelden und kein Angebot mehr verpassen'
+social.visit.us: 'Besuchen Sie auch unsere Sozialmedia-Seiten'
+standard: Standard
+start.search: 'Suche starten'
+statistic.access: Zugriffe
+statistic.access.profile: Profilzugriffe
+statistic.range.day: 'Pro Tag'
+statistic.range.month: 'Pro Monat'
+statistic.recache: Aktualisieren
+statistics.alle.kunden.modal.show: 'Alle Kunden Statistik anzeigen'
+statistics.modal.show: 'Statistik anzeigen'
+status: Status
+step.four: 'Schritt 4'
+step.one: 'Schritt 1'
+step.three: 'Schritt 3'
+step.two: 'Schritt 2'
+street: Straße
+street.number: 'Straße & Hausnummer'
+subject: Betreff
+success: Erfolg
+tag: Schlagworte
+tel: Tel
+telephone: telefon
+the.user: 'der User'
+there.is.an.error: 'Es ist ein Fehler aufgetreten'
+time.clock: Uhr
+time.from: ab
+time.hour: Stunde
+time.hours: Stunden
+time.span: '{BEGIN}Uhr - {END}Uhr'
+title: Titel
+title.searchwords: 'Titel/Stichworte:'
+title.tags: Titel/Stichworte
+to: bis
+to.comment: 'zum Kommentar'
+topic: Thema
+translation.tool.discard.changes: 'Möchten Sie wirklich alle Änderungen verwerfen ?'
+try.again.or.contact.support: 'Bitte versuchen Sie es erneut. Sollten Sie weiterhin Probleme haben bitten wenden Sie sich an unseren Support.'
+typ: Typ
+type.title: 'Bitte geben Sie einen Titel ein.'
+unexpected.error: 'Es ist ein unerwarteter Fehler aufgetreten!'
+unlock: Freischalten
+unsure: Ungewiss
+until: bis
+upload.cancel: 'Upload abbrechen'
+upload.cancel.confirm: 'Upload wirklich abbrechen?'
+url: Url
+user: Benutzer
+user.fax: Fax
+user.invoice.confirm.delete.address: 'Möchten Sie diese Adresse wirklich löschen?'
+user.phone: Telefon
+user.shipping.confirm.delete: 'Möchten Sie diese Adresse wirklich löschen?'
+user.shipping.error.delete.address: 'Fehler beim löschen der Adresse!'
+username: Benutzername
+username.form.person: 'Der Benutzername der Person'
+value: Betrag
+vat.id: 'Umsatzsteuer ID'
+view.details: 'Details ansehen'
+visibility: Sichtbarkeit
+wait.for.release: 'Auf Freigabe warten'
+waiting.for.release: |
+  wartend auf
+              Freischaltung
+warm.welcome: 'Herzlich willkommen!'
+warning: Achtung!
+watch: ansehen
+web: Web
+who.is.where.online: 'Wer ist wo online?'
+window.close: 'Fenster schließen'
+write.message: 'Nachricht schreiben'
+'yes': Ja
+you.are.in: 'Sie befinden sich in'
+you.can.change.name.once: 'Sie d&uuml;rfen einmalig Ihren Benutzernamen &auml;ndern'
+you.have: 'Sie haben'
+your.email: 'Ihre E-Mail Adresse'
+your.firstname: 'Ihr Vorname'
+your.lastname: 'Ihr Nachname'
+your.message: 'Ihre Nachricht'
+your.name: 'Ihr Name'
+zip: PLZ
+zip.and.location: 'PLZ & Ort'
+zipcode: Postleitzahl

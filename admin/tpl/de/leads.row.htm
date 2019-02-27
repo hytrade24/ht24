@@ -1,0 +1,72 @@
+    <tr class="zeile{even}">
+      <td>
+        <a href="#lead{id}_details" onclick="jQuery( jQuery(this).attr('href') ).toggle(); return false;">
+          <img src="/de/gfx/btn.detail.gif" alt="view">
+        </a>
+      </td>
+      <td>
+        {if moderated}
+          <span class="ok">Freigegeben</span>
+        {else}
+          {if declined}
+            <span class="error">Abgewiesen / Gesperrt</span>
+          {else}
+            <strong>Noch nicht geprüft</strong>
+          {endif}
+        {endif}
+      </td>
+      <td>{htm(id)}</td>
+      <td>
+        {htm(title)}
+      </td>
+      <!--<td>{htm(project_title)}</td>-->
+      <td>
+      {if user_trader_user_ID_USER}
+        <a target="_blank" href="index.php?lang=de&page=user_edit&ID_USER={user_trader_user_ID_USER}">
+        {htm(user_trader_user_NAME)}
+        </a>
+      {else}
+        ---
+      {endif}
+      </td>
+      <td>{todate(due)}</td>
+    </tr>
+    <tr id="lead{id}_details" class="zeile{even}" style="display: none;">
+      <td></td>
+      <td colspan="5">
+        {preview}
+        
+        <h2>Lead freigeben/sperren</h2>
+
+        <form action="{searchUrl}" method="post">
+          <input type="hidden" name="page" value="{curpage}" />
+          <input type="hidden" name="actionId" value="{id}" />
+          
+          <strong>Status des Leads</strong>
+          <br />
+          <div>
+            <label>
+              <input type="radio" name="action" value="confirm"{if !declined} checked{endif} />
+              Lead freigeben
+            </label>
+            <label>
+              <input type="radio" name="action" value="unconfirm"{if declined} checked{endif} />
+              Lead ablehnen/sperren
+            </label>
+          </div>
+          <br />
+          
+          <strong>Notizen (nur für Administration sichtbar)</strong>
+          <br />
+          <textarea name="NOTES" style="width: 99%; height: 160px;">{htm(adminNotes)}</textarea>
+          <br />
+          
+          <strong>Grund für die abgelehnte Freigabe</strong>
+          <br />
+          <textarea name="REASON" style="width: 99%; height: 160px;">{htm(declineReason)}</textarea>
+          <div style="text-align: right;">
+            <button type="submit">Änderung speichern</button>
+          </div>
+        </form>
+      </td>
+    </tr>

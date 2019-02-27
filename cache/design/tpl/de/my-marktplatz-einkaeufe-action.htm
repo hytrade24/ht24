@@ -1,0 +1,20 @@
+{if SUCCESS || PENDING}
+	<meta http-equiv="refresh" content="5; URL={uri_action(my-marktplatz-einkaeufe)}">
+
+	<div class="well-box align-center">
+		<div class="row">
+			<div class="col-sm-6 col-sm-offset-3">
+				<h2 class="text-center">Zahlung erhalten</h2>
+				<p>
+                        Vielen Dank für die Zahlung Ihres Einkaufs.
+                        Der Händler wurde über den Geldeingang informiert und wird Ihre Bestellung weiterverarbeiten.
+                    </p>
+                    <p>
+                        Sie werden nun wieder auf <a href="{uri_action(my-marktplatz-einkaeufe)}">Ihre Einkäufe</a> weitergeleitet.
+                    </p>
+			</div>
+		</div>
+	</div>
+{else}
+	{OUTPUT}
+{endif}

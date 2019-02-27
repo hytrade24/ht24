@@ -1,0 +1,120 @@
+<script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+<script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+
+<script>
+	function searchProducts(page) {
+		if(typeof  page == "undefined") {
+			page = 1;
+		}
+
+		var search = jQuery("#SEARCH_HDB").val();
+		var eanInput = jQuery("#SEARCH_EAN");
+		var ean = (eanInput.length > 0 ? eanInput.val() : "");
+
+		var url = ebiz_trader_baseurl + "index.php?page=my-marktplatz-neu&mode=ajax&do=typeahead_product_table&search_hdb="+encodeURIComponent(search)+"&search_ean="+ean+"&curpage="+page;
+
+		jQuery.get(url, function(result) {
+			jQuery(".result-table").html(result);
+		});
+
+		return false;
+	}
+
+	function selectProduct(hdbProductId, hdbTable) {
+		if(typeof hdbProductId == 'undefined' || typeof hdbTable == 'undefined') {
+			hdbProductId = '';
+			hdbTable = '';
+		}
+
+		var form = jQuery("#adCreateSubmitForm");
+		form.find("[name='ID_HDB_PRODUCT']").val(hdbProductId);
+		form.find("[name='HDB_TABLE']").val(hdbTable);
+
+		form.submit();
+
+		return false;
+	}
+
+
+	jQuery(function() {
+		jQuery(".js-tooltip").tooltip();
+	})
+
+</script>
+
+<h1>Produktdatenbank</h1>
+<p class="lead">
+    Sie können Ihren einzustellenden Artikel in unserer Produktdatenbank suchen und aus dieser die Beschreibung und Spezifikation
+		übernehmen
+</p>
+
+
+<form method="post" id="form_ad"  onsubmit="return searchProducts();" class="form-horizontal">
+
+
+	<div id="description">
+
+		<p>Suchen Sie über die folgende Eingabemaske die Hersteller und Produktbezeichnung des Artikels, welches Sie anbieten möchten.
+			Sofern das Produkt bereits in unserer Datenbank vorhanden ist, werden alle techn. Spezifikationen übernommen.
+		</p>
+
+		<div class="well">
+				<div id="SEARCH_HDB_INPUT" class="control-group">
+					<label class="control-label" for="SEARCH_HDB">
+						<strong>Hersteller / Produkt</strong>
+						<i class="icon icon-question-sign js-tooltip" data-toggle="tooltip" title="Geben Sie hier den Hersteller und die Produktbezeichnung des Artikels ein."></i>
+					</label>
+					<div class="controls">
+						<input type="text" id="SEARCH_HDB" name="SEARCH_HDB" value="{htm(SEARCH_HDB)}" class="input-large">
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+			{if USE_EAN}
+				<div class="control-group">
+					<label class="control-label"></label>
+					<div class="controls">
+						- oder -
+					</div>
+				</div>
+
+
+				<div id="SEARCH_EAN_INPUT" class="control-group">
+					<label class="control-label" for="SEARCH_EAN">
+						<strong>EAN / GTIN</strong>
+						<i class="icon icon-question-sign js-tooltip" data-toggle="tooltip" title="Geben Sie hier die EAN13 oder GTIN ein"></i>
+					</label>
+					<div class="controls">
+						<input type="text" id="SEARCH_EAN" name="SEARCH_EAN" value="{htm(SEARCH_EAN)}" class="input-large">
+						<span class="help-inline"></span>
+					</div>
+				</div>
+
+			{endif}
+
+			<div class="control-group">
+				<label class="control-label" for="">
+				</label>
+				<div class="controls">
+					<input type="submit" value="Produkt suchen" class="btn">
+				</div>
+			</div>
+
+		</div>
+
+		<div class="result-table">
+			<p><a href="#" onclick="selectProduct(); return false;">Ich möchte die Produktdatenbank nicht nutzen und anstelle mein Produkt selbst einstellen</a></p>
+		</div>
+	</div>
+</form>
+
+
+<form id="adCreateSubmitForm" class="hidden" onsubmit="SubmitStep(this); return false;">
+	<input type="hidden" name="step" value="{STEP_IDENT}" />
+
+	<input type="hidden" name="ID_HDB_PRODUCT" value="" />
+	<input type="hidden" name="HDB_TABLE" value="" />
+</form>
+

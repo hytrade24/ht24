@@ -1,0 +1,88 @@
+{startblock(script)}
+    {parentblock()}
+    <script type="text/javascript">
+        function removeWatchlistItem(watchlistId) {
+            if(confirm('Möchten Sie den Eintrag auf der Merkliste wirklich löschen?')) {
+                Watchlist_removeItem(watchlistId, {
+                    callback: function(wid) {
+                        console.debug(wid);
+                        jQuery("[data-watchlistId='"+wid+"']").remove();
+                    }
+                })
+            }
+        }
+    </script>
+{endblock(script)}
+
+<h1>
+	Meine Merkliste<br />
+	<span class="lead">Von Ihnen gemerkte Produkte und Seiten aus dem Marktplatz</span>
+</h1>
+
+<ul class="nav nav-tabs">
+	<li class="{if !active_tab_listform}active{endif}"><a href="#watchlist" data-toggle="tab">Merkliste</a></li>
+	<li class="{if active_tab_listform}active{endif}"><a href="#watchlistLists" data-toggle="tab">Listen verwalten</a></li>
+</ul>
+<div class="tab-content design-user-watchlist">
+	<div class="tab-pane {if !active_tab_listform}active{endif}" id="watchlist">
+		<div class="breadcrumb clearfix">
+			<div class="pull-left">
+				<span class="text-muted">{all} gemerkte Seiten</span>
+			</div>
+	        <div class="pull-right">
+
+	        </div>
+			<br class="clearfix" />
+		</div>
+
+		<form class="userSearchForm" method="get" action="{uri_action(merkliste)}">
+			<div class="design-content-box">
+				<h4><strong>Suche nach gemerkten Seiten</strong></h4>
+
+				<div class="row">
+					<div class="col-xs-12 col-sm-5">
+						<label class="control-label design-input-label"><strong>Liste</strong></label>
+                        <div class="design-input-field">
+                            <select name="FK_WATCHLIST_USER" class="form-control">
+                                <option value="">-- Alle anzeigen --</option>
+                                {watchlist_list}
+                            </select>
+                        </div>
+					</div>
+					<div class="col-xs-12 col-sm-5">
+						<label class="control-label design-input-label"><strong>Suche</strong></label>
+                        <div class="design-input-field">
+						    <input type="text" name="SEARCHTEXT" value="{SEARCHTEXT}" class="form-control">
+                        </div>
+					</div>
+
+					<div class="col-xs-12 col-sm-2">
+						<input type="submit" value="Suchen" class="btn btn-default">
+					</div>
+				</div>
+			</div>
+		</form>
+
+
+		{if liste}
+		<ul class="media-list watchlistView">
+			{liste}
+		</ul>
+		{endif}
+
+		<p>{pager}</p>
+	</div>
+	<div class="tab-pane {if active_tab_listform}active{endif}" id="watchlistLists">
+		<p>Auf dieser Seite können Sie die Bezeichnung der Merklisten verändern, um Ihre eigene Struktur und Ordnung zu erzeugen.</p>
+		{if save_list}
+		    <div class="alert alert-success">Die Listenbezeichnungen wurden erfolgreich gespeichert.</div>
+		{endif}
+		<form action="{uri_action(merkliste)}" method="post" class="form-horizontal">
+			<input type="hidden" name="DO" value="save_list">
+			{watchlist_list_form}
+            <button type="submit" class="btn btn-info">Speichern</button>
+		</form>
+	</div>
+</div>
+
+

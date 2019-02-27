@@ -1,0 +1,6 @@
+{uri_action_full(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)})}
+Hersteller: {MANUFACTURER}
+Produktname: {PRODUKTNAME}
+Kategorie: {KATEGORIE}
+{if USER_CONSTRAINTS_ALLOWED_B2B || (BF_CONSTRAINTS_B2B == 0)}Preis: {topreis(PREIS)}
+{endif}Verkäufer: {vk_username}

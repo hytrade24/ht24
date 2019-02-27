@@ -1,0 +1,6 @@
+<tr>
+  <td{if letedit} rowspan="2"{endif}><a href="javascript:;" onClick="return SelectImage('{SRC}','{js(ALT)}','{WIDTH}','{HEIGHT}');">{img(ID_IMG,100,100)}</a></td>
+  <td>{htm(TITLE)}</td>
+</tr>{if letedit}<tr>
+  <td><a href="javascript:UploadImages({ID_IMG});">bearbeiten</a></td>
+</tr>{endif}

@@ -1,0 +1,31 @@
+<tr>
+    <td>{ID_BILLING_INVOICE_EXPORT}</td>
+    <td>{todate(STAMP)}</td>
+    <td>{totime(STAMP)}</td>
+    <td>
+        {todate(FIRST_DATE)}
+    </td>
+    <td>
+        {todate(LAST_DATE)}
+    </td>
+    <td>
+        <a href="index.php?page=buchhaltung&FK_BILLING_INVOICE_EXPORT={ID_BILLING_INVOICE_EXPORT}">
+            {TOTAL_INVOICES}
+            <img title="see invoices" alt="see invoices" src="gfx/btn.detail.gif">
+        </a>
+    </td>
+    <td>{TOTAL_MONEY}</td>
+    <td>
+        <a data-button-export="{fileName}" title="download" href="index.php?page=sepa_export&download=true&export={fileName}">
+            <img src="gfx/btn.get.gif" alt="Download" />
+        </a>
+    </td>
+    <td>
+        {if MARK_AS_PAID == "0"}
+        <a class="button" onclick="confirm('Bist du sicher, dass du weiter vorgehen willst?');" href="index.php?page=sepa_export&mark_invoice_as_paid=1&export_id={fileName}">Mark as Paid</a>
+        {endif}
+        {if MARK_AS_PAID == "1"}
+        {todate(STAMP_MARK_AS_PAID)} {totime(STAMP_MARK_AS_PAID)}
+        {endif}
+    </td>
+</tr>

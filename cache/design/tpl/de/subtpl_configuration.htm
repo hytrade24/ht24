@@ -1,0 +1,28 @@
+<form class="admin-subtpl-config form-horizontal" action="{uri_action(system-admin,subtpl,config)}" method="post">
+    <input type="hidden" name="PARENT" value="{htm(SUBTPL_PARENT)}" />
+    <input type="hidden" name="NAME" value="{htm(SUBTPL_NAME)}" />
+    <input type="hidden" name="INDEX" value="{SUBTPL_INDEX}" />
+    <div>
+        <button type="button" class="btn btn-default" data-toggle="admin-subtpl-config" aria-expanded="false">
+            <span class="glyphicon glyphicon-wrench"></span>
+        </button>
+        <ul class="admin-subtpl-config-menu" role="menu">
+            <li class="admin-subtpl-config-name">
+                {SUBTPL_DESC}
+            </li>
+            {OPTIONS}
+            <li class="text-right">
+                <p class="text-left">
+                    <strong>Wichtig:</strong> Die vorgenommenen Änderungen werden unter Umständen erst nach dem 
+                        Aktualisieren des Caches wirksam!
+                </p>
+                <button data-action="close" class="btn">
+                    Schließen
+                </button>
+                <button type="submit" class="btn btn-success">
+                    Konfiguration speichern
+                </button>
+            </li>
+        </ul>
+    </div>
+</form>

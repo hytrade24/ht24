@@ -1,0 +1,874 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en-us"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8 ie7" lang="en-us"><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9 ie8" lang="en-us"><![endif]-->
+<!--[if gt IE 8]> <html class="no-js ie9" lang="en-us"><![endif]-->
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8" />
+		<title>RVC0.S08 Valve Series - Vis Hydraulics</title>
+		<meta name="description" content="SAE08 Cartridge - 350 barDirect acting - Poppet Type" />
+		<meta name="generator" content="PrestaShop" />
+		<meta name="robots" content="index,follow" />
+		<meta name="viewport" content="width=device-width, minimum-scale=0.25, maximum-scale=1.6, initial-scale=1.0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="icon" type="image/vnd.microsoft.icon" href="/img/favicon.ico?1540997179" />
+		<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico?1540997179" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/global.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/autoload/highdpi.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/autoload/responsive-tables.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/autoload/uniform.default.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/product.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/print.css" type="text/css" media="print" />
+			<link rel="stylesheet" href="/js/jquery/plugins/fancybox/jquery.fancybox.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/js/jquery/plugins/bxslider/jquery.bxslider.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/modules/blockcategories/blockcategories.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/modules/blocklanguages/blocklanguages.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/modules/blocktags/blocktags.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/modules/themeconfigurator/css/hooks.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/modules/sendtoafriend/sendtoafriend.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/modules/revsliderprestashop/rs-plugin/css/settings.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/modules/revsliderprestashop/rs-plugin/css/static-captions.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/modules/revsliderprestashop/rs-plugin/css/dynamic-captions.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/modules/revsliderprestashop/css/front.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/modules/csblog/css/csblog-block.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/modules/csbloglatestpost/css/csbloglatestpost.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/modules/blockcontact/blockcontact.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/modules/itc_confvis/css/itc_confvis.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/modules/itc_cookieinfo/views/css/itc_cookieinfo.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/modules/blocktopmenu/css/blocktopmenu.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/modules/blocktopmenu/css/superfish-modified.css" type="text/css" media="all" />
+			<link rel="stylesheet" href="/themes/default-bootstrap/css/product_list.css" type="text/css" media="all" />
+		<script type="text/javascript">
+var FancyboxI18nClose = 'Close';
+var FancyboxI18nNext = 'Next';
+var FancyboxI18nPrev = 'Previous';
+var PS_CATALOG_MODE = true;
+var ajaxsearch = true;
+var allowBuyWhenOutOfStock = false;
+var attribute_anchor_separator = '-';
+var attributesCombinations = [];
+var availableLaterValue = '';
+var availableNowValue = '';
+var baseDir = 'http://www.vishydraulics.com/';
+var baseUri = 'http://www.vishydraulics.com/';
+var contentOnly = false;
+var currencyBlank = 1;
+var currencyFormat = 2;
+var currencyRate = 1;
+var currencySign = '€';
+var currentDate = '2019-01-31 15:53:31';
+var customerGroupWithoutTax = false;
+var customizationFields = false;
+var default_eco_tax = 0;
+var displayList = false;
+var displayPrice = 0;
+var doesntExist = 'This combination does not exist for this product. Please select another combination.';
+var doesntExistNoMore = 'This product is no longer in stock';
+var doesntExistNoMoreBut = 'with those attributes but is available with others.';
+var ecotaxTax_rate = 0;
+var fieldRequired = 'Please fill in all the required fields before saving your customization.';
+var group_reduction = 0;
+var idDefaultImage = 267;
+var id_lang = 2;
+var id_product = 79;
+var img_prod_dir = 'http://www.vishydraulics.com/img/p/';
+var img_ps_dir = 'http://www.vishydraulics.com/img/';
+var instantsearch = false;
+var isGuest = 0;
+var isLogged = 0;
+var isMobile = false;
+var jqZoomEnabled = false;
+var maxQuantityToAllowDisplayOfLastQuantityMessage = 3;
+var minimalQuantity = 1;
+var noTaxForThisProduct = true;
+var oosHookJsCodeFunctions = [];
+var page_name = 'product';
+var priceDisplayMethod = 0;
+var priceDisplayPrecision = 2;
+var productAvailableForOrder = true;
+var productBasePriceTaxExcl = 0;
+var productBasePriceTaxExcluded = 0;
+var productHasAttributes = false;
+var productPrice = 0;
+var productPriceTaxExcluded = 0;
+var productPriceWithoutReduction = 0;
+var productReference = 'RVC0.S08';
+var productShowPrice = false;
+var productUnitPriceRatio = 0;
+var product_fileButtonHtml = 'Choose File';
+var product_fileDefaultHtml = 'No file selected';
+var product_specific_price = [];
+var quantitiesDisplayAllowed = true;
+var quantityAvailable = 0;
+var quickView = false;
+var reduction_percent = 0;
+var reduction_price = 0;
+var roundMode = 2;
+var specific_currency = false;
+var specific_price = 0;
+var static_token = '4f31ddeeae438b9f7d2e22b9ce7d6f77';
+var stf_msg_error = 'Your e-mail could not be sent. Please check the e-mail address and try again.';
+var stf_msg_required = 'You did not fill required fields';
+var stf_msg_success = 'Your e-mail has been sent successfully';
+var stf_msg_title = 'Send to a friend';
+var stf_secure_key = '3a1c080fc66e4b73da16bcc1ec81d848';
+var stock_management = 1;
+var taxRate = 0;
+var token = '4f31ddeeae438b9f7d2e22b9ce7d6f77';
+var uploading_in_progress = 'Uploading in progress, please be patient.';
+var usingSecureMode = false;
+</script>
+
+		<script type="text/javascript" src="/js/jquery/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="/js/jquery/jquery-migrate-1.2.1.min.js"></script>
+		<script type="text/javascript" src="/js/jquery/plugins/jquery.easing.js"></script>
+		<script type="text/javascript" src="/js/tools.js"></script>
+		<script type="text/javascript" src="/themes/default-bootstrap/js/global.js"></script>
+		<script type="text/javascript" src="/themes/default-bootstrap/js/autoload/10-bootstrap.min.js"></script>
+		<script type="text/javascript" src="/themes/default-bootstrap/js/autoload/15-jquery.total-storage.min.js"></script>
+		<script type="text/javascript" src="/themes/default-bootstrap/js/autoload/15-jquery.uniform-modified.js"></script>
+		<script type="text/javascript" src="/js/jquery/plugins/fancybox/jquery.fancybox.js"></script>
+		<script type="text/javascript" src="/js/jquery/plugins/jquery.idTabs.js"></script>
+		<script type="text/javascript" src="/js/jquery/plugins/jquery.scrollTo.js"></script>
+		<script type="text/javascript" src="/js/jquery/plugins/jquery.serialScroll.js"></script>
+		<script type="text/javascript" src="/js/jquery/plugins/bxslider/jquery.bxslider.js"></script>
+		<script type="text/javascript" src="/themes/default-bootstrap/js/product.js"></script>
+		<script type="text/javascript" src="/themes/default-bootstrap/js/tools/treeManagement.js"></script>
+		<script type="text/javascript" src="/themes/default-bootstrap/js/modules/sendtoafriend/sendtoafriend.js"></script>
+		<script type="text/javascript" src="/modules/revsliderprestashop/rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
+		<script type="text/javascript" src="/modules/revsliderprestashop/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+		<script type="text/javascript" src="/modules/itc_cookieinfo/views/js/itc_cookieinfo.js"></script>
+		<script type="text/javascript" src="/modules/ganalytics/views/js/GoogleAnalyticActionLib.js"></script>
+		<script type="text/javascript" src="/themes/default-bootstrap/js/modules/blocktopmenu/js/hoverIntent.js"></script>
+		<script type="text/javascript" src="/themes/default-bootstrap/js/modules/blocktopmenu/js/superfish-modified.js"></script>
+		<script type="text/javascript" src="/themes/default-bootstrap/js/modules/blocktopmenu/js/blocktopmenu.js"></script>
+			 
+			<script type="text/javascript">
+				(window.gaDevIds=window.gaDevIds||[]).push('d6YPbH');
+				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+				ga('create', 'UA-91172268-1', 'auto');
+				ga('require', 'ec');</script><script type="text/javascript">
+						var checkCaptchaUrl ="/modules/eicaptcha/eicaptcha-ajax.php";
+						var RecaptachKey = "6LeslCUUAAAAAFSfb54VD5VoxdKWAXQGm8HUftd2";
+						var RecaptchaTheme = "light";
+					</script>
+					<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=en" async defer></script>
+					<script type="text/javascript" src="/modules/eicaptcha//views/js/eicaptcha-modules.js"></script>
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,600&amp;subset=latin,latin-ext" type="text/css" media="all" />
+		<!--[if IE 8]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+		<![endif]-->
+		
+		
+
+
+
+
+	</head>
+	<body id="product" class="product product-79 product-rvc0s08-valve-series category-48 category-relief-valves hide-right-column lang_en">
+					<div id="page">
+			<div class="header-container">
+				<header id="header">
+					<div class="banner">
+						<div class="container">
+							<div class="row">
+								 
+							</div>
+						</div>
+					</div>
+					<div class="nav">
+						<div class="container">
+							<div class="row">
+								<nav><br>&nbsp;<!-- Block languages module -->
+<!-- /Block languages module -->
+<!--
+<div id="contact-link">
+	<a href="http://www.vishydraulics.com/contact" title="Contact us">Contact us</a>
+</div>
+
+	<span class="shop-phone">
+		<i class="icon-phone"></i>Call us now: <strong>0536-401525</strong>
+	</span>
+
+
+--></nav>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="container">
+							<div class="row">
+								<div id="header_logo">
+									<a href="http://www.vishydraulics.com/" title="Vis Hydraulics">
+										<img class="logo img-responsive" src="http://www.vishydraulics.com/img/logo.jpg" alt="Vis Hydraulics" width="375" height="250"/>
+									</a>
+								</div>
+								  
+	<!-- Menu -->
+	<div id="block_top_menu" class="sf-contener clearfix col-lg-12 test"> 
+	
+		<div class="cat-title">Menu</div>
+		<ul class="sf-menu clearfix menu-content"> 
+			<li><a class="aboutus" href="http://www.vishydraulics.com/content/4-about-us" title="About Us">About Us</a></li>
+<li><a class="mission" href="http://www.vishydraulics.com/content/6-mission" title="mission">mission</a></li>
+<li class="itc_product_sub"><a class="products" href="http://www.vishydraulics.com/3-products" title="Products" >Products</a><ul><div class="image_prod" style="position:absolute; bottom:18px; right:20px; text-align:right;"></div><li class="itc_product_sub"><a class="checkvalves" href="http://www.vishydraulics.com/14-check-valves" title="Check Valves" onmouseover="changeImg(14)">Check Valves</a></li><li class="itc_product_sub"><a class="pilotcheckvalves" href="http://www.vishydraulics.com/17-pilot-check-valves" title="Pilot Check Valves" onmouseover="changeImg(17)">Pilot Check Valves</a></li><li class="itc_product_sub"><a class="podirectionalvalves" href="http://www.vishydraulics.com/18-po-directional-valves" title="PO Directional Valves" onmouseover="changeImg(18)">PO Directional Valves</a></li><li class="itc_product_sub"><a class="reliefvalves" href="http://www.vishydraulics.com/48-relief-valves" title="Relief Valves" onmouseover="changeImg(48)">Relief Valves</a></li><li class="itc_product_sub"><a class="poreliefvalves" href="http://www.vishydraulics.com/95-po-relief-valves" title="PO Relief Valves" onmouseover="changeImg(95)">PO Relief Valves</a></li><li class="itc_product_sub"><a class="poreliefandanti-cav.valves" href="http://www.vishydraulics.com/97-po-relief-and-anti-cav-valves" title="PO Relief and Anti-cav. Valves" onmouseover="changeImg(97)">PO Relief and Anti-cav. Valves</a></li><li class="itc_product_sub"><a class="reliefandanti-cav.valves" href="http://www.vishydraulics.com/99-relief-and-anti-cav-valves" title="Relief and Anti-cav. Valves" onmouseover="changeImg(99)">Relief and Anti-cav. Valves</a></li><li class="itc_product_sub"><a class="pressurereducingvalves" href="http://www.vishydraulics.com/19-pressure-reducing-valves" title="Pressure Reducing Valves" onmouseover="changeImg(19)">Pressure Reducing Valves</a></li><li class="itc_product_sub"><a class="sequencevalves" href="http://www.vishydraulics.com/22-sequence-valves" title="Sequence Valves" onmouseover="changeImg(22)">Sequence Valves</a></li><li class="itc_product_sub"><a class="shuttlevalves" href="http://www.vishydraulics.com/23-shuttle-valves" title="Shuttle Valves" onmouseover="changeImg(23)">Shuttle Valves</a></li><li class="itc_product_sub"><a class="flowcontrols" href="http://www.vishydraulics.com/16-flow-controls" title="Flow Controls" onmouseover="changeImg(16)">Flow Controls</a></li><li class="itc_product_sub"><a class="solenoidvalves" href="http://www.vishydraulics.com/25-solenoid-valves" title="Solenoid Valves" onmouseover="changeImg(25)">Solenoid Valves</a></li><li class="itc_product_sub"><a class="proportionalsolenoidvalves" href="http://www.vishydraulics.com/21-proportional-solenoid-valves" title="Proportional Solenoid Valves" onmouseover="changeImg(21)">Proportional Solenoid Valves</a></li><li class="itc_product_sub"><a class="coils" href="http://www.vishydraulics.com/15-coils" title="Coils" onmouseover="changeImg(15)">Coils</a></li><li class="itc_product_sub"><a class="solenoidconnectors" href="http://www.vishydraulics.com/101-solenoid-connectors" title="Solenoid Connectors" onmouseover="changeImg(101)">Solenoid Connectors</a></li><li class="itc_product_sub"><a class="solenoidvalvemanualoverride" href="http://www.vishydraulics.com/24-solenoid-valve-manual-override" title="Solenoid Valve Manual Override" onmouseover="changeImg(24)">Solenoid Valve Manual Override</a></li><li class="itc_product_sub"><a class="cavityplugs" href="http://www.vishydraulics.com/103-cavity-plugs" title="Cavity Plugs" onmouseover="changeImg(103)">Cavity Plugs</a></li><li class="itc_product_sub"><a class="electroniccontrols" href="http://www.vishydraulics.com/128-electronic-controls" title="Electronic Controls" onmouseover="changeImg(0)">Electronic Controls</a></li></ul></li><li><a class="productiontechnology" href="http://www.vishydraulics.com/content/7-production-technology" title="production technology">production technology</a></li>
+<li  class="itc_application_sub"><a class="applications" href="http://www.vishydraulics.com/content/category/2-applications" title="Applications">Applications</a><ul><div class="image_cms" style="position:absolute; bottom:20px; right:20px; text-align:right; width:50%"></div><li ><a href="http://www.vishydraulics.com/content/8-directional-control-valves" onmouseover="changeImgCms(8)">Directional Control Valves</a></li><li ><a href="http://www.vishydraulics.com/content/9-mini-power-packs" onmouseover="changeImgCms(9)">Mini Power Packs</a></li><li ><a href="http://www.vishydraulics.com/content/10-hydraulic-pumps" onmouseover="changeImgCms(10)">Hydraulic Pumps</a></li><li ><a href="http://www.vishydraulics.com/content/11-hydraulic-motors" onmouseover="changeImgCms(11)">Hydraulic Motors</a></li><li ><a href="http://www.vishydraulics.com/content/12-hydraulic-integrated-circuits" onmouseover="changeImgCms(12)">Hydraulic Integrated Circuits</a></li><li ><a href="http://www.vishydraulics.com/content/13-counter-balance-valves" onmouseover="changeImgCms(13)">Counter Balance Valves</a></li></ul></li>
+<li class="itc_contact_sub"><a class="contactus" href="http://www.vishydraulics.com/contact" title="Contact Us">Contact Us</a><ul><li><a href='http://www.vishydraulics.com/contact'>Contact us</li><li><a href='http://www.vishydraulics.com/module/customerClaimForm/claimForm'>Customer Claim Form</li></ul></li>
+
+			
+			<!-- AGGIUNTA MENU per smartphone -->
+										<li class="itc_first itc_add_smartphone "><a href="http://www.vishydraulics.com/content/14-sales-distributions" title="Sales &amp; Distributions">Sales &amp; Distributions</a></li>
+				<li class="itc_first itc_add_smartphone "><a href="http://www.vishydraulics.com/content/17-terms-and-conditions" title="Terms and Conditions">Terms and Conditions</a></li>
+
+				<li class="itc_first itc_add_smartphone "><a href="http://www.vishydraulics.com/content/15-location" title="Location">Location</a></li>
+				<li class="itc_first itc_add_smartphone "><a href="http://www.vishydraulics.com/module/csblog/categoryPost/3-event" title="Events">Events</a></li>
+				<li class="itc_first itc_add_smartphone "><a href="http://www.vishydraulics.com/module/csblog/categoryPost/4-news" title="News">News</a></li>
+				<li class="itc_first itc_add_smartphone "><a href="http://www.vishydraulics.com/module/itc_jobopportunity/viewJobOpportunity" title="Job Opportunities">Job Opportunities</a></li>
+						<!-- /AGGIUNTA MENU per smartphone -->
+			
+							<li class="sf-search noBack" style="position:relative;cursor:pointer;border-bottom-right-radius:15px; overflow:hidden;">
+					<span class="itc-search" title="Search" href="" onclick="moveSearch();"><i class="icon-search"></i></span>
+				</li>
+			 
+		</ul>
+		<form id="searchbox" action="http://www.vishydraulics.com/ricerca" method="get">
+			<p>
+				<input type="hidden" name="controller" value="search" />
+				<input type="hidden" value="position" name="orderby"/>
+				<input type="hidden" value="desc" name="orderway"/>
+				<input type="text" class="search_query" name="search_query" placeholder="Search..." value="" />
+			</p>
+		</form>
+		
+	
+		<script type="text/javascript">
+			 $( document ).ready(function() {
+				$(".sf-menu li").first().addClass('itc_first');
+			});
+		
+			function changeImg(idCat){				
+				$('.image_prod').html('');
+				if(idCat != 0){
+					$('.image_prod').html('<img src="http://www.vishydraulics.com/img/c/'+idCat+'-0_thumb.jpg" />');
+				}
+				
+			}
+		
+			function changeImgCms(idCms){				
+				$('.image_cms').html('');
+				if(idCms != 0){
+					$('.image_cms').html('<img width="70%" src="http://www.vishydraulics.com/img/cms/img-menu/'+idCms+'.jpg" />');
+				}
+			}
+		
+		
+			function moveSearch(){
+
+				var width = $('.search_query').css('width');
+				if(width == "0px"){
+					$('.search_query').css("border", "1px solid #cccccc");
+					$('.search_query').css("padding-left", "10px");
+					$('.search_query').animate({
+					width: "250px"
+					}, 500, function(){						 
+						$('.search_query').focus(); 
+					});
+				}
+				else {
+					$('.search_query').animate({
+					width: "0px"
+					}, 500, function(){
+						$('.search_query').css("padding-left", "0px");
+						$('.search_query').css("border", "none");
+					});
+					
+				}
+			}
+		</script>
+	</div>
+	<!--/ Menu -->
+							</div>
+						</div>
+					</div>
+				</header>
+			</div>
+			<div class="columns-container">
+				<div id="columns" class="container">
+											
+<!-- Breadcrumb -->
+<div class="breadcrumb clearfix">
+	<a class="home" href="http://www.vishydraulics.com/" title="Return to Home">Home</a>
+			<span class="navigation-pipe">&gt;</span>
+
+					<span class="navigation_page"><span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="http://www.vishydraulics.com/3-products" title="Products" ><span itemprop="title">Products</span></a></span><span class="navigation-pipe">></span><span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="http://www.vishydraulics.com/48-relief-valves" title="Relief Valves" ><span itemprop="title">Relief Valves</span></a></span><span class="navigation-pipe">></span>RVC0.S08 Valve Series</span>
+				
+	</div>
+<!-- /Breadcrumb -->
+
+					
+										<div class="row">
+
+
+
+												
+						
+						
+												<!-- <div id="left_column" class="column col-xs-12 col-sm-3" > -->
+						<div id="left_column" class="column col-xs-12 col-sm-3">
+
+								
+							
+							<!-- Block categories module -->
+<div id="categories_block_left" class="block" style="margin-top:40px; ">
+	<!--
+	<h2 class="title_block">
+					Relief Valves
+			</h2>
+	-->
+	<div class="block_content">
+		<ul class="tree dhtml">
+												
+<li class="last">
+				<ul>
+												
+<li >
+			<a 
+		href="http://www.vishydraulics.com/14-check-valves" title="">
+			Check Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/17-pilot-check-valves" title="">
+			Pilot Check Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/18-po-directional-valves" title="">
+			PO Directional Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/48-relief-valves" class="selected" title="">
+			Relief Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/95-po-relief-valves" title="">
+			PO Relief Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/97-po-relief-and-anti-cav-valves" title="">
+			PO Relief and Anti-cav. Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/99-relief-and-anti-cav-valves" title="">
+			Relief and Anti-cav. Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/19-pressure-reducing-valves" title="">
+			Pressure Reducing Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/22-sequence-valves" title="">
+			Sequence Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/23-shuttle-valves" title="">
+			Shuttle Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/16-flow-controls" title="">
+			Flow Controls
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/25-solenoid-valves" title="">
+			Solenoid Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/21-proportional-solenoid-valves" title="">
+			Proportional Solenoid Valves
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/15-coils" title="">
+			Coils
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/101-solenoid-connectors" title="">
+			Solenoid Connectors
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/24-solenoid-valve-manual-override" title="">
+			Solenoid Valve Manual Override
+		</a>
+		</li>
+
+																
+<li >
+			<a 
+		href="http://www.vishydraulics.com/103-cavity-plugs" title="">
+			Cavity Plugs
+		</a>
+		</li>
+
+																
+<li class="last">
+			<a 
+		href="http://www.vishydraulics.com/128-electronic-controls" title="">
+			Electronic Controls
+		</a>
+		</li>
+
+									</ul>
+	</li>
+
+									</ul>
+	</div>
+</div>
+
+	
+<!-- /Block categories module -->
+ <!-- Blog categories 				 /Blog categories --><!-- Lastest post -->				<!-- /Lastest post --><!-- /Blog current comment 				 /Blog current comment --><!-- Blog tags 				 /Blog tags -->
+							
+						</div>
+											
+												
+					
+						<div id="center_column" class="center_column col-xs-12 col-sm-9">
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+	
+
+							<div itemscope itemtype="http://schema.org/Product">
+	<div class="primary_block row">
+	
+	
+						<!-- left infos-->
+		<div class="pb-left-column col-xs-12 col-sm-5 col-md-5">
+			<!-- product img-->
+			<div id="image-block" class="clearfix">
+																	<span id="view_full_size">
+													<img id="bigpic" itemprop="image" src="http://www.vishydraulics.com/267/rvc0s08-valve-series.jpg" title="RVC0.S08 Valve Series" alt="RVC0.S08 Valve Series" width="458" height="458"/>
+															<!--<span class="span_link no-print">View larger</span>-->
+																		</span>
+							</div> <!-- end image-block -->
+							<!-- thumbnails -->
+				<div id="views_block" class="clearfix ">
+											<span class="view_scroll_spacer">
+							<a id="view_scroll_left" class="" title="Other views" href="javascript:{}">
+								Previous
+							</a>
+						</span>
+										<div id="thumbs_list">
+						<ul id="thumbs_list_frame" style="width:92%;">
+													
+																																																								
+																																																									<li id="thumbnail_268" >
+										<a href="http://www.vishydraulics.com/268-thickbox_default/rvc0s08-valve-series.jpg"	data-fancybox-group="other-views" class="fancybox" title="Cross Section">
+											<img class="img-responsive" id="thumb_268" src="http://www.vishydraulics.com/268-large_default/rvc0s08-valve-series.jpg" alt="Cross Section" title="Cross Section" height="80" width="80" itemprop="image" />
+											<div class="tasto-img-itc">
+												Cross Section
+												&nbsp;&nbsp;
+												<i class="icon-search"></i>
+											</div>
+										</a>
+									</li>
+																
+																																																									<li id="thumbnail_269" class="last" >
+										<a href="http://www.vishydraulics.com/269-thickbox_default/rvc0s08-valve-series.jpg"	data-fancybox-group="other-views" class="fancybox" title="Cavity Details">
+											<img class="img-responsive" id="thumb_269" src="http://www.vishydraulics.com/269-large_default/rvc0s08-valve-series.jpg" alt="Cavity Details" title="Cavity Details" height="80" width="80" itemprop="image" />
+											<div class="tasto-img-itc">
+												Cavity Details
+												&nbsp;&nbsp;
+												<i class="icon-search"></i>
+											</div>
+										</a>
+									</li>
+																
+																			</ul>
+					</div> <!-- end thumbs_list -->
+											<a id="view_scroll_right" title="Other views" href="javascript:{}">
+							Next
+						</a>
+									</div> <!-- end views-block -->
+				<!-- end thumbnails -->
+										<p class="resetimg clear no-print">
+					<span id="wrapResetImages" style="display: none;">
+						<a href="http://www.vishydraulics.com/relief-valves/79-rvc0s08-valve-series.html" data-id="resetImages">
+							<i class="icon-repeat"></i>
+							Display all pictures
+						</a>
+					</span>
+				</p>
+					</div> <!-- end pb-left-column -->
+		<!-- end left infos-->
+		<!-- center infos -->
+		<div class="pb-center-column col-xs-12 col-sm-7 col-md-7">
+						<h1 itemprop="name">RVC0.S08 Valve Series</h1>
+							<div id="short_description_block" style="padding:0px;">
+											<div id="short_description_content" class="rte align_justify" itemprop="description"><p><strong>SAE08 Cartridge - 350 bar</strong><br /><strong>Direct acting - Poppet Type</strong></p></div>
+					
+											<p class="buttons_bottom_block">
+							<a href="javascript:{}" class="button">
+								More details
+							</a>
+						</p>
+										<!---->
+				</div> <!-- end short_description_block -->
+						
+										<div id="odcode-img1"  style="text-align:center; margin-top:10px;margin-bottom:30px"><img style="width:40%" src="http://www.vishydraulics.com/img/itc_confvis_simbol/21.jpg" /></div>
+						
+			<!--
+			<p id="product_reference">
+				<label>Reference: </label>
+				<span class="editable" itemprop="sku">RVC0.S08</span>
+			</p>
+			-->
+						<!--
+			<p id="product_condition">
+				<label>Condition: </label>
+									<link itemprop="itemCondition" href="http://schema.org/NewCondition"/>
+					<span class="editable">New product</span>
+							</p>
+			-->
+						
+			
+							<!-- More info -->
+				<section class="page-product-box">
+																<!-- full description -->
+						<div  class="rte"><p><strong>Description</strong><br />A screw-in, cartridge style, direct acting, poppet type, normally<br />closed hydraulic relief valve. It’s typically used to protect hydraulic<br />components from pressure transients. When the pressure at the<br />Inlet (1) reaches the valve setting, the valve starts to open to tank<br />(2) throttling flow to minimize the pressure rise.<br />The innovative geometry of the deflector provides in fact a very low<br />rise rate, and the poppet design guarantees great stability.<br />The cartridge offers quick response to load changes in hydraulic<br />circuits requiring low internal leakage as well as limited hysteresis.<br />NOTE: the RVC0 in the standard configuration can be used in<br />crossover relief applications (back pressure on port 2).</p>
+<p><strong>Technical Features</strong><br />All external surfaces are zinc plated and corrosion-proof.<br />All valve parts are made of high strength steel. Poppet is hardened<br />and ground to guarantee minimal wear and to extend service life.<br />Adjustment screw cannot be backed out of the valve.<br />Positive stop prevents springs from going solid.<br />Optional spring ranges to 350 bar (5000 psi)<br />Back pressure on the tank port (port 2) is directly additive to the<br />valve setting at a 1:1 ratio.<br />Industry common cavity.</p></div>
+				</section>
+				<!--end  More info -->
+						
+						<!-- availability or doesntExist -->
+			<p id="availability_statut" style="display: none;">
+				
+				<span id="availability_value" class="label label-danger">This product is no longer in stock</span>
+			</p>
+							
+				<p class="warning_inline" id="last_quantities" style="display: none" >Warning: Last items in stock!</p>
+						<p id="availability_date" style="display: none;">
+				<span id="availability_date_label">Availability date:</span>
+				<span id="availability_date_value"></span>
+			</p>
+			<!-- Out of stock hook -->
+			<div id="oosHook">
+				
+			</div>
+			 							<!-- usefull links-->
+				<ul id="usefull_link_block" class="clearfix no-print">
+					
+<li class="sendtofriend test">
+	<a id="send_friend_button" href="#send_friend_form">Send to a friend</a>
+</li>
+
+<div style="display: none;">
+	<div id="send_friend_form">
+		<h2 class="title">Send to a friend</h2>
+		<div class="product clearfix">
+			<img src="http://www.vishydraulics.com/267-home_default/rvc0s08-valve-series.jpg" height="240" width="170" alt="RVC0.S08 Valve Series" />
+			<div class="product_desc">
+				<p class="product_name"><strong>RVC0.S08 Valve Series</strong></p>
+				<p><strong>SAE08 Cartridge - 350 bar</strong><br /><strong>Direct acting - Poppet Type</strong></p>
+			</div>
+		</div>
+
+		<div class="send_friend_form_content" id="send_friend_form_content">
+			<div id="send_friend_form_error"></div>
+			<div id="send_friend_form_success"></div>
+			<div class="form_container">
+				<p class="intro_form">Recipient :</p>
+				<p class="text">
+					<label for="friend_name">Name of your friend <sup class="required">*</sup> :</label>
+					<input id="friend_name" name="friend_name" type="text" value=""/>
+				</p>
+				<p class="text">
+					<label for="friend_email">E-mail address of your friend <sup class="required">*</sup> :</label>
+					<input id="friend_email" name="friend_email" type="text" value=""/>
+				</p>
+				<p class="txt_required"><sup class="required">*</sup> Required fields</p>
+				
+				<div id="recaptchaSendToAFriend"> </div>
+			</div>
+			<p class="submit">
+				<input id="id_product_comment_send" name="id_product" type="hidden" value="79" />
+				<a href="#" onclick="$.fancybox.close();">Cancel</a>&nbsp;or&nbsp;
+				<input id="sendEmail" class="button" name="sendEmail" type="submit" value="Send" />
+			</p>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+ 					<li class="print">
+						<a href="javascript:print();">
+							Print
+						</a>
+					</li>
+									</ul>
+						
+
+			
+						<!--Download -->
+			<section class="page-product-box">
+									<div class="col-lg-4">
+						<a class="btn btn-default btn-block btn-download btn-3d" href="http://www.vishydraulics.com/index.php?controller=attachment&amp;id_attachment3d=RVC0.S08.STEP"></a>
+					</div>
+													<div class="row">						<div class="col-lg-4">
+							<!--<h4 style="margin-top:2px;"><a style="color:#24d1f5" href="http://www.vishydraulics.com/index.php?controller=attachment&amp;id_attachment=105">RVC0.S08</a></h4>
+							<p class="text-muted"></p>-->
+							<a class="btn btn-default btn-block btn-download" href="http://www.vishydraulics.com/index.php?controller=attachment&amp;id_attachment=105">
+								<!--<i class="icon-download"></i>
+								Download (1.17M)-->
+								
+							</a>
+				
+						</div>
+					</div>								
+				
+				
+			</section>
+			<!--end Download -->
+						
+			
+			
+			
+		</div>
+		<!-- end center infos-->
+	</div> <!-- end primary_block -->
+									<!-- Data sheet -->
+			<section class="page-product-box" >
+				<h3 class="page-product-heading">Performance Details</h3>
+									<div id="ordering-left" class="col-xs-6 col-sm-6 col-md-6">
+						<h3 class="itc_title_data">Tecnichal Data</h3>
+						<table class="table-data-sheet">
+														<tr class="odd">
+																<td>Maximum operating pressure</td>
+								<td>350 bar</td>
+															</tr>
+														<tr class="even">
+																<td>Maximum flow</td>
+								<td>30 l/min</td>
+															</tr>
+														<tr class="odd">
+																<td>Maximum internal leakage</td>
+								<td>0.25 cc/min to 80% of nominal set point</td>
+															</tr>
+														<tr class="even">
+																<td>Pressure settings</td>
+								<td>established @ 5 l/min</td>
+															</tr>
+														<tr class="odd">
+																<td>Reseat pressure</td>
+								<td>nominal 90% of crack pressure</td>
+															</tr>
+														<tr class="even">
+																<td>temperature</td>
+								<td>-30°C to 110°C</td>
+															</tr>
+														<tr class="odd">
+																<td>fluids</td>
+								<td>Mineral-based or synthetics with lubricating properties at viscosities of 7.4 to 420 cSt</td>
+															</tr>
+														<tr class="even">
+																<td>orientation</td>
+								<td>no restrictions</td>
+															</tr>
+														<tr class="odd">
+																<td>installation torque</td>
+								<td>40-45 Nm</td>
+															</tr>
+														<tr class="even">
+																<td>seal kit code</td>
+								<td>SK.003</td>
+															</tr>
+														<tr class="odd">
+																<td>weight</td>
+								<td>0.145 kg</td>
+															</tr>
+													</table>
+					</div>
+								<div id="ordering-right" class="col-xs-6 col-sm-6 col-md-6">
+					<div id="odcode-img2" style="margin-top:30px;"><img src="http://www.vishydraulics.com/img/p/itc/79-img2.jpg" width="100%"/></div>
+					<div id="note-itc" style="margin-top:30px;"><p><strong>NOTE:</strong> The performance chart illustrates flow handling capacity at maximum setting for each spring range option. P/Q curves are  recorded at TOil = 40°C and 46 cSt</p></div>
+				</div>
+			</section>
+			<!--end Data sheet -->
+				
+									<!-- Data sheet -->
+			<section class="page-product-box" style="clear:both;margin-top:30px;">
+				<h3 class="page-product-heading">Ordering Code</h3>
+									<div id="odcode-img3"><img src="http://www.vishydraulics.com/img/p/itc/79-img3.jpg" width="100%"/></div>
+													<div id="odcode-img4" style="margin-top:30px;"><img src="http://www.vishydraulics.com/img/p/itc/79-img4.jpg" style="border:2px solid #000" width="100%"/></div>
+							</section>
+			<!--end Data sheet -->
+				
+				
+				<!--HOOK_PRODUCT_TAB -->
+		<section class="page-product-box">
+			
+					</section>
+		<!--end HOOK_PRODUCT_TAB -->
+
+		
+				 
+				<script type="text/javascript">
+					jQuery(document).ready(function(){
+						var MBG = GoogleAnalyticEnhancedECommerce;
+						MBG.setCurrency('EUR');
+						MBG.addProductDetailView({"id":79,"name":"\"RVC0.S08 Valve Series\"","category":"\"relief-valves\"","brand":"false","variant":"null","type":"typical","position":"0","quantity":1,"list":"product","url":"","price":"0.00"});
+					});
+				</script>		<!-- description & features -->
+					
+						</div> <!-- itemscope product wrapper -->
+ 
+					</div><!-- #center_column -->
+										</div><!-- .row -->
+				</div><!-- #columns -->
+			</div><!-- .columns-container -->
+							<!-- Footer -->
+				
+				<div class="footer-container">
+					<footer id="footer"  class="container">
+						<div class="row"> <!-- Blog categories --><!-- /Blog categories --><!-- Lastest post --><!-- /Lastest post --><!-- /Blog current comment --><!-- /Blog current comment --><!-- Blog tags --><!-- /Blog tags --><div style="background-color:#314960;  bottom:0px "id="itc_cookieinfo" class="itc_cookieinfo">
+	<div class="container">
+		<a id="cookie_close"  href="#"><span>Accept</span></a>
+				<p id="tw-target-text" class="tw-data-text tw-ta tw-text-small" dir="ltr" data-placeholder="Traduzione"><span lang="en">This site uses technical and profiling cookies associated to this site and also third party for its functionality and may be used to send you advertising and services in line with your preferences. For more information or to refuse consent to all or some cookies <span style="text-decoration: underline;"><strong><span style="color: #ffffff;"><a href="http://www.vishydraulics.com/content/16-cookie-law" target="_blank"><span style="color: #ffffff; text-decoration: underline;">click here</span></a></span></strong></span>.</span></p>
+<p class="tw-data-text tw-ta tw-text-small" dir="ltr" data-placeholder="Traduzione"><span lang="en">Clicking on "Accept" button, you accept the use of cookies.</span></p>
+					<a href="index.php?id_cms=16&controller=cms" target="_blank"></a>
+		    </div>
+</div>
+
+
+
+
+				<script type="text/javascript">
+					ga('send', 'pageview');
+				</script></div>
+						
+						<section id="block_contact_infos" style="border: none" class="footer-block col-xs-7 col-sm-5">
+							<div class="footer_contact_left">
+						       <ul class="toggle-footer">
+						            <li class="footer_first">VIS HYDRAULICS Srl</li>
+						            <li class="footer_li">Via Giardini Nord 140</li>
+						            <li class="footer_li">41026 PAVULLO N/F - ITALY</li>
+						            <li class="footer_li">P.IVA e C.F. 03247840360</li>					            
+						        </ul>
+						    </div>
+						    <div class="footer_contact_right">
+						       <ul class="toggle-footer">     
+						            <li class="footer_first">Tel. +39.0536.20461</li>
+						            <li>Fax +39.0536.401525</li>
+						            <li></li>
+						            <li></li>
+						            
+						          
+
+						            <!--<li>Email: info@vishydraulics.com</li>					-->            
+						        </ul>
+						    </div>
+						</section>
+						
+						<section id="footer_logo" class="footer-block col-xs-5 col-sm-1">
+							<img src="http://www.vishydraulics.com/themes/default-bootstrap/img/VIS_logo_new.png" />
+						</section>
+						
+						<section id="footer_link" class="footer-block col-xs-5 col-sm-6">
+							<div id="footer_links">
+								<a href="http://www.vishydraulics.com/content/4-about-us" class="internal">About us</a>
+								<a href="http://www.vishydraulics.com/content/6-mission" class="internal">Mission</a>
+								<a href="http://www.vishydraulics.com/3-products" class="internal">Products</a>								
+								<a href="http://www.vishydraulics.com/content/7-production-technology"  class="internal">Production Technology</a>								
+								<a href="http://www.vishydraulics.com/content/category/2-application" class="internal">Applications</a>								
+								<a href="http://www.vishydraulics.com/contact">&nbsp;&nbsp;Contact us</a>							
+																
+							</div>
+							
+								<img src="http://www.vishydraulics.com/themes/default-bootstrap/img/valvole_footer.png" />
+						
+						</section>
+						
+						
+						
+					</footer>
+				</div><!-- #footer -->
+				<div class="post-footer container">
+					<div class="col-xs-6 col-sm-6 col-md-6" style="text-align:left;">All rights reserved</div>
+					<div class="col-xs-6 col-sm-6 col-md-6" style="text-align:right;">Credits by <a href="http://studioitc.com/" target="_blank">Studio I.T.C.</a></div>
+				</div>
+					</div><!-- #page -->
+</body></html>

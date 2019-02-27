@@ -1,0 +1,57 @@
+<link href="{uri_baseurl(/js/tree/skin/ui.dynatree.css)}" rel="stylesheet" type="text/css">
+<script src="{uri_baseurl(/js/tree/jquery.dynatree.min.js)}" type="text/javascript"></script>
+
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+<script type="text/javascript">
+    jQuery(function() {
+
+        setVendorFormular = function(d) {
+            if(d) {
+                jQuery(".visibleOnEnabledVendor").show();
+            } else {
+                jQuery(".visibleOnEnabledVendor").hide();
+            }
+        }
+
+        jQuery("#vendorFormularDescriptionTab").tabs();
+
+        setVendorFormular({if VENDOR_STATUS}true{else}false{endif});
+    });
+
+
+</script>
+
+<h1>Vendor directory</h1>
+
+{if NOTICE_SUCCESS || DO_SAVE}
+<p class="alert alert-success">
+    <strong>Form was saved..</strong>
+</p>
+{endif}
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-vendor-nav.htm,*)}
+<span class="lead">
+    This description text will be displayed on your vendor directory.
+</span>
+<form method="post" action="{uri_baseurl(/index.php)}" id="vendorFormular" enctype="multipart/form-data">
+    <input type="hidden" name="page" value="{curpage}"/>
+    <input type="hidden" name="DO" value="SAVE" />
+    <input type="hidden" id="LATITUDE" name="LATITUDE" value="{VENDOR_LATITUDE}" />
+    <input type="hidden" id="LONGITUDE" name="LONGITUDE" value="{VENDOR_LONGITUDE}" />
+    <input type="hidden" name="tmp_needed" id="tmp_needed" value="" />
+    <input type="hidden" name="CATEGORIES" id="CATEGORIES" value="" />
+
+    <div class="visibleOnEnabledVendor">
+        <div id="vendorFormularDescriptionTab">
+            <ul>
+                {languageHeader}
+            </ul>
+            <div class="well">
+            {languageBody}
+            </div>
+        </div>
+    </div>
+
+    <input type="submit" value="Save vendor profile" class="btn btn-success pull-right visibleOnEnabledVendor"/>
+</form>

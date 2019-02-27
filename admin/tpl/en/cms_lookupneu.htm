@@ -1,0 +1,69 @@
+<h1>Neuen Lookup anlegen</h1>
+Erstellen Sie hier neue Lookups, indem Sie entweder alte Arten mit neuen Einträgen erweitern, oder neue Arten erstellen.<br />
+Achtung: Die Felder sind multilingual. Möchten Sie für verschiedene Sprachen verschiedene Lookups eintragen, klicken Sie auf
+die entsprechende Flagge um in die entsprechende Sprache zu wechseln.
+<br /><br />
+
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}" />
+<input type="frame" name="{curframe}">
+
+{if ok}
+<div class="ok">
+  Ihr Lookup wurde erfolgreich mit folgenden Daten in die Datenbank eingetragen:
+</div>
+<br />
+{else}
+{if err}
+<div class="error">{err}</div>
+<br />
+{endif}
+{if hinweis}
+<b>Hinweis:</b><br />
+<div class="hinweis">
+  Sie haben einen Lookup mit einer neuen Art eingegeben. Wenn Sie wirklich sicher sind, dass Sie eine neue Art erstellen wollen,
+  aktivieren Sie die Checkbox und senden das Formular ab.<br /> Achtung: Groß- und Kleinschreibung wird beachtet!
+  <input type="checkbox" name="ja" value="1" class="nob" /><br /><br />
+  Haben Sie sich verschrieben, berichtigen Sie einfach das Feld und senden erneut.
+</div>
+<br />
+{endif}
+{endif}
+<table class="liste">
+
+  <tr>
+    <th>Art</th>
+	<th>Wert</th>
+	<th>Label</th>
+	<th>Aktion</th>
+  </tr>
+
+
+  {if ok}
+  <tr>
+	<td>
+	  {content}
+	</td>
+  </tr>
+  {endif}
+  
+  
+  <tr>
+    <td align="right">
+	  <select name="art" size="1">{opts_art}</select><br /> <b>ODER</b> neu: <input type="text" name="artneu" value="{artneu}" />
+	</td>
+	
+	<td>
+	  <input type="text" name="VALUE" value="{VALUE}" />
+	</td>
+	
+	<td>
+	  <input type="text" name="V1" value="{V1}" />
+	</td>
+	
+	<td>
+	<input type="submit" value="Senden" /> <input type="reset" value="Felder leeren" />
+	</td>
+  </tr>
+
+</table>

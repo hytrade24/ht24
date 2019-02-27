@@ -1,0 +1,16 @@
+<h1>
+	Kommentar zu {htm(TABLE_DESC)}:
+	<a href="{TARGET_LINK}" style="font-size: 18px;">{htm(TITLE)}</a>
+</h1>
+<strong>
+	{todate(STAMP,1)} von Benutzer
+	{if FK_USER > 0}
+	<a href="index.php?page=user_edit&ID_USER={FK_USER}" name="{USER_NAME}">{USER_NAME}</a>
+	{else}
+	<a href="mailto:{USER_MAIL}" name="{USER_NAME}">{USER_NAME}</a>
+	{endif}
+</strong>
+
+<p>
+	{text(COMMENT)}
+</p>

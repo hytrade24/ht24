@@ -1,0 +1,72 @@
+<script type="text/javascript" src="{uri_baseurl(/lib/prototype.js)}"></script>
+<script type="text/javascript" src="{uri_baseurl(/lib/fkt.prototype.js)}"></script>
+<script type="text/javascript">
+	function getFields(table)
+	{
+		var dis = true;
+		if(table != '')
+		{
+			dis = false;
+		}
+		$('GOON').disabled = dis;
+		contentUpdate('index.php?frame=ajax&page=table_fields&table='+table, 'FELDER', 'get');
+	}
+</script>
+<h1>Neue Tabelle anlegen</h1>
+<p>
+	Hier k&ouml;nnen Sie eine neue Tabelle anlegen, welche f&uuml;r Ihre Artikel verwendet 
+	werden kann. Um sich die Arbeit beim Erstellen zu vereinfachen, k&ouml;nnen Sie eine bestehende 
+	Tabelle als Vorlage verwenden.
+</p>
+
+{if err}
+	<h2 class="error">Fehler aufgetreten!</h2>
+	<p class="error">{err}</p>
+{endif}
+
+<form method="post" action="index.php">
+	<input type="hidden" name="page" value="{curpage}" />
+	<table class="formTable" cellspacing="0">
+		<tr>
+			<th>
+				Von welcher Vorlage soll die neue Tabelle erstellt werden?
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<select name="table" onchange="getFields(this.value);">
+					<option value="">Bitte w&auml;hlen Sie eine Tabelle</option>
+					{OPTS}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="FELDER">
+					{subtpl(tpl/de/table_fields.htm,*)}
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<h3>Tabellen Beschreibung</h3>
+				<p>Bitte geben Sie der Tabelle einen neuen Namen und ggf. Eine Beschreibung!</p>
+			</td>	
+		<tr>
+			<th>Name Ihrer Tabelle</th>			
+		</tr>
+		<tr>
+			<td><input type="text" name="V1" value="{htm(V1)}" size="52" /></td>
+		</tr>
+		<tr>
+			<td>
+				<textarea name="V2" rows="4" cols="33">{htm(V2)}</textarea>
+			</td>
+		</tr>
+		<tr class="footer">
+			<td align="right">
+				<input id="GOON" type="submit" title="btte w&auml;hlen Sie zun&auml;chst eine Tabelle" class="button" value="Weiter zu Schritt zwei" {if !table} disabled{endif} />
+			</td>
+		</tr>
+	</table>
+</form>

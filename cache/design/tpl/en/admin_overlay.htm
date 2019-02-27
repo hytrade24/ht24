@@ -1,0 +1,109 @@
+<link type="text/css" rel="stylesheet" href="{uri_resource(css/admin.css)}">
+<script type="text/javascript" src="{uri_resource(js/admin.js)}"></script>
+
+<script src="{uri_resource(/lib/codemirror/lib/codemirror.js)}"></script>
+<link rel="stylesheet" href="{uri_resource(/lib/codemirror/lib/codemirror.css)}">
+<script src="{uri_resource(/lib/codemirror/mode/xml/xml.js)}"></script>
+<script src="{uri_resource(/lib/codemirror/mode/javascript/javascript.js)}"></script>
+<script src="{uri_resource(/lib/codemirror/mode/css/css.js)}"></script>
+<script src="{uri_resource(/lib/codemirror/mode/htmlmixed/htmlmixed.js)}"></script>
+<script src="{uri_resource(/lib/pnotify/pnotify.custom.min.js)}"></script>
+<link type="text/css" rel="stylesheet" href="{uri_resource(/lib/pnotify/pnotify.custom.min.css)}" />
+
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+
+<style type="text/css">
+    .green-btn {
+        background-color: #5cb85c;
+        color: #fff;
+        border: solid 1px #5cb85c;
+    }
+
+    .green-btn:hover, .green-btn:focus {
+        background-color: #0B7A0B;
+        border: solid 1px #0B7A0B;
+        color: #fff;
+    }
+    
+    body {
+        padding-bottom: 56px;
+    }
+</style>
+
+<script type="text/javascript">
+    jQuery(function() {
+        {ADMIN_TOOLS_JS}
+    });
+</script>
+<div class="btn-group ebizAdminTools">
+  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+      <i class="glyphicon glyphicon-wrench"></i>
+  </a>
+  <ul class="dropdown-menu">
+      {if ADMIN_TRANSLATION_TOOL}
+      <li class="ebizAdminToolsTranslationToolEnable">
+          <a href="javascript:adminTranslationTool(true);">Übersetzungs-Tool anzeigen</a>
+      </li>
+      <li class="ebizAdminToolsTranslationToolDisable">
+          <a href="javascript:adminTranslationTool(false);">Übersetzungs-Tool ausblenden</a>
+      </li>
+      {endif}
+      <li class="ebizAdminToolsLoadtimeEnable">
+          <a href="javascript:adminAnalyseLoadtime(true);">Seiten-Ladezeiten anzeigen</a>
+      </li>
+      <li class="ebizAdminToolsLoadtimeDisable">
+          <a href="javascript:adminAnalyseLoadtime(false);">Seiten-Ladezeiten ausblenden</a>
+      </li>
+      <li class="ebizAdminToolsHide">
+          <a href="javascript:adminToolsHide();">Admin-Tools ausblenden</a>
+      </li>
+  </ul>
+</div>
+
+<div class="btn-group ebizEditTools">
+    <a href="#" data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+        <span class="glyphicon glyphicon-edit"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="ebizEditToolEnableInfoBereicheEdit">
+            <a href="javascript:adminEnableInfoBereicheEdit(true)">Infobereiche bearbeiten</a>
+        </li>
+        <li class="ebizEditToolEnableUserStylesheet">
+            <a href="javascript:adminEnableEdit('user-stylesheet.htm','Edit Code for User.css','text/css')">Stylesheet bearbeiten ("user.css")</a>
+        </li>
+    </ul>
+</div>
+
+<div id="large-modal-for-admin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="large-modal-for-admin">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="saveChangesForInfoBereiche()" class="btn btn-default green-btn">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="graph-modal-for-admin" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Product Statistics</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<h1>Kontakt-Modul - Einstellungen</h1>
+<p>Diese Einstellungen ver&auml;ndern das Verhalten des Kontaktformulars.</p>
+
+
+{if error}
+<span class="error">{error}</span><br />
+<br />
+{endif}
+<form method="post" action="index.php">
+<input type="hidden" name="nav" value="{curnav}" />
+<input type="hidden" name="B_VIS" value="0" />
+<table class="liste" style="border:1px #9A9A9A solid">
+ <tr><th>Beschreibung</th><th>Einstellung</th></tr>
+ <tr class="zeile1"><td>Empf&auml;nger des Kontaktformulars / E-Mail </td><td><input type="text" name="email" value="{htm(email)}" /></td></tr>
+  <tr class="zeile0"><td>Info Seite in der Modul&uuml;bersicht anzeigen?</td><td><input type="checkbox" name="B_VIS" {if B_VIS}checked {endif} value="1" style="border:none;"></td></tr>
+ <tr><td colspan="2" class="footer"><input type="submit" class="button" value="Speichern" /></td></tr>
+</table>
+<br>
+(Die Einstellung ist multilingual!)
+</form>

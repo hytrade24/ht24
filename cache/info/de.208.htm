@@ -1,0 +1,16 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="208"{endif}>
+    <div class="design-list-area design-list-area-ads-top" data-hide-when-empty="true">
+    <div class="heading">
+      <span class="heading-text">
+        Für Sie ausgewählte Produkt
+      </span>
+        <a href="{uri_action(alle-anzeigen)}" title="alle Anzeigen im Markt" class="btn btn-info">
+            Alle anzeigen
+        </a>
+    </div>
+    <div class="content">
+        {subtpl(tpl/{SYS_TPL_LANG}/ads_random.htm,ID_KAT,ID_KAT={ID_KAT},ID_GEO_REGION,ID_GEO_REGION={ID_GEO_REGION},CACHE_LIFETIME=103,COUNT=4,COUNT_PER_ROW=4,COUNT_PER_ROW_RESPONSIVE=xs-1 sm-2,ONLY_TOP=4,EXCLUDE_ADS=,TEMPLATE=row_box,HIDE_PARENT=1)}
+    </div>
+</div>
+</div>

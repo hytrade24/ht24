@@ -1,0 +1,17 @@
+<div class="checkbox" data-id="{ID_HDB_PRODUCT}">
+  <label>
+    <a href="#product-{FK_KAT}-{ID_HDB_PRODUCT}" data-action="productDetail" data-category="{FK_KAT}" data-product="{ID_HDB_PRODUCT}" class="pull-right">
+      <i class="glyphicon glyphicon-info-sign"></i>
+    </a>
+    <input type="checkbox" value="{ID_HDB_PRODUCT}"{if IS_ONLINE} data-online="1" disabled checked{endif} />
+    <span class="bulk-create-name">
+      {htm(PRODUKTNAME)}
+    </span>
+    {if IS_ONLINE}
+    <br />
+    <small class="text-muted">
+      Produkt bereits im Angebot.
+    </small>
+    {endif}
+  </label>
+</div>

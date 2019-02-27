@@ -1,0 +1,71 @@
+<script>
+	function Coupon_SubmitCode() {
+		var code = jQuery("[name='COUPON_CODE']").val().trim();
+
+		if(code.length > 0) {
+
+			jQuery.ajax({
+				url: ebiz_trader_baseurl + 'index.php?page=invoices&DO=COUPON_SUBMIT',
+				data: {
+					COUPON_WIDGET_TARGET_TYPE: '{COUPON_WIDGET_TARGET_TYPE}',
+					COUPON_WIDGET_TARGETS: '{base64encode({COUPON_WIDGET_TARGETS_JSON})}',
+					COUPON_CODE: code
+				},
+				type: 'post',
+				dataType: 'json',
+				success: function (result) {
+					jQuery(".coupon-widget-error").html('');
+					if(result.success) {
+
+						jQuery(".coupon-widget-input").after("<p class='text-success'>Der Gutschein wurde erfolgreich aktiviert. Führen Sie die Bestellung fort.</p>");
+						jQuery(".coupon-widget-input").after("<inut type='hidden' name='COUPON_CODE_USAGE' value='"+result.couponUsageId+"'>");
+						jQuery(".coupon-widget-input, .coupon-widget-input").detach();
+
+					} else {
+						jQuery(".coupon-widget-error").html(result.message);
+					}
+				}
+			})
+		} else {
+			jQuery(".coupon-widget-error").html("Es wurde kein Gutscheincode eingegeben");
+		}
+	}
+
+	jQuery(function() {
+		jQuery("[name='COUPON_CODE_USAGE']").change(function() {
+			if(jQuery(this).val() == '') {
+				jQuery(".coupon-widget-input input, .coupon-widget-input button").attr('disabled', false);
+			} else {
+				jQuery(".coupon-widget-input input, .coupon-widget-input button").attr('disabled', true);
+			}
+		})
+	})
+
+</script>
+
+<!-- Gutscheine -->
+<div class="design-content-box coupon-widget">
+	<p><strong>Sie haben einen Gutscheincode ?</strong></p>
+
+
+	<div class="coupon-widget-input form-inline">
+		<input class="form-control" type="text" name="COUPON_CODE" value="{htm(COUPON_CODE)}" placeholder="Gutscheincode eingeben">
+		<button onclick="Coupon_SubmitCode(); return false;" class="btn">Gutschein einlösen</button>
+	</div>
+	<div class="coupon-widget-error text-error"></div>
+
+	{if coupon_available}
+		<div class="coupon-widget-choose">
+		<p>- oder einen noch nicht eingelösten Gutschein verwenden -</p>
+
+		<div class="radio">
+			<label>
+				<input type="radio" value="" checked name="COUPON_CODE_USAGE">
+				<em>Keinen Gutschein verwenden</em>
+			</label>
+		</div>
+		{coupon_available}
+		</div>
+	{endif}
+</div>
+<!-- Ende Gutscheine -->

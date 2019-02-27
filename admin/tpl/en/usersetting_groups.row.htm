@@ -1,0 +1,13 @@
+<tr class="zeile{even}">
+ <td>
+  <a href="index.php?page=usersetting_group_edit&ID_SETTING_GROUP={ID_SETTING_GROUP}" title="Bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16" alt="edit"></a>
+  {if !N_SETTINGS}
+   <a href="index.php?page={curpage}&del={ID_SETTING_GROUP}" title="Gruppe l&ouml;schen?" onclick="return confirm('Wirklich löschen?');"><img src="gfx/btn.del.gif" width="32" height="16" alt="delete"></a>
+  {endif}
+ </td>
+ <td align="center">{if B_VIS}<span class="ok">&radic;</span>{else}<span class="error">x</span>{endif}</td>
+ <td>
+  <a href="index.php?page=usersetting_group_edit&ID_SETTING_GROUP={ID_SETTING_GROUP}" title="Bearbeiten"><b>{htm(V1)}</b></a>
+  <br />{htm(V2)}</td>
+ <td align="right"><a href="index.php?page=usersettings&FK_SETTING_GROUP={ID_SETTING_GROUP}" title="Einstellungen anzeigen">{N_SETTINGS}</a></td>
+</tr>

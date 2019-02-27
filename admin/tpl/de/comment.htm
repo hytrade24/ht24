@@ -1,0 +1,106 @@
+{if query}
+	{query}<br /><br /><br />
+{endif}
+{if INCLUDE}
+
+{else}
+	<table border="0" width="100%">
+	<tr>
+		<td>
+			<h1 style="margin-bottom:0px;">{htm(V1)}</h1>
+			<h5 style="margin-top:0px;padding-left:15px;">erstellt am {todate(DATUM)}</h5>
+		</td>
+		<td rowspan="2" style="padding:12px;padding-top:2px;width:60px;text-align:right;vertical-align:top;">
+			{getubox(FK_UID,2)}	
+		</td>
+	</tr>
+		<tr>
+			<td style="text-align:justify;padding-left:8px;">
+				<h3>{htm(V2)}</h3><br /><br />
+			</td>
+		</tr>
+	</table><hr />
+	<p style="text-align:center;"><a href="{linkback}"><strong>Zur&uuml;ck zum Artikel</strong></a></p>
+{endif}
+<div style="width:100%;text-align:center;border:0px solid #EEEEEE;">
+<!--<title>{htm(n_V1)} {sys(SITE.SITENAME)}</title>-->
+<h1 style="padding-left:10px;text-align:left">Kommentare</h1>
+{if comment}
+	{if preview}
+		<b>Vorschau:</b>
+		<table width="100%" cellspacing="0" class="formTable">
+		<tr>
+		  <th style="text-align:left">{htm(SUBJECT)}</th>
+		</tr><tr>
+		  <td>Autor: <b>{htm(NAME)}</b></td>
+		</tr><tr>
+		  <td>{text(BODY)}</td>
+		</tr>
+		</table><br /><br />
+	{else}
+		{if read}
+		<table class="liste" width="97%" cellspacing="0">
+		<tr>
+		  <th colspan="1" style="text-align:left">Thema &quot;{htm(o_SUBJECT)}&quot;</th>
+		  <th style="text-align:right;"> diesen Kommentar löschen</th>
+		</tr><tr>
+		  <td>Autor: <b>{print_fk(user,o_FK_USER,NAME)}</b></td>
+		  <td align="right">{if o_ID_COMMENT}{todate(o_STAMP)}{else}&nbsp;{endif}</td>
+		</tr><tr>
+		  <td colspan="2" bgcolor="#E9E9E9">&nbsp;<br>{text(o_BODY)}<br>&nbsp;</td>
+		</tr></table>
+		<br />
+		{endif}
+	{endif}
+	<!-- Listenausgabe der neusten Threads -->
+	<table width="97%" cellspacing="0" border="0" class="pathtab" align="center" style="padding-left:10px;">
+	{if liste}
+		<tr>
+		  <th style="text-align:left">Thema</th>
+		  <th style="text-align:left">Autor</th>
+		  <th style="text-align:left">Datum</th>
+		</tr>
+		{liste}
+	{else}
+		<tr><td></td><td colspan="2" style="padding-left:20px;"><h5>Noch keine Kommentare vorhanden</h5></td></tr>
+	{endif}
+		<tr>
+		  <td colspan="3" style="padding-top:6px">&nbsp;<a href="{uri_baseurl(/comment,{FK},add,0,{s_table}.htm)}">Neues Thema</a>
+		&nbsp;|&nbsp;<a href="{uri_baseurl(/comment,{FK},list,0,{s_table}.htm)}">Alles anzeigen</a></td>
+		</tr>
+	</table>
+	{if post}
+		{if ID_USER}
+			{if err}
+				 <br /><br /><p class="error" style="text-align:left">{err}</p><br /><br />
+			{endif}
+			<br />
+			<form name="post" action="{uri_baseurl(/index.php)}" method="post">
+			<input type="hidden" name="page" value="comment" />
+			<input type="hidden" name="mode" value="add" />
+			<input type="hidden" name="PARENT" value="{ID_COMMENT}" />
+			<input type="hidden" name="s_table" value="{s_table}" />
+			<input type="hidden" name="id" value="{id}" />
+			<input type="hidden" name="FK_UID" value="{FK_UID}" />			
+			 <table width="70%" cellpadding="0" cellspacing="0" border="0" class="liste" align="center"><tr>
+			  <th style="text-align:left;width:40px;"><label for="subject">Thema</label></td>
+			  <th style="text-align:left"><input type="text" class="inputhalf" name="SUBJECT" id="subject"
+				value="{htm(SUBJECT)}" style="width:200px;"/></th>
+			 </tr>
+			 <tr>
+			  <td colspan="3"><textarea style="width:100%" class="inputfull" wrap="virtual" rows="10" cols="40"name="BODY">{htm(BODY)}</textarea></td>
+			 </tr><tr>
+			  <td colspan="3" class="footer" style="text-align:left;">
+				<input type="submit" class="button" name="preview" value="Vorschau" />
+				<input type="submit" class="button" name="submit" value="Beitrag absenden" />
+			  </td>
+			</tr></table></form>
+		{else}
+		   {subtpl(module/tpl/de/login.htm)}
+		{endif}
+	{endif}
+{else}
+<!--	<div class="hinweis">Derzeit können keine Kommentare erstellt oder angezeigt werden.</div>-->
+{endif}
+</div>
+

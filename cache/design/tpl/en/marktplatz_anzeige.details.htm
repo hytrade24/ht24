@@ -1,0 +1,372 @@
+      <!-- Anzeige -->
+	  {if PRINT==1}
+      <div class="page">
+          <div class="header" style="border-bottom: solid 1px black;">
+              {content_page(PDF Artikel drucken header)}
+          </div>
+          <div class="page-content">
+              <h1>{htm(AD_TITLE)}</h1>
+              <table width="100%" cellspacing="0" cellpadding="0">
+                  {if product_fields}
+                  {product_fields}
+                  {endif}
+                  <tr>
+                      <td style="vertical-align: top;" width="30%">
+                          <h3>Produkt Bild</h3>
+                      </td>
+                      <td width="70%">
+                          <img src="{thumbnail_article({ID_AD},{product_image},350,350)}" id="img_large" data-watchlist="1">
+                      </td>
+                  </tr>
+                  <tr>
+                      <td style="vertical-align: top;" width="30%">
+                          <h3>Beschreibung</h3>
+                      </td>
+                      <td width="70%">
+                          {AD_DESCRIPTION}
+                      </td>
+                  </tr>
+                  <tr>
+                      <td width="30%" style="vertical-align: top;">
+                          <h3>Details zur Anzeige</h3>
+                      </td>
+                      <td width="70%">
+                          {if (AD_VERKAUFSOPTIONEN!=4)}
+                          <div class="design-ad-details-price">
+                              {if !AD_SOLD}
+                              {VARIANTS}
+                              {endif}
+                              {if (AD_VERKAUFSOPTIONEN!=2)}
+                              <div class="marketplaceArticlePrice">
+                        <span class="marketplaceArticlePriceLabel">
+                            {if AD_VERKAUFSOPTIONEN!=3}
+                                Price
+                            {else}
+                                Rent per day
+                                <br />
+                            {endif}
+                        </span>
+
+                                  <span id="marketplaceArticlePriceValue">
+                           {if AD_VERKAUFSOPTIONEN==3}
+                                starting
+                           {endif}
+                           {topreis_ex(AD_PREIS)} {CURRENCY_DEFAULT}
+                       </span>
+                              </div>
+                              <span class="text-muted">
+                        {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={AD_MWST})}
+                    </span>
+                              <br />
+                              {if AD_PSEUDOPREIS}
+                              <div class="marketplaceArticlePseudoPrice">
+                                  instead of {topreis_ex(AD_PSEUDOPREIS)} {CURRENCY_DEFAULT}
+                              </div>
+                              {endif}
+                              {endif}
+                              {if AD_BASISPREIS_PREIS}
+                              <p class="text-muted">
+                                  Baseprice: {topreis_ex(AD_BASISPREIS_PREIS)} {CURRENCY_DEFAULT} / {if AD_BASISPREIS_MENGE > 1}{AD_BASISPREIS_MENGE} {endif}{AD_BASISPREIS_EINHEIT}
+                              </p>
+                              {endif}
+                              {if !AD_AFFILIATE}
+                              <p>
+                                  {if !KAT_OPTIONS_HIDE_SHIPPING}
+                                  {if AD_VERSANDOPTIONEN==3}
+                                  <span class="text-muted">Shippingcosts: {topreis_ex(AD_VERSANDKOSTEN)} {CURRENCY_DEFAULT}</span>
+                                  {else}
+                                  {if AD_VERSANDOPTIONEN==0}<span class="text-success">No shippingcosts</span>{endif}
+                                  {if AD_VERSANDOPTIONEN==1}<span class="text-error">Only pickup</span>{endif}
+                                  {if AD_VERSANDOPTIONEN==2}<span class="text-error">Shippingcosts on request</span>{endif}
+                                  {endif}
+                                  <br />
+                                  {if AD_VERSANDKOSTEN_INFO}
+                                  <span class="text-muted">Shippingcosts notice: {htm(AD_VERSANDKOSTEN_INFO)}</span>
+                                  <br />
+                                  {endif}
+                                  {if AD_LIEFERTERMIN}
+                                  <span class="text-muted">Delivery date: {htm(AD_LIEFERTERMIN)}</span>
+                                  <br />
+                                  {endif}
+                                  {endif}
+                                  {if AD_MOQ}
+                                  <span class="text-muted">Minimum order quantity: {AD_MOQ}</span>
+                                  <br />
+                                  {endif}
+                                  <span id="marketplaceArticleQuanitityValue">{htm(AD_MENGE)}</span> available.
+                              </p>
+                              {if AD_VERKAUFSOPTIONEN==3 && list_rent}
+                              <table class="table table-condensed table-striped table-bordered">
+                                  <tr>
+                                      <th>Lenght of lease</th>
+                                      <th>Price</th>
+                                  </tr>
+                                  {list_rent}
+                              </table>
+                              {endif}
+                              {else}
+                              {endif}
+                          </div>
+                          {endif}
+                      </td>
+                  </tr>
+              </table>
+          </div>
+          <div class="footer" style="border-top: solid 1px black;">
+              {content_page(PDF Artikel drucken footer)}
+          </div>
+      </div>
+	  {else}
+      {startblock(script)}
+        {parentblock()}
+        <script type="application/ld+json">
+          {kat_ariadne_dynamic_json_ld({ID_KAT},marketplace,{AD_TITLE})}
+        </script>
+        <script type="application/ld+json">
+          {organization_data_json_ld()}
+        </script>
+        <script type="application/ld+json">
+          {
+            "@context": "http://schema.org/",
+            "@type": "Product",
+            "name": "{htm(AD_PRODUKTNAME)}",
+            {if product_image}"image": "{uri_baseurl_full({product_image})}",{endif}
+            "description": "{strip_tags(AD_BESCHREIBUNG)}",
+            {if AD_EAN}"gtin13": "{AD_EAN}",{endif}
+            "offers": [{
+              "@type": "Offer",
+              "priceCurrency": "{CURRENCY_CODE_FOR_SCHEMA}",
+              "price": "{AD_PREIS}"
+            }]
+          }
+        </script>
+
+      {endblock(script)}
+      {startblock(head)}
+        {parentblock()}
+        <!-- for facebook and whatsapp -->
+        <meta property="og:url" content="{uri_baseurl_full({REQUEST_URI})}" />
+        <meta property="og:type" content="product" />
+        <meta property="og:title" content="{htm(AD_PRODUKTNAME)}" />
+        <meta property="og:description" content="{shorten({AD_BESCHREIBUNG},155,1)}" />
+        {if product_image}
+        <meta property="og:image" content="{uri_baseurl_full({product_image})}" />
+        <meta property="og:image" content="{uri_baseurl_full({product_image})}" />
+        <meta property="og:image:width" content="{product_image_width}" />
+        <meta property="og:image:height" content="{product_image_height}" />
+        {endif}
+        <!-- -->
+  
+        <!-- for twitter -->
+        <meta property="twiiter:card" content="summary" />
+        <meta property="twiiter:title" content="{htm(AD_PRODUKTNAME)}" />
+        <meta property="twitter:description" content="{shorten({AD_BESCHREIBUNG},100,1)}" />
+        {if product_image}<meta property="twitter:image" content="{uri_baseurl_full({product_image})}" />{endif}
+        <!-- -->
+      {endblock(head)}
+			<div class="design-content-box">
+                <div class="nav-tabs-images">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a title="Show images/videos" href="#tab_images" data-toggle="tab">Show images/videos</a>
+                        </li>
+                        ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0)°
+                        {if product_files_free}
+                        <li>
+                            <a title="Show downloads" href="#tab_files" data-toggle="tab">Show downloads</a>
+                        </li>
+                        {else}
+                        {if product_files_paid}
+                        <li>
+                            <a title="Show downloads" href="#tab_files" data-toggle="tab">Show downloads</a>
+                        </li>
+                        {endif}
+                        {endif}
+                        {if !AD_AFFILIATE && AD_LATITUDE && AD_LONGITUDE}
+                        <li>
+                            <a href="#tab_map" title="Show advertisement on the map" data-toggle="tab">Advert-location</a>
+                        </li>
+                        {endif}
+                        ^endif°
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab_images" class="tab-pane active design-ad-details-images">
+                            {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.images.htm,product_image,product_images,product_videos,ID_AD,AD_IMPORT_IMAGES,PREVIEW)}
+                        </div>
+                        ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0)°
+                        {if AD_LATITUDE && AD_LONGITUDE}
+                        <div id="tab_map" class="tab-pane">
+                            <div id="map_container"></div>
+                        </div>
+                        {endif}
+                        <div id="tab_files" class="tab-pane">
+                            {if product_files_free}
+                            <table class="table table-bordered table-striped table-condensed">
+                                <thead>
+                                <tr>
+                                    <th>Filename</th>
+                                    <th>Filetype</th>
+                                </tr>
+                                </thead>
+                                {product_files_free}
+                            </table>
+                            {endif}
+                            {if product_files_paid}
+                            <h3>Paid Product files</h3>
+                            <table class="table table-bordered table-striped table-condensed">
+                                <thead>
+                                <tr>
+                                    <th>Filename</th>
+                                    <th>Filetype</th>
+                                </tr>
+                                </thead>
+                                {product_files_paid}
+                            </table>
+                            {endif}
+                        </div>
+                        ^endif°
+                    </div>
+                </div>
+	
+				^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0)°
+	
+					<div class="marketplaceArticleInfo">
+						<ul class="nav nav-tabs">
+							<li class="active">
+								<a href="#marketplaceArticleDescription" data-toggle="tab"><i class="icon-star"></i> Description</a>
+							</li>
+                            <li>
+                                <a href="#marketplaceArticleAttributes" data-toggle="tab"><i class="icon-star"></i> Details</a>
+                            </li>
+                            {desc_fields_tabs}
+							{if AD_AVAILABILITY}
+								<li>
+									<a href="#marketplaceArticleAvailability" data-toggle="tab"><i class="icon-star"></i> Availability</a>
+								</li>
+							{endif}
+							{if SETTINGS_MARKTPLATZ_BUYING_ENABLED}
+								{if AD_AD_AGB}
+									<li>
+										<a href="#marketplaceArticleAGB" data-toggle="tab"><i class="icon-star"></i> GTC</a>
+									</li>
+								{endif}
+								{if AD_AD_WIDERRUF}
+									<li>
+										<a href="#marketplaceArticleWiderruf" data-toggle="tab"><i class="icon-star"></i> Conditions</a>
+									</li>
+								{endif}
+								{if payment_adapter_info}
+									<li>
+										<a href="#marketplaceArticleZahlungsinformation" data-toggle="tab"><i class="icon-star"></i> Paymentinformations</a>
+									</li>
+								{endif}
+							{endif}
+                            ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0)°
+                            {if SETTINGS_MARKTPLATZ_ALLOW_COMMENTS_AD && AD_ALLOW_COMMENTS}
+                            <li>
+                                <a href="#marketplaceCommentRating" data-toggle="tab"><i class="icon-star"></i> Ratings</a>
+                            </li>
+                            {endif}
+                            ^endif°
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="marketplaceArticleDescription">
+                                <h3>Description</h3>
+								{AD_DESCRIPTION}
+							</div>
+                            <div class="tab-pane" id="marketplaceArticleAttributes">
+                                {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.fields.htm,ID_AD_MASTER={ID_AD},PREVIEW)}
+                            </div>
+                            {desc_fields_content}
+							{if AD_AVAILABILITY}
+							<div class="tab-pane" id="marketplaceArticleAvailability">
+                                <h3>Availability</h3>
+								{subtpl(tpl/{SYS_TPL_LANG}/ad_availability_calendar.htm,ID_AD)}
+							</div>
+							{endif}
+							{if AD_AD_AGB}
+							<div class="tab-pane" id="marketplaceArticleAGB">
+                                <h3>GTC</h3>
+								{text(AD_AD_AGB)}
+							</div>
+							{endif}
+							{if AD_AD_WIDERRUF}
+							<div class="tab-pane" id="marketplaceArticleWiderruf">
+                                <h3>Conditions</h3>
+								{text(AD_AD_WIDERRUF)}
+							</div>
+							{endif}
+							{if payment_adapter_info}
+							<div class="tab-pane" id="marketplaceArticleZahlungsinformation">
+                                <h3>Paymentinformations</h3>
+								The seller accepts the following payment methods:
+								<ul>
+								{payment_adapter_info}
+								</ul>
+							</div>
+							{endif}
+                            ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0)°
+                            {if SETTINGS_MARKTPLATZ_ALLOW_COMMENTS_AD && AD_ALLOW_COMMENTS}
+                            <div class="tab-pane" id="marketplaceCommentRating">
+                                <h3>Ratings</h3>
+                                <a name="comments"></a>
+                                {if AD_EAN}
+                                    <div class="row">
+                                        <div class="col-sm-{if preview}12{else}6{endif}">
+                                            {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=ad_master,FK_STR={AD_EAN},TEMPLATE=big,SHOW_EMPTY_BARS=1)}
+                                        </div>
+                                        {if !preview}
+                                            <div class="col-sm-6">
+                                                {subtpl(tpl/{SYS_TPL_LANG}/comment_ean.htm,ID_USER,TABLE=ad_master,FK_STR={AD_EAN},SHOW_RATING=1)}
+                                            </div>
+                                        {endif}
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {subtpl(tpl/{SYS_TPL_LANG}/comment_list_ean.htm,TABLE=ad_master,FK_STR={AD_EAN},SHOW_RATING=1)}
+                                        </div>
+                                    </div>
+                                {else}
+                                    <div class="row">
+                                        <div class="col-sm-{if preview}12{else}6{endif}">
+                                            {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=ad_master,FK={ID_AD},TEMPLATE=big,SHOW_EMPTY_BARS=1)}
+                                        </div>
+                                        {if !preview}
+                                            <div class="col-sm-6">
+                                                {subtpl(tpl/{SYS_TPL_LANG}/comment.htm,ID_USER,TABLE=ad_master,FK={ID_AD},SHOW_RATING=1)}
+                                            </div>
+                                        {endif}
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {subtpl(tpl/{SYS_TPL_LANG}/comment_list.htm,TABLE=ad_master,FK={ID_AD},SHOW_RATING=1)}
+                                        </div>
+                                    </div>
+                                {endif}
+                            </div>
+                            {endif}
+                            ^endif°
+						</div>
+					</div>
+				^endif°
+			</div>
+
+            {if AD_B_TOP}
+              <div data-hide-when-empty="true">
+                  <h2 class="design-vendor-box-ads-title">
+                      Further Products of this Vendor
+                  </h2>
+                  {subtpl(tpl/{SYS_TPL_LANG}/ads_user.htm,ID_USER={AD_FK_USER},COUNT=4,COUNT_PER_ROW=4,EXCLUDE_ADS={ID_AD})}
+              </div>
+            {else}
+              {if interesse}
+                  <div class="marketplaceArticleMoreProducts">
+                      <h2>This could be also interesting</h2>
+                      <div class="design-row design-row-xs-2 design-row-md-4">
+                          {interesse}
+                      </div>
+                  </div>
+              {endif}
+            {endif}
+	  {endif}
+

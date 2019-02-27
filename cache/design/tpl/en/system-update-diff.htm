@@ -1,0 +1,554 @@
+<style type="text/css">
+
+.CodeMirror-merge {
+    border: 1px solid #000000;
+    border-top: 1px solid #DDDDDD;
+}
+
+.CodeMirror-merge .CodeMirror-merge-pane .CodeMirror-scroll {
+    background: #DDDDDD;
+}
+
+.CodeMirror-merge.CodeMirror-merge-3pane .CodeMirror-merge-pane:nth-child(1) .CodeMirror-merge-l-chunk { background: #dde; }
+.CodeMirror-merge.CodeMirror-merge-3pane .CodeMirror-merge-pane:nth-child(5) .CodeMirror-merge-r-chunk { background: #eeeed0; }
+.CodeMirror-merge.CodeMirror-merge-2pane .CodeMirror-merge-pane:nth-child(3) .CodeMirror-merge-r-chunk { background: #eeeed0; }
+
+.CodeMirror-merge.CodeMirror-merge-2pane .CodeMirror-merge-pane:nth-child(1) .CodeMirror-scroll,
+.CodeMirror-merge.CodeMirror-merge-3pane .CodeMirror-merge-pane:nth-child(3) .CodeMirror-scroll {
+    background: #FFFFFF;
+}
+
+.updateDiffFile {
+    background: #F7F7F7;
+    border: 1px solid #000000;
+    height: 54px;
+    line-height: 26px;
+    text-align: center;
+}
+
+.updateDiffFileName {
+    font-weight: bold;
+    padding: 6px 4px;
+}
+
+.updateDiffFilePrev,
+.updateDiffFileNext {
+    background: #E1E3E4;
+    border-right: 1px solid #000000;
+    font-weight: bold;
+    float: left;
+    line-height: 42px;
+    padding: 6px 32px;
+}
+
+.updateDiffFileNext {
+    border-left: 1px solid #000000;
+    border-right: none;
+    float: right;
+    text-align: right;
+}
+
+.updateDiffFileCurrent {
+    border-left: 1px solid #DDDDDD;
+    padding: 6px 4px;
+}
+
+.updateDiffFileStatus {
+    color: #666;
+}
+
+.updateDiffFileStatus.dirty {
+    color: #CA7300;
+}
+
+.updateDiffFileStatus.saved {
+    color: #009602;
+}
+
+.updateDiffImages {
+    background: #DDDDDD;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    text-align: center;
+}
+
+.updateDiffImages img {
+    max-width: 100%;
+}
+
+.updateDiffImages:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.updateDiffEditorHeader {
+    background: #DDDDDD;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+    font-weight: bold;
+    line-height: 24px;
+    text-align: center;
+}
+
+.updateDiffEditorHeader:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.updateDiffEditorHeader .left,
+.updateDiffEditorHeader .center,
+.updateDiffEditorHeader .right,
+.updateDiffImages .left,
+.updateDiffImages .center,
+.updateDiffImages .right {
+    background: #F7F7F7;
+    display: block;
+    float: left;
+    width: 47%;
+}
+
+.updateDiffEditorHeader.threeWay .left,
+.updateDiffEditorHeader.threeWay .center,
+.updateDiffEditorHeader.threeWay .right,
+.updateDiffImages.threeWay .left,
+.updateDiffImages.threeWay .center,
+.updateDiffImages.threeWay .right {
+    width: 31%;
+}
+
+.updateDiffEditorHeader.threeWay .center,
+.updateDiffImages.threeWay .center,
+.updateDiffImages .right {
+    margin-left: 3.5%;
+}
+
+.updateDiffImages .center {
+    background: #FFFFFF;
+}
+
+.updateDiffEditorHeader .switch {
+    float: left;
+    font-family: monospace;
+    letter-spacing: -3px;
+    line-height: 4px;
+    width: 6%;
+}
+
+.updateDiffEditorHeader.threeWay .switch {
+    width: 3.5%;
+}
+
+.updateDiffFile .button {
+    background: #E1E3E4;
+    border-color: #000000;
+    font-weight: bold;
+    line-height: 18px;
+    padding: 0px 5px;
+    vertical-align: middle;
+}
+
+.updateDiffFileFinish {
+    color: #009602;
+}
+
+#updateDiffDiffs.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1000000;
+}
+
+#updateDiffDiffs .updateDiffMinimize,
+#updateDiffDiffs .updateDiffMaximize {
+    padding: 0;
+    margin: 0;
+}
+
+#updateDiffDiffs .updateDiffMinimize {
+    display: none;
+}
+
+#updateDiffDiffs.fullscreen .updateDiffMinimize {
+    display: inline-block;
+}
+
+#updateDiffDiffs.fullscreen .updateDiffMaximize {
+    display: none;
+}
+
+/* Fix damit die Layout-Tabelle nicht größer wird als das Fenster. */
+body > table {
+    table-layout: fixed;
+}
+
+</style>
+<div id="updateDiffDiffs">
+    <div class="updateDiffFile">
+        <a class="updateDiffFilePrev" href="javascript:updateDiffFilePrev();">&lt; Vorherige Datei</a>
+        <a class="updateDiffFileNext" href="javascript:updateDiffFileNext();">Nächste Datei &gt;</a>
+        <span class="updateDiffFileStatus">Keine Änderung</span>
+        <span class="updateDiffFileCurrent">
+            Datei
+            <span class="updateDiffFileCurrentIndex">1</span>
+            /
+            <span class="updateDiffFileCount"></span>
+        </span>
+        <span class="updateDiffFileName"></span>
+        <br />
+        <a class="updateDiffMaximize button" href="#" onclick="jQuery(this).parent().parent().addClass('fullscreen'); resizeDiffEditor();">
+            <img src="gfx/fullscreen_maximize.gif" />
+        </a>
+        <a class="updateDiffMinimize button" href="#" onclick="jQuery(this).parent().parent().removeClass('fullscreen'); resizeDiffEditor();">
+            <img src="gfx/fullscreen_minimize.gif" />
+        </a>
+        <a class="updateDiffFileRestore button" href="javascript:updateDiffFileRestore(true);" style="display: none;">Original wiederherstellen</a>
+        <a class="updateDiffFileFinish button" href="javascript:updateDiffFileSave(true);">Jetzt abschließen!</a>
+    </div>
+    {rows}
+</div>
+<script type="text/javascript">
+
+var fileDiv = null;
+var diffIndex = 0;
+var diffs = [];
+
+String.prototype.decodeHtmlEntitiesSimple = function() {
+    return String(this).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+}
+
+String.prototype.encodeHtmlEntitiesSimple = function() {
+    return String(this).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function updateDiffFileSave(finish) {
+    var jqDiff = jQuery(diffs[diffIndex]);
+    var finish = (typeof finish === "undefined" ? 0 : 1);
+    if ((finish == 0) && (jqDiff.find(".updateDiffEditor[data-dirty=1]").length == 0)) {
+        return;
+    }
+    var filename = jqDiff.attr("data-file");
+    var postData = "filename="+encodeURIComponent(filename)+"&finish="+finish;
+    if (typeof jqDiff[0].codeMirror != "undefined") {
+        // Code mirror
+        var codeMirror = jqDiff[0].codeMirror;
+        var content = codeMirror.edit.getValue();
+        var path = jqDiff.attr("data-path");
+        var pathUpdate = jqDiff.attr("data-path-update");
+        var pathBackup = jqDiff.attr("data-path-backup");
+        if (finish && !confirm("Das zusammenführen von '"+filename+"' wirklich abschließen?")) {
+            return;
+        }
+        // Prepare post
+        postData += "&content="+encodeURIComponent(content);
+        if (typeof path !== "undefined") {
+            postData += "&path="+encodeURIComponent(path);
+        }
+        if (typeof pathUpdate !== "undefined") {
+            postData += "&pathUpdate="+encodeURIComponent(pathUpdate);
+        }
+        if (typeof pathBackup !== "undefined") {
+            postData += "&pathBackup="+encodeURIComponent(pathBackup);
+        }
+    }
+    if (typeof jqDiff[0].imageDiff != "undefined") {
+        // Image diff
+        var imageDiff = jqDiff[0].imageDiff;
+        var imageFile = imageDiff.find(".center img").attr("data-source");
+        var path = jqDiff.attr("data-path");
+        var pathUpdate = jqDiff.attr("data-path-update");
+        var pathBackup = jqDiff.attr("data-path-backup");
+        if (finish && !confirm("Das zusammenführen von '"+filename+"' wirklich abschließen?")) {
+            return;
+        }
+        // Prepare post
+        postData += "&contentFile="+encodeURIComponent(imageFile);
+        if (typeof path !== "undefined") {
+            postData += "&path="+encodeURIComponent(path);
+        }
+        if (typeof pathUpdate !== "undefined") {
+            postData += "&pathUpdate="+encodeURIComponent(pathUpdate);
+        }
+        if (typeof pathBackup !== "undefined") {
+            postData += "&pathBackup="+encodeURIComponent(pathBackup);
+        }
+    }
+    // Upload changed content to server
+    jQuery.post("index.php?page=welcome&doUpdate={action}", postData, function (result) {
+        if (finish) {
+            // Datei abgeschlossen; Aus Liste entfernen.
+            updateDiffFileFinished(jqDiff);
+        } else {
+            // Datei normal gespeichert
+            var jqEditor = jqDiff.find(".updateDiffEditor");
+            if (jqEditor.length > 0) {
+                updateDiffFileSaved(jqDiff.find(".updateDiffEditor"));
+            }
+        }
+    });
+}
+
+function updateDiffFileRestore() {
+    var jqDiff = jQuery(diffs[diffIndex]);
+    var codeMirror = jqDiff[0].codeMirror;
+    var content = codeMirror.edit.getValue();
+    var filename = jqDiff.attr("data-file");
+    var path = jqDiff.attr("data-path");
+    var pathUpdate = jqDiff.attr("data-path-update");
+    var pathBackup = jqDiff.attr("data-path-backup");
+    // Prepare post
+    var postData = "filename="+encodeURIComponent(filename);
+    if (typeof path !== "undefined") {
+        postData += "&path="+encodeURIComponent(path);
+    }
+    if (typeof pathUpdate !== "undefined") {
+        postData += "&pathUpdate="+encodeURIComponent(pathUpdate);
+    }
+    if (typeof pathBackup !== "undefined") {
+        postData += "&pathBackup="+encodeURIComponent(pathBackup);
+    }
+    // Upload changed content to server
+    jQuery.post("index.php?page=welcome&doUpdate={actionRestore}", postData, function (result) {
+        if (result.success) {
+            // Datei wiederhergestellt
+            updateDiffFileRestored(jqDiff, result.content.left, result.content.center, result.content.right);
+        }
+    });
+}
+
+function updateDiffFileSwitch() {
+    if (typeof diffs[diffIndex].codeMirror != "undefined") {
+        // Codemirror diff
+        var diffEditor = diffs[diffIndex].codeMirror;
+        var jqCenterTitle = jQuery(diffs[diffIndex]).find(".updateDiffEditorHeader .center");
+        var jqRightTitle = jQuery(diffs[diffIndex]).find(".updateDiffEditorHeader .right");
+        // Backup original caption for restore
+        if (!jqCenterTitle.is("[data-original]")) { jqCenterTitle.attr("data-original", jqCenterTitle.html()); }
+        if (!jqRightTitle.is("[data-original]")) { jqRightTitle.attr("data-original", jqRightTitle.html()); }
+        // Read center content and file description
+        var content = diffEditor.edit.getValue();
+        var contentTitle = jqCenterTitle.html();
+        // Copy right side to center
+        diffEditor.edit.setValue( diffEditor.right.orig.getValue() );
+        jqCenterTitle.html(
+                jqRightTitle.html()
+        );
+        // Copy center to right side
+        diffEditor.right.orig.setValue(content);
+        jqRightTitle.html(contentTitle);
+        // Done!
+        updateDiffFileDirty( jQuery(diffs[diffIndex]).find(".updateDiffEditor") );
+    }
+    if (typeof diffs[diffIndex].imageDiff != "undefined") {
+        // Image diff
+        var diffEditor = diffs[diffIndex].imageDiff;
+        var jqCenterTitle = jQuery(diffs[diffIndex]).find(".updateDiffEditorHeader .center");
+        var jqRightTitle = jQuery(diffs[diffIndex]).find(".updateDiffEditorHeader .right");
+        // Backup original caption for restore
+        if (!jqCenterTitle.is("[data-original]")) { jqCenterTitle.attr("data-original", jqCenterTitle.html()); }
+        if (!jqRightTitle.is("[data-original]")) { jqRightTitle.attr("data-original", jqRightTitle.html()); }
+        // Read center content and file description
+        var content = diffEditor.find(".center").html();
+        var contentTitle = jqCenterTitle.html();
+        // Copy right side to center
+        diffEditor.find(".center").html( diffEditor.find(".right").html() );
+        jqCenterTitle.html(
+                jqRightTitle.html()
+        );
+        // Copy center to right side
+        diffEditor.find(".right").html( content );
+        jqRightTitle.html(contentTitle);
+        
+    }
+}
+
+function updateDiffFilePrev() {
+    if (diffIndex > 0) {
+        diffIndex--;
+    }
+    updateDiffFile();
+}
+
+function updateDiffFileNext() {
+    if (diffIndex < (diffs.length-1)) {
+        diffIndex++;
+    }
+    updateDiffFile();
+}
+
+function updateDiffFile() {
+    var fileName = jQuery(diffs[diffIndex]).attr("data-file");
+    fileDiv.find(".updateDiffFileCurrentIndex").html(diffIndex+1);
+    fileDiv.find(".updateDiffFileName").html(fileName);
+    if (diffIndex > 0) {
+        fileDiv.find(".updateDiffFilePrev").removeClass("disabled");
+    } else {
+        fileDiv.find(".updateDiffFilePrev").addClass("disabled");
+    }
+    if (diffIndex < (diffs.length-1)) {
+        fileDiv.find(".updateDiffFileNext").removeClass("disabled");
+    } else {
+        fileDiv.find(".updateDiffFileNext").addClass("disabled");
+    }
+    diffs.hide();
+    if (jQuery(diffs[diffIndex]).find(".updateDiffEditor[data-saved=1]").length > 0) {
+        fileDiv.find(".updateDiffFileRestore").show();
+    } else {
+        fileDiv.find(".updateDiffFileRestore").hide();
+    }
+    if (jQuery(diffs[diffIndex]).find(".updateDiffEditor[data-dirty=1]").length > 0) {
+        fileDiv.find(".updateDiffFileStatus").removeClass("saved").addClass("dirty").html("<b>Ungespeicherte Änderung (Strg+S zum Speichern)</b>");
+    } else if (jQuery(diffs[diffIndex]).find(".updateDiffEditor[data-saved=1]").length > 0) {
+        fileDiv.find(".updateDiffFileStatus").addClass("saved").removeClass("dirty").html("<b>Änderung gespeichert</b>");
+    } else {
+        fileDiv.find(".updateDiffFileStatus").removeClass("saved").removeClass("dirty").html("<b>Keine Änderung</b>");
+    }
+    jQuery(diffs[diffIndex]).show();
+    initializeDiffEditor( jQuery(diffs[diffIndex]).attr("data-hash") );
+}
+
+function updateDiffFileDirty(jqEditor) {
+    jqEditor.attr("data-dirty", 1);
+    updateDiffFile();
+    jQuery(window).on("beforeunload", function() {
+        return "Achtung! Sie haben noch ungespeicherte Änderungen!";
+    });
+}
+
+function updateDiffFileSaved(jqEditor) {
+    jqEditor.attr("data-dirty", 0).attr("data-saved", 1);
+    updateDiffFile();
+    if (diffs.find("updateDiffEditor[data-dirty=1]").length == 0) {
+        jQuery(window).off("beforeunload");
+    }
+}
+
+function updateDiffFileRestored(jqDiff, left, center, right) {
+    var diffEditor = jQuery(jqDiff)[0].codeMirror;
+    var jqCenterTitle = jQuery(jqDiff).find(".updateDiffEditorHeader .center");
+    var jqRightTitle = jQuery(jqDiff).find(".updateDiffEditorHeader .right");
+    if (typeof diffEditor.left !== "undefined") {
+        // Restore left side
+        diffEditor.left.orig.setValue( left );
+    }
+    // Restore center
+    diffEditor.edit.setValue( center );
+    if (jqCenterTitle.is("[data-original]")) { jqCenterTitle.html( jqCenterTitle.attr("data-original") ); }
+    // Restore right
+    diffEditor.right.orig.setValue( right );
+    if (jqRightTitle.is("[data-original]")) { jqRightTitle.html( jqRightTitle.attr("data-original") ); }
+    // Done!
+    jQuery(jqDiff).find(".updateDiffEditor").attr("data-dirty", 0).attr("data-saved", 0);
+    updateDiffFile();
+    if (diffs.find("updateDiffEditor[data-dirty=1]").length == 0) {
+        jQuery(window).off("beforeunload");
+    }
+}
+
+function updateDiffFileFinished(jqDiff) {
+    jqDiff.remove();
+    initializeDiffList();
+    updateDiffFile();
+    if (diffs.find("updateDiffEditor[data-dirty=1]").length == 0) {
+        jQuery(window).off("beforeunload");
+    }
+}
+
+function initializeDiffEditor(diffHash) {
+    var jqDiff = jQuery("#diff_"+diffHash);
+    if ((jqDiff.length != 1) || (typeof jqDiff[0].codeMirror !== "undefined")) {
+        // Invalid hash or editor already initialized
+        return false;
+    }
+    var jqEditor = jQuery("#diff_editor_"+diffHash);
+    if (jqEditor.is(".updateDiffImages")) {
+        // TODO: Image merge
+        jqDiff[0].imageDiff = jqEditor;
+    }
+    if (jqEditor.is(".updateDiffEditor")) {
+        // Decode html entities
+        var sourceLeft = null;
+        var sourceCenter = null;
+        var sourceRight = null;
+        if (jQuery("#diff_left_"+diffHash).length > 0) {
+            sourceLeft = jQuery("#diff_left_"+diffHash).text().decodeHtmlEntitiesSimple();
+        }
+        sourceCenter = jQuery("#diff_center_"+diffHash).text().decodeHtmlEntitiesSimple();
+        sourceRight = jQuery("#diff_right_"+diffHash).text().decodeHtmlEntitiesSimple();
+        var editorMode = jqEditor.attr("data-mode");
+        var editorSettings = {
+            lineNumbers: true,
+            orig: sourceRight,
+            origLeft: sourceLeft,
+            value: sourceCenter,
+            trimLines: true,
+            timeout: 1.5,
+            highlightDifferences: true
+        };
+        if (typeof editorMode !== "undefined") {
+            editorSettings.mode = editorMode;
+        }
+        var editorDiff = CodeMirror.MergeView( jQuery("#diff_editor_"+diffHash)[0], editorSettings );
+        CodeMirror.on(editorDiff.edit, "changes", function(changes) {
+            updateDiffFileDirty(jqEditor);
+        });
+        // Store editor within diff container
+        jqDiff[0].codeMirror = editorDiff;
+        // Set editor height
+        resizeDiffEditor();
+    }
+}
+
+function resizeDiffEditor(editorDiff) {
+    if (typeof editorDiff === "undefined") {
+        editorDiff = jQuery("#updateDiffDiffs > div[data-hash]:visible");
+    }
+    if (jQuery(editorDiff).length == 0) {
+        return false;
+    } else {
+        editorDiff = jQuery(editorDiff)[0].codeMirror;
+    }
+    var diffHash = jQuery(editorDiff.wrap).parent().parent().attr("data-hash");
+    var jqEditor = jQuery("#diff_editor_"+diffHash);
+    var editorHeight = jQuery(window).innerHeight() - (jQuery("#updateDiffDiffs").is(".fullscreen") ? 80 : 160);
+    jqEditor.find(".CodeMirror,.CodeMirror-merge").height(editorHeight);
+    if (editorDiff.left !== null) {
+        editorDiff.left.orig.refresh();
+    }
+    editorDiff.edit.refresh();
+    editorDiff.right.orig.refresh();
+}
+
+function initializeDiffList() {
+    var container = jQuery("#updateDiffDiffs");
+    fileDiv = container.children(".updateDiffFile");
+    diffs = container.children("div[data-hash]");
+    diffIndex = 0;
+    if (diffs.length == 0) {
+        fileDiv.hide();
+        if (confirm("Es wurden alle Dateien zusammengeführt. Soll das Update nun fortgesetzt werden?")) {
+            UpdateStart();
+        }
+    } else {
+        fileDiv.find(".updateDiffFileCount").html(diffs.length);
+        updateDiffFile();
+        fileDiv.show();
+    }
+}
+
+jQuery(function() {
+    showHelp('help-merge-{action}');
+    initializeDiffList();
+    CodeMirror.commands.save = function() {
+        updateDiffFileSave();
+    };
+    jQuery(window).on("resize", function(event) {
+        resizeDiffEditor();
+    });
+});
+
+</script>

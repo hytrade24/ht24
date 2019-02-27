@@ -1,0 +1,147 @@
+<style type="text/css">
+    .form-horizontal .control-label {
+        text-align: left;
+    }
+    .grey-color {
+        color: #999;
+    }
+</style>
+
+
+
+<h2>Edit invoice or invoice items</h2>
+<span class="lead">
+    Here you can cancel an invoice item
+</span>
+<p>&nbsp;</p>
+<div class="row" id="request-cancel-invoice-item">
+    <div class="col-md-12">
+        <form method="post" class="form-horizontal">
+            <div class="form-group">
+                <div>
+                    <span style="font-weight: bold;">
+                        {if TYPE == 1}
+                        Invoice Nr. <a href="{uri_action(invoice,{ID})}">{ID}</a> vom {date_format(STAMP,d.m.Y)}
+                        {else}
+                            {if TYPE == 2}
+                            Invoice position # {ID} {date_format(STAMP,d.m.Y)}
+                            {endif}
+                        {endif}
+                    </span>
+                    {if TYPE == 1}
+                        <span class="pull-right">
+                            <a class="btn btn-default" href="{uri_action(invoice,{ID})}">
+                                <i class="fa fa-eye"></i>
+                                <span>
+                                    &nbsp;
+                                    See Invoice
+                                </span>
+                            </a>
+                        </span>
+                    {endif}
+                </div>
+            </div>
+            <div class="form-group">
+                <table class="mytable table table-bordered table-striped table-condensed">
+                    <tbody>
+                    <tr>
+                        <th></th>
+                        <th>Invoice position</th>
+                        <th>Quantity</th>
+                        <th>Price (Net)</th>
+                        <th>VAT</th>
+                        <th>Total (Gross)</th>
+                        <th>Reason for the cancellation</th>
+                    </tr>
+                    {if TYPE == 1}
+                    <tr>
+                        <td>
+                            <input class="cancel-checkbox-invoice" onclick="check_or_uncheck_all_checkboxes(this)"
+                                   name="INVOICE_CANCEL_ALL" type="checkbox" value="1"
+                            />
+                        </td>
+                        <td><span>All invoice items</span></td>
+                        <td></td>
+                        <td>( {topreis_ex(INVOICE_SUM_PRICE)} {CURRENCY_DEFAULT} )</td>
+                        <td>{TAX_VALUE} %</td>
+                        <td>( {topreis_ex(INVOICE_TOTAL_PRICE)} {CURRENCY_DEFAULT} )</td>
+                        <td></td>
+                    </tr>
+                    {endif}
+                    {list_items}
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <div class="control-label" style="margin-bottom: 15px; font-weight: bold;">
+                    Remarks
+                </div>
+                <div>
+                    <textarea name="CANCEL_REMARKS" placeholder="Enter your remarks here..." class="form-control" style="height: 150px;">{CANCEL_REMARKS}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        <a href="{uri_action(invoices)}" class="btn btn-default">
+                            <i class="fa fa-chevron-left"></i>
+                            <span>Go Back</span>
+                        </a>
+                        <input class="btn btn-success" type="submit" value="Submit" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function check_or_uncheck_all_checkboxes( ptr ) {
+        var request_cancel_item_div = $("#request-cancel-invoice-item");
+        var obj = $(ptr);
+        var val = obj.prop('checked');
+        if ( obj.hasClass("cancel-checkbox-invoice") ) {
+            var all = request_cancel_item_div.find(".cancel-checkbox");
+            all.each(function(index,o) {
+                if ($(o).is(":disabled") == false) {
+                    $(o).prop("checked",val);
+                }
+            });
+            //all.prop("checked",val);
+        }
+        else if ( obj.hasClass("cancel-checkbox") ) {
+            if ( val == false ) {
+                request_cancel_item_div.find(".cancel-checkbox-invoice").prop("checked",false);
+            }
+            else {
+                var all = request_cancel_item_div.find(".cancel-checkbox");
+                var is_all_true = true;
+                all.each(function(index,o) {
+                    if ( $(o).prop("checked") == false ) {
+                        is_all_true = false;
+                    }
+                });
+                if ( is_all_true ) {
+                    request_cancel_item_div.find(".cancel-checkbox-invoice").prop("checked",true);
+                }
+            }
+        }
+    }
+    $(document).ready(function() {
+        var request_cancel_item_div = $("#request-cancel-invoice-item");
+        var all = request_cancel_item_div.find(".cancel-checkbox");
+        var is_all_true = true;
+        all.each(function(index,o) {
+            if ( $(o).prop("checked") == false ) {
+                is_all_true = false;
+            }
+        });
+        if ( is_all_true ) {
+            console.log( is_all_true );
+            var a = request_cancel_item_div.find(".cancel-checkbox-invoice");
+            //a.attr("checked",true);
+            //a.prop("disabled",true);
+            //request_cancel_item_div.find(".btn-success").prop("disabled",true);
+        }
+    });
+</script>

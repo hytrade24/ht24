@@ -1,0 +1,463 @@
+<h1>Marktplatz leeren</h1>
+
+<p>
+	Achtung! Bitte benutzen Sie diese Funktion mit &auml;usserster Vorsicht!
+	Am besten sollten Sie vorher ein Backup des bestehenden Systems machen.
+</p>
+{if err}
+	<h2 class="error">Nicht m&ouml;glich!</h2>
+	<p class="error">
+		{err}
+	</p>
+{endif}
+<form method="post" action="index.php" >
+	<input type="hidden" name="page" value="{curpage}" />
+	<table class="formTable" cellspacing="0">
+
+
+
+        <tr>
+            <th>
+                Allgemein
+            </th>
+            <td colspan="3">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Alle Benutzer ausser den Admin l&ouml;schen?
+            </th>
+            <td>
+                <label>
+                    <input class="groupGeneral nob"  type="checkbox" name="DEL_USER" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_USER}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Alle Rechnungen l&ouml;schen?
+            </th>
+            <td>
+                <label>
+                    <input class="groupGeneral nob"  type="checkbox" name="DEL_INVOICE" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_INVOICE}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Historie und Eventlog-Einträge löschen? (Admin-Bereich)
+            </th>
+            <td>
+                <label>
+                    <input class="groupGeneral nob"  type="checkbox" name="DEL_EVENTLOG" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_EVENTLOG}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Geo-Daten für die Google-Map löschen?
+            </th>
+            <td>
+                <label>
+                    <input class="groupGeneral nob"  type="checkbox" name="DEL_GEOLOCATION" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_GEOLOCATION}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2">
+                <a class="button" onclick="jQuery('.groupGeneral').prop('checked', true);">
+                    Alle auswählen!
+                </a>
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <th>
+                Marktplatz Inhalte
+            </th>
+            <td colspan="3">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>Anzeigen l&ouml;schen?</th>
+            <td>
+                <label>
+                    <input type="checkbox" name="DEL_ADS" value="1" class="groupMarket nob" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_ADS}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>Gesuche l&ouml;schen?</th>
+            <td>
+                <label>
+                    <input type="checkbox" name="DEL_REQUESTS" value="1" class="groupMarket nob" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_REQUESTS}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                News l&ouml;schen?
+            </th>
+            <td>
+                <label>
+                    <input class="groupMarket nob"  type="checkbox" name="DEL_NEWS" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_NEWS}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Anbieter l&ouml;schen?
+            </th>
+            <td>
+                <label>
+                    <input class="groupMarket nob"  type="checkbox" name="DEL_VENDOR" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_VENDOR}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>Gruppen l&ouml;schen?</th>
+            <td>
+                <label>
+                    <input type="checkbox" name="DEL_CLUBS" value="1" class="groupMarket nob" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_CLUBS}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>Veranstaltungen l&ouml;schen?</th>
+            <td>
+                <label>
+                    <input type="checkbox" name="DEL_EVENTS" value="1" class="groupMarket nob" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_EVENTS}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>Benutzernachrichten l&ouml;schen?</th>
+            <td>
+                <label>
+                    <input type="checkbox" name="DEL_CHAT" value="1" class="groupMarket nob" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_CHAT}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>Merklisten l&ouml;schen?</th>
+            <td>
+                <label>
+                    <input type="checkbox" name="DEL_WATCHLIST" value="1" class="groupMarket nob" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_WATCHLIST}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>Stellenangebote l&ouml;schen?</th>
+            <td>
+                <label>
+                    <input type="checkbox" name="DEL_JOBS" value="1" class="groupMarket nob" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_JOBS}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>Kommentare l&ouml;schen?</th>
+            <td>
+                <label>
+                    <input type="checkbox" name="DEL_COMMENTS" value="1" class="groupMarket nob" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_COMMENTS}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Werbebanner l&ouml;schen?
+            </th>
+            <td>
+                <label>
+                    <input class="groupMarket nob"  type="checkbox" name="DEL_ADVERTISEMENT" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_ADVERTISEMENT}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2">
+                <a class="button" onclick="jQuery('.groupMarket').prop('checked', true);">
+                    Alle auswählen!
+                </a>
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <th>
+                Marktplatz Einstellungen
+            </th>
+            <td colspan="3">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Kategorien, Artikel-Tabellen und Felder l&ouml;schen?
+            </th>
+            <td>
+                <label>
+                    <input class="groupMarketSettings nob"  type="checkbox" name="DEL_KAT" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_KAT}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Hersteller und Produkte l&ouml;schen?
+            </th>
+            <td>
+                <label>
+                    <input class="groupMarketSettings nob"  type="checkbox" name="DEL_MAN" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_MAN}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2">
+                <a class="button" onclick="jQuery('.groupMarketSettings').prop('checked', true);">
+                    Alle auswählen!
+                </a>
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <th>
+                Backups
+            </th>
+            <td colspan="3">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Backups der Navigationsstruktur löschen?
+            </th>
+            <td>
+                <label>
+                    <input class="groupBackups nob"  type="checkbox" name="DEL_NAVBACKUPS" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_NAVBACKUPS}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2">
+                <a class="button" onclick="jQuery('.groupBackups').prop('checked', true);">
+                    Alle auswählen!
+                </a>
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <th>
+                Statistiken
+            </th>
+            <td colspan="3">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Statistiken l&ouml;schen
+            </th>
+            <td>
+                <label>
+                    <input class="groupStatistics nob"  type="checkbox" name="DEL_STATISTICS" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_STATISTICS}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2">
+                <a class="button" onclick="jQuery('.groupStatistics').prop('checked', true);">
+                    Alle auswählen!
+                </a>
+            </td>
+        </tr>
+      
+        <tr>
+            <th>
+                Sonstiges
+            </th>
+            <td colspan="3">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <th>
+                Admin-Inhalte l&ouml;schen (Gebuchte Pakete/Mitgliedschaften und Rechnungen)
+            </th>
+            <td>
+                <label>
+                    <input class="groupOther nob"  type="checkbox" name="DEL_ADMIN_CONTENT" value="1" />
+                    Ja, alle l&ouml;schen
+                </label>
+            </td>
+            <td>
+                {if !err && DEL_ADMIN_CONTENT}
+                <span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td colspan="2">
+                <a class="button" onclick="jQuery('.groupOther').prop('checked', true);">
+                    Alle auswählen!
+                </a>
+            </td>
+        </tr>
+		<tr class="footer">
+			<td align="right" colspan="4">
+				<input type="submit" value="L&Ouml;SCHEN" class="button" />
+			</td>
+		</tr>
+	</table>
+</form>
+
+<table>
+    <tr>
+        <td valign="top"><h2>Datenbankgrößen und Anzahl der Einträge</h2><table class="formTable" style="border:1px #9A9A9A solid">
+            <tr>
+                <th>Tabelle</th>
+                <th>Einträge</th>
+                <th>Größe</th>
+            </tr>
+            {liste}
+        </table>

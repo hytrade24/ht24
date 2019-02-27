@@ -1,0 +1,57 @@
+<h1>Ihre Stellenanzeigen</h1>
+<p>
+    Hier finden Sie alle Stellenanzeigen, die Sie bisher verfasst haben!<br />
+        Ihre Stellenanzeigen bekommen erst ein ver&ouml;ffentlichungsdatum, wenn Sie selbst eine Freigabe gesetzt haben!
+</p>
+<p>
+    Die Stellenanzeige sind für <b>{jobruntime}
+    Tage</b>
+    online.
+</p>
+<p align="right">
+    <a href="{uri_action(my-jobs-edit)}" class="btn btn-info">
+        <i class="glyphicon glyphicon-pencil"></i> Neuen Job hinzufügen
+    </a>
+</p>
+{if err}
+<div class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert">×</button>
+	{err}
+</div>
+{endif}
+<table class="table table-bordered table-striped table-condensed">
+	<tr>
+		<th colspan="3">Aktion</th>
+		<th>Freigabe</th>
+		<th>Artikel</th>
+		<th>Datum</th>
+		<th></th>
+	</tr>
+{if liste}
+	{liste}
+{else}
+	<tr>
+		<td colspan="7" align="center">
+			<span class="error">Keine Artikel</span>
+		</td>
+	</tr>
+	{endif}
+</table>
+
+ <div class="design-content-box design-icon-legend">
+	<div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Bearbeiten
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>  = löschen (wenn noch nicht veröffentlicht)
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-fullscreen"></i></a> = Online ansehen
+	</div>
+	<div class="pull-left clearfix">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-retweet"></i></a> = Kommentare vorhanden
+	</div>
+</div>
+<p>
+{pager}
+</p>

@@ -1,0 +1,23 @@
+<tr class="zeile{even}">
+	<td>{ID_AD_SOLD}</td>
+	<td>{FK_AD}</td>
+	<td>
+		<a href="index.php?page=user_edit&ID_USER={FK_USER_VK}" title="User ansehen">
+			{htm(SELLER)}
+		</a>
+	</td>
+	<td>
+		<a href="index.php?page=user_edit&ID_USER={FK_USER}" title="User ansehen">
+			{htm(BUYER)}
+		</a>
+	</td>
+	<td>
+		<a target="_blank" href="{uri_baseurl(/marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}.htm)}" title="Anzeige in neuem Fenster ansehen">
+			{htm(PRODUKTNAME)}
+		</a>
+	</td>
+	<td>{todate(STAMP_BOUGHT)}</td>
+	<td align="right">
+		{topreis(PREIS)} {CURRENCY_DEFAULT}
+	</td>
+</tr>

@@ -1,0 +1,84 @@
+<div class="fieldMappingEditViewContainer display-none" id="FIELD_MAPPING_EDITVIEW_{TABLE_DEF}_{FIELD_NAME}">
+	{if !INITIAL_CALL}
+
+	<table style="width: 100%" class="table table-condensed table-bordered">
+		<tr>
+			<td class="span2" colspan="3">
+				<div class="btn-group">
+					<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#" title="Zuweisung nach dieser einfügen">
+						<i class="glyphicon glyphicon-plus"></i> Neue Zuordnung am Anfang einfügen
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="#" onclick="ipe.addMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', -1, 'Ad_Import_Preset_Mapping_Value_DataFieldMappingValue'); return false;">
+								Feldzuweisung
+							</a>
+						</li>
+						<li>
+							<a href="#" onclick="ipe.addMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', -1, 'Ad_Import_Preset_Mapping_Value_FixMappingValue'); return false;">
+								Fester Wert
+							</a>
+						</li>
+						<li>
+							<a href="#" onclick="ipe.addMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', -1, 'Ad_Import_Preset_Mapping_Value_FunctionMappingValue'); return false;">
+								Funktion
+							</a>
+						</li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+		{if VALUE_OUTPUT}
+			{VALUE_OUTPUT}
+		{else}
+			<td colspan="3">
+				<em>Noch keine Zuweisung vorhanden, fügen Sie dem Feld eine Neue hinzu</em>
+			</td>
+		{endif}
+		<tr>
+			<td colspan="3">
+				<div class="btn-group">
+					<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#" title="Zuweisung nach dieser einfügen">
+						<i class="glyphicon glyphicon-plus"></i>  Neue Zuordnung am Ende einfügen
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="#" onclick="ipe.addMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', 9999, 'Ad_Import_Preset_Mapping_Value_DataFieldMappingValue'); return false;">
+								Feldzuweisung
+							</a>
+						</li>
+						<li>
+							<a href="#" onclick="ipe.addMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', 9999, 'Ad_Import_Preset_Mapping_Value_FixMappingValue'); return false;">
+								Fester Wert
+							</a>
+						</li>
+						<li>
+							<a href="#" onclick="ipe.addMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', 9999, 'Ad_Import_Preset_Mapping_Value_FunctionMappingValue'); return false;">
+								Funktion
+							</a>
+						</li>
+					</ul>
+				</div>
+
+			</td>
+		</tr>
+	</table>
+
+	{if DEFAULT_VALUE_INPUT}
+		<hr>
+
+		<p>
+			<strong>Standardwert:</strong>
+			<br>
+			<small class="text-muted">
+				Dieser Wert wird verwendet, sofern keine Zuordnung vorgenommen werden konnte, oder der Import leer ist.				
+			</small>
+		</p>
+
+		{DEFAULT_VALUE_INPUT}
+	{endif}
+
+	{endif}
+</div>

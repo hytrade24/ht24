@@ -1,0 +1,89 @@
+<h1>Anzeige bearbeiten - Bilder und Uploads</h1>
+
+<div class="katbox">
+	<p style="font-weight: bold;">
+		Um die Details der Anzeige zu bearbeiten klicken Sie bitte auf den folgenden Link:
+	</p>
+	<p>
+		- <a href="index.php?page=articles_edit&show_kat=0&ID_KAT={FK_KAT}&edit={ID_AD_MASTER}">Details dieser Anzeige bearbeiten</a>
+	</p>
+</div>
+
+<div class="katbox" style="width: 350px; margin-right: 12px; float: left;">
+	<h2 class="top" style="padding-top: 0px; margin: 0px;">Artikelbilder</h2>
+	
+	{if list_images}
+	<ul style="list-style-type: none;">
+		{list_images}
+	</ul>
+	{else}
+	<span style="font-weight: bold;">Keine Bilder vorhanden.</span>
+	{endif}
+</div>
+
+<div class="adBoxRight" style="width: 536px; float: left;">
+	<div class="adInfo">
+		<h2>{htm(product_manufacturer)} {htm(product_articlename)}</h2>
+		<div style="float:right">
+			<h3>Standort Informationen</h3>
+			<table>
+	              <tr>
+	                  <td><strong>Land:</strong></td>
+	                  <td>{htm(product_country)}</td>
+	              </tr>
+	              <tr>
+	                  <td><strong>PLZ:</strong></td>
+	                  <td>{product_zip}</td>
+	              </tr>
+	              <tr>
+	                  <td><strong>Ort:</strong></td>
+	                  <td>{htm(product_city)}</td>
+	              </tr>
+	          </table>
+		</div>
+		<table class="adTable">
+			<tr>
+				<td><strong>Anzeigennummer:</strong></td>
+				<td>{ID_AD}</td>
+			</tr>
+			<tr>
+				<td><strong>Preis:</strong></td>
+                <td>
+                    <span style="font-size: 19px;">{topreis(product_price)} {CURRENCY_DEFAULT}</span><br />
+                    {if MWST}enth&auml;lt MwSt.{else}enth&auml;lt keine MwSt.{endif}
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Versandkosten:</strong></td>
+                <td>{topreis(product_versand)} {CURRENCY_DEFAULT}</td>
+            </tr>
+            <tr>
+                <td valign="top"><strong>Verk&auml;ufer:</strong></td>
+                <td>
+                    <a href="{uri_baseurl(/view_user,{urllabel(vk_username)},{vk_user}.htm)}">{htm(vk_username)}</a>
+					<br />
+					angemeldet seit {STAMP_REG} als {htm(UGROUP)}
+                </td>
+            </tr>
+		</table>
+	</div>
+</div>
+
+<div style="clear: both;"><br /></div>
+
+<div class="katbox" style="width: 900px;">
+	<h1 class="top" style="padding-top: 0px; margin: 0px;">Dateiuploads</h1>
+	
+	{if list_files}
+	<table cellpadding="0" cellspacing="0" width="95%" class="liste">
+		<tr>
+			<th>Aktion</th>
+			<th>Name</th>
+			<th>Dateityp</th>
+		</tr>
+		{list_files}
+	</table>
+	{else}
+	<span style="font-weight: bold;">Keine Bilder vorhanden.</span>
+	{endif}
+</div>

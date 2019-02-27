@@ -1,0 +1,14 @@
+{if liste}
+<tr>
+    <td style="vertical-align: top;" width="30%">
+        {if !V1}
+        <h3>Allgemeine Angaben</h3>
+        {else}
+        <h3>{htm(V1)}</h3>
+        {endif}
+    </td>
+    <td>
+        {liste}
+    </td>
+</tr>
+{endif}

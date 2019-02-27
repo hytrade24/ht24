@@ -1,0 +1,86 @@
+{if ERROR}
+<p class="error">
+	Error while booking the Top-Advertisement! The desired advert is no longer available.
+</p>
+{else}
+<form method="post" action="{uri_action(my-service)}">
+	<input type="hidden" id="ID_PACKET" name="ID_PACKET" value="{ID_PACKET}" />
+	<input type="hidden" id="FK_TARGET" name="FK_TARGET" value="{FK_TARGET}" />
+	<input type="hidden" id="success" name="success" value="/my-pages/my-marktplatz.htm" />
+    {if PENDING}
+    <p>
+        <strong>You have already booked the Top-Features for this advertisement!</strong><br />
+        These will be active after the following bills will be paid:
+
+        <ul>
+            {PENDING_INVOICES}
+        </ul>
+    </p>
+    {else}
+	<p>
+		Book now {htm(PRODUKTNAME)} as a Top-Advertisement and receive exclusive advantages:
+		<ul>
+			<li>Your article will be adverted on the homepage</li>
+			<li>Your advertisement will be displayed in front of every normal advertisements while searching the categories</li>
+			<li>Your advertisement will be highlighted in color</li>
+		</ul>
+	</p>
+    {endif}
+	<p>
+		<div class="form-inline">
+			<strong>Choose runtime:</strong>
+			{lookup(LAUFZEIT_T,,, class="form-control" onchange="TopAdRuntime(this.value);",F_ORDER ASC,----)}
+		</div>
+		
+		{if EXTENDED_TOP_ADS}
+		<input type="hidden" name="BF_OPTIONS[]" value="0" />
+			{if PRICE_0 >= 0}
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="BF_OPTIONS[]" onchange="TopAdUpdate();" value="1"{if ((BF_OPTIONS&1)==1) || ((B_TOP&1)==1)} checked="checked"{endif}{if ((B_TOP&1)==1)} disabled="disabled"{endif}>
+						  <span>
+							  <strong>{htm(V1_0)} <span class="text-muted">{topreis_ex(PRICE_0)}&nbsp;{CURRENCY_DEFAULT}/Tag</span></strong>
+							  <br />
+							  {htm(T1_0)}
+						  </span>
+				</label>
+			</div>
+			{endif}
+
+			{if PRICE_1 >= 0}
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="BF_OPTIONS[]" onchange="TopAdUpdate();" value="2"{if ((BF_OPTIONS&2)==2) || ((B_TOP&2)==2)} checked="checked"{endif}{if ((B_TOP&2)==2)} disabled="disabled"{endif}>
+	                <span>
+	                    <strong>{htm(V1_1)} <span class="text-muted">{topreis_ex(PRICE_1)}&nbsp;{CURRENCY_DEFAULT}/Tag</span></strong>
+	                    <br />
+	                    {htm(T1_1)}
+	                </span>
+				</label>
+			</div>
+			{endif}
+
+			{if PRICE_2 >= 0}
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="BF_OPTIONS[]" onchange="TopAdUpdate();" value="4"{if ((BF_OPTIONS&4)==4) || ((B_TOP&4)==4)} checked="checked"{endif}{if ((B_TOP&4)==4)} disabled="disabled"{endif}>
+					<span>
+						<strong>{htm(V1_2)} <span class="text-muted">{topreis_ex(PRICE_2)}&nbsp;{CURRENCY_DEFAULT}/Tag</span></strong>
+						<br />
+						{htm(T1_2)}
+					</span>
+				</label>
+			</div>
+			{endif}
+		{endif}
+	{if DAYS_LEFT<DAYS_RUNTIME}
+	<p>
+		<strong>Warning!</strong><br />
+		Your advert has a remaining runtime of {DAYS_LEFT} Tag(en)! If you rent this Top-advert, it
+		will run regardless
+ {calc(DAYS_RUNTIME-DAYS_LEFT)} Days shorter then selected above.
+	</p>
+	{endif}
+	<input type="submit" class="btn btn-default" value="Book Top-Advertisement"{if !DAYS_RUNTIME} disabled="disabled"{endif} />
+</form>
+{endif}

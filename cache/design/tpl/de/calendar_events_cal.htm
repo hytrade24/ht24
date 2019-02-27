@@ -1,0 +1,108 @@
+{startblock(script)}
+    {parentblock()}
+	<link rel="stylesheet" type="text/css" href="{uri_resource(/js/fullcalendar/fullcalendar.css)}">
+	<script type="text/javascript" src="{uri_resource(/js/fullcalendar/fullcalendar.js)}"></script>
+	<script type="text/javascript" src="{uri_resource(/js/fullcalendar/translation.js)}"></script>
+	<script>
+		jQuery(function() {
+			var calendar = jQuery('#calendar-events-container .calendar').html("").fullCalendar({
+				timeFormat: 'H:mm{ - H:mm}', // 24h format
+				defaultView: '{VIEW}',
+				allDayDefault: false,
+				eventSources: [{
+					url: "index.php?page=calendar_events_ajax",
+					type: 'GET',
+					data: {
+						DO: 'FETCH_EVENTS',
+						TYPE: '{SEARCH_TYPE}',
+						CATEGORY: '{SEARCH_CATEGORY}',
+						PRIVACY: '{SEARCH_PRIVACY}',
+						FK_REF: '{SEARCH_FK_REF}',
+						FK_REF_TYPE: '{SEARCH_FK_REF_TYPE}',
+						FK_USER: '{SEARCH_FK_USER}',
+						SEARCHCALENDAREVENT: '{SEARCH_SEARCHCALENDAREVENT}',
+						FK_COUNTRY: '{SEARCH_FK_COUNTRY}',
+						ZIP: '{SEARCH_ZIP}',
+						CITY: '{SEARCH_CITY}',
+						LATITUDE: '{SEARCH_LATITUDE}',
+						LONGITUDE: '{SEARCH_LONGITUDE}',
+						LU_UMKREIS: '{SEARCH_LU_UMKREIS}',
+						SEARCHHASH: '{SEARCH_HASH}'
+					}
+				}],
+				eventDataTransform: function (event) {
+	
+					return event;
+				},
+				eventClick: function( event, jsEvent, view ) {
+					var target = jQuery(jsEvent.target).parent();
+					jQuery("#calendar-events-container .popover").remove();
+					var location = (event.LOCATION == null ? "" : event.LOCATION);
+					location = (location == "" ? "" : location+"<br />") + (event.STREET == null ? "" : event.STREET);
+					var template = jQuery("#template_event_detail").html();
+					template = template.replace(/%TITLE%/, event.title);
+					template = template.replace(/%SHORT_DESCRIPTION%/, event.DESCRIPTION.substring(0, 60) + '..');
+					template = template.replace(/%ID_CALENDAR_EVENT%/, event.ID_CALENDAR_EVENT);
+					template = template.replace(/%LOCATION%/, location);
+					template = template.replace(/%ZIP%/, (event.ZIP == null ? "" : event.ZIP));
+					template = template.replace(/%CITY%/, (event.CITY == null ? "" : event.CITY));
+					template = template.replace(/%STAMP_START%/, event.STAMP_START);
+					template = template.replace(/%STAMP_END%/, event.STAMP_END);
+					template = template.replace(/%EVENT_URL%/, event.EVENT_URL);
+					template = template.replace(/%EVENT_URL_DL%/, event.EVENT_URL_DL);
+	
+					jQuery(target).popover({
+						html: true,
+						placement: 'left',
+						title: event.title,
+						trigger: 'manual',
+						content: template,
+						container: '#calendar-events-container'
+					}).popover("show");
+	
+					var divPopover = jQuery("#calendar-events-container .popover");
+					// Position
+					divPopover.offset({
+							top: jsEvent.pageY - (divPopover.height()/2), left: jsEvent.pageX - divPopover.width() - 10
+					});
+					// Click to hide
+					divPopover.click(function() {
+						jQuery(this).remove();
+					});
+				},
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,agendaWeek,agendaDay'
+				}
+			});
+		})
+	</script>
+{endblock(script)}
+
+<div id="calendar-events-container">
+	<div class="calendar"></div>
+
+	<div id="template_event_detail" class="display-none">
+		<a class="close" data-dismiss="popover" style="cursor: pointer;">&times;</a>
+		<p class="text-muted">%SHORT_DESCRIPTION%</p>
+		<dl class="dl-table">
+			<dt>Von:</dt><dd>%STAMP_START%</dd>
+			<dt>Bis:</dt><dd>%STAMP_END%</dd>
+			<dt>Ort:</dt><dd>%LOCATION%<br><span>%ZIP% %CITY%</span></dd>
+		</dl>
+		<div class="clearfix"></div>
+		<br>
+
+		<div class="text-right">
+            <a class="btn btn-default" href="%EVENT_URL_DL%">
+                <i class="glyphicon glyphicon-calendar"></i>
+                Termin herunterladen
+            </a>
+			<a class="btn btn-default" href="%EVENT_URL%">
+                <i class="glyphicon glyphicon-eye-open"></i>
+                mehr erfahren
+            </a>
+		</div>
+	</div>
+</div>

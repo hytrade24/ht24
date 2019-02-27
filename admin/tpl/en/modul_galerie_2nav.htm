@@ -1,0 +1,14 @@
+<h1><img src="gfx/modul_galerie_64.gif" width="64" height="64" alt="" border="0" align="left">Galerie Zuordnung</h1>
+<p> Ihre angelegten Galerien werden nur &ouml;ffentlich angezeigt, wenn Sie diese einer Galerie- Seite zuordnen. Um eine neue Galerie- Seite anzulegen, <a href="index.php?page=page_edit&FK_MODUL={IDM}" title="Neue Newsletter Seite erstellen">klicken Sie bitte hier</a>. </p>
+{if liste}
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktionen</th>
+  <th>Galerie</th>
+  <th>Zugeordnete Seite</th>
+ </tr>
+{liste}
+</table>
+{else}
+<div class="hinweis"><span class="error">Keine Zuordnungen gefunden</span></div>
+{endif}

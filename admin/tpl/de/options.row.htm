@@ -1,0 +1,12 @@
+<tr{if even} bgcolor="#ffffff"{endif}>
+  <td>{typ}&nbsp;</td>
+  <td><input type="text" name="set[{plugin}][{typ}]"
+    maxlength="{feldlaenge}" value="{htm(value)}">&nbsp;</td>
+  <td>
+    <a href="index.php?page={curpagealias}&set[{plugin}][{typ}]={htm(default_value)}"
+      title="Defaultwert eintragen"
+      onClick="this.href='javascript:;';setopt('{plugin}','{typ}','{htm(default_value)}');"
+      >{htm(default_value)}</a>
+  &nbsp;</td>
+  <td>{nl2br(beschreibung)}</td>
+</tr>

@@ -1,0 +1,162 @@
+<script type="text/javascript" src="{uri_baseurl(/js/slimbox2.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_baseurl(/js/slimbox/css/slimbox2.css)}" />
+
+<script>
+
+var timeStart = null;
+
+function ProcessImport() {
+    if (timeStart == null) {
+        timeStart = new Date();
+    }
+    jQuery.post("index.php", { page: '{curpage}', action: 'ajax_import' }, function(result) {
+        var progressPercent = result.offset * 100 / parseInt("{IMPORT_SIZE}");
+        var timeNow = new Date();
+        var timeGone = (timeNow.getTime() - timeStart.getTime()) / 1000;
+        var timeEstimate = (timeGone * 100 / progressPercent) - timeGone;
+        if (result.done) {
+            window.location.href = "index.php?page={curpage}"+
+                "&done="+result.status.count_all+"%2C"+result.status.count_new+"%2C"+result.status.count_updated+"%2C"+result.status.count_deleted;
+        } else {
+            var numhours = Math.floor(((timeEstimate % 31536000) % 86400) / 3600);
+            var numminutes = Math.floor((((timeEstimate % 31536000) % 86400) % 3600) / 60);
+            var numseconds = (((timeEstimate % 31536000) % 86400) % 3600) % 60;
+            jQuery(".progress-bar .fill").css("width", progressPercent+"%");
+            if (progressPercent >= 50) {
+                jQuery(".progress-bar .fill").html(progressPercent.toPrecision(2)+"%")
+                jQuery(".progress-bar .textRight").html("")
+            } else {
+                jQuery(".progress-bar .fill").html("")
+                jQuery(".progress-bar .textRight").html(progressPercent.toPrecision(2)+"%")
+            }
+            jQuery("#RESULT_COUNT_NEW").html(result.status.count_new);
+            jQuery("#RESULT_COUNT_UPDATE").html(result.status.count_updated);
+            jQuery("#RESULT_COUNT_DELETE").html(result.status.count_deleted);
+            jQuery("#TIME_ESTIMATE").html(numhours+" Stunden "+numminutes+" Minuten "+Math.round(numseconds)+" Sekunden");
+            ProcessImport();
+        }
+    });
+}
+
+{if IMPORT_START}
+jQuery(function() {
+    ProcessImport();
+})
+{endif}
+
+</script>
+
+<h1>Produktdatenbank</h1>
+
+<h2>CSV-Import von Produkten</h2>
+
+{if done}
+<p class="ok">
+    {count_all} Datensätze erfolgreich importiert!
+</p>
+
+<table class="liste" cellspacing="0">
+    <tr class="zeile0">
+        <th>Hinzugefügt</th>
+        <th>Aktualisiert</th>
+        <th>Gelöscht</th>
+    </tr>
+    <tr class="zeile1">
+        <td id="RESULT_COUNT_NEW">{int(count_new)}</td>
+        <td id="RESULT_COUNT_UPDATE">{int(count_update)}</td>
+        <td id="RESULT_COUNT_DELETE">{int(count_delete)}</td>
+    </tr>
+</table>
+<br />
+{endif}
+
+{if IMPORT_START}
+<h3>Import wird ausgeführt...</h3>
+
+<p>
+    Bitte warten Sie bis der Vorgang abgeschlossen ist bevor Sie die Seite wechseln / aktualisieren.<br />
+    <strong>Geschätzte Restzeit: </strong> <span id="TIME_ESTIMATE">Unbekannt</span>
+</p>
+
+<table class="liste" cellspacing="0">
+    <tr class="zeile0">
+        <th>Hinzugefügt</th>
+        <th>Aktualisiert</th>
+        <th>Gelöscht</th>
+    </tr>
+    <tr class="zeile1">
+        <td id="RESULT_COUNT_NEW">{int(count_new)}</td>
+        <td id="RESULT_COUNT_UPDATE">{int(count_update)}</td>
+        <td id="RESULT_COUNT_DELETE">{int(count_delete)}</td>
+    </tr>
+</table>
+<br />
+
+<div class="progress-block">
+    <div class="progress-bar">
+        <div class="fill"></div>
+        <div class="textRight"></div>
+    </div>
+</div>
+{else}
+
+<p>Über diese Schnittstelle können Sie Produkte in die Produktdatenbank übernehmen. Bitte lesen Sie sich die Anleitung aufmerksam durch und folgend sie den
+unten aufgeführten Schritten.</p>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="CSV" />
+
+    <button>Datei hochladen</button>
+</form>
+
+
+<h3>Anleitung für den Import</h3>
+
+<h4>Grundsätzliche Hinweise</h4>
+<p>
+	Der Import für die Produktdatenbank erfolgt über <b>CSV-Dateien</b>. Diese müssen folgende Eigenschaften aufweisen, um korrekt eingelesen werden zu können.
+	Wir empfehlen Ihnen die Verwendung eines Tabellenkalkulationsprogramms wie Microsoft Excel für die Erstellung.
+	<br><br>
+	<ul>
+		<li>Spalten-Trennzeichen: ; (Semikolon)</li>
+		<li>Zeichensatz: UTF-8</li>
+		<li>Feld-Begrenzungszeichen: "</li>
+		<li>CSV-Struktur aus Export</li>
+	</ul>
+
+	Die Produktdatenbank legt für jede von Ihnen angelegte Warengruppe (Artikel-Tabelle) eine eigene Struktur an, sodass Sie die dort verwendeten Artikel-Tabellen-Felder
+	ebenfalls importieren können. Dies erfordert, dass Sie jede Warengruppe (Artikel-Tabelle) einzeln importierten. Bitte folgen Sie der Schrit für Schritt Anleitung.
+</p>
+
+<h4>Schritt für Schritt Anleitung</h4>
+
+<p>
+	<ol>
+		<li>
+			Navigieren Sie in der Administration in die <a href="index.php?page=hdb_products" target="_blank">Produktdatenbank</a> und wählen Sie die
+			Artikeltabelle, in die Sie neue Produkte importieren möchten aus.
+            <br>
+            <a href="{thumbnail("/admin/gfx/hdb_import_1.jpg",800,600)}" class="lightbox-gallery" rel="lightbox-gallery"><img src="{thumbnail("/admin/gfx/hdb_import_1.jpg",60,60)}"></a>
+		</li>
+		<li>
+			An dieser Stelle macht es keinen Unterschied, ob Sie bereits Produkte in der Datenbank haben oder nicht. Mit Klick auf den Button "Suche CSV exportieren"
+			generiert Ihnen das System eine CSV Datei, die Sie als Basisstruktur für einen Import nutzen können.
+            <br>
+            <a href="{thumbnail("/admin/gfx/hdb_import_2.jpg",800,600)}" class="lightbox-gallery" rel="lightbox-gallery"><img src="{thumbnail("/admin/gfx/hdb_import_2.jpg",60,60)}"></a>
+		</li>
+		<li>
+			Öffnen Sie die CSV Datei in Microsoft Excel (oder einem ähnlichen Tabellenverarbeitungsprogramm). Sie können nun bestehende Datenzeiten bearbeiten,
+			um diese auch in Ihrer Produktdatenbank zu aktualisieren. Wenn Sie neue Datensätze hinzufügen möchten, tragen Sie eine neue Zeile ein und lassen für
+			diesen Datensatz die erste Spalte A (ID_HDB_..) frei. Wenn Sie einen Datensatz löschen möchten, tragen Sie in der Spalte "_DELETED" eine 1 ein.
+            <br>
+            <a href="{thumbnail("/admin/gfx/hdb_import_3.jpg",800,600)}" class="lightbox-gallery" rel="lightbox-gallery"><img src="{thumbnail("/admin/gfx/hdb_import_3.jpg",60,60)}"></a>
+		</li>
+		<li>
+			Speichern Sie die CSV ab und laden Sie diese über das Eingabeformular auf dieser Seite wieder hoch. Nutzen Sie immer den Export als Ausgangsbasis
+			für einen neuen Import.
+		</li>
+	</ol>
+</p>
+
+
+{endif}

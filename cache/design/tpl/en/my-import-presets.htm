@@ -1,0 +1,70 @@
+<h1>Import templates</h1>
+<p class="lead">Set a structure of your import datasets with your import templates</p>
+
+<p>
+	Every created and provided import will be listed on this page. You can edit these or use it as a base
+		for more import templates. Import templates are the foundation of each import by creating an interface
+		between the structure of your source file and the structure of the marketplace.
+
+</p>
+
+{if MESSAGE}
+	<div class="alert alert-info">{htm(MESSAGE)}</div>
+{endif}
+
+{if MESSAGE_ERROR}
+	<div class="alert alert-danger">{htm(MESSAGE_ERROR)}</div>
+{endif}
+
+
+{if ACTIVE_SESSION}
+	<div class="alert alert-info">
+		You have a template with the name "{ACTIVE_SESSION_NAME}" in process. Do you want to <a href="{uri_action(my-import-presets-edit)}">continue</a> or <a href="{uri_action(my-import-presets-edit)}?DO=RESET">cancel</a> the process?
+	</div>
+{endif}
+
+{if liste_global}
+
+{endif}
+
+
+
+<h3>My own import templates</h3>
+<p class="text-right">
+	<a href="{uri_action(my-import-presets-edit)}?DO=NEW_PRESET" class="btn btn-default">New import template</a>
+</p>
+
+<table class="table table-striped table-condensed">
+	<thead>
+		<th></th>
+		<th>Name</th>
+		<th>Templatetype</th>
+		<th>Status</th>
+		<th>Date creation</th>
+		<th>Last change</th>
+	</thead>
+	{if liste_own}
+		{liste_own}
+	{else}
+		<tr><td colspan="6">You have not applied a import template</td></tr>
+	{endif}
+</table>
+
+<div class="design-content-box design-icon-legend">
+    <div class="pull-left">
+        <a class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></a>
+        = Add source
+    </div>
+    <div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a>
+        = edit
+    </div>
+	<div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-share-alt"></i></a>
+        = use as template
+    </div>
+	<div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+        = delete
+    </div>
+</div>

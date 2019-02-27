@@ -1,0 +1,133 @@
+<style type="text/css">
+    .unapproved { background: #e9b4b4 !important; }
+</style>
+
+
+{if err}
+<div class="hinweis">
+    <span class="error">{err}</span>
+</div>{endif}
+
+<h1>Benutzer Konversationen  / Anfragen</h1>
+<p>Hier finden Sie alle Konversationen und Anfragen zu Anzeigen</p>
+
+<form method="get" action="index.php">
+  <input type="hidden" name="page" value="{curpage}" />
+ 	<table>
+		<tr>
+			<td valign="top">
+				<table class="formTable" cellspacing="0">
+					<tr>
+						<th colspan="6" style="border-bottom:1px #000099 solid;">Nach Konversationen suchen</th>
+                    </tr>
+					<tr>
+						<th>Betreff</th>
+						<td>
+							<input type="text" name="SUBJECT" value="{htm(SUBJECT)}" size="45" />
+						</td>
+                        <td colspan="2">&nbsp;</td>
+                        <th>Konversation ID</th>
+                        <td>
+                          <input type="text" name="CHAT_ID" value="{htm(CHAT_ID)}" size="20" />
+                        </td>
+					</tr>
+                    <tr>
+                      <th>User</th>
+                      <td>
+                        <input type="text" name="NAME_" value="{htm(NAME_)}" readonly="readonly" />
+                        <input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" />
+                        <a style="cursor:pointer" onclick="popupfkt('users&frompopup=1','850','500');" title="User ausw&auml;hlen">
+                          <img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+                        </a>
+                      </td>
+                      <td colspan="2"></td>
+                        <th>Anzeige ID</th>
+                        <td>
+                          <input type="text" name="FK_AD" value="{htm(FK_AD)}" size="20" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2">&nbsp;</td>
+                        <th>Transaktion ID</th>
+                        <td>
+                          <input type="text" name="FK_TRANS" value="{htm(FK_TRANS)}" size="20" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2">&nbsp;</td>
+                        <th>Gesuch ID</th>
+                        <td>
+                          <input type="text" name="FK_AD_REQUEST" value="{htm(FK_AD_REQUEST)}" size="20" />
+                        </td>
+                    </tr>
+					<tr>
+						<th>Status</th>
+						<td>
+							<input type="radio" id="CHAT_STATUS" name="CHAT_STATUS" value="1" class="nob" {if CHAT_STATUS == 1}checked{endif} />
+                              <label for="STAT_ACT">zu bestätigende</label>
+                            <input type="radio" id="CHAT_STATUS" name="CHAT_STATUS" value="2" class="nob" {if CHAT_STATUS == 2}checked{endif} />
+                              <label for="STAT_ACT">bestätigte</label>
+							<input type="radio" id="CHAT_STATUS" name="CHAT_STATUS" value="0" class="nob" {if !CHAT_STATUS || (CHAT_STATUS < 1)}checked{endif} />
+                              <label for="STAT_ALL">alle</label>
+						</td>
+						<td colspan="2">&nbsp;</td>
+                        <th>Typ</th>
+                        <td>
+                            <input type="radio" id="CHAT_TYPE" name="CHAT_TYPE" value="1" class="nob" {if CHAT_TYPE == 1}checked{endif} />
+                              <label for="STAT_ACT">Anfragen</label>
+                            <input type="radio" id="CHAT_TYPE" name="CHAT_TYPE" value="2" class="nob" {if CHAT_TYPE == 2}checked{endif} />
+                              <label for="STAT_ACT">Transaktion</label>
+                            <input type="radio" id="CHAT_TYPE" name="CHAT_TYPE" value="4" class="nob" {if CHAT_TYPE == 4}checked{endif} />
+                              <label for="STAT_ACT">Gesuche</label>
+                            <input type="radio" id="CHAT_TYPE" name="CHAT_TYPE" value="3" class="nob" {if CHAT_TYPE == 3}checked{endif} />
+                              <label for="STAT_ACT">sonstige</label>
+                            <input type="radio" id="CHAT_TYPE" name="CHAT_TYPE" value="" class="nob" {if !CHAT_TYPE || (CHAT_TYPE < 1)}checked{endif} />
+                              <label for="STAT_ALL">alle</label>
+                        </td>
+					</tr>
+					<tr>
+						<td align="right" colspan="6" class="footer">
+							<a href="index.php?page={curpage}" title="Alle Anzeigen anzeigen">Alle anzeigen</a>
+							<input type="submit" value="Suchen" class="button" />
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</form>
+
+<table border="0" cellspacing="0" cellpadding="4" class="liste">
+<tr>
+    <td colspan="11">
+
+        <iframe id="katframe" src="index.php?lang=de&frame=iframe&page=stats&show=chat&w=400" width="100%" height="200" frameborder="0"></iframe>
+    </td>
+
+</tr>
+	<tr>
+        <th>aktiv? / Aktionen</th>
+		<th>Nr.</th>
+        <th>Letzte Nachr.</th>
+        <th>Erste Nachr.</th>
+        <th>Sender</th>
+		<th>Empfänger</th>
+        <th>Betreff</th>
+        <th>Anzeige</th>
+        <th>Transaktion</th>
+        <th>Gesuch</th>
+		<th>#</th>
+        <th></th>
+	</tr>
+	{liste}
+	<tr>
+		<td colspan="11">
+			{pager}
+		</td>
+	</tr>
+</table>
+<p>
+	Anzahl der Konversationen : <b>{allchat}</b>
+</p>

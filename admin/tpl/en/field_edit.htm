@@ -1,0 +1,159 @@
+
+<h1>{if ID_FIELD_DEF}Feld {htm(V1)} bearbeiten{else}Neues Feld hinzuf&uuml;gen{endif}</h1>
+<p>
+	Bitte beachten Sie, dass der Typ eines Felds nur ge&auml;ndert werden kann, wenn sich noch keine Daten
+	in dem Feld befinden!
+</p>
+<script type="text/javascript">
+	id_field = '{ID_FIELD_DEF}';
+</script>
+<table>
+	<tr>
+		<td valign="top">
+			<form method="post" action="index.php" ID="F_EDIT">
+				<input type="hidden" name="page" value="table_action" />
+				<input type="hidden" name="ACT" value="FIELD_EDIT" />
+				<input type="hidden" name="table" value="{table}" />
+				<input type="hidden" name="ID_FIELD_DEF" value="{ID_FIELD_DEF}" />
+				<input type="hidden" name="F_NAME" value="{F_NAME}" />
+				<input type="hidden" name="frame" value="ajax" />
+				<div id="MSG"></div>
+				<table class="formTable" cellspacing="0">
+					{if ISMASTER && !ID_FIELD_DEF}
+						<tr>
+							<th>SQL Feld Name</th>
+							<td>
+								<input type="text" name="SQL_FIELD" size="62" />
+								<input type="hidden" name="IS_MASTER" value="1" />
+							</td>
+						</tr>
+					{endif}
+					<tr>
+						<th>Name des Felds</th>
+						<td>
+							<input type="text" name="V1" value="{htm(V1)}" size="62" />
+						</td>
+					</tr>
+                    <tr>
+						<th>Interne Beschreibung</th>
+						<td>
+							<input type="text" name="F_DEC_INTERN" value="{F_DEC_INTERN}" size="62" />
+						</td>
+					</tr>
+					<tr>
+						<th>Einheit<br />z.B. kg oder Km.</th>
+						<td><input type="text" name="V2" value="{htm(V2)}" size="62" /></td>
+					</tr>
+					<tr>
+						<th colspan="2">
+							Eingabefelder beim Einstellen von Artikeln
+						</th>
+					</tr>
+					<tr>
+						<th valign="top">Beschreibung</th>
+						<td>
+							<textarea name="T1_DESC" rows="5" cols="39">{htm(T1_DESC)}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<th valign="top">Hilfe</th>
+						<td>
+							<textarea name="T1_HELP" rows="5" cols="39">{htm(T1_HELP)}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<th colspan="2">
+							Eingabefelder bei der Suchmaske
+						</th>
+					</tr>
+					<tr>
+						<th valign="top">Beschreibung</th>
+						<td>
+							<textarea name="T2_DESC" rows="5" cols="39">{htm(T2_DESC)}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<th valign="top">Hilfe</th>
+						<td>
+							<textarea name="T2_HELP" rows="5" cols="39">{htm(T2_HELP)}</textarea>
+						</td>
+					</tr>			
+					<tr>
+						<th>Typ des Felds</th>
+						<td>
+							{if FK_LISTE}
+								<input type="hidden" name="FK_LISTE" value="{FK_LISTE}" />
+								<input id="ftypen" type="hidden" name="F_TYP" value="{F_TYP}" />
+								<strong>{htm(F_TYP)}</strong><br />
+								<span class="error">Der Feldtyp kann nicht mehr ge&auml;ndert werden, da bereits Daten enthalten sind!</span>
+							{else}
+								<select id="ftypen" name="F_TYP" onchange="chFieldType(this.value); vonbis(this.value);">
+									<option value="">Bitte w&auml;hlen!</option>
+									{field_types}
+								</select>
+								{if ID_FIELD_DEF && !CHANGEABLE}
+									<p class="error">
+										ACHTUNG!!!
+										Das &Auml;ndern des Feldtyps kann Datenverlust zur Folge haben!!!
+									</p>
+								{endif}
+							{endif}
+						</td>
+					</tr>
+					<tr style="display: none; background-color: #e2e2e2;"  id="LISTEN">
+					</tr>
+					<tr>
+						<th>Pflichtfeld?</th>
+						<td><input type="checkbox" name="B_NEEDED" value="1" class="nob" {if B_NEEDED}checked{endif} /></td>
+					</tr>
+					<tr>
+						<th style="vertical-align:top;">Suchfeld?</th>
+						<td>
+							<input type="radio" name="B_SEARCH" value="0" class="nob" {if !B_SEARCH}checked{endif} /> Nein<br />
+							<span id="s_date">
+								<input id="xSearchDef" type="radio" name="B_SEARCH" value="1" class="nob" {if B_SEARCH === 1}checked{endif} /> Ja<br />
+							</span>
+							<span id="xSearch" style="display:none;">
+								<input id="xSeachLock" type="radio" name="B_SEARCH" value="2" class="nob" {if B_SEARCH === 2}checked{endif} /> Von-Bis Suche
+							</span>
+						</td>
+					</tr>		
+					{if T_NAME}
+					<tr>
+						<th>Name in DB</th>
+						<td>{htm(T_NAME}</td>
+					</tr>
+					{endif}
+					<tr class="footer">
+						<td id="S_EDIT" colspan="2" align="right"><input type="button" value="Speichern" onclick="saveField();"/></td>
+					</tr>
+				</table>
+			</form>	
+		</td>
+		<td valign="top">
+			{if WARNINGS}
+				<h2 class="error">WARNUNG!</h2>
+				<p class="error">
+					Bei einer &Auml;nderung dieses Felds sind bis zu {WARNINGS}
+					Datens&auml;tze gef&auml;hrdet! Eine &Auml;nderung kann diese Daten unbrauchbar machen!
+				</p>
+			{else}
+				&nbsp;
+			{endif}
+			<!-- 
+			<h2>Beschreibung aufteilen</h2>
+			<p>Bitte nutzen Sie || Um die Beschreibungstexte aufzuteilen. In den Formularen wird nur 
+			der erste Teile vor dem || angezeigt. Der Rest erscheint erst nach einem Klick auf das 
+			Hilfe Symbol.</p>
+			 -->
+		</td>
+	</tr>
+</table>	
+<script type="text/javascript">
+	{if FK_LISTE}
+		chFieldType($('ftypen').value, {FK_LISTE});
+	{endif}
+	// INT, FLOAT, DATE
+	
+	
+</script>

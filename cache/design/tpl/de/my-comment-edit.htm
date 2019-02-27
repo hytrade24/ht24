@@ -1,0 +1,66 @@
+<h1>bearbeiten</h1>
+
+<p>
+    Hier haben Sie die Möglichkeit ihren Kommentar noch einmal zu bearbeiten. Bitte beachten Sie, dass der Kommentar unter Umständen erneut freigegeben werden muss.
+</p>
+{if not_found}
+    <div class="alert alert-danger">
+        <h3>Kommentar nicht gefunden</h3>
+        Der Kommentar den Sie bearbeiten möchten konnte nicht gefunden werden!
+    </div>
+{else}
+    {if err}
+    <div class="alert alert-danger">
+        {err}
+    </div>
+    {endif}
+    
+    <form method="POST" action="{uri_action(my-comment-edit,{ID_COMMENT})}" class="form-horizontal design-comment-edit">
+        <input type="hidden" name="ID_COMMENT" value="{ID_COMMENT}" />
+        
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputCommentRating">
+                Betreff
+            </label>
+            <div class="design-input-field">
+                {htm(TITLE)}
+            </div>
+        </div>
+        {if SHOW_RATING}
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputCommentRating">
+                Bewertung
+            </label>
+            <div class="design-input-field">
+                <div id="comment_rating">
+                    <input name="RATING" id="inputCommentRating" value="{if RATING}{RATING}{else}-1{endif}" type="hidden" />
+                </div>
+            </div>
+        </div>
+        {endif}
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputCommentText">
+                Kommentar
+            </label>
+            <div class="design-input-field">
+                <textarea name="COMMENT" id="inputCommentText" class="form-control">{htm(COMMENT)}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="design-input-notice text-right">
+                <button class="btn btn-success" type="submit">Speichern</button>
+            </div>
+        </div>
+    </form>
+    
+    <script type="text/javascript" src="{uri_baseurl(/lib/rating.js)}"></script>
+    <script type="text/javascript">
+                        
+        jQuery(function() {
+            var vote_user = new Rating(1, 5);
+            vote_user.SetInput("#inputCommentRating");
+            jQuery('#comment_rating').append(vote_user.html);
+        });
+        
+    </script>
+{endif}

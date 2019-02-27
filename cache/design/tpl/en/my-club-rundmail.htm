@@ -1,0 +1,88 @@
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}Broadcast</h1>
+
+<p>Send a broadcast to all selected groupmembers.</p>
+{if success}
+<div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Broadcast was sent!</h4>
+</div>
+{endif}
+{if errors}
+<div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Error!</h4>
+    <ul>
+        {errors}
+    </ul>
+</div>
+{endif}
+	{subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+
+    <form method="post" id="clubFormular" action="{uri_action(my-club-rundmail,{CLUB_ID_CLUB})}">
+        <input type="hidden" name="do" value="send">
+        <input type="hidden" name="ID_CLUB" value="{CLUB_ID_CLUB}">
+        <div class="row design-club-rundmail">
+            <div class="col-xs-8">
+                <p>
+                    <strong>Message</strong><br>
+                    <small>Hint: Your message will receive a header and a footer, to hint the receiver that
+                    this message was sent from our platform
+.</small>
+                </p>
+                <input type="text" placeholder="Subject" name="SUBJECT" class="form-control" value="{htm(CLUB_SUBJECT)}">
+
+                <textarea class="form-control" placeholder="Your message" rows="12" name="MESSAGE" id="message">{htm(CLUB_MESSAGE)}</textarea>
+                <br>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="1" name="ACCEPT_CONDITION">I accept, that my username and group will be visible in the E-Mail.
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-success pull-right">Send</button>
+            </div>
+            <div class="col-xs-4">
+                <p>
+                    <strong>Receiver</strong><br><br><br>
+                </p>
+                <div name="MEMBERS[]" id="members" class="selection">
+                    {liste}
+                </div>
+
+                <button class="btn btn-info pull-right" id="selectAll">Choose all</button>
+                <button class="btn btn-danger pull-left" id="deselectAll">Deselect all</button>
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        jQuery('#selectAll').click(function(event) {
+            event.preventDefault();
+
+            selectAll(jQuery('.selection'));
+        });
+
+        jQuery('#deselectAll').click(function(event) {
+            event.preventDefault();
+
+            deselectAll(jQuery('.selection'));
+        });
+
+        function selectAll(selectField)
+        {
+            selectField.find('input[type="checkbox"]:not(:checked)').each(function(index) {
+                jQuery(this).prop('checked', true);
+            });
+        }
+
+        function deselectAll(selectField)
+        {
+            selectField.find('input[type="checkbox"]:checked').each(function(index) {
+                jQuery(this).prop('checked', false);
+                jQuery(this).attr('checked', false);
+            });
+        }
+
+
+    </script>

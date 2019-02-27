@@ -1,0 +1,32 @@
+<h1>Coinpakete hinzuf&uuml;gen</h1>
+<p>Sie k&ouml;nnen hier ein Coinpaket anlegen.</p>
+&nbsp;
+
+{if err}
+<div class="hinweis">
+	<span class="error">{err}</span>
+</div>
+{endif}
+
+<form action="index.php" method="post">
+<input type="hidden" name="page" value="coinpackage_edit" />
+<input type="hidden" name="ID_COINPACKAGE" value="{ID_COINPACKAGE}" />
+<table class="formTable" cellspacing="0">
+	<tr>
+		<th>Paketbezeichnung</th>
+		<td><input type="text" name="coinpackage_title" style="width:330px;" value="{COINPACKAGE_TITLE}" /></td>
+	</tr>
+	<tr>
+		<th>Anzahl Coins</th>
+		<td><input type="text" name="number_of_coins" style="width:330px;" value="{NUMBER_OF_COINS}" /></td>
+	</tr>
+	<tr>
+		<th>Preis in Euro (netto)</th>
+		<td><input type="text" name="cost" style="width:330px;" value="{COST}" /></td>
+	</tr>
+	<tr class="footer">
+  		<th>&nbsp;</th>
+		<td align="right"><input class="button" name="send" type="submit" value="Speichern" /></td>
+	</tr>
+</table>
+</form>

@@ -1,0 +1,23 @@
+{if k == 1}
+ <tr>
+{endif}
+<td style="text-align:center;border:1px #CCCCCC solid; vertical-align:top">
+<a href="../{SRC}" target="_blank">
+<img {if SRC_T}src="../{SRC_T}" width="{WIDTH_T}" height="{HEIGHT_T}"{else}src="../shim.gif"{endif} alt="{htm(ALT)}">
+</a>
+<br />
+{if !SRC_T}keine Vorschau verf&uuml;gbar{endif}
+{if ALT}{htm(ALT)}<br />{endif}
+{todate(DATUM)}<br />
+{NAME}<br>
+<span>
+<a href="index.php?page={curpage}&id={id}&edit={ID_IMG}" title="Dieses Bild bearbeiten">bearbeiten</a>
+<br />
+<a href="index.php?page={curpage}&id={id}&del={ID_IMG}" title="Dieses Bild l&ouml;schen" onClick="return confirm('Das Bild endgültig löschen?');">löschen</a>
+</span>
+<br />
+{if OK}<span class="ok">sichtbar</span>{else}<span class="error">unsichtbar</span>{endif}
+</td>
+{if k == IMG_ROW || end}
+ </tr>
+{endif}

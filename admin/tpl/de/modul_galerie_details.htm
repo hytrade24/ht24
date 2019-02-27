@@ -1,0 +1,16 @@
+<h1>Galerie &quot;{htm(LABEL)}&quot; - Bilder bearbeiten</h1>
+{if err}
+<div class="hinweis"><span class="error">{err}</span></div>
+{endif}
+{if hinweis}
+<div class="hinweis"><span class="ok">{hinweis}</span></div>
+{endif}
+
+<p>
+<img src="gfx/settings_32.gif" width="32" height="32" alt="Zuordnungstabelle" border="0">&nbsp;<a href="index.php?page=modul_galerie_opt&ID_GALERIE={ID_GALERIE}" title="Optionen bearbeiten">Optionen der Galerie bearbeiten</a></p>
+
+{if !ID_IMG}
+{subtpl(tpl/de/_bildhochladen.htm,*)}
+{else}
+{subtpl(tpl/de/_bildbearbeiten.htm,*)}
+{endif}

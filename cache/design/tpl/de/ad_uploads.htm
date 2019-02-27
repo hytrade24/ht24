@@ -1,0 +1,52 @@
+<h3>Dateien hochladen</h3>
+{if ERR_UP}
+	<h3 class="text-error">
+        Nicht erfolgreich!
+	</h3>
+	<ul>
+		{if NOT_ALLOWED}
+			<li class="text-error">
+                Unerlaubtes Dateiformat!
+			</li>
+		{endif}
+	</ul>
+{endif}
+{if UPS_LEFT}
+	<p>
+		{if UPS_FREE}
+            Die ersten <strong>{UPS_FREE} Uploads</strong> sind kostenlos, für jeden weiteren wird ihnen
+                ein Upload von ihrem Uploadpaket abgezogen.
+		{endif}
+        <br />
+
+        {if UPS_LEFT == 1}
+            Noch <strong>{UPS_LEFT} Datei-Upload</strong> m&ouml;glich.
+        {else}
+            Noch <strong>{UPS_LEFT} Datei-Uploads</strong> m&ouml;glich.
+        {endif}
+        <br />
+	</p>
+	<form target="if_upload2" method="post" id="DATA_UP" action="{uri_baseurl(/index.php)}" enctype="multipart/form-data">
+		<input type="hidden" name="page" value="ad_uploads" />
+		<input type="hidden" name="frame" value="ajax" />
+		<input type="hidden" name="FK_AD" value="{FK_AD}" />
+		<input onchange="if (confirm('Möchten Sie die ausgewählte Datei hochladen?')) { data_upload_start(); } else { this.value = null; }" type="file" name="DATA" id="DATA_FIELD" />
+        Akzeptierte Dateiformate: {htm(FORMATS_ALLOWED)}
+	</form>
+{else}
+	<p class="text-error">
+        Keine weiteren Dateien m&ouml;glich.
+	</p>
+{endif}
+{if liste}
+	<br />
+	<fieldset style="clear:both; width:98%;">
+		<legend>
+            Bereits hochgeladene Dateien
+        </legend>
+		<br />
+		<table class="liste" cellspacing="0" width="100%" style="border:none;">
+			{liste}
+		</table>
+	</fieldset>
+{endif}

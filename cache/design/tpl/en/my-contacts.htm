@@ -1,0 +1,76 @@
+<script type="text/javascript">
+	$(function() {
+		removeContactRequestRow = function(userContactId, text) {
+			$("#userContactRow"+userContactId).replaceWith("<tr><td colspan='3' style='text-align: center'>"+ text +"</td><tr>");
+		}
+
+		$(".removeContactRequest").click(function() {
+			var userContactId = $(this).attr("alt");
+			$.ajax({
+				url: '{uri_baseurl(/)}my-pages/my-contacts-response,'+userContactId+',remove.htm?frame=ajax',
+				dataType: 'json',
+				success: function(response) {
+					if(response.success == true) {
+						removeContactRequestRow(userContactId, "The contact was deleted");
+					}
+				}
+			});
+
+			return false;
+		});
+
+		$(".acceptContactRequest").click(function() {
+			var userContactId = $(this).attr("alt");
+			$.ajax({
+				url: '{uri_baseurl(/)}my-pages/my-contacts-response,'+userContactId+',accept.htm?frame=ajax',
+				dataType: 'json',
+				success: function(response) {
+					if(response.success == true) {
+						removeContactRequestRow(userContactId, "The user has been added to your contacts");
+					}
+				}
+			});
+
+			return false;
+		});
+
+		$(".declineContactRequest").click(function() {
+			var userContactId = $(this).attr("alt");
+			$.ajax({
+				url: '{uri_baseurl(/)}my-pages/my-contacts-response,'+userContactId+',decline.htm?frame=ajax',
+				dataType: 'json',
+				success: function(response) {
+					if(response.success == true) {
+						removeContactRequestRow(userContactId, "The contact request was declined");
+					}
+				}
+			});
+
+			return false;
+		});
+	})
+
+</script>
+
+<h1>My contacts</h1>
+<p>You can link shops by the help of contacts. You can get higher attention for your own shop with that.</p>
+	<ul class="nav nav-tabs userTabsTable">
+	<li{if showContacts} class="active"{endif}>
+		<a href="{uri_action(my-contacts)}">Contacts ({countContacts})</a>
+	</li>
+	<li{if showRequestsPending} class="active"{endif}>
+		<a href="{uri_action(my-contacts,pending)}">Sent contact requests ({countRequestsPending})</a>
+	</li>
+	<li{if showRequestsReceived} class="active"{endif}>
+		<a href="{uri_action(my-contacts,open)}">Received contact request ({countRequestsReceived})</a>
+	</li>
+</ul>
+<table class="table table-bordered table-striped table-condensed">
+{if liste}
+	{liste}
+{else}
+	<tr><td colspan="3">No contacts available</td></tr>
+{endif}
+</table>
+
+{pager}

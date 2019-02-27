@@ -1,0 +1,94 @@
+<table class="formTable" width="100%">
+	<tr>
+		<th><a href="index.php?page=users">Useranzahl</a></th>
+		<td>{usercount}</td>
+	</tr>
+	
+	<tr>
+		<td >Heute</td>
+		<td>{usercount_td}</td>
+	</tr>
+	<tr>
+		<td>gestern</td>
+		<td>{usercount_yd}</td>
+	</tr>	
+	<tr>
+		<th><a href="index.php?page=useronline">Useronline</a></th>
+		<td>{useronline}</td>		
+	</tr>	
+		<tr>
+		<th><a href="index.php?page=modul_newsletter_confirmed">Newsletter</a></th>
+		<td>{nlcount}</td>
+	</tr>
+	<tr>
+		<td><a href="index.php?page=modul_newsletter_confirmed">best&auml;tigt</a></td>
+		<td>{nlrecp}</td>
+	</tr>	
+	<tr>
+		<td><a href="index.php?page=modul_newsletter_unconfirmed">unbest&auml;tigt</a></td>
+		<td>{nlunrecp}</td>
+	</tr>				
+	<tr>
+		<th colspan="2"><a href="index.php?page=eventlogs" title="Zur Gesamt&uuml;bersicht!">Eventlogs</a></th>
+	</tr>
+	<tr>
+	 <td colspan="2">
+	  <script type="text/javascript" src="sys/tooltip.js"></script>
+	  <script type="text/javascript">
+       function ch_event(what)
+	   {
+	     ajaxSubmit('','index.php?frame=ajax&page=eventlog_ajax&SHOW='+what,1,false,'event_ajax');
+	   }
+	   ajaxSubmit('','index.php?frame=ajax&page=eventlog_ajax',false,false,'event_ajax');		 
+	  </script>
+	  <div id="event_ajax">
+        Bitte warten ...
+      </div> 
+	 </td>
+	</tr>	
+	<tr>
+		<td colspan="2">{sysmsg}</td>
+	</tr>
+		
+    <tr>
+        <td colspan="2">
+        <p><strong>Aktuelle Update-Hinweise unter </strong></p>
+    <table align="center">
+            <tr>
+                <td><a rel="nofollow" href="http://www.facebook.com/ebizconsult" target="_blank"><img src="gfx/facebook.png" alt="besuchen Sie uns auf Facebook" width="30" height="30"></a></td>
+                <td><a href="http://twitter.com/ebiz_consult" title="twitter" target="_blank" rel="nofollow"><img src="gfx/twitter.png" /></a></td>
+                <td><a style="text-decoration:none;" rel="nofollow" href="https://plus.google.com/116121863112545414498?prsrc=3" target="_blank"><img style="border: 0; width: 32px; height: 32px;" src="https://ssl.gstatic.com/images/icons/gplus-32.png" alt=""></a></td>
+            </tr>
+        </table>
+        
+            <br />
+            </td>
+    </tr>
+    <tr>
+        <td><strong>Ihre Version</strong></td>
+        <td>{RELEASE_CURRENT_VERSION}</td>
+    </tr>
+    {if RELEASE_NEW_AVAILABLE}
+    <tr>
+        <td><strong>Aktuelle Version</strong></td>
+        <td><strong class="error">{RELEASE_VERSION}</strong></td>
+    </tr>
+    <tr>
+        <td><strong>Release Datum</strong></td>
+        <td><strong class="error">{todate(RELEASE_DATE)}</strong></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <a href="http://www.ebiz-trader.de" target="_blank"><strong>Neue Version herunterladen</strong></a><br /><br />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align: center;">
+            <div style="background: red; color: white;  padding: 3px; font-weight: bold;">
+                Neue Version verfügbar
+            </div>
+        </td>
+    </tr>
+
+    {endif}
+</table>

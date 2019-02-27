@@ -1,0 +1,84 @@
+<script language="JavaScript" type="text/javascript">
+<!--
+  function showAG(el)
+  {
+    var fk = el.options[el.selectedIndex].value;{if ag_inherit_fk}
+    if (!fk) fk = {ag_inherit_fk};{endif}
+    document.getElementById('ag_details').src='index.php?frame=iframe&page=attr_group_show&id='+fk;
+  }
+//-->
+</script>
+
+<h2>{if neu}neue Unterkategorie zu{else}Einstellungen f&uuml;r{endif} &quot;{htm(V1)}&quot;</h2>
+<table cellpadding="2" cellspacing="0" border="0" class="formTable"><tr>
+  <td><strong><label for="v1">Name&nbsp;</label>: </strong></td>
+  <td><input onChange="setFlag(true)" type="text" class="inputfull" name="V1" id="v1" maxlength="32" value="{htm(V1)}" /></td>
+</tr>
+{if ROOT == 2}
+<tr>
+ <td><strong>Vorschaubild</strong></td>
+ <td><input type="file" name="PREV"></td>
+</tr>
+{if IMG}
+<tr>
+ <td colspan="">
+  <img src="{IMG}" width="{IMG_W}" height="{IMG_H}" alt="{IMG}">
+ </td>
+</tr>
+{endif}
+{endif}
+{if ROOT==1}<tr>
+  <td><strong><label for="fk_attr_group">Attribut-Gruppe</label></strong></td>
+  <td>{select(attr_group,,,ROOT=1 and t.LFT>1,LFT,onChange="setFlag(true);showAG(this);",geerbt: {ag_inherit:--keine--})}&nbsp;</td>
+</tr>
+<tr>
+  <td><strong>Darstellungsart</strong></td>
+  <td>{lookup(KATART,,V1,onchange="checkArt()")}</td>
+</tr>
+<tr style="display:none" id="trKatArt">
+ <td><strong>Infoseite:</strong></td>
+ <td>{select(infoseite)}
+ <a href="javascript:editInfo(0)" title="bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16"></a>
+<a href="javascript:editInfo(1)" title="Neue Infoseite"><img src="gfx/edit1.gif" width="16" height="16"></a>
+ </td>
+</tr>
+<tr valign="top">
+  <td><strong>zu dieser<br />Gruppe<br />geh&ouml;rende<br />Attribute</strong></td>
+  <td><iframe id="ag_details" width="360" frameborder="0"
+  src="index.php?frame=iframe&page=attr_group_show&id={FK_ATTR_GROUP:{ag_inherit}}"></iframe></td>
+</tr>{endif}</table>
+<table class="formTable">
+ <tr>
+  <td><h2>Kategorie Optionen</h2>
+  Entscheiden Sie welche Optionen innerhalb der Kategorie &quot;{V1}&quot; verwendet werden k&ouml;nnen.
+  <hr style="height:1px;" noshade />
+  {options}
+  <hr style="height:1px;" noshade />
+  <input type="checkbox" name="VERERBUNG" value="1" class="nob" />
+  Sollen Ihre Optionen auch in allen Unterkategorien &uuml;bernommen werden?<br />
+  <div style="padding-left:25px"><span class="error">Alle zuvor gemachten Einstellungen in den Unterkategorien werden
+   &uuml;berschrieben!</span></div>
+  </td>
+ </tr>
+</table>
+<table class="formTable" cellspacing="0">
+{if ROOT==1}
+ <tr>
+  <td>
+   <h2>Verkaufsarten</h2>
+   Ordner Sie hier Ihrer kategorie die m&ouml;glichen Verkaufsarten zu. 
+   {if vkarten}
+   <p>{vkarten}</p>
+   <hr style="height:1px;" noshade />
+    <input type="checkbox" name="VERERBUNG_VK" value="1" class="nob" />
+    Sollen Ihre Verkaufsarten auch in allen Unterkategorien &uuml;bernommen werden?<br />
+    <div style="padding-left:25px"><span class="error">Alle zuvor gemachten Einstellungen in den Unterkategorien werden
+     &uuml;berschrieben!</span></div>   
+   {else}   
+   <div class="hinweis"><span class="error">keine Verkaufsarten gefunden</span></div>
+   {endif}
+  </td>
+ </tr>
+{endif} 
+</table>
+

@@ -1,0 +1,37 @@
+<tr>
+	<td>
+		{if AD_ID}
+			<a href="{uri_action(marktplatz_anzeige,{AD_ID},{urllabel(PRODUKTNAME)})}" title="{htm(PRODUKTNAME)} ansehen">
+				<img src="{if AD_SRC}{thumbnail({AD_SRC},40,40,crop)}{else}{thumbnail({uri_resource(/images/marketplace/nopic.jpg)},40,40,crop)}{endif}" alt="{htm(PRODUKTNAME)}" />
+			</a>
+		{endif}
+	</td>
+	<td>
+		{if AD_ID}
+			<a href="#ad{AD_ID}" onclick="showAd({AD_ID});" title="{htm(AD_PRODUKTNAME)} ansehen">
+				<strong>{if AD_MANUFACTURER}{htm(AD_MANUFACTURER)} {endif}{htm(AD_PRODUKTNAME)} {htm(VARIANT)}</strong>
+			</a>
+			<p class="marketplaceOrderItemDescription muted">
+				{htm(AD_BESCHREIBUNG)}
+			</p>
+		{else}
+			<p class="marketplaceOrderItemTitle">
+				{htm(PRODUKTNAME)}
+			</p>
+		{endif}
+	</td>
+	<td>
+		{if AD_ID}{AD_ID}{else}<span class="muted">n.v.</span>{endif}
+	</td>
+	<td>
+		{MENGE}
+	</td>
+	<td class="align-right">
+		{topreis(PREIS_STUECK)} {CURRENCY_DEFAULT}<br />
+        <span style="color: grey;">{if MWST}inkl.{else}exkl.{endif} MwSt.</span>
+	</td>
+	<td class="align-right">
+		{topreis(PREIS)} {CURRENCY_DEFAULT}<br />
+        <span style="color: grey;">{if MWST}inkl.{else}exkl.{endif} MwSt.</span>
+	</td>
+</tr>

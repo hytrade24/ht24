@@ -1,0 +1,42 @@
+{if npage == 1}
+<h1>Cronjobs</h1>
+<p>Hier finden Sie alle im System eingetragenen Croneintr&auml;ge. &Auml;nderungen k&ouml;nnen erhebliche Folgen f&uuml;r die Fuktionalit&auml;t 
+ des gesamten Systems haben.</p>
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktion</th>
+  <th>L&auml;uft seit</th>
+  <th>Beschreibung</th>
+  <th>Ausf&uuml;hrung alle</th>
+  <th>Datei</th>
+  <th>Erstmals ausgef&uuml;hrt</th>
+  <th>Letztmals ausgef&uuml;hrt</th>
+ </tr>
+ {liste}
+</table>
+{endif}
+
+<h1>Aufgabenlog</h1>
+<p>Aufgaben werden von bestimmten Funktionen angelegt, und nach vorgegebenen Zeiten ausgef&uuml;hrt!<br />
+Das Eintragen einer neuen Aufgabe wird in der Hilfe beschrieben!<br /><br />
+<strong>Hinweis: Bei Crons die öfter als 5 mal täglich ausgeführt werden werden lediglich die 5 aktuellsten Ausführungen des Tages angezeigt.</strong>
+</p> 
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Beschreibung</th>
+  <th>Erledigt?</th>
+  <th>Datei</th>
+  <th>Code</th>
+  <th>Ausf&uuml;hrung</th>
+  <th>Geplante Ausf&uuml;hrung</th>
+ </tr>
+ {if liste_aufgaben}
+ {liste_aufgaben}
+ {else}
+ <tr>
+  <td colspan="5" align="center" class="error">keine Aufgaben in der Datenbank</td>
+ </tr>
+ {endif}
+</table>
+{pager}
+<p>&nbsp;</p>

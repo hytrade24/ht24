@@ -1,0 +1,95 @@
+<div id="userVersand_Guest" class="form-horizontal">
+    <div class="form-group {if err_VERSAND_USE_INVOICE}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userVersand_Edit_UseInvoice">
+            <strong>Use billing address</strong>
+        </label>
+        <div class="design-input-field">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" onchange="UpdateShippingAddress();" id="userVersand_Edit_UseInvoice" name="VERSAND_USE_INVOICE" value="1"{if VERSAND_USE_INVOICE} checked="checked"{endif} />
+                    Use billing address for the shipping aswell
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group {if err_VERSAND_FIRSTNAME}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userVersand_Edit_Firstname">
+            <strong>Your forename <span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="Vorname" class="form-control" type="text" id="userVersand_Edit_Firstname" name="VERSAND_FIRSTNAME" value="{htm(VERSAND_FIRSTNAME)}" />
+        </div>
+    </div>
+    <div class="form-group {if err_VERSAND_LASTNAME}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userVersand_Edit_Lastname">
+            <strong>Your surname <span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="Nachname" class="form-control" type="text" id="userVersand_Edit_Lastname" name="VERSAND_LASTNAME" value="{htm(VERSAND_LASTNAME)}" />
+        </div>
+    </div>
+    <div class="form-group {if err_VERSAND_COMPANY}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userVersand_Edit_Company">
+            <strong>Company</strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="Firma" class="form-control" type="text" id="userVersand_Edit_Company" name="VERSAND_COMPANY" value="{htm(VERSAND_COMPANY)}" />
+        </div>
+    </div>
+    <div class="form-group {if err_VERSAND_STREET}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userVersand_Edit_Street">
+            <strong>Street<span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="Strasse" class="form-control" type="text" id="userVersand_Edit_Street" name="VERSAND_STREET" value="{htm(VERSAND_STREET)}" />
+        </div>
+    </div>
+    <div class="form-group {if err_VERSAND_ZIP || err_VERSAND_CITY}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userVersand_Edit_Zip">
+            <strong>ZIP & location<span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            <div class="design-input-split">
+                <div class="design-input-zip">
+                    <input placeholder="PLZ" class="form-control" type="text" id="userVersand_Edit_Zip" name="VERSAND_ZIP" value="{htm(VERSAND_ZIP)}" />
+                </div>
+                <div class="design-input-city">
+                    <input placeholder="Ort" class="form-control" type="text" id="userVersand_Edit_City" name="VERSAND_CITY" value="{htm(VERSAND_CITY)}" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group {if err_VERSAND_COUNTRY}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userversand_edit_country">
+            <strong>Country<span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            {select_country(VERSAND_FK_COUNTRY,,,, class="form-control",---)}
+        </div>
+    </div>
+    <div class="form-group {if err_VERSAND_PHONE}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userVersand_Edit_Phone">
+            <strong>Phone</strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="Telefon" class="form-control" type="text" id="userVersand_Edit_Phone" name="VERSAND_PHONE" value="{htm(VERSAND_PHONE)}" />
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function UpdateShippingAddress() {
+        var useInvoiceAddress = jQuery("#userVersand_Edit_UseInvoice").is(":checked");
+        if (useInvoiceAddress) {
+            jQuery("#userVersand_Guest input[type=text]").prop("disabled", true);
+            jQuery("#userVersand_Guest select").prop("disabled", true);
+        } else {
+            jQuery("#userVersand_Guest input[type=text]").prop("disabled", false);
+            jQuery("#userVersand_Guest select").prop("disabled", false);
+        }
+        jQuery("#userVersand_Guest select[name=VERSAND_FK_COUNTRY]").selectpicker("refresh");
+    }
+
+    UpdateShippingAddress();
+
+</script>

@@ -1,0 +1,153 @@
+{if redirect_page}
+<script type="application/javascript">
+	window.location = window.location;
+</script>
+{else}
+<div id="adsRatingWindowContent">
+
+	<script type="text/javascript" src="{uri_baseurl(/lib/rating.js)}"></script>
+	<script type="text/javascript">
+        function closeAdsRatingWindow() {
+            HideDialog();
+        }
+
+        $(function () {
+            var vote_user = new Rating(1, 5);
+            vote_user.SetInput("#RATING");
+            $('#td_rating').append(vote_user.html);
+
+            $('#bewerten_form').unbind();
+            $("#bewerten_form").submit(function () {
+                $.post(ebiz_trader_baseurl + 'index.php', $(this).serialize(), function (transport) {
+                    $('#rating{ID_AD_SOLD}').attr("src", ebiz_trader_baseurl + 'gfx/lst-btw-erhalten-pic.png');
+                    $('#adsRatingWindowContent').html(transport);
+                    show_details({ID_AD_SOLD});
+                    show_details({ID_AD_SOLD});
+                });
+
+                return false;
+            });
+        });
+	</script>
+
+	{if not_found}
+	<div class="alert alert-danger">
+		<h5>Fehler beim Bewerten</h5>
+
+		<p>
+			M&ouml;glicherweise haben Sie den Benutzer f&uuml;r diesen Verkauf/Kauf bereits bewertet.
+		</p>
+	</div>
+	{else}
+
+	<table class="table table-condensed table-striped">
+		<thead>
+		<tr>
+			{if VK}
+			<th>Verkaufter Artikel</th>
+			<th>Kaufdatum</th>
+			<th>Käufer</th>
+			{else}
+			<th>Gekaufter Artikel</th>
+			<th>Kaufdatum</th>
+			<th>Verkäufer</th>
+			{endif}
+		</tr>
+		</thead>
+		<tr>
+			<td>
+				{PRODUKTNAME}
+			</td>
+			<td>
+				{todate(STAMP_BOUGHT)}
+			</td>
+			<td>
+				{if VK}
+				{if !USER_VIRT}
+				<a title="Profil in neuem Fenster &ouml;ffnen" target="_blank" href="{uri_action(view_user,{urllabel(USER_NAME)},{FK_USER})}">{USER_NAME}</a>
+				{else}
+				{USER_NAME}
+				{endif}
+				{else}
+				{if !USER_VIRT_VK}
+				<a title="Profil in neuem Fenster &ouml;ffnen" target="_blank" href="{uri_action(view_user,{urllabel(USER_NAME_VK)},{FK_USER_VK})}">{USER_NAME_VK}</a>
+				{else}
+				{USER_NAME_VK}
+				{endif}
+				{endif}
+			</td>
+		</tr>
+		<tr>
+		</tr>
+	</table>
+	<br />
+
+	{if READY}
+	<p class="alert alert-success">
+		Ihre Bewertung wurde erfolgreich gespeichert!
+	</p>
+
+	<p class="text-right">
+		<input type="button" class="btn btn-default" value="Fenster schließen" onclick="closeAdsRatingWindow()" />
+	</p>
+	{else}
+	{if error}
+	<div class="alert alert-danger">
+		<strong>Das hat leider nicht geklappt!</strong>
+		<ul>
+			{if ERR_ALREADY_RATED}
+			<li style="font-weight: bold;">Sie haben für diesen Verkauf/Kauf schon eine Bewertung abgegeben.</li>
+			{endif}
+			{if ERR_NO_RATING}
+			<li style="font-weight: bold;">Sie müssen mindestens einen Stern vergeben.</li>
+			{endif}
+			{if ERR_NO_COMMENT}
+			<li style="font-weight: bold;">Bitte geben Sie einen kurzen Kommentar zur Bewertung ab.</li>
+			{endif}
+			{if ERR_SHORT_COMMENT}
+			<li style="font-weight: bold;">Der von ihnen eingegebene Kommentar ist zu kurz. Bitte schreiben Sie mindestens 10 Zeichen.</li>
+			{endif}
+			{if ERR_LONG_COMMENT}
+			<li style="font-weight: bold;">Der von ihnen eingegebene Kommentar ist zu lang! (max. 255 Zeichen)</li>
+			{endif}
+		</ul>
+	</div>
+	<br />
+	{endif}
+
+
+	<form method="post" action="{uri_action(my-marktplatz-rating,{ID_AD_SOLD})}" id="bewerten_form">
+		<input type="hidden" name="frame" value="ajax" />
+		<input type="hidden" name="page" value="{curpage}" />
+		<input type="hidden" name="ID_AD_SOLD" value="{ID_AD_SOLD}" />
+
+		<table cellpadding="0" cellspacing="0" class="liste" width="100%">
+			<tr>
+				<td class="header" valign="top"><strong>Bewertung</strong></td>
+				<td colspan="2" id="td_rating">
+					<input name="RATING" id="RATING" value="{if RATING}{RATING}{else}-1{endif}" type="hidden" />
+				</td>
+			</tr>
+			<tr>
+				<td class="header" valign="top"><strong>Kommentar</strong></td>
+				<td colspan="2">
+					<div class="form-group">
+						<textarea class="form-control" rows="2" name="COMMENT">{htm(COMMENT)}</textarea>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th class="footer text-right" colspan="3">
+					{if ID_AD_SOLD_RATING}
+					<input type="hidden" value="1" name="UPDATE_ID_AD_SOLD_RATING" />
+					<input type="hidden" value="{ID_AD_SOLD_RATING}" name="ID_AD_SOLD_RATING" />
+					{endif}
+					<input class="btn btn-primary" type="submit" value="Bewertung abgeben" />
+				</th>
+			</tr>
+		</table>
+	</form>
+	{endif}
+	{endif}
+</div>
+{endif}

@@ -1,0 +1,23 @@
+<tr class="zeile{even}">
+  <td>{ID_FAQKAT}</td>
+  <td>
+    <a href="index.php?frame=content&page={curpage}&ID_FAQKAT={ID_FAQKAT}" title="Kategorie bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16" alt="Kategorie bearbeiten" border="0" /></a>
+    <a href="index.php?frame=content&page={curpage}&do=rmk&id={ID_FAQKAT}" title="Kategorie l&ouml;schen" onClick="return confirm('Kategorie {if topiccount}inklusive aller Themen {endif}löschen?');"><img src="gfx/btn.rm{if topiccount}x{endif}.gif" width="32" height="16" alt="Kategorie bearbeiten" border="0" /></a>
+    <a href="index.php?frame={curframe}&page={curpage}&do=v{if POS}0{else}1{endif}&id={ID_FAQKAT}" class="mv{if !POS}0{endif}"><img src="gfx/mv{even}.v{if POS}1{else}0{endif}.gif" width="16" height="16" border="0" alt="{if POS}verstecken{else}sichtbar machen{endif}" /></a>
+  </td>
+  <td>[{htm(NAV_V1)}] {htm(V1)}</td>
+  <td style="text-align:right;">{topiccount:0}</td>
+  <td style="text-align:right;">({activecount:0})</td>
+  <td>
+    {if POS>1}
+	<a href="index.php?frame={curframe}&page={curpage}&id={ID_FAQKAT}&do=up" class="mv"><img src="gfx/mv{even}.up.gif" width="16" height="16" border="0" alt="hoch" /></a>
+	{else}
+	<img src="shim.gif" width="16" height="16" />
+	{endif}
+    {if !islast && POS>0}
+	<a href="index.php?frame={curframe}&page={curpage}&id={ID_FAQKAT}&do=dn" class="mv"><img src="gfx/mv{even}.dn.gif" width="16" height="16" border="0" alt="runter" /></a>
+	{else}
+	<img src="shim.gif" width="16" height="16" />
+{endif}
+  </td>
+</tr>

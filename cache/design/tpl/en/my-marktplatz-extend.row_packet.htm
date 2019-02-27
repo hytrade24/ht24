@@ -1,0 +1,11 @@
+{if allow_free || (PRICE>0)}
+<option value="{ID_PACKET_ORDER}" {if ID_PACKET_ORDER == FK_PACKET_ORDER}selected="selected"{endif}">
+		{htm(V1)} by {todate(STAMP_START)}
+
+        {if (MAX0==-1)}
+        (Flatrate)
+        {else}
+        ({FREE0} / {MAX0} Advertising-free)
+        {endif}
+</option>
+{endif}

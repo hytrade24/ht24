@@ -1,0 +1,18 @@
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+	<title>{strip_tags(pagetitle)} - {sitetitle}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="skin/ebiz.css" />
+	<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/jqueryui/css/theme/jqueryui.css)}" />
+	<script type="text/javascript" src="sys/misc.js"></script>
+	<script src="{uri_resource(/lib/jquery/jquery.js)}"></script>
+	<script src="{uri_resource(/lib/jqueryui/js/jqueryui.min.js)}"></script>
+</head>
+<script language="JavaScript" type="text/javascript">
+<!--
+function checkPFlag() { return checkFlag(opener, 'im Hauptfenster'); }
+//-->
+</script>
+<body onLoad="window.focus();">
+<table border="0" cellpadding="1" cellspacing="10" align="center" width="100%" bgcolor="#ffffff"><tr><td>{content}</td></tr></table>
+</body></html>

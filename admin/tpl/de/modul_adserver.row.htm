@@ -1,0 +1,19 @@
+<tr{if !(i&1)} bgcolor="#ffffff"{endif}>
+  <td><a name="{ID_ADS}"></a>
+    <a href="index.php?page=modul_adserver_add&ID_ADS={ID_ADS}"><img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0" /></a>
+<a href="index.php?page={curpage}&DELME=DEL&ID_ADS={ID_ADS}&npage={npage}" onclick="if (!confirm('ACHTUNG\nLöschen kann nicht rückgängig gemacht werden!\nBanner und Statistiken werden gel&ouml;scht!')){return false}"><img src="gfx/btn.del.gif" width="32" height="16" alt="l&ouml;schen" border="0" /></a>
+  </td>
+  <td align="center">{todate(stamp)}&nbsp;</td>  
+  <td><a href="index.php?page=modul_adserver&FK_KAT={FK_KAT}">{V1}</a></td>
+  <td>&nbsp;<a href="index.php?page=modul_adserver_add&ID_ADS={ID_ADS}">{htm(adname)}</a>&nbsp;</td>
+  <td align="center">{VALUE} {area}</td>
+  <td align="center"><a href="#{ID_ADS}" onclick="popupfkt('modul_adserver_stat&FK_ADS={ID_ADS}&frompopup=1','600','400');"><img src="gfx/stats_16.gif" width="27" height="21" alt="" border="0"></a></td>
+  <td align="center"><a href="#{ID_ADS}" onclick="popupfkt('modul_adserver_preview&ID_ADS={ID_ADS}','500','250');"><img src="gfx/preview.gif" width="32" height="16" alt="" border="0"></a></td>
+  <td align="center"><input type="hidden" class="nob" name="Okall[]"  value="{ID_ADS}" /><input type="checkbox" class="nob" name="OK1[]" {if aktiv}checked{endif} value="{ID_ADS}" /></td>
+  <td align="center">{if top}&radic;{endif}</td>
+<td>{todate(DATE_START)}</td>
+<td>{todate(DATE_END)}</td>
+<td align="right">{ADRUNTIME}</td>
+<td>{if ADRUNTIME < 1 || aktiv < 1}<img src="gfx/warnung.png">{endif}</td>
+</tr>{if preview}
+<tr{if !(i&1)} bgcolor="#ffffff"{endif}><td colspan="12" align="center">{banner}</td></tr>{endif}

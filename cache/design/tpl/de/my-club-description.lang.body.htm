@@ -1,0 +1,12 @@
+<div id="lang-{ABBR}">
+	{if CLUB_MODERATOR}
+    <script type="text/javascript">
+        jQuery(function() {
+            InitializeEditor(true, "T1_{BITVAL}");
+        })
+    </script>
+    <textarea style="width: 100%; height: 100px" name="T1[{BITVAL}]" id="T1_{BITVAL}">{htm(CLUB_DESCRIPTION)}</textarea>
+    {else}
+    	{CLUB_DESCRIPTION}
+    {endif}
+</div>

@@ -1,0 +1,63 @@
+<h1>Gemeldete Anzeigen</h1>
+
+<p>
+	Hier finden Sie alle Anzeigen über die sich Benutzer mithilfe der Funktion "Verstoß melden"
+	beschwert haben. 
+</p>
+
+<form method="post" action="index.php">
+	<input type="hidden" name="page" value="{curpage}" />
+	<table class="formTable" cellspacing="0">
+		<tr>
+			<td><strong>Anzeigennummer</strong></td>
+			<td><input type="text" name="FK_AD" value="{FK_AD}" /></td>
+			<td colspan="2"></td>
+		</tr>
+		<tr>
+			<td><strong>Besitzer Benutzer</strong></td>
+			<td>
+				<input type="text" name="NAME_" value="{htm(NAME_)}" readonly="readonly" />
+	            <input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" />
+	            <a style="cursor:pointer" onclick="popupfkt('users&frompopup=1','850','500');" title="User ausw&auml;hlen">
+	              <img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+	            </a>
+	   		</td>
+		</tr>
+		<tr>
+			<td><strong>Sortieren nach</strong></td>
+			<td><select name="orderby">{orders}</select></td>
+			<td><strong>Zeige</strong></td>
+			<td><select name="show">{shows}</select></td>
+		</tr>
+		<tr class="footer">
+			<td align="right" colspan="4">
+				<a href="index.php?page=ad_warnings">(Alle anzeigen)</a>
+				<input type="submit" value="Aktualisieren" class="button" />
+			</td>
+		</tr>
+	</table>
+</form>
+<p>&nbsp;</p>
+<table class="liste" cellspacing="0">
+	<tr>
+		<th></th>
+		<th colspan="2">Aktionen</th>
+		<th>Datum</th>
+		<th>Aktualisierung</th>
+		<th>Anzeige</th>
+		<th>Begründung</th>
+		<th>Meldender Benutzer</th>
+		<th>Besitzer der Anzeige</th>
+        <th></th>
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+		<tr>
+			<td colspan="9" class="error" align="center">Keine gemeldeten Anzeigen</td>
+		</tr>
+	{endif}
+</table>
+<p>
+	{pager}
+</p>

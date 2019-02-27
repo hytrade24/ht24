@@ -1,0 +1,11 @@
+<tr class="zeile{even}">
+ <td>{todate(STAMP)}</td>
+ <td width="90"><a name="A{ID_COMMENT}"></a>
+   <a href="#A{ID_COMMENT}" onclick="popupfkt('modul_comments_edit&id={ID_COMMENT}&modul={modul}', 700, 340)" title="Kommentar bearbeiten"><img width="32" height="16" src="gfx/btn.edit.gif"></a>
+<a href="index.php?page={curpage}&action=delete&id={ID_COMMENT}" title="Diesen Kommentar l&ouml;schen" onClick="return confirm('Diesen Kommentar endgültig löschen?');"><img src="gfx/btn.del.gif" width="32" height="16"></a>&nbsp;
+{if REPORTED}<a href="index.php?page={curpage}&action=unreport&id={ID_COMMENT}" title="Diesen Kommentar wieder Beschwerdefrei machen!"><img src="gfx/thumbup.png" /></a>{endif}
+ </td>
+ <td><a href="#" onclick="chUsr({FK_USER})" title="Nur Beitzr&auml;ge von {htm(USER)} ({C_COM}) anzeigen">{htm(USER)}</a>&nbsp;</td> 
+ <td><a href="index.php?page=modul_{htm(modul)}_details&{id_kind}={FK_CONTENT}" target="_blank" title="Artikel anzeigen">{htm(modul)}</a>&nbsp;&nbsp;</td>
+ <td><a href="#A{ID_COMMENT}" onclick="popupfkt('modul_comments_edit&id={ID_COMMENT}&modul={modul}', 700, 340)" title="Kommentar bearbeiten">{if REPORTED}<img src="gfx/achtung.gif" /> {endif}{htm(VORSCHAU)}...</a></td>
+</tr>

@@ -1,0 +1,100 @@
+
+{if !ID_MAN}<h1>Hersteller hinzuf&uuml;gen</h1>
+<p>
+    Hier können Sie einen neuen Hersteller zur Datenbank hinzufügen um diesem dann Produkte zuzuordnen.
+</p>
+{else}<h1>Hersteller bearbeiten</h1>
+<p>
+    Hier können Sie den gew&auml;hlten Hersteller bearbeiten und auf den aktuellen Stand bringen.
+</p>
+{endif}
+{if errors}
+<div class="hinweis">
+    <h3 class="error">Ein Fehler ist aufgetreten!</h3>
+    {errors}
+</div>
+{endif}
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="page" value="{curpage}">
+
+    <table width="550" cellspacing="0" class="liste">
+        <tr>
+            <td>
+                <strong>Name</strong>
+            </td>
+            <td>
+                <input style="width:99%;" name="MAN_NAME" value="{MAN_NAME}">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Webseite</strong>
+            </td>
+            <td>
+                <input style="width:99%;" name="URL" value="{URL}">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Beschreibung</strong>
+            </td>
+            <td>
+                {editor(T1,600px,400px)}
+            </td>
+        </tr>
+		<tr>
+			<td>
+				<strong>Bestätigt?</strong>
+			</td>
+			<td>
+				<label><input type="checkbox" name="CONFIRMED" value="1"{if CONFIRMED} checked="checked"{endif} /> Hersteller öffentlich auswählbar</label>
+			</td>
+		</tr>
+        <tr>
+            <th colspan="2" style="padding-top: 0; padding-bottom: 5px;"></th>
+        </tr>
+        <tr>
+            <td style="padding-top: 15px;">
+                <strong>Bulk-Upload mit CSV</strong>
+            </td>
+            <td style="padding-top: 15px;">
+                &nbsp;<input type="file" name="bulk_upload" id="bulk_upload" />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <div>
+                    <input checked type="radio" id="bulk-option-1" name="bulk-upload-type" value="1" />
+                    <label for="bulk-option-1">alle öffentlich</label>
+                </div>
+                <div>
+                    <input type="radio" id="bulk-option-2" name="bulk-upload-type" value="0" />
+                    <label for="bulk-option-2">wie in Datei angegeben, sonst öffentlich</label>
+                </div>
+                <div>
+                    <input type="radio" id="bulk-option-3" name="bulk-upload-type" value="-1" />
+                    <label for="bulk-option-3">nicht öffentlich</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2" style="padding-top: 15px; padding-bottom: 0;"></th>
+        </tr>
+        <tr>
+            <th style="text-align:right" colspan="2">
+
+            </th>
+        </tr>
+        <tr class="footer">
+            <td align="right" colspan="2">
+                <input type="submit" class="button" value="Beispiel-CSV" name="sample-csv" />
+                {if !ID_MAN}
+                    <input class="button" type="submit" value="Hersteller hinzuf&uuml;gen">
+                {else}
+                    <input type="hidden" name="ID_MAN" value="{ID_MAN}"><input type="submit" class="button" value="&Auml;nderung speichern">
+                {endif}
+            </td>
+        </tr>
+    </table>
+</form>

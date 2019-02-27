@@ -1,0 +1,41 @@
+<h1>Advertpackage</h1>
+<p class="lead">
+    Please select the advertpackage you want to use
+</p>
+
+<div class="design-content-box">
+    {if liste}
+    <div id="packet_selection">
+        <strong class="control-label">Please select the advertpackage:</strong>
+        <div class="controls">
+            <ul style="list-style-type: none;">
+                {liste}
+            </ul>
+        </div>
+    </div>
+    <form id="packet_select_form" class="form-horizontal" onsubmit="SubmitStep(this); return false;">
+        <input type="hidden" name="step" value="{STEP_IDENT}" />
+        <input type="hidden" name="FK_PACKET_ORDER" value="{FK_PACKET_ORDER}" />
+    </form>
+    {else}
+    <div id="packet_not_available" class="text-error">
+        <p>
+            <strong>No advertpackages available!</strong>
+            {if !liste_unpaid}
+            To place advertisements you have to buy an
+                <a href="{uri_action(packets)}">advertpackage first</a>.
+
+            {endif}
+        </p>
+        {if liste_unpaid}
+        <p>
+            <strong>The follow advertpackages are yet to be paid:</strong>
+
+        <ul>
+            {liste_unpaid}
+        </ul>
+        </p>
+        {endif}
+    </div>
+    {endif}
+</div>

@@ -1,0 +1,23 @@
+<tr class="zeile{even}">
+    <td>
+        <a href="index.php?page=packet_base_add&ID_PACKET={ID_PACKET}">
+            <img src="gfx/btn.edit.gif" border="0">
+        </a>
+    </td>
+    <td align="center">
+        <span class="ok" title="Aktiv!">√</span>
+    </td>
+    <td title="">
+        {V1} / {V2}
+    </td>
+    <td align="center">
+    {if TYPE_BASE_ABO}
+        <span class="ok" title="Ja">√</span>
+    {else}
+        <span class="error" title="Nein">x</span>
+    {endif}
+    </td>
+    <td align="right">
+        <input type="text" name="F_ORDER[{ID_PACKET}]" value="{F_ORDER}">
+    </td>
+</tr>

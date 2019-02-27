@@ -1,0 +1,11 @@
+	<tr class="zeile{even}">
+		<td>
+			{htm(DST)}
+		</td>
+		<td>
+			<!--  onclick="downloadSingle(this, {i}); return false;" -->
+			<a class="download" onclick="downloadSingle(this, {i}); return false;" href="index.php?page=invoice_print&PDF_SOURCES[0][SRC]={url(SRC)}&PDF_SOURCES[0][DST]={url(DST)}">
+				Herunterladen
+			</a>
+		</td>
+	</tr>

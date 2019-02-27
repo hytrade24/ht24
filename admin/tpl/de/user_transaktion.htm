@@ -1,0 +1,63 @@
+<h1><img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />Transaktionen des User '{NAME}'  / #{ID_USER}
+</h1>
+<p>
+    Alle getätigten {if what == 1}Verk&auml;ufe{else}Eink&auml;ufe{endif}
+</p>
+<p style="clear:left;margin:0px;">&nbsp;</p>
+
+{subtpl(tpl/de/user_edit.nav.htm,*)}
+<table class="liste" cellspacing="0" style="clear:left;" width="750">
+	<tr>
+		<th colspan="6">
+			<form action="index.php" method="get" id="wechseln">
+				<input type="hidden" name="ID_USER" value="{ID_USER}" />
+				<input type="hidden" name="page" value="{curpage}" />
+				Anzeige Auswahl:
+				<select name="what" onchange="$('wechseln').submit();">
+					<option value="1">Verk&auml;ufe</option>
+					<option value="2" {if what == 2}selected{endif}>Eink&auml;ufe</option>
+				</select>
+			</form>
+        </th>
+        <th>
+        <a style="cursor: pointer;" onclick="popupfkt('stats&show=transaktion_sold&w=550&ID_USER={ID_USER}{if what==2}&USER_MODE=EK{endif}','600','250');" title="Statistik">
+							<img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38" /></a>
+        </th>
+	</tr>
+	<tr>
+		<th title="Transalktions ID">
+			Trans.-Id
+		</th>
+		<th title="Artikelnummer">
+			Art.-Nr.
+		</th>
+		<th>
+			Verk&auml;ufer
+		</th>
+		<th>
+			K&auml;ufer
+		</th>
+		<th>
+			Artikel
+		</th>
+		<th>
+			Kaufdatum
+		</th>
+		<th>
+			Kaufpreis
+		</th>
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+		<tr>
+			<td colspan="7" align="center" class="error">
+				Keine Transaktionen gefunden
+			</td>
+		</tr>
+	{endif}
+</table>
+
+<p>
+<a href="index.php?lang=de&page=transactions&NAME_={NAME}&FK_AUTOR={ID_USER}">Übersicht der Verkäufe inkl Status</a>
+</p>

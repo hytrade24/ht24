@@ -1,0 +1,194 @@
+<table id="bewerten" width="100%" height="100%" style="display: none; position: absolute; left: 0px; top: 0px; z-index: 80;">
+    <tr>
+        <td valign="middle" align="center">
+            <div style="background-color: #000000; opacity: 0.75; position: fixed; left: 0px; top: 0px; height: 100%; width: 100%; z-index: 80;">
+            </div>
+            <div id="inhalt" class="stdBox" style="position:fixed; top:50%; left:50%; margin-left:-250px; margin-top:-200px; text-align:left; z-index: 99; width: 500px; height:400px; overflow:auto; padding: 4px;">
+                Bitte warten ...
+            </div>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript" src="{uri_baseurl(/lib/rating.js)}"></script>
+<script type="text/javascript">
+	function bewertung_close(id_sold)
+	{
+		var div = '#details_'+id_sold;
+		$(div).style.display = 'none';
+		$(div).update('Bitte warten ...');
+		show_details(id_sold);
+	}
+	
+	function bewerten(id_sold)
+	{
+		$('#bewerten')[0].style.display = 'table';
+		req = new Ajax.Request(
+			'/my-marktplatz-rating,'+id_sold+'.htm',
+			{
+				method: 'get',
+				onCreate: function()
+				{
+					
+				},
+				onSuccess: function(transport)
+				{
+					$('inhalt').update(transport.responseText);
+					var vote_user = new Rating(1,5);
+					vote_user.SetInput("RATING");
+					$('td_rating').appendChild(vote_user.html);
+				}
+			}
+		);
+	}
+	function sendBewertung(id_ad_sold)
+	{
+		$('bewerten_form').request(
+			{
+				method: "post",
+				onSuccess: function(transport)
+				{
+					$('rating'+id_ad_sold).src = '/gfx/lst-btw-erhalten-pic.png';
+					$('inhalt').update(transport.responseText);
+					var vote_user = new Rating(1,5);
+					vote_user.SetInput("RATING");
+					$('td_rating').appendChild(vote_user.html);
+				}
+			}
+		);
+	}
+	function show_kontakt(id_user, id_sold)
+	{
+		$('kontakt').style.display = 'block';
+		req = new Ajax.Request(
+			'/index.php?page=show_kontakt&frame=ajax&FK_USER='+id_user+'&FK_SOLD='+id_sold,
+			{
+				method: 'get',
+				onSuccess: function(transport)
+				{
+					$('inhalt').update(transport.responseText);
+				}
+			}
+			);
+	}
+	
+	function abschliessen(id_sold)
+	{
+		ask = confirm('Soll der Vorgang abgeschlossen werden?');
+		if(ask)
+		{
+			window.location.href='/my-marktplatz-einkaeufe,1,'+id_sold+',READY.htm';
+		}
+		return false;
+	}
+	
+	function show_details(id_sold)
+	{
+		var div = 'details_'+id_sold;
+		var cur_style = $(div).style.display;
+
+		if (cur_style == 'block') 
+		{
+			$(div).style.display = 'none';
+			$(div).update('Bitte warten ...');
+		}
+		else 
+		{
+			$(div).update('Bitte warten ...');
+			$(div).style.display = 'block';
+			req = new Ajax.Request(
+				'/index.php?page=sale_details&frame=ajax&FK_SOLD='+id_sold,
+				{
+					method: 'get',
+					onSuccess: function(transport)
+					{
+						$(div).update(transport.responseText);
+					}
+				}
+			);
+		}
+	}
+</script>
+<h1>
+	Meine Eink&auml;ufe<br />
+	<span>
+		Von Ihnen gekaufte Artikel
+	</span>
+</h1>
+<p>
+	Hier finden Sie alle von Ihnen gekauften Artikel. Bei Kommunikation mit dem verk&auuml;ufer oder dem 
+	Support bitte immer die Tranksaktions-Id uind die Artikelnummer angeben.
+</p>
+{if BUYED}
+	<p>
+		Sie m&uuml;ssen Artikel im Wert von 
+		<strong>{topreis(BUYED)} {CURRENCY_DEFAULT}</strong>
+		 bezahlen!
+	</p>
+{endif}
+<ul class="reiter">
+	<li {if show_open}class="active"{endif}>
+		<a href="{uri_baseurl(/my-pages/my-marktplatz-einkaeufe.htm)}">Offene Eink&auml;ufe</a>
+	</li>
+	<li {if show_done}class="active"{endif}>
+		<a href="{uri_baseurl(/my-pages/my-marktplatz-einkaeufe,,,,show_done.htm)}">Abgeschlossene Eink&auml;ufe</a>
+	</li>
+</ul>
+<table  cellspacing="0" class="liste" width="100%">
+	<tr>
+		<th valign="baseline" align="center">
+			<img src="{uri_baseurl(/gfx/lst-abgeschlossen.png)}" width="9" height="107" alt="Als abgeschlossen markieren" border="0">
+		</th>
+		<th valign="baseline" align="center">
+			<img src="{uri_baseurl(/gfx/lst-bezahlt.png)}" width="9" height="48" alt="Als bezahlt markieren" border="0">
+		</th>
+		<th valign="baseline" align="center">
+			<img src="{uri_baseurl(/gfx/lst-erhalten.png)}" width="9" height="88" alt="Als Ware erhalten markieren" border="0">
+		</th>
+		<th valign="baseline" align="center">
+			<img src="{uri_baseurl(/gfx/lst-btw-erhalten.png)}" width="21" height="67" alt="Eigene Bewertung" border="0">
+		</th>
+		<th valign="baseline" align="center">
+			<img src="{uri_baseurl(/gfx/lst-bwt-abgegeben.png)}" width="21" height="67" alt="Bewertung des verk&auml;ufers" border="0">
+		</th>
+		<th title="Transaktions Nummer" style="text-align:center;">
+			Trans.-<br />Id
+		</th>
+		<th title="Kaufdatum">
+			Datum
+		</th>
+		<th  title="Artikel">
+			Artikel
+		</th>
+		<th style="text-align:center;" title="Kaufpreis">
+			Preis
+		</th>
+		<th>
+			
+		</th>
+		<th title="Verk&auml;ufer anklicken um Kontaktdaten einzusehen!">
+			Verk&auml;ufer
+		</th>
+	</tr>
+    {if liste}
+    	{liste}
+    {else}
+    <tr>
+        <td class="error" colspan="11">
+            Keine passenden Eink&auml;ufe gefunden.
+        </td>
+    </tr>
+    {endif}
+	{if pager}
+    <tr class="footer">
+        <td class="" colspan="11">
+        	{pager}
+        </th>
+    </tr>
+	{endif}
+</table>
+
+{if OPEN}
+	<script type="text/javascript">
+		show_details({OPEN});
+	</script>
+{endif}

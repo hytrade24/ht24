@@ -1,0 +1,60 @@
+<h1>FAQ-Modul</h1>
+<p>Geben Sie hier die Kategorien f&uuml;r Ihre FQA Seite ein.</p>{if err}
+<div class="hinweis"><span class="error">{err}</span></div>{endif}
+<table class="liste" cellspacing="0"><tr>
+  <th>ID</th>
+  <th>Aktionen</th>
+  <th>Kategorie</th>
+  <th colspan="2" nowrap># Themen<br />(aktiv)</th>
+  <th>move</th>
+</tr>
+<tr>
+  <td><i>neu</i></td>
+  <td>
+    <label for="save_new" style="cursor: pointer;">
+      <img src="gfx/save_16.gif" width="16" height="16" title="Speichern" alt="Speichern" />
+    </label>
+  </td>
+  <td>
+    <form method="post" action="index.php">
+      <input type="hidden" name="frame" value="content" />
+      <input type="hidden" name="page" value="{curpage}" />
+      <input type="hidden" name="do" value="sv" />
+      
+      <input type="submit" id="save_new" style="display: none;" />
+      
+      
+      <table>
+        <tr>
+          <td>
+            <strong>Name</strong>
+          </td>
+          <td>
+            <strong>Ziel-Seite</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="text" name="V1" value="{htm(V1)}" class="inputfull" maxlength="63"/>
+          </td>
+          <td>
+            <select name="FK_NAV">
+              <option value="">Auf allen Seiten Anzeigen</option>
+              {navlist_new}
+            </select>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+</tr>
+{liste}
+<tr class="footer">
+  <td colspan="6">&nbsp;</td>
+</tr></table>
+
+<h2>Hinweis</h2>
+<p>Änderungen an den FAQs werden erst nach einer gewissen Zeit sichtbar (Caching). Wenn Sie die Ergebnisse sofort sehen wollen, dann klicken Sie bitte im oberen Seitenbereich „Cachen von Inhalten“</p>

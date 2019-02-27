@@ -1,0 +1,11 @@
+<div style="float: left; text-align: center;">
+  <a target="_blank" href="{SRC}">
+    <img border="0" style="margin: 4px; border: 1px solid black;" src="{SRC_THUMB}">
+  </a><br />
+  {if IS_DEFAULT==0}
+    <a href="index.php?page=articles_edit&edit={FK_AD}&id_kat={FK_KAT}&doimage=default&image={ID_IMAGE}">Standard-Bild</a><br />
+  {else}
+    <strong>Standard-Bild</strong><br />
+  {endif}
+  <a href="index.php?page=articles_edit&edit={FK_AD}&id_kat={FK_KAT}&doimage=delete&image={ID_IMAGE}">L&ouml;schen</a>
+</div>

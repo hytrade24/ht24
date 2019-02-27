@@ -1,0 +1,188 @@
+<script>
+
+</script>
+
+
+<form action="{uri_baseurl(index.php)}?page=my-import-presets-edit&DO=SAVE_DATA" method="POST" class="form form-horizontal" id="importPresetEditorTypeForm" enctype="multipart/form-data">
+
+	{if FLASHMESSAGES}
+	<div class="alert alert-danger">{FLASHMESSAGES}</div>
+	{endif}
+
+	<div class="form-group">
+		<label class="control-label design-input-label">Template type:</label>
+		<div class="design-input-field">
+			<div class="radio">
+				<label>
+					<input type="radio" name="PRESET_TYPE" value="Csv" onchange="ipe.toggleTypeConfig()" {if PRESET_TYPE_Csv || !PRESET_TYPE}checked{endif}>
+					CSV File
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<input type="radio" name="PRESET_TYPE" value="Xml" onchange="ipe.toggleTypeConfig()" {if PRESET_TYPE_Xml}checked{endif}>
+					XML File
+				</label>
+			</div>
+			{if eBayConfigured}
+			<div class="radio">
+				<label>
+					<input type="radio" name="PRESET_TYPE" value="eBay" onchange="ipe.toggleTypeConfig()" {if PRESET_TYPE_eBay}checked{endif}>
+					eBay Account
+				</label>
+			</div>
+			{endif}
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label design-input-label">Template description:</label>
+		<div class="design-input-field">
+			<input class="form-control" type="text" name="PRESET_NAME" value="{PRESET_NAME}">
+		</div>
+	</div>
+
+	<hr>
+
+	{if ID_IMPORT_PRESET}
+		<div class="alert alert-danger">
+			Attention, the import template already exists. Already effected assignments will be deleted, if you upload a new file.
+		</div>
+	{endif}
+
+	<div class="TYPE_CONFIG_CONTAINER TYPE_CONFIG_Csv" >
+		<div class="form-group">
+			<label class="control-label design-input-label">Preset file:</label>
+			<div class="design-input-field">
+				<p class="text-muted">via file upload (max {filesize({UPLOAD_MAX_FILESIZE})})</p>
+	
+				<p ><input type="file" name="PRESET_FILE"></p>
+	
+				<p><strong>or</strong></p>
+	
+				<p class="text-muted">via Url</p>
+	
+				<input class="form-control" type="text" name="PRESET_FILE_URL" value="{PRESET_FILE_URL}" placeholder="http://www.example.com/ihredatei.csv">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label design-input-label">Charset:</label>
+			<div class="design-input-field">
+				<div class="row">
+					<div class="col-xs-6">
+						<select id="PRESET_TYPE_CONFIG_fileCharset_select" data-selected="{PRESET_TYPE_CONFIG_fileCharset}" class="form-control" type="text" name="PRESET_TYPE_CONFIG[fileCharset]">
+							<option value="UTF-8">UTF-8</option>
+							<option value="ISO-8859-15">ISO-8859-15</option>
+							<option value="ISO-8859-2">ISO-8859-2</option>
+							<option value="ISO-8859-1">ISO-8859-1</option>
+							<option value="other">Anderes</option>
+						</select>
+					</div>
+					<div class="col-xs-6">
+						<input id="PRESET_TYPE_CONFIG_fileCharset_input" class="form-control" type="text" name="PRESET_TYPE_CONFIG[fileCharset]" value="{if PRESET_TYPE_CONFIG_fileCharset}{htm(PRESET_TYPE_CONFIG_fileCharset)}{else}UTF-8{endif}">						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label design-input-label">CSV delimiter:</label>
+			<div class="design-input-field">
+				<div class="row">
+					<div class="col-xs-6">
+						<select id="PRESET_TYPE_CONFIG_fileDelimiter_select" class="form-control" type="text" name="PRESET_TYPE_CONFIG[fileDelimiter]">
+							<option value="_comma"{if PRESET_TYPE_CONFIG_fileDelimiter_comma} selected{endif}>Komma (,)</option>
+							<option value="_semicolon"{if PRESET_TYPE_CONFIG_fileDelimiter_semicolon} selected{endif}>Semikolon (;)</option>
+							<option value="_tab"{if PRESET_TYPE_CONFIG_fileDelimiter_tab} selected{endif}>Tabulator</option>
+							<option value="other"{if PRESET_TYPE_CONFIG_fileDelimiter_other} selected{endif}>Anderes</option>
+						</select>
+					</div>
+					<div class="col-xs-6">
+						<input id="PRESET_TYPE_CONFIG_fileDelimiter_input" class="form-control" type="text" name="PRESET_TYPE_CONFIG[fileDelimiter]" value="{if PRESET_TYPE_CONFIG_fileDelimiter_other}{htm(PRESET_TYPE_CONFIG_fileDelimiter)}{else};{endif}">						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label design-input-label">CSV Enclosure-Character:</label>
+			<div class="design-input-field">
+				<input class="form-control" type="text" name="PRESET_TYPE_CONFIG[fileEnclosureCharacter]" value="{if PRESET_TYPE_CONFIG_fileEnclosureCharacter}{htm(PRESET_TYPE_CONFIG_fileEnclosureCharacter)}{else}&quot;{endif}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label design-input-label">CSV Escape-Character:</label>
+			<div class="design-input-field">
+				<input class="form-control" type="text" name="PRESET_TYPE_CONFIG[fileEscapeCharacter]" value="{if PRESET_TYPE_CONFIG_fileEscapeCharacter}{htm(PRESET_TYPE_CONFIG_fileEscapeCharacter)}{else}\{endif}">
+			</div>
+		</div>
+		{PRESET_TYPE_CONFIG_TEMPLATES}
+	</div>
+	
+	<div class="TYPE_CONFIG_CONTAINER TYPE_CONFIG_Xml">
+		<div class="form-group">
+			<label class="control-label design-input-label">Preset file:</label>
+			<div class="design-input-field">
+				<p class="text-muted">via file upload (max {filesize({UPLOAD_MAX_FILESIZE})})</p>
+	
+				<p ><input type="file" name="PRESET_FILE"></p>
+	
+				<p><strong>or</strong></p>
+	
+				<p class="text-muted">via Url</p>
+	
+				<input class="form-control" type="text" name="PRESET_FILE_URL" value="{PRESET_FILE_URL}" placeholder="http://www.example.com/ihredatei.csv">
+			</div>
+		</div>
+		{PRESET_TYPE_CONFIG_TEMPLATES}
+	</div>
+	
+	<div class="TYPE_CONFIG_CONTAINER TYPE_CONFIG_eBay">
+		<div class="TYPE_CONFIG_AJAX">
+			eBay-configuration is loading ...
+		</div>
+	</div>
+
+
+	<div class="form-actions text-right">
+		<button type="submit" class="btn btn-primary">Weiter</button>
+		{if ID_IMPORT_PRESET}
+			<button class="btn btn-default" onclick="ipe.saveFormAndClose(); ">Save and close</button>
+		{endif}
+	</div>
+</form>
+
+<script>
+	jQuery(function() {		
+		ipe.toggleTypeConfig();
+		
+		// Preselect select inputs
+		jQuery("select[data-selected]").each(function() {
+			jQuery(this).val( jQuery(this).attr("data-selected") );
+		});
+		
+		// Enable/Disable custom delimiter input
+		var updateFileDelimiterSelect = function(input) {
+			if (jQuery(input).val() == "other") {
+				jQuery("#PRESET_TYPE_CONFIG_fileDelimiter_input").prop("disabled", false);
+			} else {
+				jQuery("#PRESET_TYPE_CONFIG_fileDelimiter_input").prop("disabled", true);
+			}
+		};
+		jQuery("#PRESET_TYPE_CONFIG_fileDelimiter_select").change(function() {
+			updateFileDelimiterSelect(this);
+		});
+		updateFileDelimiterSelect( jQuery("#PRESET_TYPE_CONFIG_fileDelimiter_select") );
+		
+		// Enable/Disable custom charset input
+		var updateFileCharsetSelect = function(input) {
+			if (jQuery(input).val() == "other") {
+				jQuery("#PRESET_TYPE_CONFIG_fileCharset_input").prop("disabled", false);
+			} else {
+				jQuery("#PRESET_TYPE_CONFIG_fileCharset_input").prop("disabled", true);
+			}
+		};
+		jQuery("#PRESET_TYPE_CONFIG_fileCharset_select").change(function() {
+			updateFileCharsetSelect(this);
+		});
+		updateFileCharsetSelect( jQuery("#PRESET_TYPE_CONFIG_fileCharset_select") );
+	})
+</script>

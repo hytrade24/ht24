@@ -1,0 +1,41 @@
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+
+        <h1>Advertisement-overview</h1>
+        <p class="lead">
+            All advertisements in the overview.
+        </p>
+        
+        <div class="breadcrumb">
+            <span class="text-muted">Advertisements on the marketplace: {ALL_ADS}</span>
+        </div>
+        <div class="clearfix"></div>
+
+        {if NO_ERGS}
+            <p class="text-error">
+                There were no advertisements found.
+            </p>
+        {endif}
+
+        <script type="text/javascript">
+            function market_order(elm) {
+                window.location.href = elm.value;
+            }
+        </script>
+
+        {if liste}
+            {liste}
+        {else}
+            <p class="text-error">
+                No advertisements has been found
+            </p>
+        {endif}
+        <div style="clear:left;height:1px;"></div>
+        {pager}
+    </div>
+
+
+    <div class="design-page-menu">
+        {content_page()}
+    </div>
+</div>

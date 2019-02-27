@@ -1,0 +1,10 @@
+<tr class="zeile{even}">
+    <td><a href="index.php?page=vendor_edit&ID_VENDOR={v_ID_VENDOR}"><img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0" /></a></td>
+    <td>
+        <a href="{uri_action(view_user_vendor,{urllabel(v_NAME)},{v_FK_USER})}" target="_blank">
+        {v_NAME}
+        </a>
+    </td>
+
+    <td>{todate(v_CHANGED)}</td>
+</tr>

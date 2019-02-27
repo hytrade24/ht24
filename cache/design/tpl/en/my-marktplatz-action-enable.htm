@@ -1,0 +1,60 @@
+{if PROCESSING}
+  {startblock(head)}
+    {parentblock()}
+    <!-- Redirect for next step -->
+    <meta http-equiv="refresh" content="1;url={uri_action_full(my-marktplatz,enable,process)}" />
+  {endblock(head)}
+  <h3>Activate selected advertisements</h3>
+  <p>
+  Bitte warten Sie während die Artikel aktiviert werden ... ({PROCESS_DONE} von {PROCESS_COUNT} fertig)
+  </p>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{PROCESS_PERCENT}" aria-valuemin="0" aria-valuemax="100"
+         style="min-width: 3em; width: {PROCESS_PERCENT}%;">
+      {PROCESS_PERCENT}%
+    </div>
+  </div>
+  <div class="text-right">
+    <a href="{uri_action(my-marktplatz,enable,cancel)}" class="btn btn-danger" 
+       onclick="return confirm('Möchten Sie die Aktivierung der Artikel wirklich abbrechen?');">
+      Abbrechen
+    </a>
+  </div>
+{else}
+<form id="formActionBack" action="{REFERER}" method="POST">
+    {HIDDEN_INPUT_SELECTED}
+</form>
+<form method="POST">
+    <input type="hidden" name="action" value="{action}" />
+    <input type="hidden" name="SUCCESS" value="{SUCCESS}" />
+    <h3>Activate selected advertisements</h3>
+    
+    <p>
+        The advertisements will be activated. Note that the advertisements will be online with the same remaining time,
+            when they were deactivated.
+
+    </p>
+            
+    <div class="text-box">
+    {if countDisabled > 0}
+        <b>{countDisabled} advertisements will be activated.</b>
+        {if countEnabled > 0}
+        {countEnabled} advertisements are already activated and will not be affected.
+        {endif}
+    {else}
+        <b>The selected advertisements, which you chose, are all active or has been run out already.</b>
+    {endif}
+    {if countTimeout > 0}
+        <br />
+        {countTimeout} advertisements did run out and need to be extended to get activated again.
+    {endif}
+    </div>
+            
+    <div class="pull-right">
+        <button class="btn btn-danger" onclick="jQuery('#formActionBack').submit(); return false;">Back</button>
+    {if countDisabled > 0}
+        <button class="btn btn-success" name="confirm" value="1" type="submit">Activate selected advertisements</button>
+    {endif}
+    </div>
+</form>
+{endif}

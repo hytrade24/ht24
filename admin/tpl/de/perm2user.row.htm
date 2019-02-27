@@ -1,0 +1,9 @@
+<tr class="zeile{=i&1}">
+  <td>{htm(IDENT)}</td>
+  <td align="center">{if BF_INHERIT & 8}D{else}-&nbsp;{endif}{if BF_INHERIT & 4}E{else}-&nbsp;{endif}{if BF_INHERIT & 2}C{else}-&nbsp;{endif}{if BF_INHERIT & 1}R{else}-&nbsp;{endif}</td>
+{subtpl(tpl/de/perm2user.bit.htm,abbr=del,val=8,ID_PERM,BF_GRANT,BF_REVOKE,perm_admin_perm,ID_USER)}
+{subtpl(tpl/de/perm2user.bit.htm,abbr=edit,val=4,ID_PERM,BF_GRANT,BF_REVOKE,perm_admin_perm,ID_USER)}
+{subtpl(tpl/de/perm2user.bit.htm,abbr=create,val=2,ID_PERM,BF_GRANT,BF_REVOKE,perm_admin_perm,ID_USER)}
+{subtpl(tpl/de/perm2user.bit.htm,abbr=read,val=1,ID_PERM,BF_GRANT,BF_REVOKE,perm_admin_perm,ID_USER)}
+  <td align="center">{if BF_CHECK & 8}D{else}-&nbsp;{endif}{if BF_CHECK & 4}E{else}-&nbsp;{endif}{if BF_CHECK & 2}C{else}-&nbsp;{endif}{if BF_CHECK & 1}R{else}-&nbsp;{endif}</td>
+</tr>

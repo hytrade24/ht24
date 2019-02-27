@@ -1,0 +1,52 @@
+<script type="text/javascript">
+jQuery(function() {
+    jQuery(".registerTabs > li:first-child a").tab("show");
+});
+</script>
+
+<h1>Pricelist</h1>
+
+<p>
+    To cancel an advert by yourself, you need an advertpackage. An advertpackage contains
+        e.g. 10 adverts which you can spend on any time.
+        Additional you can purchase imagepackages, to add more images to
+        your adverts.
+
+    <br />
+	{if FREE_IMAGES > 0}
+		You can upload <strong>{FREE_IMAGES}free images</strong> for every advert.
+	{endif}
+</p>
+
+{if FREE_ADS}
+<div class="userInfo">
+	<strong>Notice:</strong>
+	Setting up adverts is currently free!
+</div>
+<br />
+{endif}
+
+<div id="registerContainerUsergroup">
+    <p class="lead">
+    Please select a fitting usergroup</p>
+
+    <ul class="nav nav-tabs registerTabs">
+        {usergroups}
+    </ul>
+
+    <div class="tab-content registerTabContent">
+        {usergroups_content}
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+<br />
+
+<script>
+    jQuery("[data-toggle=popover]").popover({
+        'trigger': 'hover',
+        'placement': 'top',
+        'html': false
+    });
+</script>

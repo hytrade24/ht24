@@ -1,0 +1,27 @@
+<table class="liste">
+    <tr class="zeile0">
+        <td>
+            <strong>Eigene USt-IdNr:</strong> {htm(OWN_USTID)}<br>
+            <strong>Abgefragte USt-IdNr:</strong> {htm(USERDATA_UST_ID)}<br>
+        </td>
+    </tr>
+    <tr class="zeile1">
+		{if ok}
+        <td>
+            Ihre Anfrage vom {todate(CHECKDATE,1)} ergab folgendes Ergebnis:<br>
+            <br>
+			{if USERDATA_UST_ID_VALID == 1}<strong class="ok">Die geprüft USt.-Id ist gültig</strong>{endif}
+			{if USERDATA_UST_ID_VALID == 2}<strong class="error">Die geprüft USt.-Id ist ungültig</strong>{endif}
+			{if USERDATA_UST_ID_VALID == 0}<strong>Die Gültigkeit der USt.-Id ist unbekannt.</strong>
+				Dies geschieht, wenn der verwendete Dienst die angegebene USt.-Id nicht erkennt oder das Land nicht unterstützt.{endif}
+        </td>
+		{endif}
+		{if error}
+		<td>
+			Es ist ein Fehler aufgetreten, da nicht alle benötigten Daten zur Verfügung stehen. Bitte prüfen Sie, ob Sie Ihre eigene USt.-Id in den Einstellungen
+			hinterlegt haben und die USt. Prüfung aktiviert haben.
+		</td>
+		{endif}
+    </tr>
+</table>
+

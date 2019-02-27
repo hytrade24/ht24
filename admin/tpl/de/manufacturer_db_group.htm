@@ -1,0 +1,37 @@
+<h1>Hersteller-Gruppen</h1>
+
+<p>
+  Hier haben Sie die Möglichkeit ihre Hersteller in Gruppen einzuteilen. Über diese Hersteller-Gruppen können Sie die 
+  Hersteller für bestimmte Kategorien ein-/auszublenden.
+</p>
+
+{if added}
+<div class="ok">Hersteller-Gruppe erfolgreich hinzugefügt!</div>
+{endif}
+{if deleted}
+<div class="error">Hersteller-Gruppe erfolgreich gelöscht!</div>
+{endif}
+
+<div>
+  <a class="button" href="index.php?page=manufacturer_db_group_edit">Neue Hersteller-Gruppe hinzufügen</a>
+  <a class="button" href="index.php?page=manufacturer_db_category">Kategorie-Zuordnungen ändern</a>
+</div>
+
+<table class="liste" cellpadding="0" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Aktionen</th>
+      <th>Name</th>
+      <th>Hersteller (ggf. gekürzt)</th>
+    </tr>
+  </thead>
+  <tbody>
+  {if liste}
+    {liste}
+  {else}
+    <tr>
+      <td colspan="3">Keine Hersteller-Gruppen vorhanden!</td>
+    </tr>
+  {endif}
+  </tbody>
+</table>

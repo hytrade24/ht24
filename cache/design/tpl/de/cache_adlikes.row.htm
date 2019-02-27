@@ -1,0 +1,10 @@
+<div class="row widgetMarketplaceLikeBoxItem">
+    <div class="col-xs-2">
+        <a href="{uri_action(view_user,{NAME},{FK_USER})}">
+            <img src="{thumbnail(/cache/users/{CACHE}/{FK_USER}/{FK_USER}.jpg,46,46,crop)}" />
+        </a>
+    </div>
+    <div class="col-xs-10">
+        {htm(NAME)} gefällt <a href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)}">{htm(PRODUKTNAME)}</a>
+    </div>
+</div>

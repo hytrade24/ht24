@@ -1,0 +1,71 @@
+<table class="mytable table table-bordered table-striped table-condensed">
+	<tr>
+		<th class="first">Action</th>
+		<th title="Transactions-Id">
+            Trans.-<br />Id
+        </th>
+		<th title="Article-number">
+            Art.-<br />Nr
+        </th>
+		<th>Date</th>
+		<th>User</th>
+		<th>Article</th>
+		<th>Rating</th>
+		<th class="last">Comment</th>
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+		<td colspan="8">
+            <div class="alert alert-info">
+                No ratings found.
+            </div>
+        </td>
+	{endif}
+	<tr>
+		<td  colspan="8">{pager}</td>
+	</tr>
+</table>
+
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left clearfix">
+        <a class="btn btn-default">
+            <i class="glyphicon glyphicon-remove"></i>
+        </a>
+        = Take rating back
+
+		<a class="btn btn-default">
+			<i class="glyphicon glyphicon-eye-open"></i>
+		</a>
+		= Show rating
+	</div>
+</div>
+
+<script type="application/javascript">
+	function show_ratings( $id_ad_sold_rating, $id_ad_sold ) {
+		var modal_for_activatin_ratings = $("#large-modal-for-admin").clone();
+        modal_for_activatin_ratings.attr("id","");
+		modal_for_activatin_ratings.attr("aria-labelledby","");
+        var modal_header = modal_for_activatin_ratings.find(".modal-header");
+        var modal_body = modal_for_activatin_ratings.find(".modal-body");
+        var modal_footer = modal_for_activatin_ratings.find(".modal-footer");
+
+        $.ajax({
+			type: "GET",
+			dataType: "HTML",
+			url: 'my-marktplatz-rating,'+$id_ad_sold+'.htm?frame=ajax&update=1&id_ad_sold_rating='+$id_ad_sold_rating,
+			success: function( resp ) {
+
+			    modal_header.html( "Ratings" );
+                modal_body.html( resp );
+                modal_body.find("#RATING");
+                modal_footer.remove();
+			    $("body").append( modal_for_activatin_ratings );
+                modal_for_activatin_ratings.modal("show");
+
+			},
+			error: function ( resp ) {}
+		});
+
+    }
+</script>

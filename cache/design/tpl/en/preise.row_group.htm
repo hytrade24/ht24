@@ -1,0 +1,65 @@
+<div class="tab-pane" id="usergroupPane{ID_USERGROUP}">
+    <p>{T1}</p>
+
+    {if rows && !NO_PACKETS}
+        <table class="table" style="width:100%;">
+            {rows}
+        </table>
+
+	    <p class="text-muted">
+	    *) Package components in the subscription refer to the runtime of the membership. E.g. if you have 10 adverts
+            in your subscription, you can have 10 adverts parallel activated. Once you sell one adverts, you can create a new one
+            for free.
+
+	    </p>
+    {else}
+        <p>
+            <strong>
+                There are currently no memberships deposited for this usergroup.
+            </strong>
+        </p>
+    {endif}
+	{if use_prov && liste_prov}
+		<h2>Sale commission</h2>
+		<p>
+		    The following commission rates will be added to our successful
+			    sellers on the portal.
+
+		</p>
+		
+		<table class="table" cellspacing="0">
+			<tr>
+				<th>Commission rate</th>
+				<th>from starting price</th>
+			</tr>
+			{liste_prov}
+		</table>
+	
+		{if PROV_MAX}
+			<br />
+			<strong>
+            {if PRICE_NETTO}
+                Maximal commission of {topreis_ex(PROV_MAX)} {CURRENCY_DEFAULT} plus {TAX_PERCENT}% VAT
+            {else}
+                Maximal commission of {topreis_ex(PROV_MAX_BRUTTO)} {CURRENCY_DEFAULT}
+            {endif}
+            </strong>
+		{endif}	
+	{endif}
+    {if liste_packets}
+   		<h2>Advertpackages</h2>
+   		<p>
+   		
+   		    Members of this usergroup got these advertpackages available:
+   		</p>
+   		
+   		<table class="table" cellspacing="0">
+   			<tr>
+   				<th>Advertpackage</th>
+   				<th>Content</th>
+   				<th>Price / Duration</th>
+   			</tr>
+   			{liste_packets}
+   		</table>
+   	{endif}
+</div>

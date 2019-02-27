@@ -1,0 +1,10 @@
+<tr>
+	<td>
+		<a href="{REQUEST_URI}?mode=ajax&do=download&{if ID_MEDIA_UPLOAD>0}ID_MEDIA_UPLOAD={ID_MEDIA_UPLOAD}{else}INDEX={INDEX}{endif}" target="_blank" title="{htm(META_TITLE)}">
+			{if FILENAME != FILENAME_SHORT}{htm(FILENAME_SHORT)} ...{else}{htm(FILENAME)}{endif}
+		</a>
+	</td>
+	<td>
+		{EXT}
+	</td>
+</tr>

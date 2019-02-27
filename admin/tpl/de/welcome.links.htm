@@ -1,0 +1,84 @@
+<div class="left_info">
+    <h1>Info</h1>
+<table width="100%">
+	<tr>
+		<th><a href="index.php?page=users">Useranzahl</a></th>
+		<td>{usercount}</td>
+	</tr>
+	
+	<tr>
+		<td >Heute</td>
+		<td>{usercount_td}</td>
+	</tr>
+	<tr>
+		<td>gestern</td>
+		<td>{usercount_yd}</td>
+	</tr>	
+	<tr>
+		<th><a href="index.php?page=useronline">Useronline</a></th>
+		<td>{useronline}</td>		
+	</tr>	
+		<tr>
+		<th><a href="index.php?page=modul_newsletter_confirmed">Newsletter</a></th>
+		<td>{nlcount}</td>
+	</tr>
+	<tr>
+		<td><a href="index.php?page=modul_newsletter_confirmed">best&auml;tigt</a></td>
+		<td>{nlrecp}</td>
+	</tr>	
+	<tr>
+		<td><a href="index.php?page=modul_newsletter_unconfirmed">unbest&auml;tigt</a></td>
+		<td>{nlunrecp}</td>
+	</tr>
+
+    </table>
+</div>
+
+<div class="left_setting">
+
+    <h1>Eventlogs</h1>
+<table  style="width: 100%;padding-right: 10px;">
+	<tr>
+	 <td colspan="2">
+	  <script type="text/javascript" src="sys/tooltip.js"></script>
+	  <script type="text/javascript">
+       function ch_event(what)
+	   {
+	     ajaxSubmit('','index.php?frame=ajax&page=eventlog_ajax&SHOW='+what,1,false,'event_ajax');
+	   }
+	   ajaxSubmit('','index.php?frame=ajax&page=eventlog_ajax',false,false,'event_ajax');		 
+	  </script>
+	  <div id="event_ajax">
+        Bitte warten ...
+      </div> 
+	 </td>
+	</tr>	
+	<tr>
+		<td colspan="2">{sysmsg}</td>
+	</tr>
+</table>
+<p><a class="button" href="index.php?page=eventlogs">Details ansehen</a></p>
+</div>
+
+<div class="{if RELEASE_NEW_AVAILABLE}left_alert{else}left_info{endif}">
+    <h1>Installierte Version</h1>
+    <p>Version: <b>{RELEASE_CURRENT_VERSION}</b></p>
+    {if RELEASE_NEW_AVAILABLE}<h2>Verfügbare  Version</h2>
+    <p>Version : <b>{RELEASE_VERSION}</b><br>
+    Release Datum : <b>{todate(RELEASE_DATE)}</b>
+    </p>
+    <p>
+    <a class="button" href="http://www.ebiz-trader.de/software.htm" target="_blank">Details ansehen</a>
+    </p>
+    {endif}
+</div>
+
+<div class="left_info">
+<table align="center" width="100%">
+    <tr>
+        <td width="33%" align="center"><a rel="nofollow" class="img_link" href="http://www.facebook.com/ebizconsult" target="_blank" class="img_link"><img src="gfx/facebook.png" alt="besuchen Sie uns auf Facebook" width="30" height="30"></a></td>
+        <td width="33%" align="center"><a rel="nofollow" class="img_link" href="https://www.youtube.com/user/ebizconsult" target="_blank"><img style="border: 0;" src="gfx/youtube.png" alt=""></a></td>
+        <td width="33%" align="center"><a rel="nofollow" class="img_link" href="https://plus.google.com/116121863112545414498?prsrc=3" target="_blank"><img style="border: 0; width: 32px; height: 32px;" src="https://ssl.gstatic.com/images/icons/gplus-32.png" alt=""></a></td>
+    </tr>
+</table>
+</div>

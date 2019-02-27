@@ -1,0 +1,134 @@
+{if NO_ACCESS}
+	<h1 class="error">Zugriff verweigert</h1>
+{else}
+<div class="page">
+    <div class="invoice_header">
+        {content_page(Rechnung header)}
+    </div>
+
+    <table width="100%;" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="55%" class="invoice_address">
+                {text(INVOICE_ADDRESS)}
+            </td>
+            <td width="45%">
+                <h2>Rechnung</h2>
+
+                {if INVOICE_STAMP_CORRECTION}
+                    <span class="text-error">KORREKTUR</span>
+                {endif}
+                {if INVOICE_STATUS == 2}
+                    <span class="text-error">STORNIERT</span>
+                {endif}
+                <br />
+
+                <br />
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th align="left">Rechnungs-Nr.:</th>
+                        <td align="right">{INVOICE_ID_BILLING_INVOICE}</td>
+                    </tr>
+                    <tr>
+                        <th align="left">Rechnungsdatum:</th>
+                        <td align="right">
+                        {if INVOICE_STAMP_CORRECTION}
+                            {todate(INVOICE_STAMP_CORRECTION)}
+                        {else}
+                            {todate(INVOICE_STAMP_CREATE)}
+                        {endif}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th align="left">Kunden Nr.:</th>
+                        <td align="right">{INVOICE_FK_USER}</td>
+                    </tr>
+                    <tr>
+                        <th align="left" colspan="2">Bei Rückfragen:</th>
+                    </tr>
+                    <tr>
+                        <td align="left" colspan="2" style="padding-top: -12px;">
+                            {content_page(Rechnung kontakt)}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br style="clear: both;" />
+
+    <table cellspacing="0" cellpadding="0" width="100%" class="invoice_table">
+        <tr>
+            <th>Pos.</th>
+            <th>Posten</th>
+            <th class="text-right">Menge</th>
+            <th class="text-right">Einzelpreis<br/>(netto)</th>
+            <th class="text-right">MwSt.</th>
+            <th class="text-right">Gesamtpreis<br/>(brutto)</th>
+        </tr>
+        {if INVOICE_ITEMS}
+        {INVOICE_ITEMS}
+        <tr>
+            <th colspan="5" class="text-right">Gesamt Netto</th>
+            <th class="text-right">{topreis_ex(INVOICE_TOTAL_PRICE_NET)} {CURRENCY_DEFAULT}</th>
+        </tr>
+        {INVOICE_TAXES}
+        <tr>
+            <th colspan="5" class="text-right">Gesamt Brutto:</th>
+            <th class="text-right">{topreis_ex(INVOICE_TOTAL_PRICE)} {CURRENCY_DEFAULT}</th>
+        </tr>
+        {else}
+        <tr>
+            <td colspan="6" align="center">
+                <span class="error">Fehler! Keine Rechnungsposten gefunden</span>
+            </td>
+        </tr>
+        {endif}
+    </table>
+    <br /><br />
+
+    <table cellspacing="0" style="width: 45%;">
+        <tr>
+            <td style="width: 150px;"><strong>Zahlungsbedingungen:</strong></td>
+            <td>Zahlbar bis {todate(INVOICE_STAMP_DUE)}</td>
+        </tr>
+        <tr>
+            <td><strong>Zahlungsart:</strong></td>
+            <td>
+                {if INVALID_PAYMENT_ADAPTER}
+                    Bitte wenden Sie sich an den Seitenbetreiber
+                {else}
+                    {INVOICE_PAYMENT_ADAPTER_NAME}
+                {endif}
+            </td>
+        </tr>
+    </table>
+
+	{if INVOICE_TAX_EXEMPT}
+		<p>
+			Es handelt sich hierbei um eine steuerfreie innergemeinschaftliche Lieferung.
+			{if INVOICE_TAX_EXEMPT_USTID}<br>Die USt.-Id des Leistungsempfängers: {INVOICE_TAX_EXEMPT_USTID} {if INVOICE_TAX_EXEMPT_USTID_CHECKDATE}(geprüft am {todate(INVOICE_TAX_EXEMPT_USTID_CHECKDATE)}){endif}{endif}
+		</p>
+	{endif}
+
+    <p>
+		Aufgeführte Waren und Dienstleistungen haben Sie gem. unseren Lieferbedingungen erhalten
+    </p>
+    <div class="clear"></div>
+
+    <br style="clear: both;" />
+    <div class="invoice_footer" style="width: 100%; border-top: 1px solid black;">
+        {content_page(Rechnung footer)}
+    </div>
+</div>
+
+
+
+{if PRINTNOW}
+	<script type="text/javascript">
+		onload = function()
+			{
+				window.print();
+			};
+	</script>
+{endif}
+{endif}

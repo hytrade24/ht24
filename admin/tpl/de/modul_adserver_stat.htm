@@ -1,0 +1,33 @@
+<h1>Banner<br>
+Statistiken</h1>{npage}
+<p>Einblendungen {if ID_ADS}Ihres Banners{else}Ihrer Banner{endif} auf Ihrer Webseite</p>
+<b>Datum: <font color="#0000FF">{displayeddatum}</font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Banner: {if ID_ADS}<font color="#0000FF">{htm(adname)}</font>&nbsp;&nbsp;<a href="#" onclick="popupfkt('modul_adserver_preview&ID_ADS={ID_ADS}','500','250');"><img src="gfx/preview.gif" width="32" height="16" alt="" border="0"></a>{else}<font color="#0000FF">Alle</font></b>{endif}
+<table border="0">
+	<tr>
+		<td><br><h2>Views aktueller Monat: <font color="#0000FF">{displayeddatum}</font></h2>Diese Grafik zeigt Ihnen den Verlauf der Bannereinblendungen f&uuml;r den<br>
+		ausgew&auml;hlen Monat<table cellSpacing="0"   cellPadding="0" background="gfx/graph_bg.gif" border="0" style="border:1px #000000 solid;">
+			{tbl_ads_aktmonth}
+		</table>
+		<div style="font-weight:bold;"><span style="float:left;">{from_ads_aktmonth}</span> <span style="float:right;">{to_ads_aktmonth}</span></div><br>
+		<b>&#931;=</b>{sum_ads_aktmonth}
+		</td>
+		{if pager}<td>&nbsp;&nbsp;</td><td valign="middle">&nbsp;<div style="border:1px #000000 solid;background-color :#eaeaea;"><b>&nbsp;Weitere Monate</b>{pager}</div></td>{endif}
+	</tr>
+</table>	
+	{if nextseite}
+<table border="0">	
+	<tr>
+		<td valign="top"><br><h2>Views der letzten 13 Monate</h2><table cellSpacing="0"   cellPadding="0" background="gfx/graph_bg.gif" border="0" style="border:1px #000000 solid;">
+			{tbl_ads_12month}
+		</table>
+		<b>Start :</b> {from_ads_12month} <b>Ende :</b> {to_ads_12month}<br>
+		<b>&#931;=</b>{sum_ads_12monthr}
+		</td>
+		<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		<td valign="top"><br><h2>Views pro Jahre</h2><table cellSpacing="0"   cellPadding="0" background="gfx/graph_bg.gif" border="0" style="border:1px #000000 solid;">
+			{tbl_ads_years}
+		</table><b>&#931;=</b>{sum_ads_years}</td>
+	</tr>
+	
+	{endif}
+</table>

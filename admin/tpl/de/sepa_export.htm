@@ -1,0 +1,110 @@
+<div id="sepa_export">
+    <h1>Lastschrift Zahlungen</h1>
+
+    {if error==1}
+    <div class="hinweis">
+        Errors :
+    </div>
+    <div class="hinweis">
+        <span class="error">
+            {error_msg}
+        </span>
+    </div>
+    {endif}
+
+    <h4>Daten für neuen SEPA Lastschrift-Export</h4>
+    <table class="liste" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>Datum von</th>
+            <th>Datum bis</th>
+            <th>Anzahl Rechnungen</th>
+            <th>Betrag (Summe)</th>
+            <th>Exportierte Rechnungen als bezahlt markieren</th>
+            <th>Download</th>
+        </tr>
+        <tr>
+            <td>{todate(POSSIBILITY_FIRST_DATE)}</td>
+            <td>{todate(POSSIBILITY_LAST_DATE)}</td>
+            <td>
+                {if INVOICE_COUNT != 0}
+                <a href="index.php?page=buchhaltung&STAMP_CREATE_FROM={todate(POSSIBILITY_FIRST_DATE)}&STAMP_CREATE_TO={todate(POSSIBILITY_LAST_DATE)}&FK_PAYMENT_ADAPTER=4&IST_KONTO_VERIFIED=1">
+                    {INVOICE_COUNT}
+                    <img title="see invoices" alt="see invoices" src="gfx/btn.detail.gif">
+                </a>
+                {else}
+                0
+                {endif}
+            </td>
+            <td>{TOTAL_NEW_EXPORT}</td>
+            <td>
+                <label>
+                    <input {if MARK_AS_PAID_1}checked{endif} type="checkbox" name="MARK_AS_PAID" value="1" />
+                    Marked as Paid
+                </label>
+            </td>
+            <td>
+                {if INVOICE_COUNT != 0}
+                <a title="download" href="javascript: download_new_export()">
+                    <img src="gfx/btn.get.gif" alt="Download" />
+                </a>
+                {else}
+                Keine Rechnungen verfügbar
+                {endif}
+            </td>
+        </tr>
+    </table>
+
+    <h4>Vergangene Exports</h4>
+    <table class="liste" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>ID</th>
+            <th colspan="2">Export Datum / Uhrzeit</th>
+            <th>Datum von</th>
+            <th>Datum bis</th>
+            <th>Anzahl der Rechnungen</th>
+            <th>Betrag (Summe)</th>
+            <th>Download</th>
+            <th>Rechnungen als bezahlt markiert?</th>
+        </tr>
+        {liste}
+
+    </table>
+</div>
+
+<script type="application/javascript">
+
+    jQuery(document).ready(function() {
+        {if download_button_click_check}
+        jQuery("#sepa_export a[data-button-export='{download_button_click}']")[0].click();
+        {endif}
+
+        jQuery("#sepa_export input[name^='EXPORT_ID_']").change(function() {
+            var $export_id = jQuery(this).attr('name').split("_");
+            $export_id = $export_id[2];
+
+            mark_exported_as_paid_unpaid(
+                $export_id,
+                jQuery(this).val()
+            );
+        });
+
+    })
+
+    function download_new_export() {
+        var url = "index.php?page=sepa_export&xml=1&MARK_AS_PAID=";
+        var checkbox = jQuery("#sepa_export input[name='MARK_AS_PAID']");
+        if ( checkbox.is(":checked") ) {
+            url += 1;
+        }
+        else {
+            url += 0;
+        }
+
+        window.location = url;
+    }
+
+    function mark_exported_as_paid_unpaid( $export_id, $paid_unpaid ){
+        window.location = "index.php?page=sepa_export&mark_invoice_as_paid="+$paid_unpaid+"&export_id="+$export_id;
+    }
+
+</script>

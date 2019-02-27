@@ -1,0 +1,169 @@
+<style type="text/css">
+  #manufacturerForm > table > tbody > tr > td {
+    padding-bottom: 20px;
+  }
+  #manufacturerList {
+    max-height: 320px;
+    overflow: auto;
+  }
+</style>
+{if ID_MAN_GROUP}
+<h1>Hersteller-Gruppe '{htm(V1)}' bearbeiten</h1>
+{else}
+<h1>Hersteller-Gruppe hinzufügen</h1>
+{endif}
+
+<form id="manufacturerForm" method="POST">
+  {if ID_MAN_GROUP}
+  <input type="hidden" name="ID_MAN_GROUP" value="{ID_MAN_GROUP}" />
+  {endif}
+  <table class="liste" cellspacing="0" cellpadding="0">
+    <tr class="zeile0">
+      <td valign="top">
+        <b>Name der Gruppe</b>
+      </td>
+      <td>
+        <input type="text" name="V1" value="{htm(V1)}" style="width: 95%;" />
+      </td>
+    </tr>
+    <tr class="zeile1">
+      <td valign="top">
+        <b>Hersteller</b>
+      </td>
+      <td>
+
+        <input type="hidden" name="MANUFACTURERS" value="{SER_MANUFACTURERS}"/>
+        <table cellpadding="0" cellspacing="0" style="width: 100%;">
+          <thead>
+            <tr>
+              <th>Hersteller-Name</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input type="text" name="MANUFACTURER_NAME" value=""/>
+              </td>
+              <td>
+                <select name="MANUFACTURER_STATUS">
+                  <option value="">Alle anzeigen</option>
+                  <option value="1">Dieser Gruppe zugeordnet</option>
+                  <option value="0">Nicht dieser Gruppe zugeordnet</option>
+                </select>
+              </td>
+              <td>
+                <button onclick="manufacturerGroup_SearchManufacturers(); return false;">Suchen</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <table cellpadding="0" cellspacing="0" style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="width: 16px;">
+                  <input id="manufacturerCheckboxGlobal" type="checkbox" title="Alle Hersteller an-/abwählen" />
+              </th>
+              <th>Name</th>
+              <th>Webseite</th>
+            </tr>
+          </thead>
+          <tbody id="manufacturerList">
+            
+          </tbody>
+        </table>
+        
+      </td>
+    </tr>
+    <tr>
+      <th colspan="2" class="footer">
+      {if ID_MAN_GROUP}
+        <button type="submit">Speichern</button>
+      {else}
+        <button type="submit">Hinzufügen</button>
+      {endif}
+      </th>
+    </tr>
+  </table>
+</form>
+<script type="text/javascript">
+  
+  var manufacturerGroup_SelectedIds = [];
+  
+  function manufacturerGroup_UpdateCheckbox(input) {
+      var manufacturerId = jQuery(input).attr("data-id");
+      if (jQuery(input).prop("checked")) {
+        // Add to selected ids (if not already present)
+        if (manufacturerGroup_SelectedIds.indexOf(manufacturerId) == -1) {
+          manufacturerGroup_SelectedIds.push(manufacturerId);
+        }
+      } else {
+        // Remove from selected ids (if present)
+        var manufacturerIndex = manufacturerGroup_SelectedIds.indexOf(manufacturerId);
+        if (manufacturerIndex >= 0) {
+          manufacturerGroup_SelectedIds.splice(manufacturerIndex, 1);
+        }
+      }
+      jQuery("input[name=MANUFACTURERS]").val( manufacturerGroup_SelectedIds.join(",") );
+  }
+  
+  function manufacturerGroup_SearchManufacturers() {
+    var searchName = jQuery("input[name=MANUFACTURER_NAME]").val();
+    var searchStatus = jQuery("select[name=MANUFACTURER_STATUS]").val();
+    var searchQuery = "selected=" + encodeURIComponent(jQuery("input[name=MANUFACTURERS]").val());
+    if (searchName != "") {
+      searchQuery += "&SEARCH_NAME=" + encodeURIComponent(searchName);
+    }
+    if (searchStatus != "") {
+      searchQuery += "&SEARCH_STATUS=" + encodeURIComponent(searchStatus);
+    }
+    jQuery.post("index.php?page=manufacturer_db_group_edit&ajax=manufacturersSearch", searchQuery, function (result) {
+      jQuery("#manufacturerList").html(result);
+      manufacturerGroup_SearchManufacturers_ProcessResult();
+    });
+  }
+  
+  function manufacturerGroup_SearchManufacturers_ProcessResult() {
+    jQuery("#manufacturerList input[type=checkbox]").change(function(event) {
+      manufacturerGroup_UpdateCheckbox(this);
+      manufacturerGroup_UpdateGlobalCheckbox();
+    });
+    manufacturerGroup_UpdateGlobalCheckbox();
+  }
+
+  function manufacturerGroup_UpdateGlobalCheckbox() {
+    var selectedAll = true;
+    jQuery("#manufacturerList input[type=checkbox]").each(function() {
+        if (!jQuery(this).prop("checked")) {
+            selectedAll = false;
+        }
+    });
+    if (selectedAll) {
+        jQuery("#manufacturerCheckboxGlobal").prop("checked", true);
+    } else {
+        jQuery("#manufacturerCheckboxGlobal").prop("checked", false);
+    }
+  }
+  
+  jQuery(function() {
+    if ("{SER_MANUFACTURERS}" != "") {
+      manufacturerGroup_SelectedIds = "{SER_MANUFACTURERS}".split(",");
+    }
+    jQuery("#manufacturerCheckboxGlobal").change(function() {
+      if (jQuery(this).prop("checked")) {
+          jQuery("#manufacturerList input[type=checkbox]").prop("checked", true).each(function() {
+            manufacturerGroup_UpdateCheckbox(this);
+          });
+      } else {
+          jQuery("#manufacturerList input[type=checkbox]").prop("checked", false).each(function() {
+            manufacturerGroup_UpdateCheckbox(this);
+          });
+      }
+    });
+    manufacturerGroup_SearchManufacturers();
+  });
+  
+</script>
+

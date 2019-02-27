@@ -1,0 +1,92 @@
+<script type="text/javascript">
+    function UpdateKatSelectorQuickedit(id_kat, name_current, root_kat, table, b_done, b_collapsing) {
+        if (!b_done) {
+            url = ebiz_trader_baseurl + "index.php?page=my-marktplatz-quickedit-kat&mode=ajax&do=kats&root=" + id_kat + "&paid=1";
+            jQuery.get(url, function(result) {
+                var html_result = result.tree;
+                jQuery("#kat_list").html(html_result);
+            });
+        } else {
+            var id_current = jQuery("#FORM_FK_KAT");
+	        var selection = jQuery("#row"+id_kat);
+            id_current.val(id_kat);
+
+            if (id_current.val() > 0) {
+                selection.addClass("active");
+                selection.children("a").css("font-weight", "bold").css("color", "black");
+                if (confirm('Moechten Sie"' + name_current + '"als Kategorie waehlen?')) {
+                    
+                }
+            }
+        }
+    }
+
+    jQuery(function() {
+
+        jQuery.ajax({
+            url: ebiz_trader_baseurl + 'index.php?page=my-marktplatz-quickedit-kat&mode=ajax&do=kats&paid=1',
+            dataType: 'json',
+            success: function(obj) {
+                var back = '<li id="kat_back_to_root" style="display: none;">' +
+                        jQuery("#kat_back_to_root").html() +
+                        '</li>';
+                jQuery("#kat_list").html(back + "\n" + obj.tree);
+            }
+        });
+            
+        jQuery("#exportFormular").submit(function() {
+            if(jQuery("#FORM_FK_KAT").val() == "") {
+				alert('Bitte wählen Sie zuerst eine Kategorie, die Sie exportieren möchten');
+                return false;
+            }
+        })
+    })
+</script>
+
+<h1>Anzeigen Export</h1>
+
+<p>
+    Sie können Ihre Anzeigen als CSV exportieren. Wählen Sie hierzu die geünschten Filter Regeln aus und drücken Sie auf
+    <em>Anzeigen exportieren</em>.
+</p>
+
+<form method="post" action="{uri_baseurl(/index.php)}" id="exportFormular">
+    <input type="hidden" name="page" value="{curpage}"/>
+    <input type="hidden" name="FK_KAT" id="FORM_FK_KAT" value ="" />
+    <input type="hidden" name="DO" value="EXPORT" />
+
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr>
+            <td style="vertical-align: top; padding-top: 10px; ">Kategorie auswählen:</td>
+            <td>
+                <ul id="kat_list" style="list-style-type: none;" class="katleft">
+                    {kat_selector}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Anzeigenstatus:</td>
+            <td>
+                <select class="form-control" name="STATUS">
+                    <option value="">alle Anzeigen</option>
+                    <option value="1">aktive Anzeigen</option> 
+                    <option value="2">ausgelaufene Anzeigen</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Spaltenbezeichnung:</td>
+            <td>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="FIRST_LINE_COLUMN_NAMES" />
+                        Spaltenbezeichnung exportieren
+                    </label>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="text-right">
+        <input type="submit" value="Anzeigen exportieren" class="btn btn-success"/>
+    </div>
+</form>

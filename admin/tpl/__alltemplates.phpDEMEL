@@ -1,0 +1,44 @@
+<?php
+/* ###VERSIONSBLOCKINLCUDE### */
+
+
+
+if(!isset($_REQUEST['sel_lang']))
+  $sel_lang = $s_lang;
+else
+  $sel_lang = $_REQUEST['sel_lang'];
+
+function reverse_strrchr($haystack, $needle)
+{
+   $pos = strrpos($haystack, $needle);
+   if($pos === false)
+       return $haystack;
+   return substr($haystack, 0, $pos);
+}
+// Admin Templates
+$d = dir("tpl/".$sel_lang);
+$ar=array ();
+while (false !== ($entry = $d->read()))
+{
+  if($entry != '..' && $entry != '.')
+    $ar[] = array ('tpl' => $entry, 'tpfile' => reverse_strrchr($entry,'.'), 'ROOT' => 2);
+}
+$d->close();
+
+if(!empty($ar))
+  $tpl_content->addlist('asite', $ar, 'tpl/de/alltemplates.row.htm');
+
+// Normale Templates
+$d = dir("../tpl/".$sel_lang);
+$ar=array ();
+while (false !== ($entry = $d->read()))
+{
+  if($entry != '..' && $entry != '.')
+    $ar[] = array ('tpl' => $entry, 'tpfile' => reverse_strrchr($entry,'.'), 'ROOT' =>1);
+}
+$d->close();
+
+if(!empty($ar))
+  $tpl_content->addlist('tsite', $ar, 'tpl/de/alltemplates.row.htm');
+
+?>

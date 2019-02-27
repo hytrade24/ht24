@@ -1,0 +1,191 @@
+<h1>
+	ABO Vertrag {ID_VERTRAG} bearbeiten
+</h1>
+<p>
+	Hier k&ouml;nnen Sie die Daten des gew&auml;hlten Vertrags zu &auml;mndern.
+</p>
+{if err}
+	<h2 class="error">
+		Fehler aufgetreten!
+	</h2>
+	<p class="error"">
+		{err}
+	</p>
+{endif}
+{if ok}
+	<h2 class="ok">
+		Änderungen durchgeführt
+	</h2>
+{endif}
+<form method="post" action="index.php">
+	
+	<input type="hidden" name="page" value="{curpage}" />
+	<input type="hidden" name="ID_VERTRAG" value="{htm(ID_VERTRAG)}" />
+	<table>
+		<tr>
+			<td valign="top">
+				<table class="formTable" cellspacing="0">
+					<tr>
+						<th>
+							Vertragsnummer
+						</th>
+						<td>
+							{base_ID_VERTRAG}
+						</td>
+					</tr>
+					<tr>
+						<th>Kundennummer</th>
+						<td>{base_FK_USER}</td>
+					</tr>
+					<tr>
+						<th>
+							Kunde
+						</th>
+						<td>
+							<a href="index.php?page=user_edit&ID_USER={FK_USER}" titel="Kunde bearbeite">
+								{htm(VORNAME)} {htm(NACHNAME)} 
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							Preis
+						</th>
+						<td>
+							{topreis(base_PRICE)} {CURRENCY_DEFAULT} 
+							f&uuml;r {htm(pack_RUNTIME_MONTH)} Monate
+						</td>
+					</tr>
+					<tr>
+						<th>Vertrag abgeschlossen am</th>
+						<td>
+							{todate(base_STAMP)}
+						</td>
+					</tr>
+					<tr>
+						<th>Gekündigt zum</th>
+						<td>
+							{if base_STAMP_CANCEL}
+								<span class="error">{todate(base_STAMP_CANCEL)}</span>
+							{else}
+								-
+							{endif}
+						</td>
+					</tr>
+					<tr>
+						<th>
+							Gültig bis
+						</th>
+						<td>
+							{if !base_STAMP_CANCEL}
+								{todate(base_STAMP_UNTIL)}
+							{else}
+								<span class="error">
+									gekündigt
+								</span>
+							{endif}
+						</td>
+					</tr>
+					<tr>
+						<th>Kündigung möglich bis</th>
+						<td>
+							{if !base_STAMP_CANCEL}
+								{todate(base_STAMP_CANCEL_UNTIL)}
+							{else}
+								<psna class="error">bereits gekündigt</psna>
+							{endif}
+						</td>
+					</tr>
+					<tr>
+						<th>Automatische Verlängerung am</th>
+						<td>
+							{if !base_STAMP_CANCEL}
+								{todate(base_STAMP_RENEW)}
+							{else}
+								<span class="error">gekündigt</span>
+							{endif}
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td valign="top">
+				
+				<table class="formTable" cellspacing="0">
+					<tr>
+						<th>Flatrate?</th>
+						<td>
+							<input type="checkbox" name="B_FLAT" value="1" class="nob" {if B_FLAT} checked{endif} />
+							Ja Flatrate aktivieren
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center">
+							Folgende Einstellungen verlieren Ihre G&uuml;ltigkeit, <br />
+							sobald Sie  Flatrate aktiviert haben!
+						</td>
+					</tr>
+					<tr>
+						<th>
+							Anzahl Anzeigen
+						</th>
+						<td>
+							<input id="anzeigen" type="text" name="anzeigen" value="{anzeigen}" />
+						</td>
+					</tr>
+					<tr>
+						<th>
+							Anzahl Bilder
+						</th>
+						<td>
+							<input id="bilder" type="text" name="bilder" value="{bilder}" />
+						</td>
+					</tr>
+					<tr>
+						<th>
+							Anzahl Downloads
+						</th>
+						<td>
+							<input id="downloads" type="text" name="downloads" value="{downloads}" />
+						</td>
+					</tr>
+					<tr>
+						<th>Verlängern um</th>
+						<td>
+							<input type="text" name="LONGER" value="{htm(LONGER)}" />
+							Monate
+						</td>
+					</tr>
+					<tr>
+						<td align="center" colspan="2">
+							Aktivieren Sie das H&auml;kchen, um das Abo zu kündigen
+						</td>
+					</tr>
+					<tr>
+						<th>Abo Kündigen?</th>
+						<td>
+							<input type="checkbox" name="DO_CANCEL" value="1" class="nob" />
+							<b>Ja kündigen</b>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							Kündigen zum
+						</th>
+						<td>
+							{datedrop(STAMP_NEXT_CANCEL)}
+						</td>
+					</tr>
+					<tr class="footer">
+						<td colspan="2" align="right">
+							<input type="submit" value="Änderungen durchführen" class="button" />
+						</td>
+					</tr>
+				</table>
+				
+			</td>
+		</tr>
+	</table>
+</form>
+<p>
+	&nbsp;
+</p>

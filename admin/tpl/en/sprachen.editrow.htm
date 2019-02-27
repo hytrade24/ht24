@@ -1,0 +1,16 @@
+<form action="index.php" method="post" style="display:inline;">
+  <input type="hidden" name="nav" value="{curnav}" />
+  <input type="hidden" name="ID_LANG" value="{ID_LANG}" />
+  <input type="hidden" name="B_PUBLIC" value="0" />
+<tr{if (i&1)} class="zeile1"{endif}>
+  <td>{if ID_LANG}<input type="image" src="gfx/save_16.gif" title="speichern" class="nob" />
+    <a href="index.php?page={curpagealias}" title="abbrechen"><img src="gfx/cancel_16.gif" width="16" height="16" border="0"></a>
+  {else}<input type="image" class="nob" src="gfx/btn.ins.png" alt="neue Sprache anlegen" />{endif}</td>
+    <td><input type="text" name="ABBR" value="{htm(ABBR)}" maxlength="2" size="3" /></td>
+  <td><input type="text" name="V1" value="{htm(V1)}" /></td>
+  <td>{if ID_LANG}{BITVAL}{else}<select name="BITVAL">{opts_bitval}</select>{endif}</td>
+  <td><input type="checkbox" name="B_PUBLIC" class="nob" {checked(B_PUBLIC,1)}value="1" /></td>
+    <td><input type="text" name="DOMAIN" value="{htm(DOMAIN)}"  /></td>
+    <td><input type="text" name="BASE_URL" value="{htm(BASE_URL)}"  /></td>
+
+</tr></form>

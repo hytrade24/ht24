@@ -1,0 +1,14 @@
+<label>
+  <span class="country-checkbox">
+    <input type="checkbox"{if COUNTRY_SELECTED} checked{endif} name="COUNTRIES[]" value="{ID_COUNTRY}"/>
+    {htm(COUNTRY_NAME)}
+  </span>
+  <i>
+  {if GROUP_NAME}
+    {htm(GROUP_NAME)}
+  {else}
+    Nicht zugeordnet
+  {endif}
+  </i>
+</label>
+<br />

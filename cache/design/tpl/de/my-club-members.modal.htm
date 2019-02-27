@@ -1,0 +1,145 @@
+<script type="text/javascript">
+
+function addUser() {
+	jQuery('#modal_club_member_add .step1').removeClass('hidden');
+	jQuery('#modal_club_member_add .step2a').addClass('hidden');
+	jQuery('#modal_club_member_add .step2b').addClass('hidden');
+
+	jQuery('#modal_club_member_add .alert-danger').addClass('hidden');
+
+	//jQuery('#modal_club_member_add .btn-cancel').removeClass('hidden');
+	jQuery('#modal_club_member_add .btn-back').addClass('hidden');
+	jQuery('#modal_club_member_add .btn-primary').addClass('disabled');
+	jQuery('#modal_club_member_add').modal();
+}
+
+function addUserRegistered() {
+	jQuery('#modal_club_member_add .step1').addClass('hidden');
+	jQuery('#modal_club_member_add .step2a').removeClass('hidden');
+	jQuery('#modal_club_member_add .step2b').addClass('hidden');
+
+	//jQuery('#modal_club_member_add .btn-cancel').addClass('hidden');
+	jQuery('#modal_club_member_add .btn-back').removeClass('hidden');
+	jQuery('#modal_club_member_add .btn-primary').removeClass('disabled');
+}
+
+function addUserNew() {
+	jQuery('#modal_club_member_add .step1').addClass('hidden');
+	jQuery('#modal_club_member_add .step2a').addClass('hidden');
+	jQuery('#modal_club_member_add .step2b').removeClass('hidden');
+
+	//jQuery('#modal_club_member_add .btn-cancel').addClass('hidden');
+	jQuery('#modal_club_member_add .btn-back').removeClass('hidden');
+	jQuery('#modal_club_member_add .btn-primary').removeClass('disabled');
+}
+
+function addUserSubmit() {
+    if (jQuery('#adduser_submit').hasClass("disabled")) {
+        return false;
+    }
+
+	var is_known = !jQuery('#modal_club_member_add_known').hasClass("hidden");
+	if (is_known) {
+		addUserRegisteredSubmit( jQuery("#modal_club_member_add_known").serialize() );
+	} else {
+		addUserNewSubmit( jQuery("#modal_club_member_add_new").serialize() );
+	}
+}
+
+function addUserRegisteredSubmit(parameters) {
+    jQuery.ajax({
+        url: "{uri_baseurl(/index.php)}?page=my-club-members&ID_CLUB={CLUB_ID_CLUB}&do=add_known&"+parameters,
+        dataType: 'json',
+        success: function(result) {
+			if (result.success) {
+				jQuery('#modal_club_member_add').modal("hide");
+				window.location.href = '{uri_action(my-club-members,{CLUB_ID_CLUB},added)}';
+			} else {
+				jQuery('#modal_club_member_add .alert-danger').removeClass('hidden');
+				jQuery('#modal_club_member_add .alert-danger ul').html(result.errors);
+			}
+        }
+    });
+}
+
+function addUserNewSubmit(parameters) {
+    jQuery.ajax({
+        url: "{uri_baseurl(/index.php)}?page=my-club-members&ID_CLUB={CLUB_ID_CLUB}&do=add_new&"+parameters,
+        dataType: 'json',
+        success: function(result) {
+			if (result.success) {
+				jQuery('#modal_club_member_add').modal("hide");
+				window.location.href = '{uri_action(my-club-members,{CLUB_ID_CLUB},added)}';
+			} else {
+				jQuery('#modal_club_member_add .alert-danger').removeClass('hidden');
+				jQuery('#modal_club_member_add .alert-danger ul').html(result.errors);
+			}
+        }
+    });
+}
+
+</script>
+<div id="modal_club_member_add" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3>Mitglied einladen</h3>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-danger hidden">
+					<h3>Fehler!</h3>
+					<ul></ul>
+				</div>
+				<div class="step1 hidden">
+					<p>
+						Ist die Person die Sie einladen möchten bereits Mitglied auf diesem Martkplatz?
+					</p>
+					<span class="btn-group text-right">
+						<a class="btn btn-default" onclick="addUserRegistered();">Ja</a>
+						<a class="btn btn-default" onclick="addUserNew();">Nein</a>
+					</span>
+				</div>
+				<form id="modal_club_member_add_known" class="step2a form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="inputUsername">Benutzername</label>
+						<div class="controls">
+							<input class="form-control" type="text" id="inputUsername" name="USERNAME" placeholder="Der Benutzername der Person" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputMessage">Nachricht</label>
+						<div class="controls">
+							<textarea class="form-control" id="inputMessage" name="MESSAGE" placeholder="Ihre Anmerkungen zur Einladung"></textarea>
+						</div>
+					</div>
+				</form>
+				<form id="modal_club_member_add_new" class="step2b form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="inputName">Name</label>
+						<div class="controls">
+							<input class="form-control" type="text" id="inputName" name="NAME" placeholder="z.B.: Max Mustermann" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputEmail">E-Mail</label>
+						<div class="controls">
+							<input class="form-control" type="text" id="inputEmail" name="EMAIL" placeholder="z.B.: Max.Mustermann@gmx.de" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputMessage">Nachricht</label>
+						<div class="controls">
+							<textarea class="form-control" id="inputMessage" name="MESSAGE" placeholder="Ihre Anmerkungen zur Einladung"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a href="#cancel" class="btn btn-default btn-cancel" data-dismiss="modal" aria-hidden="true">Abbrechen</a>
+				<a href="#back" class="btn btn-default btn-back" onclick="addUser(); return false;">Zurück</a>
+				<a href="#submit" class="btn btn-primary disabled" onclick="addUserSubmit(); return false;" id="adduser_submit">Einladung verschicken</a>
+			</div>
+		</div>
+	</div>
+</div>

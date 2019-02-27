@@ -1,0 +1,64 @@
+<script type="text/javascript">
+function neuerordner()
+{
+  document.forms[0].newfolder.value="1";
+  document.forms[0].submit();
+}
+function uebernehmen(dir)
+{
+  window.opener.document.forms[0].DIR.value=dir;
+  window.close();
+}
+</script>
+<div style="text-align:left; width:95%; padding:10px">
+  <h1>Ordner und Dateien f&uuml;r Ihre Website</h1>
+  {if err}
+    <div class="hinweis"><span class="error">{err}</span></div>
+  {endif}
+  <form enctype="multipart/form-data" style="display:inline" method="POST" action="index.php" target="_self">
+    <input type="hidden" name="frame" value="iframe" />
+    <input type="hidden" name="page" value="folder_browser" />
+    <input type="hidden" name="dir" value="{dir}" />
+    <input type="hidden" name="newfolder" value="0" />
+    <table width="100%" class="liste" cellspacing="0">
+	  <tr>
+	    <td>
+      <table class="formTable" cellspacing="0">
+        <tr>
+          <td valign="top">
+            <div style="padding:10px; margin-top:4px; width:100%; height:380px; overflow:auto">
+              <table class="pathtab" cellpadding="0" cellspacing="0" border="0" height="17">
+                <tr>
+                  <td nowrap><img src="gfx/path.{if is_root}{if folders}66{else}64{endif}{else}34{endif}.png" /></td>
+                  <td nowrap><span style="border:1px black solid; padding:2px;">..{browse}</span>{if dir2}&mdash;&gt; <a href="#" onclick="uebernehmen('{dir2}');" class="shadowbutton2"><span class="ordnerladen">In diesen Ordner laden</span></a>{endif}</td>
+                </tr>
+                {if !is_root}
+                <tr style="cursor:hand;" onMouseOver="this.style.backgroundColor='white';" onMouseOut="this.style.backgroundColor='';" onClick="location.href='index.php?page={curpage}&frame={curframe}&dir={updir}';">
+                  <td nowrap>
+                    <img src="gfx/path.{if folders}11{else}9{endif}.png" />
+                    <a href="index.php?page={curpage}&frame={curframe}&dir={updir}" title="Ordner wechseln"><img src="gfx/path.{if parent_is_root}68{else}20{endif}.png" /></a>
+                  </td>
+                  <td nowrap>
+                    <a href="index.php?page={curpage}&frame={curframe}&dir={updir}" title="Ordner wechseln">..</a>
+                  </td>
+                </tr>
+                {endif}{if folders}{folders}{else}
+                <tr>
+                  <td colspan="2" align="center" class="error">
+                    <strong>keine Unterordner</strong>
+                  </td>
+                </tr>
+                {endif}
+                <tr>
+                  <td colspan="2"><hr noshade /></td>
+                </tr>
+                <tr>
+                  <td colspan="2" nowrap>
+                    <input tabindex="1" type="text" name="NEWFOLDER" />
+                    <input tabindex="2" type="button" value="Ordner anlegen" onclick="neuerordner();" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+		  </form>
+		</div>

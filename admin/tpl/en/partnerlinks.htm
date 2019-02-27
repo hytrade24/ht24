@@ -1,0 +1,29 @@
+<h1>Partnerlinks</h1>
+<p>&Auml;nderungen werden augenblicklich &uuml;bernommen.</p>
+<table class="liste">
+<tr class="zeile1">
+		<td colspan="5">&nbsp;</td>
+		<td colspan="2" bgcolor="#cccccc" align="center"><b>PAYEDLINK</b></td>
+		<td colspan="4">&nbsp;</td>
+	</tr>
+	<tr>
+		<th>Aktionen</th>
+		<th>ID</th>
+		<th>Titel</th>
+		<th>Link</th>
+		<th>sichtbar</th>
+		<th>bezahlt...</th>
+		<th>...bis</th>				
+		<th>Toplink</th>
+		<th>RAW</th>
+		<th>seit</th>
+		<th>Hits</th>
+	</tr>
+	{liste}
+</table>
+<p>Ein Link wird angezeigt wenn er auf sichtbar gesetzt wurde.<br>
+Ist ein Link als &quot;bezahlt&quot; gekennzeichnet und das Datum&nbsp; &quot;bis&quot; liegt in 
+der Zukunft, dann wird dieser Link in die Sektion Sponsoren aufgenommen.<br>
+Ist ein Link abgelaufen, so wird automatisch der die Sichtbarkeit auf false 
+gesetzt.</p>
+<p>Dieser Prozess läuft über einen Cron</p>

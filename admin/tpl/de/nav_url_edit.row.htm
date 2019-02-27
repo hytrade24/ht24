@@ -1,0 +1,33 @@
+
+<tr class="zeile{calc(1-even)}">
+    <td>
+        <a href="index.php?page={curpage}&do=delete&id={FK_NAV}&extended={EXTENDED}&target={ID_NAV_URL}">
+            <img src="gfx/btn.del.gif" />
+        </a>
+    </td>
+    <td>
+    {if !EXTENDED}
+        <input type="hidden" name="EDIT[{ID_NAV_URL}][URL_MANUAL]" value="{if URL_MANUAL}1{else}0{endif}" />
+        <input type="hidden" name="EDIT[{ID_NAV_URL}][URL_REGEXP]" value="{htm(URL_REGEXP)}" />
+        <input type="hidden" name="EDIT[{ID_NAV_URL}][URL_MAPPING]" value="{htm(URL_MAPPING)}" />
+    {endif}
+        <input type="text" name="EDIT[{ID_NAV_URL}][URL_PATTERN]"{if !EXTENDED && URL_MANUAL} readonly{endif} value="{htm(URL_PATTERN)}" />
+    </td>
+    {if EXTENDED}
+    <td>
+        <label>
+            <input type="checkbox" onchange="UpdateManual(this);" name="EDIT[{ID_NAV_URL}][URL_MANUAL]" value="1"{if URL_MANUAL} checked{endif} />
+            Manuell
+        </label>
+    </td>
+    <td>
+        <input type="text" name="EDIT[{ID_NAV_URL}][URL_REGEXP]"{if !URL_MANUAL} readonly{endif} value="{htm(URL_REGEXP)}" data-type="URL_REGEXP" />
+    </td>
+    <td>
+        <textarea name="EDIT[{ID_NAV_URL}][URL_MAPPING]"{if !URL_MANUAL} readonly{endif} data-type="URL_MAPPING">{htm(URL_MAPPING_TEXT)}</textarea>
+    </td>
+    {endif}
+    <td>
+        <input type="number" style="width: 64px" name="EDIT[{ID_NAV_URL}][PRIORITY]" value="{htm(PRIORITY)}" />
+    </td>
+</tr>

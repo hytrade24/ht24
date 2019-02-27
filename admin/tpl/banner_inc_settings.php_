@@ -1,0 +1,25 @@
+<?php
+/* ###VERSIONSBLOCKINLCUDE### */
+
+
+  // path to template image directory (relative or absolute)
+  $path_source = '../'.$GLOBALS['nar_systemsettings']['SITE']['PATH_UPLOADS'].'bildergenerator/vorlagen';
+
+  // path to output image directory
+  $path_target = '../'.$GLOBALS['nar_systemsettings']['SITE']['PATH_UPLOADS'].'bildergenerator/fertige';
+
+  // path to font directory (relative or absolute)
+  $path_fonts = 'fonts';
+
+  // backup inc.index on execution of an index script?
+  $fl_backup = True;
+
+  // style of cursor around selected image
+  // options: rainbow, silver, static
+  // style classes s0 and s1 define 'static' view
+  $cursor = 'rainbow'; # other options: silver, static
+
+  // change these settings only if you know what you do!
+  define ('FAIL', '<span class="error">fail</span>');
+  $str_indexfile = '../cache/fonts';
+?>

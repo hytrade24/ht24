@@ -1,0 +1,85 @@
+<script type="text/javascript">
+var neu;
+
+function showComment(id) {
+	var div = jQuery("#news"+id);
+	var row = jQuery("#news"+id+"_row");
+	if (row.css("display") == 'none') {
+		div.html('Please wait...');
+		div.load(ebiz_trader_baseurl + 'index.php?page=showcomment_ajax&frame=ajax&kat=news&id='+id);
+		row.show();
+	} else {
+		row.hide();
+	}
+}
+
+</script>
+<style type="text/css">
+.showComment {
+	height: 150px;
+	overflow: auto;
+	display: none;
+	width: 100%;
+	border: 1px #cccccc solid;
+}
+</style>
+  
+<h1>My written articles</h1>
+<p>
+    Here you find all articles, you wrote so far! You can create new articles <a href="{uri_action(artikel_edit)}" title="Jetzt neuen Artiekl schreiben">here</a>.
+        <br />Your articles get publishing date, once you set a release!
+
+ </p>
+<p align="right">
+	<a href="{uri_action(artikel_edit)}" class="btn btn-info">
+		<i class="glyphicon glyphicon-pencil"></i> Add new a article
+	</a>
+</p>
+ {if err}
+<div class="alert alert-danger">{err}
+</div>
+{endif}
+<table class="table table-bordered table-striped table-condensed">
+	<tr>
+		<th colspan="3">Action</th>
+		<th>Status</th>
+		<th>Article</th>
+		<th>Date</th>
+		<th></th>
+		<th>&nbsp;</th>   
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+	<tr>
+		<td colspan="8" align="center">
+			<span class="text-error">No articles</span>
+		</td>
+	</tr>
+	{endif}
+</table>
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Edit
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>  = delete (if not publish yet)
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-fullscreen"></i></a>  = Show online
+	</div>
+	<div class="pull-left clearfix">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-retweet"></i></a> = Comments available
+	</div>
+    <br style="clear: left;" />
+	<div class="pull-left clearfix">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-hand-right"></i></a> = has to be released by you
+	</div>
+	<div class="pull-left clearfix">
+		<a class="btn btn-info"><i class="glyphicon glyphicon-user"></i></a> = Wait for release
+	</div>
+    <br style="clear: left;" />
+</div>
+<div class="pager">
+{pager}
+</div>

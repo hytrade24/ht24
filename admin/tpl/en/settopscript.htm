@@ -1,0 +1,53 @@
+<h1>{htm(V1)} als Script der Woche speichern!</h1>
+<p>Bitte wählen Sie die Kalenderwoche für welche das Script eingetragen werden soll</p>
+{if err}
+ <p class="error">{err}</p>
+{endif}
+{if OK}
+ <p class="ok">Wurde gespeichert</p>
+{endif}
+<form method="get" action="index.php" id="kalender">
+ <input type="hidden" name="page" value="{curpage}">
+ <input type="hidden" name="FK_SCRIPT" value="{FK_SCRIPT}"> 
+ <input type="hidden" name="frame" value="{curframe}">
+ <table class="formtable" cellspacing="0">
+  <tr>
+   <th>Jahr</th>
+   <td><select name="YEAR" onchange="document.getElementById('kalender').submit();">{JAHRE}</select>   
+  </tr>
+  <tr>
+   <th>Kalenderwoche</th>
+   <td><select name="KW">{KWS}</select></td>
+  </tr>
+  <tr class="footer">
+   <td colspan="2" align="right"><input type="submit" class="button" value="Speichern" name="SAVE"></td>
+  </tr>
+ </table>
+</form>
+
+{if !is_default}
+<p>&nbsp;</p>
+<h3>Defaultscript der Woche</h3>
+<p>Derzeit wird <a target="_blank" href="index.php?page=script_edit&ID_SCRIPT_WORK={DEF_ID}" title="Script in neuem Fenster anmsehen!">{htm(DEF_V1)}</a> als Defaultscript verwendet!</p>
+<form method="get" action="index.php">
+ <input type="hidden" name="page" value="settopscript" />
+ <input type="hidden" name="FK_SCRIPT" value="{FK_SCRIPT}"> 
+ <input type="hidden" name="frame" value="{curframe}">
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th>Dieses Script als Defaultscript f&uuml;r das Script der Woche festlegen</th>
+  </tr>
+  <tr class="footer">
+   <td><input type="submit" onclick="return confirm('Sicher dass Sie dieses Script als Default speichern möchten?');" name="SETDEF" value="Als Defaultscript festlegen"  /></td>
+  </tr>
+ </table>
+</form>
+{else}
+ <h2 class="ok">Dieses Script ist als Defaultscript f&uuml;r das script der Woche festgelegt!</h2>
+{endif}
+{if OK}
+ <script type="text/javascript">
+  alert('Der Eintrag war erfolgreich!\nDas Fenster wird geschlossen!');
+  window.close();
+ </script>
+{endif}

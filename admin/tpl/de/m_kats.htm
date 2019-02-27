@@ -1,0 +1,570 @@
+{if !ajax_kat}
+<link rel="stylesheet" href="sys/popup/popup.css" />
+<script type="text/javascript" src="{uri_baseurl(/lib/prototype.js)}"></script>
+<script type="text/javascript" src="sys/popup/popup.js"></script>
+<script type="text/javascript">  
+window.highlight_multi = new Array();
+
+var today = new Date();
+
+var highlight_line_class = "";
+var highlight_line = null;
+var ajaxLock = new Array();
+
+var modalWindow = new JSpopup({ width: 260, height: 112 });
+var modalWindowLarge = new JSpopup({ width: 360, height: 220 });
+
+function toggleKatRoles(roleId, toggleEnable) {
+	if(toggleEnable) {
+		if(!confirm('Möchten Sie die Rechte wirklich für alle Kategorien (inkl. Unterkategorien) aktivieren ?')) {
+			return false;
+		}
+
+		location.href = 'index.php?page=m_kats&do=modall&roleId='+roleId+'&modcheck=1';
+	} else {
+		if(!confirm('Möchten Sie die Rechte wirklich für alle Kategorien (inkl. Unterkategorien) entfernen ?')) {
+			return false;
+		}
+		location.href = 'index.php?page=m_kats&do=modall&roleId='+roleId+'&moduncheck=1';
+	}
+
+	return false;
+}
+
+function KatSetVisibility(id, isVisible) {
+  var imgSrc = $('imgVis'+id).src;
+  var even = imgSrc.match(/(.+\/mv([01])\.)v([01])\.gif/i);
+  if (isVisible == -1)
+    if (even[3] == 1) {
+      isVisible = 0;
+    } else {
+      isVisible = 1;
+    }
+  new Ajax.Request("index.php?page=m_kat_edit&frame=ajax", {
+    method: "post",
+    parameters: "ID_KAT="+id+"&B_VIS="+isVisible+"&sent=1",
+    onSuccess: (function (p){
+      var t = p.responseJSON;
+      if(t.state == 200){
+        $('imgVis'+id).src = even[1]+"v"+isVisible+".gif";
+      } else if(t.state == 450) {
+        alert(t.error);
+      }
+      if (t.reload) {
+          // Reload page
+          window.location.href = "index.php?page=m_kats&time="+today.getTime();
+          window.location.reload();
+      }
+    }).bind(this)
+  });
+}
+
+function DeleteElementUpdateWarning(input) {
+    var moveChildren = parseInt(jQuery(input).val());
+    if (moveChildren) {
+        jQuery("#DEL_ELEMENT_ARTICLE_WARNING").hide();
+        jQuery("#DEL_ELEMENT_ARTICLE_QUESTION").show();
+    } else {
+        jQuery("#DEL_ELEMENT_ARTICLE_WARNING").show();
+        jQuery("#DEL_ELEMENT_ARTICLE_QUESTION").hide();
+    }
+}
+
+function AddLineHighlight(line, highlight_class) {
+  if (line) {
+    highlight_multi[line.id] = new Array();
+    highlight_multi[line.id].line = line;
+    //highlight_multi[line.id].color = color;
+    highlight_multi[line.id].prev_class = line.className;
+
+    line.addClass(highlight_class);
+  }
+}
+
+function AddLineHighlights(list_lines, highlight_class){
+  if (list_lines == "") return false;
+  var lines = list_lines.split(",");
+  if (lines.length > 0)
+    for (var line in lines) { 
+      AddLineHighlight($(lines[line]), highlight_class);
+    }
+}
+
+function ClearLineHighlights() {
+  for (var lineid in highlight_multi) {
+    var highlight = highlight_multi[lineid];
+    if (highlight && highlight.line)
+      RemLineHighlight(highlight.line);
+    else
+      highlight_multi[lineid] = null;
+  }
+}
+
+function RemLineHighlight(line) {
+  line.className = highlight_multi[line.id].prev_class;
+  
+  highlight_multi[line.id] = null;  
+}
+
+function DoHighlight(line) {
+  RemoveHighlight();
+  highlight_line = line;
+  highlight_line_class = line.className;
+  line.className = "zeilex";
+  var tdMoveCol = $(line.id+"MoveCol");
+  tdMoveCol.className = "treeMoveCol zeilex"; 
+}
+
+function InitMoveCols(){
+  var rows = document.getElementsByName("MoveColOverlay");
+  for (var row = 0; row < rows.length; row++) {
+	if (rows[row].title != "") {
+	    var kid = rows[row].title;
+	    rows[row].title = "";
+	    rows[row].idkat = kid;
+	    Element.clonePosition(rows[row], $("row"+kid+"MoveCol"));
+	    rows[row].hide();
+	    $("row"+kid+"MoveCol").hide();
+	}
+  }
+}
+
+function ShowMoveCols(){
+  var rows = document.getElementsByName("MoveColOverlay");
+  for (var row = 0; row < rows.length; row++) {
+    var kid = rows[row].idkat;
+    if ($("row"+kid+"MoveCol") != null) {
+    	$("row"+kid+"MoveCol").show()
+    }
+  }
+  rows = document.getElementsByName("MoveCol");
+  for (var row = 0; row < rows.length; row++) {
+    rows[row].style.display = "";
+  }
+}
+
+function HideMoveCols(){
+  var rows = document.getElementsByName("MoveCol");
+  for (var row = 0; row < rows.length; row++) {
+    rows[row].style.display = "none";
+  }
+}
+
+function SetMoveCols(opacity, border) {
+  ShowMoveCols();
+  var rows = document.getElementsByName("MoveColOverlay");
+  for (var row = 0; row < rows.length; row++) {
+    var tMoveRow = $("row"+rows[row].idkat+"MoveCol");
+    if (tMoveRow != null) {
+	    tMoveRow.style.border = border;
+	    if (row > 0)
+	      tMoveRow.style.borderTop = "hidden";
+	    if ((row > 0) && (row < (rows.length-1)))
+	      tMoveRow.style.borderBottom = "hidden";
+	    if (opacity > 0) {
+	      rows[row].style.opacity = opacity;
+	      rows[row].show();
+	    }
+	    else {
+	      rows[row].hide();
+	    }
+	    Element.clonePosition(rows[row], tMoveRow);
+    }
+  }
+}
+
+function RemoveHighlight() {
+  if (highlight_line != null) {
+    highlight_line.className = highlight_line_class;
+    var tdMoveCol = $(highlight_line.id+"MoveCol");
+    tdMoveCol.className = "treeMoveCol "+highlight_line_class; 
+    highlight_line = null;
+  }
+}
+
+function toggleKat(id_kat) {
+	var row = $("row"+id_kat);
+	var childs = $$(".child"+id_kat);
+	if ((childs.length == 0) && (!ajaxLock[id_kat])) {
+		ajaxLock[id_kat] = true;
+		row.addClassName('loaded');
+
+        jQuery.ajax({
+            url: "index.php?page=m_kats&frame=ajax&ajax_kat="+id_kat,
+            async: false,
+            success: function(p) {
+                var childsHtml = p;
+                row.insert({ after: childsHtml });
+                InitMoveCols();
+                HideMoveCols();
+                var childs_icon_open = $$("#row"+id_kat+" .folder_open");
+                var childs_icon_close = $$("#row"+id_kat+" .folder_close");
+                childs_icon_open.invoke('hide');
+                childs_icon_close.invoke('show');
+                makeListEven();
+            }
+        })
+	   /* new Ajax.Request("index.php?page=m_kats&frame=ajax&ajax_kat="+id_kat, {
+	        method: "get",
+	        onSuccess: (function (p){
+
+	        }).bind(this)
+		});*/
+	} else {
+		if (childs[0].visible()) {
+			$$("#row"+id_kat+" .folder_close").invoke('hide');
+			$$("#row"+id_kat+" .folder_open").invoke('show');
+			childs.invoke('hide');
+		} else {
+			$$("#row"+id_kat+" .folder_close").invoke('show');
+			$$("#row"+id_kat+" .folder_open").invoke('hide');
+			$$(".child"+id_kat+".loaded .folder_open").invoke('hide');
+			$$(".child"+id_kat+".loaded .folder_close").invoke('show');
+			childs.invoke('show');
+		}
+		makeListEven();
+	}
+}
+
+function toggleKatPath(id_kat) {
+    jQuery.ajax({
+        url: "index.php?page=m_kats&frame=ajax&ajax_kat_path="+id_kat,
+        dataType: 'json',
+        success: function(response) {
+            if(response.success) {
+                jQuery.each(response.data, function(key, value) {
+                    toggleKat(value);
+                });
+
+                AddLineHighlight(jQuery("#row" + id_kat), "zeilex");
+
+            }
+        }
+    });
+}
+
+function makeListEven() {
+	var kat_rows = $$(".liste tr");
+	var visible = 0;
+	for (var i = 0; i < kat_rows.length; i++) {
+		if (kat_rows[i].visible()) {
+			visible++;
+			kat_rows[i].addClassName("zeile"+(i&1));
+			kat_rows[i].removeClassName("zeile"+(~i&1));
+		}
+	}
+}
+
+var moveTreeElements = Class.create({
+  initialize: function (a){
+    var emptyFunc = function(){};
+    this.ElementList = [];
+    this.onClick = (a.onClick ? a.onClick : emptyFunc);
+    this.onClickConfirmed = (a.onClickConfirmed ? a.onClickConfirmed : emptyFunc);
+    this.onClose = (a.onClose ? a.onClose : emptyFunc);
+    this.onElementMove = (a.onElementMove ? a.onElementMove : emptyFunc);
+    this.onElementDelete = (a.onElementDelete ? a.onElementDelete : emptyFunc);
+  },
+  deleteElement: function (ID_CAT, S_KAT, hasChild) {
+      modalWindowLarge.open({
+          url: "index.php?page=m_kats_delete_element&frame=popup&ID_CAT="+ID_CAT+"&do=confirm&childs="+(hasChild ? 1 : 0),
+          title: "Löschen bestätigen",
+          opacity: 0.8,
+          id: "deleteElement"
+      });
+  },
+  moveElement: function (id){
+    ClearLineHighlights();
+    DoHighlight($("row"+id));
+    $$('body')[0].appendChild(new Element('div', { id:'overlay' })).setOpacity(0.6);
+    $$('body')[0].appendChild(new Element('div', { id:'loader'}).insert("Loading..."));
+    
+    
+    new Ajax.Request("index.php?page=m_kats_find_targets&frame=popup", {
+      method: "post",
+      parameters: "ID_CAT="+id,
+      onSuccess: (function (p){
+        var t = p.responseJSON;
+        if(t.state == 200){
+          this.buildAcceptList(t.list, t.list_before, id);
+          this.hasChilds = t.childs;
+        } else if(t.state == 450) {
+          $("loader").remove();
+          alert(t.error);
+          $("overlay").remove();
+        } else if(t.state == 404) {
+          $("loader").remove();
+          alert("Verschieben nicht möglich, kein gültiges Ziel vorhanden!");
+          $("overlay").remove();
+        }
+        if (t.reload) {
+            // Reload page
+            window.location.href = "index.php?page=m_kats&time="+today.getTime();
+            window.location.reload();
+        }
+      }).bind(this)
+    });
+  },
+  buildAcceptList: function (ID_List, ID_ListSort, ID_Cat){
+    $("loader").remove();
+    $("closeElementList").show();
+
+    ID_List.each((function(i){
+      if ($("e"+i) != null) {
+      	$("e"+i).style.visibility = "visible";
+      	$("e"+i).observe('click', (function() { this.onClick(i, ID_Cat, "into"); }).bind(this));
+      	this.ElementList.push("e"+i);
+      }
+    }).bind(this));
+    ID_ListSort.each((function(i){
+      if ($("eb"+i) != null) {
+        $("eb"+i).style.visibility = "visible";
+        $("eb"+i).observe('click', (function() { this.onClick(i, ID_Cat, "before"); }).bind(this));
+        this.ElementList.push("eb"+i);
+      }
+    }).bind(this));
+    SetMoveCols(0.2, "1px solid black");
+  },
+  closeAcceptList: function (){
+    RemoveHighlight();
+    this.onClose();
+    this.removeAcceptList();
+    SetMoveCols(0, "");
+    HideMoveCols();
+  },
+  removeAcceptList: function (){
+    RemoveHighlight();
+    this.ElementList.each(function(i){
+      if($(i))
+        $(i).style.visibility = "hidden";
+    });
+    this.ElementList.clear();
+    if($("overlay"))
+      $("overlay").remove();
+    $("closeElementList").hide();
+    HideMoveCols();
+  }
+});
+
+document.observe('dom:loaded', function () { 
+  moveTreeElements = new moveTreeElements({
+    onClick: function (ID_TARGET, ID_CAT, MOVE_TO) {  
+      modalWindow.open({
+            url: "index.php?page=m_kats_move_element_ask&frame=popup&ID_CAT="+ID_CAT+"&ID_TARGET="+ID_TARGET+"&MOVE_TO="+encodeURIComponent(MOVE_TO), 
+            title: "Kategorie verschieben",
+            opacity: 0.8,
+            id: "moveElements"
+          });
+    },
+    onClickConfirmed: function (ID_TARGET, ID_CAT, MOVE_TO) {  
+      if (this.hasChilds) {
+        modalWindow.open({
+              url: "index.php?page=m_kats_move_element_childs&frame=popup&ID_CAT="+ID_CAT+"&ID_TARGET="+ID_TARGET+"&MOVE_TO="+encodeURIComponent(MOVE_TO), 
+              title: "Kind-Elemente vorhanden!",
+              opacity: 0.8,
+            id: "moveElements"
+            });  
+      } else {
+        this.onElementMove(ID_TARGET, ID_CAT, 0, MOVE_TO);
+      }    
+    },
+    onClose: function () {
+      new Ajax.Request("index.php?page=m_kats_move_element&frame=popup", {
+        method: "post",
+        parameters: "ID_TARGET=-1",
+        onSuccess: (function (p){
+          var t = p.responseJSON;
+          if(t.state == 450){
+            alert(t.error);
+          }
+          if (t.reload) {
+              // Reload page
+              window.location.href = "index.php?page=m_kats&time="+today.getTime();
+              window.location.reload();
+          }
+        }).bind(this)
+      });
+    },
+    onElementMove: function (ID_TARGET, ID_CAT, LEAVE_CHILDS, MOVE_TO) {  
+      new Ajax.Request("index.php?page=m_kats_move_element&frame=popup", {
+        method: "post",
+        parameters: "ID_CAT="+ID_CAT+"&ID_TARGET="+ID_TARGET+"&LEAVE_CHILDS="+LEAVE_CHILDS+"&MOVE_TO="+MOVE_TO,
+        onSuccess: (function (p){
+          var t = p.responseJSON;
+          if(t.state == 450){
+            alert(t.error);
+          }
+          moveTreeElements.removeAcceptList(); 
+          if (t.reload) {
+              // Reload page
+              var url = "index.php?page=m_kats&time="+today.getTime();
+              window.location.href = url;
+              window.location.reload();
+          }
+        }).bind(this)
+      });
+    },
+    onElementDelete: function (ID_CAT, LEAVE_CHILDS) {
+      new Ajax.Request("index.php?page=m_kats_delete_element&frame=popup", {
+        method: "post",
+        parameters: "ID_CAT="+ID_CAT+"&LEAVE_CHILDS="+(LEAVE_CHILDS ? 1 : 0)+"&do=delete",
+        onSuccess: (function (p){
+          var t = p.responseJSON;
+          if(t.state == 450){
+            alert(t.error);
+          }
+          moveTreeElements.removeAcceptList(); 
+          if (t.reload) {
+              // Reload page
+              window.location.href = "index.php?page=m_kats&time="+today.getTime();
+              window.location.reload();
+          }
+        }).bind(this)
+      });
+    }
+  });
+  InitMoveCols();
+});
+</script>
+<script type="text/javascript">
+	function showKatQuickedit(id) {
+	    jQuery("#dialog").dialog("close");
+		jQuery.get('index.php?frame=ajax&page=m_kat_quickedit&DO=load&ID_KAT='+id, function(data) {
+			jQuery("#dialog").html(data);
+			jQuery("#dialog").dialog("close");
+			jQuery("#dialog").dialog({ title: "Kategorie schnell bearbeiten", width: 800, height: 480, modal: true });
+		});
+	    return false;
+	}
+</script>
+
+<h1>Marktplatz Kategorien{if IS_PREVIEW}<span style="color:red;"> - Vorschau-Ansicht</span>{endif}</h1>
+<p>
+	Hier k&ouml;nnen Sie die Kategorien des Marktplatzes ver&auml;ndern und an Ihre W&uuml;nsche anpassen.<br />
+    Kategorien mit blauem Namen enthalten Unterkategorien. Diese können Sie mit einem Klick auf den Namen der Kategorie ein- bzw. ausblenden.<br />
+    Ein grauer Kategoriename bedeutet das diese Kategorie keine weiteren Unterkategorien enthält.<br />
+</p>
+<p>
+  {if IS_PREVIEW}
+    <br />
+    <span style="color:red;"><strong>Wichtig:</strong></span><br />
+    Die aktuelle Ansicht stellt nur eine Vorschau dar und entspricht nicht dem aktuellem Kategorie-Baum!<br />
+    <strong>
+    {if ID_BACKUP}Der angezeigte Kategorie-Baum zeigt den Stand des ausgew&auml;hlten Backups.{endif}
+    {if ID_UNDO_PARAM}Der angezeigte Kategorie-Baum zeigt die Veränderung des ausgew&auml;hlten R&uuml;ckg&auml;ngig-Schritts.{endif}
+    </strong>
+    <br />
+    <br />
+    
+    {if ID_UNDO_PARAM}
+    <a onclick="return confirm('Änderung wirklich entsprechend der aktuellen Vorschau übernehmen?')"
+        href="index.php?page={curpage}&UNDO_APPLY={ID_UNDO_PARAM}&id={HIGHLIGHTED}{if UNDO_BACKUP}&UNDO_BACKUP=1{endif}">
+      - &Auml;nderung &uuml;bernehmen
+    </a>
+    <br />
+    {endif}
+    <a href="index.php?page={curpage}"><strong>- Zurück zur Live-Ansicht</strong></a><br />
+  {endif}
+</p>
+{if IS_LOCKED}
+<div class="error">
+  <h1 style="color:red;">Baum gesperrt!</h1>
+  Der Kategorie-Baum ist momentan durch den Benutzer <u>{LOCKUSER}</u> gesperrt!<br />
+  Bei Inaktivit&auml;t wird die Sperre um {LOCKEXPIRE}Uhr entfernt.
+</div><br />
+{endif}
+<form method="post" action="index.php">
+	<input type="hidden" name="do" value="mod" />
+	<input type="hidden" name="page" value="{curpage}" />
+	<table border="0" cellspacing="0" cellpadding="0" class="liste">
+	    <tr>
+	        <td>
+	            <table class="pathtab" cellpadding="0" cellspacing="0" border="0">                
+	                <tr valign="bottom">
+	                <th>&nbsp;Aktionen&nbsp;</th>
+                  <th name="MoveCol" valign="bottom" align="center" class="treeMoveCol" id="row0MoveCol">
+                      <img src="gfx/text.move.png">
+                      <div title="0" class="MoveColOverlay" name="MoveColOverlay"></div>
+                      <span style="display:none;" onclick="moveTreeElements.closeAcceptList();" id="closeElementList"><img src="sys/popup/close.png"></span>
+                      <div title="In die Root verschieben" style="visibility: hidden; margin-left: 0px; margin-bottom: -6px;" class="treeMoveTarget" id="e{ID_KAT}"></div>
+                  </th>
+	              <th style="text-align:left;padding-bottom:0px;">
+	              	<img src="gfx/path.{if liste}66{else}64{endif}.png" width="19" height="17" align="left">&nbsp;<a href="index.php?page=m_kat_edit&ID_KAT=1">root</a>
+	              </th>		
+	              <th>Icon</th>
+                  {if !FREE_ADS}
+                  <th>Kostenlos</th>
+                  {endif}
+                  <th>Ansicht</th>
+                  <th>Infobereich</th>
+                  <th>&nbsp;Artikel-Tabellen&nbsp;</th>
+				  {add_header}
+	            	</tr>
+					{liste}
+	            </table>
+              <script>
+              {if HIGHLIGHTED}
+                {if IS_PREVIEW}
+                  AddLineHighlights("{HIGHLIGHT_ADD}", "zeilex");
+                  AddLineHighlights("{HIGHLIGHT_DEL}", "zeilex_red");
+                {else}
+                    toggleKatPath({HIGHLIGHTED});
+                  AddLineHighlight(jQuery("#row{HIGHLIGHTED}"), "zeilex");
+                {endif}
+              {endif}
+              </script>
+	        </td>
+	    </tr>
+	    <tr>
+          <td align="right" class="footer">
+          {if IS_LOCKED}
+            <input type="button" value="Baum gesperrt!" class="button" disabled="true" />
+          {endif}
+          {if ID_BACKUP}
+            <script type="text/javascript">
+              function BackupInsert(id, is_undo) {
+                if (!confirm("Wirklich das angezeigte Backup wiederherstellen?"))
+                  return false;
+                if (is_undo == '1')
+                  window.location.href = "index.php?page={curpage}&UNDO_BACKUP=1&BACKUP_RESTORE="+id;
+                else
+                  window.location.href = "index.php?page={curpage}&BACKUP_RESTORE="+id;
+                return true;                
+              }
+            </script>
+            <input onclick="BackupInsert({ID_BACKUP}, '{UNDO_BACKUP}');" type="button" value="Backup wiederherstellen!" class="button" />
+          {endif}
+          {if ID_UNDO_PARAM}
+            <script type="text/javascript">
+              function UndoApply(id) {
+                if (!confirm("Änderung wirklich entsprechend der aktuellen Vorschau übernehmen?"))
+                  return false;
+                window.location.href = "index.php?page={curpage}&UNDO_APPLY={ID_UNDO_PARAM}&id={HIGHLIGHTED}";
+                return true;                
+              }
+            </script>
+            <input onclick="UndoApply({ID_UNDO_PARAM});" type="button" value="&Auml;nderung &uuml;bernehmen" class="button" />
+          {endif}
+              <button>Rechte übernehmen</button>
+          </td>
+	    </tr>
+	</table>
+</form>
+{else}{liste}{endif}
+
+<h2>Gesamten Kategorie-Baum anzeigen</h2>
+<p>
+    Mit einem Klick auf den folgenden Button können Sie sich den gesamten Kategoriebaum inklusive aller Unterkategorien anzeigen lassen.<br />
+    <span class="error">
+        <strong>Achtung!</strong> Je nach Anzahl der vorhandenen Kategorien kann dies sehr lange dauern!
+    </span>
+    <br />
+    <a class="button" href="index.php?page={curpage}&all=1">
+        Vollständigen Kategorie-Baum anzeigen
+    </a>
+</p>
+
+<h2>Automatisches sortieren von Kategorien</h2>
+<p>Wenn Sie die Reihenfolge der Katageorien alphabetisch anordnen möchten, dann <a class="button" href="index.php?page=m_kat_repair">klicken Sie bitte hier</a></p>
+
+<div id="dialog" style="display: none;"></div>

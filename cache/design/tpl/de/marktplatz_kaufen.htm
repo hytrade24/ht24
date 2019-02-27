@@ -1,0 +1,338 @@
+{if error_noaddress}
+<div class="alert alert-danger">
+	<h2>Hinweis</h2>
+	<p>
+		Bitte ergänzen Sie folgende Angaben in ihrem <a href="{uri_action(my-profil)}">Profil</a> bevor Sie etwas kaufen:
+		<br />
+		<ul>
+			{if error_addr_first}<li>Vorname</li>{endif}
+			{if error_addr_last}<li>Nachname</li>{endif}
+			{if error_addr_street}<li>Straße</li>{endif}
+			{if error_addr_zip}<li>PLZ</li>{endif}
+			{if error_addr_city}<li>Ort</li>{endif}
+		</ul>
+	</p>
+</div>
+{else}
+<script type="text/javascript">
+
+function UpdateMenge(input) {
+	var menge_vorhanden = {MENGE};
+	var preis_versand = {if product_shipping>0}{topreis(product_shipping)}{else}0{endif};
+	var preis_pro_einheit = {topreis(product_price)};
+	if (input.value != "") {
+		if (input.value < 1) {
+			input.value = 1;
+		} else if (input.value > menge_vorhanden) {
+			input.value = menge_vorhanden;
+		}
+		var preis_artikel = preis_pro_einheit * input.value;
+		var preis_komplett = preis_artikel + preis_versand;
+		$("#product_price").html( GetPreis(preis_artikel) );
+		$("#full_price").html( GetPreis(preis_komplett) );
+	}
+}
+
+function GetPreis(preis) {
+	var str_preis = String(Math.round(preis * 100) / 100);
+	var str_cent = str_preis.match(/\.[0-9]{1,2}/);
+	if (!str_cent) {
+		// Format: ?
+		return str_preis+".00";
+	} else {
+		if (str_cent[0].length == 2) {
+			// Format: ?.?
+			return str_preis+"0";
+		} else {
+			// Format: ?.??
+			return str_preis;
+		}
+	}
+	return str_preis;
+}
+
+</script>
+
+<h1>
+	Artikel kaufen
+    <p class="lead">
+        {htm(PRODUKTNAME)}{if VARIANT} ({htm(VARIANT)}){endif}
+    </p>
+</h1>
+
+{if not_found}
+    <div class="alert alert-danger">
+        <h2>
+            Anzeige wurde nicht gefunden!
+        </h2>
+        <p>
+			Möglicherweise ist die gewünschte Anzeige nicht mehr aktuell.
+        </p>
+    </div>
+{else}
+	<a name="ad_top"></a>
+
+    <form method="post" action="{uri_baseurl(/index.php)}" class="form-horizontal">
+      	<div class="well-box" style="padding-bottom: 0;">
+      		<div class="row-fluid">
+				<div class="span6">
+		            <h3>Ihre Rechnungsadresse</h3>
+		
+					{subtpl(tpl/{SYS_TPL_LANG}/user_invoice.htm,*)}
+				</div>
+				<div class="span6">
+		            <h3>Ihre Versandadresse</h3>
+		
+					{subtpl(tpl/{SYS_TPL_LANG}/user_versand.htm,*)}
+				</div>
+			</div>
+		</div>
+	    <div class="row-fluid">
+	        <div class="span6">
+	            <div class="well-box">
+	                {if !_STATUS || MENGE < 1}
+	                    <h2 >
+							Dieser Artikel ist leider nicht mehr verfügbar!
+	                    </h2>
+	                    <p>
+							Der Artikel wurde deaktiviert oder bereits an einen anderen Benutzer verkauft.
+	                    </p>
+	                {else}
+	                    <input type="hidden" name="page" value="{curpage}" />
+	                    <input type="hidden" name="ID_AD" value="{ID_AD_MASTER}" />
+	                    <input type="hidden" name="ID_AD_VARIANT" value="{ID_AD_VARIANT}" />
+	                    {if ID_TRADE}
+	                        <input type="hidden" name="ID_TRADE" value="{ID_TRADE}" />
+	                    {endif}
+	
+	                    {if err_agb}
+	                        <p class="alert alert-danger">
+								Es ist ein Fehler aufgetreten!<br />
+								Bitte akzeptieren Sie die AGB!
+	                        </p>
+	                    {endif}
+	                    {if err_trade}
+	                        <p class="alert alert-danger">
+								Es ist ein Fehler aufgetreten!<br />
+								Die benötigten Daten konnten nicht geladen werden!
+	                        </p>
+	                    {endif}
+	                    {if err_amount}
+	                        <p class="alert alert-danger">
+								Es ist ein Fehler aufgetreten!<br />
+								Sie haben eine ungütige Menge angegeben!
+	                        </p>
+	                    {endif}
+						{if err_payment_adapter}
+							<p class="alert alert-danger">
+								Die ausgewählte Zahlungsweise ist für diesen Artikel nicht verfügbar.
+							</p>
+						{endif}
+
+	                    {if MENGE>0}
+	                        <div class="control-group">
+	                            <label class="control-label"><strong>Menge:</strong></label>
+	                            <div class="controls">
+	                                <input type="text" onkeyup="UpdateMenge(this);" class="input-small" name="MENGE" value="{MOQ}" />
+	                                <span class="help-block">
+	                                	({if MOQ > 1}Mindestens {MOQ}, maximal {MENGE}{else}Maximal {MENGE}{endif})
+	                                </span>
+	                            </div>
+	                        </div>
+	                    {endif}
+	                        <div class="control-group">
+	                            <label class="control-label"><strong>Anmerkungen:</strong></label>
+	                            <div class="controls">
+	                            	<textarea name="REMARKS" class="input-xlarge" rows="4"></textarea>
+	                            </div>
+	                        </div>
+
+						{if PAYMENT_ADAPTER}
+							<div class="control-group">
+								<label class="control-label"><strong>Zahlungsweise:</strong></label>
+								<div class="controls">
+									<select name="payment_adapter">
+										{PAYMENT_ADAPTER}
+									</select>
+							</div>
+						{endif}
+	
+	                    <table class="table table-condensed">
+	                        <thead>
+	                            <tr>
+	                                <th>
+										Posten
+	                                </th>
+	                                <th>
+										Preis
+	                                </th>
+	                            </tr>
+	                        </thead>
+	                        <tr>
+	                            <td>
+									Artikelpreis:
+	                            </td>
+	                            <td class="align-right">
+	                                <span id="product_price">{topreis_ex(product_price)}</span> {CURRENCY_DEFAULT}
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td>
+	                                <strong>Gesamtkosten</strong>
+	                            </td>
+	                            <td class="align-right">
+	                                <strong><span id="full_price">{topreis_ex(PREIS_KOMPLETT)}</span> {CURRENCY_DEFAULT}</strong>
+	                            </td>
+	                        </tr>
+	                    </table>
+	
+	                    <p>
+	                        <strong>
+								Der Verkauf erfolgt unter Vorbehalt der Verf&uuml;gbarkeit!<br />
+									Der Kauf ist rechtsverbindlich und kann nicht storniert werden!
+	                        </strong>
+	                    </p>
+	
+	
+	                    <label class="checkbox">
+	                        <input type="checkbox" id="AGB" name="AGB" value="1" class="nob" required="required" />
+							Ich habe die AGB und die Widerrufsbelehrung gelesen und verstanden!
+	                    </label>
+	                    <p>
+	                        <input class="btn btn-success" type="submit" value="Rechtsverbindlich kaufen" />
+	                    </p>
+	                {endif}
+	            </div>
+	        </div>
+	        <div class="span6">
+	            <div class="row-fluid">
+	                <div class="span8">
+	                    <table class="adTable">
+	                        <tr>
+	                            <td>
+	                                <strong>Anzeigennummer:</strong>
+	                            </td>
+	                            <td>
+	                                {ID_AD}
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td>
+	                                <strong>Preis:</strong>
+	                            </td>
+	                            <td>
+	                                <span style="font-size: 19px;">{topreis_ex(product_price)} {CURRENCY_DEFAULT}</span>
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td>
+	                                <strong>Versandkosten:</strong>
+	                            </td>
+	                            <td>
+						           {if VERSANDOPTIONEN==3}
+										<span class="muted">Versandkosten: {market_article_shipping(ID_AD,VERSANDKOSTEN)}</span>
+						           {else}
+										{if VERSANDOPTIONEN==0}<span class="text-success">Versandkostenfrei</span>{endif}
+										{if VERSANDOPTIONEN==1}<span class="text-error">Nur Selbstabholung</span>{endif}
+										{if VERSANDOPTIONEN==2}<span class="text-error">Auf Anfrage</span>{endif}
+						           {endif}
+						           {if VERSANDKOSTEN_INFO}
+						           		<span class="muted">Versandkostenhinweis: {htm(VERSANDKOSTEN_INFO)}</span>
+						           {endif}	
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td valign="top">
+	                                <strong>Verkäufer:</strong>
+	                            </td>
+	                            <td>
+	                                 
+	                                    {htm(vk_username)}
+	                                 
+	                                {if SCHNITT}
+	                                    <img src="{uri_baseurl(/gfx/stars_{SCHNITT}.png)}" title="Durchschnittliche Bewertung">
+	                                {else}
+										(noch keine Bewertungen)
+	                                {endif}
+	                                <br />
+									angemeldet seit {STAMP_REG} als {htm(UGROUP)}
+	                            </td>
+	                        </tr>
+	                    </table>
+	                </div>
+	                <div class="span4">
+	                    <b>
+	                        Artikelstandort
+	                    </b>
+	                    <table>
+	                        <tr>
+	                            <td>
+	                                <strong>Land:</strong>
+	                            </td>
+	                            <td>
+	                                {htm(product_country)}
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td>
+	                                <strong>PLZ:</strong>
+	                            </td>
+	                            <td>
+	                                {product_zip}
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td>
+	                                <strong>Ort:</strong>
+	                            </td>
+	                            <td>
+	                                {htm(product_city)}
+	                            </td>
+	                        </tr>
+	                    </table>
+	                </div>
+	            </div>
+	
+	            <span class="lead">
+					Rechtlich Verantwortlicher für dieses Angebot
+	            </span>
+	            <p>
+	                {htm(ANBIETER_FIRMA)}<br />
+	                {htm(ANBIETER_NAME)}<br />
+	                {htm(ANBIETER_STRASSE)}<br />
+	                {htm(ANBIETER_PLZ)}, {htm(ANBIETER_ORT)}<br />
+	                <br />
+	                {htm(ANBIETER_COUNTRY)}
+	            </p>
+	            {if ANBIETER_UMSTG}
+	                <p>
+						Umsatzsteuer ID: {htm(ANBIETER_UMSTG)}
+	                </p>
+	            {endif}
+	
+	            {if AGB}
+	            <span class="lead">
+					AGB des Anbieters
+	            </span>
+	            <p>
+	            <div style="overflow: auto;max-height:180px;">
+	                {text(AGB)}
+	            </div>
+	            </p>
+	            {endif}
+	
+	            {if WIDERRUF}
+	            <span class="lead">
+					Widerrufsbelehrung
+	            </span>
+	            <p>
+	            <div style="overflow: auto;max-height:180px;">
+	                {text(WIDERRUF)}
+	            </div>
+	            </p>
+	            {endif}
+	        </div>
+	    </div>
+	</form>
+{endif}
+{endif}

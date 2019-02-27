@@ -1,0 +1,57 @@
+<div id="myContactsAddContainer">
+	<script type="text/javascript">
+		$(function() {
+			$(".cancelForm").click(function() {
+				HideDialog();
+			});
+			$(".closeSuccessForm").click(function() {
+                $(".userContactAdd").remove();
+                HideDialog();
+			});
+			
+			$("#myContactsAddFormular").submit(function() {
+				var formular = $(this);
+				$.ajax({
+					url: '{uri_action(my-contacts-add,{ID_USER},add)}',
+					data: formular.serialize(),
+					type: 'POST',
+					success: function(response) {
+						$("#myContactsAddContainer").html(response);
+					}
+				})
+				return false;
+			}) 
+		})
+	</script>
+	
+	{if ERROR}
+        <div class="alert alert-danger">
+		<h2>An error has occurred</h2>			
+		
+		{if ERROR_USER_NOT_FOUND}ERROR_USER_NOT_FOUND{endif}
+		{if ERROR_FAIL}ERROR_FAIL{endif}
+        </div>
+	{else}
+		{if SUCCESS}
+			<p class="lead">Your contact request was sent successfully!</p>
+			<p>
+				<input type="button" value="Fenster schlie&szlig;en" class="closeSuccessForm btn btn-default " />
+			</p>
+		{else}
+
+			<p>
+                Do you want to add the user <strong>{NAME}</strong> as a contact?
+                    Optional you can send the user a message for contacting.
+
+            </p>
+				
+			<form id="myContactsAddFormular" action="#" method="post">
+				<label>Message:</label><br />
+				<textarea name="message" class="form-control"></textarea>
+				<br /><br />
+				<input type="button" class="btn btn-danger cancelForm" value="Abbrechen" />
+                <input type="submit" class="btn btn-success" value="Kontakt hinzuf&uuml;gen" />
+			</form>
+		{endif}
+	{endif}
+</div>

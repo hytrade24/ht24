@@ -1,0 +1,23 @@
+<tr>
+    <td class="design-action-buttons">
+        <!-- href="{uri_baseurl(index.php?page=artikel-suche&AGENT={ID_AD_AGENT})}" -->
+        <a href="{uri_action(artikel-suche)}?AGENT={ID_AD_AGENT}" title="Jetzt ausf&uuml;hren" class="btn btn-default">
+            <i class="glyphicon glyphicon-play"></i>
+		</a>
+    </td>
+	<td title="Beim letzten Lauf wurden {LAST_RUN} Ergebnisse gefunden">
+		{LAST_RUN}
+	</td>
+    <td>
+        {htm(SEARCH_NAME)}
+    </td>
+    <td>
+        {if SEARCH_MAN}{htm(SEARCH_MAN_TXT)}{else}---{endif}
+    </td>
+    <td>
+        {if SEARCH_KAT}{htm(SEARCH_KAT_TXT)}{else}---{endif}
+    </td>
+    <td>
+        {if SEARCH_USER}{htm(SEARCH_USER_TXT)}{else}---{endif}
+    </td>
+</tr>

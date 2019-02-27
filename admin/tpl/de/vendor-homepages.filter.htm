@@ -1,0 +1,70 @@
+<form data-action="filter-apply">
+    <table id="datatable-{hash}-filter-table" class="liste" cellspacing="0" style="width: 100%;">
+        <tbody>
+            <tr>
+                <td>
+                    <label class="mdl-dropdown__label" for="datatable-{hash}-filter-ACTIVE">
+                        Status
+                    </label>
+                </td>
+                <td>
+                    <select id="datatable-{hash}-filter-ACTIVE" data-filter="ACTIVE" class="mdl-dropdown__input">
+                        <option value="">Alle anzeigen</option>
+                        <option value="0"{if filter_ACTIVE_0} selected{endif}>In Bearbeitung</option>
+                        <option value="1"{if filter_ACTIVE_1} selected{endif}>Aktiv</option>
+                        <option value="2"{if filter_ACTIVE_2} selected{endif}>Abgewiesen</option>
+                        <option value="3"{if filter_ACTIVE_3} selected{endif}>Durch Mitgliedschaftswechsel deaktiviert</option>
+                    </select>
+                </td>
+                <td>
+                    <label class="mdl-dropdown__label" for="datatable-{hash}-filter-DOMAIN_TYPE">
+                        Art der Domain
+                    </label>
+                </td>
+                <td>
+                    <select id="datatable-{hash}-filter-DOMAIN_TYPE" data-filter="DOMAIN_TYPE" class="mdl-dropdown__input">
+                        <option value="">Alle anzeigen</option>
+                        <option value="SUBDOMAIN"{if filter_TOP_SUBDOMAIN} selected{endif}>Nur Sub-Domains</option>
+                        <option value="FULLDOMAIN"{if filter_TOP_FULLDOMAIN} selected{endif}>Nur eigenständige Domains</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="mdl-textfield__label" for="datatable-{hash}-filter-USER_NAME">
+                        Benutzername
+                    </label>
+                </td>
+                <td>
+                    <input id="datatable-{hash}-filter-USER_NAME" data-filter="USER_NAME" class="mdl-textfield__input" type="text" />
+                </td>
+                <td>
+                    <label class="mdl-textfield__label" for="datatable-{hash}-filter-DOMAIN_ANY">
+                        Domain
+                    </label>
+                </td>
+                <td>
+                    <input id="datatable-{hash}-filter-DOMAIN_ANY" data-filter="DOMAIN_ANY" class="mdl-textfield__input" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: right;">
+                    <a href="index.php?page={curpage}" class="button">Zurücksetzen</a>
+                    <button type="submit">Suchen</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+<br />
+ <table id="datatable-{hash}-filter-table" class="liste" cellspacing="0" style="width: 100%;">
+        <tbody>
+            <tr>
+                <td>
+					<iframe id="katframe" src="index.php?lang=de&amp;lang=de&amp;frame=iframe&amp;page=stats&amp;show=vendor_homepages&amp;w=400&amp;get_range=DAY" width="100%" height="200" frameborder="0"></iframe>
+				</td>
+			</tr>
+		</tbody>
+</table>
+<br />
+

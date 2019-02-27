@@ -1,0 +1,27 @@
+<tr>
+    <td>{todate(STAMP)}</td>
+    <td>{totime(STAMP)}</td>
+    <td>{TOTAL_USERS}</td>
+    <td>{TOTAL_MONEY}</td>
+    <td>
+        <a data-button-export="{EXPORT_NO}" title="download"
+           href="index.php?page=lastschrift_check_export&download=true&export={EXPORT_NO}">
+            <img src="gfx/btn.get.gif" alt="Download" />
+        </a>
+    </td>
+    <td>
+        {if IS_EMAIL_SENT == "0"}
+        Nein
+        {else}
+        Ja
+        {endif}
+    </td>
+    <td>
+        {if IS_EMAIL_SENT == "0"}
+        <input name="EXPORT_ID_{EXPORT_NO}" type="checkbox" value="{EXPORT_NO}" />
+        {else}
+        <input name="" type="checkbox" checked disabled />
+        {endif}
+
+    </td>
+</tr>

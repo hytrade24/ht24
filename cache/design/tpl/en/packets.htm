@@ -1,0 +1,138 @@
+{if buy}
+	{if error_noaddress}
+		<div class="alert alert-danger">
+			<h2>Hint</h2>
+			<p>
+			Please amend the following details on your <a href="{uri_action(my-profil)}">profile</a> before you purchase anything
+			<ul>
+				{if error_addr_first}<li>Forename</li>{endif}
+				{if error_addr_last}<li>Surname</li>{endif}
+				{if error_addr_street}<li>Street</li>{endif}
+				{if error_addr_zip}<li>Postcode</li>{endif}
+				{if error_addr_city}<li>Residence</li>{endif}
+			</ul>
+			</p>
+		</div>
+	{else}
+		<h1>
+            Order process<br />
+            <span>Please consider the accuring costs</span>
+		</h1>
+		<p>
+            After checking your choice you can buy the selected
+                package.
+
+		</p>
+		<form method="post" action="{uri_action(packet_buy)}">
+			<h2>Cost</h2>
+			<table class="table">
+				<tr>
+					<th class="align-left">Amount</th>
+					<th class="align-left">Item</th>
+					<th class="align-left">Piece price (Net)</th>
+					<th class="align-left">Net-price</th>
+					<th class="align-left">Gross-price</th>
+				</tr>
+				{liste}
+				<tr>
+					<th>&nbsp;</th>
+					<th>Total cost</th>
+					<th>&nbsp;</th>
+					<th>{topreis_ex(PRICE)} {CURRENCY_DEFAULT}</th>
+					<th>{topreis_ex(PRICE_BRUTTO)} {CURRENCY_DEFAULT}</th>
+				</tr>
+			</table>
+
+			<br />
+
+			<div class="row">
+				{if OPTION_COUPON_ENABLED}
+				<div class="col-xs-8">
+					{subtpl(tpl/{SYS_TPL_LANG}/coupon_widget.htm,*)}
+				</div>
+				{endif}
+				<div class="col-xs-4 pull-right">
+					<input class="btn btn-success pull-right" type="submit" value="Complete order" />
+				</div>
+			</div>
+
+		</form>
+	{endif}
+{else}
+<h1>
+	Buy package<br />
+	<span class="lead">
+		Purchase advert- or imagepackages
+	</span>
+</h1>
+	{if FREE_ADS}
+		<p>
+			The input of adverts are currently free, therefore it is not necessary to buy
+			an advertpackage.
+
+		</p>
+	{else}
+		<p>
+			If your advertpackage is exhausted, you can buy more packages
+			here.
+
+		</p>
+		
+		{if error_not_found}
+	      <div class="text-error">
+	        <p>
+	          The order could not be found. Please try again or contact
+	          the technical support.
+
+	        </p>
+	      </div>
+		{endif}
+	    {if error_no_order}
+	      <div class="text-error">
+	        <p>
+	          You have not selected a(ny) package(s). Please enter the desired amount of packages you want
+	          in front of the desired package.
+
+	        </p>
+	      </div>
+	    {endif}
+
+		{if liste}
+			<form method="post" class="form-inline">
+                <table class="table" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <th>Advertpackage</th>
+                            <th>Content</th>
+                            <th>Price / Terms</th>
+                        </tr>
+                        {liste}
+                    </tbody>
+                </table>
+				<input class="btn btn-success pull-right" type="submit" value="Order package" />
+			</form>
+		{else}
+			<p class="alert alert-danger">There are currently no advertpackages for sale.</p>
+		{endif}
+		{if liste_user}
+		<h1 style="margin-top:10px;">
+			Your acquired packages<br />
+			<span  class="lead">List of all packages</span>
+		</h1>
+		<table class="table table-bordered table-striped table-condensed userSalesList">
+			<tr>
+				<th>Packagename</th>
+				<th>Status</th>
+				<th>Content (available)</th>
+				<th>Confirmed</th>
+				<th class="last">Options</th>
+			</tr>
+			{liste_user}
+		</table>
+		<p>
+			{pager}
+		</p>
+		{endif}
+	{endif}
+{endif}
+

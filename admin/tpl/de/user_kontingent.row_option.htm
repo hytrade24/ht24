@@ -1,0 +1,7 @@
+{if GROUP_BEGIN}
+	<optgroup label="{htm(GROUP_BEGIN)}">
+{endif}
+		<option value="{ID_PACKET}"{if ID_PACKET==FK_PACKET} selected="selected"{endif}>{htm(V1)}</option>
+{if GROUP_END}
+	</optgroup>
+{endif}

@@ -1,0 +1,3504 @@
+abort.price.negotiation: 'Cancel price negotiation!'
+abort.price.negotiation.confrim: 'Attention! Do you really want to cancel this price negotiation?'
+accept: accept
+accept.proposed.price: 'Accept the price negotiation'
+accepted: Accepted
+accepted.prices.add.to.bought: 'Accepted prices will be put automatically into your bought products.'
+accepted.prices.add.to.sales: 'Accepted prices will be put automatically into your sold products.'
+account.my.account: 'My account'
+account.show.profile: 'Show my account'
+acticle.number: 'Product number'
+action: Action
+actions: Actions
+active: Active
+active.displays: 'active displays'
+ad: Artikel
+ad.admin.confirmation: 'There has as yet been no confirmation from the administrator'
+ad.aktivate: 'Activate advert'
+ad.aktivate.remaining: 'Re-Upload advert with remaining time'
+ad.all.add.new: |
+  Here you see all products that you have been uploaded to the marketplace.
+  		To activate a new advert,
+  		<a href="{uri_action(my-marktplatz-neu)}" title="sell product now">
+  			please click here
+  		</a>.
+ad.all.inactive: 'Show all inactive'
+ad.amount.refresh: 'To extend the advert, please update the on-hand quantity.'
+ad.as.submission: 'Use advert as a sample'
+ad.being.confirmed: 'Waiting on aproval through an administrator'
+ad.buy.accept.agb: 'I have read and understood the GTC and the cancellation policy!'
+ad.buy.error.could.not.load.data: 'The required files failed to load!'
+ad.buy.error.gtc: 'Please accept the GTC!'
+ad.buy.error.payment: 'The chosen payment method is unavailable for this product.'
+ad.buy.error.quantity.invalid: 'You have given an invalid amount!'
+ad.buy.header: 'Buy product'
+ad.buy.info.conditionally.availability: |
+  The sale occur under the condition of availability of services!<br />
+  									Every purchase is legally binding and can not be canceled!
+ad.buy.item: Product
+ad.buy.itemprice: Productprice
+ad.buy.legal.in.charge: 'Legally responsible for this offer'
+ad.buy.minmax.quantity: 'Maximum {MENGE}'
+ad.buy.minmax.quantity.moq: 'Minimum {MOQ}, maximum {MENGE}'
+ad.buy.price: Price
+ad.buy.submit: 'Purchase compulsory'
+ad.buy.totalprice: 'Total costs'
+ad.cart: 'Shopping cart'
+ad.cart.addarticletocart: 'Put product in the shopping cart'
+ad.cart.address.invoice: 'Your billing address'
+ad.cart.address.invoice.hint: 'Bitte geben Sie Ihre Rechnungsadresse an'
+ad.cart.address.shipping: 'Your delivery address'
+ad.cart.address.shipping.hint: 'Bitte geben Sie Ihre Versandadresse an'
+ad.cart.addtocart: 'Add to shopping cart'
+ad.cart.article.by.seller: 'Product from seller {SELLER}'
+ad.cart.article.with.payment.method: 'with the payment method ''{htm(PAYMENT_ADAPTER)}'''
+ad.cart.articles: 'Products in your shopping cart'
+ad.cart.cancelation.terms: 'Cancellation policy'
+ad.cart.checkout: 'Proceed to checkout'
+ad.cart.checkout.cancel: 'Back to shopping cart'
+ad.cart.checkout.done.email.hint: 'You will receive shortly an E-mail with a link where you can  pay and see all your previous purchases.'
+ad.cart.checkout.done.lead: 'Confirmation of your purchase'
+ad.cart.checkout.done.long: |
+  We thank you for your purchase on our marketplace. A confirmation E-mail has been sent, with the
+          most important informations summarized.
+          <br>
+          Once the seller confirmed the purchase, you will receive an E-mail with the contact- and paymentinformations.
+ad.cart.checkout.done.show.bought: 'A summary of your previous purchases can be found here'
+ad.cart.checkout.done.show.bought.button: 'Go to my purchases'
+ad.cart.checkout.done.title: 'Thanks you for your purchase'
+ad.cart.checkout.lead: 'Please check your details on this page, before you complete the purchase'
+ad.cart.checkout.prompt.continue.button: 'Continue purchase without an account'
+ad.cart.checkout.prompt.continue.lead: 'If you are new on our marketplace and you want to proceed to your order without an account, click on the following button:'
+ad.cart.checkout.prompt.continue.register.lead: |
+  Do you want to use all advantages on our marketplace ? Then register now with your personal
+  							account.
+ad.cart.checkout.prompt.continue.register.title: 'Register on the marketplace?'
+ad.cart.checkout.prompt.continue.title: 'Continue without an account?'
+ad.cart.checkout.prompt.login.lead: |
+  If you have an existing login on our marketplace already, you can login here and
+  								continue your purchase on your account.
+ad.cart.checkout.prompt.login.title: 'Do you have an account already?'
+ad.cart.checkout.prompt.register..continue.button: 'Register on the marketplace'
+ad.cart.checkout.prompt.title: 'Continue purchase without logging in'
+ad.cart.checkout.prompt.title.no.unregistered: 'Please login to proceed'
+ad.cart.checkout.submit: 'Purchase compulsory'
+ad.cart.checkout.title: 'Complete order'
+ad.cart.checkout.warnings: |
+  You order goods from various seller, who each have their own GTC  and withdrawal conditions.
+                      <br><br>
+                      <strong>
+                          The sale occur under the condition of availability of services
+                          Every purchase is legally binding and can not be canceled!
+                      </strong>
+ad.cart.continue.shopping: 'Continue shopping'
+ad.cart.do.you.really.want.delete.from.cart: 'Do you really want to delete this product from your shopping cart ?'
+ad.cart.empty: 'You have no products in your shopping cart.'
+ad.cart.error.gtc: 'You have not accepted the GTC and the withdrawal conditions of every seller.'
+ad.cart.error.payment: 'The chosen payment method is unavailable for this seller.'
+ad.cart.error.quantity: 'There are only {COUNT} pieces left. Please reduce your requested quantity.'
+ad.cart.gtc: 'GTC of the seller'
+ad.cart.gtc.and.cancelation.checkbox: 'I read and understood the <a href="#" onclick="showAgb({ID_AD}); return false;">GTC and the withdrawal conditions</a>'
+ad.cart.info.own.removed: |
+  The following products in your shopping cart are offered by yourself and were deleted
+                          from your shopping cart because of that.
+ad.cart.item.added: 'The product was put into your shopping cart'
+ad.cart.notice.profile: 'Please complete the following details on your <a href="{uri_action(my-profil)}">profile</a> before you buy something:'
+ad.cart.order.notes: 'Annotation on the order to the seller {SELLER}'
+ad.cart.overview: 'Order summary'
+ad.cart.payment: 'Payment method'
+ad.cart.payment.notice.support: 'Please consider that, on some circumstances, not every payment method is supported by every seller.'
+ad.cart.payment.prefered: 'Your prefered payment method'
+ad.cart.pieces: Pieces
+ad.cart.price.articles: 'Total productprice'
+ad.cart.price.including.shipping.for.sellers.above: |
+  Gesamtpreis inkl. Versand:<br />
+                      <strong>{topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT}</strong><br />
+                      on all executed sellers above
+ad.cart.price.shipping: 'Total shippingcosts'
+ad.cart.price.total: totalprice
+ad.cart.remove.text: 'Delete product from shopping cart'
+ad.cart.responsible: 'Legally responsible'
+ad.cart.show: 'Look at shopping cart'
+ad.contact.error.ad.not.found: 'The advert could not be found.'
+ad.contact.header: 'Ask a question to &quot;{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}&quot;'
+ad.contact.not.logged.in.please.provide.email: 'You are no longer logged in as a user. Please enter your name and your E-mail-adress!'
+ad.contact.request.title: 'Send Inquiry'
+ad.contact.send.message: 'Send message'
+ad.contact.success.message.delivered: 'Your message has been successfully delivered!'
+ad.count: Count
+ad.counter.memorized: 'Advert {adReminderCount}x memorized'
+ad.counter.memorized.text: '{adReminderCount} x memorized'
+ad.counter.viewed: 'View at advert {adClicks}x'
+ad.counter.viewed.text: '{adClicks} x viewed'
+ad.create.article.bulk.back.to.manufacturers: 'Zurück zur Auswahl von Produktklasse / Hersteller'
+ad.create.article.bulk.cancel: Abbrechen
+ad.create.article.bulk.cancel.confirm: 'Möchten Sie den Einstell-Prozess wirklich abbrechen?'
+ad.create.article.bulk.category: Produktklasse
+ad.create.article.bulk.category.hint: 'Es sind aktuell leider keine Produkte verfügbar.'
+ad.create.article.bulk.description.processing: 'Bitte warten Sie während die Artikel verlängert werden ... ({PROCESS_DONE} von {PROCESS_COUNT} fertig)'
+ad.create.article.bulk.manufacturer: Hersteller
+ad.create.article.bulk.manufacturer.hint: 'Bitte wählen Sie zunächst eine Produktklasse aus.'
+ad.create.article.bulk.manufacturer.selected: 'Produktklasse / Hersteller'
+ad.create.article.bulk.product.details: Produkt-Details
+ad.create.article.bulk.product.details.intro: |
+  Klicken Sie auf das <i class="glyphicon glyphicon-info-sign"></i>-Symbol eines Produkts um sich 
+                Detail-Information zu diesem anzeigen zu lassen.
+ad.create.article.bulk.product.hint: 'Bitte wählen Sie zunächst einen Hersteller aus.'
+ad.create.article.bulk.product.select.all.results: 'Alle <span class="bulk-create-value-results">0</span> Produkte auswählen'
+ad.create.article.bulk.product.select.none.results: 'Alle <span class="bulk-create-value-results">0</span> Produkte abwählen'
+ad.create.article.bulk.product.submit.count: '{COUNT} Artikel einstellen'
+ad.create.article.bulk.product.submit.generic: 'Artikel einstellen'
+ad.create.article.bulk.products: Produkte
+ad.create.article.bulk.selected.count: '{COUNT} Produkt(e) ausgewählt.'
+ad.create.article.bulk.selected.none: 'Keine Produkte ausgewählt.'
+ad.create.article.bulk.selected.online: 'Produkt bereits im Angebot.'
+ad.create.article.bulk.title: 'Mehrere Artikel einstellen'
+ad.create.article.bulk.title.processing: 'Artikel werden eingestellt...'
+ad.create.article.subtitle: 'Please enter the basic informaion for your advert'
+ad.create.article.title: Product-Description
+ad.create.back: Back
+ad.create.category.confirm: 'Do you want to choose "{NAME}" as a category?'
+ad.create.category.none.avaiable: '<strong>No categories available!</strong> There are no categories available for this membership/user-group.'
+ad.create.category.preselected: 'The following category has been set for this product already, do you want to keep this category?'
+ad.create.category.select.new.category: 'No, choose different category'
+ad.create.category.select.this.category: 'Yes, use category "{PRESELECTED_FK_KAT_NAME}" '
+ad.create.category.subtitle: 'Pick the category, which describes your product the best'
+ad.create.category.title: Category-selection
+ad.create.confirm.subtitle: 'Please confirm your entries once again before your product will be saved'
+ad.create.confirm.title: 'Confirm entries'
+ad.create.details.title: Artikel-Details
+ad.create.error.alert: 'Error while saving:'
+ad.create.error.confirm: 'Error while confirming the advert!'
+ad.create.error.upload.failed: 'Upload failed!'
+ad.create.fields.save: 'Do you want to save the made changes?'
+ad.create.hdb..error.product.nf: |
+  <strong>No suitable product has been found</strong>
+  				<br>
+  				The combination of manufacturer and product-Description which you were giving are currently unknown to us.
+  				Please check for possible typos. If you are sure that you gave us the
+  				correct information, click on the following button to continue.
+  			</p>
+  			<a href="#" onclick="selectProduct(); return false;" class="btn btn-default">Create product {SEARCH_PRODUCT}</a>
+ad.create.hdb.dont.want.use.it: '<a href="#" onclick="selectProduct(); return false;">I want to put my product by myself in instead of using the product-database</a>'
+ad.create.hdb.error.product.nfa: |
+  You have not found the product in our database?
+  			<br>
+  			Please check if for possible typos. If you are sure that you gave us the
+  			correct information, click on the following link to continue.<br><br>
+  			<a href="#" onclick="selectProduct(); return false;">I want to put a different product in</a>
+ad.create.hdb.error.tooshort: 'Please enter at least 3 characters for the search query'
+ad.create.hdb.intro: |
+  Search via the following form for manufacturer and product-Description of your product, which you want to offer.
+  			All technical specifications will be set for the product, if it is already in our database.
+ad.create.hdb.resulttable.text: |
+  We have found {ALL} results for the search query <strong>{if SEARCH_EAN}EAN {htm(SEARCH_EAN)}{else}{if SEARCH_PRODUCT}Produkt {htm(SEARCH_PRODUCT)}{endif}{endif}</strong>
+  				Please select your desired product.
+ad.create.hdb.resulttable.title: 'Product search'
+ad.create.hdb.subtitle: |
+  You can search for the article, which you want to put in, in our product-database and overwrite the
+  		description and specification
+ad.create.hdb.title: 'Search product and manufacturer'
+ad.create.images.assign.to.all.variants: All
+ad.create.images.assign.to.variants: 'Match variety'
+ad.create.images.variants: Varieties
+ad.create.images.variants.cancel: Canel
+ad.create.images.variants.save: Save
+ad.create.input.valid: 'Input correct or optional.'
+ad.create.location.subtitle: 'Please enter the location of the article'
+ad.create.location.title: Article-location
+ad.create.map.hide: 'Hide map'
+ad.create.map.show: 'Show map'
+ad.create.media.document.file: 'Show {FILENAME} file'
+ad.create.media.document.formats: 'Accepted file formats:'
+ad.create.media.document.notice.free: |
+  The first <strong><span id="documents_free_count">{downloads_free}</span> uploads</strong> are free,
+                              following uploads will be subtracted from your uploadpackage.
+ad.create.media.document.notice.left: 'There are <strong><span id="documents_left">{downloads_available}</span> file-upload(s)</strong> possible.'
+ad.create.media.document.notice.maximum.reached: |
+  You have reached the maximal count of documents!<br>
+                          To upload different documents, you have to delete at least one document
+ad.create.media.document.notice.overall: 'You can upload a total of <strong><span id="documents_max">{downloads_limit}</span> documents</strong>.'
+ad.create.media.document.upload: 'Upload file:'
+ad.create.media.error.size: 'Die Datei "{FILENAME}" überschreitet die maximal erlaubte Größe.'
+ad.create.media.image.formats: 'Accepted image formats: jpg/jpeg, png and gif'
+ad.create.media.image.notice.free: |
+  The first <strong><span id="images_free_count">{images_free}</span> images</strong>
+                              following uploads will be subtracted from your imagepackage.
+ad.create.media.image.notice.left: 'There are  <strong><span id="images_left">{images_available}</span> image-upload(s)</strong> possible.'
+ad.create.media.image.notice.maximum.reached: |
+  You have reached the maximal count of images!<br>
+                          To upload different images, you have to delete at least one image
+ad.create.media.image.notice.overall: 'You can upload a total of <strong><span id="images_max">{images_limit}</span> images</strong>.'
+ad.create.media.image.upload: 'Upload image:'
+ad.create.media.size.limit: 'Maximale Dateigröße: {filesize({UPLOAD_MAX_FILESIZE})}'
+ad.create.media.subtitle: 'Attach images, files and videos'
+ad.create.media.title: Media
+ad.create.media.upload.active: Uploading...
+ad.create.media.video.notice.free: |
+  The first <strong><span id="videos_free_count">{videos_free}</span> videos</strong> are free,
+                              following uploads will be subtracted from your advertpackage.
+ad.create.media.video.notice.left: 'There are <strong><span id="videos_left">{videos_available}</span> video-upload(s)</strong> possible.'
+ad.create.media.video.notice.maximum.reached: |
+  You have reached the maximal count of videos!<br>
+                          To upload different videos, you have to delete at least one video
+ad.create.media.video.notice.overall: 'You can upload a total of <strong><span id="videos_max">{videos_limit}</span> videos</strong>.'
+ad.create.media.video.upload: 'Upload video:'
+ad.create.packet.lead: 'Please select the advertpackage'
+ad.create.packet.not.available: '<strong>No advertpackages available!</strong>'
+ad.create.packet.not.available.buy: |
+  To place advertisements you have to buy an
+                  <a href="{uri_action(packets)}">advertpackage first</a>.
+ad.create.packet.subtitle: 'Please select the advertpackage you want to use'
+ad.create.packet.title: Advertpackage
+ad.create.packet.unpaid: 'The follow advertpackages are yet to be paid:'
+ad.create.payment.configuration: |
+  Sie können ihre Zahlungsweisen unter "Mein Account > Meine Einstellungen" über den Reiter "Zahlungsweisen" konfigurieren.
+                  <a target="_blank" href="{uri_action(my-payment-adapter)}">Klicken Sie hier</a> um diese Konfiguration jetzt zu öffnen.
+ad.create.payment.description: 'Einstellgebühr für {COUNT} Anzeigen'
+ad.create.payment.not.configured: 'Nicht konfiguriert'
+ad.create.rent.price.missing: 'Bitte geben Sie mindestens einen Mietpreis ein!'
+ad.create.request.subtitle: 'Bitte geben Sie die Rechnungs- und Lieferadresse für den gesuchten Artikel ein.'
+ad.create.sales.option.invalid: 'Unzulässige Verkaufsoption!'
+ad.create.save.moreactions: 'More actions'
+ad.create.save.moreactions.bookpremiumfeatures: 'Book Premium-Features now!'
+ad.create.save.moreactions.createanotherad: 'Place more advertisements'
+ad.create.save.moreactions.edit: 'Edit advertisement'
+ad.create.save.moreactions.tomarketplace: 'Go to marketplace'
+ad.create.save.moreactions.tomyaccount: 'Go to my account'
+ad.create.save.moreactions.tomyads: 'Go to my advertisements'
+ad.create.save.successinfotext: |
+  <h2>Advertisement was saved succesfully</h2>
+              <p>
+                  Your advertisement was saved succesfully and is accessable in
+                  about a Minute.
+              </p>
+ad.create.saving: 'Inputs will be saved...'
+ad.create.step.dirty.button.cancel: Cancel
+ad.create.step.dirty.button.cancel.long: 'Cancel and continue editing the current step'
+ad.create.step.dirty.button.discard: 'Discard changes'
+ad.create.step.dirty.button.discard.long: 'Discard changes and go to the selected step'
+ad.create.step.dirty.button.save: 'Save changes'
+ad.create.step.dirty.button.save.long: 'Save changes amd go to the selected step'
+ad.create.step.dirty.description: |
+  You still have unsaved changes on the current site.
+                              Should it be saved, before you switch the step?
+ad.create.step.dirty.title: 'Unsaved changes available!'
+ad.create.step.loading: 'Loading step...'
+ad.create.step.saving: 'Inputs are saving...'
+ad.create.submit.new: 'Definitely publish article'
+ad.create.submit.save.finish: 'Speichern und abschließen'
+ad.create.submit.step: Next
+ad.create.submit.update: 'Saving changes'
+ad.create.variants.lead: |
+  Define the availability and the price of your productvarieties. Every row in the following table is equal to one possible
+      varietycombination. Unavailable combinations can
+ad.create.variants.subtitle: 'Please enter the price and the amount for the chosen productvarieties'
+ad.create.variants.title: Article-variety
+ad.deactivated: 'An advertisement has been deactivated!'
+ad.deaktivate: 'Deactivate advertisement'
+ad.delete: 'Delete advertisement'
+ad.delete.confirm: 'Attention! Deleting the advertisement is irrevocable, are you sure to proceed?'
+ad.deleted: 'An ad has been deleted!'
+ad.details.article.heading: 'Details to the advertisement'
+ad.details.request.heading: 'Details zum Gesuch'
+ad.details.request.vendor.heading: 'Details zur Suchenden'
+ad.details.vendor.heading: 'Details to the seller'
+ad.disable: 'Deactivate advertisement#'
+ad.doesnt.exist: |
+  This advertisement no longer exists.
+  				Please create a <a href="{uri_action(my-marktplatz-neu)}">new advertisement</a>.
+ad.downloads.name: Filename
+ad.downloads.size: Filesize
+ad.downloads.title: Description
+ad.downloads.type: Filetype
+ad.edit: 'Edit advertisement'
+ad.edit.tooltip: 'Edit / modify advertisement'
+ad.enable: 'Activate advertisement'
+ad.error.disabled.or.sold.out: 'The article was deactivated or was sold to another user.'
+ad.error.maybe.not.available: 'It is possible that the desired advertisement is no longer up to date.'
+ad.error.not.found: 'Advertisements has not been found!'
+ad.error.not.in.stock: 'This article is no longer available!'
+ad.error.upload.format: 'Forbidden file format!'
+ad.error.upload.limit: 'No more files possible.'
+ad.extend: 'Extend advertisement'
+ad.extend.by: 'Extend advertisement to'
+ad.extend.error.kat.paid: 'To extend one or more advertisements you will need a chargeable advertpackage!'
+ad.extend.error.unknown: 'Unexpected error while activating the advertisement!'
+ad.extended: 'Advertisement extended'
+ad.extended.success: 'Your advertisement was succesfully extended!'
+ad.id: 'Advertisement Nr.'
+ad.location: Article-location
+ad.message.request.id: Article-Nr.
+ad.moderate.confirmed: 'Release declined'
+ad.moderate.confirmed.long: 'You have declined the release of this advertisement.{if AD_DECLINE_REASON} Reason:<br />{text(AD_DECLINE_REASON)}{endif}'
+ad.moderate.decline: Decline
+ad.moderate.title: 'Moderate advertisement:'
+ad.moderate.unlock: 'Release advertisement'
+ad.moq: 'At least {COUNT}'
+ad.my.premium.pending: |
+  <strong>You have already booked the Top-Features for this advertisement!</strong><br />
+          These will be active after the following bills will be paid:
+ad.new: New
+ad.number: Advertisement-Nr.
+ad.packet: Advertpackage
+ad.packets: Advertpackages
+ad.paid.files: 'Paid Product files'
+ad.pieces: Pieces
+ad.price: Price
+ad.price.discount: 'instead {PRICE}'
+ad.price.negotiable: 'The articleprice is negotiable'
+ad.price.negotiable.abbr: NG
+ad.price.overall: Totalprice
+ad.price.per.piece: 'Piece price'
+ad.price.starting.at: 'ab {topreis_ex(PREIS_MIN)} {CURRENCY_DEFAULT}'
+ad.qrcode: 'Show QR-Code'
+ad.qrcode.download: Download
+ad.qrcode.forum: 'Integrate in forums'
+ad.qrcode.homepage: 'Integrate in websites'
+ad.qrcode.more: |
+  If you want to integrate the QR-Code on the website or the forums, just copy the associated code
+                          and place it in the website / forum.
+ad.qrcode.title: 'QR-Code for the article'
+ad.quantity: quantity
+ad.recommend: 'Recommend advertisement'
+ad.relist: 'Restore advertisement'
+ad.reminder.add: 'Bookmark product'
+ad.reminder.added: 'Product already bookmarked'
+ad.rent.duration: 'Lenght of lease'
+ad.rent.price: Price
+ad.rent.price.per.day: 'From {topreis(PREIS)} {CURRENCY_DEFAULT} / day'
+ad.request: Gesuch
+ad.request.quantity: gesucht.
+ad.restricted.b2b: 'This offer is directed to tradepersons only'
+ad.restricted.b2b.abbr: B2B
+ad.restricted.b2b.long: |
+  This offer is directed to <strong>tradepersons</strong> only.
+                                  <br>
+                                  Please log in as a trader, to display
+                                  all productinformation.
+ad.sales.any: 'All types of sales'
+ad.sales.article.request: Request
+ad.sales.help: 'Please select the desired sales option'
+ad.sales.none: Insertion
+ad.sales.regular: 'Regular sale'
+ad.sales.rent: 'Rent out'
+ad.sales.request: 'Price on request'
+ad.sales.request.plus.price: 'Display price without sellingfunction'
+ad.sales.title: Sales-option
+ad.seller: Seller
+ad.shipping: 'Shipping costs'
+ad.shipping.addition: 'zzgl. Versandkosten'
+ad.shipping.free: 'Free shipping'
+ad.shipping.included: 'shipping costs'
+ad.shipping.notice: 'Hit for shipping costs'
+ad.shipping.on_request: 'Shipping costs on request'
+ad.shipping.pick_up: 'Will collect only'
+ad.statistics: Statistics
+ad.status.b2binfotext: |
+  <strong>Attention!</strong><br>
+  				This offer is directed to <strong>tradepersons</strong> only.
+  				<br>
+  				Please log in as a trader, to display
+  				all productinformation.
+ad.status.deactiveinfotext: |
+  <h2>Advertisement is currently deactivated!</h2>
+              <p>
+                  This advertisement is in public currently inaccessible.
+                  Click on "activate" to make the advertisement open for public again.
+              </p>
+ad.status.declinedinfotext: |
+  <h2>The Advertisement has been declined!</h2>
+              <p>
+                  The release of your advertisement was declined by an administrator!
+                  You received an E-Mail with an assessment. Please edit the advertisement
+                  and correct the criticising details. An administrator will check the advertisement afterwards.
+              </p>
+ad.status.notfoundinfotext: |
+  <h2>Advertisement has not been found!</h2>
+  			<p>It is possible that the desired advertisement is no longer up to date.</p>
+ad.status.sale: Sale
+ad.status.top: 'Top advertisement'
+ad.status.unconfirmedinfotext: |
+  <h2>Advertisement will be checked soon!</h2>
+              <p>
+                  Your advertisement has been saved and will be checked by an administrator shortly.
+                  The advertisement is not visible for public until it was checked!
+              </p>
+ad.time.extend: 'Extend duration of the advertisements'
+ad.top.book: 'Book Top-Advertisement'
+ad.top.book.now.intro: 'Book now {htm(PRODUKTNAME)} as a Top-Advertisement and receive exclusive advantages:'
+ad.top.error.runtime: 'Error while checking the duration! Please contact an administrator.'
+ad.trade.accept.agb: 'I have read and understood the <a href="#" onclick="showAgb({ID_AD}); return false;">GTC and the cancellation policy</a>!'
+ad.trade.back.trade: 'To overview!'
+ad.trade.cancel.trade: 'Cancel price negotiation!'
+ad.trade.current.price: 'Current price'
+ad.trade.do.you.want.cancel.trade: 'Attention! Do you really want to cancel the price negotiation?'
+ad.trade.error.bid.count.exceed: 'Your bid count has been exceeded.'
+ad.trade.error.cancel.current.bid.before.other.quantity: 'Please cancel your current bid before you bid a different quantity.'
+ad.trade.error.minimum.order.moq: 'You have to order at least {MOQ}.'
+ad.trade.error.proposed.price.to.less: 'Your proposed price is too low!'
+ad.trade.error.quantity.not.in.stock: 'The desired quantity is not in stock.'
+ad.trade.header: 'Negotiate the price'
+ad.trade.info.legal: |
+  Your proposed price is binding for
+                                          <br />max. {trade_max_hours}
+                                          hours valid!<br />
+                                          A legally binding purchase will come about, if the
+                                          seller has agreed to your proposed price!
+ad.trade.minimum.moq: 'Minimum {MOQ}'
+ad.trade.new.trade.header: 'Give a new price proposal'
+ad.trade.partner: Partner
+ad.trade.proposed.price: 'Price proposal'
+ad.trade.proposed.price.per.unit: 'Proposed price (per untit)'
+ad.trade.quantity.available: '{product_amount} available'
+ad.trade.submit: 'Submit binding offer'
+ad.trade.trade.is.canceled: 'The price negotiation has been canceled!'
+ad.unconfirmed: 'Is checking'
+ad.upload.confirm: 'Do you want to upload the selected file?'
+ad.upload.formats.allowed: 'Allowed file formats: {htm(FORMATS_ALLOWED)}'
+ad.uploads.free: |
+  The first <strong>{COUNT} uploads</strong> are free, every other
+                  upload will be subtracted from your uploadpackage.
+ad.uploads.left: '<strong>{COUNT} file-upload</strong> left.'
+ad.uploads.left.plural: '<strong>{COUNT} file-uploads</strong> left.'
+ad.uploads.present: 'Already uploaded files'
+ad.uploads.title: 'Upload files'
+ad.video.view: 'Watch video'
+ad.view: 'Look at {htm(PRODUKTNAME)}'
+ad.view.downloads.show: 'Show downloads'
+ad.view.generic: 'View product'
+ad.view.images.show: 'Show images/videos'
+ad.view.map.show: Advert-location
+ad.view.map.showarticleonmap: 'Show advertisement on the map'
+ad.view.sales.request: 'Send request'
+ad.view.sales.request.offer: 'Angebot senden'
+ad.violation: Violation
+ad.violation.intro: 'If you think that the advertisement violates the guidelines of the marketplace, you can inform the operator about that.'
+ad.violation.report: 'Report violation'
+ad.violation.sent: 'The violation has been reported and will be checked shortly.'
+ad.violation.submit: 'Report now'
+ad.violation.user.email: 'Ihre E-Mail Adresse'
+ad.violation.user.name: 'Ihr Name'
+ad.violation.warning: 'Abusing this function is not allowed! Your IP {IP} will be saved for security reasons.'
+ad.was.extended: 'Advertisement(s) extended successfully!'
+ad.watchlist: Watchlist
+adagent: Advert-agent
+adagent.add: 'Add advert-agent'
+adagent.add.help: |
+  To add an advert-agent, please change to
+                      <a href="{uri_action(marktplatz)}">marketplace</a> and make a searchrequest.
+                      You have the option to save your search result as an advert-
+                      agent and get informed about new advertisements.
+adagent.add.long: |
+  Here you have the option to get informed about new advertisements which fulfil certain criteria
+              With that feature you can display all new advertisements in the category
+              &quot;Back&ouml;fen&quot; and get it mailed to you.<br />
+              Please choose at least one of the available settings.
+adagent.create: 'Create advert-agent'
+adagent.del: 'Delete this advert-agent'
+adagent.del.confirm: 'Do you want to delete the advert-agent?'
+adagent.error.nosearch: '- You have to state at least one search criteria.'
+adagent.new.results: 'New results'
+adagent.new.results.last_run: '{LAST_RUN} results have been found on the last run'
+adagent.new.results.tooltip: 'Found advertisements of the last run'
+adagent.none.yet: 'You have yet no advert-agents.'
+adagent.offers: 'Search suggestions'
+adagent.search.name: 'Own description (optional)'
+adagent.search.name.long: 'Freely selectable description for the overview.'
+adagent.search.parameter: Searchparameter
+adagent.search.parameter.long: 'These parameters will be used to search for advertisements.'
+adagent.seller.select: 'Select seller'
+adagent.success.added: |
+  <strong>Advert-agent added!</strong>
+              The advert-agent was added successfully.
+adagents.active: 'Active advert-agents'
+add.comment.manually: 'Confirm comments manually'
+add.contact: 'Add as contact'
+add.new.article.as.b2b.article: 'Do you want to set new articles to B2B-articles by default?'
+add.new.event: 'Add new event'
+add.new.job: 'Add new job'
+add.new.member: 'Add new member'
+add.new.search: 'Add new searchings'
+add.rating: 'Add rating'
+add.to.cart: 'Add to the shopping cart'
+added: 'added on: {todate(STAMP_CREATE)}'
+address: Address
+address.name: 'Address name'
+adjust.product: |
+  Did you find a suitable product, which you want to buy?
+                      So <a href="{uri_action(my-marktplatz-neu)}"> add it now to the marketplace.</a>
+admin.ad.declined: |
+  <h2>Releasing the advertisement was declined</h2>
+          <p>
+              You declined the release of the advertisement. The user will be notified via an E-Mail.
+              <br />
+              Once the user edited the advertisement, you will receive it for another examination.
+          </p>
+admin.ad.unlocked: |
+  <h2>Advertisement released</h2>
+          <p>
+              You have released the advertisement. The advertisement is now accessable for public.
+          </p>
+admin.event.declined: |
+  <h2>Release of the event declined</h2>
+                  <p>
+                      You have declined the release of the event. The user will be notified via an E-Mail.
+                      <br />
+                      Once the user edited the event, you will receive it for another examination.
+                  </p>
+admin.event.unlocked: |
+  <h2>Release event</h2>
+                  <p>
+                      You have released the event. The event is now accessable for public.
+                  </p>
+admin.release: 'Admin release'
+admin.vendor.declined: |
+  <h2>Release of the vendor profile declined</h2>
+                      <p>
+                          You have declined the release of the vendor profile. The user will be notified via an E-Mail.
+                          <br />
+                          Once the user edited the vendor profile, you will receive it for another examination.
+                      </p>
+admin.vendor.unlocked: |
+  <h2>Release vendor profile</h2>
+                      <p>
+                          You have released the vendor profile. The profile is now accessable for public.
+                      </p>
+adresses: Adresses
+ads: Advertisements
+ads.all: 'Show all'
+ads.count: 'Advertisements on the marketplace: {ARTICLE_COUNT}'
+ads.end.soon: 'Advertisements, which will end soon'
+ads.endd.soon: 'Advertisements, which will end soon'
+ads.extend: 'Extend advertisements'
+ads.extend.count: 'Extend {COUNT} advertisement(s)'
+ads.extend.error: 'Fehler beim Verlängern der Anzeigen!'
+ads.extend.error.ads.count: 'Dies betrifft {ERROR_ADS_COUNT} der ausgwählten Anzeigen.'
+ads.extend.error.ads.list: 'Dies betrifft die folgenden Anzeigen:'
+ads.extend.requirement.ads: '{REQUIREMENT_ADS} Anzeigen'
+ads.extend.requirement.downloads: '{REQUIREMENT_DOWNLOADS} Downloads'
+ads.extend.requirement.images: '{REQUIREMENT_IMAGES} Bilder'
+ads.extend.requirement.videos: '{REQUIREMENT_VIDEOS} Videos'
+ads.extend.requirements: 'Für das Verlängern der ausgewählten Anzeigen wird folgendes von ihrem Anzeigenpaket abgezogen:'
+ads.extended: 'Advertisement extended'
+ads.extended.success: '{success} Advertisement(s) was/were extended successfully!'
+ads.extended.warning: '<b>Attention!</b> {warning} Advertisements could not be extended. Your advertpackage may not be sufficient.'
+ads.free: Advertising-free
+ads.new: 'New added products...'
+ads.none.yet: 'No advertisements has been found'
+ads.overview: Advertisement-overview
+ads.overview.lead: 'All advertisements in the overview.'
+ads.search.no.result: 'There were no advertisements found.'
+ads.selected.delete: 'Ausgewählte Anzeigen löschen'
+ads.selected.delete.cancel: Abbrechen
+ads.selected.delete.cancel.confirm: 'Möchten Sie die Löschung wirklich abbrechen?'
+ads.selected.delete.confirm: 'Ausgewählte Anzeigen löschen'
+ads.selected.delete.count: 'Es werden {count} Anzeigen gelöscht.'
+ads.selected.delete.count.none.affected: 'Sie haben keine Anzeigen ausgewählt.'
+ads.selected.delete.long: 'Die ausgewählten Anzeigen werden unwiderruflich gelöscht.'
+ads.selected.delete.processing: 'Bitte warten Sie während die Artikel gelöscht werden ... ({PROCESS_DONE} von {PROCESS_COUNT} fertig)'
+ads.selected.disable: 'Disable selected advertisements'
+ads.selected.disable.cancel: Abbrechen
+ads.selected.disable.cancel.confirm: 'Möchten Sie den Deaktivierung wirklich abbrechen?'
+ads.selected.disable.confirm: 'Disable selected advertisements'
+ads.selected.disable.count: '{countEnabled} advertisements will be deactivated.'
+ads.selected.disable.count.none.affected: 'The selected advertisements, which you chose, are already deactivated.'
+ads.selected.disable.count.not.affected: '{countDisabled} advertisements are already deactivated and will not be affected.'
+ads.selected.disable.long: |
+  The selected advertisements will be deactivated. The remaining time will be preserved and will not be
+              decreased while the advertisement is deactivated.
+ads.selected.disable.processing: 'Bitte warten Sie während die Artikel deaktiviert werden ... ({PROCESS_DONE} von {PROCESS_COUNT} fertig)'
+ads.selected.enable: 'Activate selected advertisements'
+ads.selected.enable.cancel: Abbrechen
+ads.selected.enable.cancel.confirm: 'Möchten Sie die Aktivierung der Artikel wirklich abbrechen?'
+ads.selected.enable.confirm: 'Activate selected advertisements'
+ads.selected.enable.count: '{countDisabled} advertisements will be activated.'
+ads.selected.enable.count.none.affected: 'The selected advertisements, which you chose, are all active or has been run out already.'
+ads.selected.enable.count.not.affected: '{countEnabled} advertisements are already activated and will not be affected.'
+ads.selected.enable.count.timeout: '{countTimeout} advertisements did run out and need to be extended to get activated again.'
+ads.selected.enable.long: |
+  The advertisements will be activated. Note that the advertisements will be online with the same remaining time,
+              when they were deactivated.
+ads.selected.enable.processing: 'Bitte warten Sie während die Artikel aktiviert werden ... ({PROCESS_DONE} von {PROCESS_COUNT} fertig)'
+ads.selected.extend: 'Extend selected advertisements'
+ads.selected.extend.cancel: Abbrechen
+ads.selected.extend.cancel.confirm: 'Möchten Sie den Verlängerung der Artikel wirklich abbrechen?'
+ads.selected.extend.confirm: 'Extend now'
+ads.selected.extend.count: '{count} advertisements will be extended.'
+ads.selected.extend.count.none.affected: 'You have not selected any advertisements.'
+ads.selected.extend.long: |
+  The selected advertisements will be extended with the runtime you chose. Run out or deactivated advertisements
+          will be reactivated.
+ads.selected.extend.runtime: Runtime
+ads.timing.out: 'Ran out advertisements'
+ads.top: Proceded
+advert.deleted: 'An advertisement was deleted!'
+advert.package: Advertpackage
+advertisement: Advertisement
+advertisement.agent.add: 'Add advert-agent'
+advertisement.agent.delete: 'Delete advert-agent'
+advertisement.book: 'Book more advertisements'
+advertisement.book.submit: 'Book chargeable advertisements'
+advertisement.categories: Categories
+advertisement.categories.long: |
+  Finally you mark <strong>categories</strong> to chose where your advertisement should be represented at.<br />
+                      <strong class="text-error">
+                          The advertisement will be exclusively displayed in the categories you chose,
+                          subcategories are not implicted, you need to select those explicitly!
+                      </strong>
+advertisement.category: Category
+advertisement.confirm: Confirm
+advertisement.content: Content
+advertisement.content.long: |
+  Please place the HTML-Code of your banner in the input field under <strong>content</strong>.
+                      To ensure that your banner is displayed like you require it, you can get a
+                      preview under the input field <strong>content</strong>.<br />
+advertisement.example.bannercode: 'Example for an HTML-bannercode'
+advertisement.id: 'Advertisement Nr.'
+advertisement.intro: 'Advertise on our website'
+advertisement.lead: 'Purposeful advertisement for your company'
+advertisement.notice.profile: 'Please fulfil your details on your <a href="{uri_action(my-profil)}">profile</a> before you book advertisement:'
+advertisement.overall: Overall
+advertisement.period: Period
+advertisement.period.long: |
+  Please choose the <strong>Period</strong> for the time you want to display the advertisement.
+                      Consider that your advertisement has to be checked and confirmed by an administrator first.<br />
+advertisement.position: Bannerposition
+advertisement.position.long: |
+  To activated a advertisement on the advert-market, you have to choose a <strong>Bannerposition</strong> first.
+                      It will decide where your advertisement will be placed.<br />
+advertisement.preview.title: 'Advertisement preview'
+advertisement.price: Price
+advertisement.price.overall: 'Price overall'
+advertisement.price.per.day: 'Price per day'
+advertisement.runtime: Runtime
+advertisement.show.own: 'Show my banner-advertisement'
+advertisement.statistics: Statistics
+advertisement.statistics.date: Date
+advertisement.statistics.views: 'Times displayed'
+advertisement.statistics.views.abbr: Show
+advertisement.status: Status
+advertisement.status.active: Activ
+advertisement.status.confirmed: Confirmed
+advertisement.status.paid: Paid
+advertisement.status.unconfirmed: Unconfirmed
+advertisement.status.unpaid: Unpaid
+advertisement.step: 'Step {STEP}'
+advertisement.subcategories.deselect: 'Deselect this and all subcategories'
+advertisement.subcategories.hide: 'Hide subcategories'
+advertisement.subcategories.select: 'Select this and all subcategories'
+advertisement.subcategories.show: 'Show subcategories'
+advertisement.success.order: 'Order completed'
+advertisement.success.order.lead: 'Thank you for your order!!'
+advertisement.success.order.long: |
+  An administrator will check your request shortly. Once this happens, you will
+          receive the bill. After your payment has been confirmed, your advertisement will be
+          displayed.
+advertisement.summary: Summary
+advertisement.type: Display-type
+advertisement.upload.banner.image: 'Bild des Banners'
+advertisement.upload.banner.image_allowed: 'Maximale Dateigröße ist 2,5 MB und erlaubte Bilddatei-Erweiterungen sind jpg, jpeg, png und gif'
+advertisement.upload.banner.intro: 'Schreiben Sie Redirect Link, Titel und Upload-Banner-Bild'
+advertisement.upload.banner.link: 'URL für den Banner-Link'
+advertisement.upload.banner.title: 'Titel des Banners'
+advertnumber: Articlenumber
+adverts: Adverts
+adverts.and.sales: 'Adverts and sales'
+affiliate.link.description: 'Wenn angegeben wird der Verkauf nicht über den Marktplatz abgewickelt. Statt dessen wechselt der Interessent dafür auf die angegebene URL.'
+affiliate.link.label: Shop-/Affiliate-URL
+after.checking.payment.you.can.buy.the.service: |
+  After checking your selection, you can
+  	buy the selected services.
+agb: GTC
+agb.display: 'Display GTC'
+agb.for.sold: 'GTC for the sale'
+agb.for.sold.notice: |
+  Hier können Sie die allgemeinen Geschäftsbedingungen für ihre Verkäufe angeben.
+                      Bitte verwenden Sie kein HTML
+agb.unavailable: 'There is no GTC for this article.'
+agent.name: 'Name of the agent'
+agents: Agents
+aktive.displays: 'active agents'
+all.categories: 'All categories'
+all.displays: 'Display all'
+all.events: 'All events'
+all.events.in.group: 'Overview over all events in the group'
+all.group.events: 'All groupevents'
+all.inserted.searchs.in.marketplace: |
+  Here you find all inserted searchs on the marketplace.
+          To start a new conversation
+all.participations: 'My participations'
+all.ratings: 'All ratings'
+all.sales: 'All sales'
+all.sales.accepted: 'All sales were accepted!'
+all.sales.declined: 'All sales were declined!'
+allow.bargaining: 'Allow bargaining?'
+allow.comments: 'Allow comments to this event'
+allow.comments.in.group: 'Allow comments in group'
+allow.price.proposals: 'Yes, allow price proposals from buyers'
+allow.price.proposals.desc: 'With this option you allow price proposals from different users.'
+allready.incurred.shopping: 'Already incurred purchases'
+alphabetic.down: 'Alphabetic descending'
+alphabetic.up: 'Alphabetic ascending'
+alphabetical.down: 'Alphabetical descending'
+alphabetical.up: 'Alphabetical ascending'
+alphabetically.ascending: 'alphabetically ascending'
+ammount.item: Amount/item
+amount: Amount
+amount.hint.article: 'Hint the on-hand amount.'
+amount.piece: Amount/piece
+an.admin.will.treat.your.request.soon.you.will.recieve.an.email.with.the.bill.when.its.finished: |
+  An administrator will take care of your request soon. Once this happened you
+  			will be informed with an E-Mail where you can find the bill.
+answer: Answer
+answer.message: 'Answer message'
+answer.security.question: 'Please answer the security question'
+answers: Answers
+approved.vendor: 'Approved vendor'
+archieve.sales.which.are.finished.in.the.orderprocess.those.are.grouped.in.the.overview: |
+  Archieve sales which are finished in the orderprocess.
+                      Those are grouped in the overview.
+archiv: Archive
+archive: Archives
+archived.purchased: 'Archived purchases'
+archiving: Archiving
+archiving.completed.orders: 'Archive completed orders'
+area: 'In area'
+ariadne.ad.request: Request
+ariadne.all.ads: '{ALL_ADS} offers'
+ariadne.marketplace: Marketplace
+ariadne.marketplace.create.lead: 'Sie stellen einen Artikel ein unter:'
+aricle.number: Article-number
+art.b.number: 'Art.-<br />Nr.'
+art.number: Art.Nr
+articel: Article
+article: Article
+article.alert.three: 'Your advertisement will be highlighted in color'
+article.alert.two: 'Your advertisement will be displayed in front of every normal advertisements while searching the categories'
+article.cost: Articlecost
+article.count: Products
+article.desc: 'Please describe the article as detailed as possible.'
+article.description: Description
+article.ean: 'EAN number'
+article.ean.desc: 'EAN-13 or ISBN number of the article'
+article.ean.other.products.found.title: '{COUNT_ARTICLES_WITH_EAN} product(s) with the same EAN number on different vendors found'
+article.ean.show.product.other.users: 'Show product from different vendors'
+article.enter.terms: TOS
+article.error.packet: |
+  You have no advertpackage with news left.<br>
+                      <a href="{uri_action(packets)}" class="">Click here to acquire the package for your needs.</a>
+article.input.payment.method: 'Payment method'
+article.isnt.available: 'The desired article is no longer available.'
+article.lead.create: 'Create a Lead'
+article.links: 'Additional links'
+article.links.href: Lead-address
+article.links.href.input: 'Lead-address (e.g. http://www.example.com)'
+article.links.intro: |
+  Here you have the option to link URLs for your article,
+                                          so visitors are able to attain further/detailed information about the article.
+article.links.label: 'Link-text / Label'
+article.new.b2b.help: 'Make this article accessable for traders only'
+article.new.btb.article: B2B-article
+article.new.name: Article-description
+article.not.available: 'The desired article is not available.'
+article.not.available.yet: 'The desired article is not available yet'
+article.not.found: 'The article could not be found!'
+article.number: Article-number
+article.number.abbr.ml: 'Art.-<br />Nr'
+article.number.extern: 'Ext. article-Nr'
+article.number.extern.desc: 'The article-Nr of the product e.g. from enterprise resource planning'
+article.overview: Article-overview
+article.print: 'Print advert'
+article.private.note: 'Private note'
+article.private.note.help: 'e.g. Your inventorynumber'
+article.required.fields: |
+  With a <span style="color: red;">*</span> labeled field are
+                  mandatory field and has to be filled.
+article.runtime: Article-runtime
+article.save: 'Save article'
+article.select.packet: 'Please the select the package, to which the article should be assigned to'
+article.type.other.products.found.title: 'Es wurden {COUNT_ARTICLES_WITH_PRODUCT} Produkt(e) des selben Typs bei weiteren Händlern gefunden'
+article.type.show.all.products: 'Alle {COUNT} Angebote zu diesem Produkt anzeigen'
+article.type.show.other.products: '{COUNT} Angebot(e) bei anderen Händlern'
+article.unlock: 'Request unlocking'
+article.unlock.checkbox: 'Please unlock the article.'
+article.unlock.warning: |
+  You can only input article, that are free from third-party rights.<br />
+                                      <strong>The author is responsible for the content he uploads.</strong>
+article.view.bids: '{BID_COUNT} Offer(s)'
+article.warning.already.unlocked: |
+  Your article has been unlocked administratively.
+                                  The unlocking will be removed, if you edit it!
+'as,category': 'choose as category'
+attention: Attention
+attention.one.or.more.articles.arent.available.enough: 'Attention!</strong>One or more articles are not sufficient on stock.'
+attention.one.or.more.articles.will.be.sold.out.with.the.confirmation.of.the.sale: '<strong>Attention!</strong>One or more article will be sold out after the confirmation of the selling.'
+attention.with.this.option.comes.an.obligatory.buy: 'Attention: A legally binding purchase will happen with this option'
+attention.with.this.you.acceppt.all.open.sales.to.this.article: |
+  <strong>Attention!</strong>
+  			Hereby you will accept <u>all</u> open purchases for this article!
+attention.with.this.you.decline.all.open.sales.from.this.article: |
+  <strong>Attention!</strong>
+  			Hereby you will decline <u>all</u> open purchases for this article!
+auto.choose: 'automatically chosen'
+auto.extra.charge: 'Automatic extra charge'
+auto.extra.charge.desc: 'If an offer equals or is higher than the price, the article will be automatically sold!'
+auto.sale.acception: 'Automatic confirmation from sales?'
+auto.sale.acception.desc: 'ATTENTION! Activate this option if you can guarantee to have the articles on stock.'
+availability: Availability
+availability.ads.selected: '{COUNT} Advertisements selected'
+availability.blocked: 'Fully blocked'
+availability.blocked.partially: 'Partially blocked'
+availability.estimate: 'Estimated availability.'
+availability.filter.settings: 'Filter settings'
+availability.free: 'No appointments'
+availability.no.worktime: 'No worktime'
+availability.span.between: 'Between {todate(BEGIN)} and {todate(END)}'
+availability.span.until: 'Until {todate(END)}'
+availability.time.starting: 'starting {TIME}o clock'
+available: available.
+average.raiting: 'Average rating'
+average.rating: 'Average rating'
+back.to.sell.list: 'Back to my sellings'
+baseprice: Baseprice
+baseprice.delimiter: pro
+baseprice.delimiter.view: /
+before.you.order.a.package: 'before you order a advertpackage:'
+before.you.publish.something: 'before you publish something:'
+bid.open: Open
+bid.status.request: Gesuch
+bill.num: 'Bill Nr.'
+bill.number: 'Bill number'
+billableitems.no.billableitems.found: 'You have no billable items at the moment'
+billing.address: 'Billing address'
+billing.and.delivery.address.will.be.displayed.after.confirmation.of.the.order: 'Billing and delivery address will be displayed after confirmation of the order.'
+blob.help: Help
+book.offer: 'Book Top-Advertisement'
+bought.items: 'Bought article'
+bought.product: 'Bought product'
+broadcast.mail.long: 'Send a broadcast to all selected groupmembers.'
+broadcast.mail.success: 'Broadcast was sent'
+btb.offer: 'This is a B2B-offer.'
+business: Business
+business.directory: 'Business directory'
+business.directory.create.now: 'Branchenbuch-Eintrag erstellen'
+business.directory.edit: 'Branchenbuch-Eintrag bearbeiten'
+business.directory.view: 'Öffentliche Darstellung ansehen'
+business.hours: Öffnungszeiten
+business.hours.friday: Freitag
+business.hours.monday: Montag
+business.hours.saturday: Samstag
+business.hours.sunday: Sonntag
+business.hours.thursday: Donnerstag
+business.hours.tuesday: Dienstag
+business.hours.wednesday: Mittwoch
+buy.package: 'Buy package'
+buy.status: 'Payment status'
+buyer: Buyer
+buyer.info: 'Buyer information'
+buyer.information: 'Information about the buyer'
+calendar: Calendar
+calendar.event: Event
+calendar.event.add.category.lead: 'Chose a category in this step, to decide where your event will be found.'
+calendar.event.add.category.required: 'You have to add a category to continue.'
+calendar.event.by.group: 'Event by a group'
+calendar.event.confirmed: 'Event confirmed'
+calendar.event.confirmed.long: 'The event was successfully confirmed and is now visible.'
+calendar.event.delete: 'delete (if not published yet)'
+calendar.event.deleted: 'Event deleted'
+calendar.event.deleted.long: 'The event was successfully deleted.'
+calendar.event.description: 'Description of the event'
+calendar.event.disabled: 'Event deactivated'
+calendar.event.disabled.long: |
+  The release for the event was cancelled.
+          The event is now not visible anymore.
+calendar.event.do.accept: 'Confirm application'
+calendar.event.do.decline: 'Decline application'
+calendar.event.do.unsure: 'Application unsure'
+calendar.event.download: 'Download date'
+calendar.event.error.not.found: 'Event has not been found'
+calendar.event.error.not.found.long: 'The event has not been found or is no longer active.'
+calendar.event.error.signup.failed: 'Error on login! Please try again. If this error repeats, please contact an administrator.'
+calendar.event.participants: Participants
+calendar.event.participants.accepted: '{int(COUNT)} accepted'
+calendar.event.participants.declined: '{int(COUNT)} declined'
+calendar.event.participants.long: '{COUNT} users have signed up for this event.'
+calendar.event.participants.none.yet: 'No participants yet.'
+calendar.event.participants.unsure: '{int(COUNT)} unsure'
+calendar.event.recommend: 'Recommend event'
+calendar.event.self.accepted: 'You are signed up for this event.'
+calendar.event.self.change: 'Change application'
+calendar.event.self.declined: 'You are signed out for this event.'
+calendar.event.self.signup: 'Sign up now'
+calendar.event.self.unsure: 'You registered yourself as unsure.'
+calendar.events: Events
+calendar.events.add.submit: 'Save event'
+calendar.events.error.upload.failed: 'Upload failed!'
+calendar.events.keyword.remove.confirm: 'Do you really want to delete the keyword {WORD}?'
+calendar.events.lead: 'Find interesting Events'
+calendar.events.search.filter: Searchfilter
+calendar.events.self.question: 'Do you want to sign up for this event?'
+calendar.events.show.all: 'Show all events'
+calendar.events.title: 'Event calendar'
+cannot.write.yourself: 'You can not write a message to yourself.'
+cant.find.message: 'The message could not be found!'
+cant.find.your.order.try.again.or.contact.the.support: |
+  The order could not be found. Please try again or contact
+  	          the technical support.
+categorie: Category
+categorie.list: 'Category list'
+categories: Categories
+categories.all: 'All categories'
+categories.all.tooltip: 'To marketplace overview'
+categories.select: 'Select category'
+categories.upper: CATEGORIES
+category: Category
+category.confirm: 'Do you want select {NAME} as category?'
+category.export: 'Export category'
+category.export.long: |
+  You can export your advertisement as CSV. Select your desired filter rules and press on
+      <em>export advertisements
+category.message.main.category: 'Please choose your main category by clicking the star.'
+category.not.current: 'It is possible that your desired category is no longer up to date.'
+category.not.found: 'Category was not found!'
+category.of.search: 'Category of search'
+category.selection: 'Category selection'
+category.show.more: 'Show more from the category {htm(KAT)}'
+category.table: 'Category table'
+change.active.displays: 'Change all active advertisements'
+change.all.active: 'Change all active advertisements'
+change.categorie: 'Change category'
+change.membership: 'Change membership'
+change.password: 'Change password'
+change.password.long: |
+  Change password</h1>
+      <p>
+          Here you can set your new password. Changes will be set immediately. Please use
+          save passwords only
+change.produkt.categories: 'Change product category (optional)'
+change.search: 'Change this search'
+changes.saved: 'Save changes'
+chat: Messages
+chat.menline.tooltip: 'Switch to inbox (messages/unread)'
+chat.new.ad: 'New advertisement{if PLURAL_COUNT!=1}s{endif}'
+chat.new.lead: 'neue Anfrage{if PLURAL_COUNT!=1}n{endif} zu Leads'
+chat.new.none: 'No new messages.'
+chat.new.other: 'New message{if PLURAL_COUNT!=1}s{endif}'
+choose: 'Choose ...'
+choose.auto: 'Choose automatically'
+choose.category: 'Please choose a category.'
+choose.category.or.manufacturer: 'Please choose a category or a manufacturer.'
+choose.different.reason: 'Choose a different reason'
+choose.if.you.want: 'Please choose, if you want to publish a company event or a group event.'
+choose.new.membership: 'Please choose a new membership'
+choose.reason: 'Choose a reason:'
+choose.time: 'Choose runtime:'
+city: PLACE
+click.for.continue: 'You have to select the type of the event to continue.'
+click.for.stats: 'Click here, to display your member stats'
+click.here.to.get.a.package: 'Click here, to get a package.'
+close.proccess: 'Close process'
+close.window: 'Close window'
+closed: Closed
+club: Group
+club.action.decline: 'Decline group invites'
+club.action.join: 'Join group'
+club.action.join.request: 'Request a group invite'
+club.address: Address
+club.count.members: 'Amount of members'
+club.description: Group-description
+club.description.save: 'Save group-description'
+club.event.add: 'Add new event'
+club.events: Events
+club.fax: Fax
+club.forum: Forum
+club.forum.all.threads: 'All threads'
+club.forum.announcement: Announcement
+club.forum.author: Author
+club.forum.close: Close
+club.forum.closed: Closed
+club.forum.confirm.delete: 'Do you really want to close this thread with all its answers?'
+club.forum.delete: Delete
+club.forum.delete.confirm: 'Attention! Do you really want to close this thread with all its comments?'
+club.forum.edit: edit
+club.forum.edit.lead: 'Edit post'
+club.forum.edit.submit: 'Save changes'
+club.forum.enable: 'Use forum'
+club.forum.last.edited: 'Last edited on {todate(STAMP_UPDATE,1)}'
+club.forum.last.reply: 'Last reply'
+club.forum.lead: 'Overview to all forum threads of the group'
+club.forum.moderated: 'Moderate forum posts'
+club.forum.moderation: Release
+club.forum.new.announce.label: Announcement
+club.forum.new.back: Back
+club.forum.new.body: 'Your post'
+club.forum.new.lead: 'Create new thread'
+club.forum.new.moderation: Moderation
+club.forum.new.name: 'Title of the thread'
+club.forum.new.public: 'Open discussions'
+club.forum.new.public.label: 'Make the thread available outside the group.'
+club.forum.new.reviewed.label: Release
+club.forum.new.sticky.label: Important
+club.forum.new.submit: 'Create thread'
+club.forum.new.thread: 'New thread'
+club.forum.no.threads: 'No threads found!'
+club.forum.no.threads.long: 'There are no threads in this forum yet. click on "new thread" to open a new one.'
+club.forum.not.reviewed: 'Do not release'
+club.forum.open: 'Open again'
+club.forum.public: Public
+club.forum.public.all: 'Show all'
+club.forum.public.filter: Public
+club.forum.public.hide: 'Private only'
+club.forum.public.show: 'Public only'
+club.forum.reply: Replies
+club.forum.reply.lead: Reply
+club.forum.reply.submit: Reply
+club.forum.reviewed: Release
+club.forum.reviewed.saved: 'The selected Post was released and is visible now'
+club.forum.search: Search
+club.forum.search.help: 'Browse forum'
+club.forum.search.lead: 'Search result for ''{htm(SEARCH_FULLTEXT)}'''
+club.forum.show.all: 'Show all threads'
+club.forum.sorting: Sorting
+club.forum.sticky: Sticky
+club.forum.thread.closed: 'It is not possible to reply to this thread anymore'
+club.forum.thread.closed.lead: 'Thread closed'
+club.forum.thread.deleted: 'The thread and all replies were succesful deleted.'
+club.forum.thread.deleted.lead: 'Thread deleted'
+club.forum.thread.opened: 'It is possible to reply to this thread again'
+club.forum.thread.opened.lead: 'Thread opened again'
+club.forum.thread.reviewed.lead: 'Release granted'
+club.forum.thread.saved: 'The changes in your post were saved successfully'
+club.forum.thread.saved.lead: 'Changes saved'
+club.forum.threads: Threads
+club.founded: Founded
+club.gallery: Gallery
+club.gallery.image.save: 'Save image'
+club.homepage: Web
+club.images.empty: 'No images available'
+club.images.upload.max: 'You can publish maximal {COUNT} images'
+club.invite.pending: 'Group invite request is pending'
+club.invite.received: 'You received an invite for this group.'
+club.join.success: 'You successfully joined the group <strong>{CLUB_NAME}</strong>.'
+club.leader: Group-leader
+club.member: Member
+club.members: Members
+club.members.list: Memberlist
+club.members.list.lead: 'List of all members of the group'
+club.name: Name
+club.phone: Telephone
+club.question.join: 'Do you want to join this group as well?'
+club.request.error.group.already.member: 'You are already a member of this group.'
+club.request.error.group.not.allowed: 'An application is not allowed for this group.'
+club.request.error.group.not.found: 'The group was not found. Please try the application again.'
+club.request.error.pending: 'An application is currently open or a past application was denied.'
+club.request.error.reason: 'Please reason your application. Write at least 50 characters for this.'
+club.request.reason: 'Reason your application'
+club.request.submit: 'Send application'
+club.request.success: |
+  Your application was sent to the Group-leader.
+                                  You will be informed after a successful confirmation.
+club.request.title: Application
+club.searchwords: Searchwords
+club.videos.empty: 'No videos available'
+club.view: 'View {htm(CLUB_NAME)}'
+clubs.count: '{ALL_CLUBS} groups'
+clubs.directory: 'Group directory'
+clubs.directory.NewPostingsLead: 'Recently published forum posts.'
+clubs.directory.lead: 'Our groups in the overview'
+clubs.directory.newpostings: 'New posts'
+clubs.none.found: 'No groups were found this category.'
+clubs.search.filter: Searchfilter
+clubs.show.all: 'Show all groups'
+comment: Comment
+comment-edit.lead: 'Here you have the option to edit your comment once again. Please bear in mind, that under some circumstances your comment needs to be confirmed again.'
+comment.added: 'Your comment was added successfully.'
+comment.added.moderated: 'Please bear in mind, that your comment will be display, after it was confirmed.'
+comment.added.unconfirmed: 'Shortly you will receive an E-Mail with a link to confirm your comment.'
+comment.already.rated: 'You have already submitted a review!'
+comment.answer: 'Reply to the comment'
+comment.answer.action: 'Reply to the comment'
+comment.answered: 'Comment replied'
+0: 'Eingereichte Stornoanfragen'
+comment.answered.long: 'replied on {todate(ANSWER_STAMP,1)}'
+comment.answered.long.self: 'You replied on {todate(ANSWER_STAMP,1)}'
+comment.answered.short: replied
+comment.answered.succesfull: 'Your reply was sent successfully'
+comment.available: 'Comments available'
+comment.deleted: 'Comment deleted'
+comment.deleted.successfull: 'The comment was deleted successfully'
+comment.edit: edit
+comment.edit.changed.mind: 'Changed your mind? Edit <a href="{uri_action(my-comment-edit,{ID_COMMENT})}"> here</a>'
+comment.edit.not.found: 'Comment not found'
+comment.edit.not.found.long: 'The comment you wanted to edit could not be found!'
+comment.enable.rating: 'Submit rating'
+comment.hide: 'Hide comment'
+comment.link.tooltip: 'Comment to {htm(TITLE)}'
+comment.lock: 'Lock comment'
+comment.moderation: Release
+comment.pick.rating: rating
+comment.ratings.1: '1 Star'
+comment.ratings.2: '2 Stars'
+comment.ratings.3: '3 Stars'
+comment.ratings.4: '4 Stars'
+comment.ratings.5: '5 Stars'
+comment.released: 'Comment released'
+comment.reply.by: 'Answered by'
+comment.show: 'Show comment'
+comment.subject: Subject
+comment.unlock: 'Unlock comment'
+comment.unlocked: 'Comment locked / not confirmed'
+comment.visible: 'Comment visible'
+comment.write.email: 'E-Mail address'
+comment.write.lead: 'Here you can write a comment'
+comment.write.name: Name
+comment.write.submit: 'Add comment'
+comment.write.text: Comment
+comment.write.text.notice: 'Please enter at least 10 characters.'
+comment.written.by: 'Written by'
+comments: Comments
+comments.activate: 'Activate comments'
+comments.allowed: 'Comments allowed'
+comments.count: '{ALL_COMMENTS} comments'
+comments.deactivate: 'Deaktivate comments'
+comments.deaktivated: 'Comments deaktivated'
+comments.disable: 'Deaktivate comments'
+comments.disabled: 'Comments deaktivated'
+comments.display: 'Display <strong>comments</strong> '
+comments.enable: 'Enable comments'
+comments.enabled: 'Comments enabled'
+comments.none.yet: 'There are no comments available yet.'
+comments.of.the.buyer.to.the.order: 'Comment from the buyer to the order:'
+comments.rated: Ratings
+comments.rated.list: 'Submitted Reviews'
+comments.rating.avg: 'Average rating:'
+comments.search.by.deactivated: 'Show deactivated'
+comments.search.by.pending: Pending
+comments.search.by.unlocked: 'Unlocked only'
+comments.search.by.visible: 'Visible only'
+comments.show: 'Show <strong>comments</strong>'
+comments.to.aricles: 'Comments to articles'
+comments.to.company: 'Comments to the company'
+comments.to.displays: 'Comments to advertisements'
+comments.to.events.group: 'Comments to group events'
+comments.to.events.vendor: 'Comments to vendor events'
+comments.to.firm: 'Comments to the company'
+comments.to.group.ads: Advertisements
+comments.to.group.all: All
+comments.to.group.clubs: Groups
+comments.to.group.events: Events
+comments.to.group.news: 'Article / News'
+comments.to.group.vendor: 'Company / Vendor'
+comments.to.my.groups: 'Comments to my groups'
+commission: Prov.
+company: Company
+company.entry: 'Company entry'
+complete.order: 'Complete order'
+conditions: Conditions
+configuration: Configuration
+configure.pay.style: 'Configurate on this page which payment methods you accept of your sold articles'
+confirm.order: 'Confirm order'
+confirm.sale: 'Confirm sale'
+confirm.sale.of.added.products.automatically: 'Confirm the sale of added products automatically'
+confirmation.email.text: |
+  Thanks your for your purchase on out marketplace. A confirmation-mail has been sent to you, where you can find
+      a summary of the most important information.
+      <br>
+  	Once the buyer confirmed their purchase, you will receive an E-Mail with contact- and paymentinformations.
+confirmed: confirmed
+confirmed.uc: Confirmed
+confrim.categorie.selection: 'Do you want to choose "'' + name_current + ''" as a category?'
+contact: Contact
+contact.add.title: 'Add contact'
+contact.added: 'The user has been added to your contacts'
+contact.data.to.vendor: 'Contact data of the vendor:'
+contact.date: 'Contact data'
+contact.deleted: 'The contact was deleted'
+contact.request: 'Make a contact request'
+contact.request.declined: 'The contact request was declined'
+contact.request.hint: 'Hinweis: Die ausstehenden Kontaktanfragen finden Sie unter ''Mein Account > Meine Einstellungen > Meine Kontakte''.'
+contact.request.sent.successfull: 'Your contact request was sent successfully'
+contacts: Contacts
+content: Content
+content.available: 'Content (available)'
+conversation: 'Conversation:'
+could.not.find.message: 'The message could not be found!'
+count.comments: '{if COUNT_COMMENTS}{COUNT_COMMENTS}{else}0{endif} comments'
+count.events: '{COUNT_EVENTS} Events'
+count.gallery: '{COUNT_GALLERY} images in the gallery'
+count.group.comments: '{COUNT_COMMENTS} comments'
+count.group.events: '{COUNT_EVENTS} events'
+count.group.gallery: '{COUNT_GALLERY} images in the gallery'
+counter.offer: 'Counter offer'
+counter.proposal: 'Counter proposal'
+counter.suggest: 'Counter suggest'
+country: Country
+country.hint.article: 'Hint the current location of the article.'
+coupon.choose.existing: '- or choose a not yet redeemed coupon -'
+coupon.code: 'Coupon code'
+coupon.enter.code: 'Enter coupon code'
+coupon.error.coupon.activated.but.not.compatible: 'Der Gutschein wurde aktiviert, kann für die aktuelle Bestellung aber nicht verwendet werden. Sie können diesen in einer anderen Bestellung verwenden.'
+coupon.error.coupon.code.not.found: 'Es konnte kein Gutschein für diesen Code gefunden werden'
+coupon.error.coupon.code.not.valid: 'Der eingegebene Code ist leider ungültig'
+coupon.error.coupon.no.code: 'Es wurde kein Code eingegeben'
+coupon.error.coupon.not.valud: 'Der Gutschein ist leider nicht mehr gültig'
+coupon.error.coupon.type.not.found: 'Es konnte kein Gutschein geladen werden'
+coupon.no.coupon.use: 'Do not use a coupon'
+coupon.restriction.class.daterestriction.name: 'An Zeitraum gebunden'
+coupon.restriction.class.individualcode.name: 'Indivudeller Code'
+coupon.restriction.class.onlyoneperuser.name: 'Auf einen Gutschein pro User limitiert'
+coupon.restriction.class.quantity.name: 'Anzahl der Verwendung limitiert'
+coupon.restriction.class.usergroup.name: 'Auf Benutzergruppen beschränkt'
+coupon.submit.code: 'Redeem a coupon'
+coupon.successfully.activated: 'The coupon {htm(COUPON_CODE)} was redeemed successfully.'
+coupon.type.absolutevalue.descripion: 'Gutschein Code {COUPON_CODE} vom {COUPON_DATE}'
+coupon.type.absolutevalue.name: 'Absoluter Betrag'
+coupon.type.absolutevalue.onactivationmessage: 'Ihnen wurde eine Gutschrift i.H.v. {CREDIT_AMOUNT} € zzgl. MwSt. in Ihrem Account hinterlegt.'
+coupon.type.couponcode: 'Type coupon code'
+coupon.type.percentagevalue.billingnote: 'Gutschein {COUPON_CODE} vom {COUPON_DATE} für '
+coupon.type.percentagevalue.name: 'Prozentualer Wert'
+coupon.type.percentagevalue.onactivationmessage: 'Der Gutschein wird mit der nächsten Buchung einer im Gutschein enthaltenen Leistung verrechnet'
+coupon.type.register.membership.descripion: 'Gutschein Code {COUPON_CODE} vom {COUPON_DATE}'
+coupon.type.register.membership.name: 'Spezielle Mitgliedschaft'
+coupon.type.register.membership.onactivationmessage: 'Ihnen wurde die Mitgliedschaft {htm(MEMBERSHIP_NAME)} für die Registierung freigeschaltet.'
+coupon.widget.added.successfully: 'The coupon was activated successfully. Continue your order.'
+coupon.widget.no.code.entered: 'No coupon code was entered'
+coupon.you.have.a.coupon: 'Do you have a coupon code?'
+create.events: 'Create events'
+create.events.long: |
+  Only vendors or groupmembers can add events.
+              To add new events, please set up a vendorarchive or
+              create/join a group.
+create.new.message: 'Click here to send a new message'
+creditnote.no.creditnotes.found: 'You have no creditnotes at the moment'
+csm.extend.error.vin: 'Extending not possible!'
+csm.extend.error.vin.long: |
+  There is a advertisement with the same vehicle identification number online!
+                  Please deactivate the other advertisement first to extend this one.
+csm.msg.ad.inbox: 'Received requests'
+csm.msg.ad.outbox: 'Sent requests'
+csm.my.requests: |
+  <h1>
+  		My requests
+  		<p class="lead">View and reply to requests</p>
+  	</h1>
+currency.convert: 'Convert currency'
+current.categorie: 'Current category'
+current.counter.proposal: 'Current counter proposal:{topreis_ex(BID_my)} {CURRENCY_DEFAULT}'
+current.no.bids: 'You have currently no bids.'
+current.pieces: '{CURRENCY_DEFAULT} / pieces'
+current.purchases: 'Current purchases'
+current.solds: 'Current solds'
+currently.free.to.issue.adverts.not.necessary.to.buy.advertpackage: |
+  The input of adverts are currently free, therefore it is not necessary to buy
+  			an advertpackage.
+currently.no.packages.available: 'There are currently no advertpackages for sale.'
+customer: Customer
+customers.num: Customer
+date: Date
+date.bought: 'Day of purchase'
+date.from: 'Date from'
+date.to: 'Date to'
+days: days
+days.remaining: 'The download is available for'
+deactivate.advert.so.it.cant.be.bought.again: 'Deaktivate advert so it can not be bought again.'
+deactivate.dispay: 'Deactivate this advert'
+deactivate.event: 'Deactivate event'
+dearchiving.completed.orders: 'Delete purchases from the archive, if you might want to buy these again'
+decline: decline!
+decline.order: 'Decline order'
+declined: declined
+default.image: 'Default image'
+delete.event: 'Delete event'
+delete.from.archive: 'Delete from the archive'
+delete.if.not.released: 'delete (if not released yet)'
+delete.job.offer: 'Delete job offer'
+delete.meber: 'Remove member'
+delete.message: 'Delete message'
+delete.own.picture: 'Delete own picture'
+delete.search: 'Delete this search'
+delete.search.really: 'Do you really want to delete this search?'
+delete.user: 'User was removed from this group'
+delivered.pricing.bids: 'delivered pricing bids'
+delivery: 'Shipping:'
+delivery.address: 'Shipping address'
+delivery.charges: Shippingcosts
+delivery.charges.hint: |
+  Shippingcosts-
+  							Hint:
+department: Department
+descending.alphabet: 'Descending alphabet'
+describe.group.exactly: 'Describe your group as exactly as possible'
+describe.search: 'Describe your searching'
+description: Description
+description.wishlist: 'You can change the description of your wishlist, to have your own structure.'
+details: Details
+did.you.save.your.changes.abort.if.you.are.not.sure: 'Did you save your changes?\nPress cancel if you are unsure!'
+dirty.sales.tax.id: 'Your VAT ID has not yet been checked'
+disable: Disable
+disable.ad: 'Disable advert?'
+disabled: Disabled
+dispatched: Dispatched
+display: Advert
+display.package: Advertpackage
+display.profile: 'Display profile'
+display.status: 'Advert status'
+display.time.improve: 'Extend advertisement runtime'
+do.auto.sale.acception: 'Yes, accept sales automatically'
+do.auto.sale.acception.desc: 'Once the user purchases the article, the sale will be accepted automatically.'
+do.u.want.net.pay.style: 'Do you want to preselect this payment method when putting a new article in?'
+do.u.want.to.finish: 'Do you want to finish the process?'
+do.want: 'Do you want'
+do.you.really.want.to.accept.the.sale: 'Do you really want to accept the sale?'
+do.you.really.want.to.decline.the.sale: 'Do you really want to decline the sale?'
+do.you.really.want.to.delete.the.job.offer: 'Do you really want to delete the job offer?'
+documents: Documents
+dont.use.filter: 'Do not use a filter'
+download.expire: 'Your download time has expired'
+e.mail: Email
+ean: EAN
+earliest.first: 'Earliest first'
+edit: Edit
+edit.config: 'Edit configuration'
+edit.display: 'Edit this advert'
+edit.event: 'Edit this event'
+edit.job.offer: 'Edit job offer'
+edit.own.group: 'Create own group'
+edit.own.group.long: |
+  You can form a syndicate with other groups. Please assure, if there is not already a syndicate with the same or a similar interest.</p>
+          <p>An overview of all already existing groups can be found <a href="{uri_action(groups)}">here</a></p>
+          <p><a href="{uri_action(my-club,,new)}" class="btn btn-success">Create new group
+edit.pay.config: 'You edit the configuration of the payment method'
+edit.pay.style: 'Edit payment method'
+editor.image.upload.confirm.delete: 'Do you really want to delete this image?'
+editor.image.upload.new: 'Upload new image'
+editor.image.upload.new.lead: 'Chose an image to upload from your computer in the form below.'
+editor.image.upload.reuse: 'Reuse already uploaded image'
+editor.upload.image.title: 'Upload image'
+email: E-Mail
+email.address: 'E-Mail address'
+email.already.used: 'E-Mail address is used already.'
+email.notification.forum: 'E-mail notification about new forum posts'
+email.notification.forum.long: 'Do you want to get an E-Mail, if someone answered on your forum post?'
+email.recieved.at.new.messages: 'E-Mail notification on new messages'
+enable: Enable
+enable.ad: 'Enable advert again?'
+enter.ean: 'Enter the EAN13 or the GTIN in here'
+enter.item.hdb: 'Enter the manufacturer and the product-description of the article in here.'
+enter.item.producer: 'Enter the manufacturer of the article in here.'
+entered.first: 'Confirm first'
+ep: EP
+error: 'Error occurred'
+error.an.error.occurred: 'An error has occurred!'
+error.check.input: 'An error has occurred. Please check your entries'
+error.extend.ad: |
+  An error has occurred while extending the runtime of the advert.
+  					Please contact the support.
+error.no.ad.free: |
+  You have no more adverts available. Please purchase a new advertpackage to
+  					extend your adverts.
+error.occured: 'An error has occurred!'
+error.occured.please.checkp.your.inputs: 'An error has occurred. Please check your entries.'
+error.payment.paypal: 'Error message from PayPal:'
+error.rating: |
+  <h5>Error while rating</h5>
+  
+  			<p>
+  				It might be that you already rated this user for this sale.
+  			</p>
+error.toparticle: 'Error while booking the Top-Advertisement! The desired advert is no longer available.'
+event.calendar: 'Event calendar'
+event.in.group: 'The event will be published in one of your groups.'
+event.info: 'The event will be published in behalf of your company and on your vendor profile.'
+event.invite: |
+  You were invited to the event '{htm(TITLE)}' by the group '{htm(GROUP_NAME)}'.
+  You can find details to the event under the following address:
+event.location: 'Event location:'
+event.moderate.confirmed: 'Release declined'
+event.moderate.confirmed.long: 'You have declined the release of this event.{if EVENT_DECLINE_REASON} Reason:<br />{text(EVENT_DECLINE_REASON)}{endif}'
+event.moderate.decline: Decline
+event.moderate.title: 'Moderate event:'
+event.moderate.unlock: 'Release event'
+event.participants: Participants
+event.participants.confirmed: '%SIGNUPS_CONFIRMED% confirmed'
+event.participants.declined: '%SIGNUPS_DECLINED% declined'
+event.participants.unsure: '%SIGNUPS_UNSURE% unsure'
+event.title: 'Event title'
+event.visibility.club: 'Visible for groupmembers only'
+event.visibility.public: 'Visible for public'
+event.when: When
+event.where: Where
+events: Events
+events.error.not.found: |
+  The desired event was not found. It might be that it was deleted or
+          that you do not have the rights to edit this event
+existing.adverts.events.goups.stay.unchanged: 'Existing adverts / events / groups stay unchanged!'
+expired.ads: 'Expired adverts'
+expired.or.deaktivated.ads: 'Expired / Deaktivated'
+expired.since: 'Expired since'
+export.choose.category: 'Choose category'
+export.my.ads: 'Save my adverts as CSV-file'
+export.row.name.long: 'Export row description'
+export.submit: 'Export adverts'
+extend: Extend
+extend.my.ads: 'Extend adverts in the search result'
+extra.cost: '(plus {EXTRA_COST} {CURRENCY_DEFAULT} charge)'
+facebook.app.configuration: 'Facebook-app configuration'
+facebook.app.configuration.article.count: 'Count of articles per page'
+facebook.app.configuration.btn.add: 'Add Facebook-app to your page'
+facebook.app.configuration.btn.connect: 'Connect Facebook-page'
+facebook.app.configuration.btn.disconnect: 'Disconnect connection'
+facebook.app.configuration.btn.open: 'Open Facebook-page'
+facebook.app.configuration.btn.reset: 'Dismiss changes'
+facebook.app.configuration.btn.save: Save
+facebook.app.configuration.connected: 'Your account is currently connected with the Facebook-page <strong>{htm(FACEBOOK_PAGE_NAME)}</strong>.'
+facebook.app.configuration.connection.available: 'Do you want to connect your account with the Facebook-page <strong>{htm(FACEBOOK_PAGE_NAME)}</strong>?'
+facebook.app.configuration.not.connected: 'Your account is currently not connected with a Facebook-page.'
+facebook.app.configuration.page: 'Facebook page'
+facebook.app.configuration.settings: Settings
+facebook.app.error: Error
+facebook.app.error.auth: 'Error while authorizing Facebook-page, please try again.'
+facebook.app.notice.empty.result: 'No adverts has been found!'
+facebook.app.notice.not.configured: 'App not configured'
+facebook.app.notice.not.configured.lead: |
+  You have not configured the app yet, click on the following button to make
+              a configuration.
+              <a href="{uri_action(my-facebook-app)}" target="_top" class="btn btn-primary">Configurate Facebook-app</a>
+facebook.app.notification.added: 'Your Facebook-page was successfully linked with your account.'
+facebook.app.notification.removed: 'Your account is no longer connected with any Facebook-page.'
+facebook.app.notification.saved: 'Your changes on the settings were saved.'
+facebook.app.search.button: Search
+facebook.app.search.category: Category
+facebook.app.search.category.all: 'all categories'
+facebook.app.search.show.all: 'Show all'
+facebook.app.search.text: 'Search for article'
+facebook.app.success: Success
+fax: Fax
+fields.empty.notice: 'Es sind keine weiteren Details zu diesem Artikel verfügbar.'
+find.interest.events: 'Find interesting events'
+finish.charged.order: 'Finish the order charged'
+firm.event: 'Firm event'
+firm.events: 'Firm events'
+flatrate: Flatrate
+floating: floating
+followed.article.is.sold: 'Following article was sold'
+forename: Forename
+free.joining: 'joining freely possible'
+full.article.description: 'Complete description of the article'
+full.article.name: 'Enter the full name of the article in here.'
+gallery: Gallery
+general.information: 'General information'
+general.information.view: 'General Information'
+get.advert.picture.package: 'Purchase advert- or imagepackages'
+give.moderator.rights: 'Give moderation rights'
+give.ur.pay.style: 'Enter here, which payment method you give your buyers. The entered payment method will be available for your listed articles!'
+go.back: 'Go Back'
+good.sales.tax.id: 'Your VAT-ID is valid'
+got.comments: 'Received comments'
+got.contact.request: 'Received contact request'
+goto.article: 'Go to article'
+goto.survey: 'Go to overview'
+gross.price: Gross-price
+group.category: 'Group category'
+group.directory: 'Group directory'
+group.event: 'Group event'
+group.event.invite: 'Invite to group event'
+group.have.this.members: 'The group {htm(CLUB_NAME)} currently consists of these members'
+group.leadership.commited: 'Group leadership commited'
+group.members: '{MEMBERS} member(s)'
+group.memberships: Group-memberships
+group.name: 'Group name'
+groups: Groups
+hdb.ean: 'EAN / GTIN'
+hdb.manufacturer.or.product: 'Manufacturer / Product'
+hdb.or.seperator: '- or -'
+hdb.search.product: 'Search product'
+hdb.use.product: 'Use product'
+helper.articleimageloader.title: 'Image is loading'
+here.are.the.last.ten.comments: 'Here you see your 10 last received comments'
+here.to.the.overview: 'Back to the overview'
+here.you.can.change.your.settings: 'Here you can change your personal settings'
+here.you.can.send.messages.to.other.users: 'Here you can send messages to other users.'
+here.you.find.all.adverts.you.made.your.adverts.get.a.publish.date.after.you.unlock.them: |
+  Here you find all adverts, you made so far!<br />
+          Your adverts get a publishing date, after you unlocked them!
+heres.an.error: 'An error has occurred'
+hide.comment: 'Hide comment'
+highest.amount: 'highest<br />amount'
+highest.bidder: 'highest<br />bidder'
+highest.offer: 'highest<br />offer'
+highest.price: 'Highest price'
+hint: Hint
+hint.extend.ad: |
+  <strong>Important advice:</strong> Extending one of your adverts
+                  and the entry will cost an advert from your advertpackage.
+i.confirm.that.i.dont.trade.commercially: 'I confirm that I <strong>do not trade commercially</strong>.'
+i.confirm.that.i.trade.commercially: 'I confirm that I <strong>trade commercially</strong>.'
+i.have.interest.in: 'I have interest in:'
+'i.plan.a.research.trip.&uuml;ber': 'I plan a research trip over:'
+i.read.the.terms.of.service.and.agree: 'I have read the TOS and agree'
+if.your.advertspackage.is.exhausted.you.can.buy.more.packages.here: |
+  If your advertpackage is exhausted, you can buy more packages
+  			here.
+images: Images
+imp: 'Site notice'
+imp.info: |
+  Enter here, if you are occur as a commercially vendor, the required information of your site notice
+                      after §5 of the German Teleservices Act.
+imp.long: |
+  Site notice, TOS, declaration of revocation and payment information</h1>
+      <p>
+          Here you can define sales conditions. They serve as a template and will be auto-filled in the form
+          on every new advert.
+imp.notice: |
+  Hier können Sie Ihre Verkaufsbedingungen definieren. Diese dienen als Vorlage und werden bei jeder Neu-Anzeige im
+          Formular vorausgefüllt.
+import.button.next: Next
+import.button.save.and.close: 'Save and close'
+import.category.confirm.assignement: 'Do you want to assign the category to {CATEGORY}?'
+import.category.no.field.assigned: |
+  No category field was assigned in your file.<br>
+  					Every data set will be assigned to the standard category <u>{htm(CATEGORY_DEFAULT_VALUE_NAME)}</u>.
+import.category.no.field.assigned.more: |
+  If your import data sets should be assigned to various categories, please go back a step and reassign the category
+  			of the field and make a comment on the source field.
+import.category.search.text: 'Search for category, min. 3 characters'
+import.categpry.search.button: Search
+import.click.to.open: 'Click to open'
+import.column: Column
+import.description: Desc
+import.error.category.required: 'Bitte wählen Sie eine Kategorie aus!'
+import.error.import.process: 'Error while importing &quot;{htm(ERRORS_PROCESS)}&quot;'
+import.error.label: 'Show {ERRORS_COUNT} errors'
+import.error.manufacturer.required: 'Bitte wählen Sie einen Hersteller aus!'
+import.field.checkbox.no: 'No'
+import.field.checkbox.yes: 'Yes'
+import.field.default.value: 'Default value'
+import.field.default.value.description: 'This value will be used, if the assignment could not be done, or if the import is empty.'
+import.field.description: Info
+import.field.import.affiliate.deeplink: Affiliate-Deeplink
+import.field.importask.displayname: 'Import Anweisung'
+import.field.not.mapped: 'This field was not assigned yet. Click here to make an assignment'
+import.field.required: 'Required field'
+import.file.csv: 'CSV File'
+import.file.eBay: 'eBay Account'
+import.file.xml: 'XML File'
+import.help: Help
+import.mapping.add.bottom: 'Add new assignment at the bottom'
+import.mapping.add.top: 'Add new assignment on the top'
+import.mapping.assignment: 'Field assignment'
+import.mapping.base.assignment: 'Your assignment from the source file'
+import.mapping.base.field.name: 'Field / Article-description of the marketplace'
+import.mapping.base.no.properties.found: 'ERROR: No article-description was found. Please contact the page administrator'
+import.mapping.categories.file: 'Your categories'
+import.mapping.categories.marketplace: 'Assignment of marketplace categories'
+import.mapping.delete: 'Delete assignment'
+import.mapping.detail.no.properties.found: 'No article properties were found.'
+import.mapping.detailed: |
+  On the step "Field assignment" you indicate more article-description to your source code.
+  				The following fields are category-dependent article-descriptions with their assigned categories.
+  				<br />
+  				The individual article-descriptions will be grouped after their basic index. You can view the individual article indexes, if you
+  				click the basic index in their blue highlighted boxes.
+import.mapping.detailed.not.required: 'There are no article properties on the marketplace. You can skip this step because of that'
+import.mapping.details.submit.warning: 'Please remember, that errors may occur on imports because of non or wrong assigned fields.'
+import.mapping.explode.delimiter: Delimiter
+import.mapping.explode.delimiter.not.assigned: 'Delimiter not yet assigned'
+import.mapping.explode.description: 'With the dissecting function you can split the characters string based on the delimiter'
+import.mapping.fixed.value: 'Fixed value'
+import.mapping.function: Function
+import.mapping.function.change.warning: 'Do you really want to change the function-type? Already saved assigned values will be lost'
+import.mapping.function.description: 'With the value assignment from list-boxes function you assign possible values of a list-box to your starting value (from your source code).'
+import.mapping.function.explode.name: Zerteilen
+import.mapping.function.listtablefieldmapfunction.name: 'Wertzuordnung aus Listenfeld'
+import.mapping.function.mapfunction.name: Wertzuordnung
+import.mapping.function.please.choose: 'Please choose function'
+import.mapping.insert.after.this: 'Insert after this assignment'
+import.mapping.listmap.from: 'Starting value'
+import.mapping.listmap.no.list: 'The field {FIELD_NAME} is no list box. Please choose the &quot;function assigned of a value&quot;'
+import.mapping.map.description: 'With the value assignment funktion you assign new values of a list-box to your starting value (from your source code).'
+import.mapping.map.from: 'Starting value'
+import.mapping.map.to: 'New value'
+import.mapping.none.yet.add.notice: 'No assignment available, add a new one to the field'
+import.mapping.not.assigned: 'Not yet assigned'
+import.mapping.reset.warning: 'Do you really want to delete the whole assignment?'
+import.mapping.table.used: 'This article group will be used in your category-assignment'
+import.next: Next
+import.no.default: 'No default value'
+import.or: or
+import.please.choose: 'Please choose'
+import.preset.button.add.source: 'Add source'
+import.preset.button.copy: 'Copy template'
+import.preset.button.delete: 'Delete template'
+import.preset.button.edit: 'Edit template'
+import.preset.datafield.edit.helpinline: |
+  Choose a column in your list from your CSV or XML file to fill the article-description with their
+  						contained values
+import.preset.delete.error: 'Es ist ein Fehler beim Löschen aufgetreten'
+import.preset.delete.success: 'Die Import Vorlage wurde erfolgreich gelöscht'
+import.preset.description: 'Template description'
+import.preset.edit.error: 'Es ist ein Fehler aufgetreten'
+import.preset.editor.categorymapping.help: |
+  <p>
+  			In this step you assign categories from your source file (for example, CSV file) to the available categories in the marketplace. Usually,
+        in your ERP or shop, you use other categories than the marketplace. In the table below you can see, in the left column,
+  			the categories that could be read from your source file. To every category you can now assign
+  			a fitting marketplace-category on the right-hand site.
+  		</p>
+  		<p>
+  			If you do not want to list every category in your source file or you still want to assign additional categories,
+  			you can add additional items to the end of the table.
+  		</p>
+  		<p>
+        While importing, all datasets for which there are no valid assignment categories, are sorted in the default category or discarded
+  			if they are not specified.
+  		</p>
+import.preset.editor.categorymapping.please.select.cat: 'Please select the desired assigned category'
+import.preset.editor.datafieldtable.header: Import-files
+import.preset.editor.map.error.fkkatempty: 'Sie müssen dem Feld Zugeordnete Kategorie einen Wert zuweisen'
+import.preset.editor.map.error.produktnameempty: 'Sie müssen dem Feld Produktname einen Wert zuweisen'
+import.preset.editor.nav.step.basemapping: '2. Basis assignment'
+import.preset.editor.nav.step.categorymapping: '3. category assignment'
+import.preset.editor.nav.step.fieldmapping: '4. Field assignment'
+import.preset.editor.nav.step.settings: '5. Settings'
+import.preset.editor.nav.step.type: '1. Templatetype'
+import.preset.editor.preset.update.notice: 'Attention, the import template already exists. Already effected assignments will be deleted, if you upload a new file.'
+import.preset.editor.setting.error.savefailed: 'Die Vorlage konnte nicht gespeichert werden'
+import.preset.editor.settings.no.settings.available: 'For the current configuration are no more settings available. <br>You can save the import template now and continue with the import.'
+import.preset.editor.subtitle: 'Adjust the import structure to your system'
+import.preset.editor.type.csv.config.affiliateDeleteAction: 'Affiliates löschen'
+import.preset.editor.type.csv.config.affiliateDeleteAction.disable: Deaktivieren
+import.preset.editor.type.csv.config.affiliateDeleteAction.intro: 'Aktion für nicht mehr aufgeführte Affiliate-Anzeigen'
+import.preset.editor.type.csv.config.affiliateDeleteAction.unavailable: 'Als "nicht vorrätig" anzeigen'
+import.preset.editor.type.csv.config.affiliateImport: Affiliate-Import
+import.preset.editor.type.csv.config.affiliateImport.help: 'Weitere Informationen zum Theme Affiliate-Artikel erhalten Sie hier'
+import.preset.editor.type.csv.config.affiliateImport.label: 'Dieser Import enthält Affiliate-Artikel'
+import.preset.editor.type.csv.config.fileCharset: Charset
+import.preset.editor.type.csv.config.fileDelimiter: 'CSV delimiter'
+import.preset.editor.type.csv.config.fileEnclosureCharacter: 'CSV Enclosure-Character'
+import.preset.editor.type.csv.config.fileEscapeCharacter: 'CSV Escape-Character'
+import.preset.editor.type.csv.config.productImport: Produkt-Import
+import.preset.editor.type.csv.config.productImport.label: 'Dieser Import enthält Daten für die Produkt-Datenbank'
+import.preset.editor.type.eBay.error.no.account: 'Es wurde noch kein eBay-Account zugeordnet!'
+import.preset.editor.type.ebay.config.loading: 'eBay-configuration is loading ...'
+import.preset.editor.type.ebay.config.login: 'Match eBay-Account'
+import.preset.editor.type.ebay.config.login.button: 'Log in'
+import.preset.editor.type.ebay.config.login.status: 'Logged in as <b>{EBAY_USER_UserID}</b>'
+import.preset.editor.type.ebay.config.runtime: 'Stadard-runtime for adverts'
+import.preset.editor.type.error.fileurlnotfound: 'Die angegebende Vorlagen Url konnte nicht geladen werden'
+import.preset.editor.type.error.nameempty: 'Es wurde keine Vorlagen Bezeichnung angegeben'
+import.preset.editor.type.error.nofile: 'Es wurde keine Vorlagen Datei ausgewählt'
+import.preset.editor.type.error.typeemtpy: 'Es wurde kein Vorlagen Typ gewählt'
+import.preset.error.filestructurenotmatch: 'Die Struktur der Import Datei stimmt nicht mit der Vorlagenstruktur überein'
+import.preset.file: 'Preset file'
+import.preset.fix.editview.inlinehelp: |
+  Enter a value for article-descriptions in this textfield, which can be used for all imported products on
+  					the marketplace.
+import.preset.init.ebay.col.itemid: Preis
+import.preset.save: 'Save preset import'
+import.preset.source.target.user: 'Besitzer der Anzeige'
+import.preset.source.target.user.long: 'Die Anzeigen werden beim Import dem User mit der angegebenen User-ID zugewiesen.'
+import.preset.tablefieldinfo.acceptedvalues: 'Accepted values'
+import.preset.tablefieldinfo.button: 'Display field description'
+import.preset.tablefieldinfo.field: Field
+import.preset.tablefieldinfo.header: Field-description
+import.preset.tablefieldinfo.optional: optional
+import.preset.tablefieldinfo.options: Description
+import.preset.tablefieldinfo.required: Required
+import.preset.tablefieldinfo.type: Type
+import.preset.title: 'Import template'
+import.preset.type: 'Template type'
+import.presets.active.session.info: 'You have a template with the name "{ACTIVE_SESSION_NAME}" in process. Do you want to <a href="{uri_action(my-import-presets-edit)}">continue</a> or <a href="{uri_action(my-import-presets-edit)}?DO=RESET">cancel</a> the process?'
+import.presets.btn-new: 'New import template'
+import.presets.datecreate: 'Date creation'
+import.presets.dateupdate: 'Last change'
+import.presets.delete.confirm: 'Do you really want to delete the import template {htm(PRESET_NAME)}?'
+import.presets.editor.categorymapping.pleasewait: 'Please wait while the categories are loading...'
+import.presets.header: 'Import templates'
+import.presets.header.sub: 'Set a structure of your import datasets with your import templates'
+import.presets.list.intro: |
+  Every created and provided import will be listed on this page. You can edit these or use it as a base
+  		for more import templates. Import templates are the foundation of each import by creating an interface
+  		between the structure of your source file and the structure of the marketplace.
+import.presets.no.presets.found: 'You have not applied a import template'
+import.presets.own.header: 'My own import templates'
+import.presets.presetname: Name
+import.presets.presettype: Templatetype
+import.presets.status: Status
+import.presets.status.disable: deactivated
+import.presets.status.enable: activated
+import.process.btn-new: 'Import files'
+import.process.button.protocol: 'View process log'
+import.process.container.tab.errors: 'Defective datasets'
+import.process.container.tab.log: Log
+import.process.container.tab.success: 'Successful datasets'
+import.process.currentstate: 'Current status'
+import.process.datecreate: 'Date creation'
+import.process.dateupdate: 'Last change'
+import.process.delete.confirm: 'Do you really want to the delete the import {htm(PROCESS_NAME)}? Please keep in mind, that not already imported datesets will be deleted.'
+import.process.delete.success: 'Der Import wurde erfolgreich gelöscht'
+import.process.header: 'My imports: {htm(SOURCE_NAME)}'
+import.process.header.sub: 'Import new datasets or update your stock'
+import.process.import.importidentifier.exists: 'Es existiert bereits ein Datensatz mit dem Identifikator {IMPORT_IDENTIFIER}'
+import.process.import.importidentifier.exists.blocked: 'Es existiert bereits ein Datensatz mit dem Identifikator {IMPORT_IDENTIFIER} im Datenimport'
+import.process.import.importidentifier.not.exists: 'Es existiert kein Datensatz mit dem Identifikator {IMPORT_IDENTIFIER}'
+import.process.import.nocategoryaccess.: 'Sie haben keinen Zugriff auf die Kategorie {KAT_ID}'
+import.process.import.nopacket.: 'Es wurde kein Paket mit ausreichendem Anzeigenvolumen gefunden'
+import.process.import.noruntime.: 'Die gewählte Laufzeit {LU_LAUFZEIT} ist nicht verfügbar'
+import.process.import.start.alreadyonline.: 'Der Artikel ist bereits online'
+import.process.intro: |
+  In the table below you see all already made imports which will be listed in the source '{htm(SOURCE_NAME)}'.
+  		You can view in the import log anytime again. <br>
+  	You can start a new import on the tab "add new import".
+  		<br><br>
+  		<em>Hint: The logs of the imports will be saved for 30 days and deleted afterwards</em>
+import.process.log.leveltoshow: 'Shown loglevel'
+import.process.name: Name
+import.process.no.presets.found: |
+  You have no imports
+  						applied yet
+import.process.run.debug: 'Starte Import Aufgabe Prozess'
+import.process.run.debug.import: 'Führe Import Aufgabe "Import der Daten" aus'
+import.process.run.debug.infra: 'Führe Import Aufgabe "Infrastruktur Erzeugung" aus'
+import.process.run.debug.load: 'Führe Import Aufgabe "Daten Einlesen" aus. Optionen: {OPTIONS}'
+import.process.run.debug.pre: 'Import wurde gestartet'
+import.process.run.debug.transform: 'Führe Import Aufgabe "Daten transformieren" aus'
+import.process.run.debug.validate: 'Führe Import Aufgabe "Daten validieren" aus'
+import.process.run.validate.deleteinvalid: 'Es wurden {COUNT} ungültige Datensätze entfernt'
+import.process.stats: Statistic
+import.process.stats.deleted: '{STATS_DELETED} datasets deleted'
+import.process.stats.new: '{STATS_NEW} new datasets imported'
+import.process.stats.paused: '{STATS_PAUSED} datasets paused'
+import.process.stats.started: '{STATS_STARTED} datasets enabled'
+import.process.stats.updated: '{STATS_UPDATED} datasets updated'
+import.process.status: Status
+import.process.status.error: Error
+import.process.status.finished: finished
+import.process.status.in.process: 'in process'
+import.process.statusname.error: Fehler
+import.process.statusname.finish: 'Import vollständig abgeschlossen'
+import.process.statusname.import: 'Daten importieren'
+import.process.statusname.importready: 'Daten importieren fertiggestellt'
+import.process.statusname.infrastructure: 'Infrastruktur erzeugen'
+import.process.statusname.ini: Initialisieren
+import.process.statusname.load: 'Daten einlesen'
+import.process.statusname.loadready: 'Daten einlesen fertiggestellt'
+import.process.statusname.transform: 'Daten transformieren'
+import.process.statusname.transformready: 'Daten transformieren fertiggestellt'
+import.process.statusname.validate: 'Daten überprüfen'
+import.process.statusname.validateready: 'Daten überprüfen fertiggestellt'
+import.process.transform.failed.categorynotfound: 'Tranformation des Datensatzes fehlgeschlagen.<br>Kategorie "{KAT_NAME}" wurde nicht gefunden'
+import.process.transform.failed.postvalidation: '<span class="text-error">Transformation des Datensatzes {DATASET_NAME} {DATASET_IDENT} fehlgeschlagen</span><br>Es konnte keine Kategorie zugewiesen werden!'
+import.process.transform.nocategorymapping.: 'Es wurde kein Kategoriefeld zugeordnet'
+import.run.datasettable.no.records.found: 'No datasets found'
+import.run.do.notclose: 'Please do not close the window while the import'
+import.run.import.name: 'Import name'
+import.run.import.preset: 'Import template'
+import.run.intro: 'The import process shows you the current status of your import of the respective step. Please follow the instructions below .'
+import.run.log.nomessage: 'No log messages available'
+import.run.no.presets.available: 'No templates found'
+import.run.no.presets.available.text: |
+  You have no
+  		<a href="{uri_action(my-import-presets)}">import templates</a> applied. You adjust the structure of your import files with the import template,
+  		to import datasets easily in your marketplace.
+  		<br><br>
+  		<a href="{uri_action(my-import-presets-edit)}?DO=NEW_PRESET">Adjust a new import template now</a>
+import.run.settings.testmode: 'Testmode (Checks and goes through the whole file, but does not import datasets to the live system)'
+import.run.source.add: 'Add source'
+import.run.source.add.intro: |
+  Choose in the following form your import template and enter the following settings.
+          Once you entered the source, you can import your files through it.
+import.run.source.edit: 'Edit source'
+import.run.title: 'Run import'
+import.save: Save
+import.save.and.close: 'Save and close'
+import.settings: Settings
+import.source.article.imported: 'Articles imported'
+import.source.btn-new: 'Add source'
+import.source.button.add: 'Add source'
+import.source.button.save: 'Update source'
+import.source.create.process: 'Add new import'
+import.source.cron: 'Automatic import'
+import.source.delete.ads: 'Delete all adverts from this source ({SOURCE_AD_COUNT})'
+import.source.delete.ads.success: 'Alle Anzeigen aus dieser Import-Quelle wurden gelöscht.'
+import.source.delete.success: 'Die Quelle wurde erfolgreich gelöscht'
+import.source.header: 'My sources'
+import.source.header.sub: 'Add new sources or import new datasets'
+import.source.intro: |
+  In the table below are all applied sources shown.
+  		You can edit this one anytime, look in the log or upload new files. <br>
+  		<br>
+  		<em>Hint: The logs of the imports will be saved for 30 days and deleted afterwards</em>
+import.source.list.processes: 'Past imports'
+import.source.name: Name
+import.source.next: 'Next import'
+import.source.none.found: 'You have not applied any imports yet'
+import.source.preset: Template
+import.source.row.interval: 'All {DOWNLOAD_INTERVAL} hours'
+import.source.row.interval.disabled: deactivated
+import.text.default: 'Default value'
+import.type: Type
+import.validation.error.value.not.accepted: 'Der Wert des Feldes "{FIELD_VALUE}" ist kein gültiger Wert'
+import.via.file.upload: 'via file upload'
+import.via.url: 'via Url'
+import.via.url.placeholder: 'http://www.example.com/ihredatei.csv'
+imprint: 'Site notice'
+in.ads.and.replace: 'In adverts and replace'
+in.process: 'in process'
+in.progress: 'in progress'
+inbox: Inbox
+info.payment: 'Payment information'
+info.seller: 'Seller information'
+information.to.the.order: 'Informationen to the order'
+interest: 'This could be also interesting'
+invite.deleted.succesfully: 'Invite deleted successfully'
+invite.user: 'Invite user'
+invited.at: 'Invited at'
+invoice: Invoice
+invoice.cancel: 'Cancel invoice / items'
+invoice.cancel.created.at: 'Created at'
+invoice.cancel.description: Description
+invoice.cancel.enter.remarks: 'Enter your remarks here'
+invoice.cancel.id: 'Cancel request ID'
+invoice.cancel.last.modified: 'Last modified'
+invoice.cancel.price.brutto: 'Total (Gross)'
+invoice.cancel.price.netto: 'Price (Net)'
+invoice.cancel.remarks: Remarks
+invoice.cancel.remarks.admin: 'Admin remarks'
+invoice.cancel.remarks.customer: 'Customer remarks'
+invoice.cancel.request: 'Cancel Invoice items'
+invoice.cancel.request.edit: 'Edit invoice or invoice items'
+invoice.cancel.requests.submit: 'Submitted cancel invoice requests'
+invoice.cancel.status.done: Accepted
+invoice.cancel.status.pending: Pending
+invoice.cancel.status.rejected: Rejected
+invoice.cancel.status.shelve: Shelve
+invoice.cancel.submit: Submit
+invoice.conditions.of.payment: 'Conditions of payment'
+invoice.conditions.of.payment.due: 'Conditions of payment due {todate(INVOICE_STAMP_DUE)}'
+invoice.conditions.of.payment.invalid: 'Please contact the site operator'
+invoice.conditions.of.payment.method: 'Payment method'
+invoice.download.selected.invoices: 'Download selected invoices'
+invoice.error.no.items.found: 'Error! No items found'
+invoice.include.cancel.requests: 'Include cancel requests'
+invoice.invoice.amount: Amount
+invoice.invoice.customer.number: 'Customer Nr.'
+invoice.invoice.customer.number.abbr: Customer-Nr.
+invoice.invoice.date: 'Invoice date'
+invoice.invoice.details: Details
+invoice.invoice.due.until: 'Due until'
+invoice.invoice.number: Invoice-Nr.
+invoice.invoice.number.abbr: 'Invoice Nr.'
+invoice.invoice.recipient: 'Invoice recipient'
+invoice.invoice.status: 'Invoice status'
+invoice.items: Items
+invoice.items.all: 'All invoice items'
+invoice.no.positions: 'No invoice positions exist'
+invoice.overview.header: 'Invoice overview'
+invoice.overview.header.subtitle: 'Your invoice in the overview'
+invoice.overview.info.open.invoices: 'You have to meet <strong>{topreis_ex(OPEN)}</strong> {CURRENCY_DEFAULT} outstanding invoices.'
+invoice.overview.no.invoices.found: 'No invoices found'
+invoice.overview.open.invoices: 'Outstanding invoices'
+invoice.overview.paid.invoices: 'Paid invoices'
+invoice.overview.show_coupon: Coupon
+invoice.overview.show_credit: 'Show credit'
+invoice.overview.storno.invoices: 'Canceled invoices'
+invoice.period.performance: Leistungszeitraum
+invoice.position: 'Invoice position'
+invoice.position.automatic: automatic
+invoice.position.charge: 'This method will be used to charge the invoices'
+invoice.position.charge.method: Method
+invoice.position.note: 'The invoice starts on the following days of the month'
+invoice.position.perform.date: 'Perform Date'
+invoice.positions: 'Invoice Positions'
+invoice.print: 'Print invoice'
+invoice.print.footnote: 'Listed wares and services have to be specified in the delivery conditions'
+invoice.print.invoice: 'Print invoice'
+invoice.print.marked.as.canceled: CANCELLED
+invoice.print.marked.as.corrected: KORREKTUR
+invoice.print.on.callback: 'On callback'
+invoice.print.selected.invoices: 'Print selected invoices'
+invoice.see: 'See Invoice'
+invoice.select.payment.method: 'Select payment method'
+invoice.select.payment.method.text: 'Select a payment method from the list, to pay the invoice.'
+invoice.status.canceled: 'The invoice was cancelled'
+invoice.status.paid: 'The invoice was paid'
+invoice.status.short.canceled.with.date: 'cancelled (on {todate(STAMP_CANCEL)})'
+invoice.status.short.paid.with.date: 'paid (on {todate(STAMP_PAY)})'
+invoice.status.short.unpaid: Unpaid
+invoice.table.header.item: Posten
+invoice.table.header.position: Pos.
+invoice.table.header.quantity: Quantity
+invoice.table.header.totalprice: 'Totalprice Gesamtpreis<br/>(gross)'
+invoice.table.header.unitprice: Unitprice<br/>(net)
+invoice.table.header.vat: VAT
+invoice.tax.value: 'VAT. {TAX_VALUE}%'
+invoice.taxexempt.info: 'This is a matter of a taxfree intra-Community delivery.'
+invoice.taxexempt.user.ustid: 'The VAT-ID of the beneficiary'
+invoice.taxexempt.user.ustid.checked.on: 'checked on {todate(INVOICE_TAX_EXEMPT_USTID_CHECKDATE)}'
+invoice.total.gross: 'Total gross'
+invoice.total.net: 'Total net'
+invoice.transaction.error: 'An error has occurred on the transaction. Please try again or contact the site operator.'
+invoice.transactions: 'Incoming payments'
+invoice.transactions.amount: Amount
+invoice.transactions.no.transacoions.found: 'There are no incoming payments available'
+invoice.transactions.number: Nr.
+invoice.transactions.paid.price: 'already paid'
+invoice.transactions.remaining.price: remaining
+invoice.view.invoice: 'View invoice'
+invoices.my.billableitems.headline: 'Yet not invoiced positions'
+invoices.my.billableitems.intro: 'The following positions will be invoiced in the position.'
+invoices.my.coupons.activated: 'Not yet activated coupons'
+invoices.my.coupons.headline: 'My coupons'
+invoices.my.creditnotes.headline: 'My credits'
+invoices.my.creditnotes.intro: |
+  You have {topreis_ex(TOTAL_CREDITNOTE_SUM)} {CURRENCY_DEFAULT} credits
+  		because of activated coupons.<br> It will be balanced automatically with the next invoice.
+is.person.member: 'Is the person you want to invite already a member of the marketplace?'
+is.top: 'is Top'
+item: Item
+job.created.on: 'created on'
+job.location: Location
+jobs: Jobs
+jobs.header: 'Job vacancies'
+jobs.header.subtitle: 'Job vacancies from our users'
+jobs.no.jobs.found: 'No jobs has been found in this category.'
+jobs.search.count.jobs.found: '{ALL_JOBS} jobs'
+jobs.show.all.jobs: 'show all jobs'
+jobs.view.job: 'view {htm(V1)}'
+joining.date.down: 'Accession date descending'
+joining.date.up: 'Accession date ascending'
+joining.request: 'Joining request'
+joining.request.long: 'You have {count_member_requests} joining requests for this group. You can configurate the joining conditions in the  <a href="{uri_action(my-group,{CLUB_ID_CLUB},view)}">group settings</a>'
+joining.request.needs.enter: 'Joining request requires confirmation'
+joining.requests: 'Joining requests:'
+label.article: 'Name of the article'
+last.action: 'Last<br />Action'
+last.active.price.proposal: 'Last active price proposal'
+last.activity: 'last activity'
+last.messages: 'last reply was from you'
+last.price.proposal: 'The last price proposal of a buyer was {topreis_ex(biduser_BID)} {CURRENCY_DEFAULT}.'
+last.rating: 'Last raiting'
+last.run.found.displays: 'Found displays on the last run'
+last_order: 'Last Order'
+latest.first: 'Latest first'
+lead.created_at: 'Eingetragen am'
+lead.documents: Dokumente
+lead.due.date: Fälligkeit
+lead.due.days: 'Abgabefrist in'
+lead.id: Ref-Id.
+lead.name: Name
+lead.search.title: 'Titel / Beschreibung'
+lead.submit: 'Anfrage abschicken'
+lead.updated_at: 'Letzte Änderung'
+leader.at.the.moment: 'Current group leader'
+leave.group: 'Leave group'
+leave.group.now: 'Leave group now'
+legal.info: 'Legal info'
+legal.payment: 'Zahlungsinformationen für den Verkauf'
+legal.recall: 'Widerrufs-/R&uuml;cktrittserkl&auml;rung f&uuml;r den Verkauf'
+like.action: 'I like this ad'
+like.action.dislike: 'I don''t like the ad'
+like.descending: 'Like descending'
+link: 'URL http://'
+link.more.informations: 'more information'
+list: List
+list.of.name.successful: 'The list names were saved successfully.'
+list.packages: 'List of all packages'
+little.comments.first: 'Less comments first'
+loaction.hint.article: 'Hint the location of the article.'
+load.please.wait: 'Please wait ...'
+loading.pleas.wait: 'Loading... Please wait.'
+location: Lokation
+location.not.found: |
+  The entered location could not be found. Please correct
+  							your entries.
+lock.event: 'Lock event (withdraw release)'
+log.in.was.successfull: 'You logged in successfully'
+log.level: Level
+log.message: Message
+login.button: Login
+login.lost.password.question: 'Forgot password?'
+login.password: Password
+login.stay.logged.in: 'Stay logged in?'
+login.username: 'Username / Email'
+logout: Logout
+lowest.price: 'Lowest price'
+main.category: 'Main category'
+manage.lists: 'Manage lists'
+manufacture.search.for.products.by.manufacture: 'Search for products of {htm(NAME)}'
+manufacture.select.category.or.manufacture: 'Please choose a category or manufacturer.'
+manufacturer: Manufacturer
+manufacturer.no.manufacturer.found: 'There are currently no manufacturer available.'
+manufacturer.select: 'Select manufacturer'
+manufacturer.select.from.db: 'Select manufacturer from the database'
+manufacturer.select.from.db.lead: 'Click on a manufacturer from the list, to select it.'
+manufacturer.skip: 'Continue without choosing a manufacturer'
+manufacturer.upper: MANUFACTURER
+manufacturer.use.input: 'Take entry'
+manufacturer.use.input.lead: 'Click on the following manufacturer, which you entered, to select it.'
+manufacturers.error.missing: 'Please enter manufacturer!'
+manufacturers.loading: 'Please wait, searching the database...'
+mark.as.unread: 'mark as unread'
+marketplace: ': Event of the user'
+marketplace.insert.search: 'In marketplace inserted searchings'
+master.table: 'Master Table'
+max.videos.error: |
+  You have reached the maximal amount of images/videos!<br>
+                  To upload another image/video, you have to delete at least one
+medium: Medium
+member.count.groups: 'Member of {USER_CLUB_COUNT} Group{if USER_CLUB_COUNT>1}s{endif}'
+member.in.followed.groups: 'You aer a member of these following groups'
+member.promoted.to.moderator: 'Member successfully appointed to a moderator'
+member.since: 'Member since'
+memberships.none.found.for.group: 'There are no memberships for this usergroup deposited.'
+message: Message
+message.from: From
+message.info.answered: Beantwortet
+message.info.count: '{MESSAGE_COUNT} Nachricht(en)'
+message.long: |
+  Hint: Your message will receive a header and a footer, to hint the receiver that
+                      this message was sent from our platform
+message.reply: Reply
+message.send: 'Write message'
+message.sent: 'Your message was sent successfully'
+message.sent.successfully: 'Your message was sent successfully'
+message.stamp.received: 'Letzte empfangen:'
+message.stamp.sent: 'Letzte verschickt:'
+message.to: To
+message.write: 'Write a message'
+messages: Messages
+min.order.quantity: 'Minimum order quantity'
+min.order.quantity.hint: 'Minimum quantity of articles for a sell.'
+minimum.order.quantity: 'Minimum order quantity: {MOQ}'
+mobile: Handy
+mod.removed: 'Moderator-rights has been withdrawn from the member'
+moderate.events.status.declined: Declined
+moderate.events.status.unchecked: Checking
+moderated.ads: Checking
+moderated.ads.declined: Declined
+moderated.ads.declined.reason: 'Your advert has been declined because of:<br />{text(DECLINE_REASON)}'
+moderated.events.declined.reason: 'Your advert has been declined because of:<br />{text(DECLINE_REASON)}'
+moderator: Moderator
+more.categories: 'Additional Categories'
+more.jobs: 'More {endif}Jobs'
+more.press.releases: 'More {endif}Press releases'
+more.shipping.info: 'More information to the shipping.'
+most.comments: 'Most comments'
+most.comments.first: 'Most comments first'
+most.events.fist: 'Most events first'
+most.pictures.first: 'Most images first'
+must.rows: 'Required fields. You have to enter these fields'
+'my purchases': 'My purchases'
+my.ad.comments: 'Comments to your adverts'
+my.ad.comments.long: |
+  Here you find all comments that are written to your advert and you have
+  		the option to release, display or to reply to them.
+my.ads: 'My adverts'
+my.ads.none.selected: 'No articles selected'
+my.bills: 'My bills'
+my.contactdata.address: 'Display my contactdata / address'
+my.contacts: 'My contacts'
+my.contacts.long: 'You can link shops by the help of contacts. You can get higher attention for your own shop with that.'
+my.coupons.intro: |
+  <p>If you received coupon codes from us, you can redeem those in the form below. Coupons Gutscheine
+  		may contain cutting of prices of several services or contain credits of a specified amount.
+  		</p>
+  		<p>The service will be shown below if you redeemed a code, but did not redeemed
+  			the service.</p>
+my.customers.title: 'My customers'
+my.data: 'My data'
+my.import.presets.add.source: 'Add source'
+my.import.presets.copy: 'use as template'
+my.import.presets.delte: delete
+my.import.presets.edit: edit
+my.import.process.delete: delete
+my.import.process.edit: 'View / Continue'
+my.import.source.add: 'add import'
+my.import.source.delete: delete
+my.import.source.edit: edit
+my.import.source.view: 'view import'
+my.imports.help.intro: |
+  <p>The import interface gives you the option, to import items from your source systems (e.g. ERP systems, import goods economies or online shops).
+  	For that, the marketplace has its own surface. The process is annotated in details and can be found under <a href="{my-import-help}">Help</a>. In the overview, it looks
+  	like this:</p>
+  
+  	<ol>
+  		<li>
+  			<b>Create import template</b>
+  			<br>With import templates, you create an interface between the structure of your source system and the marketplace. You assign categories
+        and product properties
+  		</li>
+  		<li>
+  			<b>Import test run</b><br>
+  			Before the actual import, you can start a test run, which indicates potential problems and errors
+  		</li>
+  		<li>
+  			<b>Import of datasets</b><br>
+  			Following this, import the records in the marketplace.
+  		</li>
+  	</ol>
+my.imports.link.importer: 'Open import surface in a new window'
+my.imports.title: 'My imports'
+my.messages: |
+  <h1>
+  		My messages
+  		<p class="lead">View and reply to messages</p>
+  	</h1>
+my.old.displays: 'To my ending adverts'
+my.pages.current.ad.messages: 'Current requests'
+my.products: 'My products'
+my.profil.social.media: 'Social Media Login'
+my.profil.social.media.connect: 'Establish a connection'
+my.profil.social.media.disconnect.warn: 'Do you really want to disconnect from your social media profile?'
+my.profil.social.media.displayname: Displayname
+my.profil.social.media.email: E-Mail
+my.profil.social.media.headline: 'Social Media Profile'
+my.profil.social.media.intro: |
+  You can link your account with social media profiles such as Facebook or Google. You can log in to our site
+  			without using your password.
+my.profil.social.media.provider: Provider
+my.profil.social.media.remove.connect: 'Remove connection'
+my.profil.social.media.status.connected: connected
+my.profil.social.media.status.not.connected: 'not connected'
+my.purchases: 'My purchases'
+my.purchases.digital: 'My digital purchases'
+my.sales.archived: 'Archived sales'
+my.sales.help.button.show: |
+  On this page, you have an overview with all your past purchases. Click on the
+          button <i class="glyphicon glyphicon-eye-open"></i> to get more information about a purchase, the buyer and
+          the ordered article.
+my.sales.help.status: |
+  The Status column indicates the current position of a sale in the ordering process.
+          You can mark the sales as <strong>paid / unpaid</strong> and the shipping as <strong>open / in progress / dispatched</strong>.
+          Your customer will be informed about every change.
+my.sales.help.title: Help
+my.sales.info: |
+  Here you see all your sold articles. Do always state your order-Nr while communicating
+          with the buyer or with the support.
+my.sales.lead: 'Your sold articles'
+my.sales.notice.unconfirmed.sales: |
+  You have {COUNT_UNCONFIRMED_ORDERS} <a href="{uri_action(my-marktplatz-verkaeufe)}?SEARCH_ORDER_CONFIRMATION_STATUS=0">unconfirmed sales</a> left.
+          Please accept or decline these.
+my.sales.open: 'Open sales'
+my.sales.print: print
+my.sales.show: show
+my.sales.show.statistics: 'Click here to view your sale statistics'
+my.sales.title: 'My sales'
+my.search.results: 'My searchings'
+my.searchwords: 'My searchwords'
+my.shopping: 'To my shoppings'
+my.wishlist: 'My wishlist'
+name: Name
+negotiate: Negotiate
+negotiate.price: 'Negotiate the price'
+net.price: Net-price
+new.articles.as.b2b.article: 'New articles as B2B-article'
+new.counter.offer: 'New counter offer'
+new.search.insert: 'Insert new searching'
+new.youtube.video: 'Insert new YouTube video'
+newest.first: 'Newest first'
+news.address: Standort
+'no': 'No'
+'no articles': 'No article'
+no.ads.currently: 'No adverts currently activated!'
+no.ads.found: 'No adverts found'
+no.ads.found.to.search: |
+  No articles has been found that match to your search request.<br>
+                      Please try again with different searchwords.
+no.ads.free: 'You have no more adverts available.'
+no.ads.in.category: 'There are no adverts in this categoriy.'
+no.ads.in.packet: |
+  The for the adverts selected package contains no more advertisements. Please choose a package
+  				you want to create the advert with:
+no.ads.set: 'You have not put any adverts in yet.'
+no.archived.purchases: 'You have no archived purchases.'
+no.articles.in.this.order: 'No articles are in this order'
+no.articles.in.your.order: 'No articles are in this order'
+no.comments: 'You have not received a comment yet.'
+no.contacts: 'No contacts available'
+no.contacts.yet: 'No contacts available yet.'
+no.current.offers: 'There are no current sales.<br /> <a href="{uri_action(my-marktplatz-neu)}">Click here, to sell an article.</a> Your already appointed articles can be found <a href="{uri_action(my-marktplatz)}">here'
+no.current.purchases: 'You have no current purchases.'
+no.data: 'No data'
+no.display.agent: |
+  You have no
+  		<a href="{uri_action(ad_agent)}" title="einen Anzeigenagenten einrichten">advert-agent</a>
+  		arranged
+no.display.option: 'No advertpackage available!'
+no.display.package.left: 'You have an invalid amount of advertpackages.'
+no.email.found: 'No E-Mails found.'
+no.image: 'No images available.'
+no.images.uploaded: 'You have not uploaded an image yet.'
+no.item.match: 'Did not found any matching sales.'
+no.jobs.currently: 'There are no jobs registered at the moment.'
+no.message.available: 'No messages available'
+no.messages: 'You have no messages.'
+no.messages.available: 'No messages available'
+no.own.payment.methode: |
+  You have no own <a href="{uri_action(my-payment-adapter)}">payment methods</a>
+              configured.
+no.package.selected.please.type.in.the.number.of.packages.you.want.to.buy: |
+  You have not selected a(ny) package(s). Please enter the desired amount of packages you want
+  	          in front of the desired package.
+no.press.releases.currently: 'There are no press releases entered yet.'
+no.rating.found: 'No ratings found.'
+no.ratings: 'No ratings available'
+no.ratings.yet: 'No ratings available'
+no.reviews: 'No reviews available'
+no.searchs: 'You have no searchings adjusted.'
+no.searchwords: 'No searchwords available'
+no.sold.long: |
+  Advice of cancellation for the sale
+              </th>
+          </tr>
+          <tr>
+              <td colspan="4">
+                  <p>
+                      Here you can enter the advice of cancellation.
+                      Please do not use HTML!
+no.sold.notice: |
+  Hier können Sie die Widerrufs-/R&uuml;cktrittserkl&auml;rung für ihre Verkäufe angeben.
+                      Bitte verwenden Sie kein HTML!
+no.subject: 'No subject'
+no.tax: 'No tax'
+no.vendor.in.this.categorie: 'No vendors have been found in this category.'
+no.video.uploaded: 'You have not uploaded any videos.'
+no.videos: 'No videos available.'
+normal.category: 'Normal category'
+not.available: 'Not available!'
+not.confirmed.yet: 'Not confirmed yet'
+not.ordered: 'not ordered'
+not.rated.yet: 'not rated yet'
+not.registered: 'Not registered'
+not.visibile: 'not visible'
+note.of.bidder: 'Note of the bidder'
+note.of.seller: 'Note of the seller'
+noticed.products.and.sites: 'Your noticed products and pages on the marketplace'
+notifications: Notifications
+notify.me.before.an.advert.runs.out: 'Notify me before an advert runs out'
+now.we.need.you.datas: 'Now we need your datas:'
+num.of.bidder: 'Number <br />of bidder'
+number: Nr.
+number.of.members: 'Number of member'
+obtained.pricing.bids: 'obtained pricing bids to your sales'
+of: of
+old.displays: 'Expired adverts'
+oldest.fist: 'Oldest first'
+on.article: 'On Article'
+on.request: 'On request'
+online: online.
+only.job.offers.without.third.partys.rights.are.allowed: 'Only job offers without third-party rights are allowed.'
+'only.letters.number.and.underline.are allowed': 'Only letters, numbers and underlines are allowed.'
+only.pickup: 'Only pickup'
+only.with.invite: 'Only with invite'
+open: open
+open.adver: 'Open advert'
+open.advert: 'Open advert'
+open.advert.in.new.window: 'Open advert in a new window'
+open.bills: 'Open bills'
+open.calendar: 'Open availability-calendar'
+open.profile.in.new.window: 'Open profile in a new window'
+optional: Optional
+order: Order
+order.contains.article.with.and.without.valueaddedtax: 'The order contains articles with and without tax!'
+order.date: 'Order date'
+order.free.now: 'Order free now'
+order.item: |
+  {VARIANT}
+  								{if AVAILABILITY}
+  								<br />
+  								{if AVAILABILITY_DATE_TO}
+  								Between the {todate(AVAILABILITY_DATE_FROM)} and the {todate(AVAILABILITY_DATE_TO)}
+  								{else}
+  								On {todate(AVAILABILITY_DATE_FROM)}
+  								{endif} 
+  								{if AVAILABILITY_TIME_FROM}from {AVAILABILITY_TIME_FROM}o clock{endif}
+  								{endif}
+order.modal.title: 'Order Nr. {ORDER_ID}'
+order.num: Order-Nr.
+order.number: 'Order number'
+order.of.the.package.successfull: 'The order of the package was successful.'
+order.package: 'Order package'
+order.process: 'Order process'
+order.share: 'The order was shared successfully. All currently not confirmed article purchases will be processed separately.'
+order.shipping.service: 'Order shipping service:'
+order.shipping.trackingnumber: 'Tracking-number:'
+order.shipping.trackingurl: 'Open tracking-URL'
+order.status: 'Order status:'
+order.successfull: 'Order successful'
+other.users.can.add.me: 'Other users can send me a contact request.'
+other.users.can.see.when.they.are.online: 'Othehr users can see you online, if you are.'
+other.users.can.send.messages.over.our.system: 'Other users can send you messages via our system.'
+other.users.comments.are.visivle.once.you.checko.them: 'Other users comments are visible once you checked them.'
+our.press.service: 'Our press service'
+our.provider.in.the.overview: 'Our provider in the overview'
+outbox: Outbox
+overview: Overview
+overview.over.registered.vendor.and.users: 'Overview over our registered vendors and users'
+own.offer: 'Own offer'
+own.proposal: 'Own proposal'
+package.invoice.pay: 'Pay invoice now.'
+packagename: Packagename
+packet.buy.error.backlink: 'Back to the order'
+packet.consumed: Consumed/Expired
+packet.contains: Contains
+packet.extends.by: 'Extended until {todate(STAMP_NEXT)}'
+packet.invoices.open.multiple: 'Open invoices'
+packet.invoices.open.one: 'Open invoice'
+packet.notice.profile: 'Please amend the following details on your <a href="{uri_action(my-profil)}">profile</a> before you purchase anything'
+packet.order.lead: |
+  After checking your choice you can buy the selected
+                  package.
+packet.order.subtitle: 'Please consider the accuring costs'
+packet.order.title: 'Order process'
+packet.recurring: Subscription
+packet.recurring.cancel: Cancel
+packet.recurring.cancel.deadline: '(possible until {todate(STAMP_CANCEL_UNTIL)})'
+packet.recurring.cancel.deadline.readonly: 'Cancellation period: {todate(STAMP_CANCEL_UNTIL)}'
+packet.recurring.cancel.question: 'Do you really want to cancel this subscription?'
+packet.recurring.canceled: |
+  Cancelled on {todate(STAMP_CANCEL_UNTIL)}<br />
+                          Cancelled to the {todate(STAMP_END)}
+packets.cost: Cost
+packets.owned: 'Your advertpackages'
+pager.counter.text: ': {COUNT} results found (Page {CURPAGE} from {MAXPAGE})'
+paid: paid
+partial.confirmed: 'partial confirmed'
+partial.declined: 'partial declined'
+partial.not.confirmed: 'partial not confirmed'
+partial.not.confirmed.yet: 'partial not confirmed yet'
+participation.disagree: 'Participation disagreed'
+participation.entered: 'Participation entered'
+participation.unsure: 'Participation unsure'
+"parts.of.the.packets.in.the.subscription.refer.to.the.terms.of.the.membership.\n                     if.you.have.for.example.ten.adverts.in.your.subscription.you.can.have.ten.adverts.parallel.active.if.you.sell.one.advert.you.can.make.a.free.new.one": |
+  *) Parts of the packets in the subscription refer to the terms of the membership. If you have for example 10 adverts
+                        in your subscription you can have ten adverts parallel active. If you sell one advert, you can make a free
+                        new one.
+password.must.be.at.least.longer.than.five.characters: 'Password must be at least longer than five characters.'
+password.repeat.not.correct: 'Password repeat is not correct.'
+pay.my.puchases.now: 'Pay my purchases now'
+pay.now: 'Pay now'
+pay.order: 'Pay order'
+pay.provision: 'For this sale you have to pay {topreis_ex(ORDER_PROV)} {CURRENCY_DEFAULT} commission'
+pay.style.accepted: 'Accept payment method'
+pay.typ: 'Payment method'
+payment: Payment
+payment.all: '-- all --'
+payment.failed: 'Payment failed!'
+payment.floating: 'Payment floating'
+payment.greater: 'Payment greater than'
+payment.info.long: |
+  Paymentinformations for the sale
+              </th>
+          </tr>
+          <tr>
+              <td colspan="4">
+                  <p>
+                      Here you can consign your account data. These will be sent automatically
+                      to the buyer once the buyer has to pay for the article
+payment.info.notice: |
+  Hier k&ouml;nnen Sie z.B. ihre Kontodaten hinterlegen. Diese werden dem K&auml;ufer
+                      automatisch zugeschickt sobald dieser den Artikel bezahlen muss
+payment.information: Paymentinformations
+payment.method: 'Payment method'
+payment.method.for.our.bills: 'Payment method provided from us to your bills'
+payment.methods: 'Payment methods'
+payment.open: 'Payment open'
+payment.open.short: open
+payment.paid: paid
+payment.paid.short: paid
+payment.pending: 'Payment pending'
+payment.reference: 'Payment reference'
+payment.settings.market: 'Preferred payment method to {htm(site_name)}'
+payment.settings.sales: 'Zahlungsvarianten für Ihre Verkäufe'
+payment.status: 'Payment status'
+pending: pending
+personal.description: 'personal description'
+personal.description.long: |
+  Here you can describe yourself. The text will be displayed on your profile and
+                          is visible for anyone! Please do not use any HTML!
+personal.note: 'personal note'
+personal.profile: 'Personal profile'
+phone: Phone
+phone.number: 'Phone number'
+pickup.only: 'Pickup only'
+picture.in.gallery: 'Picture in the gallery'
+pictures.in.gallery: 'Pictures in the gallery'
+piece.amount: '{AMOUNT} pieces'
+piece.price.net: 'Piece price (Net)'
+place: Place
+please.add.following.data.to.your.profile: 'Please add following data to your profile'
+please.add.following.information.in.your: 'Please add following information in your'
+please.answer.captcha: 'Please answer the captcha'
+please.call.me.because.of.this: 'Please call me because of this.'
+please.choose.right.usergroup: 'Please choose a right usergroup'
+please.choose.the.package.the.advert.refers.to: 'Please choose the package, which the advert refers to'
+please.close.the.process.here.if.you.finished.everything: 'Please close the process here, if you finished everything.'
+please.complete.profil: 'Please amend the following details on your <a href="{uri_action(my-profil)}">profile</a> before you sell something:'
+please.fill.following.form: 'Please fill the following form'
+please.fill.you.userdata: 'Please fill your userdata:'
+please.notice.the.costs: 'Please notice the accuring costs'
+please.rate.your.tradingpartner.after.every.sale.or.buy.stay.fair: |
+  Please rate your tradingpartner after every sale or buy. <br />
+      Stay fair!
+please.regard.a.fair.rating: 'Please regard a fair rating!!'
+please.release.the.job.offer: 'Please release the job offer.'
+please.send.me.all.press.messages.over: 'Please send me all press messages via:'
+please.send.me.the.current.press.folder: 'Please send me the current press folder.'
+please.try.again.later.or.contact.the.support: 'Please try again later or contact the support.'
+please.wait: 'Please wait...'
+pls.choose.category: 'Please choose a category'
+pls.choose.category.to.export: 'Please choose a category to export first'
+pls.give.description: 'Please give a description'
+pls.give.title: 'Please state a title'
+plugin.geo.region.content: 'Regionen und Inhalte'
+plugin.geo.region.content.empty.child: 'Innerhalb von {htm(PARENT_NAME)} wurden keine weiteren Regionen gefunden!'
+plugin.geo.region.content.empty.root: 'Es wurden keine Regionen gefunden!'
+plugin.geo.region.content.entry.back: 'Zurück zur übergeordneten Kategorie ({htm(NAME)})'
+plugin.geo.region.content.entry.name: 'Name der Region'
+plugin.geo.region.content.entry.seo: SEO-Infobereich
+plugin.geo.region.content.entry.sub: 'Enthaltene Regionen'
+plugin.geo.region.content.entry.sub.amount: '{int(CHILD_COUNT)} Regionen'
+plugin.geo.region.content.entry.sub.none: 'Keine vorhanden'
+plugin.geo.region.content.entry.view: Darstellung
+plugin.geo.region.list.config.dirty: 'Achtung! Sie haben Änderungen vorgenommen, die noch nicht gespeichert wurden! Region wechseln und Änderungen verwerfen?'
+plugin.geo.region.list.config.saved: 'Die Konfiguration wurde erfolgreich gespeichert!'
+plugin.user.task.list.config.general.title: Allgemein
+plugin.user.task.list.config.name: 'Name der Aufgabe'
+plugin.user.task.list.config.priority: Priorität
+plugin.user.task.list.config.resolve: 'Erledigt wenn der Benutzer ...'
+plugin.user.task.list.config.saved: 'Die Konfiguration wurde erfolgreich gespeichert!'
+plugin.user.task.list.config.target: Zielseite
+plugin.user.task.list.config.title: Benutzer-Aufgaben
+plugin.user.task.list.config.type: Typ
+plugin.user.task.list.link.click.here: 'Click here'
+plus.shipping: 'Plus shipping'
+plz.correct.amount: 'Please enter the available amount correctly in.'
+post: 'To inbox'
+post.entry: Inbox
+post.exit: Outbox
+postal: Postal
+postal.code: 'Postal code'
+postalcode: ZIP
+postcode: Postcode
+postcode.abbr: ZIP
+presente.rights: 'Presentation rights'
+presettings.for.comments: 'Presetting for comments'
+press.releases: 'Press releases'
+preview.text: 'Preview text'
+price: Price
+price.baseprice: Baseprice
+price.hint.article: 'Please enter the selling price in {CURRENCY_DEFAULT}.'
+price.in: 'Price in {CURRENCY_DEFAULT}'
+price.list: Pricelist
+price.list.commission: 'Sale commission'
+price.list.commission.lead: |
+  The following commission rates will be added to our successful
+  			    sellers on the portal.
+price.list.commission.max: 'Maximal commission of {topreis_ex(PROV_MAX_BRUTTO)} {CURRENCY_DEFAULT}'
+price.list.commission.max.netto: 'Maximal commission of {topreis_ex(PROV_MAX)} {CURRENCY_DEFAULT} plus {TAX_PERCENT}% VAT'
+price.list.commission.rate: 'Commission rate'
+price.list.commission.starting.price: 'from starting price'
+price.list.free.images: 'You can upload <strong>{FREE_IMAGES}free images</strong> for every advert.'
+price.list.no.memberships.for.usergroup: 'There are currently no memberships deposited for this usergroup.'
+price.list.notice.abo: |
+  *) Package components in the subscription refer to the runtime of the membership. E.g. if you have 10 adverts
+              in your subscription, you can have 10 adverts parallel activated. Once you sell one adverts, you can create a new one
+              for free.
+price.list.notice.create.ad: |
+  To cancel an advert by yourself, you need an advertpackage. An advertpackage contains
+          e.g. 10 adverts which you can spend on any time.
+          Additional you can purchase imagepackages, to add more images to
+          your adverts.
+price.list.notice.free: 'Setting up adverts is currently free!'
+price.list.packets.for.usergroup: 'Members of this usergroup got these advertpackages available:'
+price.list.prices.terms: 'Price / Duration'
+price.list.select.usergroup: 'Please select a fitting usergroup'
+price.negotiations: 'Price negotiations'
+price.per.piece.netto: 'Piece price (Net)'
+price.poposal.accept: 'Accept price proposal'
+price.proposal: 'Price proposal'
+price.proposal.accept: 'Accept price proposal'
+price.pseudo: 'Pseudoprice / SRP'
+price.pseudo.hint.article: 'Enter the SRP or a pseudoprice in here. The price will be crossed our in the article-description.'
+price.rent: 'Rent per day'
+price.rent.per: 'Rent / {htm(V1)}'
+price.rent.prices: 'Rental prices'
+price.rent.starting: starting
+price.request: Preisvorstellung
+price.request.base: Preisvorstellung
+price.retail: 'Price retail'
+prices.terms: 'Price / Terms'
+print: Print
+private.message.to: 'Private message to'
+producer: Producer
+product: Product
+product.amount: Amount
+product.amount.pieces: Pieces
+product.detail.offers: 'Angebote zu diesem Produkt'
+product.detail.offers.details: Details
+product.detail.offers.details.button: 'Details zum Angebot'
+product.detail.offers.image: Bild
+product.detail.offers.location: Standort
+product.detail.offers.moq: Mindestanfragemenge
+product.detail.offers.none.available: 'Es sind aktuell leider keine Angebote zu diesem Produkt verfügbar.'
+product.detail.offers.query.button: 'Ausgewählte Anbieter anfragen'
+product.detail.offers.vendor: Anbieter
+product.image: Image
+product.import.source.label: Import-source
+product.import.source.none: 'all adverts'
+product.manufacturer: Manufacturer
+product.name: 'Product name'
+product.offer.own: 'Eigenes Angebot'
+product.order.by: 'Sort by'
+product.order.by.stamp.asc: 'Oldest first'
+product.order.by.stamp.desc: 'Newest first'
+product.order.by.top.asc: 'Top-adverts last'
+product.order.by.top.desc: 'Top-adverts first'
+product.price: Price
+product.sales.type: 'type of sales'
+product.use.from.db: 'Use product from the database'
+product.use.from.db.lead: 'Click on a product from the following list, to select it.'
+product.use.input: 'Apply input'
+product.use.input.lead: 'Click on the following, from your entered, product to select it.'
+productname: 'Product name'
+products: Produkte
+products.empty: 'Enter search word / product name!'
+products.in.market: 'Products placed on the marketplace'
+products.loading: 'Please wait, searching through database...'
+profile: Profile
+profile.new.window: 'Open profile in a new window'
+profile.picture: 'Profile picture'
+profile.picture.change: 'Change profile picture'
+profile.picture.change.notice: |
+  Here you are able to upload an image in a JPG-, GIF- and a PNG-format. Please do not upload images
+              of entitled persons!
+profile.picture.current: 'Current picture'
+profile.picture.hint: 'Hint the picture you want to use'
+provisoin: Commission
+pseudoprice: 'instead of {topreis_ex(PSEUDOPREIS)} {CURRENCY_DEFAULT}'
+public.group.description: 'Please enter a description of your group. It will be displayed publicly.'
+publish.your.job.offer.on.our.portal: 'Publish your job offers on our portal'
+purchase: Purchase
+purchased.items: 'Your purchased items'
+purchased.items.long: |
+  Here you see all your purchased items. If you contact the seller or the support
+  		do not forget to insert the order-Nr.
+quantity: Quantity
+quantity.of.product.not.available: 'The desired quantity for this product is not available.'
+question.proposal: 'Do you want to accept the price proposal of {topreis(BID)} {CURRENCY_DEFAULT}?'
+question.wishlist.delete: 'Do you want to delete the entry on your wishlist?'
+quicksearch: Quicksearch
+rate.now: 'Rate now'
+rate.product: Rate
+rating: Rating
+rating.as.seller: 'Rating as seller'
+rating.buyer: 'Rating of the buyer'
+rating.save.error.already.rated: 'You already gave a rating for this sale/purchase.'
+rating.save.error.comment.empty: 'Please give a short comment to your rating.'
+rating.save.error.comment.too.long: 'The comment you gave is too long! (max. 255 characters)'
+rating.save.error.comment.too.short: 'The comment you gave is too short. Please enter at least ten characters.'
+rating.save.error.min.one.star: 'You have to give at least one star.'
+rating.save.failed: 'Rating failed!'
+rating.save.success: 'Your rating was saved successfully!'
+rating.vendor: 'Rating of the vendor'
+ratings: Ratings
+ratings.as.buyer: 'Ratings as buyer'
+read.message: 'Read message'
+really.commit.leadership: 'really assign the leadership'
+really.delete: 'really delete'
+really.delete.from.group: 'really delete from the group'
+really.display.deactivate: 'really deactivate advert'
+really.give.moderator.rights: 'really grant moderator rights'
+really.revoke: 'really revoke'
+really.send.message: 'really send message?'
+really.take.back.rating: 'really withdraw rating?'
+really.take.moderator.rights: 'really revoke moderator rights'
+really.want.to.delete.message: 'Do you really want to delete the message?'
+reason: Reason
+recieved.rating: |
+  Received<br />
+                              <a href="{uri_action(my-ratings)}" title="Alle Bewertungen">
+  							    Ratings
+                              </a>
+recieved.ratings: 'Received ratings'
+reciever: Receiver
+reciever.email: 'Receiver E-Mail'
+reciever.name: 'Receiver name'
+recommend: Recommend
+recommendations: Recommendations
+refresh.sale.and.payment.status.to.inform.your.customer.about.changes.of.the.order.over.email: |
+  Refresh the sale and payment status, to inform your customer about
+                              changes of the vendor via an E-Mail.
+register: Register
+register.button: 'Not registered yet?'
+register.date: 'Registration date'
+register.membership.feature.vendorEntry: 'Supplier directory'
+register.packets.abo.col.notice: '(in subscription*)'
+register.packets.flatrate: Flatrate
+register.packets.flatrate.tooltip: 'In this Membership are {PACKET_NAME} included as a flat rate'
+register.plugin.vendor.entry.enabled: Available
+register.plugin.vendor.entry.enabled.title: 'Entry in the Supplier Directory'
+register.plugin.vendor.entry.not.available: |
+  Diese Funktion steht ihnen aktuell nicht zur Verfügung. Um einen Eintrag ins Branchenbuch vorzunehmen, müssen Sie
+          zunächst <a href="{uri_action(packets)}">ein entsprechendes Paket kaufen</a>.
+register.plugin.vendor.homepage.enabled: Available
+register.plugin.vendor.homepage.enabled.title: 'Own Homepage'
+register.social.media.login.info: 'You account will be linked with <b>{REGISTER_SOCIAL_MEDIA_PROVIDER}</b>. You can login alternatively with your social media login instead of entering your password.'
+register.social.media.logout.info: 'Click here to login without the {REGISTER_SOCIAL_MEDIA_PROVIDER}-login.'
+registration.confirmed: 'Confirm registration'
+rejected: Rejected
+release: Release
+release.times: 'Count of releases'
+released: released
+relist: Relist
+relly.want.to.change.payment.method: 'Do you really want to change the payment method?'
+remember.link: 'Remember link'
+renounce.refund.right: 'Ich stimme der Ausführung des Vertrages vor Ablauf der Widerrufsfrist ausdrücklich zu. Ich habe zur Kenntnis genommen, dass mein Widerrufsrecht mit Beginn der Ausführung des Vertrags erlischt.'
+renounce.refund.right.hint: 'Sie müssen auf Ihr Widerrufs-/Rückgaberecht verzichten, um die Datei(en) herunterladen zu können'
+renounce.refund.right.sale: 'Käufer hat auf Widerrufs-/Rückgaberecht verzichtet.'
+rent.message.date: |
+  Gewünschter Zeitraum: {todate(FROM)} bis {todate(TO)}
+rent.missing.from: 'Bitte geben Sie das Start-Datum an!'
+rent.missing.to: 'Bitte geben Sie das Rückgabe-Datum an!'
+rent.top.ad: 'Rent Top-advert'
+report.error.reason: 'Please enter a reason!'
+report.error.user.email: 'Bitte geben Sie ihre E-Mail Adresse an!'
+report.error.user.name: 'Bitte geben Sie ihren Namen an!'
+report.security.question: 'The security question was answered wrong.'
+reported.offencens: |
+  Reported violations </h2>
+  	<p>
+  		Please react prompt on reported violations of users
+request: 'Search request'
+request.accepted: 'The application was accepted'
+request.at: 'Requested at'
+request.blocked: 'The application was declined and the user was blocked'
+request.contact: 'Offer the user a product.'
+request.contact.anonymous: 'You are not logged in as a user. Please hint your name and your E-Mail-adress!'
+request.contact.captcha: 'Please answer the security question'
+request.contact.email: 'Your E-Mail-address'
+request.contact.lead: 'If you have a fitting product / service, you can offer it on here'
+request.contact.message: 'Your message'
+request.contact.name: 'Your name'
+request.contact.send: 'Send message!'
+request.contact.subject: Subject
+request.declined: 'The application was declined'
+request.edit: 'Edit search request'
+request.options: Anfrage-Optionen
+request.question.lead: 'Ask a question about &quot;{PRODUCT}&quot;'
+request.title: 'A user searches: {PRODUKTNAME}'
+request.unlock: 'Request release'
+requests.abo: 'Subscribe to search requests'
+requests.abo.checkbox: 'Please inform me daily about new search requests on the marketplace.'
+requests.count: '{COUNT} search requests'
+requests.none.found: 'No search requests has been found in this category.'
+requests.recent: 'Recent search requests'
+requests.recent.intro: 'Offer actively your products to our user'
+requests.search.filter: Searchfilter
+requests.show.all: 'Show all search requests'
+residence: Residence
+rest.one: 'Your advert has a remaining runtime of'
+rest.three: 'Days shorter then selected above.'
+rest.two: |
+  If you rent this Top-advert, it
+  		will run regardless
+results: Results
+return.police: 'Revocation- or return policy'
+return.police.display: 'Show revocation-/return policy'
+return.police.unavailable: 'No revocation-/return policy was deposited for this article.'
+review: Review
+reviews: Reviews
+revocation: Revocation
+row.name: 'Row name'
+run.out: 'Ran out'
+runtime: Runtime
+sale: Sale
+sale.accepted: 'Sale was accepted!'
+sale.action.accept: 'Sale accepted'
+sale.action.decline: 'Sale declined'
+sale.complete.declined: 'The sale was completely declined'
+sale.declined: 'Sale was declined!'
+sale.not.confirmed: 'The sale is not confirmed yet'
+sale.rejected: 'The sale was declined'
+sale.seller.details.save.successfully: 'The seller details were saved successfully'
+sale.status: 'Sale status'
+sales.action.accept: 'Accept sales'
+sales.distribution: Distribution
+sales.distribution.action: Action
+sales.distribution.code.add.success: 'Registration-code successfully added'
+sales.distribution.code.del.success: 'Registration-code successfully deleted'
+sales.distribution.code.empty: 'You have to enter a code.'
+sales.distribution.code.invalid: 'The entered code contains invalid characters!<br />Allowed are characters, numbers and dashes.'
+sales.distribution.code.short: Reg.-code
+sales.distribution.codes: 'Distribution- registration-codes'
+sales.distribution.codes.action: Action
+sales.distribution.codes.code: Code
+sales.distribution.codes.description: Description
+sales.distribution.codes.error.duplicate: 'The code you just put in has already been taken!'
+sales.distribution.codes.error.empty: 'You have to enter a code!'
+sales.distribution.codes.lead: 'Here you are able to generate new registration-codes to advertise for new customers.'
+sales.distribution.codes.link: Link
+sales.distribution.codes.new: 'Add a new code'
+sales.distribution.codes.new.into: 'To add a new registration code, enter the code and optionally a description and click on "Add code". <br /> <b>The code</b> is freely selectable and can consist of your company name, for example. The link you can use to refer customers will contain this code. <br /> <b>The description</b> is optional and is not displayed publicly. This serves only as an overview, so that you can make notes for yourself in which way or on which occasion the corresponding registration code is distributed. (e.g. "Messe Hamburg 2016" or "E-Mail Newsletter 05/2016")'
+sales.distribution.codes.new.submit: 'Add a new code'
+sales.distribution.codes.none.yet: 'You have not yet created any registration codes'
+sales.distribution.contact.update: 'Set last contact to today'
+sales.distribution.information: Informations
+sales.distribution.intro: |
+  In this area you have the possibility to acquire new customers.
+          Customers who have been recruited by you will be linked to your account and 
+          <b>
+              You get {PROVISION_PERCENT}% of the turnover as commission, 
+              that the advertised customer makes to this portal.
+          </b>
+          (e.g. by booking a paid membership, placing advertisements or booking top advertisements)
+          <br />
+          <i>
+              As soon as you have acquired a first customer, instead of the
+              Explanatory text provides an overview with statistics on the users they have recruited and their sales.
+          </i>
+sales.distribution.intro.sales.codes: 'Create registration code(s) and refer customers'
+sales.distribution.intro.sales.codes.long: 'For customers you refer to to be assigned correctly, you must create a <a href="{uri_action(my-sales-codes)}">registration code</a>. Send the appropriate link to the customers you would like to advertise or print it on an advertising flyer/advertisement. Every visitor who comes to the marketplace via this link and then registers is automatically linked to their account.'
+sales.distribution.long: 'Here you see a list of all user you advertised for.'
+sales.distribution.membership: Membership
+sales.distribution.none.found: 'You have not advertised for an user.'
+sales.distribution.note: Note
+sales.distribution.popover.close: Close
+sales.distribution.provision: Commission
+sales.distribution.qrcode.download: Herunterladen
+sales.distribution.qrcode.forum: 'Einbinden in Foren'
+sales.distribution.qrcode.homepage: 'Einbinden auf Webseiten'
+sales.distribution.qrcode.title: 'QR-Code für das Werben von Kunden'
+sales.distribution.registered: 'Reg. date'
+sales.distribution.search.button: Search
+sales.distribution.search.last.contact: 'Last contact'
+sales.distribution.search.membership: Membership
+sales.distribution.search.membership.status: Membership-status
+sales.distribution.search.membership.status.short: Status
+sales.distribution.search.name: Name/Company
+sales.distribution.search.provision: 'Receive commission'
+sales.distribution.search.sort: Sorting
+sales.distribution.search.sort.date.asc: 'Reg. date (Oldest first)'
+sales.distribution.search.sort.date.desc: 'Reg. date (Newest first)'
+sales.distribution.search.sort.provision.asc: 'Receive commission (Least first)'
+sales.distribution.search.sort.provision.desc: 'Receive commission (High first)'
+sales.distribution.search.sort.turnover.asc: 'Turnover (Least first)'
+sales.distribution.search.sort.turnover.desc: 'Turnover (High first)'
+sales.distribution.search.sort.turnover.last.asc: 'Last turnover (Oldest first)'
+sales.distribution.search.sort.turnover.last.desc: 'Last turnover (Newest first)'
+sales.distribution.search.turnover: Turnover
+sales.distribution.status: Status
+sales.distribution.status.active: Active
+sales.distribution.status.any: '---'
+sales.distribution.status.canceled: Cancelled
+sales.distribution.turnover: Turnover
+sales.distribution.turnover.last: 'Last Sale'
+sales.distribution.user: User
+sales.question.confirm: 'Really confirm the sale?'
+sales.question.decline: 'Really decline the sale?'
+sales.search.for.buyer: 'Alle Bestellungen dieses Käufers anzeigen'
+sales.tax.id: 'Value added tax identification number'
+sales.tax.id.abbr: VAT-No
+sales.tax.not.good: 'Your VAT ID is invalid'
+save: Save
+save.group: 'Save group'
+save.job: 'Save job'
+save.order.status: 'Save order status'
+save.sales.csv: 'As CSV-file'
+save.sales.generic: 'Download seller (confirmed sales only!)'
+save.sales.xml: 'As XML-file'
+save.sales.xml.jtl: 'For the JTL commodities management'
+save.video: 'Save video'
+saved.sites: '{all} saved sites'
+saved.sites.search: 'Search for saved sites'
+search: Search
+search.ads: 'Advert search'
+search.by.city: City
+search.by.country: Country
+search.by.distance: Within
+search.by.ean: EAN-number
+search.by.price: 'Maximal price in {CURRENCY_DEFAULT}'
+search.by.product: 'Search for product'
+search.by.zip: ZIP
+search.collapse.collapse: 'Fewer search options'
+search.collapse.expand: 'More searchoptions'
+search.filter: Searchfilter
+search.for.companies: 'Search for companies'
+search.group: 'Search for group'
+search.groups.general: General
+search.groups.location: 'Search within'
+search.kunden: 'Search customers'
+search.messages: 'Search messages'
+search.multicheck.collapse: 'Less ...'
+search.multicheck.expand: 'More ...'
+search.my.ads: 'Search for my adverts'
+search.number: 'Search request-Nr.'
+search.only.b2b: 'Only B2B Products'
+search.only.discounted: 'Only discounted Products'
+search.parameter: Searchparameter
+search.placeholder.max: From
+search.placeholder.min: To
+search.purchases: 'Search purchases'
+search.reset: 'Reset search'
+search.results: '{COUNT} search results'
+search.results.none: |
+  Your search has not found any results!<br />
+                      Please try a different searchwords.
+search.results.show: 'Show hits ({ALL_ADS})'
+search.seller: 'Search for sellers'
+search.show.results: 'Show results'
+search.submit: Search
+search.suggestion: Suggestions
+searchwords.long: 'Text search in title and keyword...'
+seclude.proposal: 'Seclude proposal'
+secluded: Secluded
+secluded.lower: secluded
+sel.from.map: 'Select from map'
+select.categorie: 'Please select a category'
+select.display.packet: 'Please select an advertpackage'
+select.manufacturer: 'Please select a manufacturer first.'
+select.please.choose: 'Bitte wählen'
+select.runtime: 'Please select here the runtime for your advert.'
+select.runtime.selectbox: 'Please select article-runtime'
+select.shupping.option: 'Please choose the desired shipping option'
+sell.product.now: 'Sell product now'
+seller: Seller
+seller.accept.payment.methods: 'The seller accepts the following payment methods'
+seller.no.payment.info: 'The seller has not deposited a payment method. Please ask him directly.'
+seller.payment.info: 'The seller has deposited following payment methods'
+seller.rating: 'Rating of the seller'
+seller.sale.subline: 'Order #{ORDER_ID_AD_ORDER} of {todate(ORDER_STAMP_CREATE)}'
+seller.sale.view: 'Details of the order'
+send.long: 'I accept, that my username and group will be visible in the E-Mail.'
+send.message: 'Send message'
+send.recive: Sender/receiver
+send.recommendation: 'Your recommendation was sent!'
+sent: sent
+sent.contact.request: 'Sent contact requests'
+service.for: For
+set.advert: 'Advertise job offer'
+set.if.comments.are.allowed: |
+  Sets if comments are standardly allowed to your adverts/events/...
+                  or not allowed.
+set.if.comments.can.be.send.to.your.company: 'Sets if people can write comments about your company.'
+set.new.advert: 'Set new advert'
+set.on: 'set on'
+set.price: 'Set a new price'
+set.shipping: 'Please set information for the shipment'
+settings: Settings
+settings.saved.succesfull: 'Your settings were saved successfully'
+share: Teilen
+share.ad: 'Share advert'
+share.order: 'Share order'
+shipping: Shippingcosts
+shipping.additional.info: 'more information to the shipment'
+shipping.cost.on.request: 'Shippingcosts on request'
+shipping.costs: 'Shippingcosts: {topreis_ex(VERSANDKOSTEN)} {CURRENCY_DEFAULT}'
+shipping.costs.free: 'No shippingcosts'
+shipping.costs2: Shippingcosts
+shipping.in.e: 'Shippingcosts in €'
+shipping.notice: 'Shippingcosts notice: {htm(AD_VERSANDKOSTEN_INFO)}'
+shipping.number: Items
+shipping.open: 'Shipping open'
+shipping.options: 'Shipping options'
+shipping.price.included: 'incl. {topreis_ex(SHIPPING_PRICE)} {CURRENCY_DEFAULT} shippingcosts'
+shipping.status: 'Shipping status'
+shipping.term: 'Delivery date'
+shipping.term.help: 'Hint the expected delivery date.'
+shipping.term.notice: 'Delivery date: {htm(AD_LIEFERTERMIN)}'
+shipping.term.notice2: 'Delivery date'
+shop.directory: 'Shop directory'
+shopping.confirmation: 'Confirmation of your purchase'
+show.agent: 'show agent'
+show.all: 'show all'
+show.all.ad.messages: 'Show all requests'
+show.all.categories: 'show all categorie'
+show.all.comments: 'Show all comments'
+show.all.joining.request: 'show all joining requests'
+show.all.price.negotiations: 'Show all price negotiations'
+show.all.products: 'Show all Products'
+show.all.purchases: 'Show all purchases'
+show.all.solds: 'Show all solds'
+show.all.unterentered.group.events: 'Show all unentered group invites'
+show.all.vendor: 'Show all vendors'
+show.details: 'Show details'
+show.discount: 'Show discount in %?'
+show.discount.hint.article: 'Show pseudoprice and sale price instead of discount in %'
+show.export: 'Show export'
+show.export.long: |
+  You can export your adverts as CSV. Choose the filter rule you need and click on export advert
+      <em>export adverts
+show.file: 'Show {htm(FILENAME)} file'
+show.group.in.public.long: 'Your group will not be displayed in the group directory, if you deactivate this setting. Also, your members can not access to the information either'
+show.group.in.puclic: 'Display group in public'
+show.group.name: 'View {htm(NAME)}'
+show.job.offer: 'Show job offer'
+show.my.personal.data.following.data.only.address.and.company.name: 'Show my personal data to the following persons <br />(Only the address / companyname will be displayed)'
+show.only.top.categories: 'show only top 50 categories'
+show.overview: 'Show overview'
+show.price.proposal: 'Show price proposal'
+show.productname: 'View {htm(PRODUKTNAME)}'
+show.profil: 'Show profile'
+show.rating: 'Show rating'
+show.user.online: 'Show user online'
+show.vendor: 'View {htm(VENDOR_NAME)}'
+shown.group: 'Show group &lsaquo;<a href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}"> in public</a>&rsaquo;'
+sold: Sold
+sold.items: 'Sold items Verkaufter Artikel'
+sold.price: 'Sale price'
+soon.end: 'Soon ending'
+soon.ended.products: 'Soon ending products'
+sort.alphabet.asc: 'Alphabet ascending'
+sort.alphabet.desc: 'Alphabet descending'
+sort.comments.desc: 'Most comments first'
+sort.events.desc: 'Most events first'
+sort.images.desc: 'Most images first'
+sort.members.desc: 'Most members first zuerst'
+sort.recent.asc: 'Oldest first'
+sort.recent.desc: 'Newest first'
+source.message.not.found: 'Source message not found'
+standard.billing.address: 'Standard billing address'
+standard.delivery.address: 'Standard delivery address'
+standard.payment.method: 'Standard payment method'
+star.rating: '{adRatingAverageValue} of 5 stars ({adRatingCount} {if adRatingCount > 0}rating{else}ratings{endif})'
+start.have.to.before.end: 'The starting date has to be before the ending date.'
+start.manuell.search: 'Start the search manually'
+start.search: 'Start search'
+start.teaser.loading: Loading...
+stat.close: Close
+stat.date.range: 'Date Range'
+stat.go: Go
+stat.per.day: 'Per day'
+stat.per.month: 'Per month'
+stat.product.statistics: 'Product Statistics'
+stat.to: to
+statistic.amount: Betrag
+statistic.count: Anzahl
+statistic.count.invoices: 'Anzahl Rechnungen'
+statistic.date: Datum
+statistic.invoices.values: 'Rechnungsstatus letzte {DAYS} Tage'
+status: Status
+store: Store
+street: Street
+street.hint.article: 'Hint the street of where the article is located at the moment.'
+subcategories.hover.all.subcategories: 'Alle Kategorien'
+subcategories.hover.headline: 'Übersicht unserer Kategorien'
+subcategories.hover.more.subcategories: 'Weitere Unterkategorien'
+subcategories.hover.no.subcategories: 'Keine weiteren Unterkategorien vorhanden.<br><a href="{uri_action(marktplatz,{ID_KAT},{urllabel(V1)})}" class="btn btn-info">Zur aktuellen Kategorie wechseln</a>'
+subcategories.hover.show.subcategories: 'Einen Überblick über unsere Kategorien erhalten Sie hier:'
+subject: Subject
+submitted.ratings: 'Submitted ratings'
+succesfully.search.add: 'The searchings were added successfully.'
+suggest.price: 'Price proposal'
+suggest.price.accept: 'Accept the price proposal'
+suggest.price.accept.long: 'Do you really want to accept the proposal in the amount of {topreis(BID)} EUR?'
+suggestion: Proposal
+suppose: Accept
+sure.delete.event: 'Do you really want to delete the event'
+surname: Surname
+survey.my.shopping: 'You can find an overview of your past purchases here'
+tags: Tags
+take.back.rating: 'Take rating back'
+take.contact: 'Take contact'
+take.moderator.rights: 'Take moderator rights'
+ten.symbols.comment: |
+  Comments<br>
+  								at least 10 characters
+terms.of.service: 'Terms of service'
+text.search.title.tags: 'Text search in title and tags...'
+thank.for.your.shopping: 'Thanks your for shopping'
+thank.you.for.your.trust: 'Thank you for your trust!'
+thanks: 'Thank you!'
+thanks.for.your.registration: 'Thank you for your registration'
+the.adverts.are.for: 'The adverts are for'
+the.article.could.not.be.found.it.may.be.not.available: 'The desired article could not be found. It may be that it is no longer available.'
+the.article.isnt.available: 'The desired article is no longer available.'
+the.author.adheres.for.his.contents: 'The author adheres for his contents.'
+the.markteplaceowner.sets.manually.the.confirmation.thats.why.settins.is.not.available: |
+  The markteplaceowner sets a manually confirmation for comments,
+              		that is why this setting ins unavailable.
+the.search: Search
+these.settings.will.effect.the.visibility.of.your.personal.data.these.settings.will.be.applied.instantly.and.can.be.changed.everytime: |
+  These settings will effect the visibility of your personal data. <br />
+      These settings will be applied instantly and can be changed back everytime.
+this.ad.as.submission: 'Use this advert, to create a new (or a copy) product'
+this.ad.deaktivate: 'Deactivate this advert'
+this.ad.edit: 'Edit this advert'
+time.left: 'Remaining time'
+title: Titel
+to.advert: 'To advert'
+to.buyers.profile: 'To buyers profile'
+to.marketplace: 'To marketplace'
+to.my.ad.messages: 'To my requests'
+to.my.bills: 'To my bills'
+to.my.displays.agents: 'To my display agents'
+to.my.price.negotiations: 'To my price negotiations'
+to.my.purchases: 'To my purchases'
+to.my.solds: 'To my solds'
+to.open.calendar: 'To open calendar'
+to.shop: Store
+to.the.addresses.below: 'to the addresses below.'
+to.the.soon.ending.displays: 'To the soon ending adverts'
+toggle.comments: 'Toggle comments'
+toggle.top.ads: 'Toggle Top-adverts'
+top.seller: 'TOP Seller'
+top.vendor: 'TOP Vendor'
+tos: TOS
+total: Total
+total.amount: 'Total amount'
+total.cost: 'Total cost'
+total.orders: 'Total Orders'
+track.shipping: 'Track shipping'
+trade.accept: Accept
+trade.accept.confirm: 'Do you want to accept the proposal in amount of {topreis(BID)} {CURRENCY_DEFAULT}?'
+trade.cancel: Cancel
+trade.cancel.confirm: 'Do you want to cancel the proposal?'
+trade.counter.confirm: 'Are you sure, to submit the counter proposal?'
+trade.last.counter: 'Your last counter proposal amounted {topreis_ex(BID_my)} {CURRENCY_DEFAULT}'
+trade.negotiations: 'Price negotiations'
+trade.negotiations.lead: 'Keep track of your price negotiations!'
+trade.offer.accepted: 'Offer accepted'
+trade.offers.active.own: 'Ihr Gebot'
+trade.offers.active.user: 'Angebot des Suchenden'
+trade.partner: 'Trade partner'
+trade.price.proposal: 'Price proposal (Piece price)'
+trade.status.accepted: Accepted
+trade.status.active: Active
+trade.status.canceled: Cancelled
+trade.status.closed: Closed
+trade.submit.proposal: 'Submit proposal'
+trade.total.amount: 'Totalamount: {topreis(BID_FULL)} {CURRENCY_DEFAULT}'
+trans: Trans.
+transaction.details: 'Transaction details'
+transaction.emails: 'E-Mails about the transaction'
+transaction.number: Transactions-Id
+transaction.number.abbr.ml: 'Trans.-<br />Id'
+typ: Type
+typ.event: '1. type of event'
+type: Kind
+type.date: 'Please enter a valid starting date.'
+type.end.date: 'Please enter a valid ending date.'
+type.in.the.referencenumber.you.want.to.see: 'Enter the referencenumber, you want to see.'
+type.searchwords: 'Type the searchwords in, under which you want to be found.'
+unarchiving: Unarchiving
+unconfirmed: Unconfirmed
+unentered.first: 'Unconfirmed first'
+unentered.groupevents: 'Unconfirmed groupevents'
+unexpected.error: 'An unexpecting error occurred!'
+unlock.event.now: 'Unlock this event now.'
+unpaid.orders: |
+  You have overall <a href="{uri_action(my-marktplatz-einkaeufe)}?SEARCH_ORDER_PAYMENT_STATUS=0">
+  			{COUNT_UNPAID_ORDERS} purchases</a>, which are not paid yet.
+unread: unread
+unremember.link: 'Forget link'
+upgrade.error: 'Upgrade failed!'
+upgrade.of.your.advertpackage.failed.if.it.happens.again.please.contact.the.admin: |
+  Upgrading the advertpackage failed! If the problem repeats,
+  			please contact the administrator.
+use.all.terms: 'Use all terms'
+use.model: 'Use as model'
+user.address.location: 'Your location address'
+user.articles.selected: '{COUNT} selected articles'
+user.articles.selected.none: 'No article selected'
+user.contact: 'Make contact'
+user.files: 'Userdata for user'
+user.invoice.address: Address
+user.invoice.error.address.not.provided: 'Please enter at least Name/Company, street, ZIP, city and country.'
+user.invoice.error.delete.address: 'Error while deleting the address!'
+user.invoice.new.address: 'New address'
+user.likes: 'TRANSLATION NOT FOUND: de / marketplace.user.likes'
+user.media.attachments: Attachments
+user.media.image.actions: Actions
+user.media.image.details: Details
+user.media.image.preview: Preview
+user.media.image.source: 'Image source'
+user.media.image.title: 'Image title'
+user.media.images: Images
+user.media.source: Source
+user.media.title: Title
+user.media.upload.title: Description
+user.media.uploads: Documents
+user.media.video.submit: 'Add video'
+user.media.video.title: 'Video title'
+user.media.videos: Videos
+user.new.ad: 'New advert'
+user.not.register: 'The user is not registered yet.'
+user.price.negotiation: 'Price negotiation with user'
+user.ratings: Raitings
+user.ratings.overall: Overall
+user.register.now: 'Register now'
+user.registered.since.as.usergroup: 'registered since {STAMP_REG} as {htm(UGROUP)}'
+user.shipping.address: Address
+user.shipping.company: Company
+user.shipping.error.address.not.provided: 'Please enter at least Name/Company, street, ZIP, city and country.'
+user.shipping.name: 'Your name'
+user.shipping.new.address: 'New address'
+username: Username
+username.already.used: 'Username is already used.'
+username.contains.invalid.characters: 'The username contains invalid characters.'
+username.must.be.at.least.three.characters.long: 'The username must contain at least 3 characters.'
+vat.difference: 'Gap-tax. in §25a of the Value Added Tax Act'
+vat.difference.long: 'Gap-taxation in §25a of the Value Added Tax Act'
+vat.excluded: 'excl. VAT.'
+vat.included: 'incl. VAT.'
+vat.included.long: 'Price includes VAT'
+vat.private: 'Private sale'
+vat.private.long: 'Private sale'
+vat.stated: 'VAT. stated'
+vendor: Vendor
+vendor.all.ads.by.vendor: 'Alle Anzeigen von {VENDOR_FIRMA}'
+vendor.box.products: 'Adverts of the vendor:'
+vendor.business.hours: Öffnungszeiten
+vendor.calendar.add: 'Make a calendar entry'
+vendor.calendar.show: 'Show calendar'
+vendor.confirm.declined: |
+  <strong>Vendor profile was declined by the administrator!</strong><br>
+              Your vendor profile was declined by an administrator!
+              {if VENDOR_DECLINE_REASON}
+                  This was entered as a reason:<br>{text(VENDOR_DECLINE_REASON)}
+              {endif}
+vendor.confirm.edit.notice: |
+  <strong>Another review is required!</strong><br>
+      If you edit your vendor profile it will not be open for public anymore,
+      until an administrator has reviewed it again.
+vendor.confirm.pending: |
+  <strong>Vendor profile will be reviewed...</strong><br>
+              Your vendor profile will be reviewed by an administrator shortly. Once the administrator
+              confirmed your profile, it will be open for public again.
+vendor.contact.data.visible.once.sale.is.confirmed.by.vendor.you.recieve.an.email.once.that.happened: |
+  The contact data of the vendor is visible once he confirmed the sale.
+  				    You receive an E-Mail once that happened.
+vendor.description: Description
+vendor.didnt.confirm.the.sale.yet.you.recieve.an.email.once.he.did: 'The vendor did not confirm the sale yet. You will receive an E-Mail once he did.'
+vendor.directory: 'Vendor directory'
+vendor.directory.stats.header: 'Access statistics'
+vendor.directory.stats.info: 'This statistics shows you, how often your profile was clicked.'
+vendor.disabled.detail: |
+  Ihr Branchenbuch-Eintrag ist derzeit deaktiviert und ist nicht öffentlich einsehbar. 
+              Bitte bearbeiten Sie ihren Eintrag um diesen zu aktivieren.
+vendor.disabled.title: 'Eintrag deaktiviert'
+vendor.enabled.detail: 'Ihr Branchenbuch-Eintrag ist derzeit aktiv und wird öffentlich für alle Besucher dieser Webseite dargestellt.'
+vendor.enabled.title: 'Eintrag aktiv'
+vendor.extra.details: 'Extra details'
+vendor.extra.detils.not.defined: 'Es sind noch keine Suchfelder definiert.'
+vendor.homepage: Homepage
+vendor.homepage.action: Action
+vendor.homepage.active.declined: Declined
+vendor.homepage.active.no: Checking...
+vendor.homepage.active.unavailable: Unavailable
+vendor.homepage.active.yes: Active
+vendor.homepage.banner.position: Position
+vendor.homepage.banners: 'Upload banner'
+vendor.homepage.css: 'user.css bearbeiten'
+vendor.homepage.css.hint: 'Bitte &uuml;berpr&uuml;fen Sie jede &Auml;nderung auf das Genaueste!'
+vendor.homepage.domain: (Sub-)Domain
+vendor.homepage.domain.full: 'Name of the domain'
+vendor.homepage.domain.sub: 'Name of the sub-domain'
+vendor.homepage.edit.submit: 'Save changes'
+vendor.homepage.edit.submit.again: 'Make a new request'
+vendor.homepage.error: 'An error has occurred!'
+vendor.homepage.error.declined: |
+  Your request was declined because of:<br /> 
+                      {htm(HOMEPAGE_DETAILS_DECLINE_REASON)}
+vendor.homepage.error.invalid.database.error: |
+  Database-error: 
+                      Please try again later or contact the support.
+vendor.homepage.error.invalid.duplicate: |
+  General error: 
+                      You already habe a sub-domain!
+vendor.homepage.error.invalid.subdomain: |
+  Name of the sub-domain: 
+                      Has to be at least 2 characters long and can contain characters, numbers and dashes only.
+                      There must not be a dash on the beginning or at the end of name!
+vendor.homepage.error.lead: 'Please check the following details:'
+vendor.homepage.footer: 'Footer HTML bearbeiten'
+vendor.homepage.footer.hint: 'Bitte &uuml;berpr&uuml;fen Sie jede &Auml;nderung auf das Genaueste!'
+vendor.homepage.lead: 'Promote your company and your offers on your own homepage.'
+vendor.homepage.show: 'Open link'
+vendor.homepage.status: Status
+vendor.homepage.submit: 'Request installation'
+vendor.homepage.type: 'Type of domain'
+vendor.homepage.type.domain.existing: 'Install homepage on existing domain (e.g. www.your-name.com)'
+vendor.homepage.type.domain.existing.details: 'Choose this option if you have already a domain.'
+vendor.homepage.type.domain.new: 'Install homepage on a new domain (e.g. www.your-name.com)'
+vendor.homepage.type.domain.new.details: 'Choose this option if you want to register a new domain for your homepage.'
+vendor.homepage.type.subdomain: 'Install homepage on sub-domain (e.g. www.your-name.{MARKETPLACE_HOST})'
+vendor.image.delete: 'Bild löschen'
+vendor.images: Bilder
+vendor.images.add: 'Add new image'
+vendor.images.add.submit: 'Save image'
+vendor.images.and.videos: 'Images and Videos'
+vendor.images.and.videos.lead: |
+  You can add up to {COUNT} images/videos<br />
+          These images will appear below your description on the public area
+vendor.images.and.videos.max: |
+  You have reached the maximal amount of images/videos!<br>
+                  To upload more images, you have to delete at least one image
+vendor.images.empty: 'No images available yet'
+vendor.images.upload: 'Klicken Sie hier oder ziehen Sie eine Bilddatei in diesen Bereich um neue Bilder hochzuladen'
+vendor.imprint: 'Site notice'
+vendor.infopage.header: 'Vendor site'
+vendor.infopage.intro: |
+  Here you find a plenty of options to present your company on our marketplace.</p>
+  		<p>These function are only for our registered vendors available.
+vendor.infopage.vendorlist.advantages.advertisement.header: 'Options to buy advertisements'
+vendor.infopage.vendorlist.advantages.advertisement.intro: 'Our vendors and registered service companies can release independently adverts on our marketplace.'
+vendor.infopage.vendorlist.advantages.categories: 'Listing in categories'
+vendor.infopage.vendorlist.advantages.images: 'Extend the depiction of your company with maximal {maxbilder} images'
+vendor.infopage.vendorlist.advantages.importexport.csv: 'Import of any CSV files including images (e. g. from the e-Bay-Shop)'
+vendor.infopage.vendorlist.advantages.importexport.header: 'Extended im- and export functions'
+vendor.infopage.vendorlist.advantages.importexport.intro: 'Our marketplace gives you the option to import and export a variety of article files on a easy way'
+vendor.infopage.vendorlist.advantages.importexport.status: 'Export in article-status (new- , active- and expired adverts)'
+vendor.infopage.vendorlist.advantages.location: 'Vendors / service companies are able to add locations'
+vendor.infopage.vendorlist.advantages.news: 'Options to place news on our marketplace'
+vendor.infopage.vendorlist.advantages.tags: 'Keyword your entry'
+vendor.infopage.vendorlist.header: 'Entry in out vendor directory'
+vendor.keywords: keywords
+vendor.location.step.dirty.description: |
+  Sie haben noch nicht gespeicherte Änderungen auf der aktuellen Seite. 
+                          Sollen diese gespeichert werden, bevor Sie den Schritt wechseln?
+vendor.location.step.dirty.title: 'Nicht gespeicherter Standort vorhanden!'
+vendor.moderate.confirmed: 'Decline release'
+vendor.moderate.confirmed.long: 'You have declined the release of this company profile.{if DECLINE_REASON} Reason:<br />{text(EVENT_DECLINE_REASON)}{endif}'
+vendor.moderate.decline: Decline
+vendor.moderate.title: 'Moderate company profile:'
+vendor.moderate.unlock: 'Release company profile Firmenprofil freigeben'
+vendor.more.products: 'Further Products of this Vendor'
+vendor.my.business.hours.friday: Freitag
+vendor.my.business.hours.monday: Montag
+vendor.my.business.hours.saturday: Samstag
+vendor.my.business.hours.sunday: Sonntag
+vendor.my.business.hours.thursday: Donnerstag
+vendor.my.business.hours.tuesday: Dienstag
+vendor.my.business.hours.wednesday: Mittwoch
+vendor.my.categorie: 'Vendor category'
+vendor.my.categories.selected: 'You have chosen {CUR} of {MAX} Kategorien categories'
+vendor.my.city: City
+vendor.my.comments.lead: |
+  Here you find an overview for all comments you got.<br />
+          Under <a href="{uri_action(my-settings)}">Settings</a> you can set if you want to release comments automatically or manually.
+vendor.my.confirm.copy: 'Do you really want to apply the changes from the userprofile to the company profile? Previously made changes will be overwritten!'
+vendor.my.country: Country
+vendor.my.description.lead: 'This description text will be displayed on your vendor directory.'
+vendor.my.enable: 'Activate vendor directory'
+vendor.my.events.add: 'Add new event'
+vendor.my.events.lead: 'Draw attention of users to your events of your company'
+vendor.my.events.title: 'My company events'
+vendor.my.fax: Fax
+vendor.my.homepage: Web
+vendor.my.image.delete: 'Delete image'
+vendor.my.import: 'Import from userprofile'
+vendor.my.import.submit: 'Submit entries'
+vendor.my.imprint.lead: 'Enter here, if you are the commercial trader, the details required by §5 TMG information for your site notice.'
+vendor.my.imprint.saved: '<b>Changes saved!</b> Your site notice was updated successfully.'
+vendor.my.kewords.delete: 'Do you really want to delete the keyword {WORD}?'
+vendor.my.lead: 'All details you made here will be publicly displayed.'
+vendor.my.logo: 'Company logo'
+vendor.my.logo.delete: 'Delete company logo'
+vendor.my.logo.error.only.one: 'Bitte löschen Sie das vorherige Logo, bevor Sie ein neues hochladen.'
+vendor.my.logo.upload: 'Klicken Sie hier oder ziehen Sie eine Bilddatei in diesen Bereich um ein Firmenlogo hochzuladen'
+vendor.my.name: Company
+vendor.my.notice.imprint: |
+  We indicate that you have an obligation to create a <strong>site note</strong> as a trader. Please fill additional details below in
+              your <a href="{uri_action(my-profil)}#impressum">site note</a> .,
+vendor.my.phone: Phone
+vendor.my.places.add: 'Add location'
+vendor.my.places.city: Ort
+vendor.my.places.country: Country
+vendor.my.places.description: 'Standort Beschreibung'
+vendor.my.places.empty: 'No location available yet'
+vendor.my.places.lead: 'Enter more locations. They will displayed amoung others on google-map.'
+vendor.my.places.name: Name
+vendor.my.places.street: Street
+vendor.my.places.update: 'Standort aktualisieren'
+vendor.my.places.zip: PLZ
+vendor.my.places.zip.city: 'ZIP / City'
+vendor.my.premium.active: 'Your company profile is currently introduced on the homepage!'
+vendor.my.premium.fill.profile: 'Please fill the company profile to book this option.'
+vendor.my.premium.lead: |
+  You want to advertise your company on a prominently way? Book a place on our homepage
+              and advertise your company and your article.
+vendor.my.premium.pending: |
+  <strong>You already booked this feature!</strong><br />
+                  Your company profile will be presented, once your
+                  bill was paid.
+vendor.my.premium.submit: 'Search now'
+vendor.my.premium.title: 'Present on the homepage'
+vendor.my.saved: 'Form was saved..'
+vendor.my.street: street
+vendor.my.submit: 'Save vendor profile'
+vendor.my.title: 'Add an entry to the business directory'
+vendor.my.video.delete: 'Delete video'
+vendor.my.zip: ZIP
+vendor.payment.data.visible.once.sale.is.confirmed.by.vendor.you.recieve.an.email.once.that.happened: |
+  The payment data is visible once the sale is confirmed..
+  				    You will receive an E-Mail once that happened.
+vendor.places: Locations
+vendor.searchword.add: 'Add keyword'
+vendor.searchword.confirm.delete: 'Do you really want to delete the keyword {WORD}?'
+vendor.searchwords.current: 'My keywords'
+vendor.searchwords.lead: 'Enter the search keyword for the product to be found.'
+vendor.searchwords.none: 'No keywords available'
+vendor.statistics.access: Access-statistics
+vendor.videos: Videos
+vendor.videos.add: 'Add new YouTube video'
+vendor.videos.add.link: 'Youtube Link'
+vendor.videos.add.submit: 'Save video'
+vendor.videos.empty: 'No videos available yet'
+videos: Videos
+view.or.details: 'view / details'
+view.product: view
+view.results: 'View results'
+viewmodel: Darstellung
+virtual.user.buying.not.allowed: 'A purchase without an account is not possible. Please register on our marketplace'
+virtual.user.create.email.exist: 'A user with this E-Mail address does already exist'
+visibile: visible
+visit.my.contacts.worth: 'Visit my contacts as well. It is worth it!'
+visit.my.group: 'Visit my group(s).'
+want.searchword: 'Do you want the keyword'
+want.to.add: |
+  Do you want to add the user <strong>{NAME}</strong> as a contact?
+                      Optional you can send the user a message for contacting.
+want.to.enter.event: 'Do you really want to confirm the event'
+want.to.upload.data: 'Do you want to upload the selected file'
+warning: Warning!
+warning.changes: |
+  <strong>Attention!</strong> Entries might get lost because of additional changes
+  				on the category!
+warning.soldout: 'Attention! This article was sold out. The inventory will automatically be raised to 1 if you are going to restock it.'
+watch.all.entries: 'View all entries'
+watch.online: 'View online'
+watchlist: 'Watch list'
+watchlist.add.page.to.watchlist: 'Watch list this page'
+watchlist.description: Description
+watchlist.edit.watchlist.names.on.my.merkliste: 'You can edit the description of the watch list under <a href="{uri_action(merkliste)}">My watch list</a>'
+watchlist.error.page.already.in.watchlist: 'The element is already located in your watch list'
+watchlist.error.title.empty: 'Please fill the title.'
+watchlist.error.unknown: 'An unknown error has occurred. Please try the last action again.'
+watchlist.list: List
+watchlist.memorize: Memorize
+watchlist.show.all: 'show all'
+watchlist.success.page.added.to.watchlist: 'The page was added to your watch list.'
+watchlist.title: Title
+watchlist.watchlist: 'Watch list'
+watchlist.watchlist.want.create: 'Do you want to create a <a href="{uri_action(merkliste)}" >watch list</a>?'
+we.recieved.your.message.and.will.message.you.shortly: 'We received your message and we will message you shortly!'
+we.send.you.an.email.with.you.access.data.you.can.login.now: 'We will send you an E-Mail with your access data. You are now able to <a href="{uri_action(login)}">login</a>!'
+"we.sent.you.an.email.with.your.confirmation.code.\n                                  please.follow.the.link.to.complete.your.registration": |
+  We sent you an E-Mail with your confirmation code. 
+  Please follow the link to complete the registration.
+web: Web
+webservice.ads: Article
+webservice.ads.count: 'Amount of articles in the article-list'
+webservice.ads.height: 'Height of the article-list'
+webservice.ads.width: 'Width of the article-list'
+webservice.colors: Colors
+webservice.colors.background: 'Background color'
+webservice.colors.link: 'Link color'
+webservice.colors.text: 'Text color'
+webservice.font: Font
+webservice.font.size: 'Font size'
+webservice.font.type: 'Font type'
+webservice.lead: |
+  Use the configurator, to display your articles easily on your homepage.
+  		    You do not need any programming skills!
+webservice.preview: Preview
+webservice.save.and.preview: 'Save & preview'
+webservice.size: Size
+webservice.step.one: 'Step 1 of 2'
+webservice.step.one.lead: 'Set here how the article should be displayed.'
+webservice.step.two: 'Step 2 of 2'
+webservice.step.two.lead: |
+  Insert the following Javascript-code on your homepage. Your article will be displayed exactly on
+  		    the area, where you inserted the code!
+webservice.title: 'My articles on my homepage'
+what.i.always.wanted.to.say: 'What I alwas wanted to say...'
+which.payment.method.you.want.to.use: 'Which payment method do you want to use?'
+which.standard.billing.address.shall.be.used: 'Which standard billing address shall be used?'
+which.standard.delivery.address.shall.be.used: 'Which standard delivery address shall be used?'
+widget.for.other.websites: 'Widget for other websites'
+widget.image.alt: '{htm(site_name)} Bewertungen'
+widget.image.no.data: 'No data to show in widget ratings yet'
+widget.link.title: '{htm(site_name)} Bewertungen'
+will.be.released.shortly: 'will be released shortly...'
+wishlist: Wishlist
+write.job.offer: 'Write a job offer'
+write.message: 'Write a message'
+write.new.message: 'Write a new message'
+written.on.the: 'written on the {todate(STAMP_CREATE,1)}:'
+wrong.entered.error: 'An error has occurred. Please check your entries'
+'yes': 'Yes'
+yes.please.call.me: 'Yes, please call me.'
+yes.please.send: 'Yes, please send.'
+you: You
+you.can.use.the.new.membership.features.now: 'You can use the new membership features now.'
+you.can.use.the.package.now: 'You can use the package now.'
+you.can.use.the.package.when.the.payment.is.comfirmed: 'You can use the package when the payment is confirmed.'
+you.can.use.thenew.membership.features.after.the.bill.is.payed: |
+  You can use the new membership features after you
+  			payed the bill.
+you.didnt.confirm.the.sale.yet.once.you.confirmed.the.sale.the.vendor.recieves.an.email.with.your.payment.and.contact.data: |
+  You did not confirm the sale yet. Once you confirmed the sale, the vendor receives
+  						an E-Mail with your payment and contact data.
+you.dont.habe.advertpackages.left: 'You have no advertpackages left.'
+you.habe.to.fill.this.field: 'You have to fill this field.'
+you.have.to.choose.a.country: 'You have to choose a country.'
+you.have.to.enter.valid.email.address: 'You have to enter a valid E-Mail address.'
+you.have.to.state.a.number: 'You have to state a number.'
+you.settings.are.changed.successfully: 'Your settings were saved successfully!'
+you.want.to.recieve.an.email.if.one.of.you.adverts.runs.out: 'Do you want to recieve an E-Mail, if one of your adverts run out?'
+you.want.to.recieve.an.email.if.someone.sends.me.a.message: 'Do you want to receive an E-Mail, if someone sends you a message?'
+your.advert.package: 'Your advertpackage'
+your.adverts: 'Your adverts'
+your.article.advertised: 'Your article will be adverted on the homepage'
+your.article.was.released.by.an.admin.if.you.edit.it.the.release.will.be.deletet: |
+  Your article was release by an admin.
+                                      If you edit it the release will be deleted!
+your.comments.to.seller: 'Your comments to the seller'
+your.email: 'Your E-Mail adresse'
+your.message: 'Your message'
+your.message.was.sent: 'Your message was sent successfully'
+your.messages: 'Your messages'
+your.name: 'Your name'
+your.next.possibilities: 'Your next possibilities'
+your.packages: 'Your acquired packages'
+your.pay.style: 'Your personal payment method'
+your.personal.profile: 'Ihr pers&ouml;nliches Profil'
+your.personal.profile.long: |
+  Your personal profile</span>
+  </h1>
+  <p>
+      Put your personal information in here.
+      <br/>
+      Data privacy is important to us! Your data will be solely used on
+      our portal!
+  </p>
+  <p>
+      If you have any further queries, please do not hesitate to contact us.
+      <br/>
+your.personal.profile.notice: |
+  <p>
+          Geben Sie hier Ihre pers&ouml;nlichen Daten ein.
+          <br/>
+          Datenschutz ist uns wichtig! Ihre Daten werden ausschlie&szlig;lich von uns f&uuml;r die Verwendung hier auf dem
+          Portal genutzt!
+      </p>
+      <p>
+      Bei R&uuml;ckfragen stehen wir Ihnen gerner zur Verf&uuml;gung
+      <br/>
+your.personal.settings: 'Your personal settings'
+your.rating: 'Your rating'
+your.recieved.and.made.ratings: 'Your recieved and made ratings'
+your.registration.was.successfull: 'Your registration was successfull!'
+your.settings.saved: 'Your settings were successfully saved'
+youtube.invalid: 'Is an invalid Youtube-Link!'
+youtube.no.input: 'No input.'
+youtube.valid: 'Youtube-Link is valid.'
+youtube.video.add: 'Add video'
+youtube.video.hint: 'Please hint a Youtube-Link'
+zip: ZIP
+zip.ascending: 'ZIP ascending'
+zip.descending: 'ZIP descending'
+zip.location: 'ZIP & place'

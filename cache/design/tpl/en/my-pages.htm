@@ -1,0 +1,404 @@
+<style type="text/css">
+    h2 {
+        margin-top:20px;
+    }
+</style>
+<script type="text/javascript" src="{uri_baseurl(/lib/rating.js)}"></script>
+<script type="text/javascript">
+    function bewertung_close(id_sold)
+    {
+        var div = '#details_'+id_sold;
+        $(div).hide();
+        $(div).html('Bitte warten ...');
+    }
+
+    function bewerten(id_sold)
+    {
+        $('#bewerten').css('display', 'table');
+        $.get(ebiz_trader_baseurl + 'my-marktplatz-rating,'+id_sold+'.htm',
+                function(response) {
+                    $('#inhalt').html(response);
+                    var vote_user = new Rating(1,5);
+                    vote_user.SetInput("#RATING");
+                    $('#td_rating').append(vote_user.html);
+                }
+        );
+    }
+    function sendBewertung(id_ad_sold)
+    {
+        $.post(ebiz_trader_baseurl + 'index.php', $('#bewerten_form').serialize(), function(transport)
+                {
+                    $('#rating'+id_ad_sold).attr("src", ebiz_trader_baseurl + 'gfx/lst-btw-erhalten-pic.png');
+                    $('#inhalt').html(transport);
+                    var vote_user = new Rating(1,5);
+                    vote_user.SetInput("RATING");
+                    $('#td_rating').append(vote_user.html);
+                    show_details(id_ad_sold);
+                    show_details(id_ad_sold);
+                }
+        );
+    }
+    function show_kontakt(id_user, id_sold)
+    {
+        $('#kontakt').show();
+        req = new Ajax.Request(
+                ebiz_trader_baseurl + 'index.php?page=show_kontakt&frame=ajax&FK_USER='+id_user+'&FK_SOLD='+id_sold,
+                {
+                    method: 'get',
+                    onSuccess: function(transport)
+                    {
+                        $('#inhalt').html(transport.responseText);
+                    }
+                }
+        );
+    }
+
+    function abschliessen(id_sold)
+    {
+        ask = confirm('Do you want to finish the process??');
+        if(ask)
+        {
+            window.location.href= ebiz_trader_baseurl + 'my-marktplatz-einkaeufe,1,'+id_sold+',READY.htm';
+        }
+        return false;
+    }
+
+    function show_details(id_sold)
+    {
+        var div = '#details_'+id_sold;
+        var cur_style = $(div).css("display");
+
+        if (cur_style == 'block')
+        {
+            $(div).hide();
+            $(div).html('Please wait ...');
+        }
+        else
+        {
+            $(div).html('Please wait ...');
+            $(div).show();
+            $.get(
+                    ebiz_trader_baseurl + 'index.php?page=sale_details&frame=ajax&embed=1&FK_SOLD='+id_sold,
+                    function(response) {
+                        $(div).html(response);
+                    }
+            );
+        }
+    }
+
+    function showOrderDetails(orderId) {
+        location.href = '{uri_action(sale_details_seller)}?ID_AD_ORDER='+orderId;
+
+        /*ShowDialog("{uri_action(sale_details_seller)}", "Order Nr. "+orderId+"", 800, 500, {
+         'close':	function() {
+         var intervalRefresh = false;
+         intervalRefresh = window.setInterval(function() {
+         if (!jQuery("#modalDialog").is(":visible")) {
+         window.clearInterval(intervalRefresh);
+         window.document.location.reload();
+         }
+         }, 500);
+         }
+         }, {
+         'type':		"POST",
+         'data':		{ 'ID_AD_ORDER': orderId }
+         });*/
+    }
+
+    function showBuyerInformation(userId) {
+        ShowDialog("index.php?page=uprofil&SELLER_ID=" + userId + "&frame=ajax", "Buyer information");
+    }
+
+    function replyToComment(commentId) {
+        var action = "{uri_action(my-comments,received,reply," + commentId +")}";
+
+        jQuery('#replyForm form').attr('action', action);
+        jQuery('#replyForm form #ID_COMMENT').val(commentId);
+        jQuery('#replyForm').modal('show');
+        return false;
+    };
+
+</script>
+
+{content_page(User - Startseite)}
+
+
+<div class="design-user-notification-list design-row design-row-xs-1 design-row-sm-2 design-row-md-4">
+    {if num_club_invites}
+    <div class="design-row-item">
+        <div class="alert alert-warning alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(my-club)}" title="Club-invites">Club-invites</a></h4>
+                <p><span class="badge badge-important"><b>{num_club_invites}</b></span></p>
+            </div>
+            <i class="glyphicon glyphicon-envelope"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_club_member_requests}
+    <div class="design-row-item">
+        <div class="alert alert-warning alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(my-club)}" title="Joining request">Joining request</a></h4>
+                <p><span class="badge badge-important"><b>{num_club_member_requests}</b></span></p>
+            </div>
+            <i class="glyphicon glyphicon-envelope"></i>
+        </div>
+    </div>
+    {endif}
+    {if NEW_MAILS_AD > 0}
+    <div class="design-row-item">
+        <div class="alert alert-danger alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4>
+                    <a href="{uri_action(my-ad-msg)}" title="Show all requests"> Current requests</a>
+                </h4>
+                <p><span class="badge badge-important"><b>{NEW_MAILS_AD}</b></span></p>
+            </div>            
+            <i class="glyphicon glyphicon-envelope"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_ad_agents > 0}
+    <div class="design-row-item">
+        <div class="alert alert-info alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(ad_agent)}" title="Agents"> Ad -Agents</a></h4>
+                <p><span class="badge badge-important"><b>{num_ad_agents}</b></span></p>
+            </div>
+            <i class="glyphicon glyphicon-pushpin"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_ads_going_down > 0}
+    <div class="design-row-item">
+        <div class="alert alert-info alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(my-marktplatz,timeout)}" title="Ran out advertisements">Ran out advertisements</a></h4>
+                <p><span class="badge badge-important"><b>{num_ads_going_down}</b></span></p>
+            </div>
+            <i class="glyphicon glyphicon-warning-sign"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_trades > 0}
+    <div class="design-row-item">
+        <div class="alert alert-warning alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(my-marktplatz-handeln)}" title="Preis- verhandlungen">Price negotiations</a></h4>
+                <p><span class="badge badge-important"><b>{num_trades}</b></span></p>
+            </div>            
+            <i class="glyphicon glyphicon-envelope"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_offers > 0}
+    <div class="design-row-item">
+        <div class="alert alert-warning alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(my-marktplatz)}?VERKAUFSOPTIONEN=5" title="Angebote zu Gesuchen">Offers for Request</a></h4>
+                <p><span class="badge badge-important"><b>{num_offers}</b></span></p>
+            </div>            
+            <i class="glyphicon glyphicon-envelope"></i>
+        </div>
+    </div>
+    {endif}
+    {if num_invoices > 0}
+    <div class="design-row-item">
+        <div class="alert alert-danger alert-icon" role="alert">
+            <div class="alert-icon-content">
+                <h4><a href="{uri_action(invoices)}" title="Open bills">Open bills</a></h4>
+                <p><span class="badge badge-important"><b>{num_invoices}</b></span></p>
+            </div>            
+            <i class="glyphicon glyphicon-euro"></i>
+        </div>
+    </div>
+    {endif}
+
+</div>
+
+{if liste_verstoss}
+<h2>Reported violations </h2>
+	<p>
+		Please react prompt on reported violations of users
+!
+    </p>
+</div>
+<table class="table table-bordered table-striped table-condensed">
+    <tr>
+        <th title="Anzeigen Nummer">
+            Displays.Id
+        </th>
+        <th title="Article">
+            Article
+        </th>
+        <th>
+            Offence;
+        </th>
+    </tr>
+    {liste_verstoss}
+</table>
+{endif}
+
+
+
+
+
+
+{if liste_sales}
+<h2>
+    Current solds
+</h2>
+
+
+<p>Following article was sold</p>
+<div class="marketplaceSellerOrder">
+    <table class="table table-bordered table-striped table-condensed">
+        <tr>
+            <th></th>
+            <th>Order-Nr.</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Shipping status</th>
+            <th>Payment status</th>
+            <th class="text-right">Total amount</th>
+        </tr>
+        {liste_sales}
+    </table>
+</div>
+
+<!--
+<div align="right" data-stats="{uri_baseurl(index.php?frame=stats&page=ui_stats&show=my-marktplatz-verkaeufe&w=660&STATUS=1&bg=f9f9f9)}" data-height="300px" class="alert alert-success statistic">
+    Click here to view your sale statistics
+    <a onclick="return statsLoadIframe(this);" href="#statistic"><img src="{uri_resource(/images/icons/stats-s.png)}" /></a>
+    <div class="stats-container"></div>
+</div>
+-->
+
+
+<p class="text-right">
+    There are no current sales.<br /> <a href="{uri_action(my-marktplatz-neu)}">Click here, to sell an article.</a> Your already appointed articles can be found <a href="{uri_action(my-marktplatz)}">here</a>
+    <a class="btn btn-info" href="{uri_action(my-marktplatz-verkaeufe)}" title="Show all solds">
+        To my solds
+    </a>
+</p>
+{endif}
+
+
+
+{if liste_handeln}
+<h2>Price negotiations</h2>
+
+<table class="table table-bordered table-striped table-condensed">
+    <tr>
+        <th>Date</th>
+        <th>Article</th>
+        <th>Proposal</th>
+        <th>Amount</th>
+        <th>Status</th>
+    </tr>
+    {liste_handeln}
+</table>
+<p class="text-right">
+    <a href="{uri_action(my-marktplatz-handeln)}" class="btn btn-info" title="Show all price negotiations">
+        To my price negotiations
+    </a>
+</p>
+{endif}
+{if liste_shopping}
+<h2>
+    Current purchases
+</h2>
+<div class="marketplaceBuyerOrder">
+    <table class="table table-bordered table-striped table-condensed">
+        <tr>
+            <th>Order-Nr.</th>
+            <th>Date</th>
+            <th>Seller</th>
+            <th>Shipping status</th>
+            <th>Payment status</th>
+            <th class="align-right">Total amount</th>
+        </tr>
+        {liste_shopping}
+    </table>
+</div>
+
+<p class="text-right">
+    {if COUNT_UNPAID_ORDERS}
+
+    <a href="{uri_action(my-marktplatz-einkaeufe)}?SEARCH_ORDER_PAYMENT_STATUS=0" class="btn btn-primary">Pay my purchases now</a>
+
+    {endif}
+
+    <a class="btn btn-info" href="{uri_action(my-marktplatz-einkaeufe)}" title="Show all purchases">
+        To my purchases
+    </a>
+
+</p>
+{endif}
+
+
+{if showcomments}
+{if num_comments>0}
+<h2>
+    Received comments
+</h2>
+<p>
+    Here you see your 10 last received comments.
+</p>
+<div>
+    {subtpl(tpl/{SYS_TPL_LANG}/my-comments-list.htm,*,TYPE=ALL,VIEW=MINIMAL,PERPAGE=5)}
+</div>
+<p class="text-right">
+    <a href="{uri_action(my-comments)}" class="btn btn-info" title="Show all comments">Go to overview</a>
+</p>
+{endif}
+{endif}
+
+{if num_events>0}
+<h2>
+    Unconfirmed groupevents
+</h2>
+<div>
+    {subtpl(tpl/{SYS_TPL_LANG}/my-calendar-events-list.htm,*,TYPE=ALL,IS_CONFIRMED=0,VIEW=MINIMAL,LIMIT=5)}
+</div>
+<p class="text-right">
+    <a href="{uri_action(my-events)}" class="btn btn-info" title="Show all unentered group invites">Go to overview</a>
+</p>
+{endif}
+
+
+{if invoices}
+<h2>Open bills</h2>
+
+<table class="table table-bordered table-striped table-condensed">
+    <tr>
+        <th>
+            Nr.
+        </th>
+        <th>
+            Details
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Payable until
+        </th>
+        <th>
+            Bill status
+        </th>
+        <th class="text-right">
+            Value
+        </th>
+    </tr>
+    {invoices}
+</table>
+<p class="text-right">
+    <a href="{uri_action(invoices)}" class="btn btn-info" title="Bill state">
+        To my bills
+    </a>
+</p>
+
+{endif}
+<p> </p>

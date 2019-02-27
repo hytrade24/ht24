@@ -1,0 +1,59 @@
+<h1>Newsstatistiken {if jahr} f&uuml;r<br>
+das Jahr {jahr}{endif}</h1>
+<p>Sie können sich hier eine Übersicht darüber verschaffen, wie viele Newsartikel Sie geschrieben haben und wie viele Kommentare 
+abgegeben wurden.<br>
+Für beide Ansichten haben Sie untereinander jeweils eine Monatsansicht eines ausgewählten Jahres (Standard beim 
+Seitenaufruf sind die vergangenen zwölf Monate ab dem jetzigen Datum) und eine Gesamtübersicht der letzten zwölf Jahre.</p>
+<table border="0" cellPadding="10"  cellspacing="10">
+  <tr>
+    <td>
+	
+	<h2>News - Monatlich</h2>
+		<table cellSpacing="0"  cellPadding="0" background="gfx/graph_bg.gif" border="0" style="border:1px #000000 solid;">
+			{tbl_news_year}
+		</table>
+		<div style="font-weight:bold;"><span style="float:left;">{from_news_year}</span> <span style="float:right;">{to_news_year}</span></div>
+	</td>
+	<td>Anzahl der Newseintr&auml;ge pro Monat<br>
+	Skalierung: 12 x 1 Monat.<div style="align:center;"><b>&#931;=</b>{sum_news_year}</div></td>
+	
+    <td>
+	<h2>Kommentare - Monatlich</h2>
+		<table cellSpacing="0"   cellPadding="0" background="gfx/graph_bg.gif" border="0" style="border:1px #000000 solid;">
+			{tbl_comment_year}
+		</table>
+		<div style="font-weight:bold;"><span style="float:left;">{from_comment_year}</span> <span style="float:right;">{to_comment_year}</span></div>
+		
+	</td>
+  <td>Abgegebene Kommentare pro Monat<br>
+  Skalierung: 12 x 1 Monat.<div style="align:center;"><b>&#931;=</b>{sum_comment_year}</div></td>
+  </tr>
+  
+
+  
+  
+  
+  
+  <tr>
+    <td>
+	<h2>News - J&auml;hrlich</h2>
+		<table cellSpacing="0" cellPadding="0" background="gfx/graph_bg.gif" border="0" style="border:1px #000000 solid;">
+			{tbl_news_dozen}
+		</table>
+		<div style="font-weight:bold;"><span style="float:left;">{from_news_dozen}</span> <span style="float:right;">{to_news_dozen}</span></div>
+	</td>
+	<td>Anzahl der News pro Jahr<br>
+	Skalierung: 12 x 1 Jahr.<div style="align:center;"><b>&#931;=</b>{sum_news_dozen}</div></td>
+	
+    <td>
+	<h2>Kommentare - J&auml;hrlich</h2>
+		<table cellSpacing="0"   cellPadding="0" background="gfx/graph_bg.gif" border="0" style="border:1px #000000 solid;">
+			{tbl_comment_dozen}
+		</table>
+		<div style="font-weight:bold;"><span style="float:left;">{from_comment_dozen}</span> <span style="float:right;">{to_comment_dozen}</span></div>
+
+	</td>
+	<td>Abgegebene Kommentare pro Jahr<br>Skalierung: 12 x 1 Jahr.<div style="align:center;"><b>&#931;=</b>{sum_comment_dozen}</div></td>
+  </tr>
+</table>
+<b>HINWEIS</b>: Durch klicken auf einen Balken (Jahresansicht) erhalten Sie weitere Details zum ausgew&auml;hlen Jahr.

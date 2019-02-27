@@ -1,0 +1,28 @@
+<h1>Best&auml;tigte Newsletter-Anmeldungen</h1>
+<p>Hier sehen Sie alle Personen, welche sich in Ihren Newsletterverteiler <b>eingetragen und bestätigt</b> haben.</p>
+{if deleted}
+ <h2 class="ok">{deleted} wurde erfolgreich gelöscht</h2>
+{endif}
+<form method="get" action="index.php">
+ <input type="hidden" name="page" value="{curpage}" />
+ <input type="hidden" name="npage" value="1" />
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th>Email suchen</th>
+   <td><input type="text" name="SEARCH" value="{htm(SEARCH)}" size="40" /></td>   
+  </tr>
+  <tr class="footer">
+   <td>{if SEARCH}<a href="index.php?page={curpage}" title="Gesamt&uuml;bersicht" style="font-weight:bold;">alle anzeigen</a>{else}&nbsp;{endif}</td></td>
+   <td align="right"><input type="submit" value="Suchen" class="button"></td>
+  </tr>
+ </table>
+</form>
+{if liste}
+<table class="liste"><tr>
+  <th>L&ouml;schen</th>
+  <th>Adresse</th>
+  <th>Sprache</th>
+</tr>{liste}</table>
+<p>Anzahl Empfänger : {anzahluser}</p>{if pager}
+<table border="0"><tr><td>{pager}</td></tr></table>{endif}{else}
+<div class="hinweis"><span class="error">Kein bestätigten Eintr&auml;ge gefunden!</span></div>{endif}

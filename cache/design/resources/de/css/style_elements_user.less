@@ -1,0 +1,69 @@
+// Box containing the user information (e.g. of a seller)
+.userBox{
+  .userBoxImage {
+    .design-content-box-unstyled;
+    img {
+      .img-responsive-center;
+    }
+  }
+  .userBoxIcons{
+    .text-center;
+  }
+  .userBoxRating{
+    .text-center;
+  }
+  .userBoxInfo{
+    .dl-horizontal{
+      margin:  @padding-small-vertical 0;
+      @media (min-width: @screen-sm-min) {
+        dt{width:100px;}
+        dd{margin-left: 110px;}
+      }
+      @media (min-width: @screen-md-min) {
+        dt{width:100px;}
+        dd{margin-left: 110px;}
+      }
+      @media (min-width: @screen-lg-min) {
+        dt{width:120px;}
+        dd{margin-left: 130px;}
+      }
+
+    }
+  }
+  .userBoxMenu {
+    .menu-box > li.active > a {
+      .glyphicon-chevron-down;
+    }
+    .design-user-shop-kat-list {
+      display: block;
+      list-style: none;
+      padding: @padding-small;
+      li {
+        font-size: @font-size-small;
+        a {
+          display: block;
+          padding: @padding-xs;
+        }
+        &.active {
+          font-weight: bold;
+        }
+        .glyphicon {
+          margin-left: -1em;
+        }
+      }
+    }
+  }
+}
+
+.design-user-contact-box{
+  .design-content-base;
+  // Basic css styles
+  text-align: center;
+
+  .design-user-contact-box-img img {
+    .img-responsive-center;
+  }
+}
+.panel-vendor .design-search-group {
+  padding: 0 !important;
+}

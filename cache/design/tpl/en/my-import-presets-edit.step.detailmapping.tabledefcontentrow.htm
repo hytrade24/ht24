@@ -1,0 +1,36 @@
+<div class="accordion-group">
+   <div class="accordion-heading">
+     <a class="accordion-toggle" data-toggle="collapse" data-parent="#detailMappingContainer" href="#detailMappingTableDef{TABLE_DEF}">
+		 <strong> {htm(TABLE_DEF_NAME)}</strong>
+		 <small>{if IS_USED_BY_KAT}(This article group will be used in your category-assignment){endif}</small>
+
+		 <em class="pull-right">Click to open</em>
+
+     </a>
+   </div>
+   <div id="detailMappingTableDef{TABLE_DEF}" class="accordion-body collapse">
+     <div class="accordion-inner">
+		 <table class="table table-striped">
+			<thead>
+				<tr>
+					<th class="span4">
+						Field / Article-description of the marketplace
+					</th>
+					<th>
+						Your assignment from the source file
+					</th>
+				</tr>
+			</thead>
+			{if TABLE_FIELD_OUTPUT}
+				{TABLE_FIELD_OUTPUT}
+			{else}
+			<tr>
+				<td colspan="2">
+					No article properties were found.
+				</td>
+			</tr>
+			{endif}
+		</table>
+     </div>
+   </div>
+ </div>

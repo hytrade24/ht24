@@ -1,0 +1,34 @@
+<div class="panel panel-primary userBox">
+    <div class="panel-heading">
+        Shop: {if showcontact || VENDOR_FIRMA}{if VENDOR_FIRMA}{htm(VENDOR_FIRMA)}{else}{if USER_FIRMA}{USER_FIRMA}{else}{USER_VORNAME} {USER_NACHNAME}{endif}{endif}{else}{htm(USER_NAME)}{endif}
+    </div>
+    <div class="panel-body">
+        <div class="userBoxImage">
+            {if USER_IS_VENDOR}
+                {if VENDOR_LOGO}<img src="{thumbnail(VENDOR_LOGO,195,300)}" />{else}<img src="{uri_resource(/images/marketplace/nopic_vendor.jpg)}" />{endif}
+            {else}
+                <img src="{thumbnail(/cache/users/{USER_CACHE}/{USER_ID_USER}/{USER_ID_USER}.jpg,195,300)}" />
+            {endif}
+        </div>
+    	<div class="userBoxIcons">
+            {if USER_TOP_USER}
+                <img class="userBoxIconTopUser js-tooltip" src="{uri_resource(/images/icons/award_star_gold_3.png)}" data-toggle="tooltip" data-placement="bottom" title="TOP Anbieter" />
+            {endif}
+            {if USER_TOP_SELLER}
+                <img class="userBoxIconTopSeller js-tooltip"  src="{uri_resource(/images/icons/rainbow.png)}" data-toggle="tooltip" data-placement="bottom" title="TOP Seller" />
+            {endif}
+            {if USER_PROOFED}
+                <img class="userBoxIconProofed js-tooltip" src="{uri_resource(/images/icons/shield.png)}" data-toggle="tooltip" data-placement="bottom" title="geprüfter Anbieter" />
+            {endif}
+        </div>
+        <div class="userBoxRating">
+            {if rating_avg}
+                <img title="Durchschnittliche Bewertung" src="{uri_baseurl(/gfx/stars_{rating_avg}.png)}" />
+            {else}
+                (noch keine Bewertungen)
+            {endif}
+        </div>
+    </div>
+</div>
+
+

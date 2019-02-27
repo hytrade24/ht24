@@ -1,0 +1,69 @@
+	<tr class="zeile{even}">
+		<td class="first">
+			{if SOLD!=1}
+			<a onclick="return confirm('Möchten Sie den Kauf des Artikels {PRODUKTNAME} wirklich aus dem System löschen?')"
+					href="index.php?page={curpage}&action=delete&id={ID_SOLD}">
+				<img border="0" src="gfx/btn.del.gif">
+			</a>
+			{endif}
+		</td>
+        <td>
+            {ID_SOLD}
+        </td>
+        <td>
+            {ID_AD_MASTER}
+        </td>
+		<td>
+			<a href="{uri_baseurl(/marktplatz_anzeige,{ID_ARTIKEL},{FK_KAT},{urllabel(PRODUKTNAME)}.htm)}">
+				{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}
+			</a>
+		</td>
+		<td>
+			{todate(STAMP_BOUGHT)}
+		</td>
+		<td>
+			{MENGE}
+		</td>
+		<td>
+			{topreis(PREIS)} {CURRENCY_DEFAULT}
+		</td>
+		<td>
+			{topreis(PREIS_GESAMT)} {CURRENCY_DEFAULT}
+		</td>
+		<td>
+			{topreis(PROV)} {CURRENCY_DEFAULT}
+		</td>
+		<td>
+			<a href="{uri_baseurl(/view_user,{urllabel(USERNAME_VK)},{USER_VK}.htm)}">
+				{htm(USERNAME_VK)}
+			</a>
+		</td>
+		<td>
+			<a href="{uri_baseurl(/view_user,{urllabel(USERNAME_EK)},{USER_EK}.htm)}">
+				{htm(USERNAME_EK)}
+			</a>
+		</td>
+		<td class="last">
+			{if SOLD==1}
+				<span style="color: green; font-weight: bold;">
+					Kauf abgeschlossen
+					{if STORNO}<span style="color: black; font-weight: bold;">(Trotz Storno)</span>{endif}
+				</span>
+			{else}
+				{if STORNO}
+					{if SOLD==2}
+						<span style="color: red; font-weight: bold;">Kauf abgebrochen (Storniert)</span>
+					{else}
+						<span style="color: red; font-weight: bold;">Storniert</span>
+					{endif}
+				{else}
+					{if SOLD==2}
+						<span style="color: red; font-weight: bold;">Kauf abgebrochen</span>
+					{else}
+						<span style="color: green; font-weight: bold;">Gekauft</span>
+					{endif}
+				{endif}
+			{endif}
+		</td>
+	</tr>
+	

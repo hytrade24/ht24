@@ -1,0 +1,48 @@
+<script btype="text/javascript">
+function chUsr(val)
+{
+  document.forms[0].FK_AUTOR.value=val;
+  document.forms[0].submit();
+}
+</script>
+
+<h1>News Adv. Modul - Kommentare</h1>
+<p>Hier können Sie sich sämtliche Kommentare in Ihrem Newssystem ansehen, editieren und löschen.</p>
+
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}" />
+<input type="hidden" name="frame" value="{curframe}" />
+<input type="hidden" name="npage" value="{npage}" />
+<table class="formTable" cellspacing="0">
+ <tr>
+  <td><strong>User ausw&auml;hlen</strong></td>
+  <td><a href="#" onclick="popupfkt('users&frompopup=1','850','500');"><img src="gfx/users_16.gif" width="16" height="16" alt="user suchen" border="0"></a> <input type="text" name="NAME_" value="{htm(NAME_)}" /><input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" /></td>
+ </tr>
+<!-- <tr>
+   <td><strong>Artikel ausw&auml;hlen </strong></td>
+   <td><a href="#" onclick="popupfkt('modul_news_adv_artikelliste&frompopup=1','650','500');"><img src="gfx/users_16.gif" width="16" height="16" alt="user suchen" border="0"></a> <input type="text" name="ARTIKEL_" value="{htm(ARTIKEL_)}" /><input type="hidden" name="FK_ARTIKEL" value="{FK_ARTIKEL}" /></td>
+ </tr>
+-->
+ <tr class="footer">
+  <td>{if FK_AUTOR}<a href="index.php?page={curpage}" style="font-weight:bold;" title="alle anzeigen">Alle anzeigen</a>{else}&nbsp;{endif}</td>
+  <td  align="right"><input onclick="document.forms[0].npage.value=1;" type="submit" value="Suchen" class="button" /></td>
+ </tr>
+</table>
+{if err}
+<p class="error">{err}</p>
+{endif}
+</form>
+
+<table class="liste" cellspacing="0">
+  <tr>
+    <th align="left">Datum</th>  
+    <th align="left">Aktion</th>
+    <th align="left">User</th>		
+    <th align="left">Artikel</th>
+    <th align="left">Vorschau (die ersten 200 Zeichen)</th>
+{liste}
+</table>
+{if pager}
+{pager}
+{endif}
+<p>&nbsp;</p>

@@ -1,0 +1,14 @@
+{if not_found}
+    <div class="alert alert-danger">
+		<h2>Advertisement has not been found!</h2>
+			<p>It is possible that the desired advertisement is no longer up to date.</p>
+
+    </div>
+{else}
+    <div class="row marketplaceArticle">
+        <div class="col-xs-12">
+            {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.details.htm,*,PRINT=1)}
+        </div>
+    </div>
+{endif}
+

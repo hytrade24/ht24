@@ -1,0 +1,85 @@
+			<tr>
+				<td width="24" class="design-action-buttons">
+					{if FK_USER && (ID_USER!=FK_USER)}
+						<a title="Nachricht schreiben" href="{uri_action(my-neu-msg,{FK_USER})}" class="btn btn-default">
+							<i class="glyphicon glyphicon-envelope"></i>
+						</a>
+					{else}
+						{if FK_USER}
+						<a title="Sie können keine Nachricht an sich selbst schreiben." class="btn btn-default disabled">
+							<i class="glyphicon glyphicon-envelope"></i>
+						</a>
+						{else}
+						<a title="Der Benutzer ist noch nicht registriert." class="btn btn-default disabled">
+							<i class="glyphicon glyphicon-envelope"></i>
+						</a>
+						{endif}
+					{endif}
+				</td>                                                            
+				<td width="125"  class="design-action-buttons">
+					{if CLUB_MODERATOR && (FK_USER!=CLUB_FK_USER)}
+						{if IS_MEMBER && CLUB_ADMIN}
+							<a class="btn btn-default" href="{uri_action(my-club-members,{CLUB_ID_CLUB},lead,{FK_USER})}"
+								onclick="return confirm('Möchten Sie {htm(USERNAME)} wirklich die Gruppenleitung übertragen?');">
+								<i class="glyphicon glyphicon-share-alt"></i>
+							</a>
+							{if IS_MODERATOR}
+							<a class="btn btn-default" href="{uri_action(my-club-members,{CLUB_ID_CLUB},mod_rem,{FK_USER})}"
+								onclick="return confirm('Möchten Sie {htm(USERNAME)} wirklich die Moderations-Rechte entziehen?');">
+								<i class="glyphicon glyphicon-star-empty"></i>
+							</a>
+							{else}
+							<a class="btn btn-default" href="{uri_action(my-club-members,{CLUB_ID_CLUB},mod_add,{FK_USER})}"
+								onclick="return confirm('Möchten Sie {htm(USERNAME)} wirklich Moderations-Rechte erteilen?');">
+								<i class="glyphicon glyphicon-star"></i>
+							</a>
+							{endif}
+						{endif}
+						{if IS_MEMBER}
+							{if CLUB_ADMIN || !IS_MODERATOR}
+							<a class="btn btn-danger" href="{uri_action(my-club-members,{CLUB_ID_CLUB},kick,{FK_USER})}"
+								onclick="return confirm('Möchten Sie {htm(USERNAME)} wirklich aus der Gruppe entfernen?');">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+							{endif}
+						{else}
+							<a class="btn btn-danger" href="{uri_action(my-club-members,{CLUB_ID_CLUB},uninvite,{ID_CLUB_INVITE})}"
+								onclick="return confirm('Möchten Sie die Einladung von {htm(NAME)} wirklich widerrufen?');">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						{endif}
+					{endif}
+				</td>
+				<td>
+					{if CLUB_FK_USER==FK_USER}
+						<i class="glyphicon glyphicon-star" title="Aktueller Gruppen-Leiter"></i>
+					{else}
+						{if IS_MODERATOR}
+						<i class="glyphicon glyphicon-bullhorn" title="Moderator"></i>
+						{endif}
+					{endif}
+					{if !FK_USER}
+						<span class="text-muted">Nicht registriert</span>
+					{else}
+						{htm(USERNAME)}
+					{endif}
+
+				</td>
+				<td>
+					{if !FK_USER}
+						{htm(NAME)}
+					{else}
+						{htm(USR_VORNAME)} {htm(USR_NACHNAME)}
+					{endif}
+				</td>
+				<td>
+					{if IS_MEMBER}
+						{todate(STAMP_JOIN)}
+					{else}
+						<span class="text-muted">Eingeladen am {todate(STAMP_JOIN)}</span>
+					{endif}
+				</td>
+                <td>
+                    {todate(USR_LASTACTIV)}
+                </td>
+			</tr>

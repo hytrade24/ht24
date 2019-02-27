@@ -1,0 +1,22 @@
+<h1>Ratings<br />
+	
+</h1>
+<p>Your recieved and made ratings</p>
+<p>
+     Please rate your tradingpartner after every sale or buy. <br />
+    Stay fair!
+
+</p>
+<ul class="nav nav-tabs userTabsTable">
+	<li {if show_in}class="active"{endif}>
+		<a href="{uri_action(my-ratings,in)}">Received ratings</a>
+	</li>
+	<li {if show_out}class="active"{endif}>
+		<a href="{uri_action(my-ratings,out)}">Submitted ratings</a>
+	</li>
+</ul>
+
+{if show_in}{subtpl(tpl/{SYS_TPL_LANG}/my-ratings-in.htm)}{endif}
+{if show_out}{subtpl(tpl/{SYS_TPL_LANG}/my-ratings-out.htm)}{endif}
+
+

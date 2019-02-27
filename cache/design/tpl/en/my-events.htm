@@ -1,0 +1,38 @@
+{if CAN_CREATE_EVENT}
+<h1>Events</h1>
+
+<ul class="nav nav-tabs userTabsTable">
+	<li{if show_created} class="active"{endif}>
+		<a href="{uri_action(my-events,1,created)}">Own events</a>
+	</li>
+	<li{if show_signedup} class="active"{endif}>
+		<a href="{uri_action(my-events,1,signedup)}">My participations</a>
+	</li>
+</ul>
+{else}
+<h1>My participations</h1>
+{endif}
+
+{if CAN_CREATE_EVENT && show_created}
+    {if CAN_CREATE_EVENT}
+    <p class="text-right">
+        <a href="{uri_action(my-calendar-events-add)}" class="btn btn-success">
+            <i class="glyphicon glyphicon-plus"></i> Add new event
+        </a>
+    </p>
+    {endif}
+
+	{subtpl(tpl/{SYS_TPL_LANG}/my-calendar-events-list.htm,*,TYPE=ALL,STAMP_END_GT={STAMP_TODAY})}
+{else}
+	{subtpl(tpl/{SYS_TPL_LANG}/my-calendar-events-list.htm,*,TYPE=ALL_SIGNUP,STAMP_END_GT={STAMP_TODAY},TYPE_LOCKED=1)}
+
+    <div class="alert alert-info">
+        <h3>Create events</h3>
+        <p>
+            Only vendors or groupmembers can add events.
+            To add new events, please set up a vendorarchive or
+            create/join a group.
+
+        </p>
+    </div>
+{endif}

@@ -1,0 +1,8 @@
+<li class="{if is_inpath}active{endif} {if sub}dropdown-submenu{endif}">
+	<a href="{href}" {if sub}class="dropdown-toggle"{endif} tabindex="-1" title="{htm(V2)}">{htm(V1)}</a>
+    {if sub}
+		<ul class="dropdown-menu">
+            {sub}
+		</ul>
+	{endif}
+</li>

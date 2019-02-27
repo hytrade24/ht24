@@ -1,0 +1,118 @@
+<h1>Marktplatz leeren</h1>
+
+<p>
+	Achtung! Bitte benutzen Sie diese Funktion mit &auml;usserster Vorsicht!
+	Am besten sollten Sie vorher ein Backup des bestehenden Systems machen.
+</p>
+{if err}
+	<h2 class="error">Nicht m&ouml;glich!</h2>
+	<p class="error">
+		{err}
+	</p>
+{endif}
+<form method="post" action="index.php" >
+	<input type="hidden" name="page" value="{curpage}" />
+	<table class="formTable" cellspacing="0">
+		<tr>
+			<th>Alle Anzeigen aus dem Marktplatz l&ouml;schen?</th>
+			<td>
+				<input type="checkbox" name="DEL_ADS" value="1" class="nob" />
+				Ja, alle l&ouml;schen
+			</td>
+			<td>
+				{if !err && DEL_ADS}
+				<span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+				{endif}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				Alle Kategorien, Artikel-Tabellen und Felder l&ouml;schen?
+			</th>
+			<td>
+				<input class="nob"  type="checkbox" name="DEL_KAT" value="1" />
+				Ja, alle l&ouml;schen
+			</td>
+			<td>
+				{if !err && DEL_KAT}
+				<span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+				{endif}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				Alle Hersteller und Produkte l&ouml;schen?
+			</th>
+			<td>
+				<input class="nob"  type="checkbox" name="DEL_MAN" value="1" />
+				Ja, alle l&ouml;schen
+			</td>
+			<td>
+				{if !err && DEL_MAN}
+				<span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+				{endif}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				Alle User ausser den Admin l&ouml;schen?
+			</th>
+			<td>
+				<input class="nob"  type="checkbox" name="DEL_USER" value="1" />
+				Ja, alle l&ouml;schen
+			</td>
+			<td>
+				{if !err && DEL_USER}
+				<span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+				{endif}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				Alle Einträge im Anbieterverzeichnis l&ouml;schen?
+			</th>
+			<td>
+				<input class="nob"  type="checkbox" name="DEL_VENDOR" value="1" />
+				Ja, alle l&ouml;schen
+			</td>
+			<td>
+				{if !err && DEL_VENDOR}
+				<span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+				{endif}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				Alle Rechnungen l&ouml;schen?
+			</th>
+			<td>
+				<input class="nob"  type="checkbox" name="DEL_INVOICE" value="1" />
+				Ja, alle l&ouml;schen
+			</td>
+			<td>
+				{if !err && DEL_INVOICE}
+				<span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+				{endif}
+			</td>
+		</tr>
+		<tr>
+			<th>
+				Alle gebuchten Werbebanner l&ouml;schen?
+			</th>
+			<td>
+				<input class="nob"  type="checkbox" name="DEL_ADVERTISEMENT" value="1" />
+				Ja, alle l&ouml;schen
+			</td>
+			<td>
+				{if !err && DEL_ADVERTISEMENT}
+				<span style="color: green; font-weight: bold;">Erfolgreich gel&ouml;scht!</span>
+				{endif}
+			</td>
+		</tr>
+		<tr class="footer">
+			<td align="right" colspan="3">
+				<input type="submit" value="L&Ouml;SCHEN" class="button" />
+			</td>
+		</tr>
+	</table>
+</form>

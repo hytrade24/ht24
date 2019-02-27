@@ -1,0 +1,64 @@
+{if !hide}
+<tr height="17" id="row{ID_KAT}" class="zeile{even} {css_childs}">
+  <td>
+    {if editable && !IS_LOCKED}
+    <a title="Kategorie bearbeiten" href="index.php?page=m_kat_edit&ID_KAT={ID_KAT}">
+      <img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0">
+    </a>
+
+    {if kidcount}
+      <a href="javascript:moveTreeElements.deleteElement({ID_KAT}, '{htm(V1)}', true);"><img src="gfx/btn.rmx.gif" width="32" height="16" alt="l&ouml;schen" border="0"></a>
+    {else}
+      <a href="javascript:moveTreeElements.deleteElement({ID_KAT}, '{htm(V1)}', false);"><img src="gfx/btn.del.gif" width="32" height="16" alt="l&ouml;schen" border="0"></a>
+    {endif}
+
+    <a title="Kategorie aus-/einblenden" href="javascript:KatSetVisibility({ID_KAT},-1);"
+      class="mv{if !visible}0{endif}"><img id="imgVis{ID_KAT}" src="gfx/mv{even}.v{if B_VIS}1{else}0{endif}.gif" width="16" height="16" border="0" alt="{if B_VIS}verstecken{else}sichtbar machen{endif}"></a>
+    <a title="Kategorie verschieben" href="#" onclick="moveTreeElements.moveElement({ID_KAT}); return false;"><img border="0" src="gfx/btn.move.gif"></a>
+    <a title="Unter-Kategorie hinzuf&uuml;gen" href="index.php?page=m_kat_edit&PARENT={ID_KAT}"><img border="0" src="gfx/new.gif"></a>
+    &nbsp;
+    {endif}
+  </td>
+  <td name="MoveCol" id="row{ID_KAT}MoveCol" class="treeMoveCol zeile{even}">
+    <input type="hidden" name="UPDATE_ALLOW_NEW_AD[]" value="{ID_KAT}" />
+
+    <div title="{ID_KAT}" class="MoveColOverlay" style="opacity:1;" name="MoveColOverlay"></div>
+    <div title="In '{htm(V1)}' verschieben" style="visibility: hidden;" class="treeMoveTarget" id="e{ID_KAT}"></div>
+    <div title="Vor '{htm(V1)}' einf&uuml;gen" style="visibility: hidden;" class="treeMoveBefore" id="eb{ID_KAT}"></div>
+  </td>
+  <td nowrap="nowrap" {if !visible} class="disabled"{endif} style="padding-left: {padding}px;">
+	{if kidcount > 0}
+		<a style="cursor:pointer;" onclick="toggleKat({ID_KAT});">
+			<img class="folder_open" border="0" src="gfx/folder_has_kids.png" />
+			<img class="folder_close" border="0" src="gfx/folder_open.png" style="display: none;" />
+			{htm(V1)}
+		</a>
+	{else}
+		<img src="gfx/folder.png" />
+		{htm(V1)}
+	{endif}
+  </td>
+  <td align="center">
+  {if ICON}
+	<img src="{uri_baseurl({ICON})}" height="16" title="Icon der Kategorie" />
+  {endif}
+  </td>
+  {if !FREE_ADS}
+  <td style="padding-left: 12px;">
+    <strong>{if B_FREE}Ja{else}Nein{endif}</strong>
+  </td>
+  {endif}
+  <td style="padding-left: 12px;">
+    {print_lu(KATART)}
+  </td>
+  <td style="padding-left: 12px;">
+    <a onclick="popupfkt('infoseiten_edit&ID_INFOSEITE={FK_INFOSEITE}',1000,600);">
+      {htm(INFOSEITE_NAME)}
+    </a>
+  </td>
+  <td style="padding-left: 12px;">
+  <a href="index.php?&page=table_edit&table={ID_TABLE_DEF}">{htm(AD_TABLE_DESC)}</a>
+  </td>
+  {add_columns}
+</tr>
+{endif}

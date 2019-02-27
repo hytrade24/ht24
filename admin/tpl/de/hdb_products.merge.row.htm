@@ -1,0 +1,15 @@
+<tr class="zeile{even}">
+	<td>
+		<input type="radio" name="HDB_MERGE_PRODUCT_MAINENTRY" value="{ID_HDB_PRODUCT}" required>
+		<a href="index.php?page=hdb_products&hdb_table={HDB_TABLE}&SELECT_PRODUCT[]={ID_HDB_PRODUCT}&DO_HDB_MERGE_DELETE=DELETE" onclick="return alert('Produkt wirklich aus dem Mergetool entfernen?');"><img src="gfx/btn.rm.gif"></a>
+	</td>
+	<td>{ID_HDB_PRODUCT}</td>
+	<td>
+		<div class="hdb-product-status {if CONFIRMED == 1}status-confirmed{endif}{if CONFIRMED == 0}status-unconfirmed{endif}{if CONFIRMED == 8}status-check{endif}" title="{if CONFIRMED}Produkt bestätigt{else}Produkt unbestätigt{endif}"></div>
+		<div class="hdb-product-status {if COUNT_DATA_USER}status-info{else}status-neutral{endif}"  title="{if COUNT_DATA_USER}Offene Uservorschläge{endif}"></div>
+	</td>
+	<td>{MANUFACTURER_NAME}</td>
+	<td><a href="index.php?page=hdb_products_edit&hdb_table={HDB_TABLE}&ID_HDB_PRODUCT={ID_HDB_PRODUCT}" target="_blank">{PRODUKTNAME}</a></td>
+	<td>{PRODUCT_TYPE_DESCRIPTION}</td>
+	{TPL_DATACOL}
+</tr>

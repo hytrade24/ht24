@@ -1,0 +1,48 @@
+<table width="800">
+<tr>
+<td valign="top" width="400">
+<h1>Benutzergruppen</h1>
+<p>Hier können Sie unterschiedliche Benutzergruppen einrichten. <br />Die Benutzergruppen werden als Auswahl bei der Anmeldung von Users im öffentlichen Bereich verwenden.</p>
+<p>Benutzergruppen können unterschiedliche Rechte, <a href="index.php?page=packet_membership">Mitgliedschaften</a> und <a href="index.php?page=packets">Pakete</a> besitzen</p>
+</td>
+<td align="right">
+<iframe id="katframe" src="index.php?frame=iframe&page=stats&show=usergroups&w=300" width="200" height="200" frameborder="0"></iframe>
+</td>
+</tr>
+
+</table>
+{if update_ok}
+	<div class="hinweis">
+		<span class="ok">Benutzergruppe erfolgreich angelegt/aktuallisiert</span>
+	</div>
+{endif}
+{if err}
+	<div class="hinweis">
+		<span class="error">
+			{err}
+		</span>
+	</div>
+{endif}
+<form action="index.php" method="post">
+	<input type="hidden" name="page" value="usergroups">
+	<input type="hidden" name="action" value="sort">
+	<input type="hidden" name="npage" value="{curpage}">
+
+	<table style="min-width: 600px;" cellpadding="0" cellspacing="0" class="liste">
+		<tr>
+			<th>Aktionen</th>
+			<th>Grafik</th>
+			<th>Benutzergruppe</th>
+			<th>Öffentlich</th>
+			<th>Privat / Gewerblich</th>
+			<th>Manuelle Freischaltung</th>
+			<th>Zahlt im Vorraus</th>
+			<th>Anzahl User</th>
+			<th>Mitgliedschaften</th>
+			<th>Sortierung</th>
+		</tr>
+		{liste}
+	</table>
+	<input type="submit" value="Sortierung speichern">
+
+</form>

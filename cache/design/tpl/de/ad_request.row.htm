@@ -1,0 +1,29 @@
+<div class="design-request-row {if B_TOP} top{endif}">
+    <div class="row">
+        <div class="col-sm-8 col-md-9 col-lg-10">
+            <div class="design-request-name">
+                <a href="{uri_action(gesuch_anzeigen,{ID_AD_REQUEST},{urllabel(PRODUKTNAME)})}" title="{htm(PRODUKTNAME)} ansehen">
+                    <strong>{htm(PRODUKTNAME)}</strong>
+                </a>
+            </div>
+            <p>
+                {htm(BESCHREIBUNG_KURZ)}
+            </p>
+        </div>
+        <div class="col-sm-4 col-md-3 col-lg-2">
+            <dl class="dl-table muted">
+                <dt>Ort:</dt>
+                <dd>{ZIP} {CITY}</dd>
+
+                <dt>eingestellt am:</dt>
+                <dd>{todate(STAMP_START)}</dd>
+                <dt>Kategorie:</dt>
+                <dd>
+                    <a title="Mehr aus der Kategorie {htm(KAT_NAME)}" href="{uri_action(ad_request,{FK_KAT},)}">
+                        {htm(KAT_NAME)}
+                    </a>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>

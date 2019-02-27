@@ -1,0 +1,40 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="215"{endif}>
+    <div class="design-ad-box">
+	<div class="row">
+	   
+      <div class="col-xs-6 col-md-3 text-center">
+        <a href="{uri_action(my-marktplatz-neu)}">
+            <img src="{uri_resource(images/add-ad.png)}" class="img-responsive-center js-tooltip" width="30"  data-toggle="tooltip" title="" data-original-title="Anzeige einstellen">
+        </a>
+      </div>
+      <div class="col-xs-6 col-md-3 text-center">
+        <a href="{uri_action(my-profil)}">
+            <img src="{uri_resource(images/profil.png)}" class="img-responsive-center js-tooltip" width="30"  data-toggle="tooltip" title="" data-original-title="Ihr Profil">
+        </a>
+      </div>
+      <div class="col-xs-6 col-md-3 text-center">
+        <a href="{uri_action(my-ad-msg)}">
+            <img src="{uri_resource(images/request.png)}" class="img-responsive-center js-tooltip" width="30"  data-toggle="tooltip" title="" data-original-title="Anfragen">
+        </a>
+      </div>
+      <div class="col-xs-6 col-md-3 text-center">
+        <a href="{uri_action(packets)}">
+            <img src="{uri_resource(images/buy-packets.png)}" class="img-responsive-center js-tooltip"  width="30" data-toggle="tooltip" title="" data-original-title="Anzeigenpaket">
+        </a>
+      </div>
+        
+   </div>
+</div>
+
+	<div class="row">
+        <div class="col-xs-8 col-md-8">
+          <p>
+              <b>Willkommen {htm(NAME)} </b>, unter <a href="{uri_action(my-settings)}">Einstellungen</a> können Sie nun Ihre Einstellungen überprüfen und an Ihre Anforderungen anpassen.
+          </p>
+        </div>
+        <div class="col-xs-4 col-md-4">
+            <img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" hspace="5" align="right" />
+        </div>
+</div>
+</div>

@@ -1,0 +1,11 @@
+<tr{if !(i&1)} bgcolor="#ffffff"{endif}>
+  <td style="text-align:right;">{ID_NEWS}&nbsp;</td>
+  <td>
+    <a href="{pageref(news_edit)}&ID_NEWS={ID_NEWS}"><img src="gfx/btn.edit.gif" width="16" height="16" alt="bearbeiten" border="0" /></a>
+&nbsp;<a href="index.php?frame=content&page=news&DELME=DEL&ID_NEWS={ID_NEWS}" onclick="if (!confirm('ACHTUNG\nDas Löschen kann nicht rückgängig gemacht werden!')){return false}"><img src="gfx/btn.del.gif" width="16" height="16" alt="l&ouml;schen" border="0" /></a>
+  </td>
+  <td>&nbsp;{print_fk(user,,NAME)}&nbsp;</td>
+  <td>&nbsp;{htm(V1)}&nbsp;</td>
+  <td align="center"><input type="hidden" class="nob" name="Okall[]"  value="{ID_NEWS}" /><input type="checkbox" class="nob" name="OK1[]" {if OK1}checked onclick="return false;" {endif}value="{ID_NEWS}" /></td>
+  <td align="center"><input type="checkbox" class="nob" name="OK2[]" {if OK2}checked {endif}value="{ID_NEWS}" /></td>
+  </tr>

@@ -1,0 +1,43 @@
+<script src="{uri_resource(js/import-preset-editor.js)}"></script>
+<script>
+	var ipe = null;
+
+	jQuery(function() {
+		ipe = new ImportPresetEditor("#importPresetEditor");
+		ipe.init();
+		
+		jQuery(".btn[data-action=loading-modal]").click(function(event) {
+			ipe._showAjaxLoader("#importPresetEditorModalLoading");
+		});
+	});
+
+</script>
+
+<h1>
+	Import template
+	{if importPresetName}&quot;{htm(importPresetName)}&quot;{endif}
+</h1>
+
+<p class="lead">
+	Adjust the import structure to your system
+</p>
+
+<hr>
+
+<div id="importPresetEditor">
+	<div id="importPresetEditorNavigation">
+		...
+	</div>
+	<div id="importPresetEditorContent">
+		{importPresetEditorContent}
+	</div>
+	<div id="importPresetEditorModalLoading" class="modal fade">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-body">
+					
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</div>

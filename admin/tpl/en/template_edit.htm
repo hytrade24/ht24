@@ -1,0 +1,89 @@
+<script type="text/javascript">
+    var tmpLang = '{sel_lang}';
+
+    function selectLang() {
+        if(confirm("Möchten Sie die Sprache wirklich ändern ? Gegebenenfalls getätigte Änderungen gehen dadurch verloren.")) {
+            var newLang = jQuery("#selectlang").val();
+            window.location.href = 'index.php?page={curpage}&design={DESIGN_ident}&tpl={tpl}&ROOT={ROOT}&sel_lang=' + newLang;
+        } else {
+            jQuery("#selectlang option[value='"+tmpLang+"']").attr('selected', 'selected');
+        }
+    }
+</script>
+
+<h1><img src="gfx/html_64.gif" width="64" height="64" alt="bearbeiten" border="0"> Seite &quot;{tpl}.htm&quot; bearbeiten</h1>
+{if err || msg}
+<div class="meldung">
+    {if err}<span class="error">{err}</span>
+    {else}<span class="ok">{msg}</span>{endif}
+</div>
+{endif}
+
+
+<form method="post" action="index.php">
+    <input type="hidden" name="page" value="{curpage}" />
+    <input type="hidden" name="tpl" value="{tpl}" />
+    <input type="hidden" name="ROOT" value="{ROOT}" />
+
+    <table>
+        <tr>
+            <td>Design:</td>
+            <td style="width: 200px;">
+                <strong>{DESIGN_name}</strong>
+            </td>
+            <td rowspan="2" style="width: 300px">
+                <p>
+                    Wenn Sie Änderungen dieser Datei in Ihrem Design verwerfen und das Standarddesign wiederherstellen möchten, klicken Sie bitte auf:
+                </p>
+                <strong><a href="./index.php?page={curpage}&tpl={tpl}&ROOT={ROOT}&sel_lang={sel_lang}&action=recover" class="button_blank" onclick="return confirm('Selbst gemachte Änderungen gehen verloren! Möchten Sie die Seite aus dem Standard Design wirklich wiederherstellen?');">Standard wiederherstellen</a></strong>
+            </td>
+        </tr>
+        <tr>
+            <td>Sprache:</td>
+            <td>
+                <select name="sel_lang" id="selectlang" onchange="selectLang()">
+                    <option value="default">Alle Sprachen</option>
+                    {selectlang}
+                </select>
+            </td>
+        </tr>
+    </table>
+
+
+    <div class="reiterAktiv"><img src="gfx/options_48x16.gif" alt="" height="16" width="48" border="0">
+        <a href="index.php?page=page_edit_nav&ID_NAV={ID_NAV}">Options ändern</a>
+    </div>
+    <br /><br />
+
+    {if editor}
+        {editor(templatecode,760,500)}
+        <br />
+
+        <input type="submit" value="Speichern" />
+
+    {else}
+        <script src="{uri_resource(/lib/codemirror/lib/codemirror.js)}"></script>
+        <link rel="stylesheet" href="{uri_resource(/lib/codemirror/lib/codemirror.css)}">
+        <script src="{uri_resource(/lib/codemirror/mode/xml/xml.js)}"></script>
+        <script src="{uri_resource(/lib/codemirror/mode/javascript/javascript.js)}"></script>
+        <script src="{uri_resource(/lib/codemirror/mode/css/css.js)}"></script>
+        <script src="{uri_resource(/lib/codemirror/mode/htmlmixed/htmlmixed.js)}"></script>
+
+        <div class="codeMirrorEditor">
+            <textarea id="templatecode" name="templatecode">{htm(templatecode)}</textarea>
+
+            <script type="text/javascript">
+                var codeMirror = CodeMirror.fromTextArea(document.getElementById("templatecode"), {
+                    mode: "text/html",
+                    lineNumbers: true,
+                    fixedGutter: true
+                });
+            </script>
+        </div>
+
+        <br />
+        <input type="submit" value="Speichern" />
+    {endif}
+</form>
+
+

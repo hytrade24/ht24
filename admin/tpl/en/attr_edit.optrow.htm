@@ -1,0 +1,10 @@
+<tr class="zeile{=1-even}">
+  <td>
+    <a href="index.php?page=attr_edit&ID_ATTR={ID_ATTR}&ID_ATTR_OPTION={ID_ATTR_OPTION}" onClick="return checkFlag();"><img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0"></a>{if typ_INT || typ_FLT}
+    <a href="index.php?page=attr_edit&ID_ATTR={ID_ATTR}&ID_ATTR_OPTION={ID_ATTR_OPTION}&do=rm" onClick="return confirm('Wirklich l&ouml;schen?') && checkFlag();"><img src="gfx/btn.rm.gif" width="16" height="16" alt="l&ouml;schen" border="0"></a>{endif}{if n>1 && (typ_SEL || typ_MSEL)}
+    {if i<n-1}<a href="index.php?page=attr_edit&ID_ATTR={ID_ATTR}&ID_ATTR_OPTION={ID_ATTR_OPTION}&do=dn" onClick="return checkFlag();"><img src="gfx/mv.dn.png" width="16" height="16" alt="nach unten schieben" border="0"></a>{else}<img src="shim.gif" width="16" height="16" border="0">{endif}
+    {if i}<a href="index.php?page=attr_edit&ID_ATTR={ID_ATTR}&ID_ATTR_OPTION={ID_ATTR_OPTION}&do=up" onClick="return checkFlag();"><img src="gfx/mv.up.png" width="16" height="16" alt="nach oben schieben" border="0"></a>{else}<img src="shim.gif" width="16" height="16" border="0">{endif}
+  {endif}</td>
+  <td>{htm(VALUE)}</td>
+  <td>{htm(V1)}</td>
+</tr>

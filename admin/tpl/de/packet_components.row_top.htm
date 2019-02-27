@@ -1,0 +1,30 @@
+<tr class="zeile{even}">
+	<td>
+		<a href="index.php?page=packet_base_add&ID_PACKET={ID_PACKET}">
+			<img src="gfx/btn.edit.gif" border="0">
+		</a>
+	</td>
+	<td align="center">
+		{if (STATUS&1)==1}
+			<span class="ok" title="Aktiv!">&radic;</span>
+		{else}
+			<span class="error" title="nein">x</span>
+		{endif}
+	</td>
+  	<td title="{htm(T1)}">
+  		{htm(V1)} / {htm(V2)}
+  	</td>
+	<td align="center">
+		{if TYPE_BASE_ABO}
+			<span class="ok" title="Ja">&radic;</span>
+		{else}
+			<span class="error" title="Nein">x</span>
+		{endif}
+	</td>
+	<td>
+		{preise}
+	</td>
+	<td>
+		{preise_brutto}
+	</td>
+</tr>

@@ -1,0 +1,29 @@
+{if !ID_FAQKAT}
+{content_page(FAQ header)}
+{endif}
+
+<a name="home"></a>
+
+<h1>{htm(V1)}</h1>
+<p class="lead">
+    {htm(V2)}
+</p>
+
+{if liste}
+    {liste}
+    <div>
+        If you have any further question, you can contact the support-team.
+        <p>&nbsp;</p>
+    </div>
+{else}
+    <div class="text-error">
+        <span class="error">Now topics found</span>
+    </div>
+{endif}
+{if ID_FAQKAT}
+    <div>
+		<a href="{uri_action({IDENT})}" title="Overview">
+            Back to overview
+        </a>
+    </div>
+{endif}

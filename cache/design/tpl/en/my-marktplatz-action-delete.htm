@@ -1,0 +1,51 @@
+{if PROCESSING}
+  {startblock(head)}
+    {parentblock()}
+    <!-- Redirect for next step -->
+    <meta http-equiv="refresh" content="1;url={uri_action_full(my-marktplatz,delete,process)}" />
+  {endblock(head)}
+  <h3>Ausgewählte Anzeigen löschen</h3>
+  <p>
+  Bitte warten Sie während die Artikel gelöscht werden ... ({PROCESS_DONE} von {PROCESS_COUNT} fertig)
+  </p>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{PROCESS_PERCENT}" aria-valuemin="0" aria-valuemax="100"
+         style="min-width: 3em; width: {PROCESS_PERCENT}%;">
+      {PROCESS_PERCENT}%
+    </div>
+  </div>
+  <div class="text-right">
+    <a href="{uri_action(my-marktplatz,delete,cancel)}" class="btn btn-danger" 
+       onclick="return confirm('Möchten Sie die Löschung wirklich abbrechen?');">
+      Abbrechen
+    </a>
+  </div>
+{else}
+<form id="formActionBack" action="{REFERER}" method="POST">
+    {HIDDEN_INPUT_SELECTED}
+</form>
+<form method="POST">
+    <input type="hidden" name="action" value="{action}" />
+    <input type="hidden" name="SUCCESS" value="{SUCCESS}" />
+    <h3>Ausgewählte Anzeigen löschen</h3>
+    
+    <p>
+        Die ausgewählten Anzeigen werden unwiderruflich gelöscht.
+    </p>
+            
+    <div class="text-box">
+    {if count > 0}
+        <b>Es werden {count} Anzeigen gelöscht.</b>
+    {else}
+        <b>Sie haben keine Anzeigen ausgewählt.</b>
+    {endif}
+    </div>
+            
+    <div class="pull-right">
+        <button class="btn btn-danger" onclick="jQuery('#formActionBack').submit(); return false;">Back</button>
+    {if count > 0}
+        <button class="btn btn-success" name="confirm" value="1" type="submit">Ausgewählte Anzeigen löschen</button>
+    {endif}
+    </div>
+</form>
+{endif}

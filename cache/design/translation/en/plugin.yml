@@ -1,0 +1,57 @@
+ad.cart.error.quantity: 'Es sind leider nur noch {COUNT} Stück übrig. Bitte reduzieren Sie die gewünschte Menge.'
+ad.qrcode: 'QR-Code anzeigen'
+chat.new.ad: 'neue Anfrage{if PLURAL_COUNT!=1}n{endif}'
+chat.new.other: 'neue Nachricht{if PLURAL_COUNT!=1}en{endif}'
+country.group.others: Other
+plugin.user.task.list.heading: 'First Steps'
+search: Suche
+search.results.show: '({ALL_ADS}) Treffer anzeigen'
+shipping.cart.group.title: 'Versand mit {htm(SHIPPING_PROVIDER)}'
+shipping.country.not.available: 'Der Versand in das gewählte Land ist leider nicht möglich! Bitte wählen Sie eine andere Lieferadresse.'
+shipping.country.not.available.short: 'Versand nicht möglich!'
+shipping.country.not.selected: 'Bitte Versandadresse wählen!'
+shipping.custom.config: 'Nur für diesen Artikel'
+shipping.disabled: 'Versand deaktiviert / auf Anfrage.'
+shipping.error.config.name.duplicate: 'Please enter a name for the shipping configuration.'
+shipping.groups.button.add: New
+shipping.groups.button.delete: Delete
+shipping.groups.button.edit: Edit
+shipping.groups.config.custom.warning.detail: 'Dies ist eine benutzerdefinierte Versandkonfiguration, die ausschließlich für den aktuellen Artikel gültig ist!'
+shipping.groups.config.custom.warning.title: 'Achtung! Benutzerdefinierte Versandkonfiguration!'
+shipping.groups.config.form.dirty.global.article.long: |
+  Sie haben noch nicht gespeicherte Änderungen an der Versand-Konfiguration.
+            Bitte speichern Sie diese ab bevor Sie mit dem Einstellen des Artikels fortfahren, damit ihre Änderungen übernommen werden.
+shipping.groups.config.form.dirty.global.settings.long: |
+  Sie haben noch nicht gespeicherte Änderungen an der Versand-Konfiguration.
+            Bitte speichern Sie diese ab bevor Sie ihre Einstellungen abspeichern, damit ihre Änderungen übernommen werden.
+shipping.groups.config.form.dirty.global.title: 'Ungespeicherte Änderungen'
+shipping.groups.config.form.dirty.long: |
+  Sie haben Änderungen an den Versand-Anbietern und/oder Regionen vorgenommen. 
+              Klicken Sie auf den nachfolgenden Button um die Preis-Tabelle zu aktualisieren.
+              <br />
+              Achtung! In diesem Zuge können von ihnen vorgenommene Preisangaben verloren gehen!
+shipping.groups.config.form.dirty.title: 'Versand-Anbieter und/oder Regionen geändert'
+shipping.groups.config.form.name: 'Name der Versandkonfiguration'
+shipping.groups.config.form.prices: 'Länder und Preise'
+shipping.groups.config.form.prices.providers.emptry: 'Bitte wählen Sie mindestens einen Versand-Anbieter und ein Land aus.'
+shipping.groups.config.form.prices.region: 'Land / Region'
+shipping.groups.config.form.providers: 'Versand-Anbieter auswählen'
+shipping.groups.config.form.regions: 'Regionen/Länder auswählen'
+shipping.groups.config.form.regions.and.providers.update: Aktualisieren
+shipping.groups.empty: 'You have not yet configured any shipping settings.'
+shipping.groups.provider.delete.confirm: 'Really delete the shipping provider''{NAME}''?'
+shipping.groups.save.copy: 'Als Kopie'
+shipping.groups.save.custom: 'Für diesen Artikel'
+shipping.groups.save.default: 'Als Standard'
+shipping.groups.save.new: 'Als neue Konfiguration'
+shipping.provider.default.set: 'Versand-Anbieter als Standard festlegen'
+shipping.sales.form.provider: 'shipping providers'
+shipping.sales.form.provider.any: '-- all--'
+shipping.select.provider.count: '{COUNT} / {COUNT_MAX} Supplier selected'
+shipping.select.provider.none: 'No Supplier selected'
+shipping.select.region.count: '{COUNT} / {COUNT_MAX} Regions / Countries selected'
+shipping.select.region.none: 'No regions/countries selected'
+shipping.settings.default: 'Standard Shipping Configuration'
+shipping.settings.title: 'Shipping settings for your products'
+shipping.view.starting.at: ab
+shipping.warning.config.save.custom.as.default: 'Attention! You are about to overwrite the default configuration with a custom configuration for this item. Really move on?'

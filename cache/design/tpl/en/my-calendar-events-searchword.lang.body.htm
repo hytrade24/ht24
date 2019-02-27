@@ -1,0 +1,20 @@
+<div id="searchword-lang-{BITVAL}" class="ui-widget-content-embedded">
+    <script type="text/javascript">
+        jQuery(function() {
+        	reloadCalendarEventSearchWordList("#calendarEventSearchList{BITVAL}", {BITVAL});
+        })
+    </script>
+
+    <div id="calendarEventSearchWordFormular{BITVAL}" class="clubSearchWordFormular form-inline">
+        <p id="calendarEventSearchList{BITVAL}" class="calendarEventSearchList design-btn-small">
+        	{subtpl(tpl/{SYS_TPL_LANG}/my-calendar-events-searchword.htm,*)}
+        </p>
+
+        <div class="input-group">
+            <input class="form-control" type="text" name="SEARCHWORD" />
+            <div class="input-group-btn">
+                <input class="btn btn-success" type="button" value="Add searchword" onclick="addCalendarEventSearchword({BITVAL});" />
+            </div>
+        </div>
+    </div>
+</div>

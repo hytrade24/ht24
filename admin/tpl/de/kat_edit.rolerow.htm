@@ -1,0 +1,8 @@
+<!--
+<tr class="zeile{even}">
+  <td>{htm(LABEL)}</td>
+  <td align="center">{if perm_admin_katperm_E}<input type="checkbox" class="nob" name="perm2role[]" {if PERM}checked {endif}value="{ID_ROLE}" onChange="setFlag(true);" />{else}{if perm_admin_katperm_R}{if PERM}&radic;{else}-{endif}{else}?{endif}{endif}</td>
+</tr>
+-->
+
+<input type="hidden" class="nob" name="perm2role[]" value="{ID_ROLE}" />

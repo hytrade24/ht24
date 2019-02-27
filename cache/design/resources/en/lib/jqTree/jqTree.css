@@ -1,0 +1,250 @@
+
+.jqTree {
+    font-size: 20px;
+}
+
+/* List-Mode */
+
+.jqTree ul {
+    list-style-type: none;
+    padding: 0px;
+    position: relative;
+}
+
+.jqTree ul ul {
+    margin-left: 32px;
+}
+
+.jqTree ul > li {
+    cursor: default;
+    position: relative;
+}
+
+.jqTree ul > li > a {
+    cursor: default;
+    display: inline-block;
+    padding: 0px 4px 0px 28px;
+    position: relative;
+}
+
+/* Table-Mode */
+
+.jqTree tr > td:first-child > a {
+    display: inline-block;
+    padding: 0px 4px 0px 20px;
+    position: relative;
+    z-index: 50;
+}
+
+.jqTree tr.level1 > td:first-child { padding-left: 4px; }
+.jqTree tr.level2 > td:first-child { padding-left: 24px; }
+.jqTree tr.level3 > td:first-child { padding-left: 44px; }
+.jqTree tr.level4 > td:first-child { padding-left: 64px; }
+.jqTree tr.level5 > td:first-child { padding-left: 84px; }
+.jqTree tr.level6 > td:first-child { padding-left: 104px; }
+.jqTree tr.level7 > td:first-child { padding-left: 124px; }
+.jqTree tr.level8 > td:first-child { padding-left: 144px; }
+.jqTree tr.level9 > td:first-child { padding-left: 164px; }
+
+/* Hide collapsed sub-trees */
+
+.jqTree ul > li > ul {
+    display: none;
+}
+
+.jqTree ul > li.expanded > ul {
+    display: block;
+}
+
+/* Select effect */
+
+.jqTree ul > li.selected {
+    background: #5467ff;
+}
+
+.jqTree ul > li.selected > a {
+    color: #FFFFFF;
+}
+
+/* Drop effects */
+
+.jqTree ul > li.jqTree-drag-over > a {
+    border: 1px solid red;
+    margin: -1px;
+}
+
+.jqTree ul > li.jqTree-drag-before > a {
+    border-top: 1px solid red;
+    margin-top: -1px;
+}
+
+.jqTree ul > li.jqTree-drag-after > a {
+    border-bottom: 1px solid red;
+    margin-bottom: -1px;
+}
+
+.jqTree ul > li.jqTree-drag-after + li.jqTree-drag-before > a {
+    border-top: none;
+    margin-top: 0px;
+}
+
+.jqTree tr > td:first-child {
+    position: relative;
+}
+
+.jqTree tr.jqTree-drag-over > td:first-child:before {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    -webkit-box-shadow: inset 0 0 10px #0000FF; -moz-box-shadow: inset 0 0 10px #0000FF; box-shadow: inset 0 0 10px #0000FF;
+    z-index: 10;
+}
+
+.jqTree tr.jqTree-drag-before > td:first-child:before {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    background: #0000FF;
+    -webkit-box-shadow: 0 0 10px #0000FF; -moz-box-shadow: 0 0 10px #0000FF; box-shadow: 0 0 10px #0000FF;
+    z-index: 10;
+}
+
+.jqTree tr.jqTree-drag-after > td:first-child:after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    background: #0000FF;
+    -webkit-box-shadow: 0 0 10px #0000FF; -moz-box-shadow: 0 0 10px #0000FF; box-shadow: 0 0 10px #0000FF;
+    z-index: 10;
+}
+
+.jqTree tr.jqTree-drag-after + tr.jqTree-drag-before > td:first-child:before {
+    display: none;
+}
+
+/* Tree path */
+
+.jqTree ul > li.expanded > ul > li:after {
+    display: block;
+    content: "";
+    position: absolute;
+    left: -20px;
+    width: 18px;
+    top: 15px;
+    border-left: 1px solid #000000;
+}
+
+.jqTree ul > li.expanded > ul > li:before {
+    display: block;
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 0px;
+    bottom: 0px;
+    border-left: 1px solid #000000;
+}
+
+.jqTree ul > li.expanded > ul > li:last-child:before {
+    bottom: auto;
+    height: 16px;
+}
+
+.jqTree ul > li:after {
+    display: none;
+    content: "";
+    position: absolute;
+    width: 10px;
+    left: -10px;
+    top: 10px;
+    border-bottom: 1px solid #000000;
+}
+
+/* Tree node icons */
+
+.jqTree ul > li > a:before {
+    content: "\e022";
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    position: absolute;
+    left: 4px;
+    color: #FFFFFF;
+    text-shadow: 0 0 1px #000000;
+}
+
+.jqTree ul > li.directory > a:before {
+    left: 2px;
+    content: "\e117";
+    color: #FFED8D;
+}
+
+.jqTree ul > li.directory.expanded > a:before {
+    content: "\e118";
+    color: #FFED8D;
+}
+
+
+.jqTree ul > li.category > a:before {
+    left: 2px;
+    content: "\e041";
+    color: #FFED8D;
+}
+
+.jqTree ul > li.category.expandable > a:before {
+    left: 2px;
+    content: "\e117";
+    color: #FFED8D;
+}
+
+.jqTree ul > li.category.expanded > a:before {
+    content: "\e118";
+    color: #FFED8D;
+}
+
+
+
+
+/* Responsive */
+@media (min-width: 992px) {
+
+    .jqTree {
+        font-size: 14px;
+    }
+
+    .jqTree ul ul {
+        margin-left: 20px;
+    }
+
+    .jqTree ul > li > a {
+        padding: 0px 4px 0px 22px;
+    }
+
+    /* Tree path */
+
+    .jqTree ul > li.expanded > ul > li:after {
+        left: -10px;
+        width: 10px;
+        top: 10px;
+    }
+
+    .jqTree ul > li.expanded > ul > li:before {
+        left: -10px;
+    }
+
+    .jqTree ul > li.expanded > ul > li:last-child:before {
+        height: 10px;
+    }
+
+    .jqTree ul > li:after {
+        width: 10px;
+        left: -10px;
+        top: 10px;
+    }
+}

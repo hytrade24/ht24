@@ -1,0 +1,215 @@
+<style type="text/css">
+  
+  #categoryTree {
+    /* TABLE */
+    display: table;
+    border: 1px #9A9A9A solid;
+    background-color: #DDDDDD;
+  }
+  #categoryTree .categoryHeader {
+    /* THEAD */
+    font-weight: bold;
+  }
+  #categoryTree .categoryFooter th {
+    /* THEAD / TABLE FOOTER */
+    text-align: right;
+  }
+  #categoryTree .categoryHeader tr > th {
+    /* TH */
+    padding: 4px 2px;
+    vertical-align: bottom;
+  }
+  #categoryTree .categoryHeader tr:last-child > th {
+    /* LAST HEADER ROW > TH */
+    border-bottom: 1px #9A9A9A solid;
+  }
+  #categoryTree .categoryBody tr {
+    /* TR (TBODY) */
+    background: #FFFFFF;
+  }
+  #categoryTree .categoryBody tr:nth-child(even) {
+    /* STRIPES */
+    background: #EEEEEE;
+  }
+  #categoryTree td {
+    /* TD */
+    padding: 2px;
+  }
+  
+  #categoryTree .categoryGroupHeader {
+    max-width: 40px;
+  }
+  
+  .tableHeaderRotate {
+    height: 200px;
+    white-space: nowrap;
+  }
+  
+  .tableHeaderRotate > div {
+    display: inline-block;
+    width: 50px;
+    transform: translate(6px, -14px) rotate(-45deg); 
+    -webkit-transform: translate(6px, -14px) rotate(-45deg); /* Webkit/Safari */
+    -moz-transform: translate(6px, -14px) rotate(-45deg); /* Firefox */
+    -ms-transform: translate(6px, -14px) rotate(-45deg); /* IE */
+    -o-transform: translate(6px, -14px) rotate(-45deg); /* Opera */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3); /* Internet Explorer */
+  }
+  
+  .tableHeaderRotate > div > span {
+    border-bottom: 1px #9A9A9A solid;
+    padding: 3px 0px;
+  }
+  
+  .categoryGroupSpacer {
+    width: 160px;
+  }
+  
+  #categoryTree .categoryRow[data-level="1"] > .categoryName { padding-left: 3px; }
+  #categoryTree .categoryRow[data-level="2"] > .categoryName { padding-left: 23px; }
+  #categoryTree .categoryRow[data-level="3"] > .categoryName { padding-left: 43px; }
+  #categoryTree .categoryRow[data-level="4"] > .categoryName { padding-left: 63px; }
+  #categoryTree .categoryRow[data-level="5"] > .categoryName { padding-left: 83px; }
+  #categoryTree .categoryRow[data-level="6"] > .categoryName { padding-left: 103px; }
+  #categoryTree .categoryRow[data-level="7"] > .categoryName { padding-left: 123px; }
+  #categoryTree .categoryRow[data-level="8"] > .categoryName { padding-left: 143px; }
+  #categoryTree .categoryRow[data-level="9"] > .categoryName { padding-left: 163px; }
+  #categoryTree .categoryRow[data-level="10"] > .categoryName { padding-left: 183px; }
+  
+</style>
+
+<h1>Kategorie-Zuordnung für Hersteller-Gruppen</h1>
+
+<p>
+  Hier haben Sie die Möglichkeit festzulegen in welchen Marktplatz-Kategorien die definierten Hersteller-Gruppen verfügbar sind. 
+</p>
+{if !groups}
+<p class="error">
+  Bitte erstellen Sie zunächst <a href="index.php?page=manufacturer_db_group">Hersteller-Gruppen</a> bevor Sie die Kategorie-Zuordnung vornehmen!
+</p>
+{endif}
+
+<form method="POST">
+  <table id="categoryTree" cellpadding="0" cellspacing="0">
+    <thead class="categoryHeader">
+      <tr>
+        <th>Kategorie</th>
+        {groups}
+        <th class="categoryGroupSpacer"></th>
+      </tr>
+    </thead>
+    <tbody class="categoryBody">
+    
+    </tbody>
+    <thead class="categoryFooter">
+      <tr>
+        <th colspan="*">
+          <button type="submit">Zuordnung speichern</button>
+        </th>
+      </tr>
+    </thead>
+  </table>
+</form>
+<script type="text/javascript">
+  function manufacturerCategory_ClickCheckbox(event) {
+    if (event.shiftKey) {
+      var inputClicked = jQuery(this);
+      var inputClickedChecked = jQuery(this).prop("checked");
+      var inputClickedGroup = jQuery(this).val();
+      var inputRow = inputClicked.closest("tr.categoryRow");
+      var inputChild = inputRow.next();
+      var inputChildLevel = inputRow.attr("data-level");
+      while ((inputChild.length > 0) && (inputChild.attr("data-level") > inputChildLevel)) {
+        inputChild.find("input[type=checkbox][value="+inputClickedGroup+"]").prop("checked", inputClickedChecked);
+        inputChild = inputChild.next();
+      }
+    }
+  }
+  
+  function manufacturerCategory_ToggleChilds(parentId) {
+    var jqRow = jQuery("#categoryTree .categoryRow[data-id="+parentId+"]");
+    if (jqRow.length > 0) {
+      if (jqRow.attr("data-childs-loaded") == 0) {
+        // Toggle icon
+        jqRow.find(".folder_open").hide();
+        jqRow.find(".folder_close").show();
+        // Load children
+        manufacturerCategory_GetTree(parentId);
+      } else {
+        // Toggle children visibility
+        var jqChildren = jqRow.nextAll();
+        if (jqChildren.length > 0) {
+          var childLevel = parseInt(jqRow.attr("data-level")) + 1;
+          var childVisibility = parseInt(jqChildren.first().attr("data-visible"));
+          var endReached = false;
+          if (childVisibility) {
+            jqRow.find(".folder_open").show();
+            jqRow.find(".folder_close").hide();
+          } else {
+            jqRow.find(".folder_open").hide();
+            jqRow.find(".folder_close").show();
+          }
+          jqChildren.each(function() {
+            if (!endReached) {
+              var currentLevel = parseInt(jQuery(this).attr("data-level"));
+              if (currentLevel == childLevel) {
+                if (childVisibility) {
+                  // Hide direct child
+                  jQuery(this).attr("data-visible", 0).hide();
+                } else {
+                  // Show direct child
+                  jQuery(this).attr("data-visible", 1).show();
+                }
+              } else if (currentLevel > childLevel) {
+                if (childVisibility) {
+                  // Hide nested child
+                  jQuery(this).hide();
+                } else {
+                  if (jQuery(this).attr("data-visible")) {
+                    // Show nested child
+                    jQuery(this).show();
+                  } else {
+                    // Hide nested child
+                    jQuery(this).hide();
+                  }
+                }
+              } else {
+                endReached = true;
+              }
+            }
+          });
+        }
+      }
+    }
+  }
+  
+  function manufacturerCategory_GetTree(parentId) {
+    parentId = (parentId > 0 ? parentId : 0);
+    jQuery.post("index.php?page=manufacturer_db_category&ajax=treeGet&parent="+parentId, function(result) {
+      if (parentId > 0) {
+        jQuery(result).insertAfter( jQuery("#categoryTree .categoryRow[data-id="+parentId+"]").attr("data-childs-loaded", 1) );
+      } else {
+        jQuery("#categoryTree .categoryBody").html(result);
+      }
+      jQuery("#categoryTree .categoryBody input[type=checkbox]").off("click");
+      jQuery("#categoryTree .categoryBody input[type=checkbox]").on("click", manufacturerCategory_ClickCheckbox);
+    });
+  }
+  
+  jQuery(function() {
+    manufacturerCategory_GetTree();
+    // Add line breaks to long texts
+    /*
+    jQuery(".tableHeaderRotate > div > span").each(function() {
+      var textContent = jQuery(this).html();
+      if (textContent.length > 40) {
+        var whitespacePosition = textContent.indexOf(" ", 30);
+        if (whitespacePosition >= 30) {
+          var textContentNew = textContent.substr(0, whitespacePosition) + " <br />" + textContent.substr(whitespacePosition+1);
+          jQuery(this).html(textContentNew);
+        }
+      }
+    });
+    */
+  });
+</script>

@@ -1,0 +1,47 @@
+{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-neu.step.header_article.htm,*)}
+
+<p class="lead">
+	Bitte geben Sie die Rechnungs- und Lieferadresse für den gesuchten Artikel ein.
+</p>
+
+<form class="form-horizontal" onsubmit="SubmitStep(this); return false;">
+    <input type="hidden" name="step" value="{STEP_IDENT}" />
+
+    <div class="design-content-box">
+        <div id="INVOICE_INPUT" class="form-group">
+            <label class="control-label design-input-label">
+                <strong>Ihre Rechnungsadresse <span class="text-error">*</span></strong>
+				        <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Bitte geben Sie Ihre Rechnungsadresse an"></i>
+            </label>
+            <div class="design-input-field">
+                {subtpl(tpl/{SYS_TPL_LANG}/user_invoice.htm,*)}
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div id="VERSAND_INPUT" class="form-group">
+            <label class="control-label design-input-label">
+                <strong>Ihre Versandadresse <span class="text-error">*</span></strong>
+				        <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Bitte geben Sie Ihre Versandadresse an"></i>
+            </label>
+            <div class="design-input-field">
+                {subtpl(tpl/{SYS_TPL_LANG}/user_versand.htm,*)}
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="design-content-box">
+        <div class="submit-step">
+        {if STEP_INDEX>0}
+            <input type="button" onclick="ShowStep({calc(STEP_INDEX-1)}); return false;" class="btn btn-default" value="Zurück" />
+        {endif}
+            <button type="submit" class="btn btn-primary">
+                Weiter
+            </button>
+        </div>
+    </div>
+</form>

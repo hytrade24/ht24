@@ -1,0 +1,18 @@
+{if liste}
+	<div id="comment_list_{TABLE}_{FK_STR}" data-url="{uri_action(comment_list_ean,{TABLE},{FK_STR})}" class="design-comment-list">
+		<h4>Abgegebene Bewertungen</h4>
+		{liste}
+		
+		{pager}
+	</div>
+	<script type="text/javascript">
+		commentListInitPager('{TABLE}', {FK_STR});
+	</script>
+{else}
+	<div id="comment_list_{TABLE}_{FK_STR}" data-url="{uri_action(comment_list_ean,{TABLE},{FK_STR})}">
+		<h4>Abgegebene Bewertungen</h4>
+		<div class="text-muted">
+			Es sind noch keine Bewertungen vorhanden.
+		</div>
+	</div>
+{endif}

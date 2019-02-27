@@ -1,0 +1,97 @@
+<html><head>
+  <title>{if pagetitle}{pagetitle} - {endif}ebiz-trader ADMIN</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" type="text/css" href="skin/ebiz.css" />
+  <script type="text/javascript" src="sys/misc.js"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+function checkPFlag() { return true; }
+//-->
+</script></head>
+<body onLoad="setFlag({if savefail}true{else}false{endif})">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="topLeiste"><div style="float:right; margin:0px"><a href="#"
+   >ebiz-consult</a></div><a href="index.php">ebiz-kernel 2.0</a>
+   </td>
+  </tr>
+  <tr>
+    <td>
+   <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+       <td valign="bottom">&nbsp;
+     </td>
+       <td align="right"><img src="skin/ebizlogo.gif" width="176" height="41" /></td>
+      </tr>
+     </table>
+    </td>
+  </tr>
+</table>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="navFixed"><img src="shim.gif" width="5" height="2" /></td>
+  </tr>
+</table><img src="shim.gif" width="1" height="1" /><br>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+  <td class="navLevel1">
+   <table border="0" cellspacing="0" cellpadding="0">
+    <tr><td><img src="shim.gif" width="50" height="2" /></td>
+   {nav(0,0,1)}
+    </tr>
+   </table>
+  </td>
+  {if languages}
+  <td align="right" style="vertical-align:middle;" class="navLevel1">
+   <table border="0" cellspacing="0" cellpadding="0">
+    <tr>{languages}</tr>
+   </table>
+  </td>
+  {endif}
+ </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+ <tr><td  class="navLevel2"><img src="shim.gif" width="42" height="2" /></td>
+  <td width="100%" class="navLevel2">{nav(1,1,2)}</td>
+ </tr>
+</table>
+{if ID_USER}<img src="shim.gif" width="1" height="1" /><br>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+ <tr>
+  <td class="userInfo">{if VORNAME||NACHNAME}{htm(VORNAME)} {htm(NACHNAME)} ({htm(NAME)}){else}{htm(NAME)}{endif}</td>
+  <td align="right" class="userInfo"><img src="skin/navi-blau.gif" width="11" height="7" /><a href="logout.php">Logout</a></td>
+ </tr>
+</table>
+{endif}
+<br />
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+ <tr>
+{if nav_links || content_links}
+   <td valign="top" class="contentAussen">
+     {if nav_links}
+    <div class="kontrast">
+    {nav(2,3,0)}
+    </div>
+   {endif}
+  {if content_links}
+     <div class="kontrast">
+   {content_links}
+   </div>
+    {endif}
+  </td>
+{endif}
+  <td valign="top" class="content">
+   {content}
+  </td>
+{if content_rechts}
+  <td valign="top" class="contentAussen">
+   <div class="kontrast">
+   {content_rechts}
+   </div>
+  </td>
+{endif}
+ </tr>
+</table><br><br>
+<div align="center">&copy; 2003 - 2006 <a href="http://www.ebiz-consult.de/">ebiz-consult</a> e.K.  <br>
+All rights reserved.</div>
+</body></html>

@@ -1,0 +1,20 @@
+<tr id="articleVideo{i}">
+    <td>
+        <div class="thumbnail">
+            {youtube_preview(CODE)}
+        </div>
+    </td>
+    <td>
+        <a onclick="VideoDelete({i});">
+            Löschen
+        </a>
+    </td>
+    <td class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputVideoMetaTitle{i}">Titel</label>
+            <div class="design-input-field">
+                <input class="form-control" type="text" id="inputVideoMetaTitle{i}" name="META[VIDEOS][{i}][TITLE]" value="{htm(META_TITLE)}" placeholder="Videotitel" />
+            </div>
+        </div>
+    </td>
+</tr>

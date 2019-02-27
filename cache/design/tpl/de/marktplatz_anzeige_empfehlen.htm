@@ -1,0 +1,76 @@
+{if err}
+<div class="alert alert-danger">
+    <h2>Fehler aufgetreten</h2>
+    <p>
+        {err}
+    </p>
+</div>
+{endif}
+{if OK}
+<p class="alert alert-success">
+    Ihre Empfehlung wurde versendet!
+</p>
+{else}
+<form action="{uri_baseurl(/index.php)}" method="post" enctype="multipart/form-data" id="sEmp" class="form-horizontal design-ad-recommend">
+    <input type="hidden" name="frame" value="ajax"><input type="hidden" name="page" value="marktplatz_anzeige_empfehlen">
+    <input type="hidden" name="_URL" value="{_URL}" />
+
+
+
+    <div class="form-group">
+        <label class="control-label design-input-label">Ihre E-Mail Adresse:</label>
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="absender" value="{htm(EMAIL)}" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label design-input-label">Ihr Name:</label>
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="NAME" value="{htm(NAME)}" />
+        </div>
+    </div>
+
+    <br /> 
+
+    <div class="form-group">
+        <label class="control-label design-input-label">Empfänger Name:</label>
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="empfeangername" value="{htm(empfeangername)}"  />
+        </div>
+    </div>
+
+    <div class="form-group">
+       <label class="control-label design-input-label">Empfänger E-Mail Adresse:</label>
+       <div class="design-input-field">
+           <input type="text" name="empfeanger" value="{htm(empfeanger)}" />
+       </div>
+    </div>
+
+    <div class="form-group">
+       <label class="control-label design-input-label">Kommentar:</label>
+       <div class="design-input-field">
+           <textarea class="form-control" name="kommentar" rows="5">{htm(kommentar)}</textarea>
+       </div>
+    </div>
+
+    <p><strong>Bitte beantworten Sie die Sicherheitsfrage:</strong></p>
+
+    <div class="form-group">
+        <label class="control-label design-input-label">{question()}:</label>
+
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="ANSWER"/>
+        </div>
+    </div>
+</form>
+{endif}
+
+<div class="hide" id="modalFooterContainer">
+    <div class="modal-footer">
+        <a href="#" onclick="HideDialog(); return false;" class="btn btn-default">Fenster schließen</a>
+        {if !OK}
+        <input type="button" value="Empfehlen" class="btn btn-primary" onclick="em_submit()"/>
+        {endif}
+    </div>
+</div>

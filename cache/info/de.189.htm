@@ -1,0 +1,22 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="189"{endif}>
+    <div id="demoLead" class="carousel slide">
+    <div class="carousel-inner">
+      <div class="active item">
+        	<a href="#"><img src="{uri_resource(images/demo/lead1.jpg)}" width="745" height="300" /></a>
+      	</div>
+        <div class="item">
+          <a href="#"><img src="{uri_resource(images/demo/lead2.jpg)}" width="745" height="300" /></a>
+      	</div>
+    </div>
+    <a class="carousel-control left" href="#demoLead" data-slide="prev">‹</a> <a class="carousel-control right" href="#demoLead" data-slide="next">›</a>
+</div>
+<script type="text/javascript">// <![CDATA[
+	jQuery(function() {
+		$('#demoLead').carousel({
+			interval: 3500 // in milliseconds  
+		})
+	});
+// ]]>
+</script>
+</div>

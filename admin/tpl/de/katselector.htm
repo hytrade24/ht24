@@ -1,0 +1,18 @@
+{if liste}
+<table border="0" width="100%" class="mytable">
+	<tr>
+		<th><img src="{uri_baseurl(/gfx/red-dot.gif)}" width="10" height="10" alt="" border="0"> Kategorie ausw&auml;hlen</th>
+	</tr>
+	<tr>
+		<td><a style="cursor:pointer" onclick="kat_auswahl(0);" title="Zur&uuml;ck zur &Uuml;bersicht">Start</a>
+ {ariane}</td>
+
+	</tr>
+</table>
+<br>
+<table cellspacing="0" cellpadding="0" border="0" class="liste">
+{liste}
+</table>
+{else}
+<p class="error">Kategorien konnten nicht geladen werden!</p>
+{endif}

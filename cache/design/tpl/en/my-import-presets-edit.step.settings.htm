@@ -1,0 +1,22 @@
+<script>
+
+</script>
+
+
+
+<form action="{uri_baseurl(index.php)}?page=my-import-presets-edit&DO=SAVE_DATA" method="POST" class="form form-horizontal" id="importPresetEditorSettingsForm" enctype="multipart/form-data">
+
+	{if FLASHMESSAGES}
+	<div class="alert alert-danger">{FLASHMESSAGES}</div>
+	{endif}
+
+
+	<p class="text-muted text-center">
+		For the current configuration are no more settings available. <br>You can save the import template now and continue with the import.
+	</p>
+
+
+	<div class="form-actions text-right">
+		<button type="submit" class="btn btn-primary">Save preset import</button>
+	</div>
+</form>

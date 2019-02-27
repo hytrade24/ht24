@@ -1,0 +1,55 @@
+{if indexing}
+<h1>Die Informationen werden aufbereitet<br>
+Diesen Vorgang nicht unterbrechen!!!!</h1>
+<iframe src="index.php?page=searching_do_indexing&frame=iframe&what={what}&start={start}" width="400" height="150" frameborder="0"></iframe>
+{else}
+<h1><img src="gfx/suchen_64.gif" width="64" height="64" alt="" border="0" align="left"> interne Suchmaschine ({slang})</h1>
+<p>Auf den folgenden Seiten können Sie die Eigenschaften Ihrer Suchmaschine angeben.</p>
+
+<table>
+	<tr>
+		<td valign="top"><h2>Datenbankgrößen und Anzahl der Einträge</h2><table class="formTable" style="border:1px #9A9A9A solid">
+	<tr>
+		<th>aktion</th>
+		<th>Tabelle</th>
+		<th>Einträge</th>
+		<th>Größe</th>
+	</tr>
+	{liste}
+</table></td>
+		<td><p><span class="error">ACHTUNG!!</span><br>Die Funktion "bereinigen" löscht den Inhalt Ihrer Suchdatenbank vollständig und unwiederrufbar</p>
+Diese Funktion sollten nur dann verwenden, wenn Sie<br>
+- viele neue Badwords hinzugefügt bzw gelöscht haben<br>
+- wenn Sie Daten übernommen haben (Import)<br></td>
+	</tr>
+</table>
+<h1><img src="gfx/suchen2_64.gif" width="64" height="64" alt="" border="0" align="left"> Reindexing<br>
+Wiederherstellung der Suchdatenbank</h1>
+<p>Diese Funktion benötigt je nach Datenvolumen <b>sehr viel Rechenzeit.</b><br>
+Führen Sie diese Funktion  nur dann aus, wenn der Server wenig belastet wird.</p>
+<p>Folgende Datenbanken werden in den Index aufgenommen werden</p>
+<div class="hinweis">
+<p>Um nur einzelne Bereich Izhrer Webseite neu zu spidern, klicken Sie bitte auf die Links in der Liste.
+Wenn Sie alle Bereich neu spidern m&ouml;chten, klicken Sie bitte auf 
+</p><p align="center"><strong>&quot;Gesamten Index erstellen&quot;!</strong></p>
+</div>
+<ul type="square">
+	<li><a href="index.php?page={curpage}&do=build_index&what=news" title="Index f&uuml;r News erstellen">News</a></li>
+	<li><a href="index.php?page={curpage}&do=build_index&what=pages" title="Index f&uuml;r Webseiten erstellen">Webseiten</a></li>
+  <li><a href="index.php?page={curpage}&do=build_index&what=script" title="Index f&uuml;r Scripte erstellen">Scripte</a></li>
+  <li><a href="index.php?page={curpage}&do=build_index&what=tutorial" title="Index f&uuml;r Tutorials erstellen">Tutorials</a></li>
+  <li><a href="index.php?page={curpage}&do=build_index&what=faq" title="Index f&uuml;r FAQ erstellen">FAQ</a></li>
+	{if liste_spider}
+	<li><a href="index.php?page={curpage}&do=build_index&what=files" title="Index f&uuml;r ALLE Files erstellen!">Files in den Verzeichnissen</a></li>
+	<ul>
+	 {liste_spider}
+	</ul>
+	{endif}	
+</ul>
+<form method="POST" action="index.php" id="indexing">
+<input type="hidden" name="page" value="searching_index">
+<input type="hidden" name="do" value="build_index">
+<input type="hidden" name="what" value="all">
+<input type="submit" value="({slang}) - GESAMTEN INDEX ERSTELLEN!" name="B1" onclick="if (!confirm('ACHTUNG\nDieser Prozess sollte nicht unterbrochen werden!!\nIndexing starten?')){return false}">
+</form>
+{endif}

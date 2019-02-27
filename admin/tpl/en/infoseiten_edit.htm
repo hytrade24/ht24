@@ -1,0 +1,75 @@
+{if !bUSETYPE}<h1><img src="gfx/modul_infoarea_64.gif" width="64" height="64" alt="" border="0" align="left" vspace="5" hspace="5"> Kategorie-Infobereich bearbeiten</h1>
+Diese Inforbereiche können den <a href="index.php?page=m_kats">Kategorien</a> zugeordnet werden. Sie erscheinen auf der ersten Seite einer ausgewählten Kategorie
+{else}
+<h1><img src="gfx/modul_infoarea_64.gif" width="64" height="64" alt="" border="0" align="left" vspace="5" hspace="5" /> Infobereich {if ID_INFOSEITE}bearbeiten{else}anlegen{endif}</h1>
+Mit Hilfe der Infoseiten können Sie einen Text/Bild oder HTML auf verschiedene Seiten darstellen.
+{endif}
+{if err || msg}
+<div class="hinweis">
+{if err}<span class="error">{err}</span>
+{else}<span class="ok">{msg}</span>{endif}
+</div>
+{endif}
+<form method="post" accept-charset="utf-8" action="index.php">
+ <input type="hidden" name="page" value="{curpage}" />
+ <input type="hidden" name="frame" value="{curframe}" />
+ <input type="hidden" name="V2" value="{V2}" />
+<input type="hidden" name="V1" value="{htm(V1)}" />
+ 
+ {if ID_INFOSEITE}
+ <input type="hidden" name="ID_INFOSEITE" value="{ID_INFOSEITE}" />
+ {endif}
+ <table class="formTable" cellspacing="0">
+ {if ID_INFOSEITE}
+  <tr>
+   <th>Code f&uuml;r die Webseite</th>
+   <td><input type="text" value="{CODE}" size="45" /></td>
+  </tr>
+ {endif}
+  <tr>
+   <th style="text-align:left;width:140px;">Name:</th>
+   <th style="text-align:left;"><input {if B_SYS}type="hidden" {else} type="text" {endif} name="V1" value="{htm(V1)}" size="40">{if B_SYS}{htm(V1)}{endif}</th>
+  </tr>
+  <tr>
+  <th>Wie wollen Sie einen HTML Editor verwenden</th>
+  <td><input type="radio" value="HTML" name="TXTTYPE" {if bTXTTYPE} checked="checked" {endif} /> JA 
+<input type="radio" value="TXT" name="TXTTYPE" {if !bTXTTYPE} checked="checked" {endif} /> Nein<br />(Änderungen werden erst nach dem speichern sichtbar!)</td>
+  </tr>
+  <tr>
+    {if !ID_INFOSEITE}
+  <th>zur Verwendung in<br /><span class="notizSmall">Achtung: Zuordnung kann nachträglich nicht geändert werden!</span></th>
+  <td>
+    <input type="radio" value="STD" {if bUSETYPE} checked="checked" {endif} name="USETYPE" /> Standard Infobereich<br />
+    <input type="radio" value="KATS" {if !bUSETYPE} checked="checked" {endif} name="USETYPE" /> Kategorie Infobereich (Kann im Kopf einer Marktplatz-Kategorie angezeigt werden)</td>
+  </tr>
+  {endif}
+  <tr>
+   <td colspan="2">{if bTXTTYPE}
+   {editor(T1,780px,335px)}
+   {else}
+       <script src="{uri_resource(/lib/codemirror/lib/codemirror.js)}"></script>
+       <link rel="stylesheet" href="{uri_resource(/lib/codemirror/lib/codemirror.css)}">
+       <script src="{uri_resource(/lib/codemirror/mode/xml/xml.js)}"></script>
+       <script src="{uri_resource(/lib/codemirror/mode/javascript/javascript.js)}"></script>
+       <script src="{uri_resource(/lib/codemirror/mode/css/css.js)}"></script>
+       <script src="{uri_resource(/lib/codemirror/mode/htmlmixed/htmlmixed.js)}"></script>
+
+       <div class="codeMirrorEditor">
+           <textarea name="T1" id="T1" rows="20" cols="90">{htm(T1)}</textarea>
+
+           <script type="text/javascript">
+               var codeMirror = CodeMirror.fromTextArea(document.getElementById("T1"), {
+                   mode: "text/html",
+                   lineNumbers: true,
+                   fixedGutter: true
+               });
+           </script>
+       </div>
+   {endif}
+   </td>
+  </tr>
+  <tr class="footer">
+   <td colspan="2" align="right"><input type="submit" value="Speichern" class="button" /></td>
+  </tr>
+ </table>
+</form>

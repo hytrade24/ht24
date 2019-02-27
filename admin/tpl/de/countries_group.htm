@@ -1,0 +1,42 @@
+<h1>Länder-Gruppen</h1>
+
+<p>
+  Hier haben Sie die Möglichkeit die definierten Länder in Gruppen einzuteilen.<br />
+  Diese Länder-Gruppen werden zur vereinfachten Auswahl und für einige Funktionen (wie z.B. der Konfiguration der Versandkosten) verwendet.
+</p>
+
+{if done_delete}
+<div class="ok">
+  Länder-Gruppe erfolgreich gelöscht.
+</div>
+{endif}
+{if done_update}
+<div class="ok">
+  Länder-Gruppe erfolgreich aktualisiert.
+</div>
+{endif}
+{if done_create}
+<div class="ok">
+  Länder-Gruppe erfolgreich hinzugefügt.
+</div>
+{endif}
+
+<p>
+  <a href="index.php?page=countries_group_edit&parent=0">
+    <b>Neue Länder-Gruppe hinzufügen</b> (oberste Ebene)
+  </a>
+</p>
+
+<table class="liste" cellpadding="0" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Aktionen</th>
+      <th>Gruppe</th>
+      <th>Zugeordnete Länder</th>
+      <th>Anzahl</th>
+    </tr>
+  </thead>
+  <tbody>
+    {liste}
+  </tbody>
+</table>

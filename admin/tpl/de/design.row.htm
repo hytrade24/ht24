@@ -1,0 +1,23 @@
+<tr>
+    <td>
+    {if active}
+        <strong>
+           aktiv
+        </strong>
+    {else}
+        <a href="index.php?page=design&activate={url(ident)}" class="">
+            <img src="./gfx/btn.activate.gif">
+        </a>
+    {endif}
+    </td>
+    <td>
+        <strong>{htm(name)}</strong><br />
+        {htm(ident)}
+    </td>
+    <td>
+        {htm(description)}
+    </td>
+    <td>
+        {text(languages)}
+    </td>
+	</tr>

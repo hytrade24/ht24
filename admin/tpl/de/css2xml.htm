@@ -1,0 +1,19 @@
+<h1>CSS Converter</h1>
+<form name="form1" method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+{if err || msg}
+<div class="hinweis">{if err}<span class="error">{err}</span>
+{else}<span class="ok">{msg}</span>{endif}</div>
+{endif}
+<p>Der CSS Converter wandelt Ihre CSS- Klassen in ein lesbares Format f&uuml;r den HTML- Editor um. Nach dem Konvertieren k&ouml;nnen Sie die Klassen direkt im Editor verwenden. Das CSS File muss sich in dem Ordner skin/ befinden!</p>
+<table class="formTable" cellspacing="0">
+  <tr>
+    <td>Name Ihres CSS Files: </td>
+  <td><input type="text" name="CSSFILE" value="{htm(CSSFILE)}"></td>
+  </tr><tr class="footer">
+    <td colspan="2"><input type="submit" name="Submit" value="Convert CSS to XML" class="button"></td>
+  </tr>
+</table>
+</form>
+<p>&nbsp;</p>
+

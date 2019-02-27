@@ -1,0 +1,98 @@
+
+<div class="row design-page-with-menu design-group-forum-new">
+    <div class="design-page-content">
+        <h1>{htm(CLUB_NAME)} - Forum</h1>
+
+        <p class="lead">
+        {if ACTION_NEW}
+            Create new thread
+        {endif}
+        {if ACTION_EDIT}
+            Edit post
+        {endif}
+        {if ACTION_REPLY}
+            Reply
+        {endif}
+        </p>
+
+        <form method="post" class="forumThreadNew form-horizontal">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="FORUM_NAME">
+                    Title of the thread
+                </label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" id="FORUM_NAME" name="NAME" value="{htm(FORUM_NAME)}"{if ACTION_REPLY || ACTION_EDIT_POST} disabled{endif} />
+                </div>
+            </div>
+            {if ACTION_NEW || ACTION_EDIT}
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="FORUM_NAME">
+                    Open discussions
+                </label>
+                <div class="col-sm-9 checkbox">
+                    <label>
+                        <input type="checkbox" id="FORUM_PUBLIC" name="PUBLIC" value="1"{if FORUM_PUBLIC} checked="checked"{endif} />
+                        <i class="icon-globe"></i>
+                        Make the thread available outside the group.
+                    </label>
+                </div>
+            </div>
+            {endif}
+            {if CLUB_IS_ADMIN || CLUB_IS_MODERATOR}
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="FORUM_NAME">
+                    Moderation
+                </label>
+                <div class="col-sm-9">
+                    {if CLUB_FORUM_MODERATED}
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="FORUM_REVIEWED" name="REVIEWED" value="1"{if FORUM_REVIEWED} checked="checked"{endif} />
+                        <i class="icon-ok"></i>
+                        Release
+                    </label>
+                    {endif}
+                    {if ACTION_NEW || ACTION_EDIT}
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="FORUM_STICKY" name="STICKY" value="1"{if FORUM_STICKY} checked="checked"{endif} />
+                        <i class="icon-warning-sign"></i>
+                        Important
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="FORUM_ANNOUNCE" name="ANNOUNCE" value="1"{if FORUM_ANNOUNCE} checked="checked"{endif} />
+                        <i class="icon-bullhorn"></i>
+                        Announcement
+                    </label>
+                    {endif}
+                </div>
+            </div>
+            {endif}
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="FORUM_BODY">
+                    Your post
+                </label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="FORUM_BODY" name="BODY" rows="8">{htm(FORUM_BODY)}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group text-right">
+                <button class="btn btn-default" onclick="window.history.back(); return false;">Back</button>
+            {if ACTION_NEW}
+                <button class="btn btn-success">Create thread</button>
+            {endif}
+            {if ACTION_EDIT || ACTION_EDIT_POST}
+                <button class="btn btn-success">Save changes</button>
+            {endif}
+            {if ACTION_REPLY}
+                <button class="btn btn-success">Reply</button>
+            {endif}
+            </div>
+
+        </form>
+    </div>
+    <div class="design-page-menu">
+        {subtpl(tpl/{SYS_TPL_LANG}/club.info.htm,*)}
+        {content_page()}
+    </div>
+</div>

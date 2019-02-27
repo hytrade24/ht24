@@ -1,0 +1,138 @@
+<div class="row" id="cartArticleRow-{ID_AD}">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-4 pull-left">
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Look at {htm(PRODUKTNAME)}">
+                    <img src="{if SRC}{thumbnail_article({ID_AD},{SRC},80,80,crop)}{else}{thumbnail({uri_resource(/images/marketplace/nopic.jpg)},80,80,crop)}{endif}" alt="{htm(PRODUKTNAME)}" />
+                </a>
+            </div>
+            <div class="col-md-8">
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Look at {htm(PRODUKTNAME)}">
+                    <strong>{htm(PRODUKTNAME)}</strong>
+                </a>
+                <div class="hidden-xs">
+                    <p>
+                        {VARIANT_TEXT}
+                        {if AVAILABILITY}
+                            <br />
+                            {if AVAILABILITY_DATE_TO}
+                                Between {todate(AVAILABILITY_DATE_FROM)} and {todate(AVAILABILITY_DATE_TO)}
+                            {else}
+                                Until {todate(AVAILABILITY_DATE_TO)}
+                            {endif}
+                            {if AVAILABILITY_TIME_FROM}
+                                starting {AVAILABILITY_TIME_FROM}o clock
+                            {endif}
+                        {endif}
+                    </p>
+                    <p class="text-muted">
+                        {market_article_description({ID_AD})}
+                    </p>
+                </div>
+                <div class="visible-xs">
+                    <p>
+                        <br />
+                        <b>Seller:</b>
+                        <br />
+                        <a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">{USER_NAME}</a>
+                    </p>
+                </div>
+            
+                {if PAYMENT_ADAPTER}
+                    <strong>Payment method: </strong>{htm(PAYMENT_ADAPTER)}
+                {endif}
+                
+                <div id="cartAgb-{ID_AD}" class="hidden">
+                    <h5>Legally responsible</h5>
+                    <p>
+                        {if ANBIETER_FIRMA}{htm(ANBIETER_FIRMA)}<br />{endif}
+                        {htm(ANBIETER_VORNAME)} {htm(ANBIETER_NACHNAME)}<br />
+                        {htm(ANBIETER_STRASSE)}<br />
+                        {htm(ANBIETER_PLZ)}, {htm(ANBIETER_ORT)}<br />
+                        <br />
+                        {htm(ANBIETER_LAND)}
+                    </p>
+                    {if ANBIETER_UMSTG}
+                        <p>
+                            VAT ID: {htm(ANBIETER_UMSTG)}
+                        </p>
+                    {endif}
+        
+                    {if AD_AGB}
+                    <h5>GTC of the seller</h5>
+                    {text(AD_AGB)}
+                    {endif}
+        
+                    {if AD_WIDERRUF}
+                    <h5>Cancellation policy</h5>
+                    {text(AD_WIDERRUF)}
+                    {endif}
+                </div>
+          
+                <p>
+                {if AD_AGB || AD_WIDERRUF}
+                  <div class="checkbox">
+                      <label>
+                          <input required="required" type="checkbox" name="AGB[{ID_AD}][{ID_AD_VARIANT}]" {if IS_AGB_CHECKED}checked="checked"{endif}>
+                          <strong>
+                              I read and understood the <a href="#" onclick="showAgb({ID_AD}); return false;">GTC and the withdrawal conditions</a>
+                          </strong>
+                      </label>
+                  </div>
+                {else}
+                  <input type="hidden" name="AGB[{ID_AD}][{ID_AD_VARIANT}]" value="1" />
+                {endif}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="row">
+            <div class="col-sm-6 col-sm-push-6 text-right">
+                <div class="visible-xs visible-sm">
+                    <b>Count:</b>
+                </div>
+                {CART_QUANTITY} Pieces
+            </div>
+            <div class="col-sm-6 col-sm-pull-6 text-right hidden-xs">
+                <div class="visible-sm">
+                    <b>Seller:</b>
+                </div>
+                <a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">{USER_NAME}</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="row">
+            <div class="col-xs-6 text-right">
+                <div class="visible-xs visible-sm">
+                    <b>Piece price:</b>
+                </div>
+                <strong>{topreis_ex(PREIS)} {CURRENCY_DEFAULT}</strong><br>
+                <span class="text-muted">({subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={MWST})})</span>
+            </div>
+            <div class="col-xs-6 text-right">
+                <div class="visible-xs visible-sm">
+                    <b>Totalprice:</b>
+                </div>
+                <strong>{topreis_ex(CART_TOTAL_PRICE)} {CURRENCY_DEFAULT}</strong><br>
+                <span class="text-muted">({subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={MWST})})</span>
+                <p>
+                   {if VERSANDOPTIONEN==3}
+        				        <span class="text-muted">
+                            zzgl. Versandkosten:
+                            {market_article_shipping(ID_AD,VERSANDKOSTEN,ID_AD_VARIANT,,VERSAND_FK_COUNTRY,options_shippingProvider)}
+                        </span>
+                   {else}
+                        {if VERSANDOPTIONEN==0}<span class="text-success">Free shipping</span>{endif}
+                        {if VERSANDOPTIONEN==1}<span class="text-error">Will collect only</span>{endif}
+                        {if VERSANDOPTIONEN==2}<span class="text-error">Shipping costs on request</span>{endif}
+                   {endif}
+                   {if VERSANDKOSTEN_INFO}
+                   		<span class="text-muted">Hit for shipping costs: {htm(VERSANDKOSTEN_INFO)}</span>
+                   {endif}	
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

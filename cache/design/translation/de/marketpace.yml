@@ -1,0 +1,52 @@
+billableitems.description: Beschreibung
+billableitems.totalprice: Summe
+coupon.activated.on: 'eingegeben am'
+coupon.name: Gutschein
+coupon.used.code: Gutschein-Code
+creditnote.description: Beschreibung
+creditnote.remainprice: 'verbleibende Restsumme'
+creditnote.totalprice: Gesamtsumme
+date: Datum
+import.preset.basemapping.ebay.descriptions: |
+  Für den Import haben Sie den Account <b>{htm(EBAY_USER_UserID)}</b> zugeordnet. 
+  			Dieser Account hat <b>{AD_COUNT} aktive Verkäufe</b> die in den Marktplatz übernommen werden können.
+  			<br />
+  			Klicken Sie auf den Button "Speichern und schließen" um mit die Vorlage zu speichern.
+  			<br />
+  			<br />
+  			<i>
+  				Wenn Sie ein erfahrener Benutzer sind können Sie sich über die nachfolgende Schaltfläche erweiterte
+  				Einstellungen einblenden lassen. Dort können z.B. Standardeinstellungen für die zu importierten Artikel anpassen.
+  			</i>
+import.preset.basemapping.ebay.extended.settings.hide: 'Erweiterte Einstellungen ausblenden'
+import.preset.basemapping.ebay.extended.settings.show: 'Erweiterte Einstellungen anzeigen'
+import.preset.basemapping.ebay.title: 'eBay Import'
+import.preset.basemapping.help: |
+  <p>
+  				In diesem Schritt machen Sie eine Zuordnung zwischen den Artikeleigenschaften, die Sie auf der einen Seite in Ihrem
+  				Quellsystem (z.B. WaWi, Onlineshop, ..) konfiguriert haben und denenen des Marktplatzes.<br>
+  				In der unten stehenden Tabelle sehen Sie in der linken Seite alle Basisfelder des Marktplatzes wie z.B.
+  				Kategorie, Produktbezeichnung etc. Ordnen Sie nun diesen Feldern nun entweder Informationen
+  				aus Ihrer Quelldatei (Feldzuordnung) zu oder hinterlegen Sie feste Standardwerte.
+  			</p>
+import.preset.categories.ebay.description: 'Bitte wählen Sie die Anzeigen, die Sie aus eBay übernehmen möchten.'
+import.preset.categories.ebay.title: 'eBay Import - Kategorien zuordnen'
+import.preset.edit.ebay.button.back: Zurück
+import.preset.edit.ebay.button.cancel: Abbrechen
+import.preset.edit.ebay.button.next: Weiter
+import.preset.edit.ebay.button.start: 'Import starten'
+import.preset.edit.ebay.category.edit: 'Kategorie ändern'
+import.preset.edit.ebay.description: 'Bitte überprüfen Sie die zu importierenden Artikel.'
+import.preset.edit.ebay.title: 'eBay Import - Nachbearbeitung'
+import.preset.init.ebay.description: 'Bitte wählen Sie die Anzeigen, die Sie aus eBay übernehmen möchten.'
+import.preset.init.ebay.limit.reached: 'Sie haben zu viele Artikel ausgewählt! Sie können heute nur noch {int(selectionLimit)} Artikel importieren. Das Gesamt-Limit beträgt {int(selectionLimitMax)} Artikel pro Tag.'
+import.preset.init.ebay.search: Suchen
+import.preset.init.ebay.search.mode.full: 'in Anzeigentitel/-Beschreibung/-Kategorie (Achtung: Langsam!)'
+import.preset.init.ebay.search.mode.title: 'im Anzeigentitel'
+import.preset.init.ebay.search.reset: 'Alle anzeigen'
+import.preset.init.ebay.title: 'eBay Import - Anzeigen auswählen'
+import.preset.limit_reached.ebay.description: |
+  Sehr geehrter Kunde,<br />
+      die mögliche Anzahl der Imports aus ebay für den heutigen Tag wurde erreicht.<br />
+      Weitere imports sind leider erst Morgen wieder möglich. Bitte versuchen Sie es dann erneut.
+import.preset.limit_reached.ebay.title: 'eBay Import - Import-Limit erreicht'

@@ -1,0 +1,41 @@
+<h1>{if ID_NL_GROUP}Versandliste &quot;{htm(LABEL)}&quot; bearbeiten{else}
+Neue Versandliste anlegen{endif}</h1>
+{if err}
+<div class="hinweis"><span class="error">{err}</span></div>
+{endif}
+<form method="post" action="index.php">
+<input type="hidden" name="ID_NL_GROUP" value="{ID_NL_GROUP}">
+<input type="hidden" name="page" value="versandliste_edit">
+<table class="formTable">
+ <tr>
+  <td><strong>Name der Liste</strong>&nbsp;</td>
+  <td><input type="text" name="LABEL" value="{htm(LABEL)}" size="52"></td>
+ </tr>
+ <tr>
+  <td valign="top"><strong>Count Query</strong><br />
+   <span class="notizSmall">Mit dieser Abfrage werden alle betroffenen 
+   Datens&auml;tze aus der Datenbank gelesen. Es darf nur eine Zeile zur&uuml;ckgegeben 
+   werden, in welcher das erste Element die Anzahl der Datens&auml;tze enthalten muss.</span>
+  </td>
+  <td>{if B_SYS}<span style="font-size:10; color:red">Kann nicht bearbeitet werden</span><br />{endif}
+  <textarea name="QUERY_COUNT" rows="10" cols="65" {if B_SYS}disabled{endif}>{htm(QUERY_COUNT)}</textarea></td>
+ </tr>
+ <tr>
+  <td valign="top"><strong>Select Query</strong><br />
+  <span class="notizSmall">
+   Mit dieser query werden die Emails aus der Datenbank gelesen, und als kompletter Datensatz 
+   an die Emailfunktion geleitet. Diese Query muss in jeder Zeile das Feld &quot;EMAIL&quot;
+   enthalten. <br />
+   <span class="error">Sie d&uuml;rfen keine Angaben zu &quot;ORDER BY&quot; oder
+   &quot;LIMIT&quot; machen!</span>
+  </span>
+  </td>
+  <td>{if B_SYS}<span style="font-size:10; color:red">Kann nicht bearbeitet werden</span><br />{endif}
+  <textarea name="QUERY_DATA" rows="10" cols="65" {if B_SYS}disabled{endif}>{htm(QUERY_DATA)}</textarea>
+  <td>
+ </tr>
+ <tr class="footer">
+  <td colspan="2" align="right"><input type="submit" value="Testen und Speichern" class="button"></td>
+ </tr>
+</table>
+</form>

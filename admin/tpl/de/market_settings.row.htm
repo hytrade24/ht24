@@ -1,0 +1,17 @@
+<tr class="zeile{even}">
+			<td style="font-weight: bold;">[{htm(plugin)}]</td>
+			<td style="font-weight: bold;">{htm(typ)}</td>
+			{if TYPE_TEXT}
+			<td>
+				<input style="width: 240px;" name="SETTINGS[{plugin}][{typ}]" value="{htm(value)}" />
+			</td>
+			<td>{htm(beschreibung)}</td>
+			{endif}
+			{if TYPE_CHECK}
+			<td align="right">
+				<input type="checkbox" id="SETTINGS[{plugin}][{typ}]" name="SETTINGS[{plugin}][{typ}]" value="1" {if value}checked="checked" {endif}/>
+                </td><td>
+				<label for="SETTINGS[{plugin}][{typ}]">{htm(beschreibung)}</label>
+			</td>
+			{endif}
+</tr>

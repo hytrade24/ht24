@@ -1,0 +1,49 @@
+<tr id="plugin-{NAME}-row" class="zeile{even}">
+    <td>
+    {if ENABLED}
+        Aktiv
+    {else}
+        Deaktiviert
+    {endif}
+    </td>
+    <td>
+        <b>{htm(NAME)}</b>
+    </td>
+    <td>
+        {htm(DESCRIPTION)}
+    </td>
+    <td style="width: 100px;">
+        {if ENABLED}
+            {if SYSTEM}
+                <span class="button disabled" title="Dies ist ein System-Plugin und kann nicht deaktiviert werden!">Deaktivieren</span>
+            {else}
+                <a href="index.php?page={curpage}&do=disable&plugin={NAME}" class="button">Deaktivieren</a>
+            {endif}
+        {else}
+            <a href="index.php?page={curpage}&do=enable&plugin={NAME}" class="button">Aktivieren</a>
+        {endif}
+    </td>
+    <td style="width: 100px;">
+    {if CONFIG}
+        <a href="#plugin-{NAME}-config" onclick="pluginToggleSettings('#plugin-{NAME}-config form');" class="button">
+            Konfiguration
+        </a>
+    {endif}
+    </td>
+</tr>
+<tr id="plugin-{NAME}-config" class="zeile{even}" style="display: none;">
+    <td colspan="5">
+        <form onsubmit="pluginSaveSettings(this); return false;" class="plugin-configuration">
+            <input type="hidden" name="plugin" value="{htm(NAME)}" />
+
+            <div class="plugin-configuration-content">
+                {CONFIG}
+            </div>
+
+            <p style="text-align: right;">
+                <b class="pluginUnsavedChanges error" style="display: none;">Achtung! Sie haben noch nicht gespeicherte Änderungen vorgenommen!</b>
+                <button type="submit">Konfiguration speichern</button>
+            </p>
+        </form>
+    </td>
+</tr>

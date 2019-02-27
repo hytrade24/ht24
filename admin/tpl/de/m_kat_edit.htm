@@ -1,0 +1,795 @@
+{if ID_KAT}
+  <h1>Kategorie &quot;{htm(V1)}&quot; bearbeiten</h1>
+{else}
+  <h1>{if PARENT}Unter-{endif}Kategorie hinzuf&uuml;gen</h1>
+{endif}
+<p>
+	Hier k&ouml;nnen Sie die gew&auml;hlte Kategorie nach Ihren W&uuml;nschen und Anspr&uuml;chen ver&auml;ndern.
+</p>
+<script type="text/javascript">
+  /*
+  var kat_name = "{htm(V1)}";
+  var kat_desc = "{htm(V2)}";
+  */
+  var kat_vis = {B_VIS};
+
+  function felderListeMarkAll() {
+	  jQuery("#felderListe input[name^='fields'][type='checkbox']").each(function() {
+		  var fieldId =  jQuery(this).attr('id').replace(/^field\_/, "");
+		  jQuery(this).attr('checked', true);
+		  field_change(fieldId, this);
+	  })
+  }
+
+  function felderListeMarkNone() {
+	  jQuery("#felderListe input[name^='fields'][type='checkbox']").each(function() {
+		  var fieldId =  jQuery(this).attr('id').replace(/^field\_/, "");
+		  jQuery(this).attr('checked', false);
+		  field_change(fieldId, this);
+	  })
+  }
+
+  function felderListeMarkRevert() {
+	  jQuery("#felderListe input[name^='fields'][type='checkbox']").each(function() {
+		  var fieldId =  jQuery(this).attr('id').replace(/^field\_/, "");
+		  jQuery(this).attr('checked', !jQuery(this).attr('checked'));
+		  field_change(fieldId, this);
+
+	  })
+  }
+
+  function field_change(id, checkbox) {
+    if (checkbox.checked) {
+      $("field_row_"+id).style.color = "black";
+      if ($("field_search_"+id)) $("field_search_"+id).disabled = false;
+      if ($("field_needed_"+id)) $("field_needed_"+id).disabled = false;
+    } else {
+      $("field_row_"+id).style.color = "grey";
+      if ($("field_search_"+id)) $("field_search_"+id).disabled = true;
+      if ($("field_needed_"+id)) $("field_needed_"+id).disabled = true;
+    }
+  }
+
+  function ApplyTable(table) {
+    $("kat_edit_form").submit();
+  }
+
+  function ApplyRecursive(enable) {
+      var input_vis_yes = document.getElementById("VIS_YES");
+      var input_vis_no = document.getElementById("VIS_NO");
+      var input_vis_leave = document.getElementById("VIS_LEAVE");
+      if (enable) {
+          kat_vis = input_vis_yes.checked;
+          input_vis_leave.checked = true;
+      } else {
+          if (kat_vis) {
+              input_vis_yes.checked = true;
+          } else {
+              input_vis_no.checked = true;
+          }
+      }
+  }
+
+  function ApplyRecursiveMeta(enable) {
+      // Currently nothing
+  }
+
+  function addMeta()
+  {
+    var meta = document.getElementById('metatag').innerHTML;
+    meta = meta.replace(/<!--/i, " ");
+    meta = meta.replace(/-->/i, " ");
+    document.getElementById('META').value = meta;
+  }
+
+  function checkKatForm(form) {
+      if (jQuery(form).find('input[name=OPTIONS\\[SALES\\]\\[\\]]:checked').length <= 0) {
+          document.location.hash = "anchorSales";
+          alert("Bitte wählen Sie mindestens eine Verkaufsoption aus!");
+          return false;
+      }
+      return true;
+  }
+
+  function updateArticleLocation() {
+      var locationEnabled = parseInt(jQuery(".option-article-location input[type=radio]:checked").val());
+      if (locationEnabled == 1) {
+          jQuery(".location-enabled").show();
+          jQuery(".location-disabled").hide();
+      } else {
+          jQuery(".location-enabled").hide();
+          jQuery(".location-disabled").show();
+      }
+  }
+  
+  function updateSearchType(radioButton) {
+      var searchSettings = jQuery(".searchType").find(".searchTypeSettings");
+      searchSettings.each(function() {
+          if (jQuery(this).parent().find("input[name=SEARCH_TYPE]").is(":checked")) {
+              jQuery(this).removeClass("muted").removeClass("disabled");
+              jQuery(this).find("input,select").prop("disabled", false);
+          } else {
+              jQuery(this).addClass("muted").addClass("disabled");
+              jQuery(this).find("input,select").prop("disabled", true);
+          }
+      });
+  }
+  
+  function showArticleTable() {
+      var tableSelected = jQuery("select[name=KAT_TABLE]").val();
+      window.open("index.php?lang=de&page=table_edit&table_name="+tableSelected, "_blank");
+  }
+
+  function show_or_hide_paid_download_option() {
+      var status = jQuery("#regular-verkauf input").is(":checked");
+      if ( status ) {
+          jQuery("#permission_for_paid_downloads").show("slow");
+      }
+      else {
+          jQuery("#permission_for_paid_downloads").hide("slow");
+      }
+  }
+
+  function show_or_hide_force_at_least_one_paid_download() {
+      var status = jQuery("#force_atleast_one_paid_download input").is(":checked");
+      var second_div = jQuery("#permission_for_paid_downloads input[name='OPTIONS[PERMISSION_FOR_PAID_DOWNLOADS]']").is(":checked")
+
+      if ( status || second_div ) {
+          jQuery("#force_atleast_one_paid_download").show("slow");
+      }
+      else {
+          jQuery("#force_atleast_one_paid_download").hide("slow");
+      }
+  }
+    
+    jQuery(function() {
+        updateSearchType( jQuery("input[name=SEARCH_TYPE]:checked") );
+        updateArticleLocation();
+      /*
+        jQuery("#katGroups").accordion({
+          header: ".settingGroup", icons: false, collapsible: true
+        });
+        */
+        jQuery("#regular-verkauf input").on("click",function() {
+            if (this.checked) {
+                jQuery("#permission_for_paid_downloads").show("slow");
+            }
+            else {
+                var tmp = jQuery("#permission_for_paid_downloads");
+                tmp.find("input").prop("checked",false);
+                tmp.hide("slow");
+            }
+        });
+        show_or_hide_paid_download_option();
+
+        jQuery("#permission_for_paid_downloads input").on("click",function() {
+            if (this.checked) {
+                jQuery("#force_atleast_one_paid_download").show("slow");
+            }
+            else {
+                var tmp = jQuery("#force_atleast_one_paid_download");
+                tmp.find("input").prop("checked",false);
+                tmp.hide("slow");
+            }
+        });
+        show_or_hide_force_at_least_one_paid_download();
+    });
+</script>
+
+<div id="metatag"><!--{META_DEF}--></div>
+{if errors}
+	<h2 class="error">
+		Fehler aufgetreten!
+	</h2>
+	<p class="error">
+		{errors}
+	</p>
+{endif}
+{if !IS_LOCKED}
+
+<form id="kat_edit_form" method="post" enctype="multipart/form-data" onsubmit="return checkKatForm(this);" action="index.php">
+  <input type="hidden" name="ID_KAT" value="{ID_KAT}" />
+  <input type="hidden" name="PARENT" value="{PARENT}" />
+	<input type="hidden" name="page" value="{curpage}" />
+
+		<table id="katGroups" class="formTable" cellspacing="0">
+      <tbody class="settingGroupStatic">
+			  <tr class="footer">
+          <td colspan="2">Allgemeine Beschreibung der Kategorie</td>
+        </tr>
+      </tbody>
+      <tbody class="settingGroupStaticContent">
+        <tr>
+          <th width="320">Name der Kategorie</th>
+          <td>
+            <input type="text" name="V1" value="{htm(V1)}" size="60"/>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Kategorie-Icon
+            <p style="font-weight: normal; color: black;">
+              Ein kleines Icon das vor dem Namen der Kategorie angezeigt wird.
+            </p>
+          </th>
+          <td>
+            {if ICON}
+            <input type="checkbox" id="ICON_DEL" name="ICON_DEL" value="1" />
+            <label for="ICON_DEL">
+              Aktuelles Icon löschen: <img title="Kategorie-Icon" src="{ICON}" style="max-width: 160px;" />
+            </label>
+            {endif}
+            <input type="file" name="ICON" />
+          </td>
+        </tr>
+        <tr>
+          <th valign="top">
+            Kurzbeschreibung<br />
+            (max 255 Zeichen)<br />
+            <p style="font-weight: normal; color: black;">
+              Wird als "Mouseover" verwendet. Diese Beschreibung wird angezeigt wenn
+              man mit dem Mauszeiger eine kurze Zeit &uuml;ber der Kategorie bleibt.
+            </p>
+          </th>
+          <td>
+            <textarea name="V2" rows="6" cols="70">{htm(V2)}</textarea>
+          </td>
+        </tr>
+        {add_rows}
+      </tbody>
+      <tbody class="settingGroup">
+        <tr class="footer">
+          <td colspan="2">Stichworte / Meta-Tags</td>
+        </tr>
+      </tbody>
+      <tbody class="settingGroupContent">
+        <tr>
+          <th valign="top">
+            Stichworte f&uuml;r die Suche<br />
+            <p style="font-weight: normal; color: black;">
+              Alle Artikel in dieser Kategorie erhalten automatisch diese Stichworte und k&ouml;nnen
+              darüber gesucht werden. Gibt man Beispielsweise einer Kategorie "Handys" das Stichwort
+              "Mobiltelefone" werden bei der Suche nach letzterem alle Anzeigen in der Kategorie Handys
+              gefunden.
+            </p>
+          </th>
+          <td>
+            <textarea name="T1" rows="6"  cols="70">{htm(T1)}</textarea>
+          </td>
+        </tr>
+        <tr>
+          <th valign="top">
+              <a target="_blank" href="http://www.ebiz-trader.de/marktplatz-faq/?action=search&search=meta"><img src="gfx/helpme.gif"></a> Meta-Tags<br />
+            <p style="font-weight: normal; color: black;">
+              Legt Meta-Tags fest die ausschlie&szlig;lich für diese Kategorie g&uuml;ltig sind.<br />
+              <strong>Wichtig!</strong> Auch das umschließende HTML-Element &lt;meta&gt; muss eingef&uuml;gt
+              werden, anderenfalls erscheint lediglich der eingegebene Text am oberen Rand der Seite.
+            </p>
+          </th>
+          <td>
+            <p>
+              Ändern der Standardwerte unter :
+              <a href="index.php?page=meta_defaults" title="Meta Defaults bearbeiten" target="_blank" class="button">
+                <strong>Standard Metatags</strong>
+              </a>
+            </p>
+            <input type="button" onclick="addMeta();" value="Standard Meta Tags einf&uuml;gen" class="btn btn-success" /><br  />
+            <textarea id="META" name="META" rows="7"  cols="70">{htm(META)}</textarea>
+          </td>
+        </tr>
+        <tr>
+            <th>Für Unterkategorien übernehmen?</th>
+            <td>
+                <label class="error">
+                    <input type="checkbox" onchange="ApplyRecursiveMeta(this.checked);" name="META_RECURSIVE" value="1" class="nob" />
+                    Ja, alle unter "Stichworte / Meta-Tags" vorgenommenen Einstellungen auf die Unterkategorien übertragen
+                </label>
+            </td>
+        </tr>
+      </tbody>
+      <tbody class="settingGroup">
+            <tr class="footer">
+                <td colspan="2">Template-Codes</td>
+            </tr>
+      </tbody>
+      <tbody class="settingGroupContent">
+            <tr>
+                <th valign="top">
+                    URL zur Kategorie<br />
+                    <p style="font-weight: normal; color: black;">
+                        Binden Sie den rechts dargestellten Template-Code in ein Template ein, um an der entsprechenden Stelle
+                        die URL zu dieser Kategorie einzufügen.
+                    </p>
+                </th>
+                <td>
+                    <input onfocus="this.select();" onmouseup="this.select(); return false;" style="width: 340px;" type="text"
+                           value="&#123;uri_action(marktplatz,{ID_KAT},{urllabel(V1)})&#125;" />
+                </td>
+            </tr>
+            <tr>
+                <th valign="top">
+                    Suchmaske<br />
+                    <p style="font-weight: normal; color: black;">
+                        Binden Sie den rechts dargestellten Template-Code in ein Template ein, um an der entsprechenden Stelle
+                        eine Suchmaske für diese Kategorie einzufügen.
+                    </p>
+                </th>
+                <td>
+                    <input onfocus="this.select();" onmouseup="this.select(); return false;" style="width: 340px;" type="text"
+                           value="&#123;subtpl(tpl/&#123;SYS_TPL_LANG&#125;/ads_search_box.htm,ID_KAT={ID_KAT})&#125;" />
+                </td>
+            </tr>
+            <tr>
+                <th valign="top">
+                    Google-Karte<br />
+                    <p style="font-weight: normal; color: black;">
+                        Binden Sie den rechts dargestellten Template-Code in ein Template ein, um an der entsprechenden Stelle
+                        eine Google-Karte mit allen Anzeigen aus dieser Kategorie einzufügen.
+                    </p>
+                </th>
+                <td>
+                    <input onfocus="this.select();" onmouseup="this.select(); return false;" style="width: 340px;" type="text"
+                           value="&#123;plugin(GeoRegion,map,marktplatz,{ID_KAT})&#125;" />
+                </td>
+            </tr>
+      </tbody>
+      <tbody class="settingGroup">
+            <tr class="footer">
+                <td colspan="2">Zugriffsrechte</td>
+            </tr>
+      </tbody>
+      <tbody class="settingGroupContent">
+            <tr>
+                <th valign="top">
+                    Artikel einstellen<br />
+                    <p style="font-weight: normal; color: black;">
+                        Alle hier ausgwählten Benutzergruppen erhalten das Recht in dieser Kategorie Artikel einzustellen.
+                    </p>
+                    <a href="/index.php?page=role_edit" class="button">Rolle hinzufügen</a>
+                </th>
+                <td>
+                    {access_list}
+                </td>
+            </tr>
+            <tr>
+                <th>Für Unterkategorien übernehmen?</th>
+                <td>
+                    <label class="error">
+                        <input type="checkbox" name="ACCESS_RECURSIVE" value="1" class="nob" />
+                        Ja, die eingestellten Zugriffsrechte auf alle Unterkategorien übertragen
+                    </label>
+                </td>
+            </tr>
+      </tbody>
+      {if liste_filter}
+      <tbody class="settingGroup">
+			  <tr  class="footer">
+          <td colspan="2">Zuordnungen für den Import</td>
+        </tr>
+      </tbody>
+      <tbody class="settingGroupContent">
+        <tr>
+            <td colspan="2">Hier können Sie definieren, welche Kategorie-ID's aus einem Fremdsystem dieser Kategorie zugerodnet werden soll</td>
+
+            </tr>
+            	{liste_filter}
+      </tbody>
+      {endif}
+      <tbody class="settingGroup">
+        <tr class="footer">
+                <td colspan="2">Verkaufsoptionen</td>
+        </tr>
+      </tbody>
+      <tbody class="settingGroupContent">
+			  <tr>
+				  <th>
+                    Kostenpflichtiges Paket erforderlich?
+                        </br>
+                      <a href="index.php?page=packet_membership" class="button">Mitgliedschaften verwalten</a>
+                </th>
+          <td>
+            <label>
+                          <input type="hidden" name="B_FREE" value="1" />
+              <input type="checkbox" name="B_FREE" value="0" class="nob" {if !B_FREE}checked{endif} />
+                          Nur Kunden mit einem kostenpflichtigen Anzeigenpaket dürfen in dieser Kategorie Artikel einstellen
+                          {if FREE_ADS}
+                          <br />
+                          <strong>Achtung! Diese Einstellung hat keinen Effekt solange das kostenlose Einstellen von Anzeigen aktiv ist.</strong>
+                          {endif}
+            </label>
+          </td>
+        </tr>
+        <tr>
+          <th>Verkaufsfunktion in dieser Kategorie erlauben?</th>
+          <td>
+            <label>
+              <input type="checkbox" name="B_SALES" value="1" class="nob" {if B_SALES || !ID_KAT}checked{endif} />
+              Ja verkaufen erlauben
+            </label>
+          </td>
+        </tr>
+        <tr>
+            <th>Für Unterkategorien übernehmen?</th>
+            <td>
+                <label class="error">
+                    <input type="checkbox" onchange="ApplyRecursiveMeta(this.checked);" name="SALE_RECURSIVE" value="1" class="nob" />
+                    Ja, alle unter "Verkaufsoptionen" vorgenommenen Einstellungen auf die Unterkategorien übertragen.
+                </label>
+            </td>
+        </tr>
+      </tbody>
+      <tbody class="settingGroup">
+            <tr class="footer">
+                <td colspan="2">Weitere Optionen</td>
+            </tr>
+      </tbody>
+      <tbody class="settingGroupContent">
+            <tr>
+                <th>Verkaufsoptionen
+                    <p style="font-weight: normal; color: black;">Hier definieren Sie die möglichen Verkaufsoptionen</p></th>
+                <td>
+                    <a id="anchorSales"></a>
+                    <label id="regular-verkauf">
+                        <input type="checkbox" name="OPTIONS[SALES][]" value="0"{if OPTIONS_SALES_0} checked="checked"{endif} />
+                        Regulärer Verkauf
+                    </label>
+                    <br />
+                    <div id="permission_for_paid_downloads" style="display: none;">
+                        <label style="position: relative; left: 20px;">
+                            <input type="checkbox" name="OPTIONS[PERMISSION_FOR_PAID_DOWNLOADS]" value="1" {if OPTIONS_PERMISSION_FOR_PAID_DOWNLOADS_1}checked{endif} />
+                            Berechtigung für kostenpflichtige Downloads von Dateien (<a class="button" href="index.php?page=options&selectplugin=MARKTPLATZ&typ=PAID_DOWNLOAD_LIFETIME">EINSTELLUNGEN</a>)
+                        </label>
+                        <div id="force_atleast_one_paid_download" style="/*display: none;*/">
+                            <label style="position: relative; left: 40px;">
+                                <input type="checkbox" name="OPTIONS[FORCE_ATLEAST_ONE_PAID_DOWNLOAD]" value="1" {if OPTIONS_FORCE_ATLEAST_ONE_PAID_DOWNLOAD_1}checked{endif} />
+                                Mindestens ein kostenpflichtiger Download muss vorhanden sein.
+                            </label>
+                        </div>
+                    </div>
+                    <label>
+                        <input type="checkbox" name="OPTIONS[SALES][]" value="1"{if OPTIONS_SALES_1} checked="checked"{endif} />
+                        Preis darstellen ohne Verkaufsfunktion
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" name="OPTIONS[SALES][]" value="2"{if OPTIONS_SALES_2} checked="checked"{endif} />
+                        Preis auf Anfrage
+                    </label>
+                    {if ENABLE_RENT}
+                    <br />
+                    <label>
+                        <input type="checkbox" name="OPTIONS[SALES][]" value="3"{if OPTIONS_SALES_3} checked="checked"{endif} />
+                        Vermieten (<a class="button" href="index.php?page=cms_lookup&selectart=VERMIETEN">EINSTELLUNGEN</a>)
+                    </label>
+                    {endif}
+                    <br />
+                    <label>
+                        <input type="checkbox" name="OPTIONS[SALES][]" value="4"{if OPTIONS_SALES_4} checked="checked"{endif} />
+                        Inserat
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" name="OPTIONS[SALES][]" value="5"{if OPTIONS_SALES_5} checked="checked"{endif} />
+                        Gesuch
+                    </label>
+                    <br />
+                    <br />
+                </td>
+            </tr>
+            <tr>
+                <th>Preis & Versand
+                    <p style="font-weight: normal; color: black;">Geben Sie an, welche Informationen zum Verkauf abgefragt werden</p></th>
+                <td>
+                    <input type="hidden" name="OPTIONS[HIDE_QUANTITY]" value="1" />
+                    <input type="hidden" name="OPTIONS[HIDE_PSEUDO_PRICE]" value="1" />
+                    <input type="hidden" name="OPTIONS[HIDE_SHIPPING]" value="1" />
+                  
+                    <label>
+                        <input type="checkbox" name="OPTIONS[HIDE_QUANTITY]" value="0"{if !OPTIONS_HIDE_QUANTITY} checked="checked"{endif} />
+                        Mengenangaben abfragen (Menge / Mindestbestellmenge)
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" name="OPTIONS[HIDE_PSEUDO_PRICE]" value="0"{if !OPTIONS_HIDE_QUANTITY} checked="checked"{endif} />
+                        Pseudopreis abfragen (UVP / Rabatt in %)
+                    </label>
+                    <br />
+                    <label>
+                        <input type="checkbox" name="OPTIONS[HIDE_SHIPPING]" value="0"{if !OPTIONS_HIDE_SHIPPING} checked="checked"{endif} />
+                        Versandoptionen darstellen (Versandkosten / Liefertermin)
+                    </label>
+                    <br />
+                  <br />
+                </td>
+            </tr>
+        <tr>
+          <th style="vertical-align: top;">Standort Angabe</th>
+          <td class="option-article-location">
+            {if !GLOBAL_SETTINGS_USE_ARTICLE_LOCATION}
+              <p>Die Standort Angabe ist für den Marktplatz global deaktiviert.
+                 Bitte aktivieren Sie zuerst die Markplatz Einstellung USE_ARTICLE_LOCATION
+                in den <a href="index.php?page=options&selectplugin=MARKTPLATZ">Marktplatzeinstellungen</a>.
+              </p>
+            {endif}
+  
+            <a id="anchorLocation"></a>
+            <label>
+              <input type="radio" name="OPTIONS[USE_ARTICLE_LOCATION]" onchange="updateArticleLocation();" value="0"{if OPTIONS_USE_ARTICLE_LOCATION_0 || !GLOBAL_SETTINGS_USE_ARTICLE_LOCATION} checked="checked"{endif} {if !GLOBAL_SETTINGS_USE_ARTICLE_LOCATION}disabled{endif} />
+              Standort für Artikel in dieser Kategorie deaktivieren
+            </label>
+            <br />
+            <label>
+              <input type="radio" name="OPTIONS[USE_ARTICLE_LOCATION]" onchange="updateArticleLocation();" value="1"{if OPTIONS_USE_ARTICLE_LOCATION_1 && GLOBAL_SETTINGS_USE_ARTICLE_LOCATION} checked="checked"{endif} {if !GLOBAL_SETTINGS_USE_ARTICLE_LOCATION}disabled{endif} />
+               Standort für Artikel aktivieren
+            </label>
+            <br />
+            <br />
+          </td>
+        </tr>
+        <tr>
+          <th style="vertical-align: top;">Basispreis Angabe
+              <p style="font-weight: normal; color: black;">Geben Sie an, ob Produkt mit einem Basispreis versehen werden sollen. ZB. EUR/100ml</p></th>
+          <td>
+            {if !GLOBAL_SETTINGS_USE_ARTICLE_BASEPRICE}
+              <p>Die Grundpreisangabe ist für den Marktplatz global deaktiviert.
+                 Bitte aktivieren Sie zuerst die Markplatz Einstellung USE_ARTICLE_BASEPRICE
+                in den <a href="index.php?page=options&selectplugin=MARKTPLATZ&typ=USE_ARTICLE_BASEPRICE">Marktplatzeinstellungen</a>.
+              </p>
+            {endif}
+  
+            <a id="anchorBaseprice"></a>
+            <label>
+              <input type="radio" name="OPTIONS[USE_ARTICLE_BASEPRICE]" value="0"{if OPTIONS_USE_ARTICLE_BASEPRICE_0 || !GLOBAL_SETTINGS_USE_ARTICLE_BASEPRICE} checked="checked"{endif} {if !GLOBAL_SETTINGS_USE_ARTICLE_BASEPRICE}disabled{endif} />
+              Grundpreisangabe in dieser Kategorie deaktivieren
+            </label>
+            <br />
+            <label>
+              <input type="radio" name="OPTIONS[USE_ARTICLE_BASEPRICE]" value="1"{if OPTIONS_USE_ARTICLE_BASEPRICE_1 && GLOBAL_SETTINGS_USE_ARTICLE_BASEPRICE} checked="checked"{endif} {if !GLOBAL_SETTINGS_USE_ARTICLE_BASEPRICE}disabled{endif} />
+               Grundpreisangabe für Artikel aktivieren
+            </label>
+            <br />
+            <br />
+          </td>
+        </tr>
+        <tr>
+          <th>Für Unterkategorien übernehmen?</th>
+          <td>
+            <label class="error">
+              <input type="checkbox" name="OPTIONS_RECURSIVE" value="1" class="nob" />
+              Ja, alle unter "Weitere Optionen" vorgenommenen Einstellungen auf die Unterkategorien übertragen
+            </label>
+          </td>
+        </tr>
+      </tbody>
+      <tbody class="settingGroup">
+        <tr  class="footer">
+            <td colspan="2">Darstellung der Kategorie</td>
+        </tr>
+      </tbody>
+      <tbody class="settingGroupContent">
+        <tr>
+          <th>Darstellung<br /><p style="font-weight: normal; color: black;">Sollen die Artikel oder einen Kategorieübersicht dargestellt werden</p></th>
+          <td>
+              {lookup(KATART)}
+              <br />
+              <label class="error">
+                  <input type="checkbox" value="1" name="KATART_RECURSIVE" {if KATART_RECURSIVE}checked="checked"{endif} />
+                  Darstellung auf alle Unterkategorien &uuml;bertragen
+              </label>
+          </td>
+        </tr>
+            
+        <tr>
+            <th>
+                Suchmaske<br />
+                <p style="font-weight: normal; color: black;">
+                    Hier können Sie festlegen ob in dieser Kategorie eine
+                    Suchmaske sichtbar ist und welche Darstellung verwendet werden soll.
+                </p>
+            </th>
+            <td class="searchType">                
+                <a id="anchorSearch"></a>
+                <label>
+                    <input type="radio" name="SEARCH_TYPE" value="0"{if SEARCH_TYPE==0} checked="checked"{endif} onclick="updateSearchType(this);" />
+                    Suchmaske verstecken
+                </label>
+                <br />
+                <label>
+                    <input type="radio" name="SEARCH_TYPE" value="1"{if SEARCH_TYPE==1} checked="checked"{endif} onclick="updateSearchType(this);" />
+                    Suchmaske im Menü anzeigen (vertikal)
+                </label>
+                <br />
+                <label>
+                    <input type="radio" name="SEARCH_TYPE" value="2"{if SEARCH_TYPE==2} checked="checked"{endif} onclick="updateSearchType(this);" />
+                    Suchmaske oberhalb der Artikel darstellen (horizontal)
+                    <div class="searchTypeSettings" style="padding: 4px 0 0 32px;">
+                        <span>
+                            <strong>Spalten:</strong>
+                            <input type="number" min="1" max="12" name="SEARCH_COLUMNS" value="{SEARCH_COLUMNS}" style="width: 48px;" />
+                        </span>
+                    </div>
+                </label>
+
+                <label class="error">
+				    <input type="checkbox" value="1" name="SEARCH_TYPE_RECURSIVE"  {if SEARCH_TYPE_RECURSIVE}checked="checked"{endif} />
+                    Einstellungen zur Suchmaske auf alle Unterkategorien &uuml;bertragen
+                </label>
+            </td>
+        </tr>
+            
+        <tr>
+          <th>Seitenkopf<br /><p style="font-weight: normal; color: black;">Hier können Sie angeben, welcher Text (<a class="button" href="index.php?page=infoseiten&SHOWTYPE=1" target="_blank">Infobereich</a>) innerhalb einer bestimmten Artikeliste angezeigt werden soll.<br />Diese Einstellung ist nur für die Artikellisten relevant!</p></th>
+          <td>
+              <br />
+              <br />
+            {select(infoseite,,,USETYPE='KATS',,,Kein Infobereich)}
+            <p>
+            <b>Anwenden auf:</b><br />
+            <input type="radio" value="DOONE" checked="checked" name="KATHEAD" /> Nur für diese Kategorie verwenden<br />
+              <input type="radio" value="DOFILL" name="KATHEAD" /> Auf alle Unterkategorien anwenden die KEINEN Seitenkopf haben<br />
+              <input type="radio" value="DOALL" name="KATHEAD" /> Auf alle Unterkategorien anwenden
+            </p>
+          </td>
+        </tr>
+
+        <tr>
+            <th>
+                Regionen<br />
+                <p style="font-weight: normal; color: black;">
+                    Möchten eine Filtermöglichkeit für die Regionen anbieten, in denen die Artikel angeboten werden?
+                </p>
+            </th>
+            <td>
+                <div class="location-enabled">
+                    <label>
+                        <input type="checkbox" value="1" name="MAP_REGIONS" {if MAP_REGIONS}checked="checked"{endif} />
+                        Eingrenzen der Suchergebnisse über Regionen (z.B. Land, Bundesland, Kreis, ...)
+                    </label>
+                    <br />
+                    <label class="error">
+                        <input type="checkbox" value="1" name="MAP_REGIONS_RECURSIVE"  {if MAP_REGIONS_RECURSIVE}checked="checked"{endif} />
+                        Einstellung zu den Regionen auf alle Unterkategorien &uuml;bertragen
+                    </label>
+                </div>
+                <div class="location-disabled">
+                    <p class="error">
+                        Standort Angabe unter "Weitere Optionen" ist deaktiviert. Keine Regionen verfügbar.
+                    </p>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th>Kartendarstellung<br /><p style="font-weight: normal; color: black;">Möchten Sie die Suchergebnisse in dieser Kategorie zusätzl. als Kartenansicht darstellen</p></th>
+            <td>
+                <div class="location-enabled">
+                    <input type="radio" value="1" name="MAP_VISIBLE" {if MAP_VISIBLE && !MAP_SEARCH_VISIBLE}checked="checked"{endif} /> Karte anzeigen<br />
+                    <input type="radio" value="2" name="MAP_VISIBLE" {if MAP_VISIBLE && MAP_SEARCH_VISIBLE}checked="checked"{endif} /> Karte nur bei Umkreissuche<br />
+                    <input type="radio" value="0" name="MAP_VISIBLE"  {if !MAP_VISIBLE}checked="checked"{endif} /> Karte verstecken<br />
+
+                    <label class="error">
+                        <input type="checkbox" value="1" name="MAP_VISIBLE_RECURSIVE"  {if MAP_VISIBLE_RECURSIVE}checked="checked"{endif} />
+                        Kartendarstellung auf alle Unterkategorien &uuml;bertragen
+                    </label>
+                </div>
+                <div class="location-disabled">
+                    <p class="error">
+                        Standort Angabe unter "Weitere Optionen" ist deaktiviert. Keine Kartendarstellung verfügbar.
+                    </p>
+                </div>
+            </td>
+        </tr>
+
+        {if ID_KAT}
+        <tr>
+            <th>Navigationspunkt anlegen<br />
+                <p style="font-weight: normal; color: black;">
+                    Klicken Sie auf den folgenden Button um diese Kategorie in das Navigationsmenü einzutragen.
+                </p>
+            </th>
+            <td>
+                <a class="button" href="index.php?lang=de&page=page_edit_neu&special=kat-{ID_KAT}" target="_blank">Kategorie in die Navigation einfügen</a>
+            </td>
+        </tr>
+        {endif}
+      </tbody>
+      <tbody class="settingGroupStatic">
+        <tr  class="footer">
+                <td colspan="2">Inhalt der Kategorie / Feldauswahl</td>
+        </tr>
+      </tbody>
+      <tbody class="settingGroupStaticContent">
+        <tr>
+          <th>
+            Artikel-Tabelle
+          </th>
+          <td>
+            {if KAT_LOCKED}<input type="hidden" name="KAT_TABLE" value="{KAT_TABLE}">{endif}
+            <select onchange="ApplyTable(this.value)" style="width:99%;" name="KAT_TABLE"{if KAT_LOCKED} disabled{endif}>
+              {liste_def}
+            </select>
+            <br />
+            <a onclick="showArticleTable();" href="#editTable">
+              Die ausgewählte Artikel-Tabelle bearbeiten.
+            </a>
+            <br />
+            <br />
+          </td>
+        </tr>
+          <th>
+            Feldauswahl<br />
+        <p style="font-weight: normal; color: black;">
+                  Legt fest, welche Felder beim Erstellen einer Anzeige benötigt und beim suchen / betrachten sichtbar sind..
+                  </br><a href="index.php?page=def_tables" target="_blank">Tabellen anzeigen</a>
+              </p>
+  
+          </th>
+          <td>
+            <table cellspacing="1" width="100%" class="liste">
+              <tr>
+               <th>Verwenden</th>
+                <th width="60" colspan="2">Feld-Typ</th>
+                <th width="160">Name</th>
+                <th width="60">Suchfeld</th>
+                <th width="60">Pflichtfeld</th>
+                <th width="0"></th>
+              </tr>
+            </table>
+            <div style="max-height: 500px; overflow: auto;">
+            <table cellspacing="0" width="100%" class="liste" id="felderListe">
+              {liste_felder}
+            </table>
+  
+        Felder verwenden: <a href="#" onclick="felderListeMarkAll(); return false;">alle</a> / <a href="#" onclick="felderListeMarkNone(); return false;">keine</a> / <a href="#" onclick="felderListeMarkRevert(); return false;">umkehren</a>
+            </div>
+          </td>
+        <tr>
+        </tr>
+        <tr>
+          <th>Sichtbar?</th>
+          <td>
+            <input type="radio" name="B_VIS" id="VIS_YES" value="1" class="nob" {if B_VIS==1} checked{endif} />
+              <label for="VIS_YES">Ja</label>
+            <input type="radio" name="B_VIS" id="VIS_NO" value="0" class="nob" {if B_VIS==0} checked{endif} />
+              <label for="VIS_NO">Nein</label>
+            {if ID_KAT}
+            <input type="radio" name="B_VIS" id="VIS_LEAVE" value="" class="nob" />
+              <label for="VIS_LEAVE">Keine &Auml;nderung</label>
+            {endif}
+          </td>
+        </tr>
+          {if ID_KAT}
+          <tr>
+              <th>Für Unterkategorien übernehmen?</th>
+              <td>
+                  <label class="error">
+                      <input type="checkbox" onchange="ApplyRecursive(this.checked);" name="RECURSIVE" value="1" class="nob" {if RECURSIVE} checked{endif} />
+                      Ja, alle unter "Inhalt der Kategorie / Feldauswahl" vorgenommenen Einstellungen auf die Unterkategorien übertragen
+                  </label>
+              </td>
+          </tr>
+      </tbody>
+      {endif}
+      {if pluginHtml}
+          <tbody class="settingGroupStatic">
+              <tr  class="footer">
+                  <td colspan="2">Plugin-Einstellungen</td>
+              </tr>
+          </tbody>
+          <tbody class="settingGroupStaticContent">
+              {pluginHtml}
+          </tbody>
+      {endif}
+      <tbody class="settingGroupStatic">
+        <tr class="footer">
+            <td colspan="2" align="right">
+                <input name="sent" type="submit" value="Kategorie speichern" class="btn" />
+            </td>
+        </tr>
+      </tbody>
+    </table>
+</form>
+
+
+
+{endif}

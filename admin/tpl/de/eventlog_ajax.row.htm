@@ -1,0 +1,10 @@
+<tr class="zeile{even}">
+ <td onmouseover="Tip('{text(S_INFO)}')" valign="top" align="center"><a href="index.php?page=eventlogs&SHOW={EVENT}" title="Zu den Eventlogs"><img src="gfx/{EVENT}_s.png" alt="{EVENT}" title="{EVENT}" /></a></td>
+ <td onmouseover="Tip('{text(S_INFO)}')"><a href="index.php?page=eventlogs&SHOW={EVENT}" title="Zu den Eventlogs">{htm(S_INFO_SHORT)} ...</a></td>
+</tr>
+{if S_ERR}
+ <tr class="zeile{even}">
+  <td class="error" valign="top" onmouseover="Tip('{text(S_ERR)}')">Err:</td>
+  <td class="error" onmouseover="Tip('{text(S_ERR)}')">{htm(S_ERR_SHORT)}</td>
+ </tr>
+{endif}

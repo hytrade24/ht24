@@ -1,0 +1,417 @@
+<link href="{uri_baseurl(/js/tree/skin/ui.dynatree.css)}" rel="stylesheet" type="text/css">
+<script src="{uri_baseurl(/js/tree/jquery.dynatree.min.js)}" type="text/javascript"></script>
+
+<script type="text/javascript">
+    function updateForum(checkbox) {
+        if (jQuery(checkbox).is(":checked")) {
+            jQuery("#FORUM_PUBLIC").prop("disabled", false);
+            jQuery("#FORUM_MODERATED").prop("disabled", false);
+        } else {
+            jQuery("#FORUM_PUBLIC").prop("disabled", true);
+            jQuery("#FORUM_MODERATED").prop("disabled", true);
+        }
+    }
+
+    jQuery(function() {
+    	function setClubFormular(d) {
+            if(d) {
+                jQuery(".visibleOnEnabledClub").show();
+            } else {
+                jQuery(".visibleOnEnabledClub").hide();
+            }
+        }
+
+        club_order = function(elm) {
+            window.location.href = elm.value;
+        };
+
+        saveClubCategory = function(categories) {
+            jQuery("#CATEGORIES").val('');
+            var selKeys = jQuery.map(categories, function(node){
+                return node.data.key;
+            });
+            jQuery("#CATEGORIES").val(selKeys.join(","));
+
+            jQuery("#clubCategoryTreeSelected").html("Sie haben " + selKeys.length + " von " + categoryTreeMaxSelects + " Kategorien gewählt");
+        };
+
+        jQuery("#clubFormular input[name=STATUS]").change(function(){ setClubFormular(this.checked); })
+    {if CLUB_ID_CLUB || CLUB_NEW}
+        var categoryTree = {CATEGORY_JSON_TREE};
+        var categoryTreeMaxSelects = {CATEGORY_TREE_MAX_SELECTS};
+
+        tree = $("#clubCategoryTree").dynatree({
+            checkbox: true,
+            selectMode: 2,
+            autoCollapse: true,
+            debugLevel: 0,
+            children: categoryTree,
+            onSelect: function(select, node) {
+                var l = node.tree.getSelectedNodes().length;
+
+                if(l <= categoryTreeMaxSelects) {
+                    saveClubCategory(node.tree.getSelectedNodes());
+                } else {
+                    node.select(false);
+                }
+            }
+        });
+        saveClubCategory($("#clubCategoryTree").dynatree("getTree").getSelectedNodes());
+        setClubFormular({if CLUB_STATUS}true{else}false{endif});
+    {endif}
+
+    });
+</script>
+
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}Gruppenverzeichnis</h1>
+{if CLUB_NEW}
+<p>Sie können mit Hilfe von Gruppen eine Interessengemeinschaft gründen. Bitte vergewissern Sie sich, ob nicht bereits eine ähnliche Interessengemeinschaft existiert.</p>
+{endif}
+{if saved}
+<div class="alert alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4>Änderungen gespeichert!</h4>
+</div>
+{endif}
+{if errors}
+<div class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4>Fehler!</h4>
+	<ul>
+		{errors}
+	</ul>
+</div>
+{endif}
+
+{if CLUB_ID_CLUB || CLUB_NEW}
+	{subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+
+	<form method="post" id="clubFormular" enctype="multipart/form-data">
+	    <input type="hidden" name="page" value="{curpage}"/>
+	    <input type="hidden" name="do" value="save" />
+	    <input type="hidden" name="CHANGED" value="{CHANGEDATE}" />
+        <input type="hidden" name="CATEGORIES" id="CATEGORIES" value="" />
+		{if CLUB_ID_CLUB}<input type="hidden" name="ID_CLUB" value="{CLUB_ID_CLUB}" />{endif}
+
+		{if CLUB_MODERATOR}
+			<table class="mytable table table-bordered table-striped table-condensed">
+		        <tr>
+		            <td style="width: 200px;"><b>Gruppe öffentlich darstellen:</b>
+                        <br>
+                    <small>Wenn Sie diese Einstellung deaktivieren,wird Ihre Gruppe im Gruppenverzeichnis nicht angezeigt. Auch können Ihre Mitglieder nicht auf die Informationen zugreifen</small>
+                    </td>
+		            <td>                              
+		                <input type="checkbox" name="STATUS" {if CLUB_STATUS}checked="checked"{endif} value="1" />
+		            </td>
+                    <td style="width: 40%"><b>Gruppenkategorie</b></td>
+		        </tr>
+		        <tr>
+		            <td>Gruppenname *:</td>
+		            <td>
+		                <input class="form-control" type="text" name="NAME" id="NAME" value="{htm(CLUB_NAME)}" />
+		            </td>
+                    <td rowspan="13" style="vertical-align: top;">
+                        <div id="clubCategoryTree" style="overflow: auto; max-height: 400px;">
+
+                        </div>
+                        <p id="clubCategoryTreeSelected"></p>
+                    </td>
+		        </tr>
+		        <tr>
+		            <td>Straße:</td>
+		            <td>
+		                <input class="form-control" type="text" name="STRASSE" id="STREET" value="{htm(CLUB_STRASSE)}" />
+		            </td>
+		        </tr>
+
+		        <tr>
+		            <td>PLZ:</td>
+		            <td>
+		                <input class="form-control" type="text" name="PLZ" id="ZIP" value="{htm(CLUB_PLZ)}" />
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>Ort:</td>
+		            <td>
+		                <input class="form-control" type="text" name="ORT" id="CITY" value="{htm(CLUB_ORT)}" />
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>Land:</td>
+		            <td>
+		                {select_country(,,,, class="form-control" onchange="" id="COUNTRY",----)}
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>Telefon:</td>
+		            <td>
+		                <input class="form-control" type="text" name="TEL" id="TEL" value="{htm(CLUB_TEL)}" />
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>Fax:</td>
+		            <td>
+		                <input class="form-control" type="text" name="FAX" id="FAX" value="{htm(CLUB_FAX)}" />
+					</td>
+				</tr>
+				<tr>
+					<td>Web:</td>
+					<td>
+						<input class="form-control" type="text" name="URL" id="URL" value="{htm(CLUB_URL)}" />
+					</td>
+				</tr>
+                <tr>
+                    <td>Forum:</td>
+                    <td>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="FORUM_ENABLED" id="FORUM_ENABLED" onclick="updateForum(this);" value="1"{if CLUB_FORUM_ENABLED} checked="checked"{endif} />
+                                Forum verwenden
+                            </label>                            
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="FORUM_PUBLIC" id="FORUM_PUBLIC" value="1"{if !CLUB_FORUM_ENABLED} disabled="disabled"{endif}{if CLUB_FORUM_PUBLIC} checked="checked"{endif} />
+                                Öffentlich
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="FORUM_MODERATED" id="FORUM_MODERATED" value="1"{if !CLUB_FORUM_ENABLED} disabled="disabled"{endif}{if CLUB_FORUM_MODERATED} checked="checked"{endif} />
+                                Foren-Beiträge moderieren
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kommentare:</td>
+                    <td>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="ALLOW_COMMENTS" id="ALLOW_COMMENTS" value="1"{if CLUB_ALLOW_COMMENTS} checked="checked"{endif} />
+                                Kommentare zur Gruppe erlauben
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+		        <tr>
+					<td>Beitrittsanfragen:</td>
+					<td>
+						<label>
+							<select class="form-control" name="ALLOW_MEMBER_REQUESTS">
+								<option value="0" {if CLUB_ALLOW_MEMBER_REQUESTS == 0}selected="selected"{endif}>nur durch Einladung</option>
+								<option value="2" {if CLUB_ALLOW_MEMBER_REQUESTS == 2}selected="selected"{endif}>Beitrittsanfrage erfordert Bestätigung</option>
+								<option value="1" {if CLUB_ALLOW_MEMBER_REQUESTS == 1}selected="selected"{endif}>freier Beitritt möglich</option>
+							</select>
+						</label>
+					</td>
+				</tr>
+		        <tr>
+		            <td style="vertical-align: top;">Logo:</td>
+		            <td>
+		                {if CLUB_LOGO}
+		                    <img src="{thumbnail(CLUB_LOGO,100,100)}" />
+		                    <br />
+		                    <input type="checkbox" name="DELETE_LOGO" value="1" />Logo l&ouml;schen
+		                {else}
+		                    <input type="file" name="LOGO" id="LOGO"  />
+		                {endif}
+		            </td>
+		        </tr>
+		        {if CLUB_ID_CLUB}
+		        <tr>
+		        	{if CLUB_ADMIN}
+		            <td>Gruppe auflösen:<br /><small>Achtung, das löschen der Gruppe kann nicht rückgängig gemacht werden</small></td>
+		            <td>
+		                <input name="delete" type="submit" value="Gruppe jetzt auflösen" class="btn btn-danger" onclick="return confirm('Sind Sie sicher, dass Sie die Gruppe auflösen wollen? Alle Einstellungen gehen verloren!');"/>
+		            </td>
+			        {else}
+		            <td>Gruppe verlassen:</td>
+		            <td>
+		                <input name="leave" type="submit" value="Gruppe jetzt verlassen" class="btn btn-danger" onclick="return confirm('Sind Sie sicher, dass Sie die Gruppe verlassen wollen?');"/>
+		            </td>
+			        {endif}
+		        </tr>
+		        {endif}
+		    </table>
+
+		    <input type="submit" value="Gruppe speichern" class="btn btn-success pull-right" />
+		{else}
+			<table class="mytable table table-bordered table-striped table-condensed">
+		        <tr class="visibleOnEnabledClub">
+		            <td>Name:</td>
+		            <td>{htm(CLUB_NAME)}</td>
+		        </tr>
+		        <tr class="visibleOnEnabledClub">
+		            <td>Straße:</td>
+		            <td>{htm(CLUB_STRASSE)}</td>
+		        </tr>
+
+		        <tr class="visibleOnEnabledClub">
+		            <td>PLZ:</td>
+		            <td>{htm(CLUB_PLZ)}</td>
+		        </tr>
+		        <tr class="visibleOnEnabledClub">
+		            <td>Ort:</td>
+		            <td>{htm(CLUB_ORT)}</td>
+		        </tr>
+		        <tr class="visibleOnEnabledClub">
+		            <td>Land:</td>
+		            <td>{print_fk(country,CLUB_FK_COUNTRY)}</td>
+		        </tr>
+		        <tr class="visibleOnEnabledClub">
+		            <td>Telefon:</td>
+		            <td>{htm(CLUB_TEL)}</td>
+		        </tr>
+		        <tr class="visibleOnEnabledClub">
+		            <td>Fax:</td>
+		            <td>{htm(CLUB_FAX)}</td>
+		        </tr>
+		        <tr class="visibleOnEnabledClub">
+		            <td>Web:</td>
+		            <td>{htm(CLUB_URL)}</td>
+		        </tr>
+		        <tr class="visibleOnEnabledClub">
+		            <td style="vertical-align: top;">Logo:</td>
+		            <td>
+						<img src="{thumbnail(CLUB_LOGO,100,100)}" />
+					</td>
+		        </tr>
+		        {if CLUB_ID_CLUB}
+		        <tr class="visibleOnEnabledClub">
+		            <td>Gruppe verlassen:</td>
+		            <td>
+		                <input name="leave" type="submit" value="Gruppe jetzt verlassen" class="btn btn-danger" onclick="return confirm('Sind Sie sicher, dass Sie die Gruppe verlassen wollen?');"/>
+		            </td>
+		        </tr>
+		        {endif}
+		    </table>
+		{endif}
+	</form>
+{else}
+	{if liste || search}
+
+        {if !HIDE_SORT}
+        <div class="breadcrumb clearfix">
+            <div class="pull-left">
+                <span class="text-muted">{ALL} Gruppen</span>
+            </div>
+            <div class="pull-right">
+                <form method="get" action="{uri_baseurl(/index.php)}" style="display:inline;">
+                    <select id="C_SORTING" onchange="club_order(this);" class="form-control">
+                        <option value="{uri_action(my-club,0,list,{npage},MODERATOR,DESC)}{if search}?search={search}{endif}" {if SORT_BY_MODERATOR_ASC}selected="selected"{endif}>Moderatorenrechte</option>
+                        <option value="{uri_action(my-club,0,list,{npage},REQUESTS,DESC)}{if search}?search={search}{endif}" {if SORT_BY_REQUESTS_DESC}selected="selected"{endif}>Anzahl Freischaltungen</option>
+                        <option value="{uri_action(my-club,0,list,{npage},COMMENTS,DESC)}{if search}?search={search}{endif}" {if SORT_BY_COMMENTS_DESC}selected="selected"{endif}>Meiste Kommentare</option>
+                        <option value="{uri_action(my-club,0,list,{npage},ALLOW_COMMENTS,DESC)}{if search}?search={search}{endif}" {if SORT_BY_ALLOW_COMMENTS_DESC}selected="selected"{endif}>Kommentare aktiviert</option>
+                        <option value="{uri_action(my-club,0,list,{npage},ALLOW_COMMENTS,ASC)}{if search}?search={search}{endif}" {if SORT_BY_ALLOW_COMMENTS_ASC}selected="selected"{endif}>Kommentare deaktiviert</option>
+                        <option value="{uri_action(my-club,0,list,{npage},STAMP_JOIN,ASC)}{if search}?search={search}{endif}" {if SORT_BY_STAMP_JOIN_ASC}selected="selected"{endif}>Beitrittsdatum aufsteigend</option>
+                        <option value="{uri_action(my-club,0,list,{npage},STAMP_JOIN,DESC)}{if search}?search={search}{endif}" {if SORT_BY_STAMP_JOIN_DESC}selected="selected"{endif}>Beitrittsdatum absteigend</option>
+                        <option value="{uri_action(my-club,0,list,{npage},NAME,ASC)}{if search}?search={search}{endif}" {if SORT_BY_NAME_ASC}selected="selected"{endif}>Alphabetisch aufsteigend</option>
+                        <option value="{uri_action(my-club,0,list,{npage},NAME,DESC)}{if search}?search={search}{endif}" {if SORT_BY_NAME_DESC}selected="selected"{endif}>Alphabetisch absteigend</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        {endif}
+        <p>
+            Sie sind derzeit Mitglied in folgenden Gruppen:
+        </p>
+        <table class="table table-bordered table-striped table-condensed userList userAdList">
+            {if !HIDE_SEARCH}
+            <tr>
+                <td colspan="9" class="form-inline form-input-rows">
+                    <form method="get" action="{uri_action(my-club,0,list,1,MODERATOR,DESC)}" style="display:inline;">
+                        <div class="row clearfix">
+                            <div class="col-xs-4 col-xs-offset-2 col-md-4 col-md-offset-4">
+                                <input type="text" id="search" name="search" class="form-control" placeholder="Nach Gruppe suchen" value="{htm(search)}">
+                            </div>
+                            <div class="col-xs-6 col-md-4 text-right">
+                                <input class="btn btn-primary" type="submit" value="Suche starten">
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            {endif}
+            <tr>
+                <th>
+                    Aktionen
+                </th>
+                <th>
+                    Gruppe
+                </th>
+                <th>
+                    Vorsitzender
+                </th>
+                <th>
+                    Anzahl Mitglieder
+                </th>
+                <th>
+                    Mitglied seit
+                </th>
+            </tr>
+            {liste}
+        </table>
+        <p>{pager}</p>
+        <div class="design-content-box design-icon-legend">
+            <div class="pull-left">
+                <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Bearbeiten
+            </div>
+            <div class="pull-left">
+                <a class="btn btn-default">
+                    <i class="glyphicon glyphicon-comment"></i>
+                    <span class="caret"></span>
+                </a> = Kommentare deaktiviert
+            </div>
+            <div class="pull-left">
+                <a class="btn btn-info">
+                    <i class="glyphicon glyphicon-comment "></i>
+                    <span class="caret"></span>
+                </a> = Kommentare aktiviert
+            </div>
+            <br style="clear: left;">
+            <div class="pull-left">
+                <i class="glyphicon glyphicon-star"></i> = Gruppen-Leiter
+            </div>
+            <div class="pull-left">
+                <i class="glyphicon glyphicon-bullhorn"></i> = Moderator
+            </div>
+            <div class="pull-left">
+                <span class="label label-warning">123</span> = wartend auf
+            Freischaltung
+            </div>
+
+
+
+            <br style="clear: left;">
+        </div>
+    {endif}
+
+        <h2>Eigene Gruppe erstellen</h2>
+        <p>Sie können mit Hilfe von Gruppen eine Interessengemeinschaft gründen. Bitte vergewissern Sie sich, ob nicht bereits eine ähnliche Interessengemeinschaft existiert.</p>
+        <p>Eine Übersicht aller bereits vorhandenen Gruppen finden Sie <a href="{uri_action(groups)}">hier</a></p>
+        <p><a href="{uri_action(my-club,,new)}" class="btn btn-success">Neue Gruppe erstellen</a></p>
+
+
+        {if liste_club_invites}
+        <h2>Gruppen-Einladungen</h2>
+
+        <p>Sie haben eine Einladung erhalten um folgenden Clubs beizutreten:</p>
+
+        <table class="table table-bordered table-striped table-condensed">
+            <tr>
+                <th title="Aktionen">
+                    Aktionen
+                </th>
+                <th title="Club-Name">
+                    Club
+                </th>
+                <th title="Datum der Einladung">
+                    Datum
+                </th>
+            </tr>
+            {liste_club_invites}
+        </table>
+        {endif}
+
+{endif}

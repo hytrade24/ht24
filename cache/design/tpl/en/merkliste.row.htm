@@ -1,0 +1,20 @@
+<li class="media" data-watchlistId="{ID_WATCHLIST}">
+	<a class="pull-left media-object-container" href="{LINK}">
+		{if PREVIEW}
+			<img class="media-object" src="{thumbnail(PREVIEW,80,80)}" data-src="{thumbnail(PREVIEW,80,80)}">
+		{else}
+			<img class="media-object" src="{uri_resource(/images/marketplace/nopic.jpg)}" data-src="{uri_resource(/images/marketplace/nopic.jpg)}">
+		{endif}
+	</a>
+
+	<div class="media-body">
+		<h4 class="media-heading"><a href="{LINK}"><strong>{ITEMNAME}</strong></a></h4>
+		<p class="text-muted media-body">{text(DESCRIPTION)}</p>
+
+		<small>
+            <strong>{FK_WATCHLIST_USER_NAME}</strong> |
+            <a href="#" onclick="removeWatchlistItem('{ID_WATCHLIST}'); return false;">Delete</a> |
+            added on: {todate(STAMP_CREATE)}
+        </small>
+	</div>
+</li>

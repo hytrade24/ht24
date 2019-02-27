@@ -1,0 +1,9 @@
+<tr class="zeile{even}">
+ <td>{todate(STAMP)}</td>
+ <td><a name="A{ID_COMMENT}"></a>
+   <a href="#A{ID_COMMENT}" onclick="popupfkt('modul_news_adv_commentedit&ID_COMMENT={ID_COMMENT}&ID_NEWS={FK_NEWS}#EDIT', 700, 490)" title="Kommentar bearbeiten"><img width="32" height="16" src="gfx/btn.edit.gif"></a>
+ </td>
+ <td><a href="#" onclick="chUsr({FK_USER})" title="Nur Beitzr&auml;ge von {htm(USER)} ({C_COM}) anzeigen">{htm(USER)}</a></td> 
+ <td><a href="index.php?page=modul_news_adv_edit&ID_NEWS={FK_NEWS}" target="_blank" title="Artikel bearbeiten">{htm(ARTIKEL)}</a></td>
+ <td><a href="#A{ID_COMMENT}" onclick="popupfkt('modul_news_adv_commentedit&ID_COMMENT={ID_COMMENT}&ID_NEWS={FK_NEWS}#EDIT', 700, 490)" title="Kommentar bearbeiten">{htm(VORSCHAU)}...</a></td>
+</tr>

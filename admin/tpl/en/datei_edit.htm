@@ -1,0 +1,39 @@
+{if ID_DATEI}
+<h1>Dateiupload &quot;{htm(V1)}&quot; bearbeiten</h1>
+{else}
+<h1>Neuer Dateiupload</h1>
+{endif}
+<p>Laden Sie eine beliebige Datei von Ihrem PC in die Datei- Datenbank</p>
+{if err}
+<p class="error">{err}</p>
+{endif}
+<form method="post" action="index.php" enctype="multipart/form-data">
+<input type="hidden" name="page" value="datei_edit">
+<input type="hidden" name="ID_DATEI" value="{ID_DATEI}">
+<input type="hidden" name="frame" value="{curframe}">
+<table class="formTable" cellspacing="0">
+ <tr>
+  <th>Beschreibung</th>
+  <td><input type="text" name="DSC" value="{htm(DSC)}" size="35"></td>
+ </tr>
+ {if !ID_DATEI}
+ <tr>
+  <th>Datei von Ihrer Festplatte</th>
+  <td><input type="file" name="DATEI"></td>
+ </tr>
+ {else}
+ <tr>
+  <th valign="top">Dateinfo</th>
+  <td>Dateiname: <strong>{htm(DATEINAME)}</strong><br />
+    Typ: <strong>{htm(EXT)}</strong></td>
+ </tr>
+ <tr>
+  <th>Download</th>
+  <td><a href="../uploads/datei/{DATEINAME}" target="_blank">{htm(DATEINAME)}</a></td>
+ </tr>
+ {endif}
+ <tr class="footer">
+  <td colspan="2" align="right"><input type="submit" class="button" value="Datei speichern"></td>
+ </tr>
+</table>
+</form>

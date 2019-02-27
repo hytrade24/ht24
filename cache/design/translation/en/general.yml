@@ -1,0 +1,557 @@
+abort: Abort
+accept: accept
+accepted: Accepted
+accepted.lower: accepted
+access.denied: 'Access denied'
+action: Action
+actions: Actions
+active: Active
+active.lower: active
+ad.cart.error.quantity: 'Es sind leider nur noch {COUNT} Stück übrig. Bitte reduzieren Sie die gewünschte Menge.'
+ad.qrcode: 'QR-Code anzeigen'
+add.new.address: 'Add new address'
+add.searchword: 'Add searchword'
+address: Address
+again: Again
+agreed: Agreed
+all: All
+amount: Amount
+an.error.occurred: 'An error has occurred!'
+and.this: 'and this'
+answers: Answer
+are.perform.this.action: 'Do you really want to perform this action?'
+attention: attention!
+back: Back
+between.this: 'Between this'
+bill.state: 'Bill state'
+bill.status: 'Bill status'
+birthdate: Birthday
+blog: Blog
+broadcast: Broadcast
+broadcast.mail: Broadcast
+button.cancel: Cancel
+calendar: Calendar
+calendar.event.add.category: Category
+cancel: Cancel
+cancle: Cancel
+categories: Category
+categories.uppercase: CATEGORY
+category: Category
+change: Change
+change.saved: 'Changes saved successfully!'
+change.setting: 'Change settings'
+changes.saved: 'Settings saved'
+characters: Characters
+chat.new.ad: 'neue Anfrage{if PLURAL_COUNT!=1}n{endif}'
+chat.new.other: 'neue Nachricht{if PLURAL_COUNT!=1}en{endif}'
+check: (checking)
+choose: Choose
+choose.all: 'Choose all'
+choose.category: 'Choose category'
+city: City
+click.here: 'Please click here'
+close: Close
+close.window: 'Close window'
+club: Club
+club.invite: Club-invites
+club.invite.notification: 'You received an invite to join the following club'
+comment: Comment
+comments: Comments
+comments.activated: 'Comments activated'
+comments.deactivated: 'Comments deactivated'
+comments.for.invite: 'Your comment on the invite'
+comments.here: 'Comments available'
+comments.show.with.count: 'Show {int(COUNT)} comments'
+comments.to.invite: 'Your comment on the invite'
+company: Company
+confirmation: Confirmation
+contact.form.email: 'Your E-Mail'
+contact.form.error.missing.fields: 'Following fields were not filled or not filled completely:'
+contact.form.message: 'Your message'
+contact.form.name: 'Your name'
+contact.form.phone: 'Your phone number'
+contact.form.security.question: 'Please answer the security question'
+contact.form.subject: Subject
+contact.form.submit: Submit
+contact.form.success.lead: |
+  Your message was delivered successfully.<br />
+          We will get in touch with you soon!
+contact.form.success.title: 'Thank you!'
+continue: Continue
+cookie.notice: |
+  uses cookies, to ensure you the optimal performance. 
+              If you keep browsing on this site you accept the <a href="{uri_action(datenschutzerklaerung)}">cookie usage</a>.
+cookie.notice.close: x
+country: Country
+country.group.others: Other
+coupon.register.help: 'If you own a coupon code, you can enter it here'
+coupon.register.label: 'Coupon code'
+coupon.register.placeholder: 'Enter coupon code'
+create.calendar.record: 'Create a calendar record'
+created: ': created on'
+created.at: 'eingestellt am'
+created.from: 'Created by'
+cycle.once: 'Cycle once'
+date: Date
+date.added: 'added on'
+date.at: At
+date.by: by
+date.datefrom: 'Date from'
+date.dateuntil: 'Date until'
+date.day: Day
+date.days: Days
+date.from: From
+date.from.long: 'Date from'
+date.month: Month
+date.months: Months
+date.names.days.friday: Friday
+date.names.days.monday: Monday
+date.names.days.saturday: Saturday
+date.names.days.sunday: Sunday
+date.names.days.thursday: Thursday
+date.names.days.tuesday: Tuesday
+date.names.days.wednesday: Wednesday
+date.names.months.april: April
+date.names.months.august: August
+date.names.months.december: December
+date.names.months.february: February
+date.names.months.january: January
+date.names.months.july: July
+date.names.months.june: June
+date.names.months.march: March
+date.names.months.may: May
+date.names.months.november: November
+date.names.months.october: October
+date.names.months.september: September
+date.quarter: Quarter
+date.quarters: Quarters
+date.span: '{todate(BEGIN)} to {todate(END)}'
+date.starting.at: 'Starting at'
+date.until: Until
+date.until.between: until
+date.until.long: 'Date until'
+date.week: Week
+date.weeks: Weeks
+date.when: When
+date.year: Year
+date.years: Years
+datetime.span: '{todate(BEGIN,1)} to {todate(END,1)}'
+day.s: Day(s)
+day.s.n: Day(s)
+days: Days
+deactivate: Deactivate
+deactive: Disabled
+declined: Decline
+delete: Delete
+delete.import.and.ads: 'Delete import and ads'
+delete.invite: 'Delete invite'
+delete.logo: 'Delete logo'
+delete.only.import: 'Delete only import'
+delete.options: 'Delete options'
+delete.two: Delete
+delete.video: 'Delete video'
+delivered.comments: 'Delivered comments'
+description: Description
+deselect.all: 'Deselect all'
+disagreed: Disagreed
+displays: Displays
+do.u.want: 'Do you want'
+do.u.want.invite: 'Do you want an invite from'
+domicile: Residence
+duplicate: Duplicate
+edit: Edit
+edit.address: 'Edit address'
+edit.two: edit
+editor.image.browse.label: Select
+editor.image.insert.label: 'Add/edit image'
+email: E-Mail
+email.address: 'E-Mail address'
+enable: Enable
+ended: Ended
+ended.lower: ended
+error: Error
+error.an.error.occured: 'An error has occurred!'
+error.an.error.occurred: 'An error has occurred!'
+error.occured: 'Error occurred'
+error.occurred: 'Error occurred!'
+event: Event
+eventcalendar: Eventcalendar
+events: Events
+events.from: 'Events from'
+execute: Execute
+execute.now: 'Execute now'
+explenation.cancel.invoice: '= Request for invoice cancel'
+explenation.print: '= print'
+explenation.view: '= view'
+faq.back.to.overview: 'Back to overview'
+faq.contact.for.further.questions: 'If you have any further question, you can contact the support-team.'
+faq.lead: 'Here you find answers on almost all questions on "how to use" our portal.'
+faq.no.topics.found: 'Now topics found'
+faq.overview: Overview
+faq.title: 'Help & FAQ'
+fax: Fax
+file: File
+filename: Filename
+filetype: Filetype
+filter: Filter
+firm: Firm
+firm.number: Firm-Nr.
+firm.vendor: 'Firm / Vendor'
+first.and.last.name: 'Fore- and surname'
+first.name: Forename
+firstname: Forename
+for.example: 'e.g.: John Doe'
+for.example.mail: 'e.g.: John.Doe@yahoo.com'
+form.of.address: Title
+from: from
+gallery.slider.back: 'Previous image'
+gallery.slider.close: Close
+gallery.slider.forward: 'Next image'
+got.comments: 'Received comments'
+group: Group
+group.directory: 'Group directory'
+group.directory.long: |
+  Here you find an overview over all comments to your group.<br />
+      {if CLUB_OWNER}
+          You can set, if received comments have to be released automatically or manually in the <a href="{uri_action(my-settings)}">settings</a>.
+group.forum: 'Group discussions'
+group.index: 'Group index'
+group.index.long: 'You can create interest communities by the help of groups. Please assure, if there is not existing already a similar interest community.'
+group.leader: Group-leader
+group.leadership.commited: 'Commit group leadership'
+group.linkto: 'to group'
+group.number: Group-Nr.
+group.solve: 'Dissolve group'
+group.solve.long: 'Warning, deleting the group can not be undone'
+group.solve.now: 'Dissolve group now'
+groups: Groups
+gtc.and.cancelation: 'GTC and cancellation policy'
+help.captcha: 'Help to captcha'
+help.captcha.long: |
+  With this additional security check, we avoid the so-called automated registrations,
+          and fraudulent use of the contact form. The verification code is identical neither with your password or other personal data.<br />
+          <br />
+          If you have trouble deciphering the hidden in the image codes, try to reload the page. A new security code will be generated.<br />
+          <br />
+          Without the correct code entry, it will not be possible to submit the form.<br />
+hint: Hint
+homepage: Homepage
+image.notfound: 'No image found'
+indexes.number: Indexes-Nr.
+invite.member: 'Invite member'
+is.group.leader: 'is group-leader'
+is.paid: 'is paid'
+job.location.city: Location
+keywords: Keywords
+label: Label
+language: Language
+last.comment: 'Last comment on'
+last.name: Surname
+lastname: Surname
+layout.logo.alt: onlineSmalladds.com
+lead.description: 'Ihre Nachricht'
+lead.quantity: Menge
+leave.group: 'Leave group'
+leave.group.now: 'Leave group now'
+legend: Key
+load.please.wait: 'Please wait...'
+loading.please.wait: 'Please wait ...'
+location: Location
+location.city: Location
+location.country: Country
+location.where: Where
+location.zip.city: 'ZIP / Location:'
+locked: locked
+logged.in: 'Logged in'
+logged.out: 'Logged out'
+login.error.locked: 'login not released yet'
+login.error.locked.long: |
+  Your account has not yet been checked by an administrator.<br>
+  					    You will be notified via E-Mail, once your access has been activated .
+login.error.user.and.pass: 'Please check username and password!'
+login.failed: 'Login failed'
+login.lost.password: 'Forgot password'
+login.lost.password.confirmation.sent: 'We have sent you an E-Mail with a confirmation. Please click on the link below, to reset your password.'
+login.lost.password.error.user: |
+  This user is not known!
+                                      Please check your spelling!
+login.lost.password.errors.try.again: 'Errors did occur. Please try again.'
+login.lost.password.lead: 'Enter your username or E-Mail address, to reset your password.'
+login.lost.password.notice: |
+  If you have not received an E-Mail in the next 5 minutes,
+                                      please contact the support.
+login.lost.password.sent: 'A new password was generated and sent to your E-Mail address.'
+login.lost.password.submit: 'Request password'
+login.lost.password.title: 'Request password'
+login.remember: 'Stay logged in?'
+login.submit: Login
+login.successful: 'Login successful!'
+login.successful.lead: 'You are now logged in as an user!'
+login.user: 'Login as user'
+login.user.lead: 'Please login with your username / email and your password.'
+logout: Logout
+mail: E-Mail
+manufacturer: Manufacturer
+manufacturer.categories.lead: 'Bitte wählen Sie eine Produktkategorie des Herstellers, um eine Liste der verfügbaren Produkte zu erhalten.'
+manufacturer.products.category.title: 'Produkte vom Hersteller &quot;{htm(MAN_NAME)}&quot; aus der Kategorie <a href="{uri_action(marktplatz,{ID_KAT})}">&quot;{htm(KAT_V1)}&quot;</a>'
+manufacturer.products.name: Produktbezeichnung
+manufacturer.products.offers: Angebote
+manufacturer.products.offers.none: 'Keine Angebote vorhanden'
+manufacturer.products.offers.single: Angebot
+manufacturer.products.search.result: 'Alle {SEARCH_COUNT} Angebote zu diesem Hersteller anzeigen'
+manufacturer.products.title: 'Produkte vom Hersteller &quot;{htm(MAN_NAME)}&quot;'
+manufacturer.products.top: Top-Angebote
+manufacturer.uppercase: MANUFACTURER
+member.since: 'Member since'
+members: Members
+message: Message
+message.delivered: 'Your message was delivered successfully!'
+message.rent.from: 'Rent from'
+message.rent.to: 'Rent to'
+message.subject: Subject
+mobile: Mobile
+moderator: Moderator
+money.amount: Amount
+month: Monat
+my.events: 'My events'
+my.pages.club.invite.accept: Akzeptieren
+my.pages.club.invite.actions: Aktionen
+my.pages.club.invite.club.name: Club-Name
+my.pages.club.invite.date: 'Datum der Einladung'
+my.pages.club.invite.decline: Ablehnen
+my.participations: 'My participations'
+my.profil.social.media.status: active
+my.searchwords: 'My searchwords'
+name: Name
+name.first: Forename
+name.last: Surname
+new.pic: 'Insert new picture'
+news.media.is.preview: Vorschau
+news.number: News-Nr
+newsletter.confirm.notice: |
+  Soon you will receive an E-Mail with a link,
+              where you can confirm your order.<br>
+              If you are going to change your mind, refrain the confirmation;
+              Your order will be deleted after an amount of time.
+newsletter.confirmation: 'We received your order to our newsletter under the E-Mail address ''{EMAIL}''.'
+newsletter.confirmed.notice.unsubscribe: 'You can unsubscribe from our mailing list via our portal at anytime.'
+newsletter.confirmed.title: 'Thank you for confirming your newsletter order.'
+newsletter.removed.notice.subscribe: 'You can subscribe to our newsletter anytime again.'
+newsletter.removed.title: 'Your address was deleted from our mailing list..'
+next: Next
+'no': 'No'
+no.files.uploaded: 'You have not uploaded any documents.'
+no.rating.found: 'No ratings found.'
+no.searchwords.there: 'No searchwords available'
+not.created.events: 'You have not created any events.'
+not.entered: 'Not confirmed yet'
+not.signedin.events: 'You are not signed in on any events.'
+not.stated: 'Not stated'
+not.yet.saved.pages: 'No saved pages'
+notice: Notice
+number: Number
+offence: Offence
+on.the.site: 'on the site...'
+online: Online
+open: Open
+open.shortly: 'will be published shortly..'
+options: Options
+or: or
+own.events: 'Own events'
+page.error.403: 'The page can not be displayed.'
+page.error.403.long: |
+  You are unauthorized, to visit this page.<br />
+          Please contact the administrator on any more problems.
+page.error.404: 'The site / advert {if fnfpage}({fnfpage}) {endif}can not be displayed.'
+participations: Participations
+password: Password
+password.repeat.abbr: 'Repeat password'
+payable.until: 'Payable until'
+payment.adapter: 'Payment method'
+personal: Personal
+phone: Phone
+pic.delete: 'Delete image'
+pics.and.videos: 'Images and videos'
+pixel: Pixel
+pls.enter.description: 'Please enter a description.'
+plugin.user.task.list.heading: 'First Steps'
+plugin.user.task.list.intro: 'Die folgenden Schritten sollten Sie noch durchgehen, um Ihren Account zu vervollständigen:'
+plus.taxes: 'plus {TAX_PERCENT}% taxes'
+postcode: ZIP
+powered.by: 'powered by <a href="{LINK}">{htm(NAME)}</a>'
+presenter: Moderator
+president: President
+preview: Preview
+price: Price
+price.free: Free
+price.free.trial: 'Free Trial'
+privacy: Privacy
+profil: 'Profile of'
+public: Public
+publish: publish
+quantity: Quantity
+range.until: until
+rating.average: 'Average rating'
+read.more: 'read more'
+realname: Realname
+receiver: Receiver
+register.abo.notice: |
+  *) Parts of the packets in the subscription refer to the terms of the membership. If you have for example 10 adverts
+                                  in your subscription you can have ten adverts parallel active. If you sell one advert, you can make a free
+                                  new one.
+register.check.company: 'I confirm that I <strong>do trade commercially</strong>.'
+register.check.private: 'I confirm that I <strong>do not trade commercially</strong>.'
+register.check.tos: 'I have read the TOS and agree'
+register.confirm.admin.lead: |
+  An administrator will check and release your account shortly.<br>
+  						    You will be informed with an E-Mail, once your access was released.
+register.confirm.admin.title: 'Confirmation of your account'
+register.confirm.mail.info: |
+  <strong>An confirmation code was sent to your E-Mail address</strong><br />
+  							Please follow the embedded link, to complete your registration!<br />
+  							You can not log in without the confirmation!
+register.confirm.mail.lead: 'Your details were saved successfully.'
+register.confirm.mail.title: Congratulations!
+register.error.email.invalid: 'You have to enter a valid E-Mail.'
+register.error.lead: 'The confirmation of your of your account failed.'
+register.error.missing.country: 'You have to select a country.'
+register.error.missing.field: 'You have to fill this field.'
+register.error.missing.selectbox: 'Please select a value'
+register.error.not.numeric: 'You have to enter a number.'
+register.error.password.repeat: 'The password repetition was not correct.'
+register.error.password.too.short: 'The password has to be longer than 5 characters.'
+register.error.title: 'Confirmation of your account'
+register.error.username.invalid: 'The username contains invalid characters. Allowed are letters, numbers and dashes.'
+register.error.username.too.short: 'The username has to be at least 3 characters long.'
+register.forum.rules: 'Rules for the forum'
+register.input.okay: 'Input okay!'
+register.now: 'Register now'
+register.please.fill: 'Please fill the userdata'
+register.security.question: 'Please answer the following security question (Spam-checking)'
+register.security.question.short: 'Security question'
+register.submit.free: 'Register for free now'
+register.submit.paid: 'Register fee-based now'
+register.tos: 'General terms and conditions'
+register.usergroup.select: 'Please choose a fitting usergroup'
+register.welcome.info: |
+  We are happy to welcome you.<br />
+                              Please follow the rules and stay steadily fair.<br />
+                              You can log in now.
+register.welcome.lead: 'You have registered successfully as a user.'
+register.welcome.title: 'Welcome {htm(NAME)} as official member'
+release.the.article: 'release the article'
+remarks: Remarks
+reset: Reset
+responsible: responsible
+result.not.successful: 'Not successful!'
+salutation: Salutation
+save: Save
+save.address: 'Save address'
+search: Suche
+search.results.show: '({ALL_ADS}) Treffer anzeigen'
+search.submit: Search
+searchwords: Searchwords
+security.question: 'Security question'
+select: Select
+select.all: 'Select all'
+select.package: 'Select package'
+selection.all: 'Select all'
+selection.clear: 'Clear selection'
+selection.toggle: 'Select/deselect all'
+send: Send
+send.invite: 'Send invite'
+settings.saved: 'Your settings'
+shipping.costs: 'Shipping costs'
+shipping.use.invoice.address: 'Use billing address'
+shipping.use.invoice.address.checkbox: 'Use billing address for the shipping aswell'
+show.all: 'Show all'
+show.all.products: 'Show all products'
+show.comments: 'Show comments'
+side.structure: 'Our site structure'
+sign: Sign
+slider.next: Next
+slider.prev: Previous
+social.newsletter.order: 'Order newsletter'
+social.newsletter.order.email: 'E-Mail address'
+social.newsletter.order.lead: 'Register now and do not miss an offer again'
+social.visit.us: 'Visit our socialmedia-site'
+start: Start
+start.search: 'Start search'
+statistic.access: Zugriffe
+statistic.access.profile: Profilzugriffe
+statistic.range.day: 'Pro Tag'
+statistic.range.month: 'Pro Monat'
+statistic.recache: Aktualisieren
+statistics.alle.kunden.modal.show: 'Show all customer statistics'
+statistics.modal.show: 'View Statistics'
+status: Status
+step.four: 'Step 4'
+step.one: 'Step 1'
+step.three: 'Step 3'
+step.two: 'Step 2'
+street: Street
+street.number: 'Street & housenumber'
+subject: Subject
+success: Success
+tag: Tags
+tel: Tel
+telephone: Telephone
+the.user: 'the user'
+there.is.an.error: 'An error as occurred'
+time.clock: Clock
+time.from: from
+time.hour: Hour
+time.hours: Hours
+time.span: '{BEGIN}o Clock - {END}o clock'
+title: Title
+title.searchwords: 'Title/searchwords:'
+title.tags: Title/searchwords
+to: to
+to.comment: 'to comment'
+to.login: 'to login'
+topic: topic
+translation.tool.discard.changes: 'Do you really want to discard all changes?'
+try.again.or.contact.support: 'Please try again. If you still have problems, please contact our support.'
+typ: Type
+type.title: 'Please enter a title.'
+unexpected.error: 'An unexpected error has occurred!'
+unlock: Unlock
+unsure: Unsure
+until: until
+upload.cancel: 'Upload abbrechen'
+upload.cancel.confirm: 'Upload wirklich abbrechen?'
+url: Url
+user: User
+user.fax: Fax
+user.invoice.confirm.delete.address: 'Do you really want to delete this address?'
+user.phone: Phone
+user.shipping.confirm.delete: 'Do you really want to delete this address?'
+user.shipping.error.delete.address: 'Error while deleting the address!'
+username: Username
+username.form.person: 'The username of the person'
+value: Value
+vat.id: 'VAT ID'
+view.details: 'View details'
+visibility: visibility
+wait.for.release: 'Wait for release'
+waiting.for.release: 'Wait for release'
+warm.welcome: Welcome!
+warning: Warning!
+watch: watch
+web: Web
+welcome: Welcome
+who.is.where.online: 'Who is online?'
+window.close: 'Close window'
+write.message: 'Write message'
+'yes': 'Yes'
+you.are.in: 'You are in'
+you.can.change.name.once: 'You can change your username once'
+you.have: 'You have'
+your.email: 'Your E-Mail address'
+your.firstname: 'Your forename'
+your.lastname: 'Your surname'
+your.message: 'Your message'
+your.name: 'Your name'
+zip: ZIP
+zip.and.location: 'ZIP & location'
+zipcode: 'ZIP code'

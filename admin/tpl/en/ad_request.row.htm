@@ -1,0 +1,26 @@
+<tr class="zeile{even} {if !STATUS}unapproved{endif}">
+    <td>
+        <a onclick="return confirm('Gesuch wirklich löschen?')" href="index.php?page={curpage}&DO=delete&ID_AD_REQUEST={ID_AD_REQUEST}&npage={npage}">
+            <img border="0" src="gfx/btn.del.gif">
+        </a>
+        <a href="#" onclick="showAdRequestEdit({ID_AD_REQUEST}, 0)" title="Bearbeiten">
+            <img src="gfx/btn.edit.gif" width="32" height="16" alt="Bearbeiten">
+        </a>
+        {if !STATUS}
+        <a onclick="return confirm('Soll das Gesuch freigeschaltet werden?')" href="index.php?page={curpage}&DO=unlock&ID_AD_REQUEST={ID_AD_REQUEST}&npage={npage}">
+            <img border="0" src="gfx/ad_locked.png" alt="gesperrt">
+        </a>
+        {else}
+        <a onclick="return confirm('Soll das Gesuch gesperrt werden?')" href="index.php?page={curpage}&DO=lock&ID_AD_REQUEST={ID_AD_REQUEST}&npage={npage}">
+            <img border="0" src="gfx/ad_unlocked.png" alt="freigeschaltett">
+        </a>
+        {endif}
+    </td>
+    <td>{ID_AD_REQUEST}</td>
+    <td>{todate(STAMP_START)}</td>
+    <td>
+        <a href="index.php?page=user_edit&ID_USER={USER_ID}">{htm(USER_NAME)}</a>
+    </td>
+    <td><a href="{uri_baseurl(/handelsplatz/gesuche/gesuch_anzeigen,{ID_AD_REQUEST},{urllabel(PRODUKTNAME)}.htm)}" target="_blank">{PRODUKTNAME}</a></td>
+    <td><a href="index.php?page=kat_edit&ID_KAT={FK_KAT}&ROOT=5" title="Kategorie bearbeiten">{KAT_NAME}</a></td>
+</tr>

@@ -1,0 +1,51 @@
+<tr class="zeile{even}">
+	<td>
+		<a href="index.php?page=vertrag_edit&ID_VERTRAG={ID_VERTRAG}" title="Vertrag bearbeiten/ansehen">
+			<img src="gfx/btn.edit.gif" width="32" height="16" alt="edit" />
+		</a>
+	</td>
+	<td align="right">{ID_VERTRAG}</td>
+	<td>
+		<a href="index.php?page=packet_edit&id={FK_PACKETGROUP}" title="Paket bearbeiten">
+			{htm(V1)}
+		</a>
+	</td>
+	<td align="right">
+		<a href="index.php?page=user_edit&ID_USER={FK_USER}" title="Kunde ansehen">
+			{htm(FK_USER)}
+		</a>
+	</td>
+	<td>
+		<a href="index.php?page=user_edit&ID_USER={FK_USER}" title="Kunde ansehen">
+			{htm(FIRMA)}{if FIRMA}, {endif}{htm(VORNAME)} {htm(NACHNAME)}
+		</a>
+	</td>
+	<td>
+		{todate(STAMP)}
+	</td>
+	<td>
+		{if STAMP_UNTIL}{todate(STAMP_UNTIL)}{else}-{endif}
+	</td>
+	<td>
+		{if STAMP_CANCEL}
+			{todate(STAMP_CANCEL)}
+		{else}
+			-
+		{endif}
+	</td>
+	<td align="right">
+		{RUNTIME_MONTH} {if RUNTIME_MONTH}Monate{endif}
+	</td>
+	<td>
+		{topreis(PRICE)} {CURRENCY_DEFAULT}
+	</td>
+	<td> &nbsp;&nbsp;&nbsp;
+		{if STAMP_DELIVERY}
+			<a onclick="s_inv({FK_INVOICE});" title="Rechnung betrachten">
+			{todate(STAMP_DELIVERY)}
+			</a>
+		{else}
+			-
+		{endif}
+	</td>
+</tr>

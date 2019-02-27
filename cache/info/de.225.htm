@@ -1,0 +1,31 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="225"{endif}>
+    {if SHOW_MAP}
+{subtpl(tpl/{SYS_TPL_LANG}/googlemaps.htm,type=vendor,ident={MAP_IDENT},height=300)}
+{endif}
+
+<div class="panel panel-primary special-panel questions-panel">
+			<div class="panel-body">
+                <div class="heading">
+                    <span class="circle">1</span>
+                    <span class="explain">Firma finden</span>
+                </div>
+                <p>Finden Sie die Firma, die Ihnen die gesuchten Produkte oder Dienstleistungen anbieten kann.</p>
+                <div class="heading">
+                    <span class="circle">2</span>
+                    <span class="explain">Anfrage stellen</span>
+                </div>
+                <p>Treten Sie in Kontakt und fordern Sie schnell, unkompliziert und unverbindlich ein Angebot an.</p>
+            </div>
+</div>
+
+        <div class="panel panel-primary service-hilfe-panel">
+            <div class="panel-body" style="text-align: center;">
+                <div class="desc">Sie benötigen Hilfe?</div>
+                <div class="heading">
+                    <i class="fa fa-phone"></i>
+                    <span>+49 (0) 631 370 926 95</span>
+                </div>
+            </div>
+        </div>
+</div>

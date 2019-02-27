@@ -1,0 +1,824 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<TITLE>der professionelle Marktplatz auf Basis von php un MySQL
+- ebiz-trader 6.0 - demoversion</TITLE>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link rev="made" content="mailto:info@ebiz-consult.de">
+<meta name="author" content="">
+<meta name="description"
+	content="ebiz-trader 6.0 - Das professionelle multiliguale Anzeigenmarktscript / Marktplatzscript">
+<meta name="Keywords"
+	content="php-entwicklung  webdesign PHP Software ebiz  entwicklung  anzeigenmarkt kleinanzeigen Marktplatz anzeigen verkaufen b2b">
+<meta name="revisit-after" content="1 weeks">
+<meta http-equiv="pragma" content="no-cache">
+<meta name="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
+<META NAME="publisher" CONTENT="">
+<META NAME="copyright" CONTENT="">
+<META NAME="page-type" CONTENT="">
+<META NAME="page-topic" CONTENT="">
+<META NAME="audience" CONTENT="Alle">
+<META NAME="Robots" CONTENT="INDEX,FOLLOW">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="no-cache">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<link rel="stylesheet" type="text/css" href="{uri_baseurl(/skin/de/style-new.css)}" />
+<script src="{uri_baseurl(/sys/misc.js)}" type="text/javascript"></script> <script
+	src="{uri_baseurl(/js/jquery.js)}" type="text/javascript"></script> <script
+	type="text/javascript" src="{uri_baseurl(/js/jquery-tooltip.js)}"></script> <script
+	type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script> <script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-15436959-1");
+pageTracker._setDomainName(".ebiz-trader.de");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</HEAD>
+<body>
+<!-- Tooltip -->
+<div style="position: absolute; display: none; width: 300px;" id="blob">
+<img style="position: absolute; left: 0px; top: 0px;"
+	src="{uri_baseurl(/gfx/blob_top_left.png)}"><img
+	style="position: absolute; right: 0px; top: 0px;"
+	src="{uri_baseurl(/gfx/blob_top_right.png)}"><img
+	style="position: absolute; left: 0px; bottom: 0px;"
+	src="{uri_baseurl(/gfx/blob_bottom_left.png)}"><img
+	style="position: absolute; right: 0px; bottom: 0px;"
+	src="{uri_baseurl(/gfx/blob_bottom_right.png)}">
+<table style="width: 300px;" cellpadding="0" cellspacing="0"
+	class="blob" id="blobtable">
+	<tr>
+		<td></td>
+		<td class="top"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td class="left"></td>
+		<td class="fill" id="blobtext"></td>
+		<td class="right"></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td class="bottom"></td>
+		<td></td>
+	</tr>
+</table></div>
+<!-- / Tooltip -->
+<div id="layout">
+<div id="headcontainer">
+
+<div id="shortBox"><a href="{uri_baseurl(/logout.php)}" title="Ausloggen">
+Logout </a> | <a href="{uri_baseurl(/info/)}" title="Informationen">Informationen</a> | <a
+	href="{uri_baseurl(/info/kontakt.htm)}"
+	title="Sie haben Fragen? melden Sie sich bei uns!"> Kontakt </a> | <a
+	href="{uri_baseurl(/sitemap/)}" title="Usere Sitemap - Alles auf einen Blick">
+Sitemap </a> | <a href="/print.php?frame=print&what=index" title="Drucken">
+Drucken </a>
+<div id="minilogin" style="display: none;">
+<form method="post" action="{uri_baseurl(/login.php)}" style="display: inline">
+<div class="shadow50">
+<table class="mytable">
+	<tr>
+		<td valign="top">
+		<table cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td colspan="2">
+				<h3>Login</h3>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">Bitte geben Sie Ihre Benutzerdaten ein.</td>
+			</tr>
+			<tr>
+				<th>Benutzername</th>
+				<td><input type="text" name="user" size="20"></td>
+			</tr>
+			<tr>
+				<th>Passwort</th>
+				<td><input type="password" name="pass" size="20"></td>
+			</tr>
+			<tr>
+				<td align="right" colspan="2"><input type="submit"
+					value="Login" /><!-- <input onclick="minilogin();" type="button" value="Abbrechen" title="Login abbrechen"> -->
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="right"><a href="{uri_baseurl(/login,lostpassword.htm)}"
+					title="Passwort zugeschickt bekommen">Passwort vergessen?</a></td>
+			</tr>
+		</table>
+		</td>
+		<td valign="top" style="padding-left: 10px;">
+		<div style="float: right;"><a class="close"
+			onclick="minilogin();" title="Login abbrechen">x</a></div>
+		<h3 style="margin-top: 5px;">Sie sind neu hier?</h3>
+		<p>Schnell und kostenlos einen neuen Benutzer-Account einrichten.
+		</p>
+		<p><a href="{uri_baseurl(/register/)}" title="Hier kostenlos anmelden"
+			style="font-weight: bold;">Jetzt kostenlos anmelden</a></p>
+		</td>
+	</tr>
+</table>
+</div>
+</form>
+</div>
+</div>
+<div id="logo"><a href="{uri_baseurl(/)}" title="ebiz-trader - Portalseite"><img
+	src="{uri_baseurl(/bilder/ebiz-trader.png)}" alt="ebiz-trader-6"></a></div>
+<div style="height: 1px"></div>
+<ul id="nav0">
+	<li id="qSearch">
+	<form id="SEARCH_FORM" method="get" action="{uri_baseurl(/index.php)}">
+	<input onfocus="presearch_quick(this, false);"
+		onblur="presearch_quick(this, { which: 27 });"
+		onkeyup="presearch_quick(this, event); return false;" type="text"
+		value="" class="suchfeld" style="width: 150px;" />
+	<input class="qSearch" type="submit" value="SUCHEN">
+	<div id="div_offers">
+	<table style="position: absolute; display: none;" cellspacing="0"
+		cellpadding="0" id="list_offers" class="list_offers">
+	</table>
+	</div>
+	<input type="hidden" id="SEARCH" name="SEARCH" /> <input type="hidden"
+		name="page" value="artikel-suche" />
+	</form>
+	</li>
+	<li><a class="active" href="{uri_baseurl(/)}"
+		title="der professionelle Marktplatz auf Basis von php un MySQL">Home</a>
+	</li>
+	<li><a href="{uri_baseurl(/my-pages/)}"
+		title="Wechseln Sie hier in Ihr pers&ouml;nliches Men&uuml;">Mein
+	Account</a></li>
+	<li><a href="{uri_baseurl(/marktplatz/)}" title="Der Profi Marktplatz">Marktplatz</a>
+	</li>
+	<li><a href="{uri_baseurl(/faq/)}"
+		title="Hier finden Sie Informationen und wichtige Hinweise imm Umgang mit unserem Portal">Hilfe
+	&amp; FAQ</a></li>
+	<li><a href="{uri_baseurl(/info/)}" title="Informationen zum ebiz-trader">Info</a>
+	</li>
+
+</ul>
+<div id="content_page">
+<div
+	style="float: right; margin-top: 10px; margin-right: 200px; width: 550px;">
+<h1 style="padding-top: 0px; color: #000000;">DEMO ebiz-trader 6.0
+<br />
+Profesionelles PHP Marktplatz Script</h1>
+<p class="small">Eine flexible Kategoriengestaltung macht es Ihnen
+m&ouml;glich, nahezu jeden Kleinanzeigenmarkt zu er&ouml;ffnen. Ob KFZ
+Markt, Immobilien Markt oder einfach einen allgemeinen Anzeigenmarkt.</p>
+<p><a
+	href="http://www.ebiz-consult.de/produkte/ebiz-trader-preise.htm"
+	target="_blank"><img src="{uri_baseurl(/bilder/order.png)}" border="0"
+	alt="jetzt bestellen" width="77" height="36" /></a>&nbsp;&nbsp;&nbsp;&nbsp;<a
+	href="http://www.ebiz-consult.de/produkte/ebiz-trader-preise.htm"
+	target="_blank"><img src="{uri_baseurl(/bilder/1499.png)}" border="0" alt=""
+	width="77" height="36" /></a></p>
+</div>
+<p style="padding-top: 0px; margin-top: 0px;"><a
+	title="Profesionelles PHP Marktplatz Script"
+	href="http://www.ebiz-consult.de/produkte/ebiz-trader.htm"
+	target="_blank"><img
+	style="border: 0pt none; margin-left: 10px; margin-right: 10px;"
+	src="{uri_baseurl(/bilder/buch-ebiz-trader.jpg)}"
+	alt="Profesionelles PHP Marktplatz Script" width="95" height="149" /></a></p>
+</div>
+<div id="nav1"><a href="{uri_baseurl(/marktplatz/)}"
+	title="Alle Kategorien ansehen"> Alle Kategorien </a></div>
+
+<div id="menuLine">
+<table cellspacing="0" cellpadding="0" border="0">
+	<tr>
+		<td id="userInfoLinks">&nbsp;</td>
+		<td id="userInfoRechts">
+
+		<div class="user_news" style="margin-left: 30px; float: left;">
+		<table cellspacing="0" cellpadding="0">
+			<tr>
+				<td><img src="{uri_baseurl(/bilder/mail_20.png)}" /></td>
+				<td><span>(0)</span> <a title="Zum Posteingang"
+					href="{uri_baseurl(/my-pages/my-msg.htm)}">neue Mails</a><br />
+				(3) <a title="Zum Posteingang" href="{uri_baseurl(/my-pages/my-msg.htm)}">Posteingang</a>
+				</td>
+			</tr>
+		</table>
+		</div>
+		<div class="user_news" style="float: left; margin-left: 10px;">
+		<table cellspacing="0" cellpadding="0">
+			<tr>
+				<td><img src="{uri_baseurl(/bilder/merken.png)}" /></td>
+				<td><a href="{uri_baseurl(/my-pages/merkliste.htm)}"
+					title="Zur Merkliste wechseln">Merkliste</a><br />
+				<a href="{uri_baseurl(/my-pages/merkliste.htm)}" title="Zur Merkliste wechseln">(0)
+				Artikel vorgemerkt</a></td>
+			</tr>
+		</table>
+		</div>
+		<div class="user_news" style="float: left; margin-left: 10px;">
+		<table cellspacing="0" cellpadding="0">
+			<tr>
+				<td><img src="{uri_baseurl(/bilder/small-userpic.png)}" width="16" height="16"
+					alt="" border="0" /></td>
+				<td>Angemeldet als:<br />
+				<a href="{uri_baseurl(/my-pages/my-pages/my-profil.htm)}">admin</a></td>
+			</tr>
+		</table>
+		</div>
+		<div style="clear: left; height: 1px;"></div>
+
+		</td>
+	</tr>
+</table>
+</div>
+
+</div>
+<!-- // head -->
+<div id="market_body">
+<div id="market_left">
+<div align="center"></div>
+
+<form onsubmit="dosearch(); return false;" id="presearch" method="post"
+	action="{uri_baseurl(/index.php)}">
+<input type="hidden" name="page" value="presearch_ajax" />
+<input type="hidden" name="FK_KAT" value="1" />
+<input type="hidden" name="frame" value="ajax" />
+<div class="kats_left">
+
+<div class="katbox">
+<h3 class="top">Kategorie Auswahl</h3>
+<ul class="katleft">
+	<li><a class="level0 has_icon"
+		href="{uri_baseurl(/marktplatz,420,Automobile.htm)}" title=""> <img
+		src="{uri_baseurl(/uploads/kategorien/420.gif)}"
+		style="padding: 0px; margin: -4px 0px; border: none;" /> Automobile
+	(92) </a></li>
+	<li><a class="level0" href="{uri_baseurl(/marktplatz,448,null-tree---test.htm)}"
+		title=""> null tree - test (0) </a></li>
+	<li><a class="level0" href="{uri_baseurl(/marktplatz,426,Baumaterial.htm)}"
+		title="Baumaterialien aller Art."> Baumaterial (0) </a></li>
+	<li><a class="level0" href="{uri_baseurl(/marktplatz,422,Buero.htm)}" title="">
+	B&uuml;ro (1) </a></li>
+	<li><a class="level0 has_icon"
+		href="{uri_baseurl(/marktplatz,430,Grundstuecke.htm)}"
+		title="Grundst&uuml;cke unbebaut"> <img
+		src="{uri_baseurl(/uploads/kategorien/430.gif)}"
+		style="padding: 0px; margin: -4px 0px; border: none;" />
+	Grundst&uuml;cke (0) </a></li>
+	<li><a class="level0" href="{uri_baseurl(/marktplatz,427,Tiere.htm)}"
+		title="Tiere aller Art"> Tiere (0) </a></li>
+	<li><a class="level0" href="{uri_baseurl(/marktplatz,447,Reifen.htm)}"
+		title="Reifen ... runde :)"> Reifen (3) </a></li>
+	<li><a class="level0" href="{uri_baseurl(/marktplatz,421,Haushalt.htm)}" title="">
+	Haushalt (5) </a></li>
+	<li><a class="level0" href="{uri_baseurl(/marktplatz,423,Moebel.htm)}"
+		title="M&ouml;bel"> M&ouml;bel (0) </a></li>
+
+</ul>
+<div class="more" style="text-align: right;"><a
+	href="{uri_baseurl(/marktplatz/)}" title="Zur Marktplatz&uuml;bersicht"> alle
+Kategorien </a></div>
+</div>
+
+
+</div>
+</form>
+<div align="center"><script type="text/javascript"><!--
+google_ad_client = "pub-8569280672982767";
+/* 300x250, Erstellt 19.03.10 */
+google_ad_slot = "0376917038";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script> <script type="text/javascript"
+	src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+<br />
+<div class="stdBox">
+<h3 class="top">Jetzt Newsletter bestellen<br />
+</h3>
+<p>Jetzt anmelden und kein Angebot mehr verpassen</p>
+<form style="padding-left: 10px" action="{uri_baseurl(/newsletter/)}" method="post">
+Ihre Emailadresse :
+<br />
+<input class="inputqtr" maxlength="255" name="EMAIL" type="text"
+	value="" />
+<br />
+<br />
+<input id="nl_opt-in" checked="checked" name="mode" type="radio"
+	value="optin" />
+<label for="nl_opt-in">Newsletter bestellen</label>
+<br />
+<input id="nl_opt-out" name="mode" type="radio" value="optout" />
+<label for="nl_opt-out">Newsletter k&uuml;ndigen</label>
+<br />
+<br />
+<input type="submit" value="Bestellen" />
+</form>
+&nbsp;</div>
+<br />
+</div>
+<div id="market_right">
+
+<style type="text/css">
+.imp {
+	background-color: #fff;
+	border-width: 2px;
+}
+</style>
+<!-- Top Anzeigen -->
+<div class="adBoxFulltext imp">
+<h1>Highlights aus dem Marktplatz</h1>
+
+<div id='tooltip_top_4471296' style="display: none;" class="tooltip_img">
+<img src="" /></div>
+<div class="katbox topad"
+	style="border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1296,Breitreifen.htm)}""> <img
+	src="{uri_baseurl(/gfx/nopic.jpg)}" id="TOP_AD_4471296" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1296,Breitreifen.htm)}"
+	title="Details zu Breitreifen"> Breitreifen </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,447,Reifen.htm)}"
+	title="Mehr aus der Kategorie Reifen">Reifen</a> </strong><br />
+<strong>Preis: 225.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#TOP_AD_4471296', '#tooltip_top_4471296');
+</script>
+<div id='tooltip_top_4201314' style="display: none;" class="tooltip_img">
+<img src="{uri_baseurl(/cache/marktplatz/2011/02/1314/0.56851800_1297767843.jpg)}" />
+</div>
+<div class="katbox topad"
+	style="border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1314,Porsche-007--Model-677-Oldtimer--H-Kennzeichen.htm)}"">
+<img
+	src="{uri_baseurl(/cache/marktplatz/2011/02/1314/thumb_0.24222300_1297767844.jpg)}"
+	id="TOP_AD_4201314" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1314,Porsche-007--Model-677-Oldtimer--H-Kennzeichen.htm)}"
+	title="Details zu Porsche 007 , Model 677 ,Oldtimer !! H Kennzeichen  ">
+Porsche 007 , Model 677 ,Oldtimer !! H Kennzeichen </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,420,Automobile.htm)}"
+	title="Mehr aus der Kategorie Automobile">Automobile</a> </strong><br />
+<strong>Preis: 87690.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#TOP_AD_4201314', '#tooltip_top_4201314');
+</script>
+<div id='tooltip_top_4201298' style="display: none;" class="tooltip_img">
+<img src="{uri_baseurl(/cache/marktplatz/2011/02/1298/0.75200100_1297680358.jpg)}" />
+</div>
+<div class="katbox topad"
+	style="border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1298,verschluesselt-Eins.htm)}"">
+<img
+	src="{uri_baseurl(/cache/marktplatz/2011/02/1298/thumb_0.24093100_1297680359.jpg)}"
+	id="TOP_AD_4201298" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1298,verschluesselt-Eins.htm)}"
+	title="Details zu verschl&uuml;sselt Eins"> verschl&uuml;sselt Eins
+</a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,420,Automobile.htm)}"
+	title="Mehr aus der Kategorie Automobile">Automobile</a> </strong><br />
+<strong>Preis: 2500.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#TOP_AD_4201298', '#tooltip_top_4201298');
+</script> <br style="clear: left;" />
+</div>
+<!-- // Top Anzeigen --> <!-- USER VORGESTELLT -->
+
+<div class="adBoxFulltext" style="background-color: #ffffff;">
+<h2>Vorgestellt: <a title="Alle Artikel von admin"
+	href="{uri_baseurl(/view_user,admin,1.htm)}">admin (ebiza)</a></h2>
+<table width="100%">
+	<tr>
+		<td>
+		<div style="text-align: justify; width: 300px;">
+		<div
+			style="float: left; margin-right: 10px; width: 100px; text-align: center;">
+		<a title="Alle Artikel von admin" href="{uri_baseurl(/view_user,admin,1.htm)}"
+			class="small"> <img src="{uri_baseurl(/cache/users/A/1/1.jpg)}" alt="admin" />
+		</a> <br />
+		<a title="Alle Artikel von admin" href="{uri_baseurl(/view_user,admin,1.htm)}"
+			class="small"> &gt;&gt; admins Shop </a></div>
+		<div style="float: left; width: 190px;">Lorem ipsum dolor sit
+		amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+		invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+		At vero eos et accusam et justo duo dolores [...]</div>
+		<br style="clear: both;" />
+		</div>
+		</td>
+		<td>
+		<h3 style="clear: both; margin-top: 5px; font-size: 13px;">Angebote
+		von admin</h3>
+		<p><a
+			style="display: block; float: left; padding: 2px; margin: 2px; background-color: #999; border: 1px #fff solid;"
+			href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1298,verschluesselt-Eins.htm)}"
+			title="verschl&uuml;sselt Eins"> <img
+			src="{uri_baseurl(/cache/marktplatz/2011/02/1298/thumb_0.24093100_1297680359.jpg)}"
+			alt="verschl&uuml;sselt Eins" /> </a><a
+			style="display: block; float: left; padding: 2px; margin: 2px; background-color: #999; border: 1px #fff solid;"
+			href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1330,Bremsscheibe-A2-A3-Ibiza-Fabia-Octavia-Golf-4-Polo.htm)}"
+			title="Bremsscheibe A2 A3 Ibiza Fabia Octavia Golf 4 Polo"> <img
+			src="{uri_baseurl(/cache/marktplatz/2011/03/1330.420/thumb_0.03869600_1296121039.jpg)}"
+			alt="Bremsscheibe A2 A3 Ibiza Fabia Octavia Golf 4 Polo" /> </a><a
+			style="display: block; float: left; padding: 2px; margin: 2px; background-color: #999; border: 1px #fff solid;"
+			href="{uri_baseurl(/marktplatz/marktplatz_anzeige,358,FABIA-POLO-LICHTMASCHINE-1-9TDi-PD-ATD-74-KW--2005.htm)}"
+			title="FABIA-POLO LICHTMASCHINE 1.9TDi-PD, ATD, 74 KW , 2005"> <img
+			src="{uri_baseurl(/cache/marktplatz/2011/01/358/thumb_0.51089700_1295949126.jpg)}"
+			alt="FABIA-POLO LICHTMASCHINE 1.9TDi-PD, ATD, 74 KW , 2005" /> </a></p>
+		<br style="clear: both;" />
+		</td>
+	</tr>
+</table>
+</div>
+
+<!-- // USER VORGESTELLT --> <!-- NEWS -->
+<div class="adBoxFulltext" style="background-color: rgb(255, 255, 255);">
+<table>
+	<tr>
+		<td valign="top">
+		<table cellspacing="0" width="100%">
+			<tr>
+				<td><a
+					href="{uri_baseurl(/info/news,3,Werben-Sie-fuer-Ihre-Produkte-oder-Webseite-auf-unserem-Marktplatz.htm)}"
+					title="Werben Sie f&uuml;r Ihre Produkte oder Webseite auf unserem Marktplatz"><img
+					src="{uri_baseurl(/uploads/images/kat_89.jpg)}" width="41" height="22"
+					alt="Werben Sie f&uuml;r Ihre Produkte oder Webseite auf unserem Marktplatz"></a></td>
+				<td><a
+					href="{uri_baseurl(/info/news,3,Werben-Sie-fuer-Ihre-Produkte-oder-Webseite-auf-unserem-Marktplatz.htm)}"
+					title="Werben Sie f&uuml;r Ihre Produkte oder Webseite auf unserem Marktplatz">Werben
+				Sie f&uuml;r Ihre Produkte oder Webseite auf unserem Marktplatz</a></td>
+			</tr>
+			<tr>
+				<td colspan="2">Unser Marktplatz bietet Ihnen attraktive
+				M&ouml;glichkeiten, Ihre Produkte zielgerichtet zu bewerben.&nbsp</td>
+			</tr>
+		</table>
+		</td>
+		<td valign="top">
+		<table cellspacing="0" width="100%">
+			<tr>
+				<td><a
+					href="{uri_baseurl(/info/news,2,Einfaches-einstellen-fuer-Haendler.htm)}"
+					title="Einfaches einstellen f&uuml;r H&auml;ndler"><img
+					src="{uri_baseurl(/uploads/images/kat_88.jpg)}" width="62" height="22"
+					alt="Einfaches einstellen f&uuml;r H&auml;ndler"></a></td>
+				<td><a
+					href="{uri_baseurl(/info/news,2,Einfaches-einstellen-fuer-Haendler.htm)}"
+					title="Einfaches einstellen f&uuml;r H&auml;ndler">Einfaches
+				einstellen f&uuml;r H&auml;ndler</a></td>
+			</tr>
+			<tr>
+				<td colspan="2">Mit unsere eBay-Schnittstelle und unserem
+				CSV-Importer k&ouml;nnen Sie kinderleicht Produkte in unserem
+				Marktplatz einstellen. Informieren Sie sich jetzt.&nbsp</td>
+			</tr>
+		</table>
+		</td>
+		<td valign="top">
+		<table cellspacing="0" width="100%">
+			<tr>
+				<td><a
+					href="{uri_baseurl(/info/news,1,Stellen-Sie-Ihre-Produkte-jetzt-kostenlos-ein.htm)}"
+					title="Stellen Sie Ihre Produkte jetzt kostenlos ein"><img
+					src="{uri_baseurl(/uploads/images/kat/101.jpg)}" width="31" height="27"
+					alt="Stellen Sie Ihre Produkte jetzt kostenlos ein"></a></td>
+				<td><a
+					href="{uri_baseurl(/info/news,1,Stellen-Sie-Ihre-Produkte-jetzt-kostenlos-ein.htm)}"
+					title="Stellen Sie Ihre Produkte jetzt kostenlos ein">Stellen
+				Sie Ihre Produkte jetzt kostenlos ein</a></td>
+			</tr>
+			<tr>
+				<td colspan="2">Nutzen Sie unseren Marktplatz um Ihre Produkte
+				bestm&ouml;glichst zu verkaufen. Melden Sie sich jetzt an!&nbsp</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+</div>
+<!-- // NEWS --> <!-- neue Anzeigen -->
+<div class="adBoxFulltext">
+<h1>Weitere Neuheiten aus dem Marktplatz</h1>
+
+<div id='tooltip_4211331' style="display: none;" class="tooltip_img">
+<img src="{uri_baseurl(/cache/marktplatz/2011/03/1331.421/0.21401000_1295949122.jpg)}" />
+</div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1331,A4---A6---PASSAT-LICHTMASCHINE-2-5TDi-BDG120kW-2003.htm)}"">
+<img
+	src="{uri_baseurl(/cache/marktplatz/2011/03/1331.421/thumb_0.60632200_1295949122.jpg)}"
+	id="AD_4211331" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1331,A4---A6---PASSAT-LICHTMASCHINE-2-5TDi-BDG120kW-2003.htm)}"
+	title="Details zu A4 - A6 - PASSAT LICHTMASCHINE 2.5TDi, BDG,120kW, 2003">
+A4 - A6 - PASSAT LICHTMASCHINE 2.5TDi, BDG,120kW, 2003 </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,421,Haushalt.htm)}"
+	title="Mehr aus der Kategorie Haushalt">Haushalt</a> </strong><br />
+<strong>Preis: 109.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4211331', '#tooltip_4211331');
+</script>
+<div id='tooltip_4201330' style="display: none;" class="tooltip_img">
+<img src="{uri_baseurl(/cache/marktplatz/2011/03/1330.420/0.01266200_1296121039.jpg)}" />
+</div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1330,Bremsscheibe-A2-A3-Ibiza-Fabia-Octavia-Golf-4-Polo.htm)}"">
+<img
+	src="{uri_baseurl(/cache/marktplatz/2011/03/1330.420/thumb_0.03869600_1296121039.jpg)}"
+	id="AD_4201330" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1330,Bremsscheibe-A2-A3-Ibiza-Fabia-Octavia-Golf-4-Polo.htm)}"
+	title="Details zu Bremsscheibe A2 A3 Ibiza Fabia Octavia Golf 4 Polo">
+Bremsscheibe A2 A3 Ibiza Fabia Octavia Golf 4 Polo </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,420,Automobile.htm)}"
+	title="Mehr aus der Kategorie Automobile">Automobile</a> </strong><br />
+<strong>Preis: 25.99 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4201330', '#tooltip_4201330');
+</script>
+<div id='tooltip_4211329' style="display: none;" class="tooltip_img">
+<img src="" /></div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1329,Lorem-ipsum-dolor-sit-amet-consetetur-sadipscing-elitr-sed-diam-nonumy-eirmod.htm)}"">
+<img src="{uri_baseurl(/gfx/nopic.jpg)}" id="AD_4211329" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1329,Lorem-ipsum-dolor-sit-amet-consetetur-sadipscing-elitr-sed-diam-nonumy-eirmod.htm)}"
+	title="Details zu Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod">
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+eirmod </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,421,Haushalt.htm)}"
+	title="Mehr aus der Kategorie Haushalt">Haushalt</a> </strong><br />
+<strong>Preis: 0.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4211329', '#tooltip_4211329');
+</script>
+<div id='tooltip_4381328' style="display: none;" class="tooltip_img">
+<img src="" /></div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1328,VLLT-GEHT-BITLY-JETZT.htm)}"">
+<img src="{uri_baseurl(/gfx/nopic.jpg)}" id="AD_4381328" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1328,VLLT-GEHT-BITLY-JETZT.htm)}"
+	title="Details zu VLLT: GEHT BITLY JETZT"> VLLT: GEHT BITLY JETZT </a>
+</h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,438,Test1a.htm)}"
+	title="Mehr aus der Kategorie Test1a">Test1a</a> </strong><br />
+<strong>Preis: 1.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4381328', '#tooltip_4381328');
+</script>
+<div id='tooltip_4221327' style="display: none;" class="tooltip_img">
+<img src="" /></div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1327,Jetzt-machen-wir-das-mal-richtig-wss.htm)}"">
+<img src="{uri_baseurl(/gfx/nopic.jpg)}" id="AD_4221327" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1327,Jetzt-machen-wir-das-mal-richtig-wss.htm)}"
+	title="Details zu Jetzt machen wir das mal richtig w&szlig;"> Jetzt
+machen wir das mal richtig w&szlig; </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,422,Buero.htm)}"
+	title="Mehr aus der Kategorie B&uuml;ro">B&uuml;ro</a> </strong><br />
+<strong>Preis: 847.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4221327', '#tooltip_4221327');
+</script>
+<div id='tooltip_4211326' style="display: none;" class="tooltip_img">
+<img src="" /></div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1326,ohne-Bitly.htm)}""> <img
+	src="{uri_baseurl(/gfx/nopic.jpg)}" id="AD_4211326" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1326,ohne-Bitly.htm)}"
+	title="Details zu ohne Bitly"> ohne Bitly </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,421,Haushalt.htm)}"
+	title="Mehr aus der Kategorie Haushalt">Haushalt</a> </strong><br />
+<strong>Preis: 22.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4211326', '#tooltip_4211326');
+</script>
+<div id='tooltip_4211325' style="display: none;" class="tooltip_img">
+<img src="" /></div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1325,Bitly-will-nicht.htm)}""> <img
+	src="{uri_baseurl(/gfx/nopic.jpg)}" id="AD_4211325" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1325,Bitly-will-nicht.htm)}"
+	title="Details zu Bitly will nicht?"> Bitly will nicht? </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,421,Haushalt.htm)}"
+	title="Mehr aus der Kategorie Haushalt">Haushalt</a> </strong><br />
+<strong>Preis: 0.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4211325', '#tooltip_4211325');
+</script>
+<div id='tooltip_4211324' style="display: none;" class="tooltip_img">
+<img src="" /></div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1324,lorem-ipsum.htm)}""> <img
+	src="{uri_baseurl(/gfx/nopic.jpg)}" id="AD_4211324" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1324,lorem-ipsum.htm)}"
+	title="Details zu lorem ipsum"> lorem ipsum </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,421,Haushalt.htm)}"
+	title="Mehr aus der Kategorie Haushalt">Haushalt</a> </strong><br />
+<strong>Preis: 55.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4211324', '#tooltip_4211324');
+</script>
+<div id='tooltip_4201315' style="display: none;" class="tooltip_img">
+<img src="{uri_baseurl(/cache/marktplatz/2011/02/1315/0.09928300_1297767965.jpg)}" />
+</div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1315,Porsche-007.htm)}""> <img
+	src="{uri_baseurl(/cache/marktplatz/2011/02/1315/thumb_0.68563500_1297767965.jpg)}"
+	id="AD_4201315" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1315,Porsche-007.htm)}"
+	title="Details zu Porsche 007"> Porsche 007 </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,420,Automobile.htm)}"
+	title="Mehr aus der Kategorie Automobile">Automobile</a> </strong><br />
+<strong>Preis: 78000.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4201315', '#tooltip_4201315');
+</script>
+<div id='tooltip_4201314' style="display: none;" class="tooltip_img">
+<img src="{uri_baseurl(/cache/marktplatz/2011/02/1314/0.56851800_1297767843.jpg)}" />
+</div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1314,Porsche-007--Model-677-Oldtimer--H-Kennzeichen.htm)}"">
+<img
+	src="{uri_baseurl(/cache/marktplatz/2011/02/1314/thumb_0.24222300_1297767844.jpg)}"
+	id="AD_4201314" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1314,Porsche-007--Model-677-Oldtimer--H-Kennzeichen.htm)}"
+	title="Details zu Porsche 007 , Model 677 ,Oldtimer !! H Kennzeichen  ">
+Porsche 007 , Model 677 ,Oldtimer !! H Kennzeichen </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,420,Automobile.htm)}"
+	title="Mehr aus der Kategorie Automobile">Automobile</a> </strong><br />
+<strong>Preis: 87690.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4201314', '#tooltip_4201314');
+</script>
+<div id='tooltip_4201306' style="display: none;" class="tooltip_img">
+<img src="" /></div>
+<div class="katbox"
+	style="background: white; border-color: #cccccc; width: 145px; float: left; margin: 4px">
+<p align="center"><a
+	href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1306,7.htm)}""> <img
+	src="{uri_baseurl(/gfx/nopic.jpg)}" id="AD_4201306" /> </a></p>
+<h3 class="topic"
+	style="text-align: center; height: 30px; overflow: hidden; padding: 0px; margin: 0px;">
+<a href="{uri_baseurl(/marktplatz/marktplatz_anzeige,1306,7.htm)}" title="Details zu 7">
+7 </a></h3>
+<p align="center" style="font-size: 10px; height: 40px;"><strong>
+Kategorie: <a href="{uri_baseurl(/marktplatz,420,Automobile.htm)}"
+	title="Mehr aus der Kategorie Automobile">Automobile</a> </strong><br />
+<strong>Preis: 30.00 &euro;</strong></p>
+</div>
+<script type="text/javascript">
+	EnableTooltip('#AD_4201306', '#tooltip_4201306');
+</script> <br style="clear: left;" />
+</div>
+
+
+
+<table border="0" align="center" class="browseTable">
+	<tr>
+		<td width="100%" align="center">Anzahl der gefundenen
+		Seitenanzahl : (<b>6</b>)<br><br> <b>&nbsp;&nbsp;&nbsp;<span
+			class="pagenumstatic">1</span>&nbsp;<span class="pagenum"><a
+			href="{uri_baseurl(/alle-anzeigen,2.htm)}" title="zur Seite 2 ">2</a></span>&nbsp;<span
+			class="pagenum"><a href="{uri_baseurl(/alle-anzeigen,3.htm)}"
+			title="zur Seite 3 ">3</a></span>&nbsp;<span class="pagenum"><a
+			href="{uri_baseurl(/alle-anzeigen,4.htm)}" title="zur Seite 4 ">4</a></span>&nbsp;<span
+			class="pagenum"><a href="{uri_baseurl(/alle-anzeigen,5.htm)}"
+			title="zur Seite 5 ">5</a></span>&nbsp;&nbsp;<span class="pagenum"><a
+			href="{uri_baseurl(/alle-anzeigen,2.htm)}" title="vorw&auml;rts">&raquo;</a></span>&nbsp;<span
+			class="pagenum">... <a href="{uri_baseurl(/alle-anzeigen,6.htm)}"
+			title="zum Ende">Ende &raquo;</a></span></b>
+		</td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+
+
+<!-- // neue Anzeigen --></div>
+<div id="footer">
+<table style="width: 100%;" border="0">
+	<tbody>
+		<tr>
+			<td style="width: 50%;" valign="top">
+			<p><strong>Copyright &copy; 2011 ebiz-consult. Alle
+			Rechte vorbehalten.</strong></p>
+			<p>Die auf dieser Seite verwendeten Produktbezeichnungen, Namen
+			und Warenzeichen sind Eigentum der jeweiligen Firmen.</p>
+			<p>Mit der Benutzung dieser Seite erkennen Sie unsere AGB und die
+			Datenschutzerkl&auml;rung an.</p>
+			<p>Wir &uuml;bernehmen in keinem Fall eine Haftung f&uuml;r
+			Sch&auml;den, die durch den Gebrauch dieser Website entstehen!</p>
+			</td>
+			<td valign="top">
+			<ul type="square">
+				<li><a title="rechtliche Angaben" href="{uri_baseurl(/info/impressum.htm)}">Impressum</a></li>
+				<li><a title="so erreichen Sie uns" href="{uri_baseurl(/info/kontakt.htm)}">Kontakt</a></li>
+				<li><a title="unsere AGB" href="{uri_baseurl(/info/agb.htm)}">AGB</a></li>
+				<li><a title="Haftungsausschluss"
+					href="{uri_baseurl(/info/haftungsausschluss.htm)}">Haftungsaussschlu&szlig;</a></li>
+				<li><a title="Datenschutzerkl&auml;rung"
+					href="{uri_baseurl(/info/datenschutzerklaerung.htm)}">Datenschutzerkl&auml;rung</a></li>
+				<li><a href="{uri_baseurl(/faq/)}">FAQ</a></li>
+			</ul>
+			</td>
+			<td valign="top"><img src="{uri_baseurl(/bilder/paypal.png)}" border="0" alt=""
+				width="139" height="44" />
+			<ul type="square">
+			</ul>
+			<ul type="square">
+				<li><a title="Partner von gastro2gastro"
+					href="{uri_baseurl(/info/partner.htm)}">Partner</a></li>
+				<li><a title="Nutzen Sie unser Potential"
+					href="{uri_baseurl(/info/werbung.htm)}">Werbung buchen</a></li>
+			</ul>
+			</td>
+			<td valign="top"><a title="ebiz-consult e.K. PHP-Entwicklung"
+				href="http://www.ebiz-consult.de/" target="_blank"><img
+				src="http://www.ebiz-consult.de/bilder/ebiz-consult-best-ebiz.gif"
+				border="0" alt="" width="95" height="122" align="left" /></a></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</div>
+</div>
+</body>
+</html>

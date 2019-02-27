@@ -1,0 +1,172 @@
+{if !READY}
+{if err}
+<div class="hinweis"><span class="error">{err}</span></div>
+{endif}
+<form action="{uri_baseurl(index.php)}" method="post">
+<input type="hidden" name="page" value="{curpage}">
+<h1>Our press service</h1>
+<table border="0" width="100%" align="center" valign="top" cellspacing="0" cellpadding="0" class="formTable">
+  <tr>
+    <td valign="top" rowspan="3">&nbsp;</td>
+    <td width="100%">
+<strong>Please send me all press messages via:</strong>
+<p>
+<input type=radio name="kontaktart" value="E-Mail" class="nob" {if kontaktart_E-Mail || !kontaktart} checked{endif}>&nbsp;E-Mail &nbsp;&nbsp;&nbsp;
+<input type=radio name="kontaktart" value="Fax" class="nob"{if kontaktart_Fax} checked{endif}>&nbsp;Fax &nbsp;&nbsp;&nbsp;
+<input type=radio name="kontaktart" value="Postal" class="nob" {if kontaktart_Post} checked{endif}>&nbsp;Post &nbsp;&nbsp;&nbsp;&nbsp;
+to the addresses below.</p></td>
+    <td  valign="top"><img src="{uri_baseurl(pic/space.gif)}" width="25" height="1"></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+    
+<tr><td>       
+               <table border="0" width="100%" cellspacing="0" cellpadding="0">
+
+          <tr>
+            <td width="4%" valign="top">
+             <input type=checkbox name="pressemappe" value="Yes, please send." class="nob"{if pressemappe} checked{endif}>
+            </td>
+            
+            <td width="96%"> <strong>Please send me the current press folder.<br>
+            </strong>I have interest in:</td>
+          </tr>
+
+          <tr>
+            <td width="4%"><br>
+&nbsp;
+            </td>
+            
+            <td width="96%"><br>
+<textarea cols=30 rows=5 name="interessen">{htm(interessen)}</textarea><br>&nbsp;
+            </td>
+            
+
+
+          </tr>
+
+
+          <tr>
+            <td width="4%" valign="top">
+               <input  class="nob" type=checkbox name="recherchereise" value="Yes, please call me."{if recherchereise} checked{endif}>
+            </td>
+            
+            <td width="96%"> <strong>I plan a research trip over:<br>
+              <br>
+            </strong>
+              <input size=25  style="width:250;" maxlength=60 name="recherchethema" value="{htm(recherchethema)}">
+                <br>
+                <br>
+                Please call me because of this.
+                <p>
+            </td></tr>
+
+          <tr>
+            <td width="4%" valign="top">&nbsp;
+             
+            </td>
+            
+            <td width="96%">              <strong>What I alwas wanted to say...</strong></td>
+                                 
+          </tr>
+
+          <tr>
+            <td width="4%">&nbsp;
+               
+            </td>
+            
+            <td width="96%"><br>
+<textarea cols=30 rows=5 name="meinung">{htm(meinung)}</textarea><br><br>
+            </td>
+            
+
+
+          </tr>
+
+<tr><td colspan="2"><br>
+
+
+        <table border="0" width="100%" height="65" align="left" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td colspan="2" align="left"><strong>Now we need your datas:</strong></td>
+          </tr>
+          <tr>
+            <td colspan="3">&nbsp; </td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%"> <b>Name:</b> </td>
+            <td width="100%" align="left"><input size=25  style="width:250;" maxlength=60 name="Name" value="{htm(Name)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>Forename:&nbsp;</b> </td>
+            <td width="100%" height="15"><input size=25  style="width:250;" maxlength=60 name="Vorname" value="{htm(Vorname)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>Medium:</b> </td>
+            <td width="100%" height="15"><input size=25  style="width:250;" maxlength=60 name="Medium" value="{htm(Medium)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>Department:</b> </td>
+            <td width="100%" height="15" valign="top"><input size=25  style="width:250;" maxlength=60 name="Ressort" value="{htm(Ressort)}"></td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp; </td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>Street:</b> </td>
+            <td width="100%" height="15"><input size=25  style="width:250;" maxlength=60 name="Strasse" value="{htm(Strasse)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>ZIP:</b> </td>
+            <td width="100%" height="15"><input size=9  style="width:100;" maxlength=30 name="PLZ" value="{htm(PLZ)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>Residence:</b> </td>
+            <td width="100%" height="15"><input size=25  style="width:250;" maxlength=60 name="Wohnort" value="{htm(Wohnort)}"></td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp; </td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>Phone number:</b> </td>
+            <td width="100%" height="15"><input size=20  style="width:180;" maxlength=45 name="Telefon" value="{htm(Telefon)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>Fax:</b> </td>
+            <td width="100%" height="15"><input size=20  style="width:180;" maxlength=45 name="Telefax" value="{htm(Telefax)}"></td>
+          </tr>
+          <tr>
+            <td width="4%">&nbsp; </td>
+            <td width="26%" align="left"> <b>E-Mail:</b> </td>
+            <td width="100%" height="15"><input size=20  style="width:180;" maxlength=45 name="Email" value="{htm(Email)}"></td>
+          </tr>
+          <tr align="right" class="footer">
+            <td colspan="3">
+                <input name="submit" type="submit" class="button">
+                </td>
+            </tr>
+        </table></td>
+</tr>
+        </table>
+
+</td>
+    <td  valign="top"><img src="{uri_baseurl(pic/space.gif)}" width="25" height="1"></td></tr>
+
+  
+
+  
+</table>
+</form>
+{else}
+<h1>Thank you!</h1>
+<p>We received your message and we will message you shortly!</p>
+{endif}
+

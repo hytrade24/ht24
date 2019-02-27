@@ -1,0 +1,49 @@
+{if !ID_BACKUP}
+<table cellspacing="0" cellpadding="0" class="liste">
+  <tr>
+    <th colspan="2"><h2>Rückgängig Schritte</h2></th>
+  </tr>
+  {liste_undo}
+</table>
+{endif}
+<table width="100%" cellspacing="2" class="kontrast">
+  <tr>
+    <th colspan="2"><h3>Legende</h3></th>
+  </tr>
+  <tr>
+    <td><img src="gfx/btn.edit.gif"></td>
+    <td>Kategorie bearbeiten</td>
+  </tr>
+  <tr>
+    <td><img src="gfx/btn.del.gif"></td>
+    <td>Kategorie löschen</td>
+  </tr>
+  <tr>
+    <td><img style="background-color: black;" src="gfx/mv1.v1.gif"></td>
+    <td>Kategorie anzeigen</td>
+  </tr>
+  <tr>
+    <td><img style="background-color: black;" src="gfx/mv1.v0.gif"></td>
+    <td>Kategorie verstecken</td>
+  </tr>
+  <tr>
+    <td><img src="gfx/btn.move.gif"></td>
+    <td>Kategorie verschieben</td>
+  </tr>
+  <tr>
+    <td><img src="gfx/new.gif"></td>
+    <td>Unter-Kategorie erstellen</td>
+  </tr>
+  {if IS_PREVIEW}
+    <tr style="background-color:#ffff99;">
+      <td colspan="2">Kategorie wird eingefügt</td>
+    </tr>
+    <tr style="background-color:#ff9999;">
+      <td colspan="2">Kategorie wird entfernt</td>
+    </tr>
+  {else}
+    <tr style="background-color:#ffff99;">
+      <td colspan="2">Geänderte Kategorie</td>
+    </tr>
+  {endif}
+</table>

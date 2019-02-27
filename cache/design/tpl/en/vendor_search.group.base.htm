@@ -1,0 +1,109 @@
+{if fields}
+<div class="design-search-row-item" style="width: {GROUP_WIDTH};">
+    <div class="design-search-group">
+        <h3 class="design-search-group-header">
+            <span>General</span>
+        </h3>
+        <div class="design-search-group-content">
+            <!-- Basic search options -->
+            {if USE_HERSTELLER && SPECIAL_FK_MAN && liste_man}
+            <div class="form-group">
+                <label for="adSearchFormBaseManufacturer">
+                    Manufacturer:
+                </label>
+                <select id="adSearchFormBaseManufacturer" class="form-control" name="FK_MAN">
+                    <option value="">---</option>
+                    {liste_man}
+                </select>
+                <div id="search_products"></div>
+            </div>
+            {endif}
+
+            {if SPECIAL_PRODUKTNAME}
+            <div class="form-group">
+                <label for="adSearchFormBaseProduct">
+                    Search for product:
+                </label>
+                <input id="adSearchFormBaseProduct" type="text" class="form-control" name="PRODUKTNAME" value="^htm(PRODUKTNAME)°"/>
+            </div>
+            {endif}
+
+            {if OPTIONS_AVAILABILITY}
+            <div class="form-group">
+                <label for="adSearchFormBaseAvailabilityFrom">
+                    Availability:
+                </label>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <strong>Von:</strong>
+                        <br />
+                        <input id="adSearchFormBaseAvailabilityFrom" type="text" name="AVAILABILITY[FROM]" class="form-control" value="^htm(AVAILABILITY_FROM)°" placeholder="Datum von">
+                    </div>
+                    <div class="col-xs-6">
+                        <strong>Bis:</strong>
+                        <br />
+                        <input id="adSearchFormBaseAvailabilityTo" type="text" name="AVAILABILITY[TO]" class="form-control" value="^htm(AVAILABILITY_TO)°" placeholder="Datum bis">
+                    </div>
+                </div>
+            </div>
+            {endif}
+
+            {if B_SALES && SPECIAL_PREIS}
+            <div class="form-group">
+                <label for="adSearchForm_PREIS">
+                    Maximal price in {CURRENCY_DEFAULT}:
+                </label>
+
+                <div class="input-search-range">
+                    <div class="input-group">
+                        <span class="input-group-addon">To</span>
+                        <input class="form-control" type="text" id="adSearchForm_PREIS" name="PREIS[VON]" value="^htm(PREIS_VON)°"
+                               title="To"
+                               placeholder="To" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">From</span>
+                        <input class="form-control" type="text" id="adSearchForm_PREIS_max" name="PREIS[BIS]" value="^htm(PREIS_BIS)°"
+                               title="From"
+                               placeholder="From" />
+                    </div>
+                </div>
+            </div>
+            {endif}
+
+            {if USE_ARTICLE_EAN}
+            <div class="form-group">
+                <label for="adSearchForm_EAN">
+                    EAN-number:
+                </label>
+
+                <input id="adSearchForm_EAN" type="text" class="form-control" name="EAN" value="^htm(EAN)°"/>
+            </div>
+            {endif}
+
+            {fields}
+
+            {if USE_AD_CONSTRAINTS && SPECIAL_BF_CONSTRAINTS}
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input name="BF_CONSTRAINTS[1]" type="checkbox" value="1"^if BF_CONSTRAINTS_1° checked^endif°>
+                        Only B2B Products
+                    </label>
+                </div>
+            </div>
+            {endif}
+            <!-- {if !OPTIONS_HIDE_PSEUDO_PRICE && SPECIAL_B_PSEUDOPREIS_DISCOUNT}
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input name="B_PSEUDOPREIS_DISCOUNT" type="checkbox" value="1"^if B_PSEUDOPREIS_DISCOUNT° checked^endif°>
+                        Only discounted Products
+                    </label>
+                </div>
+            </div>
+            {endif} -->
+        </div>
+    </div>
+</div>
+{endif}

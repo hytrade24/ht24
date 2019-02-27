@@ -1,0 +1,64 @@
+<div id="lastschrift_check_export">
+    <h1>Lastschrift Export</h1>
+    <h4>Überweisungen für die Kontoverifizierungen exportieren</h4>
+    <table class="liste" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>Anzahl Benutzer</th>
+            <th>Zu überweisender Betrag (Summe)</th>
+            <th>Download</th>
+        </tr>
+        <tr>
+            <td>{BANK_REQ_VERIFICATION_USERS_COUNT}</td>
+            <td>{TOTAL_MONEY}</td>
+            <td><!--javascript: download_new_export();-->
+                <a title="download" href="javascript: download_new_export();">
+                    <img src="gfx/btn.get.gif" alt="Download" />
+                </a>
+            </td>
+        </tr>
+    </table>
+    <h4>Vergangene Exports</h4>
+    <table class="liste" cellspacing="0" cellpadding="0">
+        <tr>
+            <th colspan="2">Export Datum / Uhrzeit</th>
+            <th>Anzahl Benutzer</th>
+            <th>Betrag</th>
+            <th>Download</th>
+            <th>E-Mail an Benutzer versandt</th>
+            <th>E-Mail jetzt verschicken</th>
+        </tr>
+        {liste}
+    </table>
+</div>
+
+<script type="application/javascript">
+    function download_new_export() {
+        var url = "index.php?page=lastschrift_check_export&csv=1";
+        //var mark_as_paid_val = jQuery("#sepa_export input[name='MARK_AS_PAID']:checked").val();
+        //url += mark_as_paid_val;
+
+        window.location = url;
+    }
+
+    jQuery(document).ready(function() {
+        {if download_button_click_check}
+        jQuery("#lastschrift_check_export a[data-button-export='{download_button_click}']")[0].click();
+        {endif}
+
+        jQuery("#lastschrift_check_export input[name^='EXPORT_ID_']").change(function() {
+            var $export_id = jQuery(this).attr('name').split("_");
+            $export_id = $export_id[2];
+
+            force_sent_email(
+                    $export_id,
+                    jQuery(this).val()
+            );
+        });
+    });
+
+    function force_sent_email($export_id, $sent) {
+        var url = "index.php?page=lastschrift_check_export&export_id="+$export_id+"&sent="+$sent;
+        window.location = url;
+    }
+
+</script>

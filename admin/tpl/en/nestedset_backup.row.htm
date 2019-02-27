@@ -1,0 +1,22 @@
+<tr bgcolor="#ffffff">
+	<td><input type="radio" name="backup_ts" value="{backup_ts}" /></td>
+	<td>{if name}
+			{htm(name)}
+		{else}
+			<i>-</i>
+		{endif}
+	</td>
+	<td>{if system_insert}
+			Ja
+		{else}
+			Nein
+		{endif}
+	</td>
+	<td>{backup_ts}</td>
+	<td>{if restore_ts}
+			{restore_ts}
+		{else}
+			<i>Noch nicht verwendet</i>
+		{endif}
+	</td>
+</tr>

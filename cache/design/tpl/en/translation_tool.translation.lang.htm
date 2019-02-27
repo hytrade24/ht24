@@ -1,0 +1,8 @@
+<td>
+	{if MULTILINE}
+		<textarea class="form-control" name="TRANSLATION[{ABBR}][{NAMESPACE}][{IDENT}]" tabindex="{TABINDEX}" placeholder="{htm(TRANSLATION_FALLBACK)}">{htm(VALUE)}</textarea>
+	{else}
+		<input class="form-control" type="text" name="TRANSLATION[{ABBR}][{NAMESPACE}][{IDENT}]" tabindex="{TABINDEX}" value="{htm(VALUE)}" placeholder="{htm(TRANSLATION_FALLBACK)}">
+	{endif}
+</td>
+

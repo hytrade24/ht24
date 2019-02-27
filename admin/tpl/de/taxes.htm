@@ -1,0 +1,43 @@
+<h1>
+	Mehrwertsteuersätze
+</h1>
+
+{if ok}
+	<h2 class="ok">
+		Änderungen gespeichert
+	</h2>
+{endif}
+{if deleted}
+	<h2 class="ok">
+		Eintrag gelöscht!
+	</h2>
+{endif}
+<p class="error">
+	Bitte beachten Sie, dass das Löschen von Mehrwertsteuersätzen weitreichende Konsequenzen haben kann. 
+	<br />Es wird Ihnen stark davon abgeraten mehrwertsteuersätze zu löschen!
+</p>
+<form method="post" action="index.php">
+	<input type="hidden" name="page" value="taxes" />
+	<table class="liste" cellspacing="0">
+		<tr>
+			<th>&nbsp;</th>
+			<th>Prozentsatz</th>
+			<th>Beschreibung</th>
+		</tr>
+		{liste}
+		<tr>
+			<td><strong>NEU</strong></td>
+			<td>
+				<input name="TAX_VALUE_NEU" type="text" value="{htm(TAX_VALUE_NEU)}" size="10" title="Mehrwertsteuersatz" />
+			</td>
+			<td>
+				<input name="TXT_NEU" type="text" value="{htm(TXT_NEU)}" size="35" title="Beschreibung" />
+			</td>
+		</tr>
+		<tr class="footer">
+			<td colspan="3" align="right">
+				<input type="submit" value="Speichern" class="button" />
+			</td>
+		</tr>
+	</table>
+</form>

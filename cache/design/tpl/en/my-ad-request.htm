@@ -1,0 +1,72 @@
+<h1>My searchings</h1>
+<span class="lead">In marketplace inserted searchings</span>
+
+{if deleted}
+<div class="alert alert-success">
+	<h2>
+		An advertisement was deleted!
+	</h2>
+</div>
+{endif}
+
+
+<p class="clearfix">
+	Here you find all inserted searchs on the marketplace.
+        To start a new conversation
+
+	<a href="{uri_action(my-ad-request-neu)}" title="Insert new searching">
+		Please click here
+	</a>.<br/>
+    <br/>
+    <a href="{uri_action(my-ad-request-neu)}" class="btn btn-success pull-right" title="Insert new searching">
+        <i class="glyphicon glyphicon-plus"></i>
+        Add new searchings
+    </a>
+</p>
+
+
+<ul class="nav nav-tabs userAdsTabs">
+	<li class="active">
+		<a href="{uri_action(my-gesuche)}" title="My searchings">My searchings</a>
+	</li>
+</ul>
+<table class="table table-bordered table-striped table-condensed userList">
+    <tr>
+        <th colspan="2">
+            Actions
+        </th>
+		<th title="Gesuch Numer">
+			Search request-Nr.
+		</th>
+          <th>
+              Date
+          </th>
+          <th>
+              Category
+          </th>
+        <th width="300px">
+            Product name
+        </th>
+    </tr>
+
+    {if liste}
+    	{liste}
+    {else}
+    <tr>
+        <td colspan="8" class="error">
+            You have no searchings adjusted.
+        </td>
+    </tr>
+    {endif}
+</table>
+
+<p>{pager}</p>
+
+<div class="design-content-box design-icon-legend">
+    <div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Edit
+    </div>
+    <div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a> = Delete
+    </div>
+</div>

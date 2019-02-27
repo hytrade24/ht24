@@ -1,0 +1,92 @@
+<script>
+	function editPaymentAdapterConfig(paymentAdapterId) {
+		ShowDialog('index.php?page=my-payment-adapter-edit&frame=ajax', 'Zahlungsweise bearbeiten', 'auto', 'auto', {
+			'onlyFrame': true,
+			'close': function() {
+				location.reload();
+			}
+		}, {
+			'data': { 'ID_PAYMENT_ADAPTER': paymentAdapterId },
+			'type': 'POST'
+		});
+	}
+</script>
+
+<h1>
+	<img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="10" />
+	{htm(NAME)}, Ihre persönlichen Zahlungsweisen<br />
+</h1>
+<!--<p>
+    Konfigurieren Sie auf dieser Seite Zahlungsweisen, welche Sie beim Verkauf Ihrer Artikel akzeptieren.
+</p>-->
+<br />
+{if ok}
+<div class="alert alert-success">
+   Ihre Einstellungen wurden erfolgreich gespeichert!
+</div>
+{endif}
+{if err}
+<div class="alert alert-danger">
+    Es ist ein Fehler aufgetreten. Bitte überprüfen Sie Ihre Eingaben.
+</div>
+{endif}
+<form method="post" action="{uri_action(my-payment-adapter)}">
+    <input type="hidden" name="GET_MAIL_MSG" value="0" /><input type="hidden" name="ALLOW_CONTACS" value="0" />
+
+    {subtpl(tpl/{SYS_TPL_LANG}/my-settings-nav.htm,*)}
+
+	<!--<h2>Zahlungsvarianten für Ihre Verkäufe</h2>
+	<p>Geben Sie hier an, welche Zahlungsweise Sie Ihren Käufern anbieten wollen. Die aktiven Zahlungsweisen stehen Ihnen dann bei einstellen eines Artikel zur Verfügung!</p>
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<tr>
+			<th>
+			</th>
+			<th>
+				Zahlungsart
+			</th>
+			<th>
+				aktiv
+			</th>
+			<th>
+				Konfiguration
+			</th>
+			<th>
+				automatisch ausgewählt
+			</th>
+
+		</tr>
+		{liste}
+	</table>-->
+
+	<h2>Bevorzugte Zahlungsweise an {htm(site_name)}</h2>
+	<table class="table table-bordered table-striped table-condensed">
+		<tr>
+			<th colspan="5">
+				Zahlungsweise für durch uns an Sie gestellte Rechnungen
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<strong>Standard Zahlungsweise</strong>
+				<br>
+				Auf welche Weise möchten Sie unsere Rechnungen bezahlen?
+			</td>
+			<td valign="top">
+				<select class="form-control" name="PAYMENT_ADAPTER" id="invoicePaymentAdapterSelector">
+					<option value="">---</option>
+					{PAYMENT_ADAPTER}
+				</select>
+			</td>
+		</tr>
+		{if PAYMENT_ADAPTER_CONFIG}
+		{PAYMENT_ADAPTER_CONFIG}
+		{endif}
+		<tr>
+			<th colspan="2" class="text-right">
+				<!--<input name="reset" type="reset" class="btn btn-default" value="Reset" />-->
+				<input name="button" type="submit" class="btn btn-success" value="Speichern" />
+			</th>
+		</tr>
+	</table>
+
+</form>

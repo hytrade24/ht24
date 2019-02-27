@@ -1,0 +1,196 @@
+<script type="text/javascript">
+function neuerordner()
+{
+  document.forms[0].newfolder.value="1";
+  document.forms[0].submit();
+}
+function bildfn(dir,img)
+{
+  document.forms[0].LOADIMG.value = dir+''+img;
+  document.forms[0].IMGW.value='';
+  document.forms[0].IMGH.value='';
+  document.forms[0].submit();
+}
+function uebernehmen()
+{
+  if(document.forms[0].LOADIMG.value)
+  {
+    if(window.opener.document.getElementById("txtUrl"))
+    {
+      window.opener.document.getElementById("txtUrl").value = '{URL}/'+document.forms[0].elements['LOADIMG'].value.replace('../','');
+      window.opener.document.getElementById("txtWidth").value = document.forms[0].elements['IMGW'].value;
+      window.opener.document.getElementById("txtHeight").value = document.forms[0].elements['IMGH'].value;
+      window.opener.UpdatePreview();
+      window.close();
+    }
+    else 
+    {
+      window.opener.document.forms[0].elements['IMGH'].value = document.forms[0].elements['IMGH'].value;
+      window.opener.document.forms[0].elements['IMGW'].value = document.forms[0].elements['IMGW'].value;
+      window.opener.document.forms[0].elements['IMG'].value = document.forms[0].elements['LOADIMG'].value.substring(3, document.forms[0].LOADIMG.value.length);
+      window.opener.document.getElementById('newImg').src = '../'+document.forms[0].LOADIMG.value.substring(3, document.forms[0].LOADIMG.value.length);
+      window.opener.document.getElementById('newImg').width = document.forms[0].IMGW.value;
+      window.opener.document.getElementById('newImg').height = document.forms[0].IMGH.value;
+      window.opener.document.getElementById('newImg').style.display = 'block';
+      //window.opener.document.getElementById('showdiv').style.display = 'block';
+      // window.opener.document.getElementById('delimg').style.display = 'inline';
+      window.close();
+    }
+  }
+  else
+    alert("Kein Bild zur Übernahme gewählt!");
+}
+var lastw = {org_w:0}, lasth = {org_h:0};
+function setsize(w, h)
+{
+  var keepratio = document.getElementById('keepratio').checked;
+  if (!w)
+    w = keepratio ? Math.round(h*lastw/lasth) : parseInt(document.forms[0].elements['IMGW'].value);
+  if (!h)
+    h = keepratio ? Math.round(w*lasth/lastw) : parseInt(document.forms[0].elements['IMGH'].value);
+  if (h) lasth = h;
+  if (w) lastw = w;
+  document.getElementById('showit').width  = document.forms[0].elements['IMGW'].value = w;
+  document.getElementById('showit').height = document.forms[0].elements['IMGH'].value = h;
+}
+</script>
+<div style="text-align:left; width:100%; padding:10px">
+  <h1>Ordner und Dateien f&uuml;r Ihre Website</h1>
+  {if err}
+    <div class="hinweis"><span class="error">{err}</span></div>
+  {endif}
+  <form enctype="multipart/form-data" style="display:inline" method="POST" action="index.php" target="_self">
+    <input type="hidden" name="frame" value="iframe" />
+    <input type="hidden" name="page" value="file_browser" />
+    <input type="hidden" name="LOADIMG" value="{htm(LOADIMG)}" />
+    <input type="hidden" name="dir" value="{dir}" />
+    <input type="hidden" name="newfolder" value="0" />
+    <table width="100%" class="liste" cellspacing="0">
+	  <tr>
+	    <td>
+      <table class="formTable" cellspacing="0">
+        <tr>
+          <td valign="top">
+            <div style="padding:10px; margin-top:4px; width:100%; height:150px; overflow:auto">
+              <table class="pathtab" cellpadding="0" cellspacing="0" border="0" height="17">
+                <tr>
+                  <td nowrap><img src="gfx/path.{if is_root}{if folders}66{else}64{endif}{else}34{endif}.png"></td>
+                  <td nowrap>..{browse}</td>
+                </tr>
+                {if !is_root}
+                <tr style="cursor:hand;" onMouseOver="this.style.backgroundColor='white';" onMouseOut="this.style.backgroundColor='';" onClick="location.href='index.php?page={curpage}&frame={curframe}&dir={updir}';">
+                  <td nowrap>
+                    <img src="gfx/path.{if folders}11{else}9{endif}.png" />
+                    <a href="index.php?page={curpage}&frame={curframe}&dir={updir}" title="Ordner wechseln"><img src="gfx/path.{if parent_is_root}68{else}20{endif}.png" /></a>
+                  </td>
+                  <td nowrap>
+                    <a href="index.php?page={curpage}&frame={curframe}&dir={updir}" title="Ordner wechseln">..</a>
+                  </td>
+                </tr>
+                {endif}{if folders}{folders}{else}
+                <tr>
+                  <td colspan="2" align="center" class="error">
+                    <strong>keine Unterordner</strong>
+                  </td>
+                </tr>
+                {endif}
+                <tr>
+                  <td colspan="2"><hr noshade /></td>
+                </tr>
+                <tr>
+                  <td colspan="2" nowrap>
+                    <input tabindex="1" type="text" name="NEWFOLDER" />
+                    <input tabindex="2" type="button" value="Ordner anlegen" onclick="neuerordner();" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div style="padding:10px; margin-top:4px; width:100%; height:200px; overflow:auto">
+              <table>
+                <tr>
+                  <th colspan="2">Dateien in '{dir}'</th>
+                  <th>&nbsp;</th>
+                </tr>
+                {if files}{files}{else}
+                <tr>
+                  <td colspan="2" align="center" class="error">
+                    <strong>keine Dateien</strong>
+                 </td>
+                </tr>
+                {endif}
+              </table>
+            </div>
+          </td>
+        </tr>
+      </table>
+	  <table class="formTable" cellspacing="0" style="float:left;">
+        <tr>
+          <th colspan="2">Neues Bild hochladen</th>
+        </tr>
+        <tr>
+          <td><strong>Pfad zum Bild</strong>&nbsp;</td>
+          <td><input type="file" name="BILD"></td>
+        </tr>
+        <tr>
+          <td><strong>Beschreibung</strong></td>
+          <td><input type="text" name="ALT" value="{htm(ALT)}" size="30">  (Optional)</td>
+        </tr>
+        <tr>
+          <td><strong>Bildformat</strong></td>
+          <td>{select(bildformat)}</td>
+        </tr>
+        <tr class="footer">
+          <td colspan="2" align="right">
+            <input type="hidden" name="DIR" value="{dir}"><input type="submit" value="Bild hochladen" class="button">
+          </td>
+        </tr>
+      </table>
+	    </td>
+		<td style="float:right; border-left:1px #CCC solid;">
+      <table height="100%">
+        <tr>
+          <td valign="top">
+            <div id="showdiv" style="float:left;padding-left:10px;wrap:none;display:">
+              <b class="h3" style="float:left; margin-bottom:2px; vertical-align:absolute-middle;">Vorschau{if LOADIMG}</b><button style="float:right;" onClick="uebernehmen()">Bild &uuml;bernehmen</button><hr style="clear:both;" noshade style="height:1px" />
+              <table>
+                <tr>
+                  <td>Breite:&nbsp;</td>
+                  <td>
+                    <input tabindex="3" name="IMGW" type="text" size="8" value="{htm(IMGW)}" onChange="setsize(this.value, 0);" />
+                  </td>
+                  <td>
+                    <input tabindex="5" id="keepratio" type="checkbox" class="nob" checked="checked" /><label for="keepratio"> Proportionen erhalten</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>H&ouml;he:&nbsp;</td>
+                  <td>
+                    <input tabindex="4" name="IMGH" type="text" size="8" value="{htm(IMGH)}" onChange="setsize(0, this.value);" />
+                  </td>
+                  <td>
+                    <button tabindex="6" onClick="setsize({org_w:0}, {org_h:0});">Originalgr&ouml;&szlig;e wieder herstellen</button>
+                  </td>
+                </tr>
+              </table>
+              <img id="showit" style="block;" src="{htm(LOADIMG)}" width="{IMGW}" height="{IMGH}" />{else}
+              <hr noshade style="height:1px;clear:both;" />
+              <input name="IMGW" type="hidden" value="" />
+              <input name="IMGH" type="hidden" value="" />
+              <div class="error">
+                KEIN BILD AUSGEW&Auml;HLT!
+              </div><br />
+              {endif}
+            </div>  
+          </td>
+        </tr>
+      </table>
+	  </td>
+	  </tr>
+	</table>
+  </form>
+</div>
+<script type="text/javascript">
+<!--
+  reiterwechsel({tab:1});
+//-->
+</script>

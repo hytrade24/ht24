@@ -1,0 +1,53 @@
+<h1> {if ID_FAQ}FAQ-Thema bearbeiten{else}neues FAQ-Thema anlegen{endif}</h1>
+<a href="index.php?frame={curframe}&page=modul_faq_edit&ID_FAQKAT={FK_FAQKAT}">Zur&uuml;ck zur Liste</a><br />
+<br />
+{if err}
+  <div class="hinweis"><span class="error">{err}</span></div>
+{endif}
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="frame" value="{curframe}" />
+  <input type="hidden" name="page" value="modul_faq_thema_edit" />
+  {if ID_FAQ}
+  <input type="hidden" name="ID_FAQ" value="{ID_FAQ}" />
+  {else}
+  <input type="hidden" name="FK_FAQKAT" value="{FK_FAQKAT}" />
+  {endif}
+  <input type="hidden" name="POS" value="0" />
+<table class="formTable" cellspacing="0">
+{if ID_FAQ}
+<tr>
+  <th>ID</th>
+  <td>{ID_FAQ:neu}</td>
+</tr>
+{endif}
+{if 0}
+<tr>
+  <th><label for="IDENT">Bezeichner</label></th>
+  <td><input type="text" name="IDENT" id="IDENT" value="{htm(IDENT)}" maxlength="31" class="inputhalf" /></td>
+</tr>
+{endif}
+<tr>
+  <th><label for="fk_faqkat">Kategorie</label></th>
+  <td>{if 1}{print_fk(faqkat)}{else}{select(faqkat)}{endif}</td>
+</tr>
+<tr>
+  <th><label for="POS">sichtbar?</label></th>
+  <td><input type="checkbox" class="nob" name="POS" id="POS" {if POS>0}checked {endif}value="{pos}" /></td>
+</tr>
+<tr>
+  <th><label for="LABEL">Titel</label></th>
+  <td><input type="text" name="V1" id="LABEL" value="{htm(V1)}" maxlength="95" class="inputfull" /></td>
+</tr>
+<tr>
+  <th style="vertical-align:top"><label for="BODY">Text</label></th>
+  <td>{editor(T1,600px,400px)}</td>
+</tr>
+<tr class="footer">
+  <th>&nbsp;</th>
+  <td>
+    <input type="submit" value="Thema speichern" class="button" />
+    <input type="submit" name="new" value="Thema speichern &amp; neues Thema beginnen" class="button" />
+  </td>
+</tr>
+</table>
+</form>

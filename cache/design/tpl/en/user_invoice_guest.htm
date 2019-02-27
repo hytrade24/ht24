@@ -1,0 +1,73 @@
+<div id="userInvoice_Guest" class="form-horizontal">
+    <div class="form-group {if err_INVOICE_EMAIL}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userInvoice_Edit_Email">
+            <strong>E-Mail <span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="E-Mail Adresse" class="form-control" type="text" id="userInvoice_Edit_Email" name="INVOICE_EMAIL" value="{htm(INVOICE_EMAIL)}" />
+        </div>
+    </div>
+    <div class="form-group {if err_INVOICE_FIRSTNAME}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userInvoice_Edit_Firstname">
+            <strong>Your forename <span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="Vorname" class="form-control" type="text" id="userInvoice_Edit_Firstname" name="INVOICE_FIRSTNAME" value="{htm(INVOICE_FIRSTNAME)}" />
+        </div>
+    </div>
+    <div class="form-group {if err_INVOICE_LASTNAME}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userInvoice_Edit_Lastname">
+            <strong>Your surname <span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="Nachname" class="form-control" type="text" id="userInvoice_Edit_Lastname" name="INVOICE_LASTNAME" value="{htm(INVOICE_LASTNAME)}" />
+        </div>
+    </div>
+    <div class="form-group {if err_INVOICE_COMPANY}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userInvoice_Edit_Company">
+            <strong>Company</strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="Company" class="form-control" type="text" id="userInvoice_Edit_Company" name="INVOICE_COMPANY" value="{htm(INVOICE_COMPANY)}" />
+        </div>
+    </div>
+    <div class="form-group {if err_INVOICE_STREET}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userInvoice_Edit_Street">
+            <strong>Street <span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="Street" class="form-control" type="text" id="userInvoice_Edit_Street" name="INVOICE_STREET" value="{htm(INVOICE_STREET)}" />
+        </div>
+    </div>
+    <div class="form-group {if err_INVOICE_ZIP || err_INVOICE_CITY}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userInvoice_Edit_Zip">
+            <strong>ZIP & location <span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            <div class="design-input-split">
+                <div class="design-input-zip">
+                    <input placeholder="PLZ" class="form-control" type="text" id="userInvoice_Edit_Zip" name="INVOICE_ZIP" value="{htm(INVOICE_ZIP)}" />
+                </div>
+                <div class="design-input-city">
+                    <input placeholder="Ort" class="form-control" type="text" id="userInvoice_Edit_City" name="INVOICE_CITY" value="{htm(INVOICE_CITY)}" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group {if err_INVOICE_COUNTRY}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userinvoice_edit_country">
+            <strong>Country <span class="text-error">*</span></strong>
+        </label>
+        <div class="design-input-field">
+            {select_country(INVOICE_FK_COUNTRY,,,, class="form-control",---)}
+        </div>
+    </div>
+    <div class="form-group {if err_INVOICE_PHONE}error{else}info{endif}">
+        <label class="control-label design-input-label" for="userInvoice_Edit_Phone">
+            <strong>Phone</strong>
+        </label>
+        <div class="design-input-field">
+            <input placeholder="Telefon" class="form-control" type="text" id="userInvoice_Edit_Phone" name="INVOICE_PHONE" value="{htm(INVOICE_PHONE)}" />
+        </div>
+    </div>
+</div>

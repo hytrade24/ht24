@@ -1,0 +1,39 @@
+<div class="design-job-row">
+    <div class="row">
+        <div class="col-xs-12 col-md-3">
+            {if LOGO}
+                <img src="{thumbnail(cache/vendor/logo/{LOGO},195,300)}" data-src="{LOGO}" />
+            {else}
+                <img src="{uri_resource(/images/marketplace/nopic_vendor.jpg)}" />
+            {endif}
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <p>
+                <a class="job-name" href="{uri_action(view_user_jobs,{USER_NAME},{USER_ID},{FK_KAT},1,{ID_JOB},{urllabel(V1)})}" title="view {htm(V1)}">
+                    <h4>{htm(V1)}</h4>
+                </a>
+            </p>
+            <p>
+                {htm(V2)}
+            </p>
+            <div>
+                <dl class="dl-table-horizontal">
+                {if VENDOR_FIRM_NAME || FIRMA}
+                    <dt>Firm:</dt>
+                    <dd>{if VENDOR_FIRM_NAME}{VENDOR_FIRM_NAME}{else}{FIRMA}{endif}</dd>
+                {endif}
+                {if ZIP || CITY}
+                    <dt>Location:</dt>
+                    <dd>{ZIP} {CITY}</dd>
+                {endif}
+                </dl>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3">
+            <div class="stamp">{todate(STAMP)}</div>
+            <span>
+                <a class="job-category" title="mehr aus der Kategorie {htm(KAT_NAME)}" href="{uri_action(jobs,{FK_KAT},)}">{htm(KAT_NAME)}</a>
+            </span>
+        </div>
+    </div>
+</div>

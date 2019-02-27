@@ -1,0 +1,58 @@
+<h1>Your adverts</h1>
+<p>
+    Here you find all adverts, you made so far!<br />
+        Your adverts get a publishing date, after you unlocked them!
+
+</p>
+<p>
+    The adverts are for <b>{jobruntime}
+    Days</b>
+    online.
+</p>
+<p align="right">
+    <a href="{uri_action(my-jobs-edit)}" class="btn btn-info">
+        <i class="glyphicon glyphicon-pencil"></i> Add new job
+    </a>
+</p>
+{if err}
+<div class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert">×</button>
+	{err}
+</div>
+{endif}
+<table class="table table-bordered table-striped table-condensed">
+	<tr>
+		<th colspan="3">Action</th>
+		<th>Release</th>
+		<th>Article</th>
+		<th>Date</th>
+		<th></th>
+	</tr>
+{if liste}
+	{liste}
+{else}
+	<tr>
+		<td colspan="7" align="center">
+			<span class="error">No article</span>
+		</td>
+	</tr>
+	{endif}
+</table>
+
+ <div class="design-content-box design-icon-legend">
+	<div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Edit
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>  = delete (if not released yet)
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-fullscreen"></i></a> = View online
+	</div>
+	<div class="pull-left clearfix">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-retweet"></i></a> = Comments available
+	</div>
+</div>
+<p>
+{pager}
+</p>

@@ -1,0 +1,28 @@
+		<tr class="zeile{even}">
+			<td>
+				<a href="index.php?page=club_edit&id={CLUB_ID_CLUB}">
+					<img src="gfx/btn.edit.gif" />
+				</a>
+				{if STATUS>1}
+				<a href="index.php?page=club_edit&id={CLUB_ID_CLUB}&ajax=unlock" title="Club gesperrt."
+					onclick="return confirm('Möchten Sie diesen Club wirklich entsperren?');">
+					<img src="gfx/ad_locked.png" />
+				</a>
+				{else}
+				<a href="index.php?page=club_edit&id={CLUB_ID_CLUB}&ajax=lock"
+					onclick="return confirm('Möchten Sie diesen Club wirklich sperren?');">
+					<img src="gfx/ad_unlocked.png" />
+				</a>
+				{endif}
+			</td>
+			<td>{htm(CLUB_NAME)}</td>
+			<td>{if (STATUS&1)==1}Ja{else}Nein{endif}</td>
+			<td>
+            
+            <a href="#" onclick="jQuery('input[name=NAME_]').val('{htm(USER_NAME)}'); jQuery('input[name=FK_USER]').val('{USER_ID_USER}').parents('form').submit();">
+        <img src="gfx/putfeld_8.gif" width="8" height="8" alt="" border="0"></a> 
+				<a href="index.php?page=user_edit&ID_USER={USER_ID_USER}">{htm(USER_NAME)}</a>
+			</td>
+			<td align="center"><a href="index.php?page=club_edit_member&id={CLUB_ID_CLUB}">{MEMBERS}</a></td>
+            <td>{todate(STAMP)}</td>
+		</tr>

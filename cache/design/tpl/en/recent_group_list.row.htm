@@ -1,0 +1,13 @@
+<li class="design-row-item clearfix">
+    <div class="icon-holder-groups pull-left">
+        <img src="{thumbnail(/cache/users/{USER_CACHE}/{USER_ID}/{USER_ID}.jpg,60,60)}" alt="{htm(USER_NAME)}" class="img-responsive" />
+    </div>
+
+
+    <h3><a href="{uri_action(group-forum-view,{urllabel(DISCUSSION_NAME)},{DISCUSSION_ID_CLUB_DISCUSSION})}">{htm(DISCUSSION_NAME)}</a></h3>
+    <p class="recent-list-block text-muted">
+        <small>{if DISCUSSION_STAMP_REPLY}{todate(DISCUSSION_STAMP_REPLY)}{else}{todate(DISCUSSION_STAMP_CREATE)}{endif} - {htm(CLUB_NAME)}</small>
+    </p>
+
+    <p class="recent-list-block">{if !DISCUSSION_COMMENT_BODY}{shorten({DISCUSSION_BODY},120,1)}{else}{shorten({DISCUSSION_COMMENT_BODY},120,1)}{endif}</p>
+</li>

@@ -1,0 +1,308 @@
+<h1>My products</h1>
+<span class="lead">Products placed on the marketplace</span>
+{if deleted}
+	<div class="alert alert-success">
+		<h2>
+			An ad has been deleted!
+		</h2>
+	</div>
+{endif}
+{if deakt}
+	<div class="alert alert-success">
+		<h2>
+			An advertisement has been deactivated!
+		</h2>
+		<p>
+			<a href="{uri_action(my-marktplatz-disabled)}" style="font-weight:bold;">
+				Show all inactive
+			</a>
+		</p>
+	</div>
+{endif}
+{if extended}
+	<div class="alert alert-success">
+		<h2>
+			Advertisement(s) extended successfully!
+		</h2>
+		<p>
+			<a href="{uri_action(my-marktplatz-timeout)}" style="font-weight:bold;">
+				Soon ending products
+			</a>
+		</p>
+	</div>
+{endif}
+<p>
+	Here you see all products that you have been uploaded to the marketplace.
+		To activate a new advert,
+		<a href="{uri_action(my-marktplatz-neu)}" title="sell product now">
+			please click here
+		</a>.
+
+</p>
+{if error_extend}
+	{if error_extend_noads}
+		<div class="alert alert-danger">
+			<h2>
+				Error!
+			</h2>
+			<p>
+				You have no more adverts available. Please purchase a new advertpackage to
+					extend your adverts.
+
+			</p>
+		</div>
+	{else}
+        <div class="alert alert-danger">
+            <h2>
+				Error!
+			</h2>
+			<p>
+				An error has occurred while extending the runtime of the advert.
+					Please contact the support.
+
+			</p>
+		</div>
+	{endif}
+{endif}
+<div id="AdExtend" width="100%" height="100%" style="display: none; position: fixed; left: 0px; top: 0px; right: 0px; z-index: 80;"></div>
+
+	{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-nav.htm,*)}
+
+	<form id="article_search" class="userSearchForm" method="get" action="{uri_action(my-marktplatz,{FILTER_STATUS})}">
+        <input type="hidden" name="filter" value="{htm(FILTER_STATUS)}" />
+		<div class="design-content-box">
+			<h4><strong>Search for my adverts</strong></h4>
+
+			<div class="row">
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Art.Nr</label>
+                        <input type="text" name="ID_AD_MASTER" value="{if ID_AD_MASTER > 0}{htm(ID_AD_MASTER)}{endif}" tabindex="10"  class="form-control" />
+                    </div>
+				</div>
+				<div class="col-xs-3">
+                    {if SETTINGS_USE_HERSTELLER_DB}
+                    <div class="form-group">
+                        <label class="control-label">Manufacturer</label>
+                        <input type="text" name="HERSTELLER" value="{HERSTELLER}" tabindex="11" class="form-control" />
+                    </div>
+                    {endif}
+				</div>
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Product name</label>
+                        <input type="text" name="PRODUKTNAME" value="{PRODUKTNAME}" tabindex="12"  class="form-control" />
+                    </div>
+				</div>
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Category</label>
+                        <select name="FK_KAT" class="form-control" tabindex="13" >
+                            <option value="">All categories</option>
+                            {marketplace_categories}
+                        </select>
+                    </div>
+				</div>
+			</div>
+            <div class="row">
+                <div class="col-xs-3">
+										<div class="form-group">
+												<label class="control-label">type of sales</label>
+												<select name="VERKAUFSOPTIONEN" class="form-control">
+														<option value="">All types of sales</option>
+														<option value="1"{if VERKAUFSOPTIONEN==1} selected{endif}>Display price without sellingfunction</option>
+														<option value="2"{if VERKAUFSOPTIONEN==2} selected{endif}>Price on request</option>
+														<option value="3"{if VERKAUFSOPTIONEN==3} selected{endif}>Rent out</option>
+														<option value="4"{if VERKAUFSOPTIONEN==4} selected{endif}>Insertion</option>
+														<option value="5"{if VERKAUFSOPTIONEN==5} selected{endif}>Request</option>
+												</select>
+										</div>
+                </div>
+                <div class="col-xs-3">
+										{if importSources}
+										<div class="form-group">
+											 <label class="control-label">Import-source</label>
+											 <select name="FK_IMPORT_SOURCE" class="form-control" tabindex="22" >
+												 	<option>all adverts</option>
+													{importSources}
+											 </select>
+										</div>
+										{endif}
+                </div>
+                <div class="col-xs-3">
+										<div class="form-group">
+											 <label class="control-label">Sort by</label>
+											 <select name="SORT" class="form-control" tabindex="23" >
+													 <option value="STAMP:DESC"{if ORDER_BY_STAMP_DESC} selected="selected"{endif}>Newest first</option>
+													 <option value="STAMP:ASC"{if ORDER_BY_STAMP_ASC} selected="selected"{endif}>Oldest first</option>
+													 <option value="B_TOP:DESC"{if ORDER_BY_B_TOP_DESC} selected="selected"{endif}>Top-adverts first</option>
+													 <option value="B_TOP:ASC"{if ORDER_BY_B_TOP_ASC} selected="selected"{endif}>Top-adverts last</option>
+											 </select>
+									 	</div>
+                </div>
+                <div class="col-xs-3 design-form-group-search text-right">
+                    <a href="{uri_action(my-exports)}" class="btn btn-info js-tooltip" name="doExport"  data-toggle="tooltip" title="Save my adverts as CSV-file">
+                        <i class="glyphicon glyphicon-download-alt"></i>
+                    </a>
+                    {if !FILTER_STATUS_ACTIVE}
+                    <a href="#extend" onclick="ExtendSearchResults(this);" class="btn btn-default js-tooltip" name="doExtend" data-toggle="tooltip" title="Extend adverts in the search result">
+                        <i class="glyphicon glyphicon-time"></i>
+                    </a>
+                    {endif}
+                    <input type="submit" name="do" value="Search" tabindex="8"  class="btn btn-primary">
+                </div>
+            </div>
+			<br>
+		</div>
+	</form>
+
+
+<form action="{uri_action(my-marktplatz,{ACTION},{NPAGE},{PERPAGE})}{ADDITIONAL_PARAMS}" method="POST">
+	{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz.table.{TABLE_TEMPLATE}.htm,*)}
+
+	<p>{pager}</p>
+
+	{HIDDEN_INPUT_SELECTED}
+	<div class="userArticlesSelected well well-small">
+		<div class="userArticlesSelectedStatus">
+			<div class="userArticlesSelectedText">No articles selected</div>
+		</div>
+		<div class="userArticlesSelectedActions">
+			<button name="action" value="extend" class="btn btn-mini btn-success filterSelection disabled">
+				<i class="glyphicon glyphicon-time"></i> Extend
+			</button>
+			<button name="action" value="enable" class="btn btn-mini btn-success filterEnabled disabled">
+				<i class="glyphicon glyphicon-play"></i> Enable
+			</button>
+			<button name="action" value="disable" class="btn btn-mini btn-danger filterDisabled disabled">
+				<i class="glyphicon glyphicon-pause"></i> Deactivate
+			</button>
+			<button name="action" value="delete" class="btn btn-mini btn-danger filterSelection disabled">
+				<i class="glyphicon glyphicon-remove"></i> Delete
+			</button>
+			<button name="action" value="all" class="btn btn-mini btn-default">
+				<i class="glyphicon glyphicon-ok"></i> Select all
+			</button>
+			<button name="action" value="clear" class="btn btn-mini btn-default filterSelection disabled">
+				<i class="glyphicon glyphicon-remove"></i> Clear selection
+			</button>
+		</div>
+	</div>
+</form>
+
+
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Edit
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-share"></i></a> = Duplicate
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-pause"></i></a> = Deactivate
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a> = Delete
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-time"></i></a> = Extend
+	</div>
+    <div class="pull-left">
+    	<a class="btn btn-default"><i class="glyphicon glyphicon-star-empty"></i></a> = Rent Top-advert
+	</div>
+	<div class="pull-left">
+		<i class="glyphicon glyphicon-star"></i> = is Top
+	</div>
+    <br style="clear: left;" />
+	<div class="pull-left">
+		<a class="btn btn-default btn-info"><i class="glyphicon glyphicon-comment icon-white"></i></a> = Comments allowed
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-comment"></i></a> = Comments deaktivated
+	</div>
+</div>
+
+
+<!-- Multi Anzeigen Search & Replace -->
+<script type="text/javascript">
+	{if SHOW_REPLACE}
+    function showMultiSearchReplace() {
+        ShowDialog("/my-marktplatz-multisearchreplace.htm", "In adverts and replace", 600, 320, {
+            close: function(event, ui) {
+            	$("#article_search").submit();
+            }
+        }, {
+            data: { 'rows': {SEARCHREPLACE_AD_ID}},
+            type: 'POST'
+        });
+    }
+	{endif}
+		
+    
+		function getSelectedArticles() {
+      return jQuery("form .checkboxArticleSelected:checked,form .hiddenArticleSelected");
+  }
+  
+  function updateSelectedArticles(checkboxChanged, setAll) {
+      if (typeof setAll != "undefined") {
+          jQuery(".checkboxArticleSelected").prop("checked", setAll);
+      }
+      var selectText = "No article selected"
+      var jqCheckedArticles = getSelectedArticles();
+      if (jqCheckedArticles.length > 0) {
+          var countDisabled = jqCheckedArticles.filter("[data-disabled]").length;
+          // Enable actions
+          selectText = ""+jqCheckedArticles.length+" selected articles";
+          jQuery(".userArticlesSelectedActions .btn").removeClass("disabled");
+      } else {
+          // Disable actions
+          jQuery(".userArticlesSelectedActions .btn.filterSelection").addClass("disabled");
+      }
+      // Update labeled buttons (For references outside the form)
+      jQuery(".userArticlesSelectedActions .btn[id]").each(function() {
+          var buttonId = jQuery(this).attr("id");
+          if (!jQuery(this).is(".disabled")) {
+              jQuery("label[for="+buttonId+"]").removeClass("disabled");
+          } else {
+              jQuery("label[for="+buttonId+"]").addClass("disabled");
+          }
+      });
+      jQuery(".userArticlesSelectedText").html(selectText);
+      //console.log("debug: "+jqCheckedArticles.length);
+  }
+  
+  function updateVisiblePage(pagerLink, event) {
+      event.preventDefault();
+      var listForm = jQuery(pagerLink).parents("form").first();
+      jQuery(listForm).attr("action", jQuery(pagerLink).attr("href")).submit();
+  }
+
+	function ToggleBids(id_ad) {
+		var tr_bid = $("#bids_"+id_ad);
+		var td_bid = $("#bids_"+id_ad+" > td");
+		if (td_bid.html() == "") {
+			// Laden und anzeigen
+			$.get(ebiz_trader_baseurl + "index.php?page=my-marktplatz-handeln-gebote&id_ad="+id_ad+"&frame=ajax", function(result) {
+				td_bid.html(result);
+				tr_bid.show();
+			});
+		} else {
+			// Ein- oder ausblenden
+			tr_bid.toggle();
+		}
+	}
+
+    $(function() {
+        {if SHOW_REPLACE}
+        showMultiSearchReplace();
+        {endif}
+					
+				jQuery(".pagination a").click(function (event) {
+					updateVisiblePage(this, event);
+				});
+					
+        jQuery("[data-toggle=tooltip]").tooltip();
+					
+				updateSelectedArticles();
+    });
+</script>

@@ -1,0 +1,199 @@
+{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+<script>
+	function payOrder(orderId) {
+		ShowDialog("{uri_action(my-marktplatz-einkaeufe-action)}", "Pay order", "auto", "auto", {}, {
+			'type': "POST",
+			'data': { 'DO': 'PAY', 'ID_AD_ORDER': orderId }
+		});
+	}
+
+	function splitOrder(orderId) {
+		jQuery.ajax({
+			'url': '{uri_action(my-marktplatz-einkaeufe-action)}',
+			'type': "POST",
+			'data': { 'DO': 'SPLIT', 'ID_AD_ORDER': orderId },
+			'dataType': 'json',
+			'success': function(response) {
+				if(response.success) {
+					alert("The order was shared successfully. All currently not confirmed article purchases will be processed separately.");
+					location.reload();
+				}
+			}
+		});
+	}
+
+	function showSellerInformation(userId) {
+		ShowDialog("index.php?page=uprofil&SELLER_ID=" + userId + "&frame=ajax", "Seller information");
+	}
+
+	function showPaymentInformation(orderId) {
+		ShowContentDialog(jQuery("#paymentInformation-" + orderId).html(), "Payment information", "auto", "auto");
+	}
+	
+	function showAgb(itemId) {
+		ShowDialog("{uri_action(my-marktplatz-einkaeufe-action)}", "Display GTC", "auto", "auto", {}, {
+			'type': "POST",
+			'data': { 'DO': 'SHOW_AGB', 'ID_AD_SOLD': itemId }
+		}, function(modal) {
+			var content = modal.find('#modalDialogContent').html();
+			if (content == "") {
+				modal.find('#modalDialogContent').html("There is no GTC for this article.");
+			}
+		});
+	}
+	
+	function showWiderruf(itemId) {
+		ShowDialog("{uri_action(my-marktplatz-einkaeufe-action)}", "Show revocation-/return policy", "auto", "auto", {}, {
+			'type': "POST",
+			'data': { 'DO': 'SHOW_WIDERRUF', 'ID_AD_SOLD': itemId }
+		}, function(modal) {
+			var content = modal.find('#modalDialogContent').html();
+			if (content == "") {
+				modal.find('#modalDialogContent').html("No revocation-/return policy was deposited for this article.");
+			}
+		});
+	}
+
+    jQuery(function() {
+			// Datepicker im Suchformular
+			var stampFrom = jQuery("#STAMP_CREATE_FROM");
+			var stampTo = jQuery("#STAMP_CREATE_TO");
+			jQuery(".userSearchForm").datepicker({
+				clearBtn: true,
+				keepEmptyValues: true,
+				format: 'dd.mm.yyyy',
+				inputs: [ stampFrom, stampTo ]
+			});
+    });
+</script>
+
+<style type="text/css">
+	.highlight {
+		background-color: #FFFBCC !important;
+	}
+	.table thead tr {
+		background-color: #ccc !important;
+	}
+	.table tbody tr:nth-child(odd) {
+		background-color: #fff !important;
+	}
+	.table tbody tr:nth-child(even) {
+		background-color: #eee !important;
+	}
+</style>
+
+<h1>
+	My purchases<br />
+	<span class="lead">
+		Your purchased items
+	</span>
+</h1>
+<p>
+	Here you see all your purchased items. If you contact the seller or the support
+		do not forget to insert the order-Nr.
+
+</p>
+
+<ul class="nav nav-tabs userAdsTabs">
+	<li {if show_open}class="active"{endif}>
+		<a href="{uri_action(my-marktplatz-einkaeufe)}">My purchases</a>
+	</li>
+	<li {if show_done}class="active"{endif}>
+		<a href="{uri_action(my-marktplatz-einkaeufe,,,,show_done)}">Archived purchases</a>
+	</li>
+	<li {if show_digital_downloads}class="active"{endif}>
+		<a href="{uri_action(my-marktplatz-einkaeufe,,,,show_digital_downloads)}">My digital purchases</a>
+	</li>
+</ul>
+
+	<form class="userSearchForm" method="get" action="{if show_done}{uri_action(my-marktplatz-einkaeufe,,,,show_done)}{else}{uri_action(my-marktplatz-einkaeufe)}{endif}">
+		<div class="design-content-box">
+			<h4><strong>Search purchases</strong></h4>
+
+			<div class="row">
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Order-Nr.</strong></label>
+                        <input type="text" name="ID_AD_ORDER" value="{ID_AD_ORDER}" class="form-control" />
+                    </div>
+				</div>
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Seller</label>
+					    <input type="text" name="NAMESELLER" value="{NAMESELLER}" class="form-control" />
+                    </div>
+				</div>
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Date from</label>
+												<input type="text" class="form-control" id="STAMP_CREATE_FROM" name="STAMP_CREATE_FROM" placeholder="Date from" value="{todate(STAMP_CREATE_FROM)}" />
+                    </div>
+				</div>
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Date to</label>
+												<input type="text" class="form-control" id="STAMP_CREATE_TO" name="STAMP_CREATE_TO" placeholder="Date from" value="{todate(STAMP_CREATE_TO)}" />
+                    </div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label>Payment</label>
+                        <select name="SEARCH_ORDER_PAYMENT_STATUS" class="form-control">
+                            <option value="-1">-- all --</option>
+                            <option value="0" {if SEARCH_ORDER_PAYMENT_STATUS == 0}selected="selected"{endif}>open</option>
+                            <option value="1" {if SEARCH_ORDER_PAYMENT_STATUS == 1}selected="selected"{endif}>paid</option>
+                        </select>
+                    </div>
+				</div>
+				<div class="col-xs-2 col-xs-offset-7 design-form-group-search">
+					<input type="submit" value="Search" class="btn btn-primary">
+				</div>
+			</div>
+			<br>
+		</div>
+	</form>
+
+{if COUNT_UNPAID_ORDERS}
+	<div class="alert alert-info">
+		You have overall <a href="{uri_action(my-marktplatz-einkaeufe)}?SEARCH_ORDER_PAYMENT_STATUS=0">
+			{COUNT_UNPAID_ORDERS} purchases</a>, which are not paid yet.
+
+
+	</div>
+{endif}
+
+{if orders}
+	{orders}
+
+	{pager}
+{else}
+	<div class="design-content-box">
+    {if show_open}
+		You have no current purchases.
+    {else}
+        You have no archived purchases.
+    {endif}
+	</div>
+{endif}
+
+<script type="application/javascript">
+
+    var get_vars = [];
+
+    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+        function decode(s) {
+            return decodeURIComponent(s.split("+").join(" "));
+        }
+
+        get_vars[decode(arguments[1])] = decode(arguments[2]);
+    });
+
+    if ( get_vars["highlight"] != undefined ) {
+        var id = get_vars["highlight"];
+
+        $("div.marketplaceOrder[data-id-order='"+id+"']").addClass('highlight');
+    }
+
+</script>

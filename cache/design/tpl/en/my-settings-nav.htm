@@ -1,0 +1,19 @@
+<ul class="nav nav-tabs userTabsTable">
+    <li class="{if !password_change}{uri_is_active(my-profil,active,)}{endif}">
+        <a href="{uri_action(my-profil)}">Personal profile</a>
+    </li>
+    <li class="{if password_change}{uri_is_active(my-profil,active,)}{endif}">
+        <a href="{uri_action(my-profil,password)}">Change password</a>
+    </li>
+	{if SOCIAL_MEDIA_LOGIN_ENABLED}
+	<li class="{uri_is_active(my-profil-social-media,active,)}">
+		<a href="{uri_action(my-profil-social-media)}">Social Media Login</a>
+	</li>
+	{endif}
+    <li class="{uri_is_active(my-settings,active,)}">
+        <a href="{uri_action(my-settings)}"> Settings</a>
+    </li>
+    <li class="{uri_is_active(my-payment-adapter,active,)}">
+        <a href="{uri_action(my-payment-adapter)}"> Payment methods</a>
+    </li>
+</ul>

@@ -1,0 +1,29 @@
+<script type="text/javascript">
+
+function katRcv(id_kat)
+{
+  document.forms[0].FK_KAT.value = id_kat;
+  document.forms[0].submit();
+}
+</script>
+<h1>Artikel &Uuml;bersicht</h1>
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="frame" value="content" />
+  <input type="hidden" name="nav" value="{curnav}" />
+  <input type="hidden" name="do" value="setok" />
+<iframe id="katframe" src="index.php?frame=iframe&page=kat_select&ID_KAT={FK_KAT}&ROOT=2" width="640" height="100" frameborder="0">Kategorie-Auswahl erfordert iFrames und JavaScript!</iframe>
+<input type="hidden" name="FK_KAT" id="fk_kat" onChange="document.forms[0].submit()" value="{FK_KAT}" />
+<table class="liste" cellspacing="0"><tr>
+  <th>&nbsp;ID&nbsp;</th>
+  <th>Aktionen</th>
+  <th>&nbsp;Autor&nbsp;</th>
+  <th>&nbsp;Titel&nbsp;</th>
+  <th>Freigabe durch<br>
+  Redaktion</th>
+  <th>&nbsp;Anzeigen&nbsp;</th>
+</tr>{liste}
+<tr>
+<td class="footer" colspan="6" align="right"><input class="button" type="submit" value="ausgew&auml;hlte freischalten" name="save" /></td>
+</tr></table>
+<br />{pager}
+</form>

@@ -1,0 +1,38 @@
+{loadperm(admin_pageperm)}
+{if !perm_admin_pageperm}{subtpl(tpl/de/403.htm)}{else}
+<h1>Userrechte f&uuml;r Seite '{htm(ident)}'</h1>
+
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="frame" value="{curframe}" />
+  <input type="hidden" name="page" value="pageperm2user" />
+  <input type="hidden" name="ident" value="{htm(ident)}" />
+<table border="1"><tr>
+  <th>Name:</th>
+  <td colspan="2"><input type="text" name="s_pname" value="{htm(s_pname)}" maxlength="120"></td>
+</tr><tr>
+  <th>Username:</th>
+  <td><input type="text" name="s_name" value="{htm(s_name)}" maxlength="30"></td>
+  <th>override:</th>
+  <td><select name="s_ovr">{opts_ovr}
+  </select></td>
+  <td><input type="submit" value="aktualisieren" /></td>
+</tr></table></form>
+
+<table class="liste"><tr>
+  <th>Name</th>
+  <th>Username</th>
+  <th>Rollen</th>
+  <th>geerbt</th>
+  <th>override</th>
+</tr>{liste}</table>{endif}
+<table> <tr>
+  <td><img src="gfx/ico.up.gif" width="11" height="11" alt="" border="0"></td>
+  <td class="notizSmall">Recht erteilen</td>
+  <td><img src="gfx/ico.dn.gif" width="11" height="11" alt="" border="0"></td>
+  <td class="notizSmall">Recht verweigern</td>
+  <td><img src="gfx/ico.eq.gif" width="11" height="11" alt="" border="0"></td>
+  <td class="notizSmall">Recht aus Rollen übernehmen</td>
+ </tr> </table>
+ <p>Die Spalte "<b>geerbt</b>" gibt an, welches Recht der User über seine Rollenzugehörigkeit erhalten hat. <br>
+Mit "<b>override</b>" können Sie das geltende Recht angeben!</p>
+<p>Gehen Sie mit der Vergabe von Sonderrechte sehr sorgfältig vor.</p>

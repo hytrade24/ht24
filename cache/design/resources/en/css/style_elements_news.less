@@ -1,0 +1,108 @@
+// Groups
+.design-news {
+  // General css styles
+  .design-content-base;
+  // Group title
+  .design-news-name {
+    font-weight: bold;
+  }
+}
+
+// Groups (box view)
+.design-news-box {
+  .design-news;
+  // General css styles
+  min-height: 200px;
+}
+
+// Groups (row view)
+.design-news-row {
+  .design-news;
+}
+
+.content-news {
+  img {
+    max-width: 100%;
+  }
+}
+
+
+.design-news-archive-vendor-box{
+  .design-content-base;
+  .design-news-archive-vendor-box-content{
+    margin: @padding-small-vertical 0;
+    height: 80px;
+    overflow: auto;
+  }
+}
+
+.design-news-article {
+  margin-bottom: 20px;
+  img{
+    .img-responsive;
+    padding: @padding-small;
+  }
+}
+
+.design-user-news-box{
+  .design-content-base;
+}
+
+.design-news-archive-row{
+  .row;
+  .design-content-base;
+}
+
+// Allgemeine klasse für cbox aber in dem fall ist nur an Startseite mit Bilder angepasst
+.design-content-cbox{
+  .marketplaceListItemSmallDescription{
+    @media (min-width: @screen-md-min) {
+      height: 150px;
+      overflow: auto;
+    }
+
+  }
+}
+
+
+.design-news-media-list {
+    padding-bottom: 14px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.design-news-media {
+    background: #f0f0f0;
+    border: 1px solid transparent;
+    display: inline-block;
+    margin-right: 2.5%;
+    min-height: 120px;
+    padding: 4px 4px 22px 4px;
+    position: relative;
+    width: 22.5%;
+}
+
+.design-news-media .design-news-media-active-text {
+    display: none;
+    font-weight: bold;
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    text-align: center;
+}
+
+.design-news-media.design-news-media-active .design-news-media-active-text {
+    display: block;
+}
+
+.design-news-media-active {
+    color: #3c763d;
+    background: #dff0d8;
+    border: 1px solid #d6e9c6;
+}
+
+.design-user-news-small-image {
+    max-width: 120px;
+    margin-right: 10px;
+}

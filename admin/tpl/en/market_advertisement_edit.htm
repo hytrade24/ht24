@@ -1,0 +1,97 @@
+<form method="post">
+{if ID_ADVERTISEMENT}
+	<input type="hidden" name="ID_ADVERTISEMENT" value="{ID_ADVERTISEMENT}" />
+	
+	<h2>Werbemittel bearbeiten: {htm(V1)}</h2>
+{else}
+	<h2>Werbemittel hinzuf&uuml;gen</h2>
+{endif}
+	
+	{if errors}
+	<div class="error">
+		<span style="font-weight: bold; font-size: 16px;">
+			Fehler beim hinzuf&uuml;gen des Werbemittels:
+		</span>
+		<br />
+		{text(errors)}
+	</div>
+	<br />
+	{endif}
+	
+	<table class="liste" cellpadding="0" cellspacing="0">
+		<tr class="zeile1">
+			<td width="300">
+				<strong>Kurzbeschreibung</strong>
+				<p class="small">
+					Eine m&ouml;glichst kurze Beschreibung des Werbemittels. 
+				</p>
+			</td>
+			<td width="600">
+				<input style="min-width: 540px;" type="text" id="V1" name="V1" value="{htm(V1)}" />
+			</td>
+		</tr>
+		<tr class="zeile0">
+			<td width="300">
+				<strong>Beschreibung</strong>
+				<p class="small">
+					Eine ausf&uuml;hrliche Beschreibung des Werbemittels, sollte z.B. die Gr&ouml;&szlig;e und
+					Position des Banners beschreiben.
+				</p>
+			</td>
+			<td width="600">
+				<textarea id="T1" name="T1" style="min-width: 540px; min-height: 160px;">{htm(T1)}</textarea>
+			</td>
+		</tr>
+		<tr class="zeile1">
+			<td width="300">
+				<strong>buchbar</strong>
+				<p class="small">
+					Gibt an ob dieses Werbemittel von Benutzern gebucht werden kann.
+				</p>
+			</td>
+			<td width="600">
+				<input type="hidden" name="ENABLED" value="0" />
+				<input type="checkbox" id="ENABLED" name="ENABLED" value="1" {if ENABLED}checked="checked" {endif}/>
+				<label for="ENABLED">
+					Werbung kann gebucht werden
+				</label>
+			</td>
+		</tr>
+		<tr class="zeile0">
+			<td width="300">
+				<strong>Fallback</strong>
+				<p class="small">
+					Hier können Sie einen Banner hinterlegen der dann angezeigt wird wenn in der aktuellen Kategorie keine
+					passende Werbung gefunden werden konnte.
+				</p>
+			</td>
+			<td width="600">
+				<textarea id="FALLBACK" name="FALLBACK" style="min-width: 540px; min-height: 160px;">{htm(FALLBACK)}</textarea>
+			</td>
+		</tr>
+		<tr>
+			
+		</tr>
+		<tr class="zeile1">
+			<td width="300">
+				<strong>Preise</strong>
+				<p class="small">
+					Legt fest welche Kosten mit diesem Werbemittel verbunden sind.
+				</p>
+			</td>
+			<td width="600">
+				{liste}
+			</td>
+		</tr>
+		<tr>
+			<th colspan="2" style="text-align: right;">
+				<input type="reset" value="Eingaben zurücksetzen" />
+{if ID_ADVERTISEMENT}
+				<input style="font-weight: bold;" type="submit" value="Änderung speichern" />
+{else}
+				<input style="font-weight: bold;" type="submit" value="Werbemittel hinzufügen" />
+{endif}
+			</th>
+		</tr>
+	</table>
+</form>

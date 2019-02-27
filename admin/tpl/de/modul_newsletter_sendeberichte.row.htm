@@ -1,0 +1,9 @@
+<tr class="zeile{even}">
+ <td>{if DONE < TODO || TODO == 0}<a href="index.php?page=modul_newsletter_versand&ID_NL={FK_NL}" title="Newsletter versenden"><img src="gfx/btn.mail.gif" width="13" height="11"></a>{endif}
+ <a href="index.php?page=modul_newsletter_sendeberichte&delete={FK_NL}" title="l&ouml;schen" onclick="return confirm('den Newsltter inkl. dem Bericht löschen?')"><img src="gfx/btn.del.gif" width="32" height="16"></a></td>
+ <td>{todate(NLDATUM)}</td> 
+ <td>{htm(V1)}</td>
+ <td>{if DONE == TODO && DONE != 0}<span class="ok">Gesendet {DONE} von {TODO}</span>
+ {else}<span class="error">Nicht abgeschlossen {if TODO > 0}/ {DONE} von {TODO} gesendet{endif}</span>
+ {endif}</td>
+</tr>

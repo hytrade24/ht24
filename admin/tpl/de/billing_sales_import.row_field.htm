@@ -1,0 +1,22 @@
+<tr>
+    <td>
+        {i}{if LABEL} / {LABEL}{endif}
+    </td>
+    <td>
+        {EXAMPLE1}
+    </td>
+    <td>
+        {EXAMPLE2}
+    </td>
+    <td>
+        <select name="CONFIG[{i}]">
+            <option value="">Nicht verwenden</option>
+            <option value="NAME">Auftraggeber</option>
+            <option value="ACCOUNT">Kontonummer/IBAN (Auftraggeber)</option>
+            <option value="BANK">Bankleitzahl/BIC (Auftraggeber)</option>
+            <option value="DATE">Datum</option>
+            <option value="AMOUNT">Betrag</option>
+            <option value="SUBJECT">Verwendungszweck</option>
+        </select>
+    </td>
+</tr>

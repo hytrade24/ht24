@@ -1,0 +1,281 @@
+<script>
+
+	function toogleRestriction(restrictionType) {
+		jQuery("#restriction-"+restrictionType).find("input").attr("disabled", !jQuery("[name='RESTRICTION_TYPE["+restrictionType+"]']").is(':checked'));
+	}
+
+	function toogleType() {
+		var type = jQuery("[name='TYPE']").val();
+		jQuery(".type-config").hide();
+		jQuery(".type-config").find("input").attr("disabled", true);
+		jQuery("#type-config-"+type).show();
+		jQuery("#type-config-"+type).find("input").attr("disabled", false);
+
+	}
+
+
+	function generateCode() {
+		var length = 6,
+		charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+		newcode = "";
+		for (var i = 0, n = charset.length; i < length; ++i) {
+			newcode += charset.charAt(Math.floor(Math.random() * n));
+		}
+		jQuery("[name='COUPON_CODES']").text(jQuery("[name='COUPON_CODES']").text() +  newcode + "\r\n");
+	}
+
+	function setTarget(el) {
+		var elDataTarget = jQuery(el).attr('data-targettype');
+		var formDataTarget = jQuery("[name='TYPE_CONFIG[TARGET_TYPE]']");
+
+
+		if(formDataTarget.val() == '' || elDataTarget == formDataTarget.val()) {
+			formDataTarget.val(elDataTarget);
+
+		} else {
+			console.debug("diff");
+			if(confirm("Sie können Mitgliedschaften bzw. Pakete nicht mit Services kombinieren. Möchten sie die Auswahl übernehmen und die bereits aktivierten Felder entfernen?")) {
+				jQuery(".percentagecoupontype-targets input[type='checkbox']").attr('checked', false);
+				formDataTarget.val(elDataTarget);
+				jQuery(el).attr('checked', true);
+			} else {
+				jQuery(el).attr('checked', false);
+				return false;
+			}
+		}
+	}
+
+	jQuery(function() {
+		toogleType();
+	});
+</script>
+
+<h1>
+	Gutschein {if ID_COUPON}bearbeiten{else}erstellen{endif}
+</h1>
+
+{if success}
+	<div class="ok">Der Gutschein wurde erfolgreich gespeichert</div>
+	<br><br>
+{endif}
+
+
+{if info}
+	<div class="info">Es sind folgende Hinweise aufgetreten:<br>{info}</div><br><br>
+{endif}
+
+{if err}
+	<div class="error">{err}</div><br><br>
+{endif}
+
+
+<table border="0" cellspacing="0" cellpadding="4" class="reiter">
+	<tr>
+		<th id="R1" class="{if !DO}reiterAktiv{else}reiterPassiv{endif}"><a href="index.php?page=coupons_edit&ID_COUPON={ID_COUPON}">Beschreibung</a> </th>
+		{if ID_COUPON}<th id="R1" class="{if DO_USAGE}reiterAktiv{else}reiterPassiv{endif}"><a href="index.php?page=coupons_edit&ID_COUPON={ID_COUPON}&DO=Usage">Gutschein Nutzung</a> </th>{endif}
+
+	</tr>
+</table>
+
+{if !DO}
+<form method="post" action="index.php" style="display:inline;">
+	<input type="hidden" name="page" value="{curpagealias}" />
+	{if ID_COUPON}<input type="hidden" name="ID_COUPON" id="ID_COUPON" value="{ID_COUPON}" />{endif}
+
+	<input type="hidden" name="npage" value="{npage}">
+
+
+	<table border="0" width="950" class="formTable" style="border:1px #9A9A9A solid">
+		<tr>
+			<td valign="top">
+				<table border="0" cellspacing="0" class="formTable">
+					<tr>
+						<th>ID</th>
+						<td>{if ID_COUPON}{ID_COUPON}{else}<i>neu</i>{endif}</td>
+					</tr>
+					<tr>
+						<th>Status</th>
+						<td>
+							<label><input type="radio" name="STATUS" {if STATUS == 0}checked="checked"{endif} value="0"> pausiert </label>
+							<label><input type="radio" name="STATUS" {if STATUS == 1}checked="checked"{endif} value="1"> aktiv </label>
+						</td>
+					</tr>
+					<tr>
+						<th>Bezeichnung</th>
+						<td>
+							<input type="text" name="COUPON_NAME" id="COUPON_NAME" size="60" class="inputfull" value="{htm(COUPON_NAME)}" />
+						</td>
+					</tr>
+
+					<tr>
+						<th valign="top">Beschreibung</th>
+						<td>
+							<textarea name="COUPON_DESCRIPTION" id="COUPON_DESCRIPTION" rows="10" style="width: 600px;">{COUPON_DESCRIPTION}</textarea>
+							<p>Beschreiben Sie hier den Inhalt des Gutscheins ausführlich. Dieser wird dem Kunden dargestellt</p>
+							<br><br>
+						</td>
+					</tr>
+
+					<tr>
+						<th valign="top">Gutschein-Codes (ein Code pro Zeile)</th>
+						<td>
+							<textarea type="text" name="COUPON_CODES" id="COUPON_CODES" rows="10" style="width: 600px;" >{htm(COUPON_CODES)}</textarea>
+
+							<a href="#" onclick="generateCode(); return false;">Code generieren</a>
+						</td>
+					</tr>
+					<tr>
+						<th valign="top">Bedingungen</th>
+						<td>
+							<p>Der Gutschein kann von einem User nur verwendet werden, wenn alle verwendeten Bedingungen bei Nutzung des Gutscheins zutreffen</p>
+
+							<label class="checkbox"><input type="checkbox" name="RESTRICTION_TYPE[Coupon_Restriction_OnlyOneCouponPerUserRestriction]" value="1" {if RESTRICTION_TYPE_Coupon_Restriction_OnlyOneCouponPerUserRestriction || !ID_COUPON}checked{endif} onchange="toogleRestriction('Coupon_Restriction_OnlyOneCouponPerUserRestriction')"> <strong>Ein Gutschein je User</strong></label>
+							<div id="restriction-Coupon_Restriction_OnlyOneCouponPerUserRestriction">
+								<small>Der Gutschein kann von ein und dem selben User nur einmal eingelöst werden. <b>Sollte i.d.R. aktiviert werden, wenn "Individueller Code" nicht gewählt ist</b></small>
+							</div>
+							<script>toogleRestriction('Coupon_Restriction_OnlyOneCouponPerUserRestriction');</script>
+							<hr>
+
+							<label class="checkbox"><input type="checkbox" name="RESTRICTION_TYPE[Coupon_Restriction_IndividualCouponCodeRestriction]" value="1" {if RESTRICTION_TYPE_Coupon_Restriction_IndividualCouponCodeRestriction}checked{endif} onchange="toogleRestriction('Coupon_Restriction_IndividualCouponCodeRestriction')"> <strong>Individueller Gutscheincode</strong></label>
+							<div id="restriction-Coupon_Restriction_IndividualCouponCodeRestriction">
+								<small>Jeder Gutscheincode ist individuell und kann nur einmalig verwendet werden</small>
+							</div>
+							<script>toogleRestriction('Coupon_Restriction_IndividualCouponCodeRestriction');</script>
+							<hr>
+
+							<label class="checkbox"><input type="checkbox" name="RESTRICTION_TYPE[Coupon_Restriction_QuantityRestriction]" value="1" {if RESTRICTION_TYPE_Coupon_Restriction_QuantityRestriction}checked{endif} onchange="toogleRestriction('Coupon_Restriction_QuantityRestriction')"> <strong>Anzahl der Verwendung limitiert</strong></label>
+							<div id="restriction-Coupon_Restriction_QuantityRestriction">
+								<small>Der Gutschein darf insgesamt nur x mal eingelöst werden</small>
+								<br>
+								Anzahl :
+								<input type="number" step="1" name="RESTRICTION_CONFIG[Coupon_Restriction_QuantityRestriction][LIMIT_QUANTITY]" value="{htm(RESTRICTION_CONFIG_Coupon_Restriction_QuantityRestriction_LIMIT_QUANTITY)}" >
+							</div>
+							<script>toogleRestriction('Coupon_Restriction_QuantityRestriction');</script>
+							<hr>
+
+
+							<label class="checkbox"><input type="checkbox" name="RESTRICTION_TYPE[Coupon_Restriction_UsergroupRestriction]" value="1" {if RESTRICTION_TYPE_Coupon_Restriction_UsergroupRestriction}checked{endif} onchange="toogleRestriction('Coupon_Restriction_UsergroupRestriction')"> <strong>Auf bestimmte Benutzergruppen beschränkt</strong></label>
+							<div id="restriction-Coupon_Restriction_UsergroupRestriction">
+								<small>Der Gutschein darf nur von den ausgewählten Benutzergruppen eingelöst werden</small>
+								<br>
+								{restrictions_usergroups_list}
+							</div>
+							<script>toogleRestriction('Coupon_Restriction_UsergroupRestriction');</script>
+							<hr>
+
+							<label class="checkbox"><input type="checkbox" name="RESTRICTION_TYPE[Coupon_Restriction_DateRestriction]" value="1" {if RESTRICTION_TYPE_Coupon_Restriction_DateRestriction}checked{endif} onchange="toogleRestriction('Coupon_Restriction_DateRestriction')"> <strong>An Zeitraum gebunden</strong></label>
+							<div id="restriction-Coupon_Restriction_DateRestriction">
+								<small>Beschränkt die Nutzung des Gutscheins auf einen bestimmten Zeitraum</small>
+								<br>
+								von:
+								<input type="date" name="RESTRICTION_CONFIG[Coupon_Restriction_DateRestriction][VALID_FROM]" value="{htm(RESTRICTION_CONFIG_Coupon_Restriction_DateRestriction_VALID_FROM)}" placeholder="JJJJ-MM-TT">
+								&nbsp; &nbsp;
+								bis:
+								<input type="date" name="RESTRICTION_CONFIG[Coupon_Restriction_DateRestriction][VALID_TO]" value="{htm(RESTRICTION_CONFIG_Coupon_Restriction_DateRestriction_VALID_TO)}" placeholder="JJJJ-MM-TT">
+							</div>
+							<script>toogleRestriction('Coupon_Restriction_DateRestriction');</script>
+							<hr>
+						</td>
+					</tr>
+
+					<tr>
+						<th valign="top">Gutschein Typ</th>
+						<td>
+							<select name="TYPE" onchange="toogleType()">
+								{coupon_types}
+							</select>
+
+							<p>Konfiguration des Gutschein-Typs</p>
+
+							<div id="type-config-Coupon_Type_AbsoluteValueCouponType" class="type-config hidden">
+								<small>Mit Einlösen des Gutscheins wird dem Kunden eine Gutschrift in Höhe des angegebenen Betrags gutgeschrieben und mit allen
+								zukünftig gestellten Rechnungen verrechnet.</small>
+
+								<br>
+								Betrag:
+								<input type="number" step="0.01" name="TYPE_CONFIG[COUPON_VALUE]" value="{htm(TYPE_CONFIG_COUPON_VALUE)}" placeholder="0,00"> €
+
+
+							</div>
+
+							<div id="type-config-Coupon_Type_PercentageValueCouponType" class="type-config hidden">
+								<small>Mit Einlösen des Gutscheins wird dem Kunden <b>einmalig</b> ein prozentuale Rabatt gegeben, sofern er eines der ausgewählten
+								Leistngen wählt</small>
+
+								<input type="hidden" name="TYPE_CONFIG[TARGET_TYPE]" value="{htm(TYPE_CONFIG_TARGET_TYPE)}">
+
+								<br>
+								Rabatt:
+								<input type="number" step="0.01" name="TYPE_CONFIG[COUPON_VALUE]" value="{htm(TYPE_CONFIG_COUPON_VALUE)}" placeholder="0,00"> %
+								<br><br>
+
+								<div class="percentagecoupontype-targets">
+								<u>auf folgende Mitgliedschaften:</u>
+								<br><br>
+								{if type_membership_list}{type_membership_list}{else}<em>keine Mitgliedschaften vorhanden</em>{endif}
+								<br><br>
+
+								<u>auf folgende Pakete:</u>
+								<br><br>
+								{if type_packet_list}{type_packet_list}{else}<em>keine Pakete vorhanedn</em>{endif}
+								<br><br>
+
+								<u>auf folgende Services</u>
+								<small><b>Achtung: Wählen Sie ENTWEDER Mitgliedschften bzw. Pakete ODER Services. Eine Kombination innerhalb eines Gutscheins ist nicht möglich</b></small>
+								<br><br>
+								{if type_service_list}{type_service_list}{else}{type_service_list}{endif}
+								</div>
+							</div>
+
+							<div id="type-config-Coupon_Type_RegisterMembershipCouponType" class="type-config hidden">
+								<small>Mit Einlösen des Gutscheins wird dem Kunden bei der Registrierung eine, normalerweise nicht öffentliche, Mitgliedschaft zur Verfügung gestellt.</small>
+
+								<br>
+								Mitgliedschaften:
+								
+								{type_membership_options}
+
+							</div>
+
+							<br><br>
+						</td>
+					</tr>
+
+
+					<tr>
+						<td colspan="2" class="footer">
+							<input class="button" type="submit" value="Speichern">
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td valign="top" style="width: 400px;">
+
+			</td>
+		</tr>
+	</table>
+
+
+</form>
+
+{endif}
+{if DO_USAGE}
+
+
+	<table border="0" cellspacing="0" cellpadding="10" class="liste">
+		<tr>
+			<th>eingegeben am</th>
+			<th>verwendet am</th>
+			<th>User</th>
+			<th>Code</th>
+			<th>Status</th>
+		</tr>
+		{if liste_usage}{liste_usage}{else}<tr><td colspan="6">Noch keine verwendeted Gutscheine</td></tr>{endif}
+		<tr>
+			<td colspan="5">
+				{liste_usage_pager}
+			</td>
+		</tr>
+	</table>
+
+{endif}

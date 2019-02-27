@@ -1,0 +1,27 @@
+
+<tr class="zeile{even}">
+    <td>
+        <a href="index.php?page=nav_url_edit&id={ID_NAV}" title="URLs für Seite bearbeiten">
+            <img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0" />
+        </a>
+    </td>
+    <td>{IDENT}{if ALIAS} / {ALIAS}{endif}</td>
+    <td>{htm(V1)}</td>
+    <td>
+    {if URL_COUNT}
+        {htm(BASEURL)}{htm(URL_PATTERN)}
+        {if URL_COUNT>1}
+        <a onclick="URLShowAll(this);" data-id="{ID_NAV}" title="Alle URLs anzeigen">
+            <img src="gfx/dn.gif" />
+        </a>
+        {endif}
+    {else}
+        <span style="color: grey;">
+            {uri_action({IDENT})}
+        </span>
+    {endif}
+    </td>
+    <td>
+        <input type="number" name="URL_PRIORITY[{ID_NAV}]" value="{URL_PRIORITY}" />
+    </td>
+</tr>

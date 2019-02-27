@@ -1,0 +1,13 @@
+{if !REMOVED}
+<li class="katrow" name="child{PARENT}" id="row{ID_KAT}">
+  {if kids}
+    <a class="level{LEVEL} parent{if ID_KAT==ACTIVE_ID} active{endif}" href="javascript:UpdateKatSelector({ID_KAT}, '{htm(V1)}', {PARENT});" title="&Ouml;ffnen" style="margin-left: -16px;">
+    	{htm(V1)}
+	</a>
+  {else}
+    <a class="level{LEVEL}{if ID_KAT==ACTIVE_ID} active{endif}" href="javascript:UpdateKatSelector({ID_KAT}, '{htm(V1)}', {PARENT}, true);" title="Ausw&auml;hlen" style="margin-left: -16px;">
+		{htm(V1)}
+	</a>
+  {endif}
+</li>
+{endif}

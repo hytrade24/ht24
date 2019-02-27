@@ -1,0 +1,16 @@
+<tr class="zeile{even}">
+	<td>
+		{if CONFIRMED}
+			<a id="hersteller_{ID_MAN}" title="Nicht best&auml;tigen" onclick="confHersteller('{ID_MAN}');">
+				<img src="gfx/set_ok.png" />
+			</a>
+        {else}
+			<a id="hersteller_{ID_MAN}" title="Best&auml;tigen" onclick="confHersteller('{ID_MAN}');">
+				<img src="gfx/set_notok.png" />
+			</a>
+        {endif}
+	</td>
+	<td>
+		{htm(NAME)}
+	</td>
+</tr>

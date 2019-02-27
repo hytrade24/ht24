@@ -1,0 +1,54 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="229"{endif}>
+    <div class="top-trusted-companies">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="all-text">
+ 
+                    
+                    <span>Mehr als </span>
+                    <span class="count bold-text">111543</span> <span class="bold-text"> Artikel</span>
+                    <span>gelistet!</span>
+                  
+                 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
+                        <script>
+                           $('.count').each(function () {
+                            $(this).prop('Counter',0).animate({
+                                Counter: $(this).text()
+                            }, {
+                                duration: 2000,
+                                easing: 'swing',
+                                step: function (now) {
+                                    $(this).text(Math.ceil(now));
+                                }
+                            });
+                        });
+                  </script>
+                 	
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="all-images">                  
+                  	<img src="{thumbnail(uri_resource(images/logos/argo_logo.png),130,60)}" alt="argo_hytos_logo" class="ani"/>                  
+                    <img src="{thumbnail(uri_resource(images/logos/loesi_logo.png),130,60)}" alt="loesi_logo" class="ani"/>
+               <!-- <img src="{thumbnail(uri_resource(images/logos/hydac_logo.png),130,60)}" alt="hydac_logo" class="ani"/> -->
+                    <img src="{thumbnail(uri_resource(images/logos/logo_mpfiltri_logo.png),130,60)}" alt="logo_mpfiltri_logo" class="ani"/>
+                    <img src="{thumbnail(uri_resource(images/logos/jahns_logo.png),130,60)}" alt="jahns_logo" class="ani"/>
+               <!--     <img src="{thumbnail(uri_resource(images/logos/linde_logo.png),130,60)}" alt="linde_logo" class="ani"/> -->
+                    <script>
+                        $('.ani').css("display", "none");
+                        $(document).ready(function () {
+                            $('.ani').fadeIn(2000,function(){
+                                $(this).css("display","normal");
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

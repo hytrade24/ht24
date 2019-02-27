@@ -1,0 +1,28 @@
+<h1>Zentrale Produktdatenbank</h1>
+
+<p>In der Zentralen Produktdatenbank finden Sie alle verfügbaren Produkte und Hersteller für SecondSol und Panel42. </p>
+
+
+<table cellpadding="3" style="min-width: 500px;">
+	<tr>
+		<td style="width: 50%">
+			<h3>Produkttypen</h3>
+			<table class="liste" style="width: 100%">
+				<tr>
+					<th>ID</th>
+					<th>Produkttyp</th>
+				</tr>
+				{if liste_types}
+					{liste_types}
+				{else}
+				<tr>
+					<td colspan="2" class="zeile0">Keine Typen vorhanden</td>
+				</tr>
+				{endif}
+			</table>
+		</td>
+		<td style="width: 50%">
+
+		</td>
+	</tr>
+</table>

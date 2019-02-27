@@ -1,0 +1,18 @@
+{if liste}
+<div id="aKat">
+<table border="0" width="100%" class="formTable">
+	<tr>
+		<td><a style="cursor:pointer" onclick="kat_auswahl(0);" title="Zur&uuml;ck zur &Uuml;bersicht">Alle Kategorien</a>
+ {ariane}</td>
+
+	</tr>
+</table>
+
+<table cellspacing="0" cellpadding="0" border="0" class="liste" width="100%">
+{liste}
+</table>
+<br>
+{else}
+<p class="error">Kategorien konnten nicht geladen werden!</p>
+{endif}
+</div>

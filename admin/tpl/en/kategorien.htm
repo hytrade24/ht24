@@ -1,0 +1,58 @@
+{loadperm(admin_katperm)}
+<script language="JavaScript" type="text/javascript">
+<!--
+function editkat(id)
+{
+  if(checkPFlag()){if curframe}
+  {
+    opener.location.href='{pageref(kat_edit)}&ID_KAT='+id;
+    opener.focus();
+  }{else}
+    location.href='{pageref(kat_edit)}&ID_KAT='+id;{endif}
+}
+function editag(id)
+{
+  if(checkPFlag())
+  {
+    opener.location.href='{pageref(attr_group_edit)}&ID_ATTR_GROUP='+id;
+    opener.focus();
+  }
+}
+function katlist(id)
+{
+  if(checkPFlag())
+  {
+    opener.location.href='{pageref(kategorien)}';
+    opener.focus();
+  }
+}
+//-->
+</script><h1>Alle Kategorien</h1>
+<!--<div class="reiter{if ROOT==1}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&frame={curframe}&ROOT=1">Auktionen</a></div>-->
+<div class="reiter{if ROOT==2}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&frame={curframe}&ROOT=2">News</a></div>
+<div class="reiter{if ROOT==3}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&frame={curframe}&ROOT=3">Adserver</a></div>
+<div class="reiter{if ROOT==4}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&frame={curframe}&ROOT=4">Anbieter</a></div>
+<div class="reiter{if ROOT==5}Aktiv{else}Passiv{endif}"><a href="index.php?page={curpage}&frame={curframe}&ROOT=5">Gesuche</a></div>
+<table border="0" cellspacing="0" cellpadding="0" class="liste"><tr>
+  <td>
+   <table class="pathtab" cellpadding="0" cellspacing="0" border="0">{if perm_admin_katperm}<tr>
+     <td colspan="{if actions}{if let_move}8{else}4{endif}{else}{if 1==ROOT}3{else}2{endif}{endif}" style="border-bottom:none;padding-bottom:0px">{if frame}<div class="hinweisVar">
+    <b>&middot;</b> Falls Sie den Baum administrieren (Knoten verschieben oder l&ouml;schen) wollen, benutzen Sie bitte den Men&uuml;punkt
+      <a href="javascript:;" onClick="katlist();">Kategorien &gt; auflisten</a>{if 1==ROOT}<br />
+    <b>&middot;</b> Die Attribut-Zuordnung wird an Unterkategorien vererbt, solange denen nicht explizit eine eigene Attributgruppe zugeordnet wurde. Bei Knoten mit expliziter Zuordnung ist der Pfad der Attributgruppe <b>fett</b> markiert.{endif}
+  </div>{endif}{if !frame && !lock_ok}<div class="hinweis"><span class="error">
+      {if lock_user}Der User "{lock_user}" bearbeitet zur Zeit diesen Baum.{else}Das Locking ist fehlgeschlagen.{endif}<br />
+      Daher sind Ihnen Verschieben und L&ouml;schen momentan nicht gestattet.
+    </span></div>{else}&nbsp;{endif}</td>
+     <th colspan="{=modcount}" class="borderleft" style="border-bottom:none;">Zugriffsrechte</th>
+   </tr>{endif}<tr valign="bottom">
+    <th{if actions} colspan="3"{endif}>&nbsp;Aktionen&nbsp;</th>
+    <th style="text-align:left;padding-bottom:0px;"><img src="gfx/path.{if baum}66{else}64{endif}.png" width="19" height="17" align="left">&nbsp;root</th>{if !actions && 1==ROOT}
+    <th>Attribut-Gruppe</th>{endif}{if let_move && actions}
+    <th colspan="4">Verschieben</th>{endif}{if perm_admin_katperm}{modhead}{endif}
+   </tr>{baum}
+  </table>
+ </td>
+</tr><tr>
+  <td align="right" class="footer">&nbsp;</td>
+</tr></table><br />

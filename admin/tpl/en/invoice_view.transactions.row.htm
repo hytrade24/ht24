@@ -1,0 +1,8 @@
+<tr>
+    <td><a href="index.php?page=invoice_view&action=deletetransaction&ID_BILLING_INVOICE={FK_BILLING_INVOICE}&ID_BILLING_INVOICE_TRANSACTION={ID_BILLING_INVOICE_TRANSACTION}" onclick="return confirm('Möchten Sie den Zahlungseingang wirklich löschen ?');"><img src="./gfx/btn.del.gif"></a></td>
+    <td>{ID_BILLING_INVOICE_TRANSACTION}</td>
+    <td>{todate(STAMP_CREATE)}</td>
+    <td>{DESCRIPTION}</td>
+    <td>{TRANSACTION_ID}</td>
+    <td>{topreis(PRICE)} {CURRENCY_DEFAULT}</td>
+</tr>

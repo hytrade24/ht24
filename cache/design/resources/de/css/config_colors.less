@@ -1,0 +1,280 @@
+// Hintergrund- und Textfarbe für normalen Inhalt
+@design-background: #FFFFFF;
+@design-text-color: #2B2A29;
+@design-link-color: #166ba5;
+@design-link-hover-color: darken(@design-link-color,10%);
+
+// Hintergrund- und Textfarbe für hervorgehobene Bereiche (z.B. Boxen im Seitenmenü, Eingabemasken, etc.)
+@design-highlight-background: #F5F5F5;
+@design-highlight-text-color: #2B2A29;
+@design-highlight-link-color: @design-link-color;
+@design-highlight-link-hover-color: @design-link-hover-color;
+
+// Hintergrund- und Textfarbe für stark hervorgehobene Bereiche (z.B. Footer)
+@design-contrast-background: #444444;
+@design-contrast-text-color: #FFFFFF;
+@design-contrast-link-color: @design-contrast-text-color;
+@design-contrast-link-hover-color: darken(@design-contrast-link-color,10%);
+
+// Hauptfarben für farbige Elemente/Bereiche
+@design-color-primary: #D06F1D;
+@design-color-primary-text: #FFFFFF;
+@design-color-secondary: #3598DB;
+@design-color-secondary-text: #FFFFFF;
+@design-color-success: #5cb85c;
+@design-color-success-text: #FFFFFF;
+@design-color-warning: #f0ad4e;
+@design-color-warning-text: #FFFFFF;
+@design-color-danger: #d9534f;
+@design-color-danger-text: #FFFFFF;
+
+// Panel (general)
+@panel-bg:                    #fff;
+@panel-body-bg:               @design-highlight-background;
+@panel-inner-border:          #ddd;
+@panel-footer-bg:             #f5f5f5;
+// Panel: Primary
+@panel-primary-text:          #000000;
+@panel-primary-border:        #BABABA;
+@panel-primary-heading-bg:    #E8E8E8;
+// Panel: Default
+@panel-default-text:          @gray-dark;
+@panel-default-border:        #ddd;
+@panel-default-heading-bg:    #f5f5f5;
+// Success
+@panel-success-text:          @state-success-text;
+@panel-success-border:        @state-success-border;
+@panel-success-heading-bg:    @state-success-bg;
+// Info
+@panel-info-text:             @state-info-text;
+@panel-info-border:           @state-info-border;
+@panel-info-heading-bg:       @state-info-bg;
+// Warning
+@panel-warning-text:          @state-warning-text;
+@panel-warning-border:        @state-warning-border;
+@panel-warning-heading-bg:    @state-warning-bg;
+// Danger
+@panel-danger-text:           @state-danger-text;
+@panel-danger-border:         @state-danger-border;
+@panel-danger-heading-bg:     @state-danger-bg;
+
+// Icon box
+@design-content-box-ico-main: transparent;
+@design-content-box-ico-bg: #e84c3d;
+@design-content-box-ico-text: #212121;
+@design-content-box-ico-contrast: #fff;
+
+// Vertikale Tabs
+@design-tabs-navi-bg: #aaa;
+@design-tabs-navi-text: #fff;
+@design-tabs-content-bg: #ddd;
+@design-tabs-content-text: #212121;
+@design-tabs-lable-action-bg: @design-menline-background;
+
+// Collapse panels
+@design-collapse-border:#f0f0f0;
+@design-collapse-bg:#fafafa;
+@design-collapse-title-bg-default:#aaa;
+@design-collapse-title-bg-action:@design-menline-background;
+@design-collapse-title-text-default:@design-menline-link-color;
+@design-collapse-title-text-action:@design-collapse-title-text-default;
+
+// =====================================
+// ||       WEBSEITE ALLGEMEIN        ||
+// =====================================
+
+// Hintergrund-/Schriftfarbe der gesamten Seite 
+@design-page-background: @design-background;
+@design-page-text-color: @design-text-color;
+
+// Hintergrund-/Schriftfarbe der Kopfzeile / Menline
+@design-menline-background: #000000; //@design-background;
+@design-menline-border: @design-menline-background;
+@design-menline-text-color: #E0E0E0; //@design-text-color;
+@design-menline-link-color: @design-color-primary-text;
+@design-menline-link-hover-color: @design-highlight-link-color;
+@design-menline-brand-color: @design-menline-link-color;
+@design-menline-brand-hover-color: @design-menline-link-hover-color;
+
+// Hintergrund-/Schriftfarbe der Suchleiste (Logo + Suche + Warenkorb)
+@design-header-background: @design-highlight-background;
+@design-header-border: @design-header-background;
+@design-header-text-color: @design-highlight-text-color;
+@design-header-link-color: @design-highlight-link-color;
+@design-header-link-hover-color: @design-highlight-link-hover-color;
+
+// Hintergrund-/Schriftfarbe der Hauptnavigation
+@design-nav-main-style: full;     // full / limited - Should the main navigation have its background limited to page width or full browser width?
+                                  //                - Soll die Hauptnaivgation einen Hintergrund über die Seitenbreite erhalten oder über die volle Breite des Browsers?
+@design-nav-main-background: darken(@design-highlight-background, 5%);
+@design-nav-main-border: @design-nav-main-background;
+@design-nav-main-text-color: @design-highlight-text-color;
+@design-nav-main-active-background: @design-color-primary;
+@design-nav-main-active-text-color: @design-color-primary-text;
+@design-nav-main-hover-background: @design-nav-main-active-background;
+@design-nav-main-hover-text-color: @design-nav-main-active-text-color;
+// Hintergrund-/Schriftfarbe von Dropdowns/Untermenüs der Hauptnavigation 
+@design-nav-main-dropdown-background: @dropdown-bg;
+@design-nav-main-dropdown-border: @dropdown-border;
+@design-nav-main-dropdown-text-color: @dropdown-link-color;
+@design-nav-main-dropdown-active-background: @design-nav-main-active-background; //@dropdown-link-active-bg;
+@design-nav-main-dropdown-active-text-color: @design-nav-main-active-text-color; //@dropdown-link-active-color;
+@design-nav-main-dropdown-hover-background: @design-nav-main-hover-background; //@dropdown-link-hover-bg;
+@design-nav-main-dropdown-hover-text-color: @design-nav-main-hover-text-color; //@dropdown-link-hover-color;
+// Hintergrund-/Schriftfarbe der Kategorien innerhalb der Hauptnavigation (falls vorhanden)  
+@design-nav-main-category-background: @design-highlight-background;
+@design-nav-main-category-text-color: @design-nav-main-text-color;
+@design-nav-main-category-hover-background: @design-nav-main-hover-background;
+@design-nav-main-category-hover-text-color: @design-nav-main-hover-text-color;
+
+// Hinweis zur Verwendung von Cookies
+@design-cookie-warning-background: #FFFEB0;
+@design-cookie-warning-text-color: #000000;
+@design-cookie-warning-link-color: @design-link-color;
+@design-cookie-warning-link-hover-color: @design-link-hover-color;
+
+// =====================================
+// ||      DESIGN ELEMENTE ALLG.      ||
+// =====================================
+
+// Listen-Bereiche mit Überschrift / Button / Liste von Elementen 
+@design-list-area-background: none;
+@design-list-area-text-color: @design-text-color;
+@design-list-area-link-color: @design-link-color;
+@design-list-area-link-hover-color: @design-link-hover-color;
+@design-list-area-heading-background: @design-highlight-background;
+@design-list-area-heading-text-color: @design-highlight-text-color;
+
+// =====================================
+// ||      MARKTPLATZ KATEGORIEN      ||
+// =====================================
+
+// Links im Box-Menü (üblicherweise linke Seite)
+@design-menu-box-link-text-color: inherit;
+@design-menu-box-link-text-color-hover: inherit;
+@design-menu-box-sub-link-text-color: @design-link-color;
+@design-menu-box-sub-link-text-color-hover: @design-link-hover-color;
+// Hintergrund-/Schriftfarbe des Hover-Menüs
+@design-menu-box-popup-background: @design-background;
+@design-menu-box-popup-text-color: @design-text-color;
+// Schriftfarbe für Kategorie-Links/-Beschreibungen
+@design-menu-box-category-link-text-color: @design-menu-box-popup-text-color;
+@design-menu-box-category-link-text-color-hover: @design-menu-box-category-link-text-color;
+@design-menu-box-category-description-text-color: lighten(@design-menu-box-category-link-text-color, 40%);
+
+// Icon-/Link-Farben für die Kategorie-Übersicht
+@design-marketplace-tree-icon-color: @design-page-text-color;
+@design-marketplace-tree-link-color: @design-link-color;
+@design-marketplace-tree-link-hover-color: @design-link-hover-color;
+
+// =====================================
+// ||       MARKTPLATZ ANZEIGEN       ||
+// =====================================
+
+// Klassen für die Anzeigen-Darstellung
+@design-ad-box-class: { .design-content-base; };
+@design-ad-box-image-class: { .design-ad-image-style-box; };
+@design-ad-row-class: { .design-content-base; };
+@design-ad-row-image-class: { .design-ad-image-style-row; };
+// Highlight für Top-Anzeigen
+@design-ad-highlight-background: #FDFFD3;
+@design-ad-highlight-border: darken(@design-highlight-background, 10%);
+// Flags zum Anzeigen-Status
+// - Top Anzeige
+@design-ad-status-top-background: @design-color-success;
+@design-ad-status-top-text-color: @design-color-success-text;
+// - Angebot
+@design-ad-status-sale-background: @design-color-danger;
+@design-ad-status-sale-text-color: @design-color-danger-text;
+// - Neu
+@design-ad-status-new-background: @design-color-secondary;
+@design-ad-status-new-text-color: @design-color-secondary-text;
+// - VB
+@design-ad-status-trade-background: @design-color-primary;
+@design-ad-status-trade-text-color: @design-color-primary-text;
+// - Gesuch
+@design-ad-status-request-background: @design-color-primary;
+@design-ad-status-request-text-color: @design-color-primary-text;
+// - B2B
+@design-ad-status-b2b-background: @design-color-warning;
+@design-ad-status-b2b-text-color: @design-color-warning-text;
+// - ?% Sale
+@design-ad-status-discount-background: @design-color-danger;
+@design-ad-status-discount-text-color: @design-color-danger-text;
+
+// Top-Anzeigen Slider
+@design-marketplace-slider-indicator-color: @design-color-primary;
+
+// =====================================
+// ||         HEADER SUCHBOX          ||
+// =====================================
+
+@design-search-header-selected-color: #E8E8E8;
+
+// =====================================
+// ||       MARKTPLATZ SUCHBOX        ||
+// =====================================
+
+// Hintergrund-/Schriftfarbe
+@design-search-group-background: @design-background;
+@design-search-group-text-color: @design-text-color;
+
+// =====================================
+// ||        VERANSTALTUNGEN          ||
+// =====================================
+
+// Veranstaltungs-Box "Bild-Darstellung #1"
+@design-events-img1-primary-color: #3598DB;
+@design-events-img1-primary-text-color: #FFFFFF;
+@design-events-img1-secondary-color: #000000;
+@design-events-img1-fallback-background: #F2F2F2;
+@design-events-img1-fallback-icon: #BBBBBB;  
+
+@design-events-img2-fallback-background: #000000;
+@design-events-img2-fallback-icon: #606060;
+@design-events-img2-background-opacity: 0.4;
+@design-events-img2-text-color: #FFFFFF;
+@design-events-img2-link-color: #3598DB;
+
+
+// =====================================
+// ||          GRUPPE FORUM           ||
+// =====================================
+
+// Hintergrund-/Schriftfarbe für forum-container
+@design-group-forum-background: @design-highlight-background;
+@design-group-forum-background-bright: darken(@design-group-forum-background,5%);
+@design-group-forum-background-dark: darken(@design-group-forum-background,10%);
+@design-group-forum-text-color: @design-highlight-text-color;
+
+// =====================================
+// ||        WEBSEITE FOOTER          ||
+// =====================================
+
+// Hintergrund-/Schriftfarbe 
+@design-footer-background: @design-contrast-background;
+@design-footer-text-color: @design-contrast-text-color;
+// Links
+@design-footer-link-color: @design-contrast-text-color;
+@design-footer-link-hover-color: darken(@design-contrast-link-color,10%);
+
+// =====================================
+// ||          IMPORT TOOL            ||
+// =====================================
+
+// Hintergrund-/Schriftfarbe
+@design-import-page-background: @design-background;
+@design-import-page-text-color: @design-text-color;
+
+// =====================================
+// ||           DROPZONE              ||
+// =====================================
+
+@design-dropzone-bg: @design-background;
+@design-dropzone-border: 2px dashed @design-text-color;
+@design-dropzone-preview-bg: @panel-bg;
+@design-dropzone-preview-border: 1px solid @panel-default-border;
+@design-dropzone-preview-success-bg: @state-success-bg;
+@design-dropzone-preview-success-border: @state-success-text;
+@design-dropzone-preview-error-bg: @state-danger-bg;
+@design-dropzone-preview-error-border: @state-danger-text;

@@ -1,0 +1,15 @@
+<tr class="zeile{even}">
+      <td>{if GRP_ID_ATTR_GROUP}<a href="index.php?page={htm(curpagealias)}&ID_ATTR_GROUP={GRP_ID_ATTR_GROUP}" onClick="return checkFlag();">{print_fk(attr_group,GRP_ID_ATTR_GROUP)}{else}&nbsp;{endif}</td>
+      <td>{if GRP_ID_ATTR_GROUP && GRP_B_MANDATORY}*{else}&nbsp;{endif}{if GRP_ID_ATTR_GROUP && GRP_B_SEARCH}?{else}&nbsp;{endif}</td>
+      <td><input type="checkbox" class="nob" name="attr[]" id="chk{ID_ATTR}"
+        title="zuordnen" {if FK_ATTR_GROUP}checked {endif}value="{ID_ATTR}"
+        onClick="if(!this.checked){document.getElementById('mand{ID_ATTR}').checked=false;document.getElementById('srch{ID_ATTR}').checked=false;}"></td>
+      <td><input type="checkbox" class="nob" name="mand[]" id="mand{ID_ATTR}"
+        title="als Pflichtfeld markieren" {if B_MANDATORY}checked {endif}value="{ID_ATTR}"
+        onClick="if(this.checked)document.getElementById('chk{ID_ATTR}').checked=true;"></td>
+      <td><input type="checkbox" class="nob" name="srch[]" id="srch{ID_ATTR}"
+        title="als Einschr&auml;nkungsfeld zulassen" {if B_SEARCH}checked {endif}value="{ID_ATTR}"
+        onClick="if(this.checked)document.getElementById('chk{ID_ATTR}').checked=true;"></td>
+      <td>{print_lu(attr_type,LU_TYPE)}</td>
+      <td{if T1} title="{htm(T1)}"{endif}><label for="chk{ID_ATTR}">{htm(V1)}</label></td>
+    </tr>

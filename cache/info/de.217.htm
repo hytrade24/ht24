@@ -1,0 +1,19 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="217"{endif}>
+    <h3>Gutschein einlösen</h3>
+
+ 
+		<p>Tragen Sie Ihren persönlichen Gutscheincode in das folgende Formular ein</p>
+	 
+ 
+
+	<form class="form form-horizontal design-content-box" action="{uri_action(invoices,1,coupon)}" method="post">
+		<div class="control-group">
+			<label class="control-label"><strong>Gutscheincode eingeben:</strong></label>
+			<div class="controls">
+				<input type="text" name="COUPON_CODE" value="{htm(COUPON_CODE)}" placeholder="Gutscheincode">
+				<input type="submit" class="btn" value="abschicken">
+			</div>
+		</div>
+	</form>
+</div>

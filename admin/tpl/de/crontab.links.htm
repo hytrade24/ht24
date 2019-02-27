@@ -1,0 +1,44 @@
+{if LAST_CRON_FAIL}
+<div class="left_alert">
+<h1>FEHLER</h1>
+    <h2>ACHTUNG!</h2>
+        <p>Die Cronjobs werden scheinbar nicht korrekt ausgeführt!</p>
+
+</div>
+{endif}
+
+
+<div class="left_setting">
+    <h1><b>Cronjobs Ausführung</b></h1>
+<table width="100%">
+    <tr>
+        <td><b>Letzte Ausführung:</b></td>
+        <td>{LAST_CRON_EXEC}</td>
+    </tr>
+    <tr>
+        <td><b>Letzter Erfolg:</td>
+        <td>{LAST_CRON_DONE}</td>
+    </tr>
+    <tr>
+        <td  valign="top"><b>Nächste Ausführung:</b></td>
+        <td valign="top"> <font {if NEXT_CRON_SECS > 60}color="red"{endif}>
+            {NEXT_CRON_EXEC}<br />
+            <a class="button" title="{NEXT_CRON_SECS}" href="javascript:document.location.reload();" id="NEXT_CRON">(in {NEXT_CRON_SECS} Sekunden)</a>
+        </font>
+            <script>
+                window.UpdateNext = function() {
+                    var secs = Number(document.getElementById("NEXT_CRON").title)-1;
+                    if (secs > 0) {
+                        document.getElementById("NEXT_CRON").innerHTML = "(in "+secs+" Sekunden)";
+                    } else {
+                        if (secs < -10) { secs = 60 + secs; }
+                        document.getElementById("NEXT_CRON").innerHTML = "<strong><font color='green'>Cron gestartet!</font></strong>";
+                    }
+                    document.getElementById("NEXT_CRON").title = secs;
+                }
+                window.setInterval('UpdateNext();', 999);
+            </script></td>
+    </tr>
+</table>
+
+</div>

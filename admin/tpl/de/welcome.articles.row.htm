@@ -1,0 +1,31 @@
+<tr class="zeile{even}" id="ad_row_{ID_AD_MASTER}">
+	<td>
+		{ID_AD_MASTER}
+	</td>
+	<td>
+			{todate(STAMP_START)}
+	</td>
+	<td>
+		<a style="cursor: pointer;" onclick="showAd({ID_AD_MASTER});">
+		{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}
+		</a>
+	</td>
+	<td>
+			<a href="index.php?page=articles&quicksearch=1&ID_KAT={FK_KAT}">
+				{htm(KAT_NAME)}
+			</a>
+	</td>
+	<td>
+		<a href="index.php?page=articles&quicksearch=1&FK_AUTOR={FK_USER}&NAME_={url(USERNAME)}">
+			<img src="gfx/putfeld_8.gif" width="8" height="8" alt="" border="0">
+		</a>
+		<a href="index.php?page=user_edit&ID_USER={FK_USER}">{htm(USERNAME)}</a>
+	</td>
+	<td>
+	{if VERKAUFSOPTIONEN!=3}
+		{topreis(PREIS)} {CURRENCY_DEFAULT}
+	{else}
+		ab&nbsp;{topreis(PREIS)}&nbsp;{CURRENCY_DEFAULT}&nbsp;/&nbsp;Tag
+	{endif}
+	</td>
+</tr>

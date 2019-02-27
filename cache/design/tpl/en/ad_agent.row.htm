@@ -1,0 +1,23 @@
+<tr>
+    <td class="design-action-buttons">
+        <a class="btn btn-default" title="Delete this advert-agent" onclick="return confirm('Do you want to delete the advert-agent?');"
+		   href="{uri_action(ad_agent,del,{ID_AD_AGENT})}">
+			<i class="glyphicon glyphicon-remove"></i>
+		</a>
+		<a class="btn btn-default" href="{uri_action(marktplatz,{SEARCH_KAT},Suchergebniss,{SEARCH_HASH})}" title="Execute now">
+			<i class="glyphicon glyphicon-play"></i>
+		</a>
+		<a class="btn btn-default white-text {if STATUS == 1}btn-green{else}btn-red{endif}" title="pause" onclick="pause_anzeige_agent( '{uri_action(ad_agent,pause,{ID_AD_AGENT})}', this );" href="javascript:;">
+			<i class="glyphicon glyphicon-pause"></i>
+		</a>
+    </td>
+	<td title="{LAST_RUN} results have been found on the last run">
+		{LAST_RUN}
+	</td>
+    <td>
+        {htm(SEARCH_NAME)}
+    </td>
+    <td>
+    	{SEARCH_PARAMS}
+    </td>
+</tr>

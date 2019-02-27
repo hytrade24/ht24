@@ -1,0 +1,10 @@
+<div class="input-group">
+	<select name="DEFAULTVALUE[{TABLE_DEF}][{FIELD_NAME}]" class="form-control" onchange="jQuery('#TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_DEFAULTVALUE').attr('disabled', false);" >
+		<option value="">kein Standardwert</option>
+		<option value="0" {if DEFAULT_VALUE_0}selected{endif}>Nein</option>
+		<option value="1" {if DEFAULT_VALUE_1}selected{endif}>Ja</option>
+	</select>
+    <div class="input-group-btn">
+		<input type="button" class="btn btn-default" onclick="ipe.saveDefaultFieldValue('{FIELD_NAME}', '{TABLE_DEF}'); return false;" value="Speichern" id="TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_DEFAULTVALUE" disabled>
+    </div>
+</div>

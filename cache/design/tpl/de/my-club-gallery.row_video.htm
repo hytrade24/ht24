@@ -1,0 +1,10 @@
+<li class="design-row-item">
+    <div class="thumbnail">
+        {youtube_preview(YOUTUBEID,,,100,75)}
+    </div>
+    {if CLUB_MODERATOR}
+    <a href="{uri_action(my-club-gallery,{CLUB_ID_CLUB},delete,video,{ID_CLUB_GALLERY_VIDEO})}" title="Video löschen">
+        Löschen
+    </a>
+    {endif}
+</li>

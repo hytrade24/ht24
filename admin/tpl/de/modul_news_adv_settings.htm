@@ -1,0 +1,16 @@
+<h1>News Adv. -Einstellungen</h1>
+<p>Bitte beachte Sie, dass die hier gemachten Einstellungen sich auf alle 
+Seiten beziehen, die das News-Adv.-Modul benutzen.</p>
+<h2>Einstellungen</h2>
+<form method="post" action="index.php">
+<input type="hidden" name="comment" value="0" />
+<input type="hidden" name="B_VIS" value="0" />
+<input type="hidden" name="nav" value="{curnav}" />
+<table class="liste" style="border:1px #9A9A9A solid">
+ <tr><th>Beschreibung</th><th>Einstellung</th></tr>
+ <tr class="zeile1"><td>Dürfen Kommentare zu den News geschrieben werden? </td><td><input type="checkbox" name="comment" {if comment}checked="checked"{endif} value="1" class="nob" /></td></tr>
+<tr class="zeile0"><td>Info Seite in der Modul&uuml;bersicht anzeigen? </td><td><input type="checkbox" name="B_VIS" {if B_VIS}checked="checked" {endif} value="1"  class="nob" /></td></tr>
+ <tr class="zeile1"><td>Anzahl der Pagerseiten</td><td><input type="text" name="pages" value="{pages}" class="nob" /></td></tr>
+<tr><td colspan="2" class="footer"><input type="submit" class="button" value="Speichern" /></td></tr>
+</table>
+</form>

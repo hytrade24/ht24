@@ -1,0 +1,112 @@
+<script type="text/javascript">
+
+    function sslEnableFull() {
+        return confirm("Möchten Sie wirklich die SSL-Verschlüsselung für den gesamten Marktplatz aktivieren?");
+    }
+
+    function sslEnableUser() {
+        return confirm("Möchten Sie wirklich die SSL-Verschlüsselung nur für den Benutzerbereich?");
+    }
+
+    function sslResetUser() {
+        return confirm("Möchten Sie wirklich alle Änderungen an den SSL-Einstellungen der Navigation zurücksetzen?");
+    }
+
+    function sslDisable() {
+        return confirm("Möchten Sie wirklich die SSL-Verschlüsselung deaktivieren?");
+    }
+
+</script>
+
+<h1>SSL-Verschlüsselung konfigurieren</h1>
+
+<p>
+    Hier haben Sie die Möglichkeit die SSL-Verschlüsselung für Ihren Marktplatz zu aktivieren oder deaktivieren.<br />
+    <!-- Grundlegend gibt es zwei Möglichkeiten SSL zu aktivieren: -->
+</p>
+
+{if SSL_ENABLED}
+    <h3>Aktuelle Einstellung</h3>
+    {if done_saved}
+        <p class="meldung ok">
+            Änderung gespeichert!
+        </p>
+    {endif}
+    {if SSL_FULL}
+        <strong>
+            Die SSL-Verschlüsselung ist derzeit für den gesamten Marktplatz aktiviert.
+        </strong>
+        {if SSL_ALLOW_USER}
+        <br />
+        <a href="index.php?page=nav_ssl&do=enable_user" class="button" onclick="return sslEnableUser();">
+            SSL-Verschlüsselung nur für den Benutzerbereich aktivieren
+        </a>
+        {endif}
+        <br />
+        <a href="index.php?page=nav_ssl&do=disable" class="button error" onclick="return sslDisable();">
+            SSL-Verschlüsselung deaktivieren
+        </a>
+    {else}
+        <strong>
+            Die SSL-Verschlüsselung ist derzeit für den Benutzerbereich aktiviert.
+        </strong>
+        <br />
+        <a href="index.php?page=nav_ssl&do=enable_full" class="button" onclick="return sslEnableFull();">
+            SSL-Verschlüsselung für den gesamten Marktplatz aktivieren
+        </a>
+        <br />
+        <a href="index.php?page=nav_ssl&do=disable" class="button error" onclick="return sslDisable();">
+            SSL-Verschlüsselung deaktivieren
+        </a>
+    {endif}
+{endif}
+
+{if SSL_ALLOW_USER}
+<h3>Den Benutzerbereich verschlüsseln (empfohlen)</h3>
+
+<p>
+    Diese Option bietet Ihnen in allen relevanten Bereichen (z.B. der Artikelkauf oder "Mein Account" inkl. Unterseiten)
+    eine verschlüsselte Verbindung, in rein öffentlichen Bereichen dagegen eine unverschlüsselte Verbindung.
+    Für die meisten Betreiber ist dies die beste Wahl.
+</p>
+{endif}
+
+<h3>Den gesamten Marktplatz verschlüsseln</h3>
+
+<p>
+    Sie können auch den gesamten Marktplatz verschlüsseln, so dass alle Anfragen an ihren Marktplatz
+    verschlüsselt werden. Dies erhöht selbstverständlich noch einmal die Sicherheit der Seite,
+    <b>kann aber zu Problemen beim einbinden externer Inhalte (z.B. Werbung) führen!</b>
+</p>
+
+{if SSL_ENABLED}
+    {if SSL_ALLOW_USER}
+    <h3>SSL-Einstellungen der Navigationspunkte zurücksetzen</h3>
+
+    <p>
+        Sollten Sie Änderungen an den SSL-Einstellungen für einzelne Navigationspunkte vorgenommen haben
+        und möchten diese Verwerfen klicken Sie auf den folgenden Button.<br />
+        <strong class="error">
+            Achtung! Alle vorgenommenen Änderungen an den SSL-Einstellungen gehen unwiderruflich verloren
+        </strong>
+        <br />
+        <a href="index.php?page=nav_ssl&do=reset_user" onclick="return sslResetUser();" class="button error">
+            SSL-Einstellungen zurücksetzen
+        </a>
+    </p>
+    {endif}
+{else}
+<p>
+    <h3>SSL aktivieren</h3>
+
+    {if SSL_ALLOW_USER}
+    <a href="index.php?page=nav_ssl&do=enable_user" class="button ok" onclick="return sslEnableUser();">
+        SSL-Verschlüsselung nur für den Benutzerbereich aktivieren
+    </a>
+    <br />
+    {endif}
+    <a href="index.php?page=nav_ssl&do=enable_full" class="button ok" onclick="return sslEnableFull();">
+        SSL-Verschlüsselung für den gesamten Marktplatz aktivieren
+    </a>
+</p>
+{endif}

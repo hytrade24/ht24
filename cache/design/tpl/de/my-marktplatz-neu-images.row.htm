@@ -1,0 +1,46 @@
+<tr id="articleImage{i}">
+    <td>
+        <div class="thumbnail">
+            <a{if SRC} target="_blank" href="{uri_baseurl({SRC})}"{endif} class="galleryImagePreview">
+                {if BASE64}
+                <img src="data:{TYPE};base64,{BASE64}" style="height: 80px;" />
+                {else}
+                <img src="{uri_baseurl({SRC_THUMB})}">
+                {endif}
+            </a>
+        </div>
+    </td>
+    <td>
+        {if IS_DEFAULT==0}
+        <a href="#" onclick="ImageSetDefault({ID_AD}, {i}); return false;">Standard-Bild</a><br />
+        {else}
+        <strong>Standard-Bild</strong><br />
+        {endif}
+        <a href="#"  onclick="ImageDelete({ID_AD}, {i}); return false;">Löschen</a><br />
+        <br />
+        <a href="#" onclick="ImageRotate({ID_AD}, {i}, 90); return false;">
+            <i class="fa fa-rotate-right"></i> Im Uhrzeigersinn drehen
+        </a>
+        <br />
+        <a href="#" onclick="ImageRotate({ID_AD}, {i}, 270); return false;">
+            <i class="fa fa-rotate-left"></i> Gegen Uhrzeigersinn drehen
+        </a>
+    </td>
+    <td class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputImageMetaTitle{i}">Titel</label>
+            <div class="design-input-field">
+                <input class="form-control" type="text" id="inputImageMetaTitle{i}" name="META[IMAGES][{i}][TITLE]" value="{htm(META_TITLE)}" placeholder="Bildtitel" />
+            </div>
+        </div>
+				{if HAS_VARIANTS}
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputImageVariants{i}">Varianten</label>
+            <div class="design-input-field">
+								<div id="inputImageVariants{i}Text">{variantsText}</div>
+                <button id="inputImageVariants{i}" onclick="showImageVariant({ID_AD}, {i}); return false;" data-current="{htm(variantsJson)}" class="btn btn-default">Varianten zuordnen</button>
+            </div>
+        </div>
+				{endif}
+    </td>
+</tr>

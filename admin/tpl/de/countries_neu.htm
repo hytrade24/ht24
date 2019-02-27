@@ -1,0 +1,52 @@
+<h1>Neues Land anlegen</h1>
+Erstellen Sie hier neue L&auml;nder.<br />
+Achtung: Die Felder sind multilingual. Möchten Sie für verschiedene Sprachen verschiedene Lookups eintragen, klicken Sie auf
+die entsprechende Flagge um in die entsprechende Sprache zu wechseln.
+<br /><br />
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}" />
+
+{if ok}
+<div class="ok">
+  Ihr Land wurde erfolgreich mit folgenden Daten in die Datenbank eingetragen:
+</div>
+<br />
+{else}
+{if err}
+<div class="error">{err}</div>
+<br />
+{endif}
+{endif}
+<table class="liste">
+
+  <tr>
+    <th>CODE</th>
+	<th>Name</th>
+	<th>Aktion</th>
+  </tr>
+
+
+  {if ok}
+  <tr>
+	<td>
+	  {content}
+	</td>
+  </tr>
+  {endif}
+  
+  
+  <tr>
+    <td>
+	  <input type="text" name="CODE" />
+	</td>
+	
+	<td>
+	  <input type="text" name="V1" />
+	</td>
+	
+	<td>
+	<input type="submit" value="Senden" /> <input type="reset" value="Felder leeren" />
+	</td>
+  </tr>
+
+</table>

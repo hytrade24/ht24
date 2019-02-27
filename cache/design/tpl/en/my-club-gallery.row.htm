@@ -1,0 +1,12 @@
+<li class="design-row-item">
+    <div class="thumbnail">
+        <a class="galleryImagePreview" href="{thumbnail(FILENAME,800,600,crop)}" rel="lightbox-gallery">
+            <img src="{thumbnail(FILENAME,100,75,crop)}" />
+        </a>
+    </div>
+    {if CLUB_MODERATOR}
+    <a href="{uri_action(my-club-gallery,{CLUB_ID_CLUB},delete,image,{ID_CLUB_GALLERY})}" title="Delete image">
+        Delete
+    </a>
+    {endif}
+</li>

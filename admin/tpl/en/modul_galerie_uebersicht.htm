@@ -1,0 +1,21 @@
+<h1><img src="gfx/modul_galerie_64.gif" width="64" height="64" alt="Galerien" border="0" align="left">Angelegte Galerien</h1>
+{if liste}
+<p>
+Sie haben folgende Galerien angelegt. 
+</p>
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktion</th>
+  <th>Name</th>
+  <th>User</th>
+  <th>Enthaltene Bilder</th>
+ </tr>
+ {liste}
+</table>
+{else}
+<p>
+<span class="error">Sie haben noch keine Galerien angelegt!</span><br />
+<a href="index.php?page=modul_galerie_opt" title="Neue Galerie anlegen" style="font-weight:bold">Hier klicken, um eine neue Galerie anzulegen</a>
+</p>
+{endif}
+</p><br><br>

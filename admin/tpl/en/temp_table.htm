@@ -1,0 +1,46 @@
+<h1>
+	Tempor&auml;re Daten
+</h1>
+<p>
+	Hier finden Sie die tempor&auml;ren Daten aus Ihren CSV Imports. 
+	Sie k&ouml;nnen heir entscheiden welche
+	Daten wie &uuml;bernommen werden sollen.
+</p>
+
+<h2>Datenansicht</h2>
+<p>
+	Im folgenden sehen Sie alle Daten aus der Temp-Tabelle zur Voransicht.
+</p>
+<table class="liste" cellspacing="0">
+	{th}
+	{liste}
+</table>
+{pager}
+
+<a name="IMP"></a>
+<h2>Daten &uuml;bernehmen</h2>
+<p>
+	Hier k&ouml;nnen Sie einstellen welche Felder wie &uuml;bernommen werden sollen!<br />
+	Verwenden Sie ein Feld mehrfach, werden die Werte mittels einem Zeilenumbruch zusammengefasst!
+</p>
+{if err}
+	<h2 class="error">Fehler aufgetreten!</h2>
+	<p class="error">{err}</p>
+{endif}
+<form method="post" action="index.php">
+	<input type="hidden" name="page" value="{curpage}" />
+	<table class="formTable" cellspacing="0">
+		<tr>
+			<th>Feld</th>
+			<th>Verwenden als</th>
+			<th>Beispiel-Inhalt</th>
+		</tr>
+		{felder}
+		<tr class="footer">
+			<td colspan="3" aölign="right">
+				<input type="submit" value="Daten verwenden" class="button" />
+			</td>
+		</tr>
+	</table>
+</form>
+<p>&nbsp;</p>

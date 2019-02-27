@@ -1,0 +1,17 @@
+<form data-action="filter-apply">
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="text" class="form-control" data-filter="search" id="ebayArticleSearch" placeholder="Search ...">
+        </div>
+        <div class="col-sm-4">
+            <select class="form-control" data-filter="searchMode" id="ebayArticleSearchMode">
+                <option value="title">in advertstitle</option>
+                <option value="full">in advertstitle/-description/-category (Attention: Slow!)</option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <button type="submit" data-action="filter-apply" class="btn btn-primary">Search</button>
+            <button type="reset" data-action="filter-reset" class="btn btn-default">Show all</button>
+        </div>
+    </div>
+</form>

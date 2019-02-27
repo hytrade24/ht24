@@ -1,0 +1,8 @@
+<tr class="zeile{even}">
+ <td><a href="index.php?page=sicherheitsfrage_edit&ID_QUESTION={ID_QUESTION}" title="Frage bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16"></a>
+  <a href="index.php?page=sicherheitsfragen&del={ID_QUESTION}&npage={npage}" title="Frage löschen" onclick="return confirm('Frage wirklich löschen?');"><img src="gfx/btn.del.gif" width="32" height="16" ald="del"></a>
+ </td>
+ <td align="center">{if B_VIS}<span class="ok">&radic;</span>{else}<span class="error">x</span>{endif}</td>
+ <td><a href="index.php?page=sicherheitsfrage_edit&ID_QUESTION={ID_QUESTION}" title="Frage bearbeiten">{htm(V1)}</a></td>
+ <td><a href="index.php?page=sicherheitsfrage_edit&ID_QUESTION={ID_QUESTION}" title="Frage bearbeiten">{htm(V2)}</a></td>
+</tr>

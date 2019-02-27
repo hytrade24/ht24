@@ -1,0 +1,50 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="207"{endif}>
+    <div class="row">
+    <div class="col-xs-12 col-md-4">
+        <div class="panel panel-primary panel-body-blank">
+            <h3>Ihre Produkte</h3>
+            <div class="row">
+                <div class="col-xs-6 col-md-4">
+                        <img src="{uri_resource(images/demo/online-shop.png)}" />
+                </div>
+                <div class="col-xs-6 col-md-8">
+                    <p>Importieren Sie Ihre Produkte mit Hilfe unseres Datenimportes im CSV- und XML-Format.</p>
+                  <a href="{uri_action(register)}">Registrieren Sie sich jetzt.</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <div class="panel panel-primary panel-body-blank">
+            <h3>Ihr Shop</h3>
+            <div class="row">
+                <div class="col-xs-6 col-md-4">
+                    <img src="{uri_resource(images/demo/einfach.png)}" />
+                </div>
+                <div class="col-xs-6 col-md-8">
+                    <p>Innerhalb weniger Minuten ist Ihr Online-Shop eingerichtet und startklar.</p>
+                  <a href="{uri_action(register)}">Registrieren Sie sich jetzt.</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <div class="panel panel-primary panel-body-blank">
+            <h3>Sicherheit</h3>
+            <div class="row">
+                <div class="col-xs-6 col-md-4">
+                    <img src="{uri_resource(images/demo/safe.png)}" />
+                </div>
+                <div class="col-xs-6 col-md-8">
+                    <p>Unser Marktplatz verfügt über ausgefeilte Schutzmechanismen.</p>
+                  <a href="{uri_action(register)}">Registrieren Sie sich jetzt.</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{subtpl(tpl/{SYS_TPL_LANG}/top-vendor-slider.htm)}
+</div>

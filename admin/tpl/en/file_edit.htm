@@ -1,0 +1,41 @@
+{if use_ha}<script language="Javascript1.2"><!-- // load htmlarea
+_editor_url = '../';  // URL to htmlarea files
+_nav_imgsel = '{pageref(img_select)}';
+_nav_imgput = '{pageref(img_edit)}';
+var win_ie_ver = parseFloat(navigator.appVersion.split("MSIE")[1]);
+if (navigator.userAgent.indexOf('Mac')        >= 0) { win_ie_ver = 0; }
+if (navigator.userAgent.indexOf('Windows CE') >= 0) { win_ie_ver = 0; }
+if (navigator.userAgent.indexOf('Opera')      >= 0) { win_ie_ver = 0; }
+if (win_ie_ver >= 5.5) {
+  document.write('<scr' + 'ipt src='+ '"' +_editor_url+ 'editor.js"');
+  document.write(' language="Javascript1.2"></scr' + 'ipt>');
+} else { document.write('<scr'+'ipt>function editor_generate() { return false; }</scr'+'ipt>'); }
+// --></script>{endif}
+{if msg}<span class="error">{msg}</span><br /><br />
+{endif}<b>Textdatei bearbeiten</b>{if ID_NAV}<br />
+<a class="notizSmall" href="{pageref(page_edit)}&ID_NAV={ID_NAV}">zur&uuml;ck zur Bearbeitung der Seite</a>{endif}<br /><br />
+<table cellpadding="2" cellspacing="0">
+<form method="post" action="index.php"> <!-- onSubmit="return checkfrm(this);" -->
+  <input type="hidden" name="nav" value="{curnav}">
+  <input type="hidden" name="ID_NAV" value="{ID_NAV}">
+  <input type="hidden" name="ID_TPLFILE" value="{ID_TPLFILE}">
+  <input type="hidden" name="dir" value="{fdir}">
+<tr>
+  <th><label for="filename">Dateiname:</label>&nbsp;</th>
+  <td>{htm(fdir)}/{if ID_TPLFILE}{htm(fname)}{else}<input type="text" id="filename" name="fname" value="{if fname}{htm(fname)}{else}{htm(ident)}.htm{endif}">{endif}</td>
+</tr><tr>
+  <th><label for="BODY">Inhalt:</label></th>
+  <td><textarea rows="21" cols="80" id="BODY" name="BODY" wrap="off">{htm(BODY)}</textarea></td>
+</tr><tr>
+  <td></td>
+  <td>
+    <input type="submit"  value="speichern">
+    <input type="reset"  value="Formular zur&uuml;cksetzen">
+  </td>
+</tr></form></table>{if use_ha}
+<script language="javascript1.2">
+htmlname='BODY';
+htmlw = "550px"
+htmlh = "300px";
+</script></td>
+<script language="javascript1.2" src="../editor_init.js"></script>{endif}

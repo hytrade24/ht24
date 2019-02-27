@@ -1,0 +1,41 @@
+<h1><img src="gfx/modul_galerie_64.gif" width="64" height="64" alt="" border="0" align="left">Neue Galeriebilder freigeben</h1>
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}" />
+<input type="hidden" name="npage" value="0">
+<input type="hidden" name="frame" value="{curframe}" />
+<table class="formTable" cellspacing="0">
+ <tr>
+  <td>Sortieren nach</td>
+  <td><select name="orderby">
+       <option value="date"{if order_date} selected="selected"{endif}>Datum</option>
+	   <option value="user"{if order_user} selected="selected"{endif}>Benutzer</option>
+	   <option value="galerie"{if order_galerie} selected="selected"{endif} />Galerie</option>
+	  </select>
+  </td>  
+ </tr>
+ <tr>
+  <td>Nur nicht freigegebene Bilder?&nbsp;</td>
+  <td><input type="checkbox" name="FREE" value="1" class="nob"{if FREE} checked="checked"{endif} /></td>
+ </tr>
+ <tr class="footer">
+  <td align="right" colspan="2"><input type="submit" value="Neu sortieren" class="button"></td>
+</table>
+</form>
+{if bilder}
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+<input type="hidden" name="npage" value="{npage}">
+<input type="hidden" name="orderby" value="{orderby}">
+<input type="hidden" name="show" value="{show}">
+<input type="hidden" name="FREE" value="{FREE}">
+<table style="border:1px #CCCCCC solid; border-collapse:collapse" cellpadding="3" cellspacing="0">
+{bilder}
+ <tr class="footer">
+  <td colspan="3" align="right"><input type="submit" value="Freigaben neu setzen" /></td>
+ </tr>
+</table>
+</form>
+{else}
+<p class="error">Keine Bilder gefunden</p>
+{endif}
+{pager}

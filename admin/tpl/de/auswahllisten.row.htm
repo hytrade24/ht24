@@ -1,0 +1,23 @@
+<tr class="zeile{even}">
+  <td>
+    {if FIELD_DEF_COUNT == 0}<a title="Auswahlliste L&ouml;schen" href="index.php?page={curpage}&do=delete&ID_LISTE={ID_LISTE}" onclick="return confirm('Sind Sie sicher dass Sie die Liste löschen möchten?');"><img src="gfx/btn.del.gif" width="32" height="16" alt="del" /></a>{endif}
+    <a title="Auswahlliste bearbeiten" style="cursor:pointer;" id="EDIT_{ID_LISTE}"><img src="gfx/btn.edit.gif" width="32" height="16" alt="edit" /></a>
+    <script type="text/javascript">
+         myPopup.add(
+          {
+              url: "index.php?page=auswahllisten_edit&ID_LISTE={ID_LISTE}&frame=ajax", 
+              title: "Auswahlliste bearbeiten", //optional
+              target: "EDIT_{ID_LISTE}",
+              id: "edit_{ID_LISTE}",
+              width: 480,
+              height: 400
+            });
+        </script>
+  </td>
+  <td>{if LIST_GLOBAL}Ja{else}Nein{endif}</td>
+  <td>{htm(NAME)}</td>
+  <td>{LIST_VALUE_COUNT}</td>
+  <td style="padding-right:10px">{todate(STAMP_CREATE)}</td>
+  <td>{todate(STAMP_UPDATE)}</td>
+</tr>
+

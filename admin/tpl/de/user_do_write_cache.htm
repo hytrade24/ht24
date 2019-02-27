@@ -1,0 +1,23 @@
+{if running}
+<script type="text/javascript">
+window.setTimeout("window.location.href = 'index.php?page=user_do_write_cache&frame=iframe&running={running}&npage={npage}'", 1500);
+</script>
+<table  width="100%" cellpadding="20" bgcolor="#ffffff">
+	<tr>
+		<td>
+		
+		<p>Beutzerprofile werden gecached</p>
+<img src="gfx/animbar.gif" width="200" height="20" alt="" border="0">
+<p>noch weitere Seiten  : {mpage}</p>
+		</td>
+	</tr>
+</table>
+{else}
+<table  width="100%" cellpadding="20" bgcolor="#ffffff">
+	<tr>
+		<td>
+<span class="ok">Vorgang abgeschlossen</span>
+		</td>
+	</tr>
+</table>
+{endif}

@@ -1,0 +1,44 @@
+{startblock(script)}
+    {parentblock()}
+
+    <style type="text/css">
+        .single-vendor-page .design-page-content .vendor-tabs-row .nav-tabs > li {
+            bottom: 0;
+        }
+    </style>
+
+{endblock(script)}
+
+{if USER_ID_USER}
+    <div class="row design-page single-vendor-page">
+        <div class="col-md-12 design-page-content">
+            {subtpl(tpl/{SYS_TPL_LANG}/view_user.info.htm,*)}
+
+            <div class="row">
+                <div class="col-md-3">
+                    {content_page()}
+                </div>
+                <div class="col-md-9">
+
+                    <h1>Site notice</h1>
+                    {USERCONTENT_IMPRESSUM}
+                    {if USERCONTENT_AGB}
+                    <h3>GTC</h3>
+                    {text(USERCONTENT_AGB)}
+                    {endif}
+                    {if USERCONTENT_WIDERRUF}
+                    <h3>Revocation</h3>
+                    {text(USERCONTENT_WIDERRUF)}
+                    {endif}
+
+                    {if USERCONTENT_ZAHLUNG}
+                    <h3>Payment reference</h3>
+                    {text(USERCONTENT_ZAHLUNG)}
+                    {endif}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+{endif}

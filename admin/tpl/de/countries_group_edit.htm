@@ -1,0 +1,67 @@
+<style type="text/css">
+  .country-checkbox {
+    display: inline-block;
+    min-width: 160px;
+  }
+</style>
+
+<h1>
+{if ID_COUNTRY_GROUP>0}
+  Länder-Gruppe bearbeiten
+{else}
+  Länder-Gruppe hinzufügen
+{endif}
+</h1>
+
+<form method="POST">
+{if ID_COUNTRY_GROUP>0}
+  <input type="hidden" name="ID_COUNTRY_GROUP" value="{ID_COUNTRY_GROUP}"/>
+{endif}
+{if FK_PARENT>0}
+  <input type="hidden" name="FK_PARENT" value="{FK_PARENT}"/>
+{endif}
+  
+  <table class="liste">
+    <tr>
+      <td valign="top">
+        <b>Eltern-Element</b>
+      </td>
+      <td>
+      {if PARENT_NAME}
+        {htm(PARENT_NAME)}
+      {else}
+        <i>Oberste Ebene</i>
+      {endif}
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <b>Name der Gruppe</b>
+      </td>
+      <td>
+        <input type="text" name="V1" value="{htm(V1)}"/>
+      </td>
+    </tr>
+    {if !HAS_CHILDS}
+    <tr>
+      <td valign="top">
+        <b>Zugeordnete Länder</b>
+      </td>
+      <td>
+        {liste}
+      </td>
+    </tr>
+    {endif}
+    <tr>
+      <td colspan="2" align="right">
+        <button type="submit">
+        {if ID_COUNTRY_GROUP>0}
+          Speichern
+        {else}
+          Hinzufügen
+        {endif}
+        </button>
+      </td>
+    </tr>
+  </table>
+</form>

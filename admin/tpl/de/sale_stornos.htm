@@ -1,0 +1,41 @@
+<h1>
+	Best&auml;tigte Verkaufsabbr&uuml;che
+</h1>
+
+{if liste}
+<div class="reiterPassiv">
+	  <a href="index.php?page=articles_sold&show=show_open">Offene Verk&auml;ufe</a>
+	</div>
+	<div class="reiterPassiv">
+	  <a href="index.php?page=articles_sold&show=show_done">Abgeschlossene Verk&auml;ufe</a>
+	</div>
+	<div class="reiterPassiv">
+		<a href="index.php?page=pending_stornos">
+			Unbest&auml;tigte Stornos
+		</a>
+	</div>
+	<div class="reiterAktiv">
+		<a href="index.php?page=sale_stornos">
+			Best&auml;tigte Stornos
+		</a>
+	</div>
+	<table class="liste" cellspacing="0">
+		<tr>
+			<th>Aktion</th>
+			<th title="Transaktions-ID">Trans.-Id</th>
+			<th>Datum Abbruch</th>
+			<th>Artikel/Anzeige</th>
+			<th>Verk&auml;ufer</th>
+			<th>Provision</th>
+			<th>K&auml;ufer</th>
+		</tr>
+		{liste}
+	</table>
+	<p>
+		{pager}
+	</p>
+{else}
+	<p>
+		Bisher wurden keine Verk&auml;ufe eng&uuml;ltig abgebrochen.
+	</p>	
+{endif}

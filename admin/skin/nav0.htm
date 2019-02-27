@@ -1,0 +1,11 @@
+{if is_inpath}
+<td class="navAktiv{if is_current} current{endif}" nowrap>
+  <img src="skin/navi-orange-aktiv.gif" width="11" height="7" />
+  <a href="index.php?{PAGE}" onClick="return checkFlag()">{htm(LABEL)}</a>
+</td>
+{else}
+<td class="navPassiv{if is_current} current{endif}" nowrap>
+  <img src="skin/navi-weiss.gif" width="11" height="7" />
+  <a href="index.php?{PAGE}" onClick="return checkFlag()">{htm(LABEL)}</a>
+</td>
+{endif}

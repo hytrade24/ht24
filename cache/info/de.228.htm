@@ -1,0 +1,50 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="228"{endif}>
+    <div id="demoLead" class="carousel slide" >
+        <div class="carousel-inner">
+          <div class="active item">               
+    <div class="row first-row">
+                    <div class="col-md-12">
+                      Willkommen bei hytrade24, </br>dem Business-Portal </br>der Hydraulikbranche!
+                    </div>
+                </div>
+                <div class="row second-row">
+                   <a href="{uri_action(info)}" class="btn btn-lg btn-black col-xs-12" type="button">MEHR ERFAHREN</a>
+                </div>
+
+
+            </div>
+            <div class="item">
+    <div class="row first-row">
+                    <div class="col-md-12">
+                      Stellen Sie noch heute Ihre</br> Produkte und Dienstleistungen </br>auf hytrade24 ein
+                    </div>
+                </div>
+                <div class="row second-row">
+                   <a href="{uri_action(info)}" class="btn btn-lg btn-black col-xs-6" type="button">INFO</a>                    
+                  <a href="{uri_action(register)}" class="btn btn-lg btn-red col-xs-6" type="button">Registrieren</a>
+                </div>
+            </div>
+            <div class="item">
+              
+
+    <div class="row first-row">
+                    <div class="col-md-12">
+                      Finden Sie die richtigen </br>Komponenten und Partner </br>für Ihr Hydraulik-Projekt
+                    </div>
+                </div>
+                <div class="row second-row">
+                   <a href="{uri_action(info)}" class="btn btn-lg btn-black col-xs-12" type="button">MEHR</a>
+                </div>
+            </div>          
+        </div>
+    </div>
+    <script type="text/javascript">// <![CDATA[
+        jQuery(function() {
+            $('#demoLead').carousel({
+                interval: 5000 // in milliseconds  
+            })
+        });
+    // ]]>
+    </script>
+</div>

@@ -1,0 +1,253 @@
+<tr class="zeile{even}" id="ad_row_{ID_AD_MASTER}">
+	<td {if ID_VERSTOSS}title="Vertoss gemeldet: &quot;{htm(GRUND)}&quot; am {todate(STAMP_VERSTOSS)}"{endif}>
+		{if ID_VERSTOSS}
+			<a href="index.php?page=ad_warnings&FK_AD={ID_AD_MASTER}">
+				<img src="gfx/warnung.png" alt="warning" width="20" height="20" />
+			</a>
+		{else}
+			&nbsp;
+		{endif}
+	</td>
+    <td nowrap="nowrap">
+    	{if !ADMIN_STAT}
+    	<a href="index.php?page={curpage}&ID_KAT={FK_KAT}&lock={ID_AD_MASTER}&search={search}&npage={npage}"  onclick="return confirm('Anzeige sperren?');" title="Anzeige deaktvieren und sperren?">
+    		<img src="gfx/ad_unlocked.png" alt="unlocked" width="16" height="16" />
+		</a>
+		{else}
+			<a href="index.php?page={curpage}&ID_KAT={FK_KAT}&unlock={ID_AD_MASTER}&search={search}&npage={npage}"  onclick="return confirm('Anzeige wieder freigeben?');" title="Anzeige wieder für den markt freigeben?">
+	    		<img src="gfx/ad_locked.png" alt="locked" width="16" height="16" />
+			</a>
+		{endif}
+        <a onclick="return confirm('Achtung! Alle dazugehörigen Medien, Preisverhandlungen und Verstöße werden ebenfalls gelöscht! Möchten Sie die Anzeige wirklich endgültig löschen?')" href="index.php?page={curpage}&show_kat={ID_KAT}&ID_KAT={FK_KAT}&delete={ID_AD_MASTER}&search={search}&npage={npage}">
+        	<img border="0" src="gfx/btn.del.gif">
+		</a>
+		<a onclick="jQuery('#ad_edit_{ID_AD_MASTER}').toggle();" title="Bearbeiten (Schnellansicht)">
+			<img border="0" src="gfx/btn.edit.gif" alt="Bearbeiten">
+		</a>
+		<div class="topDetails{if (STATUS&3)!=1} disabled{endif}">
+			<div title="Topanzeige: Immer oben" class="topDetailsBlock pin{if (B_TOP&1)==1} active{endif}"></div>
+			<div title="Topanzeige: Slider" class="topDetailsBlock slider{if (B_TOP&2)==2} active{endif}"></div>
+			<div title="Topanzeige: Farbig hervorgehoben" class="topDetailsBlock color{if (B_TOP&4)==4} active{endif}"></div>
+			<div title="Topanzeige: Eigen" class="topDetailsBlock custom{if (B_TOP&8)==8} active{endif}"></div>
+		</div>
+    	{if (STATUS&3)==1}
+		<a class="topButton" title="Topanzeige Ja/nein" onclick="jQuery('#ad_edit_{ID_AD_MASTER}').toggle();" style="cursor:pointer; float: right;" id="top_a_{ID_AD_MASTER}_{FK_KAT}" >
+			<img id="top_i_{ID_AD_MASTER}_{FK_KAT}" src="gfx/top{if B_TOP>0}1{else}0{endif}.png" width="32" height="16" alt="top" />
+		</a>
+		{else}
+		<img style="float: right;" title="Anzeige nicht aktiv" src="gfx/top.png" width="32" height="16" alt="top" />
+		{endif}
+		{if FK_USER!=1}
+    	<a target="userlogin" href="{uri_baseurl(login.php?user={FK_USER}&sig={SIG_OWNER}&do=adEdit&id={ID_AD_MASTER})}" title="Als dieser Benutzer einloggen und Anzeige bearbeiten">
+   			<img src="gfx/btn.put.gif" width="16" height="16" alt="einloggen" border="0" />
+    	</a>
+    	{endif}
+	
+    </td>
+    <td>
+    	{if (STATUS&3)==1}
+		<a onclick="return confirm('Anzeige wirklich deaktivieren?')" href="index.php?page={curpage}&show_kat={ID_KAT}&ID_KAT={FK_KAT}&deactivate={ID_AD_MASTER}&search={search}&npage={npage}">
+			<img border="0" src="gfx/btn.deactivate.gif">
+		</a>
+		{endif}
+		{if (STATUS&3)==2}
+			<a onclick="return confirm('Anzeige wirklich aktivieren?')" href="index.php?page={curpage}&show_kat={ID_KAT}&ID_KAT={FK_KAT}&activate={ID_AD_MASTER}&search={search}&npage={npage}">
+				<img border="0" src="gfx/btn.activate.gif">
+			</a>
+		{endif}
+    </td>
+    {if MODERATE_ADS}
+    <td>
+        {if CONFIRMED==0}<b>Nicht geprüft</b>{endif}
+        {if CONFIRMED==1}<span class="ok">Freigegeben</span>{endif}
+        {if CONFIRMED==2}<span class="error">Abgelehnt</span>{endif}
+    </td>
+    <td align="right">
+        {if CONFIRMED!=1}
+        <a title="Anzeige freigeben" onclick="return confirm('Anzeige wirklich freigeben?')" href="index.php?page={curpage}&show_kat={ID_KAT}&ID_KAT={FK_KAT}&confirm={ID_AD_MASTER}&search={search}&npage={npage}">
+            <img border="0" height="16" src="gfx/btn.important2.png">
+        </a>
+        {endif}
+    </td>
+    <td align="left">
+        {if CONFIRMED!=2}
+        <a title="Freigabe ablehenen/entziehen" onclick="UnlockDecline({ID_AD_MASTER}, '{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}');">
+            <img border="0" height="16" src="gfx/btn.cancel.gif">
+        </a>
+        {endif}
+    </td>
+    {endif}
+	<td>
+		{ID_AD_MASTER}
+	</td>
+    <td>
+        {todate(STAMP_START)}
+    </td>
+	  <td>
+			{if (STATUS&3)==0}
+			  {if MODERATE_ADS && (CONFIRMED==0)}
+					<span class="error">Nicht freigeschaltet</span>
+				{else}
+					<span class="error">verkauft</span>
+				{endif}
+			{else}
+				{if TIMEOUT_DAYS>0}
+					{TIMEOUT_DAYS} Tage
+				{else}
+					{if STAMP_DEACTIVATE}
+						<strong>deaktiviert</strong>
+					{else}
+						<span class="error">ausgelaufen</span>
+					{endif}
+				{endif}
+			{endif}
+		</td>
+    <td>
+        <a style="cursor: pointer;" onclick="showAd({ID_AD_MASTER});">
+			{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}
+        </a>
+    </td>
+    <td>
+        <a href="index.php?page=articles&quicksearch=1&ID_KAT={FK_KAT}">
+          {htm(KAT_NAME)}
+        </a>
+    </td>
+    <td><a href="#" onclick="jQuery('input[name=NAME_]').val('{htm(USERNAME)}'); jQuery('input[name=FK_AUTOR]').val('{FK_USER}').parents('form').submit();">
+        <img src="gfx/putfeld_8.gif" width="8" height="8" alt="" border="0"></a>
+        <a href="index.php?page=user_edit&ID_USER={FK_USER}">{htm(USERNAME)}</a>
+    </td>
+    <td>
+	{if VERKAUFSOPTIONEN!=3}
+		{topreis(PREIS)} {CURRENCY_DEFAULT}
+	{else}
+		ab&nbsp;{topreis(PREIS)}&nbsp;{CURRENCY_DEFAULT}&nbsp;/&nbsp;Tag
+	{endif}
+    </td>
+    <td align="center"> {if IMAGE_COUNT}
+        <a onclick="popupfkt('articles_files&ID_AD={ID_AD_MASTER}&frompopup=1','950','500');" onmouseover="PreviewImages({ID_AD_MASTER}, this);" onmouseout="HideImages({ID_AD_MASTER});">
+          {IMAGE_COUNT}
+        </a>
+        <div class="preview" id="image_preview{ID_AD_MASTER}" style="width: 180px; position: absolute; background-color: white; border: 1px solid black;"></div>
+        {endif}
+    </td>
+    <td align="center">{if UPLOAD_COUNT}
+        <a onclick="popupfkt('articles_files&ID_AD={ID_AD_MASTER}&frompopup=1','950','500');" onmouseover="PreviewImages({ID_AD_MASTER}, this);" onmouseout="HideImages({ID_AD_MASTER});">
+          {UPLOAD_COUNT}
+        </a>{endif}
+    </td>
+    <td align="center">{if TRANSACTION_COUNT}
+        <a href="index.php?page=transactions&ID_AD={ID_AD_MASTER}">
+          {TRANSACTION_COUNT}
+        </a>{endif}
+    </td>
+    <td align="right">{AD_CLICKS}
+    </td>
+    <td>
+        <a style="cursor: pointer;" onclick="popupfkt('stats&amp;show=article_views&amp;w=550&amp;FK_AD={ID_AD_MASTER}','600','350');" title="Statistik">
+            <img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38" align="left"></a>
+
+        <a class="button" href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)})}" target="_blank">
+            live</a>
+    </td>
+</tr>
+<tr class="zeile{even}" id="ad_edit_{ID_AD_MASTER}" style="display: none;">
+	<td colspan="15" style="padding-left: 80px;">
+		<form id="ad_edit_{ID_AD_MASTER}_form">
+			<input type="hidden" name="ID_AD" value="{ID_AD_MASTER}" />
+			<input type="hidden" name="AD_TABLE" value="{AD_TABLE}" />
+			<table cellpadding="0" cellspacing="0" style="width: 100%;">
+				<tr>
+					<th>Anzeigen-Titel</th>
+					<th>L&auml;uft aus am:</th>
+					<th>Top-Anzeige</th>
+				</tr>
+				<tr>
+					<td>
+						<input style="width: 99%;" name="PRODUKTNAME" value="{htm(PRODUKTNAME)}" />
+					</td>
+					<td>
+						{datedrop(STAMP_END)}
+					</td>
+					<td>
+						<label>
+							<input type="checkbox" name="B_TOP[]" value="1" {if (B_TOP&1)==1} checked="checked"{endif}/>
+							Immer oben
+						</label>
+						<br />
+						<label>
+							<input type="checkbox" name="B_TOP[]" value="2" {if (B_TOP&2)==2} checked="checked"{endif} />
+							Darstellung im Slider
+						</label>
+						<br />
+						<label>
+							<input type="checkbox" name="B_TOP[]" value="4" {if (B_TOP&4)==4} checked="checked"{endif} />
+							Farbiges Highlight
+						</label>
+						<br />
+						<label>
+							<input type="checkbox" name="B_TOP[]" value="8" {if (B_TOP&8)==8} checked="checked"{endif} />
+							Eigen
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<th>Bilder und Downloads</th>
+					<th colspan="2">Administration</th>
+				</tr>
+				<tr>
+					<td>
+					{if (IMAGE_COUNT+UPLOAD_COUNT)>0}
+						<a onclick="popupfkt('articles_files&ID_AD={ID_AD_MASTER}&frompopup=1','950','500');" onmouseover="PreviewImages({ID_AD_MASTER}, this);" onmouseout="HideImages({ID_AD_MASTER});">
+							<img border="0" src="gfx/btn.edit.gif" alt="Bearbeiten">
+							Bilder und Dateien bearbeiten
+							(
+						    {if IMAGE_COUNT>0}
+								{IMAGE_COUNT}
+								Bild{if IMAGE_COUNT>1}er{endif}
+								{if UPLOAD_COUNT>0}und{endif}
+							{endif}
+						    {if UPLOAD_COUNT>0}
+								{UPLOAD_COUNT}
+								Upload{if UPLOAD_COUNT>1}s{endif}
+							{endif}
+							)
+						</a>
+					{else}
+						Keine Bilder/Dateien vorhanden.
+					{endif}					      
+					</td>
+					<td colspan="2">
+						{if FK_USER!=1}
+				    	<a target="userlogin" href="{uri_baseurl(login.php?user={FK_USER}&sig={SIG_OWNER}&do=adEdit&id={ID_AD_MASTER})}" title="Als dieser Benutzer einloggen und Anzeige bearbeiten">
+				   			<img src="gfx/btn.put.gif" width="16" height="16" alt="einloggen" border="0" />
+				   			Als Benutzer einloggen und Anzeige bearbeiten
+				    	</a>
+				    	{else}
+				    	<strong class="error">
+				    		Als Admin-Benutzer einloggen nicht möglich!
+				    	</strong>
+				    	{endif}
+                        <br />
+                        <a onclick="return confirm('Wirklich alle Anzeigen dieses Benutzers freigeben?')" title="Alle Anzeigen dieses Benutzers freischalten"
+                           href="index.php?page={curpage}&show_kat={ID_KAT}&ID_KAT={FK_KAT}&confirm_user={FK_USER}&search={search}&npage={npage}">
+                            <img border="0" height="16" src="gfx/btn.important2.png">
+                            Alle Anzeigen dieses Benutzers freischalten
+                        </a>
+                        <br />
+                        <a title="Alle Anzeigen dieses Benutzers ablehnen"
+                           href="#" onclick="UnlockDeclineAll({ID_AD_MASTER}, '{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}'); return false;">
+                            <img border="0" height="16" src="gfx/btn.cancel.gif">
+                            Alle Anzeigen dieses Benutzers ablehnen
+                        </a>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top: 20px;" align="right" colspan="4">
+						<input type="button" onclick="SaveEdit({ID_AD_MASTER});" align="right" value="Speichern" />
+					</td>
+				</tr>
+			</table>
+			<hr />
+		</form>
+	</td>
+</tr>

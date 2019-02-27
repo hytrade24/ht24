@@ -1,0 +1,43 @@
+{if i==0 && show_big_img}
+<div class="col-md-12 big-img-div">
+    <img src="{thumbnail({IMAGE_URL},850,450,crop-height,North)}" alt="" class="img-responsive">
+    <div class="pull-right">
+        <span class="grey">from</span>
+        <span class="blackish-color">{VORNAME} {NACHNAME}</span>
+        <span class="grey">in</span>
+        <span class="blackish-color">{sk_V1}</span>
+        <span class="grey">publish</span>
+        <span class="blackish-color">{todate(STAMP)}</span>
+    </div>
+    <div class="clearfix"></div>
+    <a href="{uri_action(view_user_news,{USER_NAME},{USER_ID_USER},{FK_KAT},1,{ID_NEWS},{urllabel(V1)})}"
+       title="View {htm(V1)}">
+        <h3>{htm(V1)}</h3>
+    </a>
+    <p>{shorten({V2},200)}</p>
+</div>
+{else}
+<div class="col-sm-12 col-md-4">
+    <img src="{thumbnail({IMAGE_URL},300,200,crop-height,South)}" alt="" class="img-responsive">
+    <a href="{uri_action(view_user_news,{USER_NAME},{USER_ID_USER},{FK_KAT},1,{ID_NEWS},{urllabel(V1)})}"
+       title="View {htm(V1)}">
+        <h2>{htm(V1)}</h2>
+    </a>
+    <div>
+        <span>USer</span>
+        <span>{todate(STAMP)}</span>
+    </div>
+    <!--<p>
+        <strong><a href="{uri_action(view_user_news,{USER_NAME},{USER_ID_USER},{FK_KAT},1,{ID_NEWS},{urllabel(V1)})}" title="View {htm(V1)}">{htm(V1)}</a></strong>
+    </p>
+    <p class="text-muted">
+        {htm(V2)}
+    </p>-->
+</div>
+<!--<div class="col-xs-12 col-sm-3">
+    <dl class="dl-table">
+        <dt>set on:</dt>
+        <dd>{todate(STAMP)}</dd>
+    </dl>
+</div>-->
+{endif}

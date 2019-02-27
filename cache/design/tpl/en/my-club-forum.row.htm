@@ -1,0 +1,48 @@
+<tr>
+    <td nowrap="nowrap" class="design-action-buttons">
+        <form method="POST" class="inline">
+            <a class="btn btn-default" href="{uri_action(club-forum-new,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},edit,{ID_CLUB_DISCUSSION})}">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a>
+            {if CLOSED}
+            <button name="OPEN" value="{ID_CLUB_DISCUSSION}" class="btn btn-default" title="Open again">
+                <i class="glyphicon glyphicon-asterisk"></i>
+            </button>
+            {else}
+            <button name="CLOSE" value="{ID_CLUB_DISCUSSION}" class="btn btn-default" title="Close">
+                <i class="glyphicon glyphicon-lock"></i>
+            </button>
+            {endif}
+            <button onclick="return confirm('Attention! Do you really want to close this thread with all its comments?');" name="DELETE" value="{ID_CLUB_DISCUSSION}" class="btn btn-danger" title="Delete">
+                <i class="glyphicon glyphicon-remove"></i>
+            </button>
+            {if !REVIEWED}
+            <button name="REVIEW" value="{ID_CLUB_DISCUSSION}" class="btn btn-success" title="Release">
+                <i class="glyphicon glyphicon-ok"></i>
+            </button>
+            {endif}
+        </form>
+    </td>
+    <td colspan="4">
+        <a href="{uri_action(club-forum-view,{urllabel(NAME)},{ID_CLUB_DISCUSSION})}">
+            {if ANNOUNCE}<i class="glyphicon glyphicon-bullhorn" title="Announcement"></i>{endif}
+            {if STICKY}<i class="glyphicon glyphicon-warning-sign" title="Sticky"></i>{endif}
+            {htm(NAME)}
+        </a>
+        <br />
+        {shorten({BODY})}
+    </td>
+    <td>
+    {if FK_USER>0}
+        <a href="{uri_action(view_user,{USER_NAME},{FK_USER})}">
+            {htm(USER_NAME)}
+        </a>
+    {else}
+        <strong>{htm(USER_NAME)}</strong>
+    {endif}
+        <br />
+        <span class="small text-muted">
+            At {todate(STAMP_CREATE,1)}
+        </span>
+    </td>
+</tr>

@@ -1,0 +1,151 @@
+<h1>Meine Quellen</h1>
+<p class="lead">
+	Fügen Sie neue Quellen hinzu oder importieren Sie neue Datensätze
+</p>
+
+<p>
+	In der unten stehenden Tabelle werden Ihnen alle angelegten Quellen angezeigt.
+		Sie können diese jederzeit bearbeiten, die Import Protokolle einsehen oder neue Daten hochladen. <br>
+		<br>
+		<em>Hinweis: Die Protokolle der Imports werden für 30 Tage gespeichert und anschließend gelöscht</em>
+</p>
+
+{if MESSAGE}
+	<div class="alert alert-info">{htm(MESSAGE)}</div>
+{endif}
+
+{if MESSAGE_ERROR}
+	<div class="alert alert-danger">{htm(MESSAGE_ERROR)}</div>
+{endif}
+
+<p class="text-right">
+	<a href="{uri_action(my-import-run)}" class="btn btn-default">Quelle hinzufügen</a>
+</p>
+
+<table class="table table-striped table-condensed">
+	<thead>
+		<th></th>
+		<th>Name</th>
+		<th>Vorlage</th>
+		<th>Artikel importiert</th>
+		<th>Automatischer Import</th>
+		<th>Nächster Import</th>
+	</thead>
+	{if liste}
+		{liste}
+	{else}
+		<tr><td colspan="6">Sie haben bislang noch keine Imports angelegt</td></tr>
+	{endif}
+</table>
+
+{pager}
+
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left clearfix"><a class="btn btn-info"><i class="glyphicon glyphicon-eye-open"></i></a> = Imports einsehen</div>
+	<div class="pull-left clearfix"><a class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></a> = Import hinzufügen</div>
+	<div class="pull-left clearfix"><a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = bearbeiten</div>
+	<div class="pull-left clearfix"><a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a> = löschen</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delModal" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">DecideOptionen löschen</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-3">
+								<div class="pull-right">
+									<label class="control-label">Optionen</label>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="col-md-9">
+								<div class="radio">
+									<label>
+										<input checked value="del_import_and_data" name="select-del-import-type" type="radio" />
+										<span>Löschen Sie den Import und die Anzeigen</span>
+									</label>
+								</div>
+								<div class="radio">
+									<label>
+										<input value="del_import_only" name="select-del-import-type" type="radio" />
+										<span>Löschen Sie nur den Import</span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default"
+						data-dismiss="modal">Schließen</button>
+				<button type="button" class="btn btn-primary" onclick="submit_modal_del_form( this );"
+						>Submit</button>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<script type="application/javascript">
+
+	function show_or_decide_modal( ptr, id_import_source ) {
+
+	    var ad_count = jQuery(ptr).closest("tr").find(".ad_count").html();
+	    var url = '';
+
+	    if ( ad_count == 0 ) {
+            url = '{uri_action(my-import-run)}'+'?DO=DELETE&ID_IMPORT_SOURCE='+id_import_source;
+            url += '&del_type=del_import_only';
+            if ( confirm("Möchten Sie diese Aktion wirklich ausführen?") ) {
+                window.location = url;
+            }
+		}
+		else {
+            var modal = jQuery("#delModal");
+            modal.attr("data-ID_IMPORT_SOURCE",id_import_source);
+            modal.modal();
+		}
+
+	}
+
+	function submit_modal_del_form( ptr ) {
+	    var id_import_source = jQuery( ptr ).closest(".modal").attr("data-ID_IMPORT_SOURCE");
+	    var radios = jQuery( ptr ).closest(".modal-footer").prev().find("input[name='select-del-import-type']");
+	    var value = '';
+	    var url = '';
+	    jQuery.each(radios,function(index,item) {
+
+			if ( jQuery(item).prop("checked") ) {
+			    value = jQuery(item).val();
+			}
+
+		});
+
+	    if ( value == "del_import_and_data" ) {
+			url = '{uri_action(my-import-run)}'+'?DO=DELETE&ID_IMPORT_SOURCE='+id_import_source;
+			url += '&del_type=del_import_and_data';
+			if ( confirm("Möchten Sie diese Aktion wirklich ausführen?") ) {
+                window.location = url;
+			}
+		}
+		else if ( value == "del_import_only" ) {
+            url = '{uri_action(my-import-run)}'+'?DO=DELETE&ID_IMPORT_SOURCE='+id_import_source;
+            url += '&del_type=del_import_only';
+            if ( confirm("Möchten Sie diese Aktion wirklich ausführen?") ) {
+                window.location = url;
+            }
+		}
+
+	}
+
+</script>

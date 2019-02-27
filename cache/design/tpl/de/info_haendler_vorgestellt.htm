@@ -1,0 +1,10 @@
+{if haendler_vorgestellt}
+<div class="design-top-vendor-container design-subtpl design-row design-row-xs-1 design-row-md-{COUNT_PER_ROW}">
+    {haendler_vorgestellt}
+    ^SUBTPL_ADMIN°
+</div>
+{else}
+    {if HIDE_PARENT}
+    <div class="specialHideParent"></div>
+    {endif}
+{endif}

@@ -1,0 +1,153 @@
+<tr class="zeile{even}">
+	<td>
+     <input type="checkbox" class="checkboxArticleSelected" name="selected[]" value="{ID_ARTIKEL}" onchange="updateSelectedArticles(this);"{if IS_SELECTED} checked="checked"{endif} />
+  </td>
+	<td colspan="5" class="design-action-buttons">
+		<div class="btn-group">
+			{if CONFIRMED}
+				{if STAMP_DEACTIVATE && TIME_LEFT > 0}
+				<a class="btn btn-default" title="Re-Upload advert with remaining time" href="{uri_action(my-marktplatz,activate,{ID_ARTIKEL},{FK_KAT})}" {if MENGE<=0}onclick="return confirm('Attention! This article was sold out. The inventory will automatically be raised to 1 if you are going to restock it.')"{endif}>
+					<i class="glyphicon glyphicon-play"></i>
+				</a>
+				{else}
+				<button class="btn btn-default" onclick="ExtendAd({ID_ARTIKEL},{FK_KAT});">
+					<i class="glyphicon glyphicon-edit"></i>
+				</button>
+				{endif}
+			{else}
+				<button class="btn btn-default" disabled>
+					<i class="glyphicon glyphicon-lock"></i>
+				</button>
+			{endif}
+			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="There has as yet been no confirmation from the administrator">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+			{if ADMIN_STAT}
+				<li class="text-error">
+					locked
+				</li>
+			{else}
+			</a>
+				<li>
+				{if STAMP_DEACTIVATE && TIME_LEFT > 0}
+                    {if CONFIRMED}
+                    <a title="Re-Upload advert with remaining time" href="{uri_action(my-marktplatz,activate,{ID_ARTIKEL},{FK_KAT})}" {if MENGE<=0}onclick="return confirm('Attention! This article was sold out. The inventory will automatically be raised to 1 if you are going to restock it.')"{endif}>
+                        <i class="glyphicon glyphicon-play"></i>
+                        Activate advert
+                    </a>
+                    {else}
+                    <a class="disabled" title="There has as yet been no confirmation from the administrator">
+                        <i class="glyphicon glyphicon-lock"></i>
+                        There has as yet been no confirmation from the administrator
+                    </a>
+                    {endif}
+				{else}
+					{if CONFIRMED}
+					<a title="Restore advertisement" onclick="ExtendAd({ID_ARTIKEL},{FK_KAT});">
+						<i class="glyphicon glyphicon-edit"></i>
+						Restore advertisement
+					</a>
+					{endif}
+				{endif}
+				</li>
+				<li>
+					<a title="Use this advert, to create a new (or a copy) product" href="{uri_action(my-marktplatz-disabled,recreate,{ID_ARTIKEL},{FK_KAT})}">
+						<i class="glyphicon glyphicon-share"></i>
+						Use advert as a sample
+					</a>
+				</li>
+			{endif}
+				{if AVAILABILITY}
+				<li class="divider"></li>
+				<li>
+					<a title="To open calendar" href="{uri_action(my-marktplatz-neu,{ID_ARTIKEL})}#calendar">
+						<i class="glyphicon glyphicon-calendar"></i>
+						Open availability-calendar
+					</a>
+				</li>
+				{endif}
+			</ul>
+		</div>
+		{if ALLOW_COMMENTS_AD}
+		<div class="btn-group" id="comment_ad_{ID_ARTIKEL}">
+			<a class="btn{if ALLOW_COMMENTS} btn-info{else} btn-default{endif} dropdown-toggle" onclick="AdToggleComments({ID_ARTIKEL}); return false;" href="#" title="Toggle comments">
+				<i class="glyphicon glyphicon-comment"></i>
+				{if COMMENTS>0}{COMMENTS}{endif}
+			</a>
+			<button class="btn{if ALLOW_COMMENTS} btn-info{else} btn-default{endif} dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li class="activeOnDisabledComments"{if ALLOW_COMMENTS} style="display: none;"{endif}>
+					<a href="#" onclick="AdToggleComments({ID_ARTIKEL}); return false;">
+						<i class="glyphicon glyphicon-ok"></i> Activate comments
+					</a>
+				</li>
+				<li class="activeOnEnabledComments"{if !ALLOW_COMMENTS} style="display: none;"{endif}>
+					<a href="#" onclick="AdToggleComments({ID_ARTIKEL}); return false;">
+						<i class="glyphicon glyphicon-remove"></i> Deaktivate comments
+					</a>
+				</li>
+				<li>
+					<a href="{uri_action(my-marktplatz-comments,{ID_ARTIKEL})}">
+						<i class="glyphicon glyphicon-th-list"></i> <strong>{int(COMMENTS)} Display <strong>comments</strong> 
+					</a>
+				</li>
+			</ul>
+		</div>
+		{endif}
+        <a class="btn btn-default" title="Delete advertisement" href="{uri_action(my-marktplatz,deleteSingle,{ID_ARTIKEL},disabled,{NPAGE})}" onclick="return confirm('Attention! Deleting the advertisement is irrevocable, are you sure to proceed?');">
+            <i class="glyphicon glyphicon-remove"></i>
+        </a>
+    </td>
+	<td align="right">
+		{ID_AD_MASTER}
+        {if NOTIZ}
+          <span id="NOTIZ_{ID_AD_MASTER}" title="{htm(NOTIZ)}" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+            <img src="{uri_baseurl(/bilder/notiz.gif)}">
+          </span>
+        {endif}
+	</td>
+    <td>
+        <img src="{if SRC_THUMB}{uri_baseurl({SRC_THUMB})}{else}{uri_baseurl(/gfx/nopic.jpg)}{endif}">
+    </td>
+    <td>
+		<a href="{uri_action(marktplatz_anzeige,{ID_ARTIKEL},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+        	{htm(PRODUKTNAME)}
+		</a>
+    </td>
+    <td>
+		{if VERKAUFSOPTIONEN!=3}
+			{topreis(PREIS)} {CURRENCY_DEFAULT}
+		{else}
+			From {topreis(PREIS)} {CURRENCY_DEFAULT} / day
+		{endif}<br />
+        {MENGE} Pieces
+    </td>
+    <td class="last">
+    {if CONFIRMED==1}
+        {if STAMP_DEACTIVATE && TIME_LEFT > 0}
+            <strong>Remaining time:</strong><br />
+            <span class="ok">{TIME_LEFT} Days</span>
+        {else}
+            {if MENGE==0}
+                <b>Sold</b>
+            {else}
+                {TIMEOUT_DAYS} Day(s)
+            {endif}
+        {endif}
+    {else}
+        {if CONFIRMED==2}
+            <span class="text-error">Declined</span>
+            {if DECLINE_REASON}
+                <a href="#" data-toggle="tooltip" data-placement="left" data-html="true" title="" data-original-title="Your advert has been declined because of:<br />{text(DECLINE_REASON)}">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+            {endif}
+        {else}
+            <b>Waiting on aproval through an administrator</b>
+        {endif}
+    {endif}
+    </td>
+</tr>

@@ -1,0 +1,38 @@
+<div id="adRequestEditor-{ID_AD_REQUEST}" class="dialog_content">
+	<form action="index.php?page=ad_request&DO=edit" onsubmit="return saveAdRequest({ID_AD_REQUEST});">
+		<input type="hidden" name="ID_AD_REQUEST" value="{ID_AD_REQUEST}" />
+	  	<table cellpadding="0" cellspacing="0" width="100%">
+	  		<tr>
+	  			<th align="left" valign="top">
+	  				<label for="adTitle-{ID_AD_REQUEST}">
+	  					Titel
+	  				</label>
+	  			</th>
+	  			<td>
+	  				<input id="adTitle-{ID_AD_REQUEST}" style="width: 100%;" name="PRODUKTNAME" value="{htm(PRODUKTNAME)}" />
+	  			</td>
+	  		</tr>
+	  		<tr>
+	  			<th align="left" valign="top">
+	  				<label for="adDesc-{ID_AD_REQUEST}">
+	  					Beschreibung
+	  				</label>
+	  			</th>
+	  			<td>
+	  				<textarea id="adDesc-{ID_AD_REQUEST}" style="height: 240px; width: 99%;" name="BESCHREIBUNG">{htm(BESCHREIBUNG)}</textarea>
+	  			</td>
+	  		</tr>
+	  		<tr>
+	  			<th></th>
+	  			<td>
+	  				{if saved}
+	  				<span class="ok">
+	  					Erfolgreich gespeichert!
+	  				</span>
+	  				{endif}
+	  				<input style="float: right;" type="submit" value="Speichern" />
+	  			</td>
+	  		</tr>
+	  	</table>
+  </form>
+</div>

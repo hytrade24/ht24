@@ -1,0 +1,51 @@
+<script type="text/javascript">
+jQuery(function() {
+    jQuery(".registerTabs > li:first-child a").tab("show");
+});
+</script>
+
+<h1>Preisliste</h1>
+
+<p>
+    Um auf hytrade24 Produkte und Dienstleistungen suchen oder anbieten
+  		zu können, müssen Sie sich in einem der aufgeführten Tarife registrieren.
+  		Hierdurch können Ihnen entsprechende Kosten	entstehen. Beachten Sie
+  		bitte, dass sich unser Serviceangebot nur an Gewerbetreibende richten
+    <br />
+	{if FREE_IMAGES > 0}
+		Zu Produktanzeigen können Sie <strong>{FREE_IMAGES} Bilder kostenlos</strong> hochladen.
+	{endif}
+</p>
+
+{if FREE_ADS}
+<div class="userInfo">
+	<strong>Hinweis:</strong>
+	Das Einstellen von Produkten und Dienstleistungen ist derzeit kostenlos!
+</div>
+<br />
+{endif}
+
+<div id="registerContainerUsergroup">
+    <p class="lead">
+    Bitte wählen Sie eine passende Benutzergruppe aus</p>
+
+    <ul class="nav nav-tabs registerTabs">
+        {usergroups}
+    </ul>
+
+    <div class="tab-content registerTabContent">
+        {usergroups_content}
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+<br />
+
+<script>
+    jQuery("[data-toggle=popover]").popover({
+        'trigger': 'hover',
+        'placement': 'top',
+        'html': false
+    });
+</script>

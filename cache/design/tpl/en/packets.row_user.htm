@@ -1,0 +1,59 @@
+		<tr>
+			<td>
+				{htm(NAME)}<br />
+				{if RECURRING}(Subscription){endif}
+			</td>
+			<td>
+				{if ACTIVE}
+					<span class="text-success">Aktiv</span>
+				{else}
+					{if INVOICE_COUNT>0}
+						<a href="{uri_action(invoices)}" class="text-error">
+                            {INVOICE_COUNT}
+                            {if INVOICE_COUNT==1}
+                                Open invoice
+                            {else}
+                                Open invoices
+                            {endif}
+						</a>
+					{else}
+						<span class="text-error">Consumed/Expired</span>
+					{endif}
+				{endif}
+			</td>
+			<td> 
+				{text(CONTENTS)}
+			</td>
+			<td>
+				{if FK_INVOICE}
+					<a href="{uri_action(invoice,{FK_INVOICE})}" title="View invoice">{todate(STAMP)}</a>
+				{else}
+					{todate(STAMP_START)}
+				{endif}
+			</td>
+			<td nowrap="nowrap">
+			{if RECURRING && ACTIVE}
+				{if (STAMP_NEXT)}
+                    Extended until {todate(STAMP_NEXT)}
+					<br />
+					{if CANCEL_ENABLED}
+						<a class="btn btn-danger" onclick="return confirm('Do you really want to cancel this subscription?');" href="{uri_action(packets,cancel,{ID_PACKET_ORDER})}">
+							Cancel
+						</a>
+                        <br />
+						(possible until {todate(STAMP_CANCEL_UNTIL)})
+					{else}
+						<span class="text-warning">
+                            Cancellation period: {todate(STAMP_CANCEL_UNTIL)}
+                        </span>
+					{endif}
+				{else}
+                    Cancelled on {todate(STAMP_CANCEL_UNTIL)}<br />
+                        Cancelled to the {todate(STAMP_END)}
+
+				{endif}
+			{else}
+				---
+			{endif}
+			</td>
+		</tr>

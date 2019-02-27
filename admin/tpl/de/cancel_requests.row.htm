@@ -1,0 +1,21 @@
+<tr class="zeile{even}">
+    <td>
+        <a href="index.php?page=cancel_request_edit&FK_USER={FK_USER}&STATUS={STATUS}" title="Edit">
+            <img src="gfx/btn.edit.gif" alt="Edit" />
+        </a>
+        <a href="index.php?page=buchhaltung&NAME_={NAME}&FK_USER={FK_USER}" title="zur Buchhaltung">
+            <img src="gfx/receipt_big.png" alt="zur Buchhaltung" />
+        </a>
+        &nbsp;
+        <a style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_overall&w=550&ID_USER={FK_USER}','600','250');" title="Statistik">
+          <img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38">
+        </a>
+    </td>
+    <td>
+
+        <img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">  <a href="index.php?page=user_edit&ID_USER={FK_USER}" target="_blank">{NAME}<a></td>
+    <td>{REQUESTS_COUNT}</td>
+    <td>{topreis(TOTAL_PRICE)} {CURRENCY_DEFAULT}</td>
+    <td>{DATE_FORMAT(MIN_DATE,d.m.Y)}</td>
+    <td>{DATE_FORMAT(MAX_DATE,d.m.Y)}</td>
+</tr>

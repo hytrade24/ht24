@@ -1,0 +1,27 @@
+        <tr class="zeile{even}">
+            <td>
+                <input type="checkbox" data-prov="{topreis(PROVISION)}" name="CHECK[{ID_BILLING_SALES}]" onchange="UpdateProvSum();" value="1" />
+            </td>
+            <td>
+                <a href="index.php?page=user_buchhaltung&ID_USER={ID_USER}" target="_blank">
+                    {htm(NAME)}
+                </a>
+            </td>
+            <td>
+                {todate(STAMP_PAY)}
+            </td>
+            <td>
+                <a href="index.php?page=invoice_view&ID_BILLING_INVOICE={FK_BILLING_INVOICE}" target="_blank" title="Rechnung ansehen">
+                    {FK_BILLING_INVOICE}
+                </a>
+            </td>
+            <td>
+                {topreis(TURNOVER)} {CURRENCY_DEFAULT}
+            </td>
+            <td>
+                {topreis(PROVISION)} {CURRENCY_DEFAULT}
+            </td>
+            <td>
+                {if BILLED}<strong>Ja</strong>{else}Nein{endif}
+            </td>
+        </tr>

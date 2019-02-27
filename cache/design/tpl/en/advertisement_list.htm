@@ -1,0 +1,64 @@
+<script type="text/javascript" src="{uri_baseurl(/lib/swfobject.js)}"></script>
+<script type="text/javascript">
+
+function ToggleStats(id_ad_user) {
+	if ($("#stats_content_"+id_ad_user+" iframe").attr("src") == "about:blank") {
+		// Not loaded yet
+		//$("#stats_content_"+id_ad_user).html("Please wait...");
+		//$("#stats_content_"+id_ad_user).load(ebiz_trader_baseurl + "index.php?page=advertisement_stat&frame=ajax&id_ad_user="+id_ad_user);
+    jQuery("#stats_content_"+id_ad_user+" iframe").attr("src", "index.php?frame=stats&page=ui_stats&show=advertisement&w=660&bg=dff0d8&id_ad_user="+id_ad_user);
+	}
+	$("#stats_"+id_ad_user).toggle();
+}
+
+function PreviewCode(id_ad) {
+	var code = document.getElementById("code"+id_ad).value;	
+	ShowContentDialog(code, "Advertisement preview", "auto", "auto");
+}
+function showAdvertisementUserInfo(id_ad) {
+	ShowDialog("{uri_baseurl(/)}advertisement_info,"+id_ad+".htm?frame=ajax", "Advertisement", 720, 400);
+}
+
+</script>
+
+<h1>
+    Advertise on our website
+    <p class="lead">Purposeful advertisement for your company</p>
+</h1>
+
+<ul class="nav nav-tabs userTabs">
+	<li class="active">
+		<a href="{uri_action(advertisement_list)}" title="Show my banner-advertisement">
+            Show my banner-advertisement
+        </a>
+	</li>
+	<li>
+		<a href="{uri_action(advertisement)}" title="Book more advertisements">
+            Book more advertisements
+        </a>
+	</li>	
+</ul>
+
+
+<table class="table table-bordered table-striped table-condensed">
+	<thead>
+        <tr>
+            <th></th>
+            <th>Bannerposition</th>
+            <th>Activ?</th>
+            <th>Status</th>
+            <th>Categories</th>
+            <th>From</th>
+            <th>Until</th>
+            <th>Price</th>
+            <th>Statistics</th>
+        </tr>
+    </thead>
+	{liste}
+</table>
+
+<p class="pull-right">
+    <a href="{uri_action(advertisement)}" class="btn btn-info">
+        <i class="glyphicon glyphicon-plus"></i> Book more advertisements
+    </a>
+</p>

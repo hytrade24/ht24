@@ -1,0 +1,990 @@
+<h1>Design ändern</h1>
+
+<p>
+	Hier haben Sie die Möglichkeit aus einer Liste von Vorlagen ein Design auszuwählen.
+	
+</p>
+
+<table class="liste">
+	<tr>
+		<th colspan="2">Design</th>
+		<th>Kurzbeschreibung</th>
+		<th>Sprachen</th>
+	</tr>
+	{liste}
+</table>
+
+<hr>
+
+<h1>Design Einstellungen</h1>
+
+<style>
+	.design-settings-table h3,
+	.design-settings-table h4 {
+		margin: 4px 0px;
+	}
+	.design-settings-table td {
+		padding-right: 40px;
+		text-align: left;
+		vertical-align: top;
+	}
+	.design-settings-table table th {
+		border: none;
+		padding: 4px 8px;
+		text-align: left;
+		vertical-align: middle;
+	}
+	.design-settings-table table td {
+		text-align: left;
+		vertical-align: top;
+	}
+	.design-settings-table table td input[type=text] {
+		width: 280px;
+	}
+</style>
+<script type="text/javascript">
+	
+	function DesignUpdateBlock_Checkbox(checkbox) {
+		var blockTable = jQuery(checkbox).closest("table");
+		var enabled = jQuery(checkbox).prop("checked");
+		if (enabled) {
+			blockTable.addClass("enabled").removeClass("disabled");
+			blockTable.find("input,select").not(checkbox).prop("disabled", false);
+		} else {
+			blockTable.addClass("disabled").removeClass("enabled");
+			blockTable.find("input,select").not(checkbox).prop("disabled", true);
+		}
+	}
+	
+	function designSettingsSubmit(button) {
+		var action = jQuery(button).attr("value");
+		var form = jQuery(button).closest("form");
+		jQuery.post(jQuery(form).attr("action"), jQuery(form).serialize()+"&do="+action, function(result) {
+			if (result.success) {
+				jQuery("#designPreview").attr("src", result.url);
+			}
+		});
+		jQuery("body").scrollTop( jQuery("#designPreview").offset().top );
+		jQuery("#designPreview")[0].contentWindow.ebizDesignShowLoading();
+	}
+	
+	jQuery(function() {
+		jQuery("input[name^=enabled]").each(function() {
+			DesignUpdateBlock_Checkbox(this);
+		});
+		jQuery("input[name^=enabled]").change(function() {
+			DesignUpdateBlock_Checkbox(this);
+		});
+		// Custom tabs
+		jQuery(".admin-tabs").each(function () {
+			var tabContainer = this;
+			var tabActive = jQuery(tabContainer).find(".admin-tabs-links a.reiterAktiv").first().attr("href");
+			jQuery(tabContainer).children(".admin-tabs-content").children().hide().filter(tabActive).show();
+			jQuery(tabContainer).find(".admin-tabs-links a").on("click", function() {
+				event.preventDefault();
+				// Tab clicked
+				tabActive = jQuery(this).attr("href");
+				jQuery(tabContainer).find(".admin-tabs-links a.reiterAktiv").removeClass("reiterAktiv").addClass("reiterPassiv");
+				jQuery(this).removeClass("reiterPassiv").addClass("reiterAktiv");
+				jQuery(tabContainer).children(".admin-tabs-content").children().hide().filter(tabActive).show();
+			});
+		});
+	});
+	
+</script>
+
+<form id="designSettings" action="index.php" method="POST">
+	<input type="hidden" name="page" value="design" />
+	<div class="admin-tabs">
+		<div class="admin-tabs-links">
+			<a class="reiterAktiv" href="#admin-design-colors">Farben</a>
+			<a class="reiterPassiv" href="#admin-design-fonts">Schriftart/-größe</a>
+		</div>
+		<div class="admin-tabs-content liste">
+			<div id="admin-design-colors">
+				<!-- FARBEN -->
+				<table class="design-settings-table">
+					<tr>
+						<td>
+							
+							<h3>Allgemein</h3>
+							<h4>
+								Allgemeine Farbgebung der Webseite<br />
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_base]" value="1"{if enabled_design_base} checked{endif} />
+											Farben anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Hintegrund-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-background]" value="{less_color_hex({variables_design-background})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Text-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-text-color]" value="{less_color_hex({variables_design-text-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-link-color]" value="{less_color_hex({variables_design-link-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe (hover)</th>
+									<td>
+										<input type="color" name="variables[design-link-hover-color]" value="{less_color_hex({variables_design-link-hover-color})}" />
+									</td>
+								</tr>
+							</table>
+							
+							<h3>Highlights</h3>
+							<h4>
+								Hervorgehobene Bereiche der Webseite<br />
+								(z.B. Anzeigen, Inhalts-Boxen, ...)
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_highlight]" value="1"{if enabled_design_highlight} checked{endif} />
+											Farben anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Hintegrund-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-highlight-background]" value="{less_color_hex({variables_design-highlight-background})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Text-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-highlight-text-color]" value="{less_color_hex({variables_design-highlight-text-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-highlight-link-color]" value="{less_color_hex({variables_design-highlight-link-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe (hover)</th>
+									<td>
+										<input type="color" name="variables[design-highlight-link-hover-color]" value="{less_color_hex({variables_design-highlight-link-hover-color})}" />
+									</td>
+								</tr>
+							</table>
+							
+							<h3>Kontrast</h3>
+							<h4>
+								Farblich stark abgehobene Bereiche<br />
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_contrast]" value="1"{if enabled_design_contrast} checked{endif} />
+											Farben anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Hintegrund-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-contrast-background]" value="{less_color_hex({variables_design-contrast-background})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Text-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-contrast-text-color]" value="{less_color_hex({variables_design-contrast-text-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-contrast-link-color]" value="{less_color_hex({variables_design-contrast-link-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe (hover)</th>
+									<td>
+										<input type="color" name="variables[design-contrast-link-hover-color]" value="{less_color_hex({variables_design-contrast-link-hover-color})}" />
+									</td>
+								</tr>
+							</table>
+							
+						</td>
+						<td>
+							
+							<h3>Header</h3>
+							<h4>
+								Kopfzeile der Webseite<br />
+								(Logo / Suchleiste / Warenkorb)
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_header]" value="1"{if enabled_design_header} checked{endif} />
+											Farben anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Hintegrund-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-header-background]" value="{less_color_hex({variables_design-header-background})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Rahmen-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-header-border]" value="{less_color_hex({variables_design-header-border})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Text-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-header-text-color]" value="{less_color_hex({variables_design-header-text-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-header-link-color]" value="{less_color_hex({variables_design-header-link-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe (hover)</th>
+									<td>
+										<input type="color" name="variables[design-header-link-hover-color]" value="{less_color_hex({variables_design-header-link-hover-color})}" />
+									</td>
+								</tr>
+							</table>
+							
+							<h3>Footer</h3>
+							<h4>
+								Fußzeile der Webseite<br />
+								(Copyright / Impressum / Newsletter / ...)
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_footer]" value="1"{if enabled_design_footer} checked{endif} />
+											Farben anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Hintegrund-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-footer-background]" value="{less_color_hex({variables_design-footer-background})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Text-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-footer-text-color]" value="{less_color_hex({variables_design-footer-text-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-footer-link-color]" value="{less_color_hex({variables_design-footer-link-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe (hover)</th>
+									<td>
+										<input type="color" name="variables[design-footer-link-hover-color]" value="{less_color_hex({variables_design-footer-link-hover-color})}" />
+									</td>
+								</tr>
+							</table>
+							
+						</td>
+						<td>
+							
+							<h3>Hauptmenü</h3>
+							<h4>
+								Hauptmenü des Marktplatz<br />
+								(Start / Marktplatz / Gesuche ...)
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_nav]" value="1"{if enabled_design_nav} checked{endif} />
+											Farben anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Hindergrund-Darstellung</th>
+									<td>
+										<select name="variables[design-nav-main-style]">
+											<option value="full"{checked_ex({variables_design-nav-main-style},full,selected )}>Volle Breite</option>
+											<option value="limited"{checked_ex({variables_design-nav-main-style},limited,selected )}>Begrenzt (wie Seiteninhalt)</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Hintegrund-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-nav-main-background]" value="{less_color_hex({variables_design-nav-main-background})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Rahmen-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-nav-main-border]" value="{less_color_hex({variables_design-nav-main-border})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Text-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-nav-main-text-color]" value="{less_color_hex({variables_design-nav-main-text-color})}" />
+									</td>
+								</tr>
+								
+								<tr>
+									<th>Menüpunkt Mouseover / Hintergrund-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-nav-main-hover-background]" value="{less_color_hex({variables_design-nav-main-hover-background})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Menüpunkt Mouseover / Text-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-nav-main-hover-text-color]" value="{less_color_hex({variables_design-nav-main-hover-text-color})}" />
+									</td>
+								</tr>
+								
+								<tr>
+									<th>Aktiver Menüpunkt / Hintergrund-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-nav-main-active-background]" value="{less_color_hex({variables_design-nav-main-active-background})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Aktiver Menüpunkt / Text-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-nav-main-active-text-color]" value="{less_color_hex({variables_design-nav-main-active-text-color})}" />
+									</td>
+								</tr>
+							</table>
+							
+							
+							<h3>Menline</h3>
+							<h4>
+								Menüzeile ganz oben auf der Seite<br />
+								(Login / Logout / ...)
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_menline]" value="1"{if enabled_design_menline} checked{endif} />
+											Farben anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Hintegrund-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-menline-background]" value="{less_color_hex({variables_design-menline-background})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Rahmen-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-menline-border]" value="{less_color_hex({variables_design-menline-border})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Text-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-menline-text-color]" value="{less_color_hex({variables_design-menline-text-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe</th>
+									<td>
+										<input type="color" name="variables[design-menline-link-color]" value="{less_color_hex({variables_design-menline-link-color})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Link-Farbe (hover)</th>
+									<td>
+										<input type="color" name="variables[design-menline-link-hover-color]" value="{less_color_hex({variables_design-menline-link-hover-color})}" />
+									</td>
+								</tr>
+							</table>
+							
+						</td>
+						<td>
+							
+							<h3>Hauptfarben</h3>
+							<h4>
+								Die Hauptfarben für farbige Elemente<br />
+								(z.B. Buttons / Menüs)
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_color]" value="1"{if enabled_design_color} checked{endif} />
+											Farben anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Primär-Farbe (Hintergrund)</th>
+									<td>
+										<input type="color" name="variables[design-color-primary]" value="{less_color_hex({variables_design-color-primary})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Primär-Farbe (Text)</th>
+									<td>
+										<input type="color" name="variables[design-color-primary-text]" value="{less_color_hex({variables_design-color-primary-text})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Sekundär-Farbe (Hintergrund)</th>
+									<td>
+										<input type="color" name="variables[design-color-secondary]" value="{less_color_hex({variables_design-color-secondary})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Sekundär-Farbe (Text)</th>
+									<td>
+										<input type="color" name="variables[design-color-secondary-text]" value="{less_color_hex({variables_design-color-secondary-text})}" />
+									</td>
+								</tr>
+								
+								<tr>
+									<th>Erfolgreich/Positiv (Hintergrund)</th>
+									<td>
+										<input type="color" name="variables[design-color-success]" value="{less_color_hex({variables_design-color-success})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Erfolgreich/Positiv (Text)</th>
+									<td>
+										<input type="color" name="variables[design-color-success-text]" value="{less_color_hex({variables_design-color-success-text})}" />
+									</td>
+								</tr>					
+								<tr>
+									<th>Warnung/Hinweis (Hintergrund)</th>
+									<td>
+										<input type="color" name="variables[design-color-warning]" value="{less_color_hex({variables_design-color-warning})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Warnung/Hinweis (Text)</th>
+									<td>
+										<input type="color" name="variables[design-color-warning-text]" value="{less_color_hex({variables_design-color-warning-text})}" />
+									</td>
+								</tr>					
+								<tr>
+									<th>Fehler/Löschen/Wichtig (Hintergrund)</th>
+									<td>
+										<input type="color" name="variables[design-color-danger]" value="{less_color_hex({variables_design-color-danger})}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Fehler/Löschen/Wichtig (Text)</th>
+									<td>
+										<input type="color" name="variables[design-color-danger-text]" value="{less_color_hex({variables_design-color-danger-text})}" />
+									</td>
+								</tr>
+							</table>
+							
+						</td>
+					</tr>
+				</table>			
+				<!-- // FARBEN -->
+			</div>
+			
+			<div id="admin-design-fonts">
+				<!-- SCHRIFTART/-GRÖßE -->
+				<table class="design-settings-table">
+					<tr>
+						<td>
+							
+							<h3>Schriftgröße</h3>
+							<h4>
+								Allgemein verwendete Schriftgröße<br />
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[font_size]" value="1"{if enabled_font_size} checked{endif} />
+											Schriftgröße anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Basis-Schriftgröße</th>
+									<td>
+										<input type="text" name="variables[font-size-base]" value="{htm(variables_font-size-base)}" />
+									</td>
+								</tr>
+							</table>
+							
+							<h3>Allgemein</h3>
+							<h4>
+								Allgemein verwendete Schriftarten<br />
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[font_family]" value="1"{if enabled_font_family} checked{endif} />
+											Schriftarten anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Sans-Serif</th>
+									<td>
+										<input type="text" name="variables[font-family-sans-serif]" value="{htm(variables_font-family-sans-serif)}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Serif</th>
+									<td>
+										<input type="text" name="variables[font-family-serif]" value="{htm(variables_font-family-serif)}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Monospace</th>
+									<td>
+										<input type="text" name="variables[font-family-monospace]" value="{htm(variables_font-family-monospace)}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Eigene 1</th>
+									<td>
+										<input type="text" name="variables[font-family-custom-1]" value="{htm(variables_font-family-custom-1)}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Eigene 2</th>
+									<td>
+										<input type="text" name="variables[font-family-custom-2]" value="{htm(variables_font-family-custom-2)}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Eigene 3</th>
+									<td>
+										<input type="text" name="variables[font-family-custom-3]" value="{htm(variables_font-family-custom-3)}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Eigene 4</th>
+									<td>
+										<input type="text" name="variables[font-family-custom-4]" value="{htm(variables_font-family-custom-4)}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Eigene 5</th>
+									<td>
+										<input type="text" name="variables[font-family-custom-5]" value="{htm(variables_font-family-custom-5)}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Standard-Schriftart</th>
+									<td>
+										<select name="variables[font-family-base]">
+											<option value="@font-family-sans-serif"{checked_ex({variables_font-family-base},@font-family-sans-serif,selected )}>Sans-Serif</option>
+											<option value="@font-family-serif"{checked_ex({variables_font-family-base},@font-family-serif,selected )}>Serif</option>
+											<option value="@font-family-monospace"{checked_ex({variables_font-family-base},@font-family-monospace,selected )}>Monospace</option>
+											<option value="@font-family-custom-1"{checked_ex({variables_font-family-base},@font-family-custom-1,selected )}>Eigene 1</option>
+											<option value="@font-family-custom-2"{checked_ex({variables_font-family-base},@font-family-custom-2,selected )}>Eigene 2</option>
+											<option value="@font-family-custom-3"{checked_ex({variables_font-family-base},@font-family-custom-3,selected )}>Eigene 3</option>
+											<option value="@font-family-custom-4"{checked_ex({variables_font-family-base},@font-family-custom-4,selected )}>Eigene 4</option>
+											<option value="@font-family-custom-5"{checked_ex({variables_font-family-base},@font-family-custom-5,selected )}>Eigene 5</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+							
+						</td>
+						<td>
+							
+							<h3>Anzeigen-Boxen</h3>
+							<h4>
+								Boxen-Darstellung der Anzeigen aus dem Marktplatz<br />
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_ad_boxes]" value="1"{if enabled_design_ad_boxes} checked{endif} />
+											Anzeigen-Boxen anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftgröße des Anzeigentitel</th>
+									<td>
+										<select name="variables[font-size-ad-boxes-name]">
+											<option value="@font-size-large"{checked_ex({variables_font-size-ad-boxes-name},@font-size-large,selected )}>Groß (font-size-large)</option>
+											<option value="@font-size-base"{checked_ex({variables_font-size-ad-boxes-name},@font-size-base,selected )}>Normal (font-size-base)</option>
+											<option value="@font-size-small"{checked_ex({variables_font-size-ad-boxes-name},@font-size-small,selected )}>Klein (font-size-small)</option>
+											<option value="@font-size-h1"{checked_ex({variables_font-size-ad-boxes-name},@font-size-h1,selected )}>Überschrift 1 (font-size-h1)</option>
+											<option value="@font-size-h2"{checked_ex({variables_font-size-ad-boxes-name},@font-size-h2,selected )}>Überschrift 2 (font-size-h2)</option>
+											<option value="@font-size-h3"{checked_ex({variables_font-size-ad-boxes-name},@font-size-h3,selected )}>Überschrift 3 (font-size-h3)</option>
+											<option value="@font-size-h4"{checked_ex({variables_font-size-ad-boxes-name},@font-size-h4,selected )}>Überschrift 4 (font-size-h4)</option>
+											<option value="@font-size-h5"{checked_ex({variables_font-size-ad-boxes-name},@font-size-h5,selected )}>Überschrift 5 (font-size-h5)</option>
+											<option value="@font-size-h6"{checked_ex({variables_font-size-ad-boxes-name},@font-size-h6,selected )}>Überschrift 6 (font-size-h6)</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftart des Anzeigentitel</th>
+									<td>
+										<select name="variables[font-family-ad-boxes-name]">
+											<option value="@font-family-base"{checked_ex({variables_font-family-ad-boxes-name},@font-family-base,selected )}>Standard-Schriftart</option>
+											<option value="@font-family-sans-serif"{checked_ex({variables_font-family-ad-boxes-name},@font-family-sans-serif,selected )}>Sans-Serif</option>
+											<option value="@font-family-serif"{checked_ex({variables_font-family-ad-boxes-name},@font-family-serif,selected )}>Serif</option>
+											<option value="@font-family-monospace"{checked_ex({variables_font-family-ad-boxes-name},@font-family-monospace,selected )}>Monospace</option>
+											<option value="@font-family-custom-1"{checked_ex({variables_font-family-ad-boxes-name},@font-family-custom-1,selected )}>Eigene 1</option>
+											<option value="@font-family-custom-2"{checked_ex({variables_font-family-ad-boxes-name},@font-family-custom-2,selected )}>Eigene 2</option>
+											<option value="@font-family-custom-3"{checked_ex({variables_font-family-ad-boxes-name},@font-family-custom-3,selected )}>Eigene 3</option>
+											<option value="@font-family-custom-4"{checked_ex({variables_font-family-ad-boxes-name},@font-family-custom-4,selected )}>Eigene 4</option>
+											<option value="@font-family-custom-5"{checked_ex({variables_font-family-ad-boxes-name},@font-family-custom-5,selected )}>Eigene 5</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Ausrichtung des Anzeigentitel</th>
+									<td>
+										<select name="variables[font-align-ad-boxes-name]">
+											<option value="left"{checked_ex({variables_font-align-ad-boxes-name},left,selected )}>Links</option>
+											<option value="center"{checked_ex({variables_font-align-ad-boxes-name},center,selected )}>Mittig</option>
+											<option value="right"{checked_ex({variables_font-align-ad-boxes-name},right,selected )}>Rechts</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftgröße des Preises</th>
+									<td>
+										<select name="variables[font-size-ad-boxes-price]">
+											<option value="@font-size-large"{checked_ex({variables_font-size-ad-boxes-price},@font-size-large,selected )}>Groß (font-size-large)</option>
+											<option value="@font-size-base"{checked_ex({variables_font-size-ad-boxes-price},@font-size-base,selected )}>Normal (font-size-base)</option>
+											<option value="@font-size-small"{checked_ex({variables_font-size-ad-boxes-price},@font-size-small,selected )}>Klein (font-size-small)</option>
+											<option value="@font-size-h1"{checked_ex({variables_font-size-ad-boxes-price},@font-size-h1,selected )}>Überschrift 1 (font-size-h1)</option>
+											<option value="@font-size-h2"{checked_ex({variables_font-size-ad-boxes-price},@font-size-h2,selected )}>Überschrift 2 (font-size-h2)</option>
+											<option value="@font-size-h3"{checked_ex({variables_font-size-ad-boxes-price},@font-size-h3,selected )}>Überschrift 3 (font-size-h3)</option>
+											<option value="@font-size-h4"{checked_ex({variables_font-size-ad-boxes-price},@font-size-h4,selected )}>Überschrift 4 (font-size-h4)</option>
+											<option value="@font-size-h5"{checked_ex({variables_font-size-ad-boxes-price},@font-size-h5,selected )}>Überschrift 5 (font-size-h5)</option>
+											<option value="@font-size-h6"{checked_ex({variables_font-size-ad-boxes-price},@font-size-h6,selected )}>Überschrift 6 (font-size-h6)</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftgröße des Pseudopreises</th>
+									<td>
+										<select name="variables[font-size-ad-boxes-price-pseudo]">
+											<option value="@font-size-large"{checked_ex({variables_font-size-ad-boxes-price-pseudo},@font-size-large,selected )}>Groß (font-size-large)</option>
+											<option value="@font-size-base"{checked_ex({variables_font-size-ad-boxes-price-pseudo},@font-size-base,selected )}>Normal (font-size-base)</option>
+											<option value="@font-size-small"{checked_ex({variables_font-size-ad-boxes-price-pseudo},@font-size-small,selected )}>Klein (font-size-small)</option>
+											<option value="@font-size-h1"{checked_ex({variables_font-size-ad-boxes-price-pseudo},@font-size-h1,selected )}>Überschrift 1 (font-size-h1)</option>
+											<option value="@font-size-h2"{checked_ex({variables_font-size-ad-boxes-price-pseudo},@font-size-h2,selected )}>Überschrift 2 (font-size-h2)</option>
+											<option value="@font-size-h3"{checked_ex({variables_font-size-ad-boxes-price-pseudo},@font-size-h3,selected )}>Überschrift 3 (font-size-h3)</option>
+											<option value="@font-size-h4"{checked_ex({variables_font-size-ad-boxes-price-pseudo},@font-size-h4,selected )}>Überschrift 4 (font-size-h4)</option>
+											<option value="@font-size-h5"{checked_ex({variables_font-size-ad-boxes-price-pseudo},@font-size-h5,selected )}>Überschrift 5 (font-size-h5)</option>
+											<option value="@font-size-h6"{checked_ex({variables_font-size-ad-boxes-price-pseudo},@font-size-h6,selected )}>Überschrift 6 (font-size-h6)</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftart des Preises</th>
+									<td>
+										<select name="variables[font-family-ad-boxes-price]">
+											<option value="@font-family-base"{checked_ex({variables_font-family-ad-boxes-price},@font-family-base,selected )}>Standard-Schriftart</option>
+											<option value="@font-family-sans-serif"{checked_ex({variables_font-family-ad-boxes-price},@font-family-sans-serif,selected )}>Sans-Serif</option>
+											<option value="@font-family-serif"{checked_ex({variables_font-family-ad-boxes-price},@font-family-serif,selected )}>Serif</option>
+											<option value="@font-family-monospace"{checked_ex({variables_font-family-ad-boxes-price},@font-family-monospace,selected )}>Monospace</option>
+											<option value="@font-family-custom-1"{checked_ex({variables_font-family-ad-boxes-price},@font-family-custom-1,selected )}>Eigene 1</option>
+											<option value="@font-family-custom-2"{checked_ex({variables_font-family-ad-boxes-price},@font-family-custom-2,selected )}>Eigene 2</option>
+											<option value="@font-family-custom-3"{checked_ex({variables_font-family-ad-boxes-price},@font-family-custom-3,selected )}>Eigene 3</option>
+											<option value="@font-family-custom-4"{checked_ex({variables_font-family-ad-boxes-price},@font-family-custom-4,selected )}>Eigene 4</option>
+											<option value="@font-family-custom-5"{checked_ex({variables_font-family-ad-boxes-price},@font-family-custom-5,selected )}>Eigene 5</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Ausrichtung des Preises</th>
+									<td>
+										<select name="variables[font-align-ad-boxes-price]">
+											<option value="left"{checked_ex({variables_font-align-ad-boxes-price},left,selected )}>Links</option>
+											<option value="center"{checked_ex({variables_font-align-ad-boxes-price},center,selected )}>Mittig</option>
+											<option value="right"{checked_ex({variables_font-align-ad-boxes-price},right,selected )}>Rechts</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+							
+							<h3>Anzeigen-Details</h3>
+							<h4>
+								Detail-Ansicht eines Artikels<br />
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_ad_details]" value="1"{if enabled_design_ad_details} checked{endif} />
+											Anzeigen-Details anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftart des Anzeigentitel</th>
+									<td>
+										<select name="variables[font-family-ad-details-name]">
+											<option value="@font-family-base"{checked_ex({variables_font-family-ad-details-name},@font-family-base,selected )}>Standard-Schriftart</option>
+											<option value="@font-family-sans-serif"{checked_ex({variables_font-family-ad-details-name},@font-family-sans-serif,selected )}>Sans-Serif</option>
+											<option value="@font-family-serif"{checked_ex({variables_font-family-ad-details-name},@font-family-serif,selected )}>Serif</option>
+											<option value="@font-family-monospace"{checked_ex({variables_font-family-ad-details-name},@font-family-monospace,selected )}>Monospace</option>
+											<option value="@font-family-custom-1"{checked_ex({variables_font-family-ad-details-name},@font-family-custom-1,selected )}>Eigene 1</option>
+											<option value="@font-family-custom-2"{checked_ex({variables_font-family-ad-details-name},@font-family-custom-2,selected )}>Eigene 2</option>
+											<option value="@font-family-custom-3"{checked_ex({variables_font-family-ad-details-name},@font-family-custom-3,selected )}>Eigene 3</option>
+											<option value="@font-family-custom-4"{checked_ex({variables_font-family-ad-details-name},@font-family-custom-4,selected )}>Eigene 4</option>
+											<option value="@font-family-custom-5"{checked_ex({variables_font-family-ad-details-name},@font-family-custom-5,selected )}>Eigene 5</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Ausrichtung des Preises</th>
+									<td>
+										<select name="variables[font-align-ad-details-price]">
+											<option value="left"{checked_ex({variables_font-align-ad-details-price},left,selected )}>Links</option>
+											<option value="center"{checked_ex({variables_font-align-ad-details-price},center,selected )}>Mittig</option>
+											<option value="right"{checked_ex({variables_font-align-ad-details-price},right,selected )}>Rechts</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Ausrichtung des Preises (Mobil-Darstellung)</th>
+									<td>
+										<select name="variables[font-align-ad-details-price-xs]">
+											<option value="left"{checked_ex({variables_font-align-ad-details-price-xs},left,selected )}>Links</option>
+											<option value="center"{checked_ex({variables_font-align-ad-details-price-xs},center,selected )}>Mittig</option>
+											<option value="right"{checked_ex({variables_font-align-ad-details-price-xs},right,selected )}>Rechts</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftgröße des Preises</th>
+									<td>
+										<select name="variables[font-size-ad-details-price]">
+											<option value="@font-size-large"{checked_ex({variables_font-size-ad-details-price},@font-size-large,selected )}>Groß (font-size-large)</option>
+											<option value="@font-size-base"{checked_ex({variables_font-size-ad-details-price},@font-size-base,selected )}>Normal (font-size-base)</option>
+											<option value="@font-size-small"{checked_ex({variables_font-size-ad-details-price},@font-size-small,selected )}>Klein (font-size-small)</option>
+											<option value="@font-size-h1"{checked_ex({variables_font-size-ad-details-price},@font-size-h1,selected )}>Überschrift 1 (font-size-h1)</option>
+											<option value="@font-size-h2"{checked_ex({variables_font-size-ad-details-price},@font-size-h2,selected )}>Überschrift 2 (font-size-h2)</option>
+											<option value="@font-size-h3"{checked_ex({variables_font-size-ad-details-price},@font-size-h3,selected )}>Überschrift 3 (font-size-h3)</option>
+											<option value="@font-size-h4"{checked_ex({variables_font-size-ad-details-price},@font-size-h4,selected )}>Überschrift 4 (font-size-h4)</option>
+											<option value="@font-size-h5"{checked_ex({variables_font-size-ad-details-price},@font-size-h5,selected )}>Überschrift 5 (font-size-h5)</option>
+											<option value="@font-size-h6"{checked_ex({variables_font-size-ad-details-price},@font-size-h6,selected )}>Überschrift 6 (font-size-h6)</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftgröße des Pseudopreises</th>
+									<td>
+										<select name="variables[font-size-ad-details-price-pseudo]">
+											<option value="@font-size-large"{checked_ex({variables_font-size-ad-details-price-pseudo},@font-size-large,selected )}>Groß (font-size-large)</option>
+											<option value="@font-size-base"{checked_ex({variables_font-size-ad-details-price-pseudo},@font-size-base,selected )}>Normal (font-size-base)</option>
+											<option value="@font-size-small"{checked_ex({variables_font-size-ad-details-price-pseudo},@font-size-small,selected )}>Klein (font-size-small)</option>
+											<option value="@font-size-h1"{checked_ex({variables_font-size-ad-details-price-pseudo},@font-size-h1,selected )}>Überschrift 1 (font-size-h1)</option>
+											<option value="@font-size-h2"{checked_ex({variables_font-size-ad-details-price-pseudo},@font-size-h2,selected )}>Überschrift 2 (font-size-h2)</option>
+											<option value="@font-size-h3"{checked_ex({variables_font-size-ad-details-price-pseudo},@font-size-h3,selected )}>Überschrift 3 (font-size-h3)</option>
+											<option value="@font-size-h4"{checked_ex({variables_font-size-ad-details-price-pseudo},@font-size-h4,selected )}>Überschrift 4 (font-size-h4)</option>
+											<option value="@font-size-h5"{checked_ex({variables_font-size-ad-details-price-pseudo},@font-size-h5,selected )}>Überschrift 5 (font-size-h5)</option>
+											<option value="@font-size-h6"{checked_ex({variables_font-size-ad-details-price-pseudo},@font-size-h6,selected )}>Überschrift 6 (font-size-h6)</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+							
+						</td>
+						<td>
+							
+							<h3>Anzeigen-Zeilen</h3>
+							<h4>
+								Zeilen-Darstellung der Anzeigen aus dem Marktplatz<br />
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_ad_rows]" value="1"{if enabled_design_ad_rows} checked{endif} />
+											Anzeigen-Zeilen anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftgröße des Anzeigentitel</th>
+									<td>
+										<select name="variables[font-size-ad-rows-name]">
+											<option value="@font-size-large"{checked_ex({variables_font-size-ad-rows-name},@font-size-large,selected )}>Groß (font-size-large)</option>
+											<option value="@font-size-base"{checked_ex({variables_font-size-ad-rows-name},@font-size-base,selected )}>Normal (font-size-base)</option>
+											<option value="@font-size-small"{checked_ex({variables_font-size-ad-rows-name},@font-size-small,selected )}>Klein (font-size-small)</option>
+											<option value="@font-size-h1"{checked_ex({variables_font-size-ad-rows-name},@font-size-h1,selected )}>Überschrift 1 (font-size-h1)</option>
+											<option value="@font-size-h2"{checked_ex({variables_font-size-ad-rows-name},@font-size-h2,selected )}>Überschrift 2 (font-size-h2)</option>
+											<option value="@font-size-h3"{checked_ex({variables_font-size-ad-rows-name},@font-size-h3,selected )}>Überschrift 3 (font-size-h3)</option>
+											<option value="@font-size-h4"{checked_ex({variables_font-size-ad-rows-name},@font-size-h4,selected )}>Überschrift 4 (font-size-h4)</option>
+											<option value="@font-size-h5"{checked_ex({variables_font-size-ad-rows-name},@font-size-h5,selected )}>Überschrift 5 (font-size-h5)</option>
+											<option value="@font-size-h6"{checked_ex({variables_font-size-ad-rows-name},@font-size-h6,selected )}>Überschrift 6 (font-size-h6)</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftart des Anzeigentitel</th>
+									<td>
+										<select name="variables[font-family-ad-rows-name]">
+											<option value="@font-family-base"{checked_ex({variables_font-family-ad-rows-name},@font-family-base,selected )}>Standard-Schriftart</option>
+											<option value="@font-family-sans-serif"{checked_ex({variables_font-family-ad-rows-name},@font-family-sans-serif,selected )}>Sans-Serif</option>
+											<option value="@font-family-serif"{checked_ex({variables_font-family-ad-rows-name},@font-family-serif,selected )}>Serif</option>
+											<option value="@font-family-monospace"{checked_ex({variables_font-family-ad-rows-name},@font-family-monospace,selected )}>Monospace</option>
+											<option value="@font-family-custom-1"{checked_ex({variables_font-family-ad-rows-name},@font-family-custom-1,selected )}>Eigene 1</option>
+											<option value="@font-family-custom-2"{checked_ex({variables_font-family-ad-rows-name},@font-family-custom-2,selected )}>Eigene 2</option>
+											<option value="@font-family-custom-3"{checked_ex({variables_font-family-ad-rows-name},@font-family-custom-3,selected )}>Eigene 3</option>
+											<option value="@font-family-custom-4"{checked_ex({variables_font-family-ad-rows-name},@font-family-custom-4,selected )}>Eigene 4</option>
+											<option value="@font-family-custom-5"{checked_ex({variables_font-family-ad-rows-name},@font-family-custom-5,selected )}>Eigene 5</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Ausrichtung des Preises</th>
+									<td>
+										<select name="variables[font-align-ad-rows-price]">
+											<option value="left"{checked_ex({variables_font-align-ad-rows-price},left,selected )}>Links</option>
+											<option value="center"{checked_ex({variables_font-align-ad-rows-price},center,selected )}>Mittig</option>
+											<option value="right"{checked_ex({variables_font-align-ad-rows-price},right,selected )}>Rechts</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftgröße des Preises</th>
+									<td>
+										<select name="variables[font-size-ad-rows-price]">
+											<option value="@font-size-large"{checked_ex({variables_font-size-ad-rows-price},@font-size-large,selected )}>Groß (font-size-large)</option>
+											<option value="@font-size-base"{checked_ex({variables_font-size-ad-rows-price},@font-size-base,selected )}>Normal (font-size-base)</option>
+											<option value="@font-size-small"{checked_ex({variables_font-size-ad-rows-price},@font-size-small,selected )}>Klein (font-size-small)</option>
+											<option value="@font-size-h1"{checked_ex({variables_font-size-ad-rows-price},@font-size-h1,selected )}>Überschrift 1 (font-size-h1)</option>
+											<option value="@font-size-h2"{checked_ex({variables_font-size-ad-rows-price},@font-size-h2,selected )}>Überschrift 2 (font-size-h2)</option>
+											<option value="@font-size-h3"{checked_ex({variables_font-size-ad-rows-price},@font-size-h3,selected )}>Überschrift 3 (font-size-h3)</option>
+											<option value="@font-size-h4"{checked_ex({variables_font-size-ad-rows-price},@font-size-h4,selected )}>Überschrift 4 (font-size-h4)</option>
+											<option value="@font-size-h5"{checked_ex({variables_font-size-ad-rows-price},@font-size-h5,selected )}>Überschrift 5 (font-size-h5)</option>
+											<option value="@font-size-h6"{checked_ex({variables_font-size-ad-rows-price},@font-size-h6,selected )}>Überschrift 6 (font-size-h6)</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftgröße des Pseudopreises</th>
+									<td>
+										<select name="variables[font-size-ad-rows-price-pseudo]">
+											<option value="@font-size-large"{checked_ex({variables_font-size-ad-rows-price-pseudo},@font-size-large,selected )}>Groß (font-size-large)</option>
+											<option value="@font-size-base"{checked_ex({variables_font-size-ad-rows-price-pseudo},@font-size-base,selected )}>Normal (font-size-base)</option>
+											<option value="@font-size-small"{checked_ex({variables_font-size-ad-rows-price-pseudo},@font-size-small,selected )}>Klein (font-size-small)</option>
+											<option value="@font-size-h1"{checked_ex({variables_font-size-ad-rows-price-pseudo},@font-size-h1,selected )}>Überschrift 1 (font-size-h1)</option>
+											<option value="@font-size-h2"{checked_ex({variables_font-size-ad-rows-price-pseudo},@font-size-h2,selected )}>Überschrift 2 (font-size-h2)</option>
+											<option value="@font-size-h3"{checked_ex({variables_font-size-ad-rows-price-pseudo},@font-size-h3,selected )}>Überschrift 3 (font-size-h3)</option>
+											<option value="@font-size-h4"{checked_ex({variables_font-size-ad-rows-price-pseudo},@font-size-h4,selected )}>Überschrift 4 (font-size-h4)</option>
+											<option value="@font-size-h5"{checked_ex({variables_font-size-ad-rows-price-pseudo},@font-size-h5,selected )}>Überschrift 5 (font-size-h5)</option>
+											<option value="@font-size-h6"{checked_ex({variables_font-size-ad-rows-price-pseudo},@font-size-h6,selected )}>Überschrift 6 (font-size-h6)</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftart des Preises</th>
+									<td>
+										<select name="variables[font-family-ad-rows-price]">
+											<option value="@font-family-base"{checked_ex({variables_font-family-ad-rows-price},@font-family-base,selected )}>Standard-Schriftart</option>
+											<option value="@font-family-sans-serif"{checked_ex({variables_font-family-ad-rows-price},@font-family-sans-serif,selected )}>Sans-Serif</option>
+											<option value="@font-family-serif"{checked_ex({variables_font-family-ad-rows-price},@font-family-serif,selected )}>Serif</option>
+											<option value="@font-family-monospace"{checked_ex({variables_font-family-ad-rows-price},@font-family-monospace,selected )}>Monospace</option>
+											<option value="@font-family-custom-1"{checked_ex({variables_font-family-ad-rows-price},@font-family-custom-1,selected )}>Eigene 1</option>
+											<option value="@font-family-custom-2"{checked_ex({variables_font-family-ad-rows-price},@font-family-custom-2,selected )}>Eigene 2</option>
+											<option value="@font-family-custom-3"{checked_ex({variables_font-family-ad-rows-price},@font-family-custom-3,selected )}>Eigene 3</option>
+											<option value="@font-family-custom-4"{checked_ex({variables_font-family-ad-rows-price},@font-family-custom-4,selected )}>Eigene 4</option>
+											<option value="@font-family-custom-5"{checked_ex({variables_font-family-ad-rows-price},@font-family-custom-5,selected )}>Eigene 5</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Ausrichtung des Preises</th>
+									<td>
+										<select name="variables[font-align-ad-rows-price]">
+											<option value="left"{checked_ex({variables_font-align-ad-rows-price},left,selected )}>Links</option>
+											<option value="center"{checked_ex({variables_font-align-ad-rows-price},center,selected )}>Mittig</option>
+											<option value="right"{checked_ex({variables_font-align-ad-rows-price},right,selected )}>Rechts</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+							
+							<h3>Listen-Bereiche</h3>
+							<h4>
+								z.B.: "Neu eingestellte Produkte"<br />
+							</h4>
+							<table>
+								<tr>
+									<td colspan="2">
+										<label>
+											<input type="checkbox" name="enabled[design_list_area]" value="1"{if enabled_design_list_area} checked{endif} />
+											Listen-Bereiche anpassen
+										</label>
+									</td>
+								</tr>
+								<tr>
+									<th>Schriftgröße der Überschrift</th>
+									<td>
+										<select name="variables[font-size-list-area-heading]">
+											<option value="@font-size-large"{checked_ex({variables_font-size-list-area-heading},@font-size-large,selected )}>Groß (font-size-large)</option>
+											<option value="@font-size-base"{checked_ex({variables_font-size-list-area-heading},@font-size-base,selected )}>Normal (font-size-base)</option>
+											<option value="@font-size-small"{checked_ex({variables_font-size-list-area-heading},@font-size-small,selected )}>Klein (font-size-small)</option>
+											<option value="@font-size-h1"{checked_ex({variables_font-size-list-area-heading},@font-size-h1,selected )}>Überschrift 1 (font-size-h1)</option>
+											<option value="@font-size-h2"{checked_ex({variables_font-size-list-area-heading},@font-size-h2,selected )}>Überschrift 2 (font-size-h2)</option>
+											<option value="@font-size-h3"{checked_ex({variables_font-size-list-area-heading},@font-size-h3,selected )}>Überschrift 3 (font-size-h3)</option>
+											<option value="@font-size-h4"{checked_ex({variables_font-size-list-area-heading},@font-size-h4,selected )}>Überschrift 4 (font-size-h4)</option>
+											<option value="@font-size-h5"{checked_ex({variables_font-size-list-area-heading},@font-size-h5,selected )}>Überschrift 5 (font-size-h5)</option>
+											<option value="@font-size-h6"{checked_ex({variables_font-size-list-area-heading},@font-size-h6,selected )}>Überschrift 6 (font-size-h6)</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+							
+						</td>
+					</tr>
+				</table>
+				<!-- // SCHRIFTART/-GRÖßE -->
+			</div>
+		</div>
+	</div>
+	<button name="do" onclick="designSettingsSubmit(this); return false;" value="designPreview">Vorschau</button>
+	<button name="do" onclick="designSettingsSubmit(this); return false;" value="designSave">Änderung speichern</button>
+</form>
+
+<h2>Vorschau</h2>
+
+<iframe id="designPreview" src="{uri_action(system-admin,design,preview_live)}?access={accessToken}" style="width: 100%; height: 600px;"></iframe>

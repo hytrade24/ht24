@@ -1,0 +1,10 @@
+<input type="hidden" name="chk[{ID_PERM}][]" value="0" />
+<tr{if i&1} class="zeile1"{endif}>
+  <td>{htm(IDENT)}</td>
+  <td>{VALUE}</td>
+{if 0}  <td style="text-align:center;"><input class="nob" type="checkbox" name="chk[{ID_PERM}][]" {if BF_ALLOW&16}checked {endif}value="16" /></td>
+{endif}  <td style="text-align:center;"><input class="nob" type="checkbox" name="chk[{ID_PERM}][]" {if BF_ALLOW&8}checked {endif}value="8" /></td>
+  <td style="text-align:center;"><input class="nob" type="checkbox" name="chk[{ID_PERM}][]" {if BF_ALLOW&4}checked {endif}value="4" /></td>
+  <td style="text-align:center;"><input class="nob" type="checkbox" name="chk[{ID_PERM}][]" {if BF_ALLOW&2}checked {endif}value="2" /></td>
+  <td style="text-align:center;"><input class="nob" type="checkbox" name="chk[{ID_PERM}][]" {if BF_ALLOW&1}checked {endif}value="1" /></td>
+</tr>

@@ -1,0 +1,6 @@
+<a class="galleryImagePreview" onclick="YoutubePlayVideo('http://www.youtube.com/embed/{id}', {width}, {height});">
+	<img style="{if preview_width} width:{preview_width}px;{endif}{if preview_height} height:{preview_height}px;{endif}" src="http://i{youtube_server}.ytimg.com/vi/{id}/default.jpg" class="img-polaroid" />
+	<div class="video_play" style="position: absolute; margin-top: {if preview_height}-{calc(preview_height/2+25)}px{else}-71px{endif}; margin-left: {if preview_width}{calc(preview_width/2-15)}px{else}46px{endif}; text-align: center; vertical-align: middle;">
+		<img src="{uri_baseurl(/bilder/play.png)}" />
+	</div>
+</a>

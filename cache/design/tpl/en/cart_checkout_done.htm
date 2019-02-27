@@ -1,0 +1,30 @@
+<h1>
+    Thanks you for your purchase
+	<p class="lead">Confirmation of your purchase</p>
+</h1>
+
+<p>
+    <p>We thank you for your purchase on our marketplace. A confirmation E-mail has been sent, with the
+        most important informations summarized.
+        <br>
+        Once the seller confirmed the purchase, you will receive an E-mail with the contact- and paymentinformations.
+</p>
+</p>
+
+{PLUGIN_HTML}
+
+{if ID_USER}
+<h5>
+    A summary of your previous purchases can be found here
+</h5>
+
+<a href="{uri_action(my-marktplatz-einkaeufe)}" class="btn btn-success">
+    Go to my purchases
+</a>
+{else}
+<h5>
+    You will receive shortly an E-mail with a link where you can  pay and see all your previous purchases.
+</h5>
+{endif}
+
+{content_page(DankeNACHKaufen)}

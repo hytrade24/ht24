@@ -1,0 +1,18 @@
+{if liste}
+	<div id="comment_list_{TABLE}_{FK}" data-url="{uri_action(comment_list,{TABLE},{FK})}" class="design-comment-list">
+		<h4>Submitted Reviews</h4>
+		{liste}
+		
+		{pager}
+	</div>
+	<script type="text/javascript">
+		commentListInitPager('{TABLE}', {FK});
+	</script>
+{else}
+	<div id="comment_list_{TABLE}_{FK}" data-url="{uri_action(comment_list,{TABLE},{FK})}">
+		<h4>Submitted Reviews</h4>
+		<div class="text-muted">
+			There are no comments available yet.
+		</div>
+	</div>
+{endif}

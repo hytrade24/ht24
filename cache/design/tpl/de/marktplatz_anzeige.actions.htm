@@ -1,0 +1,365 @@
+
+^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0)°
+<div class="design-content-box">
+    <div class="design-ad-details-actions">
+    {if !AD_SOLD}
+        <form id="form_buy" class="form-inline" onsubmit="addArticleToCartWrapper(this); return false;">
+        <input type="hidden" name="ID_AD_VARIANT" id="CART_VARIANT" value="{FK_AD_VARIANT}" />
+    {endif}
+    {if SETTINGS_MARKTPLATZ_BUYING_ENABLED}
+        <!-- -->
+            <div class="design-ad-status">
+                {if (AD_B_TOP&4)==4}
+                <div class="design-ad-status-top">
+                    Top
+                </div>
+                {endif}
+                ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0)°
+                {if AD_PSEUDOPREIS && AD_B_PSEUDOPREIS_DISCOUNT && (AD_PSEUDOPREIS > AD_PREIS)}
+                <div class="design-ad-price-discount">
+                    <span class="design-sale-word">Sale</span>
+                    <span class="design-sale-number">-{pseudopreis_discount({AD_PREIS}, {AD_PSEUDOPREIS})}%</span>
+                </div>
+                {endif}
+                {if AD_RUNTIME_DAYS_GONE < DAYS_ADS_NEW}
+                <span class="design-ad-status-new">
+                    Neu
+                </span>
+                {endif}
+                {if AD_TRADE}
+                <span class="design-ad-status-trade"
+                     data-toggle="tooltip" data-placement="right" title="Der Artikelpreis ist verhandelbar">
+                    VB
+                </span>
+                {endif}
+                ^else°
+                ^endif°
+                <div class="clearfix"></div>
+            </div>
+        <!-- -->
+        {if (AD_VERKAUFSOPTIONEN!=4)}
+        <div class="design-ad-details-price">
+            {if !AD_SOLD}
+                {VARIANTS}
+            {endif}
+            {if (AD_VERKAUFSOPTIONEN!=2)}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="marketplaceArticlePrice">
+                        <span class="marketplaceArticlePriceLabel-and-value">
+                            {if AD_VERKAUFSOPTIONEN!=3}
+                                Preis
+                            {else}
+                                Mietpreis pro Tag
+                            {endif}
+                            {if AD_VERKAUFSOPTIONEN==3}
+                                ab
+                           {endif}
+                           {topreis_ex(AD_PREIS)} {CURRENCY_DEFAULT}
+                        </span>
+                        <br />
+                        {if AD_PSEUDOPREIS}
+                        <span class="marketplaceArticlePseudoPrice">
+                            {topreis_ex(AD_PSEUDOPREIS)} {CURRENCY_DEFAULT}
+                        </span>
+                        <span class="marketplaceArticlePseudoPrice-sale">-{pseudopreis_discount({AD_PREIS}, {AD_PSEUDOPREIS})}%</span>
+                        <br />
+                        {endif}
+                        <span class="text-muted include-tax">
+                            ({subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={AD_MWST})})
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6 currency-conversion-tool" style="text-align: right;">
+                    {if SETTINGS_MARKTPLATZ_CURRENCY_CONVERSION}
+                    {subtpl(tpl/{SYS_TPL_LANG}/currency_conversion.htm,PRICE={AD_PREIS})}
+                    {endif}
+                </div>
+            </div>
+            {endif}
+            {if AD_BASISPREIS_PREIS}
+                <p class="text-muted">
+                    Grundpreis: {topreis_ex(AD_BASISPREIS_PREIS)} {CURRENCY_DEFAULT} / {if AD_BASISPREIS_MENGE > 1}{AD_BASISPREIS_MENGE} {endif}{AD_BASISPREIS_EINHEIT}
+                </p>
+            {endif}
+            {if !AD_AFFILIATE}
+                    <p>
+                    {if !KAT_OPTIONS_HIDE_SHIPPING}
+                        {if AD_VERSANDOPTIONEN==3}
+                            <span class="text-muted text-bold">Versandkosten:</span>
+                            <span class="text-muted">{market_article_shipping(ID_AD,AD_VERSANDKOSTEN)}</span>
+                        {else}
+                            {if AD_VERSANDOPTIONEN==0}<span class="text-success text-bold">Versandkostenfrei</span>{endif}
+                            {if AD_VERSANDOPTIONEN==1}<span class="text-error text-bold">Nur Selbstabholung</span>{endif}
+                            {if AD_VERSANDOPTIONEN==2}<span class="text-error text-bold">Versandkosten auf Anfrage</span>{endif}
+                        {endif}
+                            <br />
+                        {if AD_VERSANDKOSTEN_INFO}
+                            <span class="text-muted text-bold">Versandkostenhinweis:</span>
+                            <span class="text-muted">{htm(AD_VERSANDKOSTEN_INFO)}</span>
+                            <br />
+                        {endif}
+                        {if AD_LIEFERTERMIN}
+                            <span class="text-muted text-bold">Liefertermin</span>
+                            <span class="text-muted">{htm(AD_LIEFERTERMIN)}</span>
+                            <br />
+                        {endif}
+                    {endif}
+                    {if AD_MOQ && DISABLED}
+                        <span class="text-muted">Mindestanfragemenge: {AD_MOQ}</span>
+                        <br />
+                    {endif}
+                    {if DISABLED}
+                        <span class="text-muted text-bold">Anzahl</span>
+                        <span class="text-muted" id="marketplaceArticleQuanitityValue">{htm(AD_MENGE)} verfügbar</span>
+                    {endif}
+                    </p>
+                {if AD_VERKAUFSOPTIONEN==3 && list_rent}
+                    <table class="table table-condensed table-striped table-bordered">
+                        <tr>
+                            <th>Mietdauer</th>
+                            <th>Preis</th>
+                        </tr>
+                        {list_rent}
+                    </table>
+                {endif}
+            {else}
+                <p>
+                    <a href="{uri_action(marktplatz_anzeige,{ID_AD},,extern)}" target="_blank" class="btn btn-success" rel="nofollow">mehr Details</a>
+                </p>
+            {endif}
+        </div>
+        {endif}
+        {if AD_MOQ}
+            <p class="text-muted">Mindestanfragemenge: {AD_MOQ}</p>
+        {endif}
+        {if COUNT_ARTICLES_WITH_PRODUCT>1}
+            <p>
+                <a href="{uri_action(product_details,{AD_FK_KAT},{AD_FK_PRODUCT})}" class="js-tooltip" data-toogle="tooltip" title="Es wurden {COUNT_ARTICLES_WITH_PRODUCT} Produkt(e) des selben Typs bei weiteren Händlern gefunden">
+                    Alle {COUNT_ARTICLES_WITH_PRODUCT} Angebote zu diesem Produkt anzeigen
+                </a>
+            </p>
+        {endif}
+        <div class="design-ad-details-buy">
+        {if ID_USER!=OVERRIDE_USER_ID}
+            <div class="marketplaceArticleVisibleWhenNotAvailable" style="display: none;">
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>Nicht verfügbar!</strong>
+                    Der gewünschte Artikel ist leider nicht verfügbar.
+                </div>
+            </div>
+            <div class="marketplaceArticleVisibleWhenAvailable">
+            {if !AD_AFFILIATE && (AD_ACTIVE || PREVIEW || USER_IS_ADMIN)}
+                {if !PREVIEW && USER_IS_ADMIN}
+                    {if AD_CONFIRMED!=1}
+                       <p>
+                           <strong>Anzeige Moderieren:</strong>
+                           <br />
+                           <a class="btn btn-success" onclick="UnlockAd();">
+                               Anzeige freigeben
+                           </a>
+                           <a class="btn btn-danger{if CONFIRMED==2} disabled{endif}"{if AD_CONFIRMED!=2} onclick="UnlockDecline({ID_AD}, '{if AD_MANUFACTURER}{htm(AD_MANUFACTURER)} {endif}{htm(AD_TITLE)}');"{endif}>
+                               Ablehnen
+                           </a>
+                       </p>
+                    {endif}
+                    {if AD_CONFIRMED==2}
+                       <div class="alert alert-danger">
+                           <strong>Freigabe abgelehnt</strong>
+                           <p>
+                               Sie haben die Freigabe dieser Anzeige abgelehnt.{if AD_DECLINE_REASON} Begründung:<br />{text(AD_DECLINE_REASON)}{endif}
+                           </p>
+                       </div>
+                    {endif}
+                {endif}
+                {if (AD_CONFIRMED==1 || PREVIEW)}
+                    {if SETTINGS_MARKTPLATZ_BUYING_ENABLED && AD_VERKAUFSOPTIONEN==0}
+                        {if !AD_SOLD}
+                            {if SETTINGS_MARKTPLATZ_USE_CART}
+                                <div class="alert hide" id="marketplaceArticleQuanitityValueAlert">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Warnung!</strong> Die gewünschte Menge für das Produkt, ist nicht vorhanden.
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p>
+                                            <label class="marketplaceArticleCartQuantityLabel"><strong>Menge:</strong></label>
+                                            <input type="text" class="form-control" name="CART_QUANTITY" id="CART_QUANTITY" value="{if AD_MOQ>1}{AD_MOQ}{else}1{endif}">
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>
+                                            <button href="#" class="btn btn-success btn-warenkorb">
+                                                <span>In den Warenkorb</span>
+                                                <i class="fa fa-shopping-cart"></i>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+                            {else}
+                                <p>
+                                    <a id="marketplaceArticleBuy" href="{uri_action(marktplatz_kaufen,{ID_AD},{ID_AD_VARIANT})}" class="btn btn-success">Kaufen</a>
+                                </p>
+                            {endif}
+                        {else}
+                            <p>
+                                <a href="#" class="btn btn-success disabled">In den Warenkorb</a>
+                            </p>
+                        {endif}
+                    {else}
+                        {if ID_USER}
+                        <a id="marketplaceLeadCreate" href="#lead-create" onclick="openLeadCreateWindow({ID_AD}); return false;" class="btn btn-success" 
+                           title="Anzeige ausdrucken">
+                            Anfrage senden / Lead erstellen
+                        </a>
+                        {endif}
+                    {endif}
+                    <br />
+                    <br />
+                        {if SETTINGS_MARKTPLATZ_BUYING_ENABLED && AD_VERKAUFSOPTIONEN==0 && AD_TRADE}
+                        <div class="row">
+                            <div class="col-md-6 col-md-push-6">
+                                <p>
+                                    <a id="marketplaceArticleTrade" class="btn btn-success btn-handeln"
+                                       href="{uri_action(marktplatz_handeln,{ID_AD},{ID_AD_VARIANT})}"
+                                       title="Den Preis aushandeln">
+                                        <span>Handeln</span>
+                                        <i class="fa fa-dollar"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    {endif}
+                    <div class="design-row design-row-xs-2 text-left">
+                        {if AD_VERKAUFSOPTIONEN==0}
+                        <div class="design-row-item">
+                            <a title="Nachricht schreiben" href="#" onclick="sendAdContactMessage({ID_AD}, {ID_KAT}, jQuery('#CART_VARIANT').val(), 'Stellen Sie eine Frage zu &quot;{if AD_MANUFACTURER}{htm(AD_MANUFACTURER)} {endif}{htm(AD_TITLE)}&quot;'); return false;">
+                                <i class="glyphicon glyphicon-user"></i>
+                                Kontakt aufnehmen
+                            </a>
+                        </div>
+                        {endif}
+                        {if ID_USER}
+                        <div class="design-row-item">
+                            <a href="#" onclick="AdReminderToggle('{ID_AD}', 'adReminderLabel-{ID_AD}', 'Produkt bereits gemerkt', 'Produkt merken', '{text(AD_TITLE)}', 'marktplatz_anzeige,{ID_AD},{urllabel(AD_TITLE)}'); return false;" >
+                                <i class="glyphicon glyphicon-bookmark"></i>
+                                <span id="adReminderLabel-{ID_AD}">Produkt merken</span>
+                            </a>
+                        </div>
+                        {endif}
+                        {if ID_USER}
+                        <div class="design-row-item">
+                            <a class="adLikeButton" href="#">
+                                <i class="glyphicon glyphicon-thumbs-up"></i>
+                                <span>...</span>
+                            </a>
+                        </div>
+                        {endif}
+                        <div class="design-row-item">
+                            <a title="Anzeige weiterempfehlen" href="#" onclick="empfehlen(); return false;">
+                                <i class="glyphicon glyphicon-share-alt"></i>
+                                Anzeige weiterempfehlen
+                            </a>
+                        </div>
+                        <div class="design-row-item">
+                            <a title="Verstoß melden" href="#" onclick="open_verstoss({ID_AD}); return false;">
+                                <i class="glyphicon glyphicon-bell"></i>
+                                Verstoß melden
+                            </a>
+                        </div>
+                        <div class="design-row-item">
+                            <a id="marketplaceArticlePrint" href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(AD_TITLE)},print|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Anzeige ausdrucken">
+                                <i class="glyphicon glyphicon-print"></i>
+                                Anzeige ausdrucken
+                            </a>
+                        </div>
+                    </div>
+                {else}
+                    {if AD_CONFIRMED==1}
+                        <p>Zur Zeit ist der Artiekl leider nicht ausreichend verfügbar</p>
+                    {endif}
+                {endif}
+            {endif}
+            </div>
+        {endif}
+        </div>
+        {if ID_USER==OVERRIDE_USER_ID}
+        <div class="design-ad-details-actions-own">
+            <p>
+            {if AD_MENGE > 0}
+                    <a class="btn btn-default" title="Anzeige bearbeiten / ver&auml;ndern" href="{uri_action(my-marktplatz-neu,{ID_AD})}">
+                        Bearbeiten
+                    </a>
+                {if AD_ACTIVE}
+                    <a class="btn btn-danger" title="Anzeige# deaktivieren" onclick="return confirm('Anzeige wirklich deaktivieren?');" href="{uri_action(my-marktplatz,deactivate,{ID_AD},{ID_KAT})}">
+                        Deaktivieren
+                    </a>
+                {else}
+                    {if AD_CONFIRMED}
+                    <a class="btn btn-success" title="Anzeige aktivieren" onclick="return confirm('Anzeige wirklich wieder aktivieren?');" href="{uri_action(my-marktplatz-disabled,activate,{ID_AD},{ID_KAT})}">
+                        Aktivieren
+                    </a>
+                    {else}
+                    <a class="btn btn-success disabled" title="Wird geprüft" onclick="return confirm('Anzeige wirklich wieder aktivieren?');">
+                        <i class="icon-lock icon-white"></i>
+                        Wird geprüft
+                    </a>
+                    {endif}
+                {endif}
+            {else}
+                <div class="btn-multiline">
+                    <a title="Diese Anzeige verwenden, um ein neues (oder Kopie) Produkt einzustellen" class="btn" href="{uri_action(my-marktplatz-disabled,recreate,{ID_AD},{ID_KAT})}">
+                        Als Vorlage verwenden
+                    </a>
+                    <a title="Anzeige wiedereinstellen" onclick="ExtendAd({ID_AD},{ID_KAT});" class="btn btn-success">
+                        Wiedereinstellen
+                    </a>
+                </div>
+            {endif}
+            </p>
+            {if biduser_ID_TRADE && AD_ACTIVE}
+            <p>
+                {if biduser_ACTIVE}
+                    <span class="ok">
+                        Letzter aktiver Preisvorschlag:
+                        {topreis_ex(biduser_BID)} {CURRENCY_DEFAULT}
+                    </span>
+                {else}
+                    Der letzte Vorschlag eines Käufers lag bei {topreis_ex(biduser_BID)} {CURRENCY_DEFAULT}.
+                {endif}
+            </p>
+            <p>
+                <a href="{uri_action(my-marktplatz-handeln)}#ad{ID_AD}" class="btn" title="&Uuml;bersicht anzeigen">
+                    Preisvorschläge anzeigen
+                </a>
+            </p>
+            {endif}
+        </div>
+        {endif}
+    {endif}
+    {if !AD_SOLD}
+        </form>
+    {endif}
+    </div>
+</div>
+
+{if ID_USER && DISABLED}
+<div class="design-content-box">
+    <div class="design-ad-details-actions">
+        <div class="heading">
+            Anfrage stellen
+        </div>
+        {subtpl(tpl/{SYS_TPL_LANG}/ad-contact-form.htm,*)}
+    </div>
+</div>
+
+<div class="design-content-box">
+    <div class="design-ad-details-vendor">
+        <div>
+            {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.vendor.htm,*)}
+        </div>
+    </div>
+</div>
+{endif}
+^endif°

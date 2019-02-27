@@ -1,0 +1,61 @@
+{startblock(script)}
+{parentblock()}
+<script type="text/javascript">
+    jQuery(function() {
+        var searchPending = false;
+        jQuery("#SEARCH_FORM").off("submit");
+        jQuery("#SEARCH_FORM").submit(function() {
+            if (searchPending == false) {
+                searchPending = jQuery.ajax({
+                    url: $("#SEARCH_FORM").attr('action'),
+                    type: 'POST',
+                    data: $('#SEARCH_FORM').serialize(),
+                    dataType: 'json',
+                    success: function (json) {
+                        location.href = '{uri_baseurl(/)}marktplatz/marktplatz,' + json["ID_KAT"] + ',Suchergebniss,' + json["HASH"] + '.htm';
+                    }
+                });
+            }
+            return false;
+        });
+    })
+</script>
+{endblock(script)}
+
+<div class="design-subtpl design-header-searchform">
+    <form method="post" action="{uri_baseurl(/index.php)}" id="SEARCH_FORM">
+        <input value="{htm(PRODUKTNAME)}" id="SEARCH" name="PRODUKTNAME" type="hidden" />
+        <input name="page" value="presearch_ajax" type="hidden" />
+        <input type="hidden" name="frame" value="ajax" />
+
+        <div class="design-header-search-form-inputs{if SHOW_CATEGORY} with-category{endif}">
+            <div class="design-header-search-form-text">
+                <input id="sfeld1" type="text" class="form-control" value="{htm(PRODUKTNAME)}" value="{htm(PRODUKTNAME)}" autocomplete="off"
+                       onfocus="presearch_quick(this, false);" onblur="presearch_quick(this, { which: 27 });" onkeyup="presearch_quick(this, event); return false;" />
+            </div>
+            {if SHOW_CATEGORY}
+            <div class="design-header-search-form-category">
+                <select name="FK_KAT" class="form-control">
+                    <option value="1">alle Kategorien</option>
+                    {katopts}
+                </select>
+            </div>
+            {endif}
+            <div class="design-header-search-form-submit">
+                <input type="submit" class="btn btn-info form-control" value="Suchen" />
+            </div>
+        </div>
+
+        <div id="div_offers" class="popover fade bottom in" style="display: none;">
+            <div class="arrow"></div>
+            <h3 class="popover-title">Suchvorschläge</h3>
+            <div class="popover-content">
+                <table style="position: absolute; display: none;" id="list_offers" class="list_offers" cellpadding="0"
+                       cellspacing="0">
+                </table>
+            </div>
+        </div>
+    </form>
+
+    ^SUBTPL_ADMIN°
+</div>

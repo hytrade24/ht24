@@ -1,0 +1,10 @@
+{if !IS_SPECIAL}
+	<label>
+		<input type="checkbox" name="GRUPPE[]" value="{ID_FIELD_GROUP}" class="nob"{if FK_FIELD_TAB==ID_FIELD_TAB} checked="checked"{endif} />
+		{htm(V1)}
+		{if (FK_FIELD_TAB>0) && (FK_FIELD_TAB != ID_FIELD_TAB)}
+		<span style="color:#909090;">(Aktuell: {htm(FIELD_TAB)})</span>
+		{endif}
+		<br />
+	</label>
+{endif}

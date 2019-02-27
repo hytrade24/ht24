@@ -1,0 +1,78 @@
+<div class="row">
+	<div class="col-xs-3">
+		<br><br>
+		{if USER_LOGO}
+			<img src="{thumbnail(USER_LOGO,180,300)}" />
+		{else}
+			<img src="{uri_resource(/images/marketplace/nopic.jpg)}" />
+		{endif}
+	</div>
+	<div class="col-xs-9">
+		{if anonymisierung}
+			<h3>{if USER_VORNAME}{USER_VORNAME} {USER_NACHNAME}{else}{USER_NAME}{endif}</h3>
+		{else}
+			<h3>{if USER_FIRMA}{USER_FIRMA}{else}{USER_VORNAME} {USER_NACHNAME}{endif}</h3>
+		{endif}
+
+		<dl class="dl-table-horizontal vendorInfo">
+			{if (VENDOR_FIRMA || USER_FIRMA) && !anonymisierung}
+				<dt>Company:</dt>
+				<dd>{if VENDOR_FIRMA}{VENDOR_FIRMA}{else}{USER_FIRMA}{endif}</dd>
+			{endif}
+
+			{if USER_VORNAME && !anonymisierung}
+				<dt>Fore- and surname:</dt>
+				<dd>{USER_VORNAME} {USER_NACHNAME}</dd>
+			{endif}
+
+			{if !anonymisierung}
+			<dt>Address:</dt>
+			<dd>
+				<p>{USER_STRASSE}<br />{USER_PLZ} {USER_ORT}, {USER_COUNTRY}</p>
+			</dd>
+            {if USER_TEL}
+            <dt>Phone:</dt>
+            <dd>{USER_TEL}</dd>
+            {endif}
+            {if USER_EMAIL}
+            <dt>Email:</dt>
+            <dd>{USER_EMAIL}</dd>
+            {endif}
+
+			{endif}
+
+			{if ID_VENDOR && !anonymisierung}
+				{if USER_TEL}
+					<dt>Phone:</dt>
+					<dd>{USER_TEL}</dd>
+				{endif}
+				{if USER_FAX}
+					<dt>Fax:</dt>
+					<dd>{USER_FAX}</dd>
+				{endif}
+				{if USER_URL}
+					<dt>Homepage:</dt>
+					<dd><a href="{USER_URL}">{USER_URL}</a></dd>
+				{endif}
+			{endif}
+
+			<dt></dt><dd class="separator"></dd>
+
+			<dt>Member since:</dt>
+			<dd>{todate(STAMP_REG)}</dd>
+
+			<dt>Already incurred purchases:</dt>
+			<dd>{anzahl_einkaufen}</dd>
+
+			<dt>My purchases:</dt>
+			<dd>{anzahl_verkaufen}</dd>
+		</dl>
+
+		{if USER_RATINGS}
+			<h3>Last raiting</h3>
+			<table class="table table-bordered table-condensed table-striped">
+				{USER_RATINGS}
+			</table>
+		{endif}
+	</div>
+</div>

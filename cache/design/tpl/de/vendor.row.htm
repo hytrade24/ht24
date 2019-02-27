@@ -1,0 +1,90 @@
+{if (!noads) && (i==3)}
+<div class="advertisement-box" style="text-align: center;">
+    {content_page(Werbung - Inline)}
+</div>
+{endif}
+<div class="design-vendor-row{if B_TOP} top{endif} {if even}vendor-even{else}vendor-odd{endif}">
+    <div class="row absolute-position-row">
+        <div class="col-sm-4 col-md-4 col-lg-3 img-thumb-container">
+            <div class="design-vendor-image thumbnail">
+                <a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}"
+                   title="{htm(VENDOR_NAME)} ansehen">
+                    {if VENDOR_LOGO}
+                        <img src="{thumbnail(VENDOR_LOGO,165,150)}" data-watchlist="true" />
+                    {else}
+                        <img src="{uri_resource(/images/marketplace/nopic.jpg)}" />
+                    {endif}
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-9 other-container">
+            <div class="row">
+                <div class="col-md-9">
+                    <p style="margin-bottom: 15px;">
+                        <a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}" title="{htm(VENDOR_NAME)} ansehen">
+                            <strong>{htm(VENDOR_FIRMA)}</strong>
+                        </a>
+                    </p>
+                    <dl class="">
+                        <dt class="first">Standort</dt>
+                        <dd>
+                            {VENDOR_COUNTRY} / {VENDOR_ORT}
+                        </dd>
+
+                        <dt class="first">Beschreibung</dt>
+                        <dd>
+                            {strip_tags(VENDOR_SHORT_DESCRIPTION)}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-3">
+                    <div class="design-ad-country-flag">
+
+                        <div class="pull-left">
+                            <img src="{uri_baseurl(/bilder/flags/{lower(COUNTRY_CODE)}.png)}" alt=""/>
+                        </div>
+                        <div class="pull-right">
+                            {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=vendor,FK={ID_VENDOR},TEMPLATE=small)}
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+                    {if ID_USER}
+                    <!--<button type="button" class="btn btn-anfragen"
+                            onclick="SendMail({USER_ID_USER}, '', 0, 0, 0); return false;">
+                        <span class="icon-container"><i class="fa fa-play"></i></span>
+                        <span>Anfragen</span>
+                    </button>
+                    -->
+                    {endif}
+
+                    <dl class="dl-table">
+                    <p></p>
+                    {if USER_TOP_USER}
+                        <dt><img class="userBoxIconTopUser js-tooltip" src="{uri_resource(/images/icons/award_star_gold_3.png)}" data-toggle="tooltip" data-placement="bottom" title="TOP Anbieter" /></dt>
+                    {endif}
+                    {if USER_TOP_SELLER}
+                        <dt><img class="userBoxIconTopSeller js-tooltip"  src="{uri_resource(/images/icons/rainbow.png)}" data-toggle="tooltip" data-placement="bottom" title="TOP Seller" /></dt>
+                    {endif}
+                    {if USER_PROOFED}
+                        <dt><img class="userBoxIconProofed js-tooltip" src="{uri_resource(/images/icons/shield.png)}" data-toggle="tooltip" data-placement="bottom" title="geprüfter Anbieter" /></dt>
+                    {endif}
+                    </dl>
+
+                </div>
+            </div>
+            {if VENDOR_KEYWORDS_TPL}
+            <div class="row">
+                <div class="col-md-12">
+                    <dl>
+                        <dt class="second">Schwerpunkten</dt>
+                        <dd>
+                            {VENDOR_KEYWORDS_TPL}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            {endif}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<ul class="nav nav-tabs userTabs">
+	<li class="{if FILTER_STATUS_ACTIVE}active{endif}">
+		<a href="{uri_action(my-marktplatz,active)}" title="Meine Anzeigen">
+            Meine Anzeigen ({COUNT_ACTIVE})
+        </a>
+	</li>
+	<li class="{if FILTER_STATUS_TIMEOUT}active{endif}">
+		<a href="{uri_action(my-marktplatz,timeout)}" title="Anzeigen, die bald auslaufen">
+            Bald endend ({COUNT_TIMEOUT_SOON})
+        </a>
+	</li>
+  {if SETTINGS_MODERATE_ADS}
+    <li class="{if FILTER_STATUS_DECLINED}active{endif}">
+        <a href="{uri_action(my-marktplatz,declined)}" title="Wird überprüft">
+            Abgelehnt ({COUNT_DECLINED})
+        </a>
+    </li>
+  {endif}
+    <li class="{if FILTER_STATUS_DISABLED}active{endif}">
+        <a href="{uri_action(my-marktplatz,disabled)}" title="Ausgelaufene Anzeigen">
+            Ausgelaufen / Deaktiviert ({COUNT_DISABLED})
+        </a>
+    </li>
+	<li class="{uri_is_active(my-marktplatz-comments,active,)}">
+		<a href="{uri_action(my-marktplatz-comments)}" title="Kommentare zu ihren Anzeigen">
+            Kommentare ({COUNT_COMMENTS})
+        </a>
+	</li>
+</ul>

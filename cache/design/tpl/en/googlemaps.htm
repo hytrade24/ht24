@@ -1,0 +1,244 @@
+{if MAP}
+<div class="design-content-box-unstyled">
+    {javascript_google_maps()}
+    <script src="{uri_resource(/lib/marker-cluster.js)}"></script>
+    {MARKER_INCLUDE_LIST}
+    <script>
+        function initialize() {
+            // generate map
+            {MAP}
+            var mcOptions = {
+                styles: [
+                    {
+                        height: 53,
+                        url: "{uri_resource(images/map-clusterer/m1.png)}",
+                        width: 53
+                    },
+                    {
+                        height: 56,
+                        url: "{uri_resource(images/map-clusterer/m2.png)}",
+                        width: 56
+                    },
+                    {
+                        height: 66,
+                        url: "{uri_resource(images/map-clusterer/m3.png)}",
+                        width: 66
+                    },
+                    {
+                        height: 78,
+                        url: "{uri_resource(images/map-clusterer/m4.png)}",
+                        width: 78
+                    },
+                    {
+                        height: 90,
+                        url: "{uri_resource(images/map-clusterer/m5.png)}",
+                        width: 90
+                    }
+                ],
+                'zoomOnClick': false
+            };
+            var mc = new MarkerClusterer(map, {}, mcOptions);
+            infoWindow = new google.maps.InfoWindow({
+                content: '<img src="{uri_baseurl(/gfx/ajax-loader.gif)}" alt="Please wait ...">'
+            });
+
+            {if MARKERS}
+                var markers = [];
+
+                {MARKERS}
+
+                mc.addMarkers(markers);
+
+                if (markers.length > 0) {
+                    mc.fitMapToMarkers();
+                }
+
+                google.maps.event.addListener(mc, 'click', function(cluster) {
+                    var bounds = cluster.getBounds();
+
+                    if (map.getZoom() >= 15) {
+                        var markers = cluster.getMarkers();
+                        var lat = markers[0].position.lat().toFixed(5);
+                        var lng = markers[0].position.lng().toFixed(5);
+
+
+                        for (var i = markers.length - 1; i >= 0; i--) {
+                            if (markers[i].position.lat().toFixed(5) != lat || markers[i].position.lng().toFixed(5) != lng) {
+                                map.fitBounds(bounds);
+                                break;
+                            }
+                        }
+
+                        infoWindow.setPosition(cluster.getCenter());
+                        getContent('multimarker', cluster, function(content) {
+							setMapInfo(content);
+						});
+                    } else {
+                        map.fitBounds(bounds);
+                    }
+                });
+
+            {endif}
+        }
+
+        function setMapInfo(content, marker) {
+            infoWindow.close();
+            infoWindow.setContent(content);
+            infoWindow.open(map, marker);
+        }
+
+        function getContent(layout, marker, callback) {
+            var content = "";
+
+            if (!marker.success) {
+                var ids = [];
+                var types = [];
+
+				callback.call(this, '<img src="{uri_baseurl(/gfx/ajax-loader.gif)}" alt="Please wait ...">');
+                if (typeof marker.getMarkers !== "undefined") {
+                    var markers = marker.getMarkers();
+                    var len = markers.length;
+
+                    for (var i = 0; i < len; i++) {
+                        ids.push(markers[i].ID);
+                        types.push(markers[i].TYPE);
+                    }
+                } else {
+                    ids.push(marker.ID);
+                    types.push(marker.TYPE);
+                }
+
+
+                $.ajax({
+                    url: '{uri_baseurl(/index.php)}',
+                    type: 'POST',
+                    data: {
+                        'page': 'googlemapsmarker',
+                        'frame': 'ajax',
+                        'ID': ids,
+                        'TYPE': types,
+                        'WIDTH': 100,
+                        'HEIGHT': 100
+                    },
+                    dataType:   'json',
+                    success:    function(json) {
+                        if (json.success) {
+                            marker.success = json.success;
+
+							delete json.success;
+							delete json.error;
+
+							marker.data = json;
+							jQuery.each(marker.data, function(i, data) {
+								content += buildContent(layout, data);
+							});
+
+                        }
+
+						callback.call(this, content);
+                    }
+                });
+            } else {
+				jQuery.each(marker.data, function(i, data) {
+					content += buildContent(layout, data);
+				});
+
+				callback.call(this, content);
+			}
+
+        }
+
+        function buildContent(layout, marker) {
+            var contentString = jQuery('#' + layout).clone();
+            console.log( contentString, contentString.html() );
+            var contentVariables = new Object();
+
+
+            contentString.removeClass("hidden");
+            jQuery.each(marker, function(key, value) {
+                if ((value != "" && value != null) && (key.indexOf("$") !== 0)) {
+                    contentString.find("[data-remove-empty="+key+"]").removeAttr("data-remove-empty");
+                    contentVariables[key] = value;
+                }
+            });
+
+            // remove not avaible
+            jQuery(contentString).find("[data-remove-empty]").remove();
+            jQuery(contentString).children().each(function() {
+
+                // Replace variables
+                var element = this;
+                jQuery.each(contentVariables, function( key, value ) {
+                    jQuery(element).html(jQuery(element).html().replace(eval("/%"+key+"%/g"), value));
+                });
+            });
+
+            jQuery(contentString).find("img[data-src]").each(function () {
+                var img = this;
+
+                jQuery(img).attr("src", marker.THUMBNAIL);
+                jQuery(img).removeAttr("data-src");
+            });
+
+            contentString = "<div class=\""+contentString.attr("class")+"\">"+contentString.html()+"</div>";
+            return contentString;
+        }
+
+        ebizGoogleMapCallback(initialize);
+
+    </script>
+
+    <div id="multimarker" class="multimarker hidden">
+        <div>
+            <a data-remove-empty="MARKTPLATZ" href="{uri_action(marktplatz_anzeige,%ID%,%URL_TITLE%|KAT_PATH=%KAT_PATH%)}"><strong>%TITLE%</strong></a>
+            <a data-remove-empty="VENDOR" href="{uri_action(view_user_vendor,%URL_TITLE%,%ID%)}"><strong>%TITLE%</strong></a>
+            <a data-remove-empty="EVENT" href="{uri_action(calendar_events_view,%URL_TITLE%,%ID%)}"><strong>%TITLE%</strong></a>
+            <a data-remove-empty="USEROVERVIEW" href="{uri_action(%URL_TITLE%)}"><strong>%TITLE%</strong></a>
+        </div>
+    </div>
+    <div id="singlemarker" class="singlemarker hidden">
+        <div class="design-google-maps-marker-location">
+            <strong data-remove-empty="TITLE">%TITLE%</strong><br>
+            <p>
+                <span data-remove-empty="STREET">%STREET%, </span>
+                <span data-remove-empty="ZIP">%ZIP% %CITY%, </span>
+                <span data-remove-empty="COUNTRY">%COUNTRY%</span>
+            </p>
+        </div>
+        <div class="design-google-maps-marker-article">
+            <div class="design-google-maps-marker-article-thumbnail">
+                <img data-remove-empty="THUMBNAIL" data-src="%THUMBNAIL%" />
+            </div>
+
+
+            <p data-remove-empty="PREIS"><strong>Price:</strong> <span>%PREIS% {CURRENCY_DEFAULT}</span></p>
+            <p data-remove-empty="QUANTITY"><strong>quantity:</strong> <span>%QUANTITY%</span></p>
+
+            <p data-remove-empty="TEL"><strong>Phone:</strong> <span>%TEL%</span></p>
+            <p data-remove-empty="FAX"><strong>Fax:</strong> <span>%FAX%</span></p>
+
+            <p data-remove-empty="EVENT_STAMP_START"><strong>When:</strong> <span>%EVENT_STAMP_START%</span></p>
+            <p data-remove-empty="LOCATION">
+                <strong>Where:</strong> <span>%LOCATION%</span>
+            </p>
+            <p data-remove-empty="SIGNUPS">
+                <strong>Participants:</strong>
+                                             <span>%SIGNUPS_CONFIRMED% confirmed</span>
+                                             <span>%SIGNUPS_UNSURE% unsure</span>
+                                             <span>%SIGNUPS_DECLINED% declined</span>
+            </p>
+
+            <p data-remove-empty="KATEGORIE"><span class="muted">%KATEGORIE%</span></p>
+        </div>
+        <div class="design-google-maps-marker-links">
+            <a data-remove-empty="MARKTPLATZ" href="{uri_action(marktplatz_anzeige,%ID%,%URL_TITLE%|KAT_PATH=%KAT_PATH%)}">more information</a>
+            <a data-remove-empty="VENDOR" href="{uri_action(view_user_vendor,%URL_TITLE%,%ID%)}">more information</a>
+            <a data-remove-empty="EVENT" href="{uri_action(calendar_events_view,%URL_TITLE%,%ID%)}">more information</a>
+            <a data-remove-empty="USEROVERVIEW" href="%URL_TITLE%">more information</a>
+        </div>
+    </div>
+    <div>
+        <div id="map-canvas" style="{if height}height: {height}px;{endif}{endif}"></div>
+    </div>
+</div>
+{endif}

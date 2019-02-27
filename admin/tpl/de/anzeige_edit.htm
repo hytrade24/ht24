@@ -1,0 +1,87 @@
+<script language="JavaScript" type="text/javascript">
+<!--
+function katReset()
+{//
+  katRcv({FK_KAT},'{print_fk(kat)}');
+  document.getElementById('katframe').src='index.php?frame=iframe&page=kat_select&ID_KAT={FK_KAT}';
+}
+function katRcv(id_kat, label)
+{
+  document.getElementById('fk_kat').value = id_kat;
+  document.getElementById('kat').innerHTML = label;
+}
+//-->
+</script><h1>Anzeige {if ID_ANZEIGE}bearbeiten{else}einstellen{endif}</h1>
+<form method="post" action="index.php" style="display:inline">
+  <input type="hidden" name="page" value="{curpagealias}" />{if ID_ANZEIGE}
+  <input type="hidden" name="ID_ANZEIGE" value="{ID_ANZEIGE}" />{endif}
+  <input type="hidden" name="FK_KAT" id="fk_kat" value="{FK_KAT}" />
+  <input type="hidden" name="do" value="sv" />
+  <input type="hidden" name="FK_ANZART" value="{FK_ANZART}">
+{if err}<div class="hinweis"><span class="error">{err}</span></div>
+{endif}
+<table class="formTable"><tr>
+  <td><b>ID</b></td>
+  <td><b>{if ID_ANZEIGE}{ID_ANZEIGE}{else}neu{endif}</b></td>
+</tr><tr>
+  <td><b>User</b></td>
+  <td>{if ID_ANZEIGE}{print_fk(user,,NAME)}{else}{NAME}{endif}</td>
+</tr><tr valign="top">
+  <td><b>Kategorie</b></td>
+  <td><span id="kat">{print_fk(kat)}</span><br />
+    <iframe id="katframe" src="index.php?frame=iframe&page=kat_select&ID_KAT={FK_KAT}&ROOT=1" width="640" height="200" frameborder="0">Kategorie-Auswahl erfordert iFrames und JavaScript!</iframe>
+  </td>
+</tr><tr>
+  <td><b><label for="v1">Titel</label></b></td>
+  <td><input type="text" name="V1" id="v1" value="{htm(V1)}" maxlength="255" class="inputfull" /></td>
+</tr><tr>
+  <td><b><label for="v2">Kurzbeschreibung</label></b></td>
+  <td><input type="text" name="V2" id="v2" value="{htm(V2)}" maxlength="255" class="inputfull" /></td>
+</tr><tr>
+  <td valign="top"><b><label for="t1">Beschreibung</label></b></td>
+  <td><textarea name="T1" id="t1" class="inputfull" rows="10">{htm(T1)}</textarea></td>
+</tr><tr>
+  <td><b>Start-Datum</b></td>
+  <td>{datedrop(STAMP_START,<=)} {timedrop(STAMP_START)}</td>
+</tr><tr>
+<input type="hidden" name="B_VIS" value="0" />
+  <td><b><label for="vis">freigeschaltet?</label></b></td>
+  <td><input type="checkbox" class="nob" name="B_VIS" id="vis" {if B_VIS}checked {endif}value="1" /></td>
+</tr><tr>
+<input type="hidden" name="B_TOP" value="0" />
+  <td><b><label for="top">TopScript?</label></b></td>
+  <td><input type="checkbox" class="nob" name="B_TOP" id="top" {if B_TOP}checked {endif}value="1" /></td>
+</tr><tr>
+  <td><b><label for="home">Home-URL</label></b></td>
+  <td>http://<input type="text" name="URL_HOME" id="home" value="{htm(URL_HOME)}" maxlength="255" class="input3q" /></td>
+</tr><tr>
+  <td><b><label for="down">Download-URL</label></b></td>
+  <td>http://<input type="text" name="URL_DOWNLOAD" id="down" value="{htm(URL_DOWNLOAD)}" maxlength="255" class="input3q" /></td>
+</tr><tr>
+  <td class="footer" colspan="2">
+    <input type="submit" class="button" value="{if ID_ANZEIGE}&Auml;nderungen speichern{else}Script einstellen{endif}" />
+    <input type="reset" class="button" value="Formular zur&uuml;cksetzen" onClick="katReset();" />
+  </td>
+</tr></table></form>
+
+{if ID_ANZEIGE}<br /><br />
+
+<div class="hinweis" style="width:150px;">
+  <h3>Statistisches</h3>
+  <table><tr>
+    <th align="left">Views</th>
+    <td align="right">{VIEWS}</td>
+  </tr><tr>
+    <th align="left">Clicks</th>
+    <td align="right">{CLICKS}</td>
+  </tr><tr>
+    <th align="left">Views/Tag&nbsp;&nbsp;</th>
+    <td align="right">{if age}{topreis(VIEWS/age)}{else}--{endif}</td>
+  </tr><tr>
+    <th align="left">Klickrate</th>
+    <td align="right">{if VIEWS}{topreis(100*CLICKS/VIEWS)}%{else}-/-{endif}</td>
+  </tr><tr>
+    <th align="left">Rating</th>
+    <td align="right">{if RATE_COUNT}{RATE_SUM}/{RATE_COUNT}&nbsp;=&nbsp;{topreis(RATE_SUM/RATE_COUNT)}{else}-/-{endif}</td>
+  </tr></table>
+</div>{endif}

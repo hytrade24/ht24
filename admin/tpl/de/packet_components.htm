@@ -1,0 +1,76 @@
+<h1>Pakete verwalten</h1>
+
+<form action="index.php" method="post">
+    <input type="hidden" name="page" value="packet_components">
+    <input type="hidden" name="action" value="sort">
+
+    <div class="stdBox">
+        <h2>Paket-Bestandteile</h2>
+        <p>
+            Hier finden Sie eine Liste aller Bestandteile aus denen Sie ein Paket zusammenstellen k&ouml;nnen.
+        </p>
+        <table class="liste" cellpadding="0" cellspacing="0">
+            <tr>
+                <th class="first">
+                    Aktion
+                </th>
+                <th>
+                    In Paketverwaltung sichtbar?
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Abo?
+                </th>
+                <th>
+                    Sortierung
+                </th>
+            </tr>
+            {liste_base}
+        </table>
+    </div>
+    <input type="submit" value="Sortierung speichern">
+
+</form>
+
+<div class="stdBox">
+    <h2>Top-Features</h2>
+    <p>
+        Hier finden Sie die zubuchbaren Top-Features und deren Preise für die verschiedenen Benutzergruppen.
+    </p>
+
+    <p>
+        Die Laufzeiten können Sie hier <a href="index.php?page=cms_lookup&selectart=LAUFZEIT_T">definieren</a>
+        </p>
+    <table class="liste" cellpadding="0" cellspacing="0">
+        <tr>
+            <th class="first">
+                Aktion
+            </th>
+            <th>
+                In Paketverwaltung sichtbar?
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Abo?
+            </th>
+            <th>
+                Netto-Preis
+            </th>
+            <th class="last">
+                Brutto-Preis
+            </th>
+        </tr>
+        {liste_top}
+        {if pager}
+        <tr>
+            <th colspan="5" class="footer">
+                {pager}
+            </th>
+        </tr>
+        {endif}
+    </table>
+</div>

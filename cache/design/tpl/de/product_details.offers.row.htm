@@ -1,0 +1,71 @@
+<tr class="design-ad-row">
+	<td>
+    {if !IS_OWN}
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="ID_AD[]" value="{ID_AD}" />
+			</label>
+		</div>
+		{endif}
+	</td>
+	<td style="width: 165px;">
+		<div class="design-ad-image">
+				<div class="design-ad-image-container">
+				{if (B_TOP&4)==4}
+						<a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+								<div class="design-ad-status-top">
+										<span>Top</span>
+								</div>
+						</a>
+				{endif}
+				{if RUNTIME_DAYS_GONE<DAYS_ADS_NEW}
+						<a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+								<div class="design-ad-status-new">
+										<span>Neu</span>
+								</div>
+						</a>
+				{endif}
+						<a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+								{if IMPORT_IMAGES}{thumbnail_article_loader(#row-img-{ID_AD},{ID_AD},165,150,crop)}{endif}
+								<img src="{if !IMG_DEFAULT_SRC}{uri_resource(/images/marketplace/nopic.jpg)}{else}{thumbnail_article({ID_AD},{IMG_DEFAULT_SRC},165,150,crop)}{endif}" id="row-img-{ID_AD}" data-watchlist="true" />
+						</a> 
+				</div>
+		</div>
+	</td>
+	<td>
+		<a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+		{if VENDOR_NAME}
+			{if VENDOR_LOGO}
+				<img src="{thumbnail(VENDOR_LOGO,100,100)}" data-watchlist="true" />
+				<br />
+			{endif}
+			{htm(VENDOR_NAME)}
+		{else}
+			{htm(USER_NAME)}
+		{endif}
+		</a>
+    {if IS_OWN}
+		<br />
+    <span class="badge badge-info">
+      Eigenes Angebot
+    </span>
+    {endif}
+	</td>
+	<td>
+		{htm(ZIP)} {htm(CITY)}
+		<br />
+		<img alt="{htm(COUNTRY_CODE)}" title="{htm(COUNTRY_CODE)}" src="{uri_baseurl(/gfx/lang.{lower(COUNTRY_CODE)}.gif)}" /> {htm(COUNTRY)}
+	</td>
+	<td>
+	{if MOQ>0}
+		{htm(MOQ)}
+	{else}
+		---
+	{endif}
+	</td>
+	<td>
+		<a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" class="btn btn-primary">
+			Details zum Angebot
+		</a>
+	</td>
+</tr>

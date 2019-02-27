@@ -1,0 +1,21 @@
+{if 0}
+<!-- {abbr} -->
+  <td style="text-align:center;"{if BF_INHERIT & val} class="highlight"{endif}><input class="nob" title="GRANT" type="radio" name="chk[{ID_PERM}][{val}]" {if BF_GRANT&val}checked {endif}value="G" /></td>
+  <td style="text-align:center;"><input title="LEAVE" type="radio" class="nob" name="chk[{ID_PERM}][{val}]" {if !((BF_GRANT|BF_REVOKE)&val)}checked {endif}value="0" /></td>
+  <td style="text-align:center;"{if !(BF_INHERIT & val)} class="highlight"{endif}><input class="nob" title="REVOKE" type="radio" name="chk[{ID_PERM}][{val}]" {if BF_REVOKE&val}checked {endif}value="R" /></td>
+
+  {val}/{abbr} -- {BF_GRANT},{BF_REVOKE}
+{else}
+  <td align="center"><b>{perm_admin_perm}{if 0}
+    {if BF_GRANT & val}<img src="gfx/ico.up.gif" width="11" height="11">{else}<a
+      href="index.php?page=perm2user&ID_USER={ID_USER}&ID_PERM={ID_PERM}&val={val}&do=%2B{s_param}"
+      >+</a>{endif}
+    {if !((BF_REVOKE|BF_GRANT)& val)}<img src="gfx/ico.eq.gif" width="11" height="11">{else}<a
+      href="index.php?page=perm2user&ID_USER={ID_USER}&ID_PERM={ID_PERM}&val={val}&do=0{s_param}"
+      >o</a>{endif}
+    {if (BF_REVOKE & val)}<img src="gfx/ico.dn.gif" width="11" height="11">{else}<a
+      href="index.php?page=perm2user&ID_USER={ID_USER}&ID_PERM={ID_PERM}&val={val}&do=-{s_param}"
+      >-</a>{endif}{else}
+    <img src="gfx/ico.{if B_OVR>0}up{endif}{if !B_OVR}dn{endif}{if (0>B_OVR)}eq{endif}.gif" width="11" height="11">{endif}
+  </b></td>
+{endif}

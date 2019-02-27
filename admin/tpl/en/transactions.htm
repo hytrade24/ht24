@@ -1,0 +1,140 @@
+<script src="{uri_baseurl(/js/jquery.js)}" type="text/javascript"></script>
+<script type="text/javascript">
+
+jQuery.noConflict();
+
+function show_details(id_sold) {
+	var div = '#details_'+id_sold;
+	var cur_style = jQuery(div).css('display');
+	if (cur_style != 'none') {
+		jQuery(div).hide();
+		jQuery(div).html('Bitte warten ...');
+	} else {
+		jQuery(div).html('Bitte warten ...');
+		jQuery(div).show();
+		jQuery.ajax({
+			url: 'index.php?page=transaction_details&frame=ajax&embed=1&id='+id_sold,
+			success: function(response) {
+				jQuery(div).html(response);
+			}
+		});
+	}
+} 
+
+</script>
+
+<h1>Transaktionen (Verk&auml;ufe / K&auml;ufe)</h1>
+
+{if ok_delete}
+<div class="ok">
+	Kauf bzw. Verkauf erfolgreich aus dem System gelöscht.
+</div><br />
+{endif}
+
+<form method="post" action="index.php">
+	<input type="hidden" name="page" value="transactions" />
+	<table cellspacing="0" class="formTable">
+		<tbody>
+			<tr>
+				<th style="border-bottom:1px #000099 solid;" colspan="6">Nach Transaktionen suchen</th>
+			</tr>
+			<tr>
+				<th>Anzeigentitel</th>
+				<td colspan="3">
+					<input type="text" size="60" value="{htm(TITLE)}" name="TITLE">
+				</td>
+				<th valign="top">
+					Status
+				</th>
+			</tr>
+			<tr>
+				<th>Artikelnummer</th>
+				<td>
+					<input type="text" size="20" value="{ID_AD}" name="ID_AD">
+				</td>
+				<th>Transaktions-ID</th>
+				<td>
+					<input type="text" size="20" value="{ID_AD_SOLD}" name="ID_AD_SOLD">
+				</td>
+				<td rowspan="3" valign="top">
+					<input type="checkbox" id="status_open" name="status[open]" value="1" {if status_open}checked="checked" {endif}/>
+					<label for="status_open">Offene Verk&auml;ufe</label>
+					<br />
+					<input type="checkbox" id="status_done" name="status[done]" value="1" {if status_done}checked="checked" {endif}/>
+					<label for="status_done">Abgeschlossene Verk&auml;ufe</label>
+					<br />
+					<input type="checkbox" id="status_confirmed" name="status[confirmed]" value="1" {if status_confirmed}checked="checked" {endif}/>
+					<label for="status_confirmed">Best&auml;tigte Verk&auml;ufe</label>
+					<br />
+					<input type="checkbox" id="status_canceled" name="status[canceled]" value="1" {if status_canceled}checked="checked" {endif}/>
+					<label for="status_canceled">Abgelehnte Verk&auml;ufe</label>
+					<br />			
+				</td>
+			</tr>
+			<tr>
+				<th>User</th>
+				<td>
+					<input type="text" size="18" readonly="readonly" value="{htm(NAME_)}" name="NAME_">
+					<input type="hidden" value="{FK_AUTOR}" name="FK_AUTOR">
+					<a title="User auswählen" onclick="popupfkt('users&amp;frompopup=1','650','500');" style="cursor:pointer">
+						<img height="16" border="0" width="16" alt="" src="gfx/users_16.gif">
+					</a>
+				</td>
+				<th colspan="2">
+				</th>
+			</tr>
+			<tr>
+				<th>Sortieren nach</th>
+				<td>
+					<select name="ORDERBY">
+						<option value="STAMP_BUY"{if ORDERBY_STAMP_BUY} selected="selected"{endif}>Kaufdatum</option>
+						<option value="STATUS"{if ORDERBY_STATUS} selected="selected"{endif}>Status</option>
+						<option value="USER_SELL"{if ORDERBY_USER_SELL} selected="selected"{endif}>Verk&auml;ufer</option>
+						<option value="USER_BUY"{if ORDERBY_USER_BUY} selected="selected"{endif}>K&auml;ufer</option>
+					</select>
+				</td>
+				<th colspan="2">
+					<input type="radio" class="nob" value="0" name="UPDOWN" id="SORT_UP" {if !UPDOWN}checked="checked" {endif}/>
+						<label for="SORT_UP">aufsteigend</label>
+					<input type="radio" class="nob" value="1" name="UPDOWN" id="SORT_DOWN" {if UPDOWN}checked="checked" {endif}/>
+						<label for="SORT_DOWN">absteigend</label>
+				</th>
+			</tr>
+			<tr>
+                <td colspan="3" class="footer">
+                <p><a style="cursor: pointer;" onclick="popupfkt('stats&show=transaktion_sold&w=550','600','250');" title="Statistik">
+							<img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38" /></a></p> 
+                </td>
+				<td align="right" class="footer" colspan="2">
+					<a title="Alle Anzeigen anzeigen" href="index.php?page=transactions">
+						Alle anzeigen
+					</a>
+					<input type="submit" class="button" value="Suchen">
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+<br />
+<br />
+
+<table cellpadding="0" cellspacing="0" class="liste">
+	<tr>
+		<th class="first">Aktion</th>
+        <th title="WTransaktions Id">Trans.-ID</th>
+		<th>Art.-Nr</th>
+        <th>Artikel</th>
+		<th>Datum</th>
+		<th>Menge</th>
+		<th>Preis/St&uuml;ck</th>
+		<th>Gesamtpreis</th>
+		<th title="berechnete Provision">Prov.</th>
+		<th>Verkäufer</th>
+		<th>Käufer</th>
+		<th class="last">Status</th>
+	</tr>
+	{liste}
+</table>
+
+<div>{pager}</div>
+<br />

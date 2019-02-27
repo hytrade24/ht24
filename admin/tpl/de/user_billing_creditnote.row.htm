@@ -1,0 +1,26 @@
+<tr>
+    <td>
+        <a href="index.php?page=user_billing_creditnote&do=delete&ID_USER={FK_USER}&ID_BILLING_CREDITNOTE={ID_BILLING_CREDITNOTE}" onclick="return confirm('Möchten Sie diese Gutschrift wirklich löschen? Diese Aktion hat keine Auswirkung auf bereits zugeordnete Rechnungen.')">
+            <img src="./gfx/btn.del.gif">
+        </a>
+    </td>
+	<td>
+		{ID_BILLING_CREDITNOTE}
+	</td>
+	<td>
+		{todate(STAMP_CREATE)}
+	</td>
+    <td>
+        {DESCRIPTION}
+    </td>
+	<td>
+        {if STATUS == 0}<span class="error">vollständig eingelöst</span>{endif}
+        {if STATUS == 1}<span class="ok">offen</span>{endif}
+	</td>
+	<td align="right" style="font-weight:normal">
+		{topreis(TOTAL_PRICE)} {CURRENCY_DEFAULT}
+	</td>
+    <td align="right" style="font-weight:normal">
+    		{topreis(REMAINING_PRICE)} {CURRENCY_DEFAULT}
+    	</td>
+</tr>

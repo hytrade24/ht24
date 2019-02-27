@@ -1,0 +1,65 @@
+
+<style type="text/css">
+.preview {
+  position: absolute;
+  display: none;
+  width: 300px;
+  border:solid 1px #5C0001;
+  background-repeat:no-repeat;
+  background-color:#FFFFFF;
+  background-position:bottom;
+}
+</style>
+<script type='text/javascript' src='sys/core.js'></script>
+<script type='text/javascript' src='sys/event.js'></script>
+<script type='text/javascript'>
+if (typeof window.onload == 'function') {bpOldOnLoad = window.onload;}
+window.onload = function()
+{
+  if (window.bpOldOnLoad) 
+  {
+    bpOldOnLoad();
+  }
+  bpInit();
+}
+function bpInit()
+{  
+  var i = 1, b = xGetElementById('b' + i);
+  while (b) {
+    //alert('call: '+b);
+	b.onmousemove = bpOnMousemove;
+    b.onmouseout = bpOnMouseout;
+    b = xGetElementById('b' + (++i));
+  }
+}
+function bpOnMousemove(e)
+{
+  var p, w, h, x, y, offset = 20; // offset = horizontal distance between mouse and edge of preview
+  p = xGetElementById('p' + this.id);
+  if (p) {
+    p.style.display = 'block';
+    e = new xEvent(e);
+    x = e.pageX;
+    y = e.pageY;
+    w = xWidth(p);
+    if (x - w - offset - xScrollLeft() < 0) {x += offset;}
+    else {x -= w + offset;}
+    h = xHeight(p);
+    if (y + h > xScrollTop() + xClientHeight()) {y -= h;}
+    xMoveTo(p, x, y);
+	window.setTimeout('loadUser("'+this.name+'", "'+this.id+'")',500);
+	//loadUser(this.name, this.id);
+  }
+}
+function bpOnMouseout()
+{
+  var p = xGetElementById('p' + this.id);
+  if (p) p.style.display = 'none';
+}
+
+ function loadUser(user, id)
+ {
+   //alert(user+ ' ' + id);
+   ajaxSubmit('','index.php?frame=ajax&page=usershortinfo&USER='+user,0,false,'p'+id);
+ }
+</script>

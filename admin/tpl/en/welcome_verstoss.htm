@@ -1,0 +1,32 @@
+<tr>
+	<td>
+		<a style="cusror:pointer;" onclick="$('ART_ID').value={ID_AD_MASTER}; schnellsuchen('ART_ID');">
+		 	<img src="gfx/btn.edit.gif" width="32" height="16" alt="suchen" />
+		</a>
+		<a onclick="return confirm('Soll der Verstoss verworfen werden?');" href="index.php?page={curpage}&kickverstoss={ID_VERSTOSS}" title="den Verstoss löschen">
+			<img src="gfx/btn.del.gif" width="32" height="16" alt="delete" />
+		</a>
+	</td>
+	<td>
+		<a href="{uri_baseurl(/marktplatz_anzeige,{ID_AD_MASTER}.htm)}" target="_blank" title="Anzeige ansehen">
+			{htm(PRODUKTNAME)}
+		</a>
+	</td>
+	<td>
+		<a href="index.php?page=user_edit&ID_USER={FK_SELLER}" title="verkäufer bearbeiten">
+			{htm(NAME)}
+		</a>
+	</td>
+	<td>
+		{todate(STAMP_VERSTOSS)}
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td colspan="3">
+		<strong>Begründung: </strong> {htm(GRUND)}<br />
+		<strong>Gemeldet von:</strong> 
+		{if MELDER}<a href="index.php?page=user_edtit&ID_USER={FK_MELDER}" title="bearbeiten">{htm(MELDER)}</a>{endif} 
+		IP {IP}
+	</td>
+</tr>

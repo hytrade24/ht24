@@ -1,0 +1,73 @@
+<script type="application/javascript">
+
+    function CheckChangeAll(checkbox) {
+        var checked = jQuery(checkbox).prop("checked");
+        jQuery("#tableSalesUsers input[type=checkbox]").prop("checked", checked);
+    }
+
+</script>
+
+<h1>
+    <img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />
+    User {if ID_USER}'{NAME}' / #{ID_USER} bearbeiten{else}erstellen{endif}
+</h1>
+
+{if IS_VIRTUAL}
+<span style="background: red; color: #FFF; font-size: 14px;">ACHTUG! Dies ist ein virtueller User, der nur zum anonymen Einkauf verwendet wird!</span>
+{endif}
+
+<p>Bitte geben Sie hier die Benutzerdaten ein.</p>
+{if err || msg}
+<div class="hinweis">
+    <span class="error">{err}</span>
+    <span class="ok">{msg}</span>
+</div>
+{endif}
+<br style="clear: left;" />
+
+<form method="post">
+{if ID_USER}
+    {subtpl(tpl/de/user_edit.nav.htm,*)}
+{endif}
+
+    <table border="0" cellspacing="0" cellpadding="0" class="liste" id="tableSalesUsers" style="min-width: 700px;">
+        <tr>
+            <td colspan="4">
+                <p>
+                    <strong>Hier erhalten Sie eine Liste aller Kunden die derzeit diesem Vertriebler zugeordnet sind.</strong>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <input type="checkbox" onchange="CheckChangeAll(this);" />
+            </th>
+            <th>Kunde</th>
+            <th>Letzter Umsatz</th>
+            <th>Umsatz</th>
+        </tr>
+        {liste}
+    </table>
+
+    {pager}
+
+    <p>
+        <strong>
+            Ausgewählte Kunden einem anderen Vertriebler zuordnen:
+        </strong>
+        <br />
+        <a href="#" onclick="popupfkt('users&frompopup=1','850','500');">
+            <img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+        </a>
+        <input type="text" name="NAME_" value="{htm(NAME_)}" readonly="readonly" />
+        <input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" />
+        <button name="SUBMIT_CHECK_ALIGN">Zuordnung ändern</button>
+    </p>
+    <p>
+        <strong>
+            Zugeordneten Vertriebler für ausgewählte Kunden löschen:
+        </strong>
+        <br />
+        <button name="SUBMIT_CHECK_ALIGN_CLEAR">Zuordnung löschen</button>
+    </p>
+</form>

@@ -1,0 +1,13 @@
+  <tr class="zeile{even}">
+    <td>
+      <a title="Backup wiederherstellen" href="index.php?page=m_kats&BACKUP_PREVIEW={ID_BACKUP}">
+        <img src="gfx/backup_restore.gif">
+      </a>
+      <a onclick="return confirm('Backup wirklich löschen?')" title="Backup l&ouml;schen" href="index.php?page=m_kats_backup_restore&DEL={ID_BACKUP}">
+        <img border="0" src="gfx/btn.del.gif">
+      </a>      
+    </td>
+    <td><strong>[{todate(STAMP,1)}]</strong></td>
+    <td>{CREATED_BY}</td>
+    <td>{DESCRIPTION}</td>
+  </tr>

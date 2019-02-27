@@ -1,0 +1,24 @@
+<h1>E-Mail Benachrichtigungsgruppen</h1>
+
+<p>Mit E-Mail Benachrichtigungsgruppen können Sie alle über das System versendete E-Mails eines Typs an eine weitere Adresse weiterleiten.
+   So können beispielsweise alle erstellten Rechnungen in Kopie an Ihre Buchhaltung gesandt werden. Richten Sie hier Gruppen ein und weisen Sie
+   den einzelnen <a href="index.php?page=emailvorlage">E-Mail Vorlagen</a> diese zu.</p>
+
+
+
+<table class="liste" cellspacing="0" width="90%">
+	<tr>
+		<th>Aktion</th>
+		<th>Beschreibung</th>
+		<th>CC</th>
+		<th>BCC</th>
+		<th>Verwendet in # Mails</th>
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+		<tr>
+			<td colspan="5">Noch keine Benchrichtigungsgruppen angelegt</td>
+		</tr>
+	{endif}
+</table>

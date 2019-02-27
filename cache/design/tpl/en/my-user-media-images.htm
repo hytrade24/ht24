@@ -1,0 +1,15 @@
+<p id="uploadImageNoneYet" class="text-error"{if liste} style="display: none"{endif}>
+You have not uploaded an image yet.
+</p>
+<table id="uploadImageTable" class="table table-bordered table-striped table-condensed"{if !liste} style="display: none"{endif}>
+    <thead>
+        <tr>
+            <th>Preview</th>
+            <th>Actions</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {liste}
+    </tbody>
+</table>

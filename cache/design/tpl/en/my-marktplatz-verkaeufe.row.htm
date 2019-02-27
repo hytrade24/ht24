@@ -1,0 +1,89 @@
+<tr>
+	<td class="design-action-buttons">
+		<a onclick="showOrderDetails({ID_AD_ORDER});" class="btn btn-default">
+			<i class="glyphicon glyphicon-eye-open"></i>
+		</a>
+		<a href="{uri_action(sale_details_seller)}?do=print&ID_AD_ORDER={ID_AD_ORDER}&frame=print" target="_blank" class="btn btn-default">
+			<i class="glyphicon glyphicon-print"></i>
+		</a>
+	</td>
+	<td>
+		{ID_AD_ORDER}
+        {if REMARKS}
+          <a id="NOTIZ_{ID_AD_MASTER}" class="js-popover" data-title="Note of the seller" data-content="{htm(REMARKS)}" data-trigger="hover">
+            <img src="{uri_baseurl(/bilder/notiz.gif)}" />
+          </a>
+        {endif}
+	</td>
+	<td>{todate(STAMP_CREATE)}</td>
+	<td>
+		<a href="#" onclick="showBuyerInformation('{FK_USER}'); return false;">{htm(USER_EK_NAME)}</a>
+		<a href="#" onclick="searchBuyer('{htm(USER_EK_NAME)}'); return false;" title="Alle Bestellungen dieses Käufers anzeigen">
+			<i class="glyphicon glyphicon-search"></i>
+		</a>
+	</td>
+	{if ORDER_CONFIRMATION_PARTIAL_OPEN || ORDER_DECLINED}
+		{if ORDER_CONFIRMATION_PARTIAL_OPEN}
+		<td colspan="2">
+			<a onclick="showOrderDetails({ID_AD_ORDER}); return false;" href="#">
+				<span class="label label-warning">Unconfirmed</span>
+			</a>
+		</td>
+		{endif}
+		{if ORDER_DECLINED}
+		<td colspan="2">
+			<span class="label label-error">Rejected</span>
+		</td>
+		{endif}
+	{else}
+	<td>
+		<a onclick="showOrderDetails({ID_AD_ORDER}); return false;" href="#">
+			{if STATUS_SHIPPING == 0}<span class="label label-default">Shipping open</span>{endif}
+			{if STATUS_SHIPPING == 1}<span class="label label-info">in progress</span>{endif}
+			{if STATUS_SHIPPING == 2}<span class="label label-success">sent</span>{endif}
+		</a>
+	</td>
+	<td>
+		<a onclick="showOrderDetails({ID_AD_ORDER}); return false;" href="#">
+			{if STATUS_PAYMENT == 0}<span class="label label-default">Payment open</span>{endif}
+			{if STATUS_PAYMENT == 1}<span class="label label-success">paid</span>{endif}
+			{if STATUS_PAYMENT == 3}<span class="label label-success">Payment pending</span><br>{endif}
+		</a>
+	</td>
+	{endif}
+	<td class="text-right">
+		<span class="marketplaceSellerOrderPrice" id="marketplaceSellerOrderArticlePopUpTrigger-{ID_AD_ORDER}" data-order="{ID_AD_ORDER}">
+			{ARTICLE_COUNT}
+			<i class="glyphicon glyphicon-question-sign"></i>
+		</span>
+
+		<div class="hidden">
+			<div id="marketplaceSellerOrderArticlePopUpContent-{ID_AD_ORDER}">
+				{if tplItems}
+					{tplItems}
+				{endif}
+			</div>
+		</div>
+
+		<script>
+			jQuery("#marketplaceSellerOrderArticlePopUpTrigger-{ID_AD_ORDER}").popover({
+				'title': 'Artikelübersicht',
+				'trigger': 'hover',
+				'placement': 'left',
+				'html': true,
+				'container': '.marketplaceSellerOrder',
+				'content': jQuery("#marketplaceSellerOrderArticlePopUpContent-{ID_AD_ORDER}").html()
+			});
+		</script>
+	</td>
+	<td class="text-right">
+		{topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT}
+	</td>
+	{if use_prov}
+		<td class="align-right">
+			<span class="js-tooltip" {if ORDER_PROV}data-toggle="tooltip" data-placement="left" title="For this sale you have to pay {topreis_ex(ORDER_PROV)} {CURRENCY_DEFAULT} commission"{endif}>
+				{topreis_ex(ORDER_PROV)} {CURRENCY_DEFAULT}
+			</span>
+		</td>
+	{endif}
+</tr>

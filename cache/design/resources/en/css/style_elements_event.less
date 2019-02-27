@@ -1,0 +1,160 @@
+#calendar-events-container {
+  #calendarEventsDatePrev,
+  #calendarEventsDateNext {
+    font-size: @font-size-h3;
+    line-height: @font-size-h3 * @line-height-base;
+  }
+}
+
+.design-event-details-info {
+  // Responsive button
+  a.btn {
+    margin-bottom: @padding-small-vertical;
+    display: block;
+    @media (min-width: @screen-xs-max) {
+      display: inline-block;
+    }
+    @media (min-width: @screen-sm-max) {
+      display: block;
+    }
+    @media (min-width: @screen-lg-min) {
+      display: inline-block;
+    }
+  }
+}
+
+
+
+.design-event-image1 {
+  position: relative;
+  height: 340px;
+
+  .design-event-background {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 120px;
+    z-index: 0;
+    overflow: hidden;
+    text-align: center;
+    background: @design-events-img1-fallback-background;
+
+    img {
+      min-width: 100%;
+      min-height: 100%;
+    }
+    .glyphicon {
+      color: @design-events-img1-fallback-icon;
+      font-size: 180px;
+      margin-top: 20px;
+    }
+  }
+  
+  .design-event-date {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 90px;
+    bottom: 120px;
+
+    background: rgba(red(@design-events-img1-primary-color), green(@design-events-img1-primary-color), blue(@design-events-img1-primary-color), 0.7);
+    color: white;
+    padding: 8px;
+    padding-top: 72px;
+    text-align: left;
+    .day {
+      font-size: 24px;
+    }
+  }
+  
+  .design-event-detail {
+    position: absolute;
+    left: 0px;
+    right: 90px;
+    bottom: 0px;
+    height: 120px;
+    padding: 20px 12px;
+
+    background: @design-events-img1-secondary-color;
+    color: @design-events-img1-primary-text-color;
+    h3 {
+      .text-ellipsis(20px, @line-height-base, 1);
+      color: @design-events-img1-primary-color;
+      font-size: 20px;
+    }
+  }
+  
+  .design-event-counter {
+    position: absolute;
+    width: 90px;
+    right: 0px;
+    bottom: 0px;
+    height: 120px;
+    padding: 28px 12px;
+
+    background: @design-events-img1-primary-color;
+    font-size: 24px;
+    text-align: center;
+    a {
+      color: @design-events-img1-primary-text-color;
+    }
+  }
+}
+
+
+
+.design-event-image2 {
+  position: relative;
+  height: 480px;
+  padding: 40px 20px;
+  color: @design-events-img2-text-color;
+  text-align: center;
+  
+  a {
+    color: @design-events-img2-link-color;
+  }
+
+  .design-event-background {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: -1;
+    overflow: hidden;
+    text-align: center;
+    background: @design-events-img2-fallback-background;
+
+    img {
+      min-width: 100%;
+      min-height: 100%;
+      opacity: @design-events-img2-background-opacity;
+    }
+    .glyphicon {
+      color: @design-events-img2-fallback-icon;
+      font-size: 180px;
+      margin-top: 128px;
+    }
+  }
+  
+  .design-event-detail {
+    margin-top: 40px;
+    h3 {
+      .text-ellipsis(28px, @line-height-base, 1);
+      color: @design-events-img1-primary-color;
+      font-size: 28px;
+      margin-bottom: 48px;
+    }
+  }
+  
+  .design-event-more {
+    position: absolute;
+    right: 20px;
+    bottom: 40px;
+    
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+  
+}

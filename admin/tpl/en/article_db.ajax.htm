@@ -1,0 +1,9 @@
+{if CONFIRMED}
+	<a id="product_{ID_PRODUCT}" title="Nicht best&auml;tigen" onclick="confProduct('{ID_PRODUCT}');">
+	<img src="gfx/set_ok.png" />
+</a>
+{else}
+<a id="product_{ID_PRODUCT}" title="Best&auml;tigen" onclick="confProduct('{ID_PRODUCT}');">
+	<img src="gfx/set_notok.png" />
+</a>
+{endif}

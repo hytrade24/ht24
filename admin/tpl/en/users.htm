@@ -1,0 +1,130 @@
+<style type="text/css">
+    .faellig td .error a {
+		color:#FFFFFF;
+	}
+	.faellig td .error  {
+		display:block;
+		padding:3px;
+		background-color:#FF0000;
+        color: white;
+	}
+</style>
+
+<script type="text/javascript">
+
+    function uebernehmen(id, name){
+        if (id) {
+            if (window.opener) {
+                fenster = window.opener.document;
+                if (fenster.popup_input1 && fenster.popup_input1) {
+                    fenster.popup_input1.value = id;
+                    fenster.popup_input2.value = name;
+                }
+                else {
+                    if (fenster.forms[0].FK_AUTOR) 
+                        fenster.forms[0].FK_AUTOR.value = id;
+                    else 
+                        fenster.forms[0].FK_USER.value = id;
+                    fenster.forms[0].NAME_.value = name;
+                    //alert("Benutzer wurde übernommen.\nDas Fenster wird geschlossen");
+                }
+                window.opener.focus();
+                window.close();
+            }
+            else 
+                alert('Hauptfenster wurde bereits geschlossen');
+        }
+        else 
+            alert('bitte wählen Sie einen Benutzer aus!');
+    }
+    
+</script>
+{if err}
+<div class="hinweis">
+    <span class="error">{err}</span>
+</div>{endif}
+{if need_new}
+<div class="hinweis">
+    <h1>Achtung</h1>
+    <p class="ok">
+        {msg}
+    </p>
+    <p>
+        <form method="POST" action="index.php">
+            <input type="hidden" name="page" value="users"><input type="hidden" name="ID_USER" value="{ID_USER}"><input type="hidden" name="do" value="rm"><span class="error">F&uuml;r einige Datens&auml;tze wird eine neuer Bezitzer ben&ouml;tigt. Bitte geben Sie diesen an, und
+                best&auml;tigen Ihre Auswahl!</span>
+            <p>
+                <strong>Neuen Besitzer ausw&auml;hlen: </strong>
+                <a href="#" onclick="popupfkt('users&frompopup=1','650','500');"><img src="gfx/users_16.gif" width="16" height="16" alt="" border="0"></a><input type="text" name="NAME_" value="{htm(NAME_)}" readonly="readonly" /><input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" />
+            </p>
+            <p>
+                <input class="button" type="submit" value="Auswahl best&auml;tigen, und User endg&uuml;ltig l&ouml;schen!">
+            </p>
+        </form>
+    </p>
+</div> {endif}
+{if deleted}
+<div class="hinweis">
+    <span class="ok">Der Benutzer wurde erfolgreich aus dem System entfernt!</span>
+</div>
+{endif}<h1><img src="gfx/rechte_64.gif" width="64" height="64" alt="" border="0" align="left"> Userübersicht</h1>
+<p>
+    Folgende User sind dem System bekannt.
+</p>
+<table border="0" cellspacing="0" cellpadding="4" class="liste">
+    <tr>
+        <form method="post" action="index.php">
+            <input type="hidden" name="nav" value="{curnav}" />{if frompopup} <input type="hidden" name="frame" value="popup" /><input type="hidden" name="frompopup" value="{frompopup}" />{endif}
+            <td colspan="11">
+                <b>User suchen</b>
+                Geben Sie bitte mindestens einen Wert an.
+                <div>
+                    Username <input type="text" name="NAME_" size="15" value="{NAME_}">
+					Name <input type="text" name="NNAME_" size="15" value="{NNAME_}"> 
+					Emailadresse <input type="text" name="EMAIL_" size="15" value="{EMAIL_}">					
+                </div>
+                <div>
+                    Notizen/Tags
+					<input type="text" name="NOTIZEN_ADMIN_" size="40" value="{NOTIZEN_ADMIN_}">
+					Gruppe
+					{select(usergroup)} 
+                </div>
+                <div>
+                    <b>Rollen: </b>
+                    {roles} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    
+                    <b>Status: </b> 
+                    alle <input type="radio" name="STAT_" {if  STAT_== 3}checked {endif}  value="3" style="border:none;"> 
+                    aktiv <input type="radio" name="STAT_" {if  STAT_==1}checked {endif}  value="1" style="border:none;"> 
+                    gesperrt <input type="radio" name="STAT_" value="0" {if  STAT_==0}checked {endif}style="border:none;"> 
+                    nicht best&auml;tigt <input type="radio" name="STAT_" value="2" {if  STAT_==2}checked {endif}style="border:none;"> 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="submit" value="suchen" name="B1">
+                    <hr noshade="noshade" />
+				</div>
+			</td>
+		</form>
+	</tr>
+	<tr>
+		<th>Nr.</th>
+        <th></th>
+        <th></th>
+        <th></th>
+		<th>Username</th>
+		<th>Anzeigen</th>
+		<th>Name</th>
+		<th>Offene<br/> Posten</th>
+		<th>E-Mail</th>
+		<th>Benutzergruppe</th>
+		<th>aktiv? / Aktionen</th>
+	</tr>
+	{liste}
+	<tr>
+		<td colspan="11">
+			{pager}
+		</td>
+	</tr>
+</table>
+<p>
+	Anzahl der User : <b>{anzahluser}</b>
+</p>

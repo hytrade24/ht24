@@ -1,0 +1,8 @@
+<tr class="zeile{even}">
+ <td><a href="index.php?page=datei_edit&ID_DATEI={ID_DATEI}"><img src="gfx/btn.edit.gif" width="32" height="16"></a>
+ <a href="index.php?page=datei_uebersicht&del={ID_DATEI}" onclick="return confirm('wirklich löschen?');"><img src="gfx/btn.del.gif" width="32" height="16"></a></td>
+ <td>{htm(DSC)}</td>
+ <td>{todate(DATUM)}</td>
+ <td>{htm(EXT)}</td>
+ <td><a href="../uploads/datei/{DATEINAME}" target="_blank">{htm(DATEINAME)}</a></td>
+</tr>

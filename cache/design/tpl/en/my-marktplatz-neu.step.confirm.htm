@@ -1,0 +1,165 @@
+<h1>Confirm entries</h1>
+
+<p class="lead">
+	Please confirm your entries once again before your product will be saved
+</p>
+
+{CONFIRM_CONTENT_BEFORE}
+
+<div class="design-content-box">
+    <div class="alert alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Fehler!</strong><br />
+        <span id="CONFIRM_ERROR">Unbekannter Fehler</span>
+    </div>
+
+    <form class="form-horizontal submit-step" onsubmit="SubmitStep(this, { loadingModal: true }); return false;">
+        <input type="hidden" name="step" value="{STEP_IDENT}" />
+
+        <div class="control-group submit-step">
+            <div class="controls">
+            {if STEP_INDEX>0}
+                <input type="button" onclick="ShowStep({calc(STEP_INDEX-1)}); return false;" class="btn btn-default" value="Back" />
+            {endif}
+                <button type="submit" class="btn btn-primary">
+                {if NEW}
+                    Definitely publish article
+                {else}
+                    Saving changes
+                {endif}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="content-marktplatz_anzeige">
+    <div class="text-box design-location">
+        <div class="design-ariande design-ariande-marketplace">
+            {kat_ariadne_dynamic({AD_FK_KAT},marketplace,{AD_TITLE})}
+        </div>
+    </div>
+    
+    <div class="design-ad-details-title">
+        <h1>{htm(AD_TITLE)}</h1>
+    </div>
+    
+    <div class="row design-ad-details design-page-with-menu marketplaceArticle">
+        <div class="design-page-content">
+            {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.notifications.htm,*)}
+        
+            {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.details.htm,*,PREVIEW=1)}
+        </div>
+        <div class="design-page-menu">
+            {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.actions.htm,*,OVERRIDE_USER_ID={AD_FK_USER},PREVIEW=1)}
+        </div>
+    </div>
+</div>
+
+<div class="design-content-box">
+    <div class="alert alert-danger" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Fehler!</strong><br />
+        <span id="CONFIRM_ERROR">Unbekannter Fehler</span>
+    </div>
+
+    <form class="form-horizontal submit-step" onsubmit="SubmitStep(this, { loadingModal: true }); return false;">
+        <input type="hidden" name="step" value="{STEP_IDENT}" />
+
+        <div class="control-group submit-step">
+            <div class="controls">
+            {if STEP_INDEX>0}
+                <button onclick="ShowStep({calc(STEP_INDEX-1)}); return false;" class="btn btn-default">
+                    Back
+                </button>
+            {endif}
+                <button type="submit" class="btn btn-primary">
+                    {if NEW}
+                        Definitely publish article
+                    {else}
+                        Saving changes
+                    {endif}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{CONFIRM_CONTENT_AFTER}
+
+<script type="text/javascript">
+
+function updateVariants() {
+    // TODO: Handle using my-marktplatz-neu.php
+    return false;
+    jQuery.ajax({
+        url: 		'{uri_baseurl(/index.php)}?page=marktplatz_anzeige&ajax=variant_details&ID_ANZEIGE={ID_AD}',
+        type: 		'POST',
+        data:		jQuery('#form_buy').serialize(),
+        success: 	function(result) {
+            if (result.ID_AD_VARIANT > 0) {
+                jQuery(".marketplaceArticleVisibleWhenAvailable").show();
+                jQuery(".marketplaceArticleVisibleWhenNotAvailable").hide();
+                // Variante, Preis und Menge updaten
+                jQuery("#CART_VARIANT").val(result.ID_AD_VARIANT);
+                jQuery("#marketplaceArticlePriceValue").html(result.PREIS);
+                jQuery("#marketplaceArticleQuanitityValue").html(result.MENGE);
+                // Buttons updaten
+                jQuery("#marketplaceArticleBuy").attr("href", result.LINK_BUY);
+                jQuery("#marketplaceArticleTrade").attr("href", result.LINK_TRADE);
+            } else {
+                jQuery(".marketplaceArticleVisibleWhenAvailable").hide();
+                jQuery(".marketplaceArticleVisibleWhenNotAvailable").show();
+                // Variante, Preis und Menge updaten
+                jQuery("#CART_VARIANT").val(0);
+                jQuery("#marketplaceArticlePriceValue").html((result.PREIS > 0 ? result.PREIS : "--.--"));
+                jQuery("#marketplaceArticleQuanitityValue").html(0);
+            }
+        }
+    });
+}
+
+
+function initMapTab() {
+	{if AD_LATITUDE && AD_LONGITUDE}
+    var container = $('#map_container');
+    if (container.html() == '') {
+        container.css("width", "100%");
+        container.css("height", "300px");
+        var latlng = new google.maps.LatLng({AD_LATITUDE}, {AD_LONGITUDE});
+        var myOptions = {
+            zoom:13,
+            zoomMax:15,
+            center:latlng,
+            mapTypeId:google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById(container.attr("id")), myOptions);
+        marker = new google.maps.Marker({
+            position:latlng,
+            map:map
+        });
+        var infowindow = new google.maps.InfoWindow({
+            content: "{htm(AD_STREET)} <br>" +
+                    "{htm(AD_ZIP)} " +
+                    "{htm(AD_CITY)}<br>" +
+                    "{htm(AD_COUNTRY)}"
+        });
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, this);
+        });
+        infowindow.open(map, marker);
+    }
+	{endif}
+}
+
+jQuery(function() {
+        
+    jQuery('a[data-toggle="tab"][href="#tab_map"]').on('shown.bs.tab', function (e) {
+        initMapTab();
+    });
+    
+    jQuery("#adCreateStepContent a[rel~=lightbox-gallery]").swiperGallery();
+    
+});
+
+</script>

@@ -1,0 +1,27 @@
+<h1>RSS Feed</h1>
+{if deleted}
+<h2 class="ok">Feed gel&ouml;scht!</h2>
+ {if RSS_AKTIV}
+  <p class="error">ACHTUNG! Ihr Feed wird wieder neu angelegt, sobald Sie eine der unten aufgef&uuml;hrten 
+   Aktionen durchf&uuml;hren!<br />
+   Des weiteren wird weiterhin auf Ihren RSS Feed hingewiesen!</p>  
+ {endif}
+{endif}
+<p>Die aktuelaisierung Ihres RSS Feeds  ist derzeit <span class="{if RSS_AKTIV}ok">aktiviert{else}error">deaktiviert{endif}</span>.</p>
+<p>Sie k&ouml;nnen jederzeit die Einstellungen Ihres RSS Feeds ver&auml;ndern. 
+Um Ver&auml;nderungen an den Einstellungen vorzunehmen, 
+<a href="index.php?page=options&selectplugin=RSS" title="Zu den RSS Einstellungen">folgen Sie bitte diesem Link.</a></p>
+<p>Ihr RSS Feed wird automatisch aktualisiert. Und zwar bei folgenden Aktionen: </p>
+<ul>
+  <li>Ver&auml;nderung eines Artikels</li>
+  <li>L&ouml;schen eines Artikels</li>
+  <li>&Auml;nderungen an Artikelfreigaben</li>
+</ul>
+<p>Es werden die jeweils 10 neuesten Artikel in Ihren Feed &uuml;bernommen. </p>
+<h2>M&ouml;gliche Aktionen </h2>
+<ul>
+  <li><a href="{uri_baseurl(/cache/rss.de.xml)}" target="_blank" title="zu Ihrem RSS Feed">Um Ihren Feed zu lesen, klicken Sie bitte hier</a></li>
+  <li><a href="index.php?page={curpage}&del=rss" title="RSS Feed l&ouml;schen" onclick="return confirm('Möchten Sie Ihren Feed wirklich löschen?');">Um Ihren Feed zu l&ouml;schen, klicken Sie bitte hier.</a></li>
+  <li><a href="index.php?page=options&selectplugin=RSS" title="Zu den RSS Einstellungen">Einstellungen Ihres Feeds ver&auml;ndern</a> </li>
+</ul>
+<p>&nbsp; </p>

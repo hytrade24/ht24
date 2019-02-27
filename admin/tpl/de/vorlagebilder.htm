@@ -1,0 +1,29 @@
+<h1>Vorlagebilder</h1>
+<p>Bilder, welche Sie &uuml;ber die Mediendatenbank mit dem Bildformat "Bildergenerator" hochgeladen haben, k&ouml;nnen Sie hier
+ausw&auml;hlen.
+Wenn Sie eine der Vorlagen l&ouml;schen m&ouml;chten, diese aber von einem Ihrer gespeicherten Bilder genutzt wird, werden die
+entsprechenden Fertigen Bilder ebenfalls aus der Datenbank gel&ouml;scht! Die als Datei gespeicherten Bilder jedoch bleiben
+bestehen.</p>
+{if deleted}
+<div class="ok">{deleted}</div>
+{endif}
+{if template_images}
+<table style="background-color:#EEEEEE; border:1px solid; border-color:#9A9A9A">
+<tr>
+<td>
+	<h2>Vorlagen</h2>
+	<p>W&auml;hlen Sie jetzt eine Vorlage aus, die Sie bearbeiten wollen.</p>
+		{template_images}
+</td>	
+</tr>		
+</table>
+{endif}
+
+{if list_formats}
+<p>Bitte w&auml;hlen Sie ein Bild-Format:</p>
+<ul>
+  {list_formats}  
+</ul>
+{else}
+<div class="hinweis">Es sind keine Vorlagebilder vorhanden!</div>
+{endif}

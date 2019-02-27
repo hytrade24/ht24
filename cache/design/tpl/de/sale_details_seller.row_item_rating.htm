@@ -1,0 +1,28 @@
+<tr>
+	<td>
+		{if AD_ID}
+			<a href="{uri_action(marktplatz_anzeige,{AD_ID},{urllabel(AD_PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(AD_PRODUKTNAME)} ansehen">
+				<strong>{htm(AD_PRODUKTNAME)} {htm(VARIANT)}</strong>
+			</a>
+		{else}
+			<p class="marketplaceOrderItemTitle">
+				{htm(PRODUKTNAME)}
+			</p>
+		{endif}
+	</td>
+	<td>
+		{if !RATING_BUYER}
+			noch nicht bewertet
+		{else}
+			<img src="{uri_baseurl(/gfx/stars_{RATING_BUYER}.png)}" />
+		{endif}
+	</td>
+	<td class="design-action-buttons">
+		{if !RATING_SELLER}
+			<a href="#" onclick="openAdsRatingWindow({ID_AD_SOLD}); return false;"
+			   class="btn btn-default">Jetzt Bewerten</a>
+		{else}
+			<img src="{uri_baseurl(/gfx/stars_{RATING_SELLER}.png)}" />
+		{endif}
+	</td>
+</tr>

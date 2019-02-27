@@ -1,0 +1,182 @@
+
+<h1>Anbieter : {VENDOR_FIRMA}</h1>
+
+{if saved}
+<div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Änderungen gespeichert!</h4>
+</div>
+{endif}
+{if errors}
+<div class="alert alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Fehler!</h4>
+    <ul>
+        {errors}
+    </ul>
+</div>
+{endif}
+
+{if VENDOR_ID_VENDOR || VENDOR_NEW}
+    <div class="nav nav-tabs userTabsTable">
+        <div class="active reiterAktiv">
+            <a href="index.php?page=vendor_edit&ID_VENDOR={VENDOR_ID_VENDOR}">Anbieter</a>
+        </div>
+        {if !VENDOR_NEW}
+        <div class="reiterPassiv">
+            <a href="index.php?page=vendor_edit_desc&ID_VENDOR={VENDOR_ID_VENDOR}">Beschreibung</a>
+        </div>
+        {endif}
+    </div>
+    {if VENDOR_EDITABLE}
+        <form method="post" id="VendorFormular" enctype="multipart/form-data">
+            <input type="hidden" name="page" value="{curpage}"/>
+            <input type="hidden" name="do" value="save" />
+            <input type="hidden" name="CHANGED" value="{CHANGEDATE}" />
+            {if VENDOR_ID_VENDOR}<input type="hidden" name="ID_VENDOR" value="{VENDOR_ID_VENDOR}" />{endif}
+<table class="mytable table table-bordered table-striped table-condensed liste">
+    <tr>
+        <td>
+
+           <table class="mytable table table-bordered table-striped table-condensed liste">
+
+                <tr>
+                    <td style="width: 200px;"><b>Anbieter öffentlich darstellen:</b></td>
+                    <td>
+                        <input type="checkbox" name="STATUS" {if VENDOR_STATUS}checked="checked"{endif} value="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td>
+                        <input type="text" name="NAME" id="NAME" value="{VENDOR_FIRMA}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Straße:</td>
+                    <td>
+                        <input type="text" name="STRASSE" id="STREET" value="{VENDOR_STRASSE}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>PLZ:</td>
+                    <td>
+                        <input type="text" name="PLZ" id="ZIP" value="{VENDOR_PLZ}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ort:</td>
+                    <td>
+                        <input type="text" name="ORT" id="CITY" value="{VENDOR_ORT}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Land:</td>
+                    <td>
+                        {select(country,,,,, onchange="" id="COUNTRY",----)}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Telefon:</td>
+                    <td>
+                        <input type="text" name="TEL" id="TEL" value="{VENDOR_TEL}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Fax:</td>
+                    <td>
+                        <input type="text" name="FAX" id="FAX" value="{VENDOR_FAX}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Web:</td>
+                    <td>
+                        <input type="text" name="URL" id="URL" value="{VENDOR_URL}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;">Logo:</td>
+                    <td>
+                        {if VENDOR_LOGO}
+                            <img src="{thumbnail(VENDOR_LOGO,100,100)}" />
+                            <br />
+                            <input type="checkbox" name="DELETE_LOGO" value="1" /> Logo l&ouml;schen
+                        {else}
+                            <input type="file" name="LOGO" id="LOGO"  />
+                        {endif}
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+        <td valign="top" width="400"><b>Mit Ihnen gemachten Umsatz</b><br>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_overall&w=400&get_range=MONTHE&ID_USER={VENDOR_FK_USER}" width="100%" height="220" frameborder="0">
+            </iframe>
+            <a class="button" href="index.php?page=user_edit&ID_USER={VENDOR_FK_USER}">User-Profil anzeigen</a>
+            <a class="button" href="index.php?page=buchhaltung&NAME_={VENDOR_FIRMA}&FK_USER={VENDOR_FK_USER}">In der Buchhaltung anzeigen</a>
+        </td>
+        <td valign="top" width="300">
+            <b>Aufrufe im Branchenbuch</b><br>
+            <iframe id="katframe" src="index.php?lang=de&frame=iframe&page=stats&show=user_views&ID_USER={VENDOR_FK_USER}" width="100%" height="220" frameborder="0"></iframe>
+            <p>
+            </p>
+        </td>
+        <td valign="top" width="300">
+				    <iframe src="index.php?frame=iframe&page=googlemap&ID_VENDOR={VENDOR_ID_VENDOR}" width="290" height="280" frameborder="0"></iframe>
+        </td>
+
+    </tr>
+
+</table>
+
+            <input type="submit" value="Anbieter speichern" class="button" />
+        </form>
+<h1>Öffentliche Ansicht</h1>
+{if VENDOR_FK_USER}<p><a class="button" href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_FK_USER})}" target="_blank">zur öffentlichen Ansicht</a> des Anbieters wechseln</p>{endif}
+<iframe src="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_FK_USER})}" frameborder="0" width="90%" height="700" align="center"></iframe>
+
+    {else}
+        <table class="mytable table table-bordered table-striped table-condensed">
+            <tr>
+                <td>Name:</td>
+                <td>{htm(VENDOR_FIRMA)}</td>
+            </tr>
+            <tr>
+                <td>Straße:</td>
+                <td>{htm(VENDOR_STRASSE)}</td>
+            </tr>
+
+            <tr>
+                <td>PLZ:</td>
+                <td>{htm(VENDOR_PLZ)}</td>
+            </tr>
+            <tr>
+                <td>Ort:</td>
+                <td>{htm(VENDOR_ORT)}</td>
+            </tr>
+            <tr>
+                <td>Land:</td>
+                <td>{print_fk(country,VENDOR_FK_COUNTRY)}</td>
+            </tr>
+            <tr>
+                <td>Telefon:</td>
+                <td>{htm(VENDOR_TEL)}</td>
+            </tr>
+            <tr>
+                <td>Fax:</td>
+                <td>{htm(VENDOR_FAX)}</td>
+            </tr>
+            <tr>
+                <td>Web:</td>
+                <td>{htm(VENDOR_URL)}</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;">Logo:</td>
+                <td>
+                    <img src="{thumbnail(VENDOR_LOGO,100,100)}" />
+                </td>
+            </tr>
+        </table>
+
+    {endif}
+{endif}

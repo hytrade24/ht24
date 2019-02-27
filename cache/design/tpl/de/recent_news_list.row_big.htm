@@ -1,0 +1,44 @@
+<li class="design-row-item design-user-news-big clearfix">
+    <div class="design-user-news-big-title">
+        {if SHOW_PREVIEW_IMAGE}
+            {if PREVIEW_TYPE_VIDEO}
+                <div class="thumbnail-video">
+                    <a href="{URL}">
+                        <img class="img-responsive" src="{thumbnail({PREVIEW_URL},850,450,crop-height,North)}" title="{htm(V1)}" />
+                    </a>
+                    <div class="video_play">
+                        <a href="{URL}">
+                            <img src="{uri_baseurl(/bilder/play.png)}"/>
+                        </a>
+                    </div>
+                </div>
+            {endif}
+            {if PREVIEW_TYPE_IMAGE}
+                <div class="design-user-news-big-image" data-img="{PREVIEW_PATH}">
+                    <a href="{URL}">
+                        <img class="img-responsive" src="{thumbnail({PREVIEW_PATH},850,450,crop-height,North)}" title="{htm(V1)}" />
+                    </a>
+                </div>
+            {else}
+                {if DEFAULT_PIC}
+                    <div class="design-user-news-big-image">
+                        <a href="{URL}">
+                            <img class="img-responsive" src="{uri_resource(images/blog_no_pic.jpg)}" title="{htm(V1)}" />
+                        </a>
+                    </div>
+                {endif}
+            {endif}
+        {endif}
+        <a href="{URL}">
+            <h3>{htm(V1)}</h3>
+        </a>
+        <p class="design-user-news-big-text">
+
+            {htm(V2)}<br>
+
+            <a href="{URL}">
+                Weiter...
+            </a>
+        </p>
+
+</li>

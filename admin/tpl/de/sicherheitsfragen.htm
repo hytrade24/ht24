@@ -1,0 +1,17 @@
+<h1>Sicherheitsfragen</h1>
+
+<p>Sicherheitsfragen können in Formularen als Spam Schutz verwendet werden. Um eine Frage zu erzeugen, nutzen Sie die <strong>Template-Funktion 
+ question().</strong> Generieren Sie dann noch ein Textfeld mit dem Namen &quot;ANSWER&quot; und &uuml;berpr&uuml;fen die Anwort mit der 
+ <strong>php- Funktion secure_question($_REQUEST).</strong></p>
+ 
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktion</th>
+  <th>Sichtbar?</th>
+  <th>Frage</th>
+  <th>Antwort</th>
+ </tr>
+ {liste}
+</table>
+{pager}
+<p>&nbsp;</p>

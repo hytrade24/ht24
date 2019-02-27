@@ -1,0 +1,36 @@
+<h1>{if ID_MAILVORLAGE}E-Mailvorlage &quot;{SYS_NAME}&quot; bearbeiten{else}Neue E-Mailvorlage anlegen{endif}</h1>
+<p>Hier k&ouml;nnen Sie Ihre Mailvorlagen bearbeiten und nach Ihren W&uuml;nschen anpassen</p>
+{if err}
+<div class="hinweis">
+ <span class="error">{err}</span>
+<div>
+{endif}
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="{curpage}">
+ <input type="hidden" name="ID_MAILVORLAGE" value="{ID_MAILVORLAGE}">
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th><strong>System Name</strong>&nbsp;</th>
+   <td><input type="text" name="SYS_NAME" value="{htm(SYS_NAME)}" size="65"></td>   
+  </tr>
+  <tr>
+   <th><strong>Beschreibung</strong></th>
+   <td><input type="text" name="BESCHREIBUNG" size="65" value="{htm(BESCHREIBUNG)}"></td>   
+  </tr>
+  <tr>
+   <th><strong>Modulzuordnung</strong></th>
+   <td>{select(modul,,,B_NOTINSTALLED=0,,,Kein Modul)}</td>
+  </tr>
+  <tr>
+   <th>Mail- Betreff</th>
+   <td><input type="text" name="V1" value="{htm(V1)}" size="65"></td>
+  </tr>
+  <tr>
+    <th valign="top">E-Mailtext</th>	
+	<td><textarea name="T1" style="width: 640px; height: 320px;">{htm(T1)}</textarea></td>
+  </tr>
+  <tr class="footer">
+   <td colspan="2" align="right"><input type="submit" value="Speichern" class="button"></td>
+  </tr>
+ </table>
+</form>

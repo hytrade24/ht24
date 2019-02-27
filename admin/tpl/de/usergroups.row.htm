@@ -1,0 +1,70 @@
+	<tr class="zeile{even}">
+		<td>
+			<a href="index.php?page=usergroups_edit&id={ID_USERGROUP}">
+				<img border="0" src="gfx/btn.edit.gif">
+			</a>
+		{if (anzahl+anzahl_mitgliedschaften)==0}
+			<a onclick="return confirm('Die gewählte Benutzergruppe wirklich löschen?')" href="index.php?page=usergroups&delete={ID_USERGROUP}">
+				<img border="0" src="gfx/btn.del.gif">
+			</a>
+		{else}
+			<a onclick="return confirm('Die gewählte Benutzergruppe wirklich löschen?')" href="index.php?page=usergroups&delete={ID_USERGROUP}">
+				<img border="0" src="gfx/btn.rmx.gif">
+			</a>
+		{endif}
+		</td>
+		<td>
+			<img src="{uri_baseurl(/cache/usergroups/{ID_USERGROUP}.png)}">
+		</td>
+		<td>
+			<a href="index.php?page=usergroups_edit&id={ID_USERGROUP}" title="{htm(V2)}"{if IS_DEFAULT} style="font-weight: bold;"{endif}>
+				{htm(V1)} {if IS_DEFAULT}(Standard){endif}
+			</a>
+			<br />
+			<small>{V2}</small>
+		</td>
+		<td>
+			{if IS_AVAILABLE}
+                {if IS_AVAILABLE==1}
+                    <span style="font-weight: bold; color: green;">Ja</span>
+                {else}
+                    <span style="font-weight: bold; color: #fa0;">Nur Mitglieder</span>
+                {endif}
+			{else}
+				<span style="font-weight: bold; color: red;">Nein</span>
+			{endif}
+		</td>
+		<td>
+			{if PRIVATE==0}Beides{endif}
+			{if PRIVATE==1}Nur Privat{endif}
+			{if PRIVATE==2}Nur Gewerblich{endif}
+		</td>
+		<td>
+			{if UNLOCK_MANUAL}
+				<span style="font-weight: bold; color: green;">Ja</span>
+			{else}
+				<span style="font-weight: bold; color: red;">Nein</span>
+			{endif}
+		</td>
+		<td>
+			{if PREPAID}
+				<span style="font-weight: bold; color: green;">Ja</span>
+			{else}
+				<span style="font-weight: bold; color: red;">Nein</span>
+			{endif}
+		</td>
+        <td>
+        	<a href="index.php?lang=de&page=users&FK_USERGROUP={ID_USERGROUP}">{anzahl}</a>
+        </td>
+        <td>
+        	{anzahl_mitgliedschaften}
+        </td>
+		<td align="right">
+			<input type="text" name="F_ORDER[{ID_USERGROUP}]" value="{F_ORDER}">
+		</td>
+	</tr>
+    <tr class="zeile{even}">
+        <td colspan="10" align="right">
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=user_anmeldungen&FK_USERGROUP={ID_USERGROUP}&w=600&bg={even}&color={i}" width="100%" height="200" frameborder="0"></iframe>
+        </td>
+    </tr>

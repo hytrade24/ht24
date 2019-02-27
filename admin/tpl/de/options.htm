@@ -1,0 +1,75 @@
+<script language="JavaScript" type="text/javascript" src="sys/forms.js"></script>{if check}
+<script language="JavaScript" type="text/javascript">
+<!--
+function frmchk()
+{
+  var t, s = '';{check}
+  if (s)
+/**/
+    return confirm(s + '\n\nTrotzdem speichern?');
+/*/
+    alert('Formularprüfung:' + s);
+  return !s;
+/**/
+}
+//-->
+</script>{endif}
+<h1>Systemeinstellungen ändern</h1>
+<p>Diese Einstellung bestimmen das verhalten der Software.<br />
+Wählen Sie eine Einstellung die Sie ändern wollen:</p>
+
+<!-- Anfang Tabelle um Maske -->
+
+<!-- Anfang Maske -->
+{if msg}
+<p>&nbsp;<div class="error"><p><b>Die Daten wurden erfolgreich gespeichert</b></p>{msg}</div>&nbsp;</p>
+{endif}
+{if err}
+<p>&nbsp;<div class="error"><p><b>Fehlermeldung / Hinweis</b></p>{err}</div>&nbsp;</p>
+
+{endif}
+
+<div class="reiterPassiv">
+	<a href="index.php?page=market_settings" title="Marktplatz Einstellungen">Marktplatz Einstellungen</a>
+</div>
+<div class="reiterAktiv">
+	<a href="index.php?page=options" title="Erweiterte Einstellungen">Erweiterte Systemeinstellungen</a>
+</div>
+<div class="reiterPassiv">
+  <a href="index.php?page=plugins" title="Plugin-Einstellungen">Plugin-Einstellungen</a>
+</div>
+<br style="clear: both;"/>
+<table border="0" cellspacing="0" cellpadding="4" class="liste">
+<form method="post" action="index.php" onSubmit="return frmchk();">
+  <input type="hidden" name="dummy" value="" />
+  <input type="hidden" name="nav" value="{curnav}" />
+  <input type="hidden" name="selectplugin" value="{selectplugin}" />
+  <tr>
+  <th colspan="4">
+  {opts_art}
+  </th>
+  
+  </tr>
+<tr>
+  <th>Typ&nbsp;</th>
+  <th>Wert&nbsp;</th>
+  <th>Defaultwert&nbsp;</th>
+  <th>Beschreibung&nbsp;</th>
+</tr>{liste}
+
+    <tr class="footer">
+    <th colspan="3"></th>
+  <th  align="right" colspan="1">
+    <input type="reset" class="button" />
+    <input type="submit" class="button" value="Speichern" />
+  </th>
+    </tr>
+
+</form>
+</table>
+<!-- Ende Maske -->
+
+  
+<!-- Ende Tabelle um Maske -->
+ 
+<br><br>

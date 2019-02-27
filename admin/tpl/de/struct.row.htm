@@ -1,0 +1,28 @@
+<tr height="17" class="zeile{if is_current}x{else}{even}{endif}">
+
+  <td align="center">{if B_SYS}
+  <img src="gfx/achtung.gif" alt="systemseite">
+  {else}
+  {if IDENT && !FK_MODUL}<a href="index.php?page=template_edit&tpl={IDENT}&ROOT={ROOT}" title="Seite bearbeiten"><img src="gfx/html_48x16.gif" width="48" height="16" alt="" border="0"></a>{endif}
+  {endif}	
+	</td>
+	<td><a href="index.php?page=page_edit_nav&ID_NAV={ID_NAV}"><img src="gfx/options_48x16.gif" width="48" height="16" alt="" border="0"></a></td>
+  <td>
+   <table class="pathtab" cellpadding="0" cellspacing="0" border="0">
+    <tr height="17">{path}
+    <td nowrap>&nbsp;{htm(V1)}</td>
+  </tr>
+  </table>
+ </td>
+
+  <td>&nbsp;
+{if MODUL}
+  {if MODTABLE}
+      <a href="index.php?page={MODTABLE}2nav&do=edit&id={ID_NAV}#nav{ID_NAV}" title="Modul Zuordnung bearbeiten"><img src="gfx/modul_{modulgfx}.gif" width="32" height="16" alt="{MODUL}" border="0"></a>
+  {else}
+      <a href="index.php?page=modul_{modulgfx}" title="Modul Zuordnung bearbeiten"><img src="gfx/modul_{modulgfx}.gif" width="32" height="16" alt="{MODUL}" border="0"></a>
+  {endif}
+{else}
+{endif}</td>
+
+</tr>

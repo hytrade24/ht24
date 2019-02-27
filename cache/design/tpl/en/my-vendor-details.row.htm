@@ -1,0 +1,22 @@
+{if F_TYP_TEXT}
+<tr>
+    <td>{V1}:</td>
+    <td>
+        <input type="text" class="form-control" name="{F_NAME}" />
+    </td>
+</tr>
+{endif}
+{if F_TYP_LONGTEXT}
+<tr>
+    <td>{V1}:</td>
+    <td>
+        <textarea name="{F_NAME}" class="form-control"></textarea>
+    </td>
+</tr>
+{endif}
+{if F_TYP_LIST}
+<tr>
+    <td>{V1}:</td>
+    <td>{select_liste({FK_LISTE},{F_NAME},class="form-control",1)}</td>
+</tr>
+{endif}

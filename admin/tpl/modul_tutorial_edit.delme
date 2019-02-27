@@ -1,0 +1,59 @@
+<?php
+###pfad korrigiert by jura 04.02.08
+	require_once($_SERVER['DOCUMENT_ROOT'].'/sys/lib.tutorial.php');
+	$myTut = new tutorial('string_tutorial');
+	$topic = $_POST["topic"];
+	$descr = $_POST["descr"];
+	$text = $_POST["text"];
+	$inform = $_POST["inform"];
+	$now = date("Y-m-d H:i:s");
+
+if (isset($_POST["saveit"])) {
+	$myTut->insertStep2($tutid, $topic, $descr, $text, $inform);
+	$tpl_content->addvar("formular", false);
+	$tpl_content->addvar("vorschau", false);
+	$tpl_content->addvar("confirm", true);
+} else {
+	$tpl_content->addvar("formular", true);
+}
+
+
+if (isset($_POST["Vorschau"])) {
+	$tpl_content->addvar("vorschau",$myTut->translate($text, $tutid));
+} else {
+	$tpl_content->addvar("vorschau","");
+}
+
+
+$thumbs = $db->fetch_table("SELECT SRC_T as thumb, ALT as label FROM img WHERE FK_ANZEIGE='$tutid' ORDER BY label");
+
+$counter = 0;
+$ausgabe_thumbs = "";
+foreach($thumbs as $thumb) {
+	$error = $counter;
+	if ($counter%4 == 0) {
+		if ($counter > 0) {
+			$ausgabe_thumbs[] = "</tr>";
+		}
+		$ausgabe_thumbs[] = "<tr>";
+		//echo $counter;
+	}
+	$ausgabe_thumbs[] = "<td><div style='text-align:center;width:100px;'><img src='../".$thumb["thumb"]."'><br>"
+							.$thumb["label"]."</div></td>";
+	$counter++;
+}
+$ausgabe_thumbs[] = "</tr>";
+$ausgabe_thumbs = implode("\n",$ausgabe_thumbs);
+$thisTut = $myTut->getTut($tutid);
+	// Übergabe an HTML
+/*	if ($thisTut["FK_UID"] != $uid) {
+		$tpl_content->addvar("error","Sie dürfen nur ihre eigenen Tutorials bearbeiten.");
+	}*/
+	$tpl_content->addvar("thumbs",$ausgabe_thumbs);
+	$tpl_content->addvar("tutid",$tutid);
+	$tpl_content->addvar("topic",$thisTut["V1"]);
+	$tpl_content->addvar("descr",$thisTut["V2"]);
+	$tpl_content->addvar("textarea",htmlspecialchars($thisTut["T1"]));
+
+
+?>

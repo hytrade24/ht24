@@ -1,0 +1,52 @@
+<script type="text/javascript">
+	function confHersteller(nummer)
+	{
+		req = new Ajax.Request('index.php?frame=ajax&page=set_hersteller&ID_MAN='+nummer,
+		{
+			method: 'get',
+			onSuccess: function(transport)
+			{
+				$('hersteller_'+nummer).replace(transport.responseText);
+			}
+		})
+	}
+</script>
+<h1>Herstellerdatenbank</h1>
+{if unconfirmed}
+<div class="reiterPassiv">
+    <a href="index.php?page=manufacturer_db">Best&auml;tigte Hersteller</a>
+</div>
+<div class="reiterAktiv">
+    <a href="index.php?page=manufacturer_db&unconfirmed=1">Unbest&auml;tigte Hersteller</a>
+</div>
+{else}
+<div class="reiterAktiv">
+    <a href="index.php?page=manufacturer_db">Best&auml;tigte Hersteller</a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=manufacturer_db&unconfirmed=1">Unbest&auml;tigte Hersteller</a>
+</div>
+{endif}
+<table cellspacing="0" class="liste">
+    <tr>
+        <th>
+            Aktionen
+        </th>
+        <th>
+            Hersteller
+        </th>
+        <th>
+            Anzahl Artikel
+        </th>
+        <th>
+            Webseite
+        </th>
+    </tr>
+    {liste}
+</table>
+{if pager}
+<br/>
+{pager}
+<br/>
+<br/>
+{endif}

@@ -1,0 +1,29 @@
+<tr>
+	<td>
+		{if ID_BILLING_CANCEL}
+			<span title="Beinhaltet Strornoanfragen" class="btn btn-default btn-sm" style="color: blue;">
+					<strong>!</strong>
+			</span>
+		{endif}
+		<span>{ID_BILLING_BILLABLEITEM}</span>
+	</td>
+	<td>{todate(STAMP_CREATE)}</td>
+	<td>
+		{if REF_TYPE == "4" && REF_FK != "" }
+		<a href="{uri_action(sale_details_seller)}?ID_AD_ORDER={FK_AD_ORDER}">
+			{htm(DESCRIPTION)}
+		</a>
+		{else}
+		{htm(DESCRIPTION)}
+		{endif}
+	</td>
+	<td>{QUANTITY}</td>
+	<td>{topreis(PRICE)} {CURRENCY_DEFAULT}</td>
+	<td>{TAX_VALUE} %</td>
+	<td>{topreis(TOTAL_PRICE)} {CURRENCY_DEFAULT}</td>
+	<td>
+		<a title="Rechnungspositionen stornieren" class="btn btn-default" href="{uri_action(invoice_cancel,{ID_BILLING_BILLABLEITEM},billable)}">
+			<i class="fa fa-eraser"></i>
+		</a>
+	</td>
+</tr>

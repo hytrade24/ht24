@@ -1,0 +1,18 @@
+<tr class="zeile{even}">
+	<td>
+		{ID_AD_MASTER}
+	</td>
+	<td >
+		<a title="{htm(PRODUKTNAME)} im Markt ansehen" href="{uri_baseurl(/marktplatz_anzeige,{ID_AD_MASTER}.htm)}" target="_blank">
+			{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(KURZ)}{if KURZ != PRODUKTNAME} ...{endif}
+		</a>
+	</td>
+	<td align="right">
+		{topreis(PREIS)} {CURRENCY_DEFAULT}
+	</td>
+	<td>
+		<a name="{htm(USER)}" id="b{NUMMER}" style="cursor:help;" href="index.php?page=user_edit&ID_USER={FK_USER}">
+			{htm(USER)}
+		</a>
+	</td>
+</tr>

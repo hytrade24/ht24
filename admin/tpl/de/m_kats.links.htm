@@ -1,0 +1,62 @@
+<div class="left_dark">
+    zur <a class="button" href="{uri_action(marktplatz)}" target="_blank">Liveansicht</a> wechseln
+</div>
+
+<div class="left_setting">
+    <h2>Marktplatz Startseite ändern</h2>
+    <p>Sollten Sie den Navigationspunkt „Marktplatz“ individualisieren wollen, so klicken Sie bitte <a class="button" href="index.php?page=m_kat_edit&ID_KAT=1">hier</a>!</p>
+</div>
+
+{if !ID_BACKUP}
+<div class="left_alert">
+    <h1>Schritte Rückgängig machen</h1>
+<table width="100%" cellspacing="0" cellpadding="2" style="margin: 0px; padding: 4px;" >
+    {liste_undo}
+</table>
+</div>
+{endif}
+
+
+
+<div class="left_info">
+    <h1>Legende</h1>
+    <table width="100%" cellspacing="0" cellpadding="2" style="margin: 0px; padding: 4px;" >
+
+  <tr>
+    <td><img src="gfx/btn.edit.gif"></td>
+    <td>Kategorie bearbeiten</td>
+  </tr>
+  <tr>
+    <td><img src="gfx/btn.del.gif"></td>
+    <td>Kategorie löschen</td>
+  </tr>
+  <tr>
+    <td><img style="background-color: black;" src="gfx/mv1.v1.gif"></td>
+    <td>Kategorie anzeigen</td>
+  </tr>
+  <tr>
+    <td><img style="background-color: black;" src="gfx/mv1.v0.gif"></td>
+    <td>Kategorie verstecken</td>
+  </tr>
+  <tr>
+    <td><img src="gfx/btn.move.gif"></td>
+    <td>Kategorie verschieben</td>
+  </tr>
+  <tr>
+    <td><img src="gfx/new.gif"></td>
+    <td>Unter-Kategorie erstellen</td>
+  </tr>
+  {if IS_PREVIEW}
+    <tr style="background-color:#ffff99;">
+      <td colspan="2">Kategorie wird eingefügt</td>
+    </tr>
+    <tr style="background-color:#ff9999;">
+      <td colspan="2">Kategorie wird entfernt</td>
+    </tr>
+  {else}
+    <tr style="background-color:#ffff99;">
+      <td colspan="2">Geänderte Kategorie</td>
+    </tr>
+  {endif}
+</table>
+       </div>

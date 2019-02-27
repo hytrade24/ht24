@@ -1,0 +1,11 @@
+<tr>
+	<td>{ident}</td>
+  <td><img src="gfx/ico.{if INHERIT}dn{else}up{endif}.gif" width="11" height="11"></td>
+  <td><a href="#" onclick="popupfkt('pageperm2user&frame=popup&ident={ident}&s_name={NAME}','500','500');">
+    {if B_OVR>0}<img src="gfx/ico.up.gif" width="11" height="11">{endif}
+    {if (0>B_OVR)}<img src="gfx/ico.eq.gif" width="11" height="11">{endif}
+    {if !B_OVR}<img src="gfx/ico.dn.gif" width="11" height="11">{endif}</a>
+
+  
+  </td>
+</tr>

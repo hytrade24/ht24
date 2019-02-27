@@ -1,0 +1,370 @@
+{if userInvoice_ReadOnly}
+<dl id="userInvoice_Current" class="dl-table-horizontal">
+	<dt>Ihr Name:</dt>
+    <dd>
+      	<span id="userInvoice_Current_Firstname">{htm(INVOICE_FIRSTNAME)}</span>
+      	<span id="userInvoice_Current_Lastname">{htm(INVOICE_LASTNAME)}</span>
+	</dd>
+
+	<dt class="userInvoice_CompanyBlock">Firma:</dt>
+	<dd class="userInvoice_CompanyBlock">
+		<span id="userInvoice_Current_Company">{htm(INVOICE_COMPANY)}</span>
+	</dd>
+
+    <dt>Anschrift:</dt>
+    <dd>
+		<span id="userInvoice_Current_Street">{htm(INVOICE_STREET)}</span><br />
+		<span id="userInvoice_Current_Zip">{htm(INVOICE_ZIP)}</span>
+		<span id="userInvoice_Current_City">{htm(INVOICE_CITY)}</span><br />
+		<span id="userInvoice_Current_Country">{print_fk(country,INVOICE_FK_COUNTRY)}</span>
+    </dd>
+
+	<dt class="userInvoice_PhoneBlock">Telefon:</dt>
+	<dd class="userInvoice_PhoneBlock">
+		<span id="userInvoice_Current_Phone">{htm(INVOICE_PHONE)}</span>
+	</dd>
+</dl>
+<br />
+{else}
+<div>
+	<script type="text/javascript">
+	
+	userInvoiceMode = "view";
+	
+	jQuery(function() {
+		{if FK_USER_INVOICE > 0}
+			selectUserInvoice({FK_USER_INVOICE});
+		{else}
+			jQuery("#userInvoice_Edit").hide();
+			jQuery("#userInvoice_Current").show();
+		{endif}
+	});
+	
+	function reloadInvoice(id_selected) {
+		jQuery.get("{uri_baseurl(/index.php)}?page=user_invoice&frame=ajax&ID_USER_INVOICE="+id_selected, function(result) {
+			jQuery("#userInvoice_Container").html(jQuery(result).find("#userInvoice_Container"));
+			selectUserInvoice(id_selected);
+		});
+	}
+	
+	function createUserInvoice() {
+		jQuery("#userInvoice_Current").hide();
+		jQuery("#userInvoice_Edit").show();
+		jQuery("#userInvoice_Edit .titleCreate").show();
+		jQuery("#userInvoice_Edit .titleEdit").hide();
+		jQuery("#userInvoice_Edit_ID").val("");
+		jQuery("#userInvoice_Edit_Company").val("");
+		jQuery("#userInvoice_Edit_Firstname").val("");
+		jQuery("#userInvoice_Edit_Lastname").val("");
+		jQuery("#userInvoice_Edit_Street").val("");
+		jQuery("#userInvoice_Edit_Zip").val("");
+		jQuery("#userInvoice_Edit_City").val("");
+		jQuery("#userinvoice_edit_country").val(0);
+		jQuery("#userInvoice_Edit_Phone").val("");
+	}
+	
+	function deleteUserInvoice() {
+		if (jQuery("#userInvoice_DeleteBtn").hasClass("disabled")) {
+			return;	// Not available
+		}
+		if (!confirm("Möchten Sie diese Adresse wirklich löschen?")) {
+			return false;
+		}
+		jQuery("#userInvoice_Current").hide();
+		var id_user_invoice = jQuery("#userInvoice_List > option:selected").val();
+		jQuery("#userInvoice_Edit .titleCreate").hide();
+		jQuery("#userInvoice_Edit .titleEdit").show();
+		jQuery("#userInvoice_Edit_ID").val(id_user_invoice);
+		// Get selected address
+		jQuery.get("{uri_baseurl(/index.php)}?page=user_invoice&mode=ajax&what=delete&id="+id_user_invoice, function(json_result) {
+			if (json_result.success) {
+				reloadInvoice(0);
+			} else {
+				alert("Fehler beim löschen der Adresse!");
+			}
+		});
+	}
+	
+	function editUserInvoice() {
+		if (jQuery("#userInvoice_EditBtn").hasClass("disabled")) {
+			return;	// Not available
+		}
+		jQuery("#userInvoice_Current").hide();
+		var id_user_invoice = jQuery("#userInvoice_List > option:selected").val();
+		jQuery("#userInvoice_Edit .titleCreate").hide();
+		jQuery("#userInvoice_Edit .titleEdit").show();
+		jQuery("#userInvoice_Edit_ID").val(id_user_invoice);
+		// Get selected address
+		jQuery.get("{uri_baseurl(/index.php)}?page=user_invoice&mode=ajax&what=getById&id="+id_user_invoice, function(ar_address) {
+			if (ar_address.success) {
+				jQuery("#userInvoice_Edit").show();
+				jQuery("#userInvoice_DeleteBtn").removeClass("disabled");
+				jQuery("#userInvoice_EditBtn").removeClass("disabled");
+				// Company
+				jQuery("#userInvoice_Edit_Company").val(ar_address.COMPANY);
+				// Name
+				jQuery("#userInvoice_Edit_Firstname").val(ar_address.FIRSTNAME);
+				jQuery("#userInvoice_Edit_Lastname").val(ar_address.LASTNAME);
+				// Address
+				jQuery("#userInvoice_Edit_Street").val(ar_address.STREET);
+				jQuery("#userInvoice_Edit_Zip").val(ar_address.ZIP);
+				jQuery("#userInvoice_Edit_City").val(ar_address.CITY);
+				jQuery("#userinvoice_edit_country").val(ar_address.FK_COUNTRY).selectpicker("refresh");
+				// Phone number
+				jQuery("#userInvoice_Edit_Phone").val(ar_address.PHONE);
+			} else {
+				jQuery("#userInvoice_Edit").hide();
+				jQuery("#userInvoice_DeleteBtn").addClass("disabled");
+				jQuery("#userInvoice_EditBtn").addClass("disabled");
+			}
+		});
+	}
+	
+	function editUserInvoiceCancel() {
+		var id_user_invoice = jQuery("#userInvoice_List > option:selected").val();
+		jQuery("#userInvoice_Edit").hide();
+		if (id_user_invoice > 0) {
+			// Es ist eine Adresse ausgewählt, aktuelle Auswahl wieder einblenden.
+			jQuery("#userInvoice_Current").show();	
+		}
+	}
+	
+	function editUserInvoiceSubmit() {
+		if ((jQuery("#userInvoice_Edit_Street").val().length <= 0) ||
+			(jQuery("#userInvoice_Edit_Zip").val().length <= 0) ||
+			(jQuery("#userInvoice_Edit_City").val().length <= 0) ||
+			(jQuery("#userinvoice_edit_country > option:selected").val() <= 0)) {
+			alert("Bitte geben Sie mindestens Name/Firma, Straße, PLZ, Ort und Land ein.");
+			return;
+		}
+		jQuery.post("{uri_baseurl(/index.php)}?page=user_invoice&mode=ajax&what=edit", {
+			ID_USER_INVOICE: jQuery("#userInvoice_Edit_ID").val(),
+			FIRSTNAME: jQuery("#userInvoice_Edit_Firstname").val(),
+			LASTNAME: jQuery("#userInvoice_Edit_Lastname").val(),
+			COMPANY: jQuery("#userInvoice_Edit_Company").val(),
+			STREET: jQuery("#userInvoice_Edit_Street").val(),
+			ZIP: jQuery("#userInvoice_Edit_Zip").val(),
+			CITY: jQuery("#userInvoice_Edit_City").val(),
+			FK_COUNTRY: jQuery("#userinvoice_edit_country").val(),
+			PHONE: jQuery("#userInvoice_Edit_Phone").val()
+		}, function(ar_result) {
+			if (ar_result.success) {
+				jQuery("#userInvoice_Edit").hide();
+				reloadInvoice(ar_result.id);
+			} else {
+				alert("Bitte geben Sie mindestens Name/Firma, Straße, PLZ, Ort und Land ein.");
+			}
+		});
+	}
+	
+	function toggleUserInvoiceEdit() {
+		if (userInvoiceMode != "view") {
+			jQuery("#userInvoice_Container .showOnView").show();
+			jQuery("#userInvoice_Container .showOnEdit").hide();
+			userInvoiceMode = "view";
+		} else {
+			jQuery("#userInvoice_Container .showOnEdit").show();
+			jQuery("#userInvoice_Container .showOnView").hide();
+			userInvoiceMode = "edit";
+		}
+	}
+	
+	function selectUserInvoice(id_user_invoice) {
+		if (typeof id_user_invoice == "undefined") {
+			id_user_invoice = 0;
+		}
+		// Hide input form if visible
+		jQuery("#userInvoice_Edit").hide();
+		jQuery("#userInvoice_List > option").attr("selected", false);
+		jQuery("#userInvoice_ListItem"+id_user_invoice).attr("selected", true);
+		// Get selected address
+		jQuery.get("{uri_baseurl(/index.php)}?page=user_invoice&mode=ajax&what=getById&id="+id_user_invoice, function(ar_address) {
+			if (ar_address.success) {
+				jQuery("#userInvoice_Current").show();
+				if (id_user_invoice > 0) {
+					jQuery("#userInvoice_DeleteBtn").removeClass("disabled");
+					jQuery("#userInvoice_EditBtn").removeClass("disabled");
+				} else {
+					jQuery("#userInvoice_DeleteBtn").addClass("disabled");
+					jQuery("#userInvoice_EditBtn").addClass("disabled");
+				}
+				// Company
+				jQuery("#userInvoice_Company").val(ar_address.COMPANY);
+				jQuery("#userInvoice_Current_Company").html(ar_address.COMPANY);
+				if (typeof ar_address.COMPANY != "undefined") {
+					jQuery("#userInvoice_List .userInvoice_CompanyBlock").show();
+				} else {
+					jQuery("#userInvoice_List .userInvoice_CompanyBlock").hide();
+				}
+				// Name
+				jQuery("#userInvoice_Firstname").val(ar_address.FIRSTNAME);
+				jQuery("#userInvoice_Current_Firstname").html(ar_address.FIRSTNAME);
+				jQuery("#userInvoice_Lastname").val(ar_address.LASTNAME);
+				jQuery("#userInvoice_Current_Lastname").html(ar_address.LASTNAME);
+				// Address
+				jQuery("#userInvoice_Street").val(ar_address.STREET);
+				jQuery("#userInvoice_Current_Street").html(ar_address.STREET);
+				jQuery("#userInvoice_Zip").val(ar_address.ZIP);
+				jQuery("#userInvoice_Current_Zip").html(ar_address.ZIP);
+				jQuery("#userInvoice_City").val(ar_address.CITY);
+				jQuery("#userInvoice_Current_City").html(ar_address.CITY);
+				jQuery("#userInvoice_Country").val(ar_address.FK_COUNTRY);
+				jQuery("#userInvoice_Current_Country").html(ar_address.COUNTRY);
+				// Phone number
+				jQuery("#userInvoice_Phone").val(ar_address.PHONE);
+				jQuery("#userInvoice_Current_Phone").html(ar_address.PHONE);
+				if (typeof ar_address.PHONE != "undefined") {
+					jQuery("#userInvoice_List .userInvoice_PhoneBlock").show();
+				} else {
+					jQuery("#userInvoice_List .userInvoice_PhoneBlock").hide();
+				}
+			} else {
+				jQuery("#userInvoice_Current").hide();
+				jQuery("#userInvoice_DeleteBtn").addClass("disabled");
+				jQuery("#userInvoice_EditBtn").addClass("disabled");
+			}
+		});
+	}
+	
+	</script>
+	<div id="userInvoice_Container">	
+		<input id="userInvoice_Company" name="INVOICE_COMPANY" value="{htm(INVOICE_COMPANY)}" type="hidden" />
+		<input id="userInvoice_Firstname" name="INVOICE_FIRSTNAME" value="{htm(INVOICE_FIRSTNAME)}" type="hidden" />
+		<input id="userInvoice_Lastname" name="INVOICE_LASTNAME" value="{htm(INVOICE_LASTNAME)}" type="hidden" />
+		<input id="userInvoice_Street" name="INVOICE_STREET" value="{htm(INVOICE_STREET)}" type="hidden" />
+		<input id="userInvoice_Zip" name="INVOICE_ZIP" value="{htm(INVOICE_ZIP)}" type="hidden" />
+		<input id="userInvoice_City" name="INVOICE_CITY" value="{htm(INVOICE_CITY)}" type="hidden" />
+		<input id="userInvoice_Country" name="INVOICE_FK_COUNTRY" value="{INVOICE_FK_COUNTRY}" type="hidden" />
+		<input id="userInvoice_Phone" name="INVOICE_PHONE" value="{htm(INVOICE_PHONE)}" type="hidden" />
+		
+		<div class="showOnEdit display-none">
+			<div style="width: 90%;">
+				<select id="userInvoice_List" name="ID_USER_INVOICE" class="form-control" required="required" onchange="selectUserInvoice(this.value);">
+					<option id="userInvoice_ListItem0" value="0"{if FK_USER_INVOICE==0} selected="selected"{endif}>
+						{if CURUSER_FIRMA}{htm(CURUSER_FIRMA)}, {endif}{if CURUSER_VORNAME}{htm(CURUSER_VORNAME)} {endif}{if CURUSER_NACHNAME}{htm(CURUSER_NACHNAME)} ,{endif}
+						{htm(CURUSER_STRASSE)} {htm(CURUSER_PLZ)} {htm(CURUSER_ORT)} {htm(CURUSER_COUNTRY)}
+					</option>
+					{liste}
+				</select>
+				<br />
+				
+				<a href="#" id="userInvoice_DeleteBtn" class="btn btn-default disabled" onclick="deleteUserInvoice(); return false;">
+					<i class="glyphicon glyphicon-remove"></i>
+					Löschen
+				</a>
+				<a href="#" id="userInvoice_EditBtn" class="btn btn-default disabled" onclick="editUserInvoice(); return false;">
+					<i class="glyphicon glyphicon-edit"></i>
+					Bearbeiten
+				</a>
+				<a href="#" class="btn btn-default" onclick="createUserInvoice(); return false;">
+					<i class="glyphicon glyphicon-plus"></i>
+					Neue Adresse
+				</a>
+			</div>
+		</div>
+		<div>
+				<dl id="userInvoice_Current" class="dl-horizontal" style="display: none;">
+						<dt>Ihr Name:</dt>
+						<dd>
+							<span id="userInvoice_Current_Firstname">{htm(INVOICE_FIRSTNAME)}</span>
+							<span id="userInvoice_Current_Lastname">{htm(INVOICE_LASTNAME)}</span>
+				</dd>
+		
+				<dt class="userInvoice_CompanyBlock">Firma:</dt>
+				<dd class="userInvoice_CompanyBlock">
+					<span id="userInvoice_Current_Company">{htm(INVOICE_COMPANY)}</span>
+				</dd>
+		
+						<dt>Anschrift:</dt>
+						<dd>
+					<span id="userInvoice_Current_Street">{htm(INVOICE_STREET)}</span><br />
+					<span id="userInvoice_Current_Zip">{htm(INVOICE_ZIP)}</span>
+					<span id="userInvoice_Current_City">{htm(INVOICE_CITY)}</span><br />
+					<span id="userInvoice_Current_Country">{print_fk(country,INVOICE_FK_COUNTRY)}</span>
+						</dd>
+		
+				<dt class="userInvoice_PhoneBlock">Telefon:</dt>
+				<dd class="userInvoice_PhoneBlock">
+					<span id="userInvoice_Current_Phone">{htm(INVOICE_PHONE)}</span>
+				</dd>
+				</dl>
+			<div id="userInvoice_Edit" class="design-content-box form-horizontal" style="display: none;">
+				<input id="userInvoice_Edit_ID" type="hidden" value="{htm(INVOICE_ID_USER_INVOICE)}" />
+			
+				<h3 class="titleCreate">Neue Adresse hinzufügen</h3>
+				<h3 class="titleEdit">Adresse bearbeiten</h3>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userInvoice_Edit_Firstname">
+						<strong>Ihr Vorname <span class="text-error">*</span></strong>
+					</label>
+					<div class="design-input-field">
+							<input placeholder="Vorname" class="form-control" type="text" id="userInvoice_Edit_Firstname" value="{htm(INVOICE_FIRSTNAME)}" />
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userInvoice_Edit_Lastname">
+						<strong>Ihr Nachname <span class="text-error">*</span></strong>
+					</label>
+					<div class="design-input-field">
+							<input placeholder="Nachname" class="form-control" type="text" id="userInvoice_Edit_Lastname" value="{htm(INVOICE_LASTNAME)}" />
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userInvoice_Edit_Company">
+						<strong>Firma</strong>
+					</label>
+					<div class="design-input-field">
+						<input placeholder="Firma" class="form-control" type="text" id="userInvoice_Edit_Company" value="{htm(INVOICE_COMPANY)}" />
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userInvoice_Edit_Street">
+						<strong>Straße <span class="text-error">*</span></strong>
+					</label>
+					<div class="design-input-field">
+						<input placeholder="Straße" class="form-control" type="text" id="userInvoice_Edit_Street" value="{htm(INVOICE_STREET)}" />
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userInvoice_Edit_Zip">
+						<strong>PLZ & Ort <span class="text-error">*</span></strong>
+					</label>
+					<div class="design-input-field">
+						<div class="design-input-split">
+							<div class="design-input-zip">
+								<input placeholder="PLZ" class="form-control" type="text" id="userInvoice_Edit_Zip" value="{htm(INVOICE_ZIP)}" />
+							</div>
+							<div class="design-input-city">
+								<input placeholder="Ort" class="form-control" type="text" id="userInvoice_Edit_City" value="{htm(INVOICE_CITY)}" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userinvoice_edit_country">
+						<strong>Land <span class="text-error">*</span></strong>
+					</label>
+					<div class="design-input-field">
+										{select_country(userinvoice_edit_country,,,, class="form-control",---)}
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userInvoice_Edit_Phone">
+						<strong>Telefon</strong>
+					</label>
+					<div class="design-input-field">
+						<input placeholder="Telefon" class="form-control" type="text" id="userInvoice_Edit_Phone" value="{htm(INVOICE_PHONE)}" />
+					</div>
+				</div>
+				
+				<a onclick="editUserInvoiceCancel()" class="btn btn-danger">Abbrechen</a>
+				<a onclick="editUserInvoiceSubmit()" class="btn btn-success">Adresse speichern</a>
+			</div>
+		</div>
+		<div>
+			<a onclick="toggleUserInvoiceEdit()" style="margin-top: -40px;" class="btn btn-default pull-right showOnView">Ändern</a>
+		</div>
+		<br style="clear: both;" />
+	</div>
+</div>
+{endif}

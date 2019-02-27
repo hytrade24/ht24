@@ -1,0 +1,44 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="201"{endif}>
+      	<h1>{V1}</h1>
+	<h3>{V2}</h3>
+<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo</p>   
+ 
+        <div id="demoLead" class="carousel slide">
+                <div class="carousel-inner">
+                  <div class="active item">
+                        <img src="{uri_resource(images/demo/moebel-01.jpg)}" />
+                    </div>
+                    <div class="item">
+                        <img src="{uri_resource(images/demo/moebel-02.jpg)}" />
+                    </div>                                            
+                </div>
+                <a class="carousel-control left" href="#demoLead" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control right" href="#demoLead" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+        </div>
+            <script type="text/javascript">// <![CDATA[
+                jQuery(function() {
+                    $('#demoLead').carousel({
+                        interval: 3500 // in milliseconds  
+                    })
+                });
+            // ]]>
+            </script>
+
+
+<h2>Vorgestellt</h2>
+ <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo</p>   
+ 
+
+
+  {subtpl(tpl/{SYS_TPL_LANG}/slider_ads_top.htm,ID_KAT={ID_KAT},MAX_PER_PAGE=2,MAX_PAGES=3,INTERVAL=5000,HIDE_INDICATOR=0)}
+      
+
+
+</div>

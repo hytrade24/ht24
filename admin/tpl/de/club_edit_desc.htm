@@ -1,0 +1,55 @@
+{if CLUB_LOGO}
+    <img src="{thumbnail({CLUB_LOGO},100,100)}" data-source="{CLUB_LOGO}" align="left" hspace="10" vspace="10" />
+{endif}
+
+<h1>
+	Club : {CLUB_NAME} {if CLUB_ID_CLUB}<br />
+	<a href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}" target="_blank">zur öffentlichen Ansicht des Clubs wechseln</a>{endif}
+	<br style="clear: both;" />
+</h1>
+{if saved}
+<div class="alert alert-success">
+	<h4>Änderungen gespeichert!</h4>
+</div>
+{endif}
+{if errors}
+<div class="alert alert-error">
+	<h4>Fehler!</h4>
+	<ul>
+		{errors}
+	</ul>
+</div>
+{endif}
+
+{if CLUB_ID_CLUB}
+	<div class="nav nav-tabs userTabsTable">
+	    <div class="reiterPassiv">
+	        <a href="index.php?page=club_edit&id={CLUB_ID_CLUB}">Club</a>
+	    </div>
+	    {if !CLUB_NEW}
+	    <div class="active reiterAktiv visibleOnEnabledClub">
+	        <a href="index.php?page=club_edit_desc&id={CLUB_ID_CLUB}">Beschreibung</a>
+	    </div>
+	    <div class="reiterPassiv">
+	        <a href="index.php?page=club_edit_member&id={CLUB_ID_CLUB}">Mitglieder</a>
+	    </div> 
+	    {endif}
+       
+	</div>
+	<div class="liste">
+		<form method="post" action="{uri_baseurl(/admin/index.php)}" id="vendorFormular" enctype="multipart/form-data">
+		    <input type="hidden" name="page" value="{curpage}"/>
+		    <input type="hidden" name="do" value="save" />
+		    <input type="hidden" name="id" value="{CLUB_ID_CLUB}"/>
+		
+			<p>
+				Bitte geben Sie hier eine Beschreibung ihres Club ein. Diese wird öffentlich dargestellt.
+			</p>
+		
+			<textarea id="T1" name="T1" rows="10" cols="80">{htm(CLUB_T1)}</textarea>
+			<br />
+		
+		    <input type="submit" value="Club-Beschreibung speichern" class="btn btn-success pull-right visibleOnEnabledClub"/>
+		</form>
+	</div>
+{endif}

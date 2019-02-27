@@ -1,0 +1,632 @@
+<style type="text/css">
+  #ad_agent a {
+  	text-decoration: underline;
+  }
+  #ad_agent a:hover {
+  	color: #E55F20;
+  }
+
+  .white-text {
+	  color: #FFFFFF;
+  }
+
+	.btn-red {
+		background-color: red;
+	}
+
+	.btn-green {
+		background-color: green;
+	}
+</style>
+<script type="text/javascript">
+var pager = new Array();
+var search_blocked = false;
+var input_timer;
+	
+// ========================================
+//         ---- INPUT  TOGGLES ----
+// ========================================
+
+
+function ShowInput_Category() {
+	$('#KAT').show();
+	$('#SEARCH_KAT_REMOVE').show();
+	$('#SEARCH_KAT_TXT').hide();
+	$('#SEARCH_KAT_CHANGE').hide();
+}
+
+function HideInput_Category() {
+	$('#KAT').hide();
+	$('#SEARCH_KAT_TXT').show();
+	$('#SEARCH_KAT_CHANGE').show();
+}
+
+function ShowInput_Manufacturer() {
+	$('#MANUFACTURER input:first').show();
+	$('#SEARCH_MAN_REMOVE').show();
+	$('#SEARCH_MAN_TXT').hide();
+	$('#SEARCH_MAN_CHANGE').hide();
+}
+
+function HideInput_Manufacturer() {
+	$('#MANUFACTURER input:first').hide();
+	$('#SEARCH_MAN_TXT').show();
+	$('#SEARCH_MAN_CHANGE').show();
+}
+
+function ShowInput_User() {
+	$('#USER input:first').show();
+	$('#SEARCH_USER_REMOVE').show();
+	$('#SEARCH_USER_TXT').hide();
+	$('#SEARCH_USER_CHANGE').hide();
+}
+
+function HideInput_User() {
+	$('#USER input:first').hide();
+	$('#SEARCH_USER_TXT').show();
+	$('#SEARCH_USER_CHANGE').show();
+}
+
+// ========================================
+//          ---- INPUT EVENTS ----
+// ========================================
+	  
+function UpdateInput_Manufacturer(text, do_search, event) {
+  	var key = (event ? (event.which ? event.which : event.keyCode) : 0);
+  	if ((key == 13) || (key == 27) || (key == 38) || (key == 40)) {
+			// Key controls			
+			custom_offer(this, event, false, false);
+		}
+		
+		if (!do_search) {
+			if (input_timer)
+				window.clearTimeout(input_timer);
+			input_timer = window.setTimeout(function() { 
+					UpdateInput_Manufacturer(text, true);
+				}, 1000);
+			if ((text.length < 2) || (search_blocked)) {
+				if (!search_blocked) UpdateList_Manufacturer(new Array());
+				return;
+			}
+			search_blocked = true;
+			window.setTimeout(function() {
+					search_blocked = false;
+				}, 500);
+		}
+		
+  	if (text.length >= 2) {
+  	  	$.ajax({
+  	  	  	url:		ebiz_trader_baseurl + "index.php?page=ad_agent_ajax&frame=ajax&suggest_man="+encodeURIComponent(text),
+  	  	  	success:	function(obj) {
+				if (obj.manufacturers.length > 0) {
+					UpdateList_Manufacturer(obj.manufacturers);
+				} else {
+					UpdateList_Manufacturer(new Array());
+				}
+  	  		}
+  	  	});
+	}
+}
+	
+function UpdateInput_User(text, do_search, event) {
+   	var key = (event ? (event.which ? event.which : event.keyCode) : 0);
+   	if ((key == 13) || (key == 27) || (key == 38) || (key == 40)) {
+		// Key controls			
+		custom_offer(this, event, false, false);
+	}
+	
+	if (!do_search) {
+		if (input_timer)
+			window.clearTimeout(input_timer);
+		input_timer = window.setTimeout(function() { 
+				UpdateInput_User(text, true);
+			}, 1000);
+		if ((text.length < 2) || (search_blocked)) {
+			if (!search_blocked) UpdateList_User(new Array());
+			return;
+		}
+		search_blocked = true;
+		window.setTimeout(function() {
+				search_blocked = false;
+			}, 500);
+	}
+ 		
+   	if (text.length >= 2) {
+  	  	$.ajax({
+  	  	  	url:		ebiz_trader_baseurl + "index.php?page=ad_agent_ajax&frame=ajax&suggest_user="+encodeURIComponent(text),
+  	  	  	success:	function(obj) {
+				if (obj.users.length > 0) {
+					//Pager_Enable(obj.manufacturers, 15, UpdateList_Manufacturer);
+					UpdateList_User(obj.users);
+				} else {
+					//Pager_Disable();
+					UpdateList_User(new Array());
+				}
+  	  		}
+  	  	});
+ 	}
+}
+	
+// ========================================
+//          ---- LIST UPDATES ----
+// ========================================
+
+function custom_offer(text_element, e, results, callback) {
+   	var key = (e ? (e.which ? e.which : e.keyCode) : 0);
+ 		
+ 		// Key controls			
+   	if ((key == 13) || (key == 27) || (key == 38) || (key == 40)) {
+ 			if (key == 13) {
+ 				// Return
+ 				if (row_selection >= 0) {
+ 					eval(row_list[row_selection]);
+ 				}
+ 				return;
+ 			}
+ 			if (key == 27) {
+ 				// Escape
+ 				window.setTimeout(function() { 
+ 					$('#div_offers_agent').hide();
+ 				}, 300);
+ 				return;
+ 			}
+ 			if (key == 38) row_selection = row_selection - 1;												// Up
+ 			if (key == 40) row_selection = row_selection + 1;												// Down
+ 			
+ 			if (row_selection >= row_count) row_selection = row_count - 1;
+ 			if (row_selection < 0) row_selection = -1;
+ 			
+ 			// Update selection
+ 			var rows = $('#list_offers_agent > tr');
+ 			for (var row in rows) {
+ 				if (row == row_selection) 
+ 					rows[row].className = "selected";
+ 				else
+ 					rows[row].className = "";
+ 			}
+ 			return;
+   	}
+
+	if ((results.length >= 1) && $(text_element).is(":visible")) {
+		var table = document.createElement("table");
+		table.id = "list_offers_agent";
+		table.className = "list_offers";
+		table.cellPadding = 0;
+		table.cellSpacing = 0;
+		$('#div_offers_agent .popover-content').html("").append(table);
+		
+		row_count = 0;
+		row_list = new Array();
+		
+		for (var offer = 0; offer < results.length; offer++) {
+			var object = results[offer];
+			var text = object.NAME;
+			var id = object.ID;
+			var row = document.createElement("tr");
+			var col = document.createElement("td");
+			var link = document.createElement("a");
+			// Click event
+			link.href = "javascript:" + callback + "(" + id + ",'" + text + "');";
+			link.innerHTML = text;
+			// Add to table
+			col.appendChild(link);
+			row.appendChild(col);
+			if (row_count == row_selection) row.className = "selected";
+			table.appendChild(row);
+			// Update "cache"
+			row_count = row_count + 1;
+			row_list.push(callback + "(" + id + ",'" + text + "');");
+		}
+		var element_pos = $(text_element).position(); 
+		$('#div_offers_agent').css({
+			'position':		"absolute",
+			'left':			(element_pos.left - 12)+"px",
+			'top':			(element_pos.top + 30)+"px",
+			'min-width':	$(text_element).outerWidth()
+		}).show().children(".popover-content").css({
+			'max-height':	"128px",
+			'overflow':		"auto"
+		});
+	} else {
+		$('#div_offers_agent').hide();
+	}
+	
+	return;
+}
+
+function UpdateList_Manufacturer(manufacturers) {
+	custom_offer($('#MANUFACTURER input:first')[0], false, manufacturers, 'UpdateSelection_Manufacturer');
+}
+
+function UpdateList_User(users) {
+	custom_offer($('#USER input:first')[0], false, users, 'UpdateSelection_User');
+}
+
+// ========================================
+//      ---- SELECTION UPDATES ----
+// ========================================
+
+function UpdateSelection_Manufacturer(man_id, man_name) {
+	if (man_id > 0) {
+		// Manufactuerer chosen
+		$("#SEARCH_MAN").val(man_id);
+		$("#SEARCH_MAN_TXT").html(man_name);
+		$("#SEARCH_MAN_TXT").css("font-weight", "bold");
+		$("#SEARCH_MAN_CHANGE").html("(Change)");
+		$('#SEARCH_MAN_REMOVE').show();
+	} else {
+		// Nothing chosen or removed setting
+		$("#SEARCH_MAN").val("");
+		$("#SEARCH_MAN_TXT").html("Nicht ausgew&auml;hlt.");
+		$("#SEARCH_MAN_TXT").css("font-weight", "normal");
+		$("#SEARCH_MAN_CHANGE").html("Select manufacturer");
+		$('#SEARCH_MAN_REMOVE').hide();
+	}
+	// Show replacement Text
+	$('#div_offers_agent').hide();
+	HideInput_Manufacturer();
+}
+
+
+function UpdateSelection_Category(cat_id, cat_name) {
+	if (cat_id > 0) {
+		// Category chosen
+		$("#SEARCH_KAT").val(cat_id);
+		$("#SEARCH_KAT_TXT").html(cat_name);
+		$("#SEARCH_KAT_TXT").css("font-weight", "bold");
+		$("#SEARCH_KAT_CHANGE").html("(Change)");
+		$('#SEARCH_KAT_REMOVE').show();
+	} else {
+		// Nothing chosen or removed setting
+        //UpdateKatSelector(-1, '', 0, true);
+		$("#SEARCH_KAT").val("");
+		$("#SEARCH_KAT_TXT").html("Nicht ausgew&auml;hlt.");
+		$("#SEARCH_KAT_TXT").css("font-weight", "normal");
+		$("#SEARCH_KAT_CHANGE").html("Select category");
+		$('#SEARCH_KAT_REMOVE').hide();
+	}
+	HideInput_Category();
+}
+
+function UpdateSelection_User(user_id, user_name) {
+	if (user_id > 0) {
+		// Manufactuerer chosen
+		$("#SEARCH_USER").val(user_id);
+		$("#SEARCH_USER_TXT").html(user_name);
+		$("#SEARCH_USER_TXT").css("font-weight", "bold");
+		$("#SEARCH_USER_CHANGE").html("(Change)");
+		$('#SEARCH_USER_REMOVE').show();
+	} else {
+		// Nothing chosen or removed setting
+		$("#SEARCH_USER").val("");
+		$("#SEARCH_USER_TXT").html("Nicht ausgew&auml;hlt.");
+		$("#SEARCH_USER_TXT").css("font-weight", "normal");
+		$("#SEARCH_USER_CHANGE").html("Select seller");
+		$('#SEARCH_USER_REMOVE').hide();
+	}
+	$('#div_offers_agent').hide();
+	HideInput_User();
+}
+
+  // ========================================
+  //         ---- CATEGORY FUNC ----
+  // ========================================
+
+  function getElementByNameIE(name_tag, name_element) {
+    if (navigator.appName == "Microsoft Internet Explorer") {
+      // IE hack
+      var elements = document.getElementsByTagName(name_tag);
+      var results = new Array();
+      if (elements != null) {
+	    for (var i = 0; i < elements.length; i++) {
+			if (elements[i].name == name_element) {
+				results[results.length] = elements[i];
+			} else {
+				var curname = elements[i].attributes.getNamedItem("name");
+				if ((curname != null) && (curname.value == name_element)) {
+					results[results.length] = elements[i];
+				}
+			}
+	    }
+      }
+      return results;
+    }
+    // Default
+    return document.getElementsByName(name_element);
+  }
+
+  function getSubElementByNameIE(parent_element, name_tag, name_element) {
+    if (navigator.appName == "Microsoft Internet Explorer") {
+      // IE hack
+      var elements = parent_element.getElementsByTagName(name_tag);
+      var results = new Array();
+      if (elements != null) {
+  	    for (var i = 0; i < elements.length; i++) {
+			if (elements[i].name == name_element) {
+				results[results.length] = elements[i];
+			} else {
+				var curname = elements[i].attributes.getNamedItem("name");
+				if ((curname != null) && (curname.value == name_element)) {
+					results[results.length] = elements[i];
+				}
+			}
+  	    }
+      }
+      return results;
+    }
+    // Default
+    return document.getElementsByName(name_element);
+  }
+
+  function UpdateKatSelector(id_kat, name_current, root_kat, b_done, b_collapsing) {
+    UpdateKatSelector_SetVisibility(1, "none");
+	if (!b_done) {
+	  if (id_kat <= 1) {
+        UpdateKatSelector_SetVisibility(1, "");
+        $('#kat_back_to_root').hide();
+	  } else {
+        $('#kat_back_to_root').show();
+	  }
+	}
+	UpdateKatSelector_SetParentVisibility(id_kat, 1, "");
+    
+    if (!b_done) {
+      var childs = getSubElementByNameIE($("#kat_selector")[0], "li", "child"+id_kat);
+      if (childs.length > 0) {
+        var target_state = (childs[0].style.display == "none" ? "" : "none");
+        UpdateKatSelector_SetVisibility(id_kat, target_state);
+      }
+    } else {
+      if (id_kat > 0) {
+        if (confirm('Do you want select '+name_current+' as category?')) {
+            UpdateSelection_Category(id_kat, name_current);     
+        }
+      }
+    }
+  }
+  
+  function UpdateKatSelector_SetParentVisibility(id_kat, id_root, target_state) {
+	if (id_kat > 1) {
+	    var childs = getSubElementByNameIE($("#kat_selector")[0], "li", "child"+id_root);
+	    for (var i = 0; i < childs.length; i++) {
+	      var id_child = childs[i].id.substr(3);
+	      // 
+	      if ((id_child == id_kat) || (UpdateKatSelector_SetParentVisibility(id_kat, id_child, target_state))) {
+	    	childs[i].style.display = target_state;
+	    	return true;           
+	      }
+	    }
+	    return false;
+	}
+  }
+
+  function UpdateKatSelector_SetVisibility(id_kat, target_state) {
+    if ((id_kat > 1) && (target_state != "none")) {
+      $("#row"+id_kat).show();
+    }
+	  
+    var id_current = document.getElementById("SEARCH_KAT");
+    var childs = getElementByNameIE("li", "child"+id_kat);
+    for (var i = 0; i < childs.length; i++) {
+      var id_child = childs[i].id.substr(3);
+      if (childs[i].style.display != target_state) {
+        childs[i].style.display = target_state;
+        if ((childs[i].id == "row"+parseInt(id_current.value)) && (target_state == "none")) {
+          var last_selection = document.getElementById("row"+id_current.value);
+          id_current.value = 0;
+        }
+        if (target_state == "none") {
+          UpdateKatSelector_SetVisibility(id_child, target_state);
+        } 
+      }
+    } 
+  }
+</script>
+
+
+<div id="div_offers_agent" class="popover fade bottom in" style="display: none;">
+	<div class="arrow"></div>
+	<h3 class="popover-title">Search suggestions</h3>
+	<div class="popover-content">
+		<table style="position: absolute; display: none;" id="list_offers_agent" class="list_offers" cellpadding="0" cellspacing="0">
+		</table>
+	</div>
+</div>
+
+{if new}
+	<h1>Add advert-agent</h1>
+	<p>
+        Here you have the option to get informed about new advertisements which fulfil certain criteria
+            With that feature you can display all new advertisements in the category
+            &quot;Back&ouml;fen&quot; and get it mailed to you.<br />
+            Please choose at least one of the available settings.
+
+	</p>
+	
+	{if error}
+		<div class="stdBox text-error">
+			{if error_nosearch}
+                - You have to state at least one search criteria.
+                <br />
+            {endif}
+		</div>
+	{endif}
+	
+	<table id="ad_agent" class="table table-bordered table-striped table-condensed userList">
+
+		<tr>
+			<td>
+				<strong>
+                    Searchparameter
+                </strong>
+                <br />
+				<span class="smallText">
+                    These parameters will be used to search for advertisements.
+                </span>
+			</td>
+			<td>
+				{SEARCH_PARAMS}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong>
+                    Own description (optional)
+                </strong><br />
+				<span class="smallText">
+                    Freely selectable description for the overview.
+                </span>
+			</td>
+			<td>
+				<input class="form-control" onkeyup="$('#SEARCH_NAME').val(this.value);"/>
+			</td>
+		</tr>
+	</table>
+	<form id="form_search" method="post">
+		<input id="SEARCH_NAME" name="SEARCH_NAME" value="" type="hidden" />
+		
+		<input id="SEARCH_KAT" name="SEARCH_KAT" value="{htm(SEARCH_KAT)}" type="hidden" />
+		<input id="SEARCH_MAN" name="SEARCH_MAN" value="{htm(SEARCH_MAN)}" type="hidden" />
+		<input id="SEARCH_USER" name="SEARCH_USER" value="{htm(SEARCH_USER)}" type="hidden" />
+		<input id="SEARCH_USER" name="SEARCH_HASH" value="{htm(SEARCH_HASH)}" type="hidden" />
+		
+		<input id="SEARCH_SUBMIT" class="btn btn-success pull-right clearfix" type="submit" value="Anzeigen-Agent hinzufügen" />
+		<br />
+	</form>
+{else}
+	{if new_saved}
+	<div class="alert alert-success">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>Advert-agent added!</strong>
+            The advert-agent was added successfully.
+
+	</div>
+	{endif}
+
+	<ul class="nav nav-tabs">
+		<li class="{if !IS_ABO_REQUEST_ACTION}active{endif}">
+            <a href="#adagent" data-toggle="tab">Advert-agent</a>
+        </li>
+		<li class="{if IS_ABO_REQUEST_ACTION}active{endif}">
+            <a href="#gesuche" data-toggle="tab">Subscribe to search requests</a>
+        </li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane {if !IS_ABO_REQUEST_ACTION}active{endif}" id="adagent">
+			<h1>Active advert-agents</h1>
+
+			<p>
+                To add an advert-agent, please change to
+                    <a href="{uri_action(marktplatz)}">marketplace</a> and make a searchrequest.
+                    You have the option to save your search result as an advert-
+                    agent and get informed about new advertisements.
+
+			</p>
+
+			<table class="table table-bordered table-striped table-condensed userList">
+				<tr>
+					<th class="first">
+                        Actions
+                    </th>
+					<th title="Found advertisements of the last run">
+                        New results
+                    </th>
+					<th>
+                        Description
+                    </th>
+					<th class="last">
+                        Searchparameter
+                    </th>
+				</tr>
+			{if liste}
+				{liste}
+			{else}
+				<tr>
+					<td colspan="4" class="text-error">
+                        You have yet no advert-agents.
+					</td>
+				</tr>
+			{endif}
+			</table>
+
+			<div class="design-content-box design-icon-legend">
+                <div class="pull-left">
+                    <a class="btn btn-default">
+                        <i class="glyphicon glyphicon-play"></i>
+                    </a> = Execute
+				</div>
+                <div class="pull-left">
+                    <a class="btn btn-default">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </a> = Delete
+				</div>
+				<div class="pull-left">
+					<a class="btn btn-default btn-red white-text">
+						<i class="glyphicon glyphicon-pause"></i>
+					</a> = Disabled
+				</div>
+				<div class="pull-left">
+					<a class="btn btn-default btn-green white-text">
+						<i class="glyphicon glyphicon-pause"></i>
+					</a> = Active
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane {if IS_ABO_REQUEST_ACTION}active{endif}" id="gesuche">
+			<form method="post">
+				<h1>Subscribe to search requests</h1>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ABO_REQUEST" value="1" {if ABO_REQUEST}checked="checked" {endif}/>
+                        Please inform me daily about new search requests on the marketplace.
+                    </label>
+                </div>
+				{if done_abo_request}
+				<p class="text-success">
+                    Changes saved successfully!
+				</p>
+				{endif}
+				<input name="ABO_SUBMIT" type="submit" class="btn btn-default" value="Change settings" />
+			</form>
+		</div>
+	</div>
+
+
+{endif}
+
+{startblock(script)}
+{parentblock()}
+<script type="application/javascript">
+    function pause_anzeige_agent( url, ptr ) {
+        var status = null;
+        if ( $(ptr).hasClass('btn-red') ){
+            status = 1;
+		}
+		else if ( $(ptr).hasClass('btn-green') ) {
+            status = 0;
+		}
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: url,
+            data: {
+                STATUS: status
+			},
+            success: function( resp ) {
+                var element = $(ptr);
+                if ( element.hasClass('btn-red') ) {
+                    element.removeClass('btn-red');
+                    element.addClass('btn-green');
+				}
+				else if ( element.hasClass('btn-green') ) {
+                    element.removeClass('btn-green');
+                    element.addClass('btn-red');
+				}
+				element.blur();
+            },
+            error: function( resp ) {}
+        });
+    }
+</script>
+{endblock(script)}

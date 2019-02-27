@@ -1,0 +1,13 @@
+<tr class="zeile{even}">
+ <td><a href="index.php?page={curpage}&do=edit&id={ID_NAV}" title="Zuordnung &auml;ndern"><img src="gfx/btn.edit.gif" width="32" height="16"></a></td>
+ {if edit == ID_NAV}<td style="border:1px red dashed">
+ <form method="post" action ="index.php" style="display:inline">
+ <input type="hidden" name="FK_NAV" value="{ID_NAV}">
+ <input type="hidden" name="page" value="{curpage}">
+ {select(galerie,ID_GALERIE,LABEL)} <input type="submit" value="&Auml;ndern"> <input type="button" value="abbrechen" onClick="window.location.href='index.php?page={curpage}'">
+ </form>
+ {else}<td><a name="nav{ID_NAV}"></a><a href="{if LABEL}index.php?page=modul_galerie_details&id={ID_GALERIE}{else}index.php?page={curpage}&do=edit&id={ID_NAV}{endif}" title="Bilder bearbeiten">{if LABEL}{htm(LABEL)}{else}<span class="error">keine</span>{endif}</a>
+ {endif}
+ </td> 
+ <td><a href="../index.php?page={htm(IDENT)}" title="Ansehen" target="_blank">{htm(V1)} :: {htm(IDENT)}.htm :: {htm(ALIAS)}</a></td>
+</tr>

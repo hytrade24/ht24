@@ -1,0 +1,70 @@
+add.event: 'Veranstaltung hinzufügen'
+add.new.event: 'Neue Veranstaltung eintragen'
+archive: Nachrichten-Archiv
+archive.lead: 'Alle Nachrichten, die auf unserem Portal veröffentlicht wurden.'
+article: Artikel
+article.edit: 'Artikel bearbeiten'
+article.error: 'Fehler beim Speichern des Artikels!'
+article.language.save.first: 'Bitte erst den Artikel speichern um die Sprache zu wechseln!'
+article.language.warning: 'Haben sie Ihre Änderungen gespeichert?\nDrücken Sie Abbrechen wenn Sie sich nicht sicher sind!'
+article.media.preview: Vorschau
+article.media.preview.label: Bilder/Videos
+article.media.preview.media: 'Dieses Bild/Video wird in der Vorschau des Artikels angezeigt.'
+article.notice.profile: 'Bitte ergänzen Sie folgende Angaben in ihrem <a href="{uri_action(my-profil)}">Profil</a> bevor Sie etwas veröffentlichen:<br />'
+article.preview: Vorschautext
+article.subject: Thema
+article.summary: Kurzbeschreibung
+article.summary.info: 'Die Kurzbeschreibung wird in der Übersicht unseres Portals angezeigt.'
+article.text: Artikeltext
+article.text.info: |
+  Bitte schreiben Sie ausführlich und vermeiden Sie Rechtschreibfehler.<br>
+                          Nicht ordnungsgemäße Texte werden von uns nicht freigeschaltet
+article.title: Überschrift
+article.write: 'Artikel schreiben'
+article.write.intro: 'Schreiben Sie einen Newsbeitrag und machen Sie auf Ihre Produkte oder Dienstleistung aufmerksam.'
+articles.none.found: 'Es wurden leider keine Artikel gefunden'
+calendar.record: 'Kalendereintrag erstellen'
+cancle.newsletter: 'Newsletter k&uuml;ndigen'
+category: Kategorien
+category.empty: 'Zurzeit befinden sich in dieser Kategorie keine News'
+club.member.request.reason: Beitrittsbegründung
+comments.long: |
+  Hier finden Sie eine Übersicht über alle Kommentare die Sie verfasst oder erhalten haben.<br />
+      Unter <a href="{uri_action(my-settings)}">Einstellungen</a> können Sie angeben, ob erhaltenen Kommentare automatisch oder manuell freigeschaltet werden müssen.
+delete: 'löschen (wenn noch nicht veröffentlicht)'
+delete.article: 'Diesen Artikel löschen'
+edit.article: 'Artikel bearbeiten'
+edit.event: 'Veranstaltung bearbeiten: {htm(TITLE)}'
+got.comments: 'Erhaltene Kommentare'
+have.to.release: 'muss von Ihnen freigegeben werden'
+hint: Hinweis
+hint.long: |
+  Bitte ergänzen Sie folgende Angaben in ihrem <a href="{uri_action(my-profil)}">Profil</a> bevor Sie etwas veröffentlichen:<br />
+  		<ul>
+  			{if error_addr_first}<li>Vorname</li>{endif}
+  			{if error_addr_last}<li>Nachname</li>{endif}
+  			{if error_addr_street}<li>Stra&szlig;e</li>{endif}
+  			{if error_addr_zip}<li>Postleitzahl</li>{endif}
+  			{if error_addr_city}<li>Wohnort</li>{endif}
+links.to.article: 'Links zum Artikel'
+make.other.user.attentive: 'Machen Sie andere Benutzer auf Ihre Veranstaltungen und Termine aufmerksam'
+more.articles: 'Weitere Beiträge'
+my.written.articles: 'Meine geschriebenen Artikel'
+my.written.articles.long: |
+  Hier finden Sie alle Artikel, die Sie bisher verfasst haben! Neue Artikel k&ouml;nnen Sie <a href="{uri_action(artikel_edit)}" title="Jetzt neuen Artiekl schreiben">hier</a> anlegen.
+          <br />Ihre Artikel bekommen erst ein ver&ouml;ffentlichungsdatum, wenn Sie selbst eine Freigabe gesetzt haben!
+new.article: 'Neuen Artikel einstellen'
+news: News
+news.title.general: Aktuelles
+newsletter.form.email: Emailadresse
+no.article: 'Keine Artikel'
+order.newsletter: 'Newsletter bestellen'
+read.article: 'Artikel lesen'
+read.lead: 'Lesen Sie alle Neuigkeiten rund um die Branche und unseren Marktplatz'
+register.now.for.our.newsletter: 'Melde dich jetzt zu unserem Newsletter an!'
+related.topics: 'Verwandte Beiträge'
+show.online: 'Online ansehen'
+sure.delete.article: 'Sicher dass Du diesen Artikel löschen möchtest?'
+user.news: '{htm(V1)} ansehen'
+written.comments: 'Geschriebene Kommentare'
+you.editing: 'in Bearbeitung durch Sie'

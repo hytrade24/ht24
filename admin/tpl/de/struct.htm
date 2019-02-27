@@ -1,0 +1,21 @@
+<h1>Struktur der öffentlichen Seite</h1>
+<p> Strukturen oder auch <em>Ordner</em> Ihrer Webseite. Hier finden Sie Ihre Navigations- Struktur sowie das Kategorie Modell. Die Strukturen sind das <em>Herzst&uuml;ck</em> Ihrer Webseite! Bitte bedenken Sie dieses, bevor Sie etwas l&ouml;schen, verschieben oder bearbeiten. Nahezu alle &Auml;nderungen wirken sich unmittelbar auf das Aussehen Ihrer Seiten aus.</p>
+<p>Wenn Sie &Auml;nderungen an Ihrer Seiten- Struktur vornehmen m&ouml;chten, klicken Sie bitte <a href="index.php?page=nav_edit&ROOT=1" title="Zur Struktur">hier.</a></p>
+{if msg}
+<div class="hinweis"><span class="error">{msg}</span></div>{endif}
+<table  border="0" cellspacing="0" cellpadding="0" class="liste">
+ <tr>
+  <td>
+   <table class="pathtab" cellpadding="0" cellspacing="0" border="0" width="100%">
+   <tr>
+    <th style="text-align:left;">&nbsp;Seite&nbsp;</th>
+    <th style="text-align:left;">&nbsp;Seite<br>
+	Eigenschaft&nbsp;</th>	
+    <th style="text-align:left;vertical-align:bottom;padding-bottom:0px;"><img src="gfx/path.{if navtree}66{else}64{endif}.png" width="19" height="17" align="left">&nbsp;root</th>
+    <th style="text-align:left;">&nbsp;Inhalt&nbsp;</th>
+   </tr>{baum}
+  </table>
+ </td>
+</tr>
+</table>
+

@@ -1,0 +1,85 @@
+{if !ID_PRODUCT}
+<h1>Produkt hinzuf&uuml;gen</h1>
+{else}
+<h1>Produkt bearbeiten</h1>
+{endif}
+<p>Hier können Sie einen neue Produkte zur Datenbank hinzufügen oder bestehende bearbeiten.</p>
+{if errors}
+<div class="hinweis">
+  <h3 class="error">Ein Fehler ist aufgetreten!</h3>
+  {errors}
+</div>
+{endif}
+<form method="post">
+<table width="550" cellspacing="0" class="liste">
+  <tr>
+    <td><strong>Name</strong></td>
+    <td>
+      <input style="width:99%;" name="V1" value="{htm(V1)}">
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Hersteller</strong></td>
+    <td>
+      <select style="width:99%;" name="FK_MAN">
+        {liste}
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Kurzbeschreibung</strong></td>
+    <td>
+      <textarea style="height: 100px; width:99%;" name="V2">{htm(V2)}</textarea>
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Komplette Beschreibung</strong></td>
+    <td>
+      <textarea style="height: 100px; width:99%;" name="T1">{htm(T1)}</textarea>
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Bestell-Nr.</strong></td>
+    <td>
+      <input style="width:99%;" name="ID_ORDER" value="{ID_ORDER}">
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Volt</strong></td>
+    <td>
+      <input style="width:99%;" name="VOLT" value="{VOLT}">
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Watt</strong></td>
+    <td>
+      <input style="width:99%;" name="WATT" value="{WATT}">
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Verkaufspreis</strong></td>
+    <td>
+      <input style="width:99%;" name="PRICE" value="{PRICE}">
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Einkaufspreis</strong></td>
+    <td>
+      <input style="width:99%;" name="PRICE_MAN" value="{PRICE_MAN}">
+    </td>
+  </tr>
+  <tr>
+    <th style="text-align:right" colspan="2">
+      {if !ID_PRODUCT}
+        <input type="submit" value="Produkt hinzuf&uuml;gen">
+      {else}
+        <input type="hidden" name="ID_PRODUCT" value="{ID_PRODUCT}">
+        <input type="submit" value="&Auml;nderung speichern">
+      {endif}
+    </th>
+  </tr>
+  <tr>
+    <td colspan="2" class="footer">&nbsp;</td>
+  </tr>
+</table>
+</form>

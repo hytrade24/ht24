@@ -1,0 +1,86 @@
+<h1><img src="gfx/backup_64.gif" width="64" height="64" alt="" border="0" align="left"> Backup erzeugen</h1>
+<p>Hier k&ouml;nnen Sie ein Backup der Navigationsstruktur des &ouml;ffentlichen Bereiches sowie des administrativen Bereiches erstellen.</p>
+&nbsp;
+
+<h2>Backup erstellen</h2>
+<p>Vergeben Sie f&uuml;r Ihr Backup einen Namen. Sie k&ouml;nnen sp&auml;ter anhand des Namens danach suchen.</p>
+<form action="index.php" method="post">
+<input type="hidden" name="page" value="nestedset_backup" />
+<input type="hidden" name="opt" value="make_backup" />
+{if make_backup_err}<div class="error">{make_backup_err}</div><br />{endif}
+{if make_backup_ok}<div class="ok">{make_backup_ok}</div><br />{endif}
+<table class="formTable" cellspacing="0">
+	<tr>
+		<th>Backupname</th>
+		<td><input type="text" name="backupname" style="width:330px;" value="" /></td>
+	</tr>
+	<tr class="footer">
+  		<th>&nbsp;</th>
+		<td align="right"><input class="button" type="submit" value="Backup erzeugen" /></td>
+	</tr>
+</table>
+</form>
+
+<br />
+<h2>Backup suchen</h2>
+<p>Geben Sie einen Teil des Namens des Backups ein, um danach zu suchen.</p>
+<form action="index.php" method="post">
+<input type="hidden" name="page" value="nestedset_backup" />
+<input type="hidden" name="opt" value="search_dump" />
+<table class="formTable" cellspacing="0">
+	<tr>
+		<th>Suche</th>
+		<td><input type="text" name="backupname" style="width:330px;" value="" /></td>
+	</tr>
+	<tr class="footer">
+  		<th>&nbsp;</th>
+		<td align="right"><a href="index.php?page=nestedset_backup">Alle anzeigen</a> <input class="button" type="submit" value="Suchen" /></td>
+	</tr>
+</table>
+</form>
+
+<br />
+<h2>Wiederherstellen</h2>
+<p>Sie k&ouml;nnen hier einen alten Stand der Navigation wiederherstellen oder l&ouml;schen.</p>
+<form action="index.php" name="backup_list" method="post">
+<input type="hidden" name="page" value="nestedset_backup" />
+<input type="hidden" id="restore_opt" name="opt" value="restore_backup" />
+{if delete_err}<div class="error">{delete_err}</div><br />{endif}
+{if delete_ok}<div class="ok">{delete_ok}</div><br />{endif}
+{if restore_err}<div class="error">{restore_err}</div><br />{endif}
+{if restore_ok}<div class="ok">{restore_ok}</div><br />{endif}
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td>
+			<table border="0" cellspacing="0" cellpadding="4">
+				<tr>
+				</tr>
+			</table>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td valign="top">
+						<table width="100%" border="0" cellspacing="1" cellpadding="4" class="liste">
+							<tr>
+								<th>&nbsp;#&nbsp;</th>
+								<th>Name&nbsp;</th>
+								<th>Systembackup&nbsp;</th>
+								<th>Erstellt&nbsp;</th>
+								<th>Zuletzt verwendet&nbsp;</th>
+							</tr>
+							{list}
+						</table>
+					</td>
+				</tr>
+				<tr class="footer">
+					<th align="center" colspan="5">
+						<input type="reset" class="button" />
+						<input type="button" class="button" onclick="if(confirm('Möchten Sie die datenbanktabelle optimieren?')) {document.getElementById('restore_opt').value='optimize'; document.backup_list.submit();}" value="Tabelle Optimieren" />
+						<input type="button" class="button" onclick="if(confirm('Soll das ausgewählte Backup gelöscht werden?')) {document.getElementById('restore_opt').value='delete_dump'; document.backup_list.submit();}" value="L&ouml;schen" />
+						<input type="button" class="button" onclick="if(confirm('Möchten Sie das ausgewählte Backup einspielen?')) {document.backup_list.submit();}" value="Wiederherstellen" />
+					</th>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</form>

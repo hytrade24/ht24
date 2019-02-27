@@ -1,0 +1,91 @@
+<tr height="17" class="zeile{if is_current}x{else}{even}{endif}">
+  <td width="19">
+    <a title="bearbeiten" href="javascript:;" onClick="editkat({ID_KAT});return false;">
+      <img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0">
+    </a>
+  </td>
+{if actions}
+  <td width="19">
+    {if let_move}
+      {if kidcount}
+        <a href="javascript:if(checkPFlag())dialogTreeDel('index.php?frame={curframe}&page={curpagealias}&id={ID_KAT}&do=','{htm(V1)}')"><img src="gfx/btn.rmx.gif" width="32" height="16" alt="l&ouml;schen" border="0"></a>
+      {else}
+        <a href="index.php?frame={curframe}&page={curpagealias}&id={ID_KAT}&do=rm"
+            onClick="return checkPFlag() && confirm('diesen Punkt aus der Navigation entfernen?');"><img src="gfx/btn.del.gif" width="32" height="16" alt="l&ouml;schen" border="0"></a>
+      {else}
+        <img src="shim.gif" width="16" height="16" />
+      {endif}
+    {endif}
+    </td>
+    <td width="19">
+      <a href="index.php?frame={curframe}&page={curpagealias}&do=v{if B_VIS}0{else}1{endif}&id={ID_KAT}"
+        class="mv{if !visible}0{endif}"><img src="gfx/mv{even}.v{if B_VIS}1{else}0{endif}.gif" width="16" height="16" border="0" alt="{if B_VIS}verstecken{else}sichtbar machen{endif}"></a>
+    </td>
+{endif}
+   <td>
+     <table class="pathtab" cellpadding="0" cellspacing="0" border="0">
+       <tr height="17">
+         {path}
+         <td nowrap{if !visible} class="disabled"{endif}>
+           &nbsp;
+           {if !actions}
+             <a href="javascript:;" onClick="editkat({ID_KAT});return false;" title="bearbeiten">{htm(V1)}</a>
+           {else}
+             {htm(V1)}
+           {endif}
+         </td>
+       </tr>
+     </table>
+   </td>
+   {if !actions && 1==ROOT}
+     <td>
+       &nbsp;
+       {if FK_ATTR_GROUP}
+         <a {if thisag}style="font-weight:bold;" {endif}title="Attributgruppe bearbeiten" href="javascript:editag({FK_ATTR_GROUP});">
+           {print_fk(attr_group)}
+         </a>
+       {else}
+         --
+       {endif}
+       </td>
+     {endif}
+     {if actions && let_move}
+       <td>
+         {if !is_first}
+           <a href="index.php?frame={curframe}&page={curpagealias}&id={ID_KAT}&do=up"
+             class="mv" onClick="return checkPFlag();"><img src="gfx/mv{even}.up.gif" width="16" height="16" border="0" alt="hoch"></a>
+         {else}
+           <img src="shim.gif" width="16" height="16">
+         {endif}
+       </td>
+       <td>
+         {if !is_last}
+           <a href="index.php?frame={curframe}&page={curpagealias}&id={ID_KAT}&do=dn"
+             class="mv" onClick="return checkPFlag();"><img src="gfx/mv{even}.dn.gif" width="16" height="16" border="0" alt="runter"></a>
+         {else}
+           <img src="shim.gif" width="16" height="16">
+         {endif}
+       </td>
+       <td>
+         {if level>1}
+           <a href="index.php?frame={curframe}&page={curpagealias}&id={ID_KAT}&do=lt"
+             class="mv" onClick="return checkPFlag();"><img src="gfx/mv{even}.lt.gif" width="16" height="16" border="0" alt="Ebene hoch"></a>
+         {else}
+           <img src="shim.gif" width="16" height="16">
+         {endif}
+       </td>
+       <td>
+         {if !is_first}
+           <a href="index.php?frame={curframe}&page={curpagealias}&id={ID_KAT}&do=rt"
+             class="mv" onClick="return checkPFlag();"><img src="gfx/mv{even}.rt.gif" width="16" height="16" border="0" alt="Ebene tiefer"></a>
+         {else}
+           <img src="shim.gif" width="16" height="16">
+         {endif}
+       </td>
+     {endif}
+     {if perm_admin_katperm && rolemod}
+       {rolemod}
+     {endif}
+   {endif}
+ {endif}
+</tr>

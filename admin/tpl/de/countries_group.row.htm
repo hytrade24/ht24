@@ -1,0 +1,25 @@
+    <tr class="zeile{even}">
+      <td>
+        <a href="index.php?page=countries_group_edit&id={ID_COUNTRY_GROUP}">
+          <img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0">
+        </a>
+        <a href="index.php?page=countries_group&do=delete&id={ID_COUNTRY_GROUP}"
+            onclick="return confirm('Möchten Sie die Länder-Gruppe \'{htm(V1)}\' wirklich löschen?');">
+          <img src="gfx/btn.del.gif" width="32" height="16" alt="bearbeiten" border="0">
+        </a>
+        <a href="index.php?page=countries_group_edit&parent={ID_COUNTRY_GROUP}">
+          <img border="0" src="gfx/new.gif">
+        </a>
+      </td>
+      <td style="padding-left: {calc(NS_LEVEL*20-10)}px; padding-right: 20px;">
+        <img src="gfx/folder.png">
+        {htm(V1)}
+      </td>
+      <td>
+        {COUNTRY_LIST}
+      </td>
+      <td>
+        {COUNTRY_COUNT}
+      </td>
+    </tr>
+    

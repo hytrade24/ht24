@@ -1,0 +1,22 @@
+<h1>Schl&uuml;sselw&ouml;rter</h1>
+<p>Bitte w&auml;hlen Sie einen Anfangsbuchstaben, ujm entsprechende Schl&uuml;sselw&ouml;rter zu finden.
+</p>
+{charrefs}
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="page" value="keywords" />
+  <input type="hidden" name="ID_NEWS_KEY" value="{ID_NEWS_KEY}" />
+  <input type="hidden" name="c" value="{htm(c)}" />
+<div class="formTable"><br />
+  {if ID_NEWS_KEY}Keyword bearbeiten{else}neues Keyword anlegen{endif}:
+  <input type="text" name="V1" value="{htm(V1)}" />
+  <input type="submit" class="button" value="speichern" />
+<br /><br /></div></form>
+
+<table><tr>
+  <td>{words0}</td>
+  <td>{words1}</td>
+  <td>{words2}</td>
+  <td>{words3}</td>
+  <td>{words4}</td>
+  <td>{words5}</td>
+</tr></table>

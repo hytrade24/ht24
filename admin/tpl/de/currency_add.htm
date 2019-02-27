@@ -1,0 +1,51 @@
+{if ID_CURRENCY}
+<h1>Währung bearbeiten</h1>
+{else}
+<h1>Währung hinzufügen</h1>
+{endif}
+
+<form method="post">
+{if ID_CURRENCY}
+    <input type="hidden" name="ID_CURRENCY" value="{ID_CURRENCY}" />
+{endif}
+    <input type="hidden" name="BF_LANG" value="{LANGVAL}" />
+
+    <table class="formTable" cellspacing="0">
+        <tr>
+            <th valign="top">Name der Währung</th>
+            <td valign="top">
+                <input name="V1" value="{htm(V1)}" placeholder="z.B. Euro, Pfund" />
+            </td>
+        </tr>
+        <tr>
+            <th valign="top">Symbol der Währung</th>
+            <td valign="top">
+                <input name="V2" value="{htm(V2)}" placeholder="z.B. €, £" />
+            </td>
+        </tr>
+        <tr>
+            <th valign="top">Umrechnungskurs von {CURRENCY_DEFAULT}</th>
+            <td valign="top">
+                <input name="RATIO_FROM_DEFAULT" value="{RATIO_FROM_DEFAULT}" placeholder="1 {CURRENCY_DEFAULT} = ?" />
+            </td>
+        </tr>
+        <tr>
+            <th valign="top">ISO Währungs Format</th>
+            <td valign="top">
+                <input type="text" name="ISO_CURRENCY_FORMAT" value="{ISO_CURRENCY_FORMAT}" placeholder="z.B. EUR, USD, GBP" />
+            </td>
+        </tr>
+        <tr>
+            <th valign="top">Kann automatisch aktualisiert werden</th>
+            <td valign="top">
+                <input type="radio" name="AUTOMATICALLY_UPDATED" value="1" {if AUTOMATICALLY_UPDATED_1}checked{endif} /> Ja
+                <br />
+                <input type="radio" name="AUTOMATICALLY_UPDATED" value="0" {if AUTOMATICALLY_UPDATED_0}checked{endif} /> Nein
+            </td>
+        </tr>
+        <tr class="footer">
+            <td colspan="3" align="right"><input type="submit" value="Speichern" class="button"></td>
+        </tr>
+    </table>
+
+</form>

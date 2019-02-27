@@ -1,0 +1,43 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>
+            QR-Code für das Werben von Kunden
+        </h3>
+    </div>
+    <div class="modal-body">
+        <div class="row design-marketplace-qr-code">
+            <div class="col-xs-4">
+                <a href="{URL_TARGET}" target="_blank">
+                    <img src="{QRCODE}" />
+                </a>
+                <br />
+                <a class="btn btn-default" href="{uri_action(my-sales-codes,qrcode,{ID_SALES_CODE},download)}">
+                    <i class="glyphicon glyphicon-download-alt"></i>
+                    Herunterladen
+                </a>
+            </div>
+            <div class="col-xs-8">
+                <p>
+                    Wenn Sie den QR-Code auf Webseiten oder in Foren einbauen möchten, kopieren Sie sich dazu einfach
+                        den entsprechenden Code und fügen Sie diesen in der Webseite / dem Forum ein.
+                </p>
+                <p>
+                    <strong>Einbinden auf Webseiten</strong>
+                    <br />
+                    <input class="form-control" type="text" value='<a href="{URL_TARGET}" target="_blank"><img src="{QRCODE}" /></a>' onclick="jQuery(this).select();" readonly />
+                </p>
+                <p>
+                    <strong>Einbinden in Foren</strong>
+                    <br />
+                    <input class="form-control" type="text" value='[url={URL_TARGET}][img]{QRCODE}[/img][/url]' onclick="jQuery(this).select();" readonly />
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-default" data-dismiss="modal">Fenster schließen</a>
+    </div>
+  </div>
+</div>

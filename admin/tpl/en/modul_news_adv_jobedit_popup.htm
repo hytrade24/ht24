@@ -1,0 +1,61 @@
+<script type="text/javascript">
+<!--
+function uebernehmen() 
+{
+  var id = document.getElementById('autor').value;
+  if(id)
+  {
+    if(window.opener)
+	{
+	  fenster = window.opener.document;
+      fenster.forms[0].FK_AUTOR.value = id;
+	  fenster.forms[0].NAME_.value = id;
+      alert("Benutzer wurde übernommen.\nDas Fenster wird geschlossen");
+	  window.opener.focus();
+	  window.close();
+	}
+	else
+	  alert('Hauptfenster wurde bereits geschlossen');
+  }
+  else
+    alert('bitte wählen Sie einen Benutzer aus!');
+}
+-->
+</script>
+<div style="background-color:#EEEEEE; height:400px; width:500px;">
+  <!-- Usersuche -->
+  Suchen Sie gezielt nach existierenden Usern, um sie als Autor einzufügen. Sie können nach dem Username im System, als auch nach dem richtigen Name suchen.
+  <form method="post" action="index.php?page=modul_news_adv_edit_popup&frame=popup">
+    <p>
+	  <table>
+	    <tr>
+		  <td>
+            Username
+	      </td>
+		  <td>
+		    <input type="text" name="NAME_" size="15" value="{NAME_}" />
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+            Name
+		  </td>
+		  <td>
+		    <input type="text" name="NNAME_" size="15"  value="{NNAME_}" />
+		  </td>
+		</tr>
+	  </table>
+    </p>
+      <input type="submit" value="Suchen">
+  </form>
+  Mit der Suche übereinstimmende Autoren werden hier angezeigt. Haben Sie die Suchfunktion nicht genutzt, werden hier alle registrierten User angezeigt.
+  <!-- Anzeige gefundener Autoren und bei Klick übermittlung in FK_AUTOR hidden im opener -->
+  <form>
+    <p>
+      <select name="FK_AUTOR" size="1" id="autor">
+        {liste}
+      </select>
+      <input type="button" onclick="uebernehmen()" value="Autor &uuml;bernehmen">
+	</p>
+  </form>
+</div>

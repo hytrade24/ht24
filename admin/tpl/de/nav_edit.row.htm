@@ -1,0 +1,100 @@
+<tr height="17" class="zeile{if is_current}x{else}{even}{endif}" data-id="{ID_NAV}" data-level="{level}">
+
+
+{if actions}
+  <td height="17" nowrap>
+    <a name="nav{ID_NAV}"></a>
+    {if !B_SYS || perm_edit_syspages_E}
+    <a href="{pageref(page_edit_nav)}&ID_NAV={ID_NAV}" {if B_SYS}onclick="return confirm('Sind Sie sicher?\nDies ist eine Systemseite!\nDas Bearbeiten kann zu Funktionsstörungen führen!')"{endif}>
+    	<img src="gfx/options_48x16.gif" width="48" height="16" border="0" style="width: 48px;" />
+    </a>&nbsp;
+	{if ROOT != 2 && IDENT}
+		<a href="{pageref(template_edit)}&ROOT={ROOT}&tpl={IDENT}" {if B_SYS}onclick="return confirm('Sind Sie sicher?\nDies ist eine Systemseite!\nDas Bearbeiten kann zu Funktionsstörungen führen!')"{endif}>
+			<img src="gfx/html_48x16.gif" width="48" height="16" alt="" border="0" style="width: 48px;" />
+		</a>&nbsp;&nbsp;
+	{endif}
+{else}
+	<img src="gfx/achtung.gif" width="16" height="16" alt="Erlaubnis verweigert"  style="width: 16px;" />{endif}
+  </td>
+  
+  <td width="33">
+  {if !B_SYS || perm_edit_syspages_D}{if let_move}{if kidcount}<a href="javascript:dialogTreeDel('index.php?frame=content&page={curpagealias}&id={ID_NAV}&do=','{htm(V1)}')"><img src="gfx/btn.rmx.gif" width="32" height="16" alt="l&ouml;schen" border="0" /></a>
+  {else}
+  <a href="index.php?frame=content&page={curpagealias}&id={ID_NAV}&do=rm" onClick="return confirm('diesen Punkt aus der Navigation entfernen?');"><img src="gfx/btn.del.gif" width="32" height="16" alt="l&ouml;schen" border="0" /></a>{endif}{else}<img src="shim.gif" width="16" height="16" />{endif}{else}<img src="gfx/achtung.gif" width="16" height="16" alt="Erlaubnis verweigert" />{endif}
+  </td>
+  
+  <td width="20">
+    <a href="index.php?frame=content&page={curpagealias}&do=v{if B_VIS}0{else}1{endif}&id={ID_NAV}" class="mv{if !visible}0{endif}">
+    	<img src="gfx/mv{even}.v{if B_VIS}1{else}0{endif}.gif" width="16" height="16" border="0" alt="{if B_VIS}verstecken{else}sichtbar machen{endif}" style="width: 16px;" />
+    </a>
+  </td>
+  
+  <td width="36" nowrap="nowrap">
+    <a id="search_link{ID_NAV}" href="javascript:toggle_search({ID_NAV},{if B_SEARCH}0{else}1{endif});">
+    	<img id="search_img{ID_NAV}" width="16" height="16" {if B_SEARCH}src="gfx/spider.png" alt="Erlaubnis verweigert"{else}src="gfx/nospider.png" alt="Erlaubnis verweigert"{endif}/>
+	</a>
+    {if USE_SSL && ((USE_SSL_GLOBAL>0 || B_SSL>0) && ALLOW_USER_SSL)}
+    <span data-id="{ID_NAV}" data-status="{B_SSL}" title="SSL-Verschlüsselung aktiviert {if !USE_SSL_GLOBAL && B_SSL==1}(optional){endif}">
+        <img id="ssl_img{ID_NAV}" height="16" src="gfx/btn.lock1.gif" style="opacity: {if !USE_SSL_GLOBAL && B_SSL==1}0.33{else}1{endif};" />
+    </span>
+    {endif}
+  </td>
+  
+{else}
+
+  <td colspan="3">
+    <input type="radio" name="trg" {if trg == ID_NAV}checked {endif}value="{ID_NAV}" id="radio_{ID_NAV}" class="nob" />
+  </td>
+  
+{endif}
+
+  <td{if V2} title="{htm(V2)}"{endif}>
+    <table class="pathtab" cellpadding="0" cellspacing="0" border="0">
+      <tr height="17">
+        {path}
+<!--   <td><img width="{level}0" height="1" src="gfx/path.0.png"></td> -->
+<!--     <td>[{level}] </td> -->
+        <td nowrap{if !visible} class="disabled"{endif}>
+		  &nbsp;{if B_SYS}&nbsp;<img src="gfx/sys.gif" width="16" height="11" alt="" border="0" />{endif}&nbsp;{if !actions}<label for="radio_{ID_NAV}">{htm(V1)}</label>{else}{htm(V1)}{endif}
+		</td>
+      </tr>
+    </table>
+  </td>
+  <td align="center" nowrap>
+    {if MODUL}<img src="gfx/modul_{modulgfx}.gif" width="32" height="16" alt="{MODUL}" border="0" />{else}&nbsp;{endif}
+  </td>
+  
+  <td align="center">
+    {if FK_INFOSEITE}<a href="#nav{ID_NAV}" onclick="popupfkt('infoseiten_edit&ID_INFOSEITE={FK_INFOSEITE}',1000,800);" title="{htm(INFOBEREICH)} bearbeiten"><img src="gfx/nav_info.gif" width="32" height="16" alt="{htm(INFOBEREICH)}" /></a>{else}&nbsp;{endif}
+  </td>
+  
+  {if actions}
+  
+  <td{if !visible} class="disabled"{endif}{if V2} title="{htm(V2)}"{endif}>
+    &nbsp;{htm(IDENT)} / {S_LAYOUT}&nbsp;
+  </td>
+  
+  <td{if !visible} class="disabled"{endif}{if V2} title="{htm(V2)}"{endif}>
+    &nbsp;{htm(ALIAS)}&nbsp;
+  </td>
+  
+  {if let_move}
+  
+  <td>
+    {if !is_first}<a href="index.php?frame=content&page={curpagealias}&id={ID_NAV}&do=up" class="mv"><img src="gfx/mv{even}.up.gif" width="16" height="16" border="0" alt="hoch" /></a>{else}<img src="shim.gif" width="16" height="16" />{endif}
+  </td>
+  <td>
+    {if !is_last}<a href="index.php?frame=content&page={curpagealias}&id={ID_NAV}&do=dn" class="mv"><img src="gfx/mv{even}.dn.gif" width="16" height="16" border="0" alt="runter" /></a>{else}<img src="shim.gif" width="16" height="16" />{endif}
+  </td>
+  <td>
+    {if level>1}<a href="index.php?frame=content&page={curpagealias}&id={ID_NAV}&do=lt" class="mv"><img src="gfx/mv{even}.lt.gif" width="16" height="16" border="0" alt="Ebene hoch" /></a>{else}<img src="shim.gif" width="16" height="16" />{endif}
+  </td>
+  <td>
+    {if !is_first}<a href="index.php?frame=content&page={curpagealias}&id={ID_NAV}&do=rt" class="mv"><img src="gfx/mv{even}.rt.gif" width="16" height="16" border="0" alt="Ebene tiefer" /></a>{else}<img src="shim.gif" width="16" height="16" />{endif}
+  </td>
+  
+  {endif}
+  {if perm_admin_pageperm}{if rolemod}{rolemod}{endif}
+  {endif}{endif}
+
+</tr>

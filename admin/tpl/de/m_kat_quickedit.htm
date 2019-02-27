@@ -1,0 +1,109 @@
+<h2>{KAT_PATH}</h2>
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-advertisement">Werbepreise</a></li>
+		{if SETTINGS_AFFILIATE}<li><a href="#tabs-affiliate">Affiliate</a></li>{endif}
+    </ul>
+
+    <div id="tabs-advertisement">
+        <form action="index.php" id="katQuickEditAdvertisementForm" class="katQuickEditForm" onsubmit="return false;">
+            <input type="hidden" name="page" value="m_kat_quickedit">
+            <input type="hidden" name="ID_KAT" value="{KAT_ID_KAT}">
+            <input type="hidden" name="DO" value="SAVE">
+            <input type="hidden" name="TYPE" value="ADVERTISEMENT">
+
+
+            <table class="liste" style="width: 100%" cellspacing="0">
+                <tr>
+                    <th colspan="2"></th>
+                    {ADVERTISEMENT_TABLE_USERGROUP_TH}
+                </tr>
+                {ADVERTISEMENT_TABLE}
+            </table>
+            <p style="float: right" class="form-result"></p>
+            <p style="width: 50%;">Preise müssen brutto und pro Tag angegeben werden.</p>
+
+            <div style="clear: both"></div>
+
+            <div style="float: right">
+                <a type="button" class="button" href="#" onclick="submitForm('#katQuickEditAdvertisementForm', 1); return false;">Werbepreise für die Kategorie und alle Unterkategorien speichern</a>
+                <a type="button" class="button" href="#" onclick="submitForm('#katQuickEditAdvertisementForm', 0); return false;">Werbepreise speichern</a>
+            </div>
+        </form>
+    </div>
+	{if SETTINGS_AFFILIATE}
+	<div id="tabs-affiliate">
+		<form action="index.php" id="katQuickEditAffiliateForm" class="katQuickEditForm" onsubmit="return false;">
+			<input type="hidden" name="page" value="m_kat_quickedit">
+			<input type="hidden" name="ID_KAT" value="{KAT_ID_KAT}">
+			<input type="hidden" name="DO" value="SAVE">
+			<input type="hidden" name="TYPE" value="AFFILIATE">
+
+
+			<table class="liste" style="width: 100%">
+				<tr>
+					<th>Affiliate Link</th>
+					<th>Kategorie Zuordnung</th>
+				</tr>
+				{AFFILIATE_ROW}
+			</table>
+			<p style="float: right" class="form-result"></p>
+
+			<div style="clear: both"></div>
+
+			<div style="float: right">
+				<a type="button" class="button" href="#" onclick="submitForm('#katQuickEditAffiliateForm', 1); return false;">Affiliate Kategoriezuordnung für die Kategorie und alle Unterkategorien speichern</a>
+				<a type="button" class="button" href="#" onclick="submitForm('#katQuickEditAffiliateForm', 0); return false;">Affiliate Kategoriezuordnung speichern</a>
+			</div>
+		</form>
+	</div>
+
+	{endif}
+</div>
+
+<div style="clear: both;"></div>
+<br>
+
+{if PREDECESSOR_ID_KAT > 1}<a href="#" class="button" onclick="changeCategory({PREDECESSOR_ID_KAT}); return false;">Zurück zu {PREDECESSOR_V1}</a>{endif}
+{if SUCCESSOR_ID_KAT}<div style="float: right"><a href="#"class="button"  onclick="changeCategory({SUCCESSOR_ID_KAT}); return false;">Weiter zu {SUCCESSOR_V1}</a></div>{endif}
+
+
+<script type="text/javascript">
+    function changeCategory(category) {
+        var selectedTab = jQuery("#tabs").tabs('option', 'selected');
+         jQuery.get('index.php?frame=ajax&page=m_kat_quickedit&DO=load&ID_KAT='+category+"&SELECTED_TAB="+selectedTab, function(data) {
+            jQuery("#dialog").html(data);
+        });
+    }
+
+    function submitForm(formName, passToChildren) {
+        var form = jQuery(formName);
+
+        if(passToChildren) {
+            if(!confirm('Möchten Sie die Einstellung für die Kategorie {KAT_PATH} und alle Unterkategorien speichern? Bestehende Einstellungen werden überschrieben.'))  {
+                return false;
+            }
+        }
+
+        jQuery.ajax({
+            url: 'index.php',
+            data: form.serialize() + '&PASS_TO_CHILDREN=' + passToChildren,
+            type: 'POST',
+            dataType: 'json',
+            success: function(result) {
+                if(result.success) {
+                    form.find(".form-result").html('<span class="ok">Erfolgreich gespeichert</span>');
+                } else {
+                    form.find(".form-result").html('<span class="error">Fehler beim Speichern</span>');
+                }
+            }
+        })
+
+        return false;
+    }
+
+
+    jQuery("#tabs").tabs();
+    {if SELECTED_TAB}jQuery("#tabs").tabs('select', {SELECTED_TAB});{endif}
+</script>

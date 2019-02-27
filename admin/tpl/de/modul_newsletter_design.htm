@@ -1,0 +1,28 @@
+<h1>Newsletter Design</h1>
+
+<p>Sie k&ouml;nnen ein Newsletter Grunddesign definieren und hier abspeichern! Bitte beachten Sie, 
+dass Sie einen Platzhalter f&uuml;r den eigentlichen Newsletter definieren m&uuml;ssen. 
+Der Platzhalter muss so aussehen: <strong>{noparse(NL)}</strong></p>
+<p>Das Design muss im HTML Format angelegt sein!</p>
+{if err}
+  <h1 class="error">Fehler aufgetreten!</h1>
+  <p class="error">{err}</p>
+{endif}
+{if ok}
+ <h2 class="ok">Speichervorgang erfolgreich!</h2>
+{endif}
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="{curpage}">
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th>Geben Sie hier den Code f&uuml;r das Design ein</th>   
+  </tr>
+  <tr>
+   <td><textarea name="DESIGN"  cols="70" rows="12">{htm(DESIGN)}</textarea></td>
+  </tr>
+  <tr class="footer">
+   <td align="right"><input type="submit" value="Speichern" class="button"></td>
+  </tr>
+ </table>
+</form>
+<p>&nbsp;</p>

@@ -1,0 +1,15 @@
+{if (INVOICE_STATUS==0) && !TIMED_OUT}
+<li>
+    <strong>
+        {htm(V1)}
+    </strong>
+    {if (MAX0==-1)}
+        (Flatrate)
+    {else}
+        ({MAX0} Anzeigen)
+    {endif}
+    {if FK_INVOICE>0}
+        <a href="{uri_action(invoice,{FK_INVOICE})}">Rechnung Nr. {FK_INVOICE}</a>
+    {endif}
+</li>
+{endif}

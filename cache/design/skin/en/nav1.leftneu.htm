@@ -1,0 +1,10 @@
+<li {if is_inpath}class="active"{endif}>
+	<a href="{href}" title="{htm(V2)}">
+		<span>{htm(V1)}</span>
+	</a>
+    {if sub}
+		<ul>
+            {sub}
+		</ul>
+	{endif}
+</li>

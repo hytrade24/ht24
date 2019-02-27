@@ -1,0 +1,24 @@
+<tr class="zeile{even}">
+	<td valign="top" nowrap>
+		<a href="index.php?page=importfilter_edit&ID_IMPORT_FILTER={ID_IMPORT_FILTER}" title="Bearbeiten">
+			<img src="gfx/btn.edit.gif" width="32" height="16" alt="edit" />
+		</a>
+		<a onclick="return confirm('Wirklich löschen?');" href="index.php?page=importfilter&ID_IMPORT_FILTER={ID_IMPORT_FILTER}&act=del" title="Löschen">
+			<img src="gfx/btn.del.gif" width="32" height="16" alt="edit" />
+		</a>
+	</td>
+	<td valign="top">{htm(V1)}</td>
+	<td align="center" valign="top">
+		{if B_AKTIV}
+			<span class="ok">&radic;</span>
+		{else}
+			<span class="error">x</span>
+		{endif}
+	</td>
+	<td valign="top">
+		{htm(IDENT)}
+	</td>
+	<td valign="top">
+		{text(T1)}
+	</td>
+</tr>

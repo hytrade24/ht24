@@ -1,0 +1,74 @@
+[13.03.2018 15:52:51] SQL-Anweisungen werden ausgeführt: 'update/update.sql'
+[13.03.2018 15:52:51]   Table 'vendor_master' already exists
+[13.03.2018 15:53:56] SQL-Anweisungen werden ausgeführt: 'update/update.sql'
+[13.03.2018 15:53:56] SQL-Anweisungen ausgeführt: 'update/update.sql'
+[13.03.2018 15:53:56] Dateien werden kopiert...
+[13.03.2018 15:53:56]   Datei wurde modifiziert und muss zusammengeführt werden: '/admin/sys/tabledef.php'
+[13.03.2018 15:53:56]   Datei wurde modifiziert und muss zusammengeführt werden: '/admin/tpl/de/kat_edit.props.htm'
+[13.03.2018 15:53:56]   Datei wurde modifiziert und muss zusammengeführt werden: '/admin/tpl/kat_edit.php'
+[13.03.2018 15:53:56]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/resources/css/style_elements_general.less'
+[13.03.2018 15:53:56]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/my-vendor-details.htm'
+[13.03.2018 15:53:56]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/my-vendor-details.row.htm'
+[13.03.2018 15:53:56]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/my-vendor-nav.htm'
+[13.03.2018 15:53:56]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor.htm'
+[13.03.2018 15:53:56]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor_details.fields.htm'
+[13.03.2018 15:53:56]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor_details.fields.row_htmltext.htm'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor_details.group.htm'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor_details.group.row.htm'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor_search.field.htm'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor_search.group.base.htm'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor_search.group.htm'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor_search.group.location.htm'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor_search.htm'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/vendor_search.row.htm'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/design/default/default/tpl/view_vendor.htm'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/sys/lib.hdb.php'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/sys/lib.pub_kategorien.php'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/sys/lib.vendor.php'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/tpl/my-vendor-details.php'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/tpl/presearch_vendor_ajax.php'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/tpl/vendor_search.php'
+[13.03.2018 15:53:57]   Datei wurde modifiziert und muss zusammengeführt werden: '/tpl/view_vendor.php'
+[13.03.2018 16:01:46] Dateien werden kopiert...
+[13.03.2018 16:01:46]   Datei kopiert: /design/default/default/resources/css/style_elements_user.less
+[13.03.2018 16:01:46]   Datei kopiert: /design/default/default/tpl/vendor_search.group.base.manufacturer.htm
+[13.03.2018 16:01:46]   Datei kopiert: /design/default/en/translation/marketplace.yml
+[13.03.2018 16:01:46]   Datei kopiert: /sys/Rest/MarketplaceAds.php
+[13.03.2018 16:01:46] Notwendige Anpassungen am User-Design werden ermittelt...
+[13.03.2018 16:01:46]   tpl/vendor.htm muss angepasst werden!
+[13.03.2018 16:01:46]   tpl/view_vendor.htm muss angepasst werden!
+[13.03.2018 16:03:29]   Datei existiert nicht: design/user/default/tpl/vendor.htm
+[13.03.2018 16:03:55]   Datei existiert nicht: design/user/default/tpl/view_vendor.htm
+[13.03.2018 16:03:57] Notwendige Anpassungen am User-Design werden ermittelt...
+[13.03.2018 16:03:57] Navigationspunkt wird hinzugefügt: 'Array' / 'my-vendor-details' ...
+[13.03.2018 16:03:57]   Doppelter Bezeichner für Navigationspunkt.
+[13.03.2018 16:07:48] Cache wird geleert...
+[16.04.2018 16:07:51] E-Mail-Template wird hinzugefügt: 'GROUP_FORUM_REPLY' / 'Mail an Autor bei neuer Antwort im Forum' ...
+[16.04.2018 16:07:51] E-Mail-Template hinzugefügt: 'GROUP_FORUM_REPLY' / ''
+[16.04.2018 16:19:01] E-Mail-Template wird hinzugefügt: 'GROUP_FORUM_REPLY' / 'Mail an Autor bei neuer Antwort im Forum' ...
+[16.04.2018 16:19:01]   Mailvorlage existiert bereits!
+[23.04.2018 15:22:15] Navigationspunkt wird hinzugefügt: 'Array' / 'comment_ratings' ...
+[23.04.2018 15:22:15] Navigationspunkt hinzugefügt: 'Array' / 'comment_ratings'
+[30.05.2018 09:44:59] Navigationspunkt wird hinzugefügt: 'Array' / 'my-vendor-details' ...
+[30.05.2018 09:44:59]   Doppelter Bezeichner für Navigationspunkt.
+[30.05.2018 09:45:12] Navigationspunkt wird hinzugefügt: 'Array' / 'comment_ratings' ...
+[30.05.2018 09:45:12]   Doppelter Bezeichner für Navigationspunkt.
+[30.05.2018 09:45:36] E-Mail-Template wird hinzugefügt: 'GROUP_FORUM_REPLY' / 'Mail an Autor bei neuer Antwort im Forum' ...
+[30.05.2018 09:45:36]   Mailvorlage existiert bereits!
+[30.05.2018 09:45:46] Lookup wird hinzugefügt: 'Array' / 'RGBFARBE' / '255.255.255.0' ...
+[30.05.2018 09:45:46]   Datenbank-Fehler!
+[30.05.2018 09:46:13] E-Mail-Template wird aktualisiert: 'AD_AGENT_REMINDER' / 'Anzeigenagent läuft in Kürze aus' ...
+[30.05.2018 09:46:13]   Ursprünglicher Mail-Betreff:
+[30.05.2018 09:46:13]     Ihr Anzeigenagent läuft in kürze aus!
+[30.05.2018 09:46:13]   Ursprünglicher E-Mailtext:
+[30.05.2018 09:46:13]     Hallo Max Mustermann!
+[30.05.2018 09:46:13]     
+[30.05.2018 09:46:13]     Einer oder mehrere ihrer Anzeigen-Agenten laufen in kürze aus. Um diese zu verlängern besuchen Sie die folgende URL:
+[30.05.2018 09:46:13]     {uri_action_full(ad_agent)}
+[30.05.2018 09:46:13]     
+[30.05.2018 09:46:35] Navigationspunkt wird hinzugefügt: 'Array' / 'presearch_useroverview_ajax' ...
+[30.05.2018 09:46:35] Navigationspunkt hinzugefügt: 'Array' / 'presearch_useroverview_ajax'
+[18.09.2018 17:03:17] Navigationspunkt wird hinzugefügt: 'Array' / 'import_stats' ...
+[18.09.2018 17:03:18] Navigationspunkt hinzugefügt: 'Array' / 'import_stats'
+[18.09.2018 17:03:18] Navigationspunkt wird hinzugefügt: 'Array' / 'my-vendor-steps' ...
+[18.09.2018 17:03:19] Navigationspunkt hinzugefügt: 'Array' / 'my-vendor-steps'

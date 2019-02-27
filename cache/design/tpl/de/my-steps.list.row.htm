@@ -1,0 +1,6 @@
+    <li class="step{if i==STEP_ACTIVE} active{endif}{if !ENABLED} disabled{endif}">
+        <a{if ENABLED} onclick="ShowStep('{IDENT}');"{endif} href="#step_{IDENT}">
+            {calc(i+1)}.
+            {htm(TITLE)}
+        </a>
+    </li>

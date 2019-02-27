@@ -1,0 +1,24 @@
+<tr class="zeile{even}">
+	<td>
+		{ID_AD_SOLD}
+	</td>
+	<td>
+		<a href="{uri_baseurl(/marktplatz_anzeige,{FK_AD}.htm)}" target="_blank" title="Anzeige in neuem Fenster ansehen">{FK_AD}</a>
+	</td>
+	<td>
+		<a title="User bearbeiten" href="index.php?page=user_edit&ID_USER={ID_SELLER}">
+			{htm(SELLER)}
+		</a>
+	</td>
+	<td>
+		<a title="User bearbeiten" href="index.php?page=user_edit&ID_USER={ID_BUYER}">
+			{htm(BUYER)}
+		</a>
+	</td>
+	<td>
+		{topreis(PREIS)}
+	</td>
+	<td>
+		{htm(PRODUKTNAME)}
+	</td>
+</tr>

@@ -1,0 +1,33 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="199"{endif}>
+    {kat_ariadne_dynamic({ID_KAT},marketplace)}
+
+<div class="row">
+
+<div class="col-xs-12 col-md-6">
+
+  	<h1>{V1}</h1>
+	<h3>{V2}</h3>
+  
+  {subtpl(tpl/de/kat_boxes.htm,ID_KAT,COLUMNS=2)}
+  {subtpl(tpl/{SYS_TPL_LANG}/slider_ads_top.htm,ID_KAT={ID_KAT},MAX_PER_PAGE=2,MAX_PAGES=3,INTERVAL=5000,HIDE_INDICATOR=1)}
+</div>
+<div class="col-xs-12 col-md-6">
+<div class="design-list-area design-list-area-ads-new" data-hide-when-empty="true">
+    <div class="heading">
+        <span class="heading-text">
+            Neu eingestellte Produkte...
+        </span>
+        <a href="{uri_action(alle-anzeigen)}" title="alle Anzeigen im Markt" class="btn btn-info">
+            Alle anzeigen
+        </a>
+    </div>
+    <div class="content">
+        {subtpl(tpl/{SYS_TPL_LANG}/ads_new.htm,ID_KAT={ID_KAT},CACHE_LIFETIME=103,COUNT=8,COUNT_PER_ROW=2,ONLY_TOP,HIDE_PARENT=1)}
+    </div>
+</div>
+  </div>
+
+</div>
+
+</div>

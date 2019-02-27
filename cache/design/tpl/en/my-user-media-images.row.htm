@@ -1,0 +1,35 @@
+<tr id="articleImage{i}">
+    <td>
+        <div class="thumbnail">
+            <a{if SRC} target="_blank" href="{uri_baseurl({SRC})}"{endif} class="galleryImagePreview">
+                {if BASE64}
+                <img src="data:{TYPE};base64,{BASE64}" style="height: 80px;" />
+                {else}
+                <img src="{uri_baseurl({SRC_THUMB})}">
+                {endif}
+            </a>
+        </div>
+    </td>
+    <td>
+        {if IS_DEFAULT==0}
+        <a href="#" onclick="ImageSetDefault({i}); return false;">Default image</a><br />
+        {else}
+        <strong>Default image</strong><br />
+        {endif}
+        <a href="#"  onclick="ImageDelete({i}); return false;">Delete</a>
+    </td>
+    <td class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputImageMetaTitle{i}">Title</label>
+            <div class="design-input-field">
+                <input class="form-control" type="text" id="inputImageMetaTitle{i}" name="META[IMAGES][{i}][TITLE]" value="{htm(META_TITLE)}" placeholder="Image title" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputImageMetaSource{i}">Source</label>
+            <div class="design-input-field">
+                <input class="form-control" type="text" id="inputImageMetaSource{i}" name="META[IMAGES][{i}][SOURCE]" value="{htm(META_SOURCE)}" placeholder="Image source" />
+            </div>
+        </div>
+    </td>
+</tr>

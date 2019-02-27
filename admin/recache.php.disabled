@@ -1,0 +1,25 @@
+<?php
+
+$n_navroot = 2;
+$s_cachepath = '../cache/';
+require_once '../inc.app.php';
+require_once 'sys/lib.kernel.php';
+nocache ();
+
+require_once 'inc.all.php';
+maqic_unquote_gpc ();
+
+registerAutoloader();
+
+// 2. db connect ===============================================================
+$db = new ebiz_db ( $db_name, $db_host, $db_user, $db_pass );
+unset ( $db_user );
+unset ( $db_pass );
+
+
+require_once $ab_path . 'sys/lib.cache.adapter.php';
+
+$cacheAdapter = new CacheAdapter();
+$cacheAdapter->cacheAll();
+
+leadsExecute("artisan config:cache");

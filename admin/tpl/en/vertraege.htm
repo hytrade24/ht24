@@ -1,0 +1,83 @@
+<script type="text/javascript">
+	function s_inv(id_i)
+	{
+		$('s_page').value = 'buchhaltung';
+		$('s_id').name = 'ID_INVOICE';
+		$('s_id').value = id_i;
+		$('s_go').submit();
+	}
+</script>
+
+<h1>
+	Abo Verträge
+</h1>
+<form method="post" action="index.php">
+	<input type="hidden" name="page" value="{curpage}" />
+	<input type="hidden" name="S_ID" value="{htm(S_ID)}" />
+	<table class="formTable" cellspacing="0">
+		<tr>
+			<th>
+				Vertragsnummer
+			</th>
+			<td>
+				<input type="text" name="ID_VERTRAG" value="{htm(ID_VERTRAG)}" />
+			</td>
+			<th>
+				Kundennummer
+			</th>
+			<td>
+				<input type="text" name="ID_KUNDE" value="{htm(ID_KUNDE)}" />
+			</td>
+		</tr>
+		<tr class="footer">
+			<td colspan="4" align="right">
+				<input type="submit" value="Suchen" class="button" />
+			</td>
+		</tr>
+	</table>
+</form>
+<br />
+
+<table class="liste" cellspacing="0">
+	<tr>
+		<th>
+			&nbsp;
+		</th>
+		<th>
+			Vertrags-ID
+		</th>
+		<th>
+			Paket
+		</th>
+		<th>
+			Kundennr.
+		</th>
+		<th>
+			Kunde
+		</th>
+		<th>
+			Vertragsbeginn
+		</th>
+		<th>
+			Gültig bis
+		</th>
+		<th>
+			Gekündigt zum
+		</th>
+		<th>
+			Laufzeit in Monaten
+		</th>
+		<th>
+			Preis
+		</th>
+		<th> &nbsp;&nbsp;&nbsp;
+			Letzte Rechnung
+		</th>
+	</tr>
+	{liste}
+</table>
+
+<p>
+	{pager}
+</p>
+<p>&nbsp;</p>

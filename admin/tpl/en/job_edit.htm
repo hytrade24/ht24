@@ -1,0 +1,171 @@
+<style type="text/css">@import url(/lib/jscalendar/skins/aqua/theme.css);</style>
+<script type="text/javascript" src="{uri_baseurl(/lib/jscalendar/calendar.js)}"></script>
+<script type="text/javascript" src="{uri_baseurl(/lib/jscalendar/lang/calendar-de.js)}"></script>
+<script type="text/javascript" src="{uri_baseurl(/lib/jscalendar/calendar-setup.js)}"></script>
+<form method="post" action="index.php" enctype="multipart/form-data" id="scrform{ID_JOB}">
+<input type="hidden" name="ID_JOB" value="{ID_JOB}" />
+<input type="hidden" name="FK_KAT" value="{FK_KAT}" id="fkkat" />
+<input type="hidden" name="what" value="job">
+<input type="hidden" name="frame" value="ajax">
+<input type="hidden" name="page" value="job_edit">
+<h1>Job editieren</h1>
+{if DELPDF}
+ <h3 class="ok">PDF wurde vom Server gelöscht!</h3>
+{endif}
+{if err}
+ <div class="error"><h2>Fehler aufgetreten!</h2><p>{err}</p></div>
+{endif}
+{if SAVED}
+ <h2 class="ok">Job wurde gespeichert!</h2>
+{endif}
+<table border="0" width="100%" class="mytable">
+ <tr>
+  <td>Freigabe</td>
+	<td>User:
+      <input type="checkbox" class="nob" name="OK[]" {if OK&1}checked {endif}value="1"  />
+Admin:
+<input type="checkbox" class="nob" name="OK[]" {if OK&2}checked {endif}value="2"  /></td>
+ </tr>
+</table>
+<div id="aKopf">
+<table border="0" width="100%" class="mytable">
+{if ONLINE == 3}
+ <tr>
+  <td>Online Version</td>
+	<td><a href="{uri_baseurl(/jobs/job,{ID_JOB},{urllabel(JOBTITLE)}.htm)}" target="_blank">Job ansehen</a></td>
+ </tr>
+ {endif}
+ <tr><td valign="top">In welchem Bereich ist der Job am ehesten angesiedelt</td><td valign="top">{lookup(JOBART,LU_JOBART,,,,-Bitte wählen-)} </td></tr>
+ <tr>
+  <td width="200">Titel des Jobs</td>
+  <td><input type="text" name="JOBTITLE" value="{htm(JOBTITLE)}" size="50" /></td>
+ </tr>
+ <tr>
+  <td valign="top">Kurzbeschreibung f&uuml;r &Uuml;bersicht<br />
+   (kein HTML)</td>
+  <td><textarea name="DSC" rows="5" cols="47">{htm(DSC)}</textarea> </td>
+ </tr>
+
+ <tr>
+  <td width="200">Auftragsbegin</td>
+  <td><select name="FLAG_START" id="FLAG_START" onchange="dropdownBlender(this.value+'|fixdate|FLAG_START');">
+        <option value="0" {if FLAG_START==0}selected{endif}>beliebig</option>
+		<option value="1" {if FLAG_START==1}selected{endif}>Fixdatum</option>
+		<option value="2" {if FLAG_START==2}selected{endif}>Sofort</option>
+	  </select></td>
+ </tr>
+</table>
+<div id="fixdate_1" {if FLAG_START!=1}style="display:none;"{endif}>
+<table border="0" width="100%" class="mytable">
+ <tr>
+  <td width="200">&nbsp;&nbsp;- Geben Sie ein Startdatum ein</td>
+  <td><input type="hidden" name="WANN" id="WANN" value="{WANN}" />
+      <input type="text" value="{todate(WANN)}" size="12" readonly="readonly" id="WANN_de" name="WANN_de" onclick="showCalendar();" /> <img src="{uri_baseurl(/bilder/kalender.png)}" style="cursor: pointer;" id="trigger" align="absmiddle"/>
+  
+  <script type="text/javascript">
+function catcalc(cal) {
+        var date = cal.date;
+        var time = date.getTime()
+        // use the _other_ field
+        var field = document.getElementById("WANN");
+        var date2 = new Date(time);
+        field.value = date2.print("%Y-%m-%d");
+    }
+
+     Calendar.setup(
+      {
+        inputField  : "WANN_de",         // ID of the input field
+        ifFormat    : "%d.%m.%Y",    // the date format
+	    singleClick : false,			// fenster schließt sich erst nach einem doppelklick, mit x oder wenn man außerhalb des fensters klickt
+     	onUpdate    : catcalc
+
+	  });
+
+	  Calendar.setup(
+      {
+        inputField  : "WANN_de",         // ID of the input field
+        ifFormat    : "%d.%m.%Y",    // the date format
+		button      : "trigger",      // ID of the button
+	    singleClick : false,			// fenster schließt sich erst nach einem doppelklick, mit x oder wenn man außerhalb des fensters klickt
+      	onUpdate    : catcalc
+
+	  });
+</script>
+
+  </td>
+ </tr>
+</table>
+</div>
+<table border="0" width="100%" class="mytable">
+ <tr>
+  <td width="200">Erf&uuml;llungsort</td>
+  <td>{lookup(WORKWERE,LU_WORKWERE,, onchange="dropdownBlender(this.value+'|lw_workwere|lu_workwere');",,)}</td>
+ </tr>
+</table>
+<div id="lw_workwere_68" {if LU_WORKWERE != 68}style="display: none;"{endif}>
+<table border="0" width="100%" class="mytable">
+ <tr>
+  <td width="200">&nbsp;&nbsp;- Land</td>
+  <td>{select(country,,,,,id="land",-Bitte wählen-)}</td>
+ </tr>
+ <tr>
+  <td>&nbsp;&nbsp;- PLZ</td>
+  <td><input type="text" name="PLZ" value="{htm(PLZ)}" size="15" /></td>
+ </tr>
+</table>
+</div>
+<table border="0" width="100%" class="mytable">
+  <tr>
+  <td width="200">Anmerkung</td>
+  <td><input type="text" name="ANMERKUNG" value="{htm(ANMERKUNG)}" size="50" /></td>
+ </tr>
+</table>
+</div>
+<div id="PROJECT" {if FK_KAT != 13}style="display: none;"{endif}>
+<table border="0" width="100%" class="mytable">
+ <tr>
+  <td width="200">Verg&uuml;tung</td>
+  <td>{lookup(VERGUETUNG,LU_VERGUETUNG,, onchange="dropdownBlender(this.value+'|lw_verguetung|lu_verguetung');",ID_LOOKUP,)}</td>
+ </tr>
+</table>
+
+<div id="lw_verguetung_61" {if LU_VERGUETUNG !=61 && FK_KAT==13}style="display: none;"{endif}>
+<table border="0" width="100%" class="mytable">
+ <tr>
+  <td width="200">Preisvorstellung (in {CURRENCY_DEFAULT})</td>
+  <td><input type="text" name="PRICE_NUM" value="{PRICE_NUM}"  size="6" /></td>
+ </tr>
+ <tr>
+  <td>Angebote erlauben</td>
+  <td><input type="checkbox" name="PRICE_MUST" {if PRICE_MUST} checked="checked"{endif} /></td>
+ </tr>
+</table>
+</div>
+</div>
+<table border="0" width="100%" class="mytable">
+ <tr>
+  <td colspan="2"><a href="index.php?page=job_edit_full&ID_JOB={ID_JOB}" title="Text bearbeiten" style="font-weight:bold;">Die Beschreibung kann nur in der Vollansicht bearbeitet werden</a></td>
+ </tr>
+ <tr>
+  <td colspan="2">{LONGTEXT}</td>
+ </tr>
+ {if liste}
+ <tr>
+  <td colspan="2">
+   <h3>PDF Dokumente</h3>
+	  <table class="liste" cellspacing="0">
+		 <tr>
+		  <th>Aktion</th>
+			<th>Dokument</th>
+		 </tr>
+		{liste}
+		</table>  
+	 </td>
+ </tr> 
+ {endif}
+ <tr class="footer">
+  <td align="right" colspan="2"><input type="button" class="button" value="Speichern" onclick="ajaxSubmit(document.getElementById('scrform{ID_JOB}'),'index.php',true,0,'details{ID_JOB}');"></td>
+ </tr>
+</table>
+
+</form>

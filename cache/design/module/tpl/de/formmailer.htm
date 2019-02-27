@@ -1,0 +1,82 @@
+{if send}
+	<h1>Vielen Dank!</h1>
+
+	Ihre Nachricht wurde erfolgreich zugestellt.<br />
+        Wir werden uns in Kürze bei Ihnen melden!
+{else}
+	{if err}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h2>Fehler aufgetreten!</h2>
+        <p>
+            Folgende Felder wurden nicht oder nur unvollst&auml;ndig ausgef&uuml;llt:
+            <br /> {err}
+        </p>
+    </div>
+	{endif}
+	<div class="design-contact-form">
+		<form method="POST" action="{uri_baseurl(/index.php)}" class="form-horizontal">
+			<input type="hidden" name="page" value="{curpage}" />
+			
+			<div class="form-group">
+				<label for="CONTACT_NAME" class="control-label design-input-label">
+					Ihr Name *
+				</label>
+				<div class="design-input-field">
+					<input id="CONTACT_NAME" class="form-control" name="NAME" type="text" value="{htm(NAME)}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="CONTACT_TELEFON" class="control-label design-input-label">
+					Ihre Telefonnummer
+				</label>
+				<div class="design-input-field">
+					<input id="CONTACT_TELEFON" class="form-control" name="TELEFON" type="text" value="{htm(TELEFON)}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="CONTACT_EMAIL" class="control-label design-input-label">
+					Ihre Email *
+				</label>
+				<div class="design-input-field">
+					<input id="CONTACT_EMAIL" class="form-control" name="EMAIL" type="text" value="{htm(EMAIL)}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="CONTACT_BETREFF" class="control-label design-input-label">
+					Betreff
+				</label>
+				<div class="design-input-field">
+					<input id="CONTACT_BETREFF" class="form-control" name="BETREFF" type="text" value="{htm(BETREFF)}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="CONTACT_TEXT" class="control-label design-input-label">
+					Ihre Nachricht *
+				</label>
+				<div class="design-input-field">
+					<textarea id="CONTACT_TEXT" class="form-control" name="TEXT" rows="8" cols="52">{htm(TEXT)}</textarea>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="design-input-notice">
+					Bitte beantworten Sie folgende Frage:
+					<br />
+					<label for="CONTACT_ANSWER">
+						{question()}
+					</label>
+					<input id="CONTACT_ANSWER" class="form-control" type="text" name="ANSWER" />
+				</div>
+			</div>
+			
+			<div class="text-right">
+				<input type="submit" value="Abschicken" class="btn btn-success">
+			</div>
+		</form>
+	</div>
+{endif}

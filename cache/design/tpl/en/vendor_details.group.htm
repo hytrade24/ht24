@@ -1,0 +1,14 @@
+{if liste}
+<div class="fieldGroup{ID_FIELD_GROUP}">
+	<h4>
+		{if !V1}
+			General Information
+		{else}
+			{htm(V1)}
+		{endif}
+	</h4>
+	<div class="">
+		{liste}
+	</div>
+</div>
+{endif}

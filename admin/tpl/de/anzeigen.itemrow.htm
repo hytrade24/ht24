@@ -1,0 +1,13 @@
+<tr class="zeile{even}" valign="top">
+  <td align="center">
+    <a href="index.php?page=anzeigen&ID_ANZEIGE={ID_ANZEIGE}"><img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0"></a>{if B_VIS}
+    <a href="index.php?page=anzeigen&ID_KAT={ID_KAT}&ofs={ofs}&ID_ANZEIGE={ID_ANZEIGE}&do=v0"><img src="gfx/mv.v1.png" width="16" height="16" alt="deaktivieren" border="0"></a>{else}
+    <a href="index.php?page=anzeigen&ID_KAT={ID_KAT}&ofs={ofs}&ID_ANZEIGE={ID_ANZEIGE}&do=v1"><img src="gfx/mv.v0.png" width="16" height="16" alt="aktivieren" border="0"></a>{endif}
+    <a href="index.php?page=anzeigen&ID_KAT={ID_KAT}&ofs={ofs}&ID_ANZEIGE={ID_ANZEIGE}&do=rm" onClick="return confirm('Wirklich l&ouml;schen?');"><img src="gfx/btn.rm.gif" width="16" height="16" alt="Script l&ouml;schen" border="0"></a>
+  </td>
+  <td align="left">{if B_TOP}<img src="gfx/btn.cashok.gif" width="19" height="15" alt="Top-Auktion" border="0">{else}&nbsp;{endif}</td>
+  <td>{print_fk(user,,NAME)}</td>
+  <td{if !B_VIS} class="disabled"{endif}>{htm(V1)}</td>
+  <td{if !B_VIS} class="disabled"{endif}>{todate(DATUM)}</td>
+  <td{if !B_VIS} class="disabled"{endif}>{VIEWS}</td>
+</tr>

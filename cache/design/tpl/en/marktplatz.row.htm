@@ -1,0 +1,126 @@
+
+{if (!noads) && ((i==0) || (i==3))}
+<div class="advertisement-box" style="text-align: center;">
+    {advertisement(1)}
+</div>
+{endif}
+
+<div class="design-ad-row{if (B_TOP&4)==4} top{endif}">
+
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+            <div class="design-ad-image">
+                <div class="design-ad-image-container">
+                    {if (B_TOP&4)==4}
+                        <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Look at {htm(PRODUKTNAME)}">
+                            <div class="design-ad-status-top">
+                                <span>Top advertisement</span>
+                            </div>
+                        </a>
+                    {endif}
+                    {if RUNTIME_DAYS_GONE<DAYS_ADS_NEW}
+                        <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Look at {htm(PRODUKTNAME)}">
+                            <div class="design-ad-status-new">
+                                <span>New</span>
+                            </div>
+                        </a>
+                    {endif}
+                    ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(BF_CONSTRAINTS_B2B)} == 0)°
+                        {if TRADE}
+                            <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Look at {htm(PRODUKTNAME)}">
+                                <div class="design-ad-status-trade"
+                                     data-toggle="tooltip" data-placement="right" title="The articleprice is negotiable">
+                                    <span>NG</span>
+                                </div>
+                            </a>
+                        {endif}
+                        {if PSEUDOPREIS && B_PSEUDOPREIS_DISCOUNT && (PSEUDOPREIS > PREIS)}
+                            <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Look at {htm(PRODUKTNAME)}">
+                                <div class="design-ad-status-discount">
+                                    <span>-{pseudopreis_discount({PREIS}, {PSEUDOPREIS})}%</span>
+                                </div>
+                            </a>
+                        {endif}
+                    ^endif°
+
+                    <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Look at {htm(PRODUKTNAME)}">
+                        {if IMPORT_IMAGES}{thumbnail_article_loader(#row-img-{ID_AD},{ID_AD},250,150,crop)}{endif}
+                        <img src="{if !IMG_DEFAULT_SRC}{uri_resource(/images/marketplace/nopic.jpg)}{else}{thumbnail_article({ID_AD},{IMG_DEFAULT_SRC},250,150,crop)}{endif}" id="row-img-{ID_AD}" data-watchlist="true" />
+                    </a>
+                </div>
+                {if SHOW_RATING}
+                <div class="design-ad-ratings">
+                    {if EAN}
+                        {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=ad_master,FK_STR={EAN},TEMPLATE=small)}
+                    {else}
+                        {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=ad_master,FK={ID_AD},TEMPLATE=small)}
+                    {endif}
+                </div>
+                {endif}
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-5">
+            <div class="design-ad-name">
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Look at {htm(PRODUKTNAME)}">
+                    {htm(PRODUKTNAME)}
+                </a>
+            </div>
+
+            <div class="design-ad-description">
+                ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(BF_CONSTRAINTS_B2B)} == 0)°
+                    {market_article_description({ID_AD})}
+                ^else°
+                    This offer is directed to <strong>tradepersons</strong> only.
+                                <br>
+                                Please log in as a trader, to display
+                                all productinformation.
+
+                ^endif°
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <div class="design-ad-price">
+                {if VERKAUFSOPTIONEN!=4 && !HIDE_PRICE}
+                ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(BF_CONSTRAINTS_B2B)} == 0)°
+                <div class="design-ad-price-new">
+                    {if VERKAUFSOPTIONEN!=2}
+                    {if VERKAUFSOPTIONEN!=3}
+                    {topreis_ex(PREIS)} {CURRENCY_DEFAULT}
+                    {else}
+                    From {topreis(PREIS)} {CURRENCY_DEFAULT} / day
+                    {endif}
+                    {else}
+                    Price on request
+                    {endif}
+                </div>
+                {if PSEUDOPREIS && B_PSEUDOPREIS_DISCOUNT && (PSEUDOPREIS > PREIS)}
+                <div class="design-ad-price-old">
+                    {topreis_ex(PSEUDOPREIS)} {CURRENCY_DEFAULT}
+                </div>
+                {endif}
+                ^endif°
+                {endif}
+            </div>
+            <div class="design-ad-country-flag">
+                <img src="{uri_baseurl(/bilder/flags/{lower(COUNTRY_CODE)}.png)}" alt=""/>
+            </div>
+            <div class="design-ad-actions">
+                {if ALLOW_COMMENTS && SYSTEM_ALLOW_COMMENTS}
+                <!-- Kommentare -->
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}#comments">
+                    <i class="glyphicon glyphicon-comment"></i>
+                    <span>
+                    {if COUNT_COMMENTS}{COUNT_COMMENTS}{else}0{endif}
+                    {if COUNT_COMMENTS==1}
+                        Comment
+                    {else}
+                        Comments
+                    {endif}
+                    </span>
+                </a>
+                <br />
+                {endif}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<h1>
+	<img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="10" />
+	{htm(NAME)}<br> Social Media Profile<br />
+</h1>
+<div class="clearfix"></div>
+<br />
+{if ok}
+<div class="alert alert-success">
+   Ihre Einstellungen wurden erfolgreich gespeichert!
+</div>
+{endif}
+{if err}
+<div class="alert alert-danger">
+    Es ist ein Fehler aufgetreten. Bitte überprüfen Sie Ihre Eingaben.
+</div>
+{endif}
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-settings-nav.htm,*)}
+
+<form method="post" action="{uri_action(my-profil-social-media)}">
+
+	<p>
+	    Sie können Ihren Account mit Social Media Profilen wie Facebook oder Google verbinden. Damit ermöglichen Sie ein Login über diese
+			Profile ohne Eingabe Ihres Passwortes.
+	</p>
+
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<tr>
+			<th>
+			</th>
+			<th>
+				Dienst
+			</th>
+			<th>
+				aktiv
+			</th>
+			<th>
+				Anzeigenamen
+			</th>
+			<th>
+				E-Mail
+			</th>
+		</tr>
+		{liste}
+	</table>
+
+</form>

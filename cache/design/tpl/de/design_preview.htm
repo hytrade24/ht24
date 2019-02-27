@@ -1,0 +1,108 @@
+<!-- <link rel="stylesheet/less" type="text/css" href="{uri_resource(/css/design.less)}" /> -->
+
+<div class="row">
+  <div class="col-xs-12 col-sm-9 col-sm-push-3">
+    
+    <div class="design-list-area design-list-area-ads-new" data-hide-when-empty="true">
+      
+      <div class="heading">
+        <span class="heading-text">
+            Neu eingestellte Produkte...
+        </span>
+        <a href="/de/alle-anzeigen/" title="alle Anzeigen im Markt" class="btn btn-info">
+          Alle anzeigen
+        </a>
+      </div>
+      
+      <div class="content">
+        <div class="design-ads-new design-subtpl">
+          <div class="design-row design-row-xs-1 design-row-sm-3">
+            {example_ads}
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+  <div class="col-xs-12 col-sm-3 col-sm-pull-9">
+    
+    {subtpl(tpl/{SYS_TPL_LANG}/kat_left_2.htm,*)}
+    
+  </div>
+</div>
+
+<div id="modal_loading" class="modal fade" style="display:none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h3 align="center">Wird geladen... Bitte warten Sie.</h3>
+      </div>
+      <div class="modal-body">
+          <p align="center">
+              <img src="{uri_baseurl(/gfx/ajax-loader.gif)}" alt="waiting">
+          </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  
+  /*
+   * Loading modal
+   */
+
+  modal_loading_active = false;
+
+  function LoadingStart(options) {
+    if (!modal_loading_active) {
+      jQuery('#modal_loading').unbind('hidden');
+      jQuery('#modal_loading').unbind('shown');
+
+      modal_loading_active = true;
+      if (!jQuery("#modal_loading").is(":visible")) {
+        jQuery('#modal_loading').on('hidden', function () {
+          LoadingStop();
+        });
+        if ((typeof options != "undefined") && (typeof options.shown != "undefined")) {
+          jQuery('#modal_loading').on('shown', options.shown);
+        }
+        jQuery("#modal_loading").modal("show");
+      }
+    }
+  }
+
+  function LoadingStop() {
+    if (modal_loading_active) {
+      modal_loading_active = false;
+
+      jQuery("#modal_loading").modal("hide");
+      // Workaround for some bug leaving the modal backdrop
+      jQuery('body').removeClass('modal-open');
+      jQuery('.modal-backdrop').remove();
+    }
+  }
+  
+  jQuery(function() {
+    
+    // Make first menu entry active
+    jQuery("#navbarCollapseMain .navbar-nav li:first-child").addClass("active");
+    
+    jQuery("link").each(function () {
+      var href = jQuery(this).attr("href");
+      if ((typeof href == "string") && href.match(/cache\/design\/resources\/[a-z]+\/css\/design.css$/i)) {
+        jQuery(this).attr("href", href.replace("\/css\/", "\/{cssDirectory}\/") + "?update=1");
+      }
+    });
+    LoadingStop();
+    
+    window.ebizDesignShowLoading = function() {
+      LoadingStart({});
+    };
+    
+  });
+  
+  LoadingStart({});
+</script>

@@ -1,0 +1,36 @@
+
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 2
+    'IDENT': 'import_stats'
+    'ALIAS': ''
+    'V1':
+      'de': 'Import stats'
+    'V2':
+      'de': 'Import stats'
+    'TARGET':
+      'BY_IDENT': 'crontab'
+    'S_LAYOUT': ''
+    'POSITION': 'appendAfter'
+    'B_VIS': 1
+    'B_SYS': 1
+    'ROLES': [ 'Admin' ]
+-
+  'action': 'navAdd'
+  'parameters':
+    'ROOT': 1
+    'IDENT': 'my-vendor-steps'
+    'ALIAS': ''
+    'V1':
+      'de': 'Branchenbuch-Eintrag bearbeiten'
+    'V2':
+      'de': 'Branchenbuch-Eintrag bearbeiten'
+    'TARGET':
+      'BY_IDENT': 'my-vendor'
+    'S_LAYOUT': ''
+    'POSITION': 'appendChild'
+    'B_VIS': 0
+    'B_SYS': 1
+    'B_SEARCH': 0
+    'ROLES': [ 'Admin', 'User', 'Haendler' ]

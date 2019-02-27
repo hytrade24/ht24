@@ -1,0 +1,142 @@
+<tr class="zeile{even}">
+	<td {if ID_VERSTOSS}title="Vertoss gemeldet: &quot;{htm(GRUND)}&quot; am {todate(STAMP_VERSTOSS)}"{endif}>
+		{if ID_VERSTOSS}
+			<a href="index.php?page=ad_warnings&FK_AD={ID_AD_MASTER}">
+				<img src="gfx/warnung.png" alt="warning" width="20" height="20" />
+			</a>
+		{else}
+			&nbsp;
+		{endif}
+	</td>
+    <td>
+    	{if !ADMIN_STAT}
+    	<a href="index.php?page={curpage}&ID_KAT={FK_KAT}&lock={ID_AD_MASTER}&search={search}&npage={npage}"  onclick="return confirm('Anzeige sperren?');" title="Anzeige deaktvieren und sperren?">
+    		<img src="gfx/ad_unlocked.png" alt="unlocked" width="16" height="16" />
+		</a>
+		{else}
+			<a href="index.php?page={curpage}&ID_KAT={FK_KAT}&unlock={ID_AD_MASTER}&search={search}&npage={npage}"  onclick="return confirm('Anzeige wieder freigeben?');" title="Anzeige wieder für den markt freigeben?">
+	    		<img src="gfx/ad_locked.png" alt="locked" width="16" height="16" />
+			</a>
+		{endif}
+        <a onclick="return confirm('Achtung! Alle dazugehörigen Medien, Preisverhandlungen und Verstöße werden ebenfalls gelöscht! Möchten Sie die Anzeige wirklich endgültig löschen?')" href="index.php?page={curpage}&show_kat={ID_KAT}&ID_KAT={FK_KAT}&delete={ID_AD_MASTER}&search={search}&npage={npage}">
+        	<img border="0" src="gfx/btn.del.gif">
+		</a>
+		<a onclick="jQuery('#ad_edit_{ID_AD_MASTER}').toggle();" title="Bearbeiten (Schnellansicht)">
+			<img border="0" src="gfx/btn.edit.gif" alt="Bearbeiten">
+		</a>
+		<!-- 
+		<a href="index.php?page={curpage}&show_kat={ID_KAT}&ID_KAT={FK_KAT}&cache={ID_AD_MASTER}&search={search}&npage={npage}">
+			<img border="0" src="gfx/btn.cache.png">
+		</a>
+		 -->
+		{if (STATUS&3)==2}
+			<a onclick="return confirm('Anzeige wirklich aktivieren?')" href="index.php?page={curpage}&show_kat={ID_KAT}&ID_KAT={FK_KAT}&activate={ID_AD_MASTER}&search={search}&npage={npage}">
+				<img border="0" src="gfx/btn.activate.gif">
+			</a>
+		{endif}
+		{if (STATUS&3)==1}
+			<a onclick="return confirm('Anzeige wirklich deaktivieren?')" href="index.php?page={curpage}&show_kat={ID_KAT}&ID_KAT={FK_KAT}&deactivate={ID_AD_MASTER}&search={search}&npage={npage}">
+				<img border="0" src="gfx/btn.deactivate.gif">
+			</a>
+			<a title="Topanzeige Ja/nein" style="cursor:pointer; float: right;" onclick="ad_top({if B_TOP}false{else}true{endif}, {ID_AD_MASTER}, {FK_KAT}, '{AD_TABLE}');" id="top_a_{ID_AD_MASTER}_{FK_KAT}" >
+				<img id="top_i_{ID_AD_MASTER}_{FK_KAT}" src="gfx/top{B_TOP}.png" width="32" height="16" alt="top" />
+			</a>
+		{else}
+			<img style="float: right;" title="Anzeige nicht aktiv" src="gfx/top.png" width="32" height="16" alt="top" />
+		{endif}
+    </td>
+	<td>
+		{ID_AD_MASTER}
+	</td>
+    <td>
+        {todate(STAMP_START)}
+    </td>
+    <td>
+        <a style="cursor: pointer;" onclick="showAd({ID_AD_MASTER});">
+          {htm(PRODUKTNAME)}
+        </a>
+    </td>
+    <td>
+        <a href="index.php?page=articles&quicksearch=1&ID_KAT={FK_KAT}">
+          {htm(KAT_NAME)}
+        </a>
+    </td>
+    <td>
+        <a href="index.php?page=user_edit&ID_USER={FK_USER}">{htm(USERNAME)}</a>
+    </td>
+    <td>
+        {topreis(PREIS)}&nbsp;{CURRENCY_DEFAULT}
+    </td>
+    <td align="center">
+        <a href="index.php?page=articles_files&ID_AD={ID_AD_MASTER}" onmouseover="PreviewImages({ID_AD_MASTER}, this);" onmouseout="HideImages({ID_AD_MASTER});">
+          {IMAGE_COUNT}
+        </a>
+        <div class="preview" id="image_preview{ID_AD_MASTER}" style="width: 180px; position: absolute; background-color: white; border: 1px solid black;"></div>
+    </td>
+    <td align="center">
+        <a href="index.php?page=articles_files&ID_AD={ID_AD_MASTER}" onmouseover="PreviewImages({ID_AD_MASTER}, this);" onmouseout="HideImages({ID_AD_MASTER});">
+          {UPLOAD_COUNT}
+        </a>
+    </td>
+    <td align="center">
+        <a href="index.php?page=transactions&ID_AD={ID_AD_MASTER}" onmouseover="PreviewImages({ID_AD_MASTER}, this);" onmouseout="HideImages({ID_AD_MASTER});">
+          {TRANSACTION_COUNT}
+        </a>
+    </td>
+</tr>
+<tr id="ad_edit_{ID_AD_MASTER}" style="display: none;">
+	<td colspan="11" style="padding-left: 80px;">
+		<form id="ad_edit_{ID_AD_MASTER}_form">
+			<input type="hidden" name="ID_AD" value="{ID_AD_MASTER}" />
+			<input type="hidden" name="AD_TABLE" value="{AD_TABLE}" />
+			<table cellpadding="0" cellspacing="0" style="width: 100%;">
+				<tr>
+					<th colspan="3">Anzeigen-Titel</th>
+					<th>L&auml;uft aus am:</th>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<input style="width: 99%;" name="PRODUKTNAME" value="{htm(PRODUKTNAME)}" />
+					</td>
+					<td>
+						{datedrop(STAMP_END)}
+					</td>
+				</tr>
+				<tr>
+					<th>Top-Anzeige</th>
+					<th>Menge</th>
+					<th>Preis</th>
+					<th>Versandkosten</th>
+				</tr>
+				<tr>
+					<td>
+						<input id="ad_edit_{ID_AD_MASTER}_top" type="checkbox" name="B_TOP" value="1" {if B_TOP}checked="checked"{endif}/>
+						<label for="ad_edit_{ID_AD_MASTER}_top">
+							Aktiv
+						</label>
+					</td>
+					<td>
+						<input name="MENGE" value="{htm(MENGE)}" />
+					</td>
+					<td>
+						<input name="PREIS" value="{topreis(PREIS)}" />
+					</td>
+					<td>
+						<input name="VERSANDKOSTEN" value="{htm(VERSANDKOSTEN)}" />
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top: 20px; font-weight: bold;" colspan="3">
+						<a href="index.php?page=articles_edit&show_kat={ID_KAT}&ID_KAT={FK_KAT}&edit={ID_AD_MASTER}">
+							<img border="0" src="gfx/btn.edit.gif" alt="[ICON]"> Artikel in der Vollansicht bearbeiten
+						</a>
+					</td>
+					<td style="padding-top: 20px;" align="right">
+						<input type="button" onclick="SaveEdit({ID_AD_MASTER});" align="right" value="Speichern" />
+					</td>
+				</tr>
+			</table>
+			<hr />
+		</form>
+	</td>
+</tr>

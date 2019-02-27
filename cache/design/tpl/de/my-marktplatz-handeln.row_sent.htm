@@ -1,0 +1,42 @@
+<tr class="zeile{even}">
+	<td class="design-action-buttons">
+		{if AD_STATUS == 1}
+		<a href="{uri_action(marktplatz_handeln,{FK_AD},{FK_AD_VARIANT},liste,{FK_NEGOTIATION})}" title="Zur Übersicht" class="btn btn-default">
+			<i class="glyphicon glyphicon-eye-open"></i>
+		</a>
+		{endif}
+	</td>
+	<td>{todate(STAMP_BID,1)}</td>
+	<td>
+		{if FK_AD_REQUEST>0}
+		<a href="{uri_action(marktplatz_anzeige,{FK_AD_REQUEST},{urllabel(REQUESTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT_REQUEST})})}" title="Zum Artikel" target="_blank">
+			<b>Gesuch:</b>
+			{htm(REQUESTNAME)}
+		</a>
+		<br />
+		{endif}
+    <a href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Zum Artikel">
+      <b>Artikel:</b>
+      {htm(PRODUKTNAME)}{if VARIANT} ({htm(VARIANT)}){endif}
+    </a>
+	</td>
+	<td>
+		<a href="{uri_action(view_user,{urllabel(OWNER_USERNAME)},{FK_USER_AD_OWNER})}" title="Profil anzeigen">
+			{htm(OWNER_USERNAME)}
+		</a>
+	</td>
+	<td align="right">
+		{topreis_ex(BID)} {CURRENCY_DEFAULT}
+	</td>
+	<td align="right">
+	{if SELLER_BID}
+		{topreis_ex(SELLER_BID)} {CURRENCY_DEFAULT}
+	{else}
+		---
+	{endif}
+	</td>
+	<td align="right">
+		{if BID_STATUS_ACCEPTED}<strong>Akzeptiert</strong>{endif}
+		{if BID_STATUS_ACTIVE || BID_STATUS_REQUEST}Offen{endif}
+	</td>
+</tr>

@@ -1,0 +1,127 @@
+<script type="application/javascript">
+
+function validateCodeInput(input) {
+    var code = jQuery(input).val();
+    var error = jQuery(input).attr("data-content");
+    var errorPrev = error;
+    if (code == "") {
+        error = "Sie müssen einen Code eingeben.";
+    } else if (!code.match(/^[a-z0-9-_]+$/i)) {
+        error = "Der eingegebene Code enthält ungültige Zeichen!<br />Zugelassen sind Buchstaben, Zahlen sowie Bindestriche.";
+    } else {
+        error = "";
+    }
+    if (error == "") {
+        jQuery(input).removeClass("error");
+    } else {
+        jQuery(input).addClass("error");
+    }
+    if (errorPrev != error) {
+        jQuery(input).attr("data-content", error).removeClass("error-visible");
+    }
+    showErrorMessage(input);
+}
+
+function showErrorMessage(input) {
+    if (jQuery(input).is('[data-content][data-content!=""]:focus')) {
+        if (!jQuery(input).is(".error-visible")) {
+            jQuery(input).addClass("error-visible").popover("show");
+        }
+    } else {
+        jQuery(input).removeClass("error-visible").popover("hide");
+    }
+}
+    
+function showSalesQrCode(codeId) {
+    jQuery.post("{uri_action(my-sales-codes,qrcode,"+codeId+")}", function(result) {
+        jQuery("#modalSalesQrCode").html(result).modal("show");
+    });
+}
+
+</script>
+
+<h1>Vertrieb - Registrierungs-Codes</h1>
+
+<p>
+    Hier haben Sie die Möglichkeit Registrierungs-Codes zu generieren um neue Kunden zu werben.
+        In der folgenden Übersicht finden Sie alle von ihnen bereits angelegten Registrierungs-Codes und die dazugehörigen Links.
+</p>
+
+{if ADDED || DELETED}
+<div class="alert alert-success">
+    {if ADDED}<strong>Registrierungs-Code erfolgreich hinzugefügt</strong>{endif}
+    {if DELETED}<strong>Registrierungs-Code erfolgreich gelöscht</strong>{endif}
+</div>
+{endif}
+
+<table class="table table-bordered table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>Aktion</th>
+            <th>Code</th>
+            <th>Link</th>
+            <th>Beschreibung</th>
+        </tr>
+    </thead>
+    <tbody>
+    {if liste}
+        {liste}
+    {else}
+        <tr>
+            <td colspan="4">
+                <i>Sie haben noch keine Registrierungs-Codes angelegt</i>
+            </td>
+        </tr>
+    {endif}
+    </tbody>
+</table>
+
+<h3>Neuen Code hinzufügen</h3>
+
+<p>
+    Um einen neuen Registrierubgs-Code hinzuzufügen, geben Sie den Code und optional eine Beschreibung ein und klicken Sie auf "Code hinzufügen".
+        <br />
+        <b>Der Code</b> ist frei wählbar und kann zum Beispiel aus ihrem Firmennamen bestehen. 
+        In dem Link, über den Sie dann Kunden werben können wird dieser Code enthalten sein.
+        <br />
+        <b>Die Beschreibung</b> ist optional und wird nicht öffentlich dargestellt. Diese dient nur zu ihrer Übersicht,
+        damit Sie für sich notieren können auf welche Art und Weise oder zu welcher Gelegenheit der entsprechende
+        Registrierungs-Code verteilt wird.
+        (z.B. "Messe Hamburg 2016" oder "E-Mail Newsletter 05/2016")    
+</p>
+
+{if ERROR}
+<div class="alert alert-danger">
+    <strong>Fehler!</strong>
+    <br />
+    {if ERROR_CODE_EMPTY}Sie müssen einen Code eingeben!{endif}
+    {if ERROR_CODE_DUPLICATE}Der von ihnen eingegebene Code ist bereits vergeben!{endif}
+    {if ERROR_CODE_INVALID}Der eingegebene Code enthält ungültige Zeichen!<br />Zugelassen sind Buchstaben, Zahlen sowie Bindestriche.{endif}
+</div>
+{endif}
+
+<div class="design-content-box">
+    <form method="post">
+        <div class="row">
+            <div class="col-xs-4">Code</div>
+            <div class="col-xs-4">Beschreibung</div>
+            <div class="col-xs-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <input type="text" name="CODE" value="{htm(CODE)}" required="required"
+                       data-placement="bottom" data-title="Fehler" data-html="true" data-trigger="manual"
+                       onfocus="showErrorMessage(this);" onblur="showErrorMessage(this);"
+                       onchange="validateCodeInput(this);" onkeyup="validateCodeInput(this);" />
+            </div>
+            <div class="col-xs-4">
+                <input type="text" name="DESCRIPTION" value="{htm(DESCRIPTION)}" />
+            </div>
+            <div class="col-xs-4">
+                <button class="btn">Code hinzufügen</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal" id="modalSalesQrCode"></div>

@@ -1,0 +1,141 @@
+{startblock(script)}
+{parentblock()}
+
+<script src="{uri_resource(/js/jqcloud/jqcloud.min.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_resource(/css/jqcloud/jqcloud.min.css)}">
+
+<script type="text/javascript">
+    jQuery(function() {
+
+        dosearch = function() {
+            if(jQuery("#SEARCHURL").val() != "") { location.href = jQuery("#SEARCHURL").val(); }
+        }
+        presearch = function() {
+            if (jQuery('#CITY').val() != '' || jQuery('#ZIP').val() != '') {
+                getLatiLongi("", "", "", "", "", function() {
+                    dopresearch();
+                });
+            } else {
+                jQuery("#LATITUDE, #LONGITUDE").val('');
+                dopresearch();
+            }
+        }
+        dopresearch = function() {
+            jQuery.ajax({
+                url: jQuery("#presearch").attr("action"),
+                type: 'POST',
+                data: jQuery("#presearch").serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    console.log( response );
+                    jQuery('#ASB').val('('+response["COUNT"]+') Treffer anzeigen');
+
+                    if (response["COUNT"] > 0) {
+                        $('#SEARCHURL').val('{uri_baseurl(/)}anbieter/anbieter,'+$("#FK_KAT").val()+',' + response["HASH"] + '.htm');
+                    }
+                    else {
+                        $('#SEARCHURL').val('');
+                    }
+                }
+            });
+        }
+
+        vendor_order = function(elm) {
+            window.location.href = elm.value;
+        }
+
+        presearch();
+
+    })
+
+</script>
+{endblock(script)}
+{if SHOW_TOP_VENDOR}
+{if show_banner || SHOW_MAP}
+<div class="row vendor-list-top-row {URI_CURPAGE}" style="background-image: url('{uri_resource(images/world.jpg)}');background-position: left; background-repeat: no-repeat;">
+    <div class="col-md-7">
+        {content_page(Anbieter Top buchen)}
+        {subtpl(tpl/{SYS_TPL_LANG}/vendor_statistics.htm)}
+    </div>
+    <div class="col-md-5">
+        {subtpl(tpl/{SYS_TPL_LANG}/info_haendler_vorgestellt.htm,ID_KAT=,ID_USER=,CACHE_LIFETIME=102,COUNT=1,COUNT_PER_ROW=1,DISPLAY_ADS=0,TEMPLATE=vendor_dynamic,HIDE_PARENT=1)}
+    </div>
+</div>
+<hr>
+
+{endif}
+{endif}
+
+<div class="advertisement-box">{adserver(,1780,)}</div>
+
+
+<div class="row vendor-list-top-row">
+    <div class="col-md-12">
+        {content_page(anbieter_page_top)}
+    </div>
+</div>
+
+<div class="row design-page-with-menu">
+    <div class="design-page-content all-vendors">
+
+        <div class="text-box design-location">
+            <div class="row">
+                <div class="col-md-6 col-lg-7 clearfix">
+                    <span class="text-muted">{ALL_VENDORS} Anbieter</span>
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    <form method="get" action="{uri_baseurl(/index.php)}">
+                        <select class="form-control" name="ordering" onchange="vendor_order(this);">
+                            <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},STANDARD,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_STANDARD_DESC}selected="selected"{endif}>Standard</option>
+                            <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},CHANGED,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_CHANGED_DESC}selected="selected"{endif}>Neueste zuerst</option>
+                            <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},CHANGED,ASC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_CHANGED_ASC}selected="selected"{endif}>Älteste zuerst</option>
+                            <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},NAME,ASC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_NAME_ASC}selected="selected"{endif}>Alphabet aufsteigend</option>
+                            <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},NAME,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_NAME_DESC}selected="selected"{endif}>Alphabet absteigend</option>
+                            <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},COMMENTS,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_COMMENTS_DESC}selected="selected"{endif}>Meiste Kommentare zuerst</option>
+                            <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},EVENTS,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_EVENTS_DESC}selected="selected"{endif}>Meiste Veranstaltungen zuerst</option>
+                            <option value="{uri_action(anbieter,{CATEGORY},{URI_SEARCHHASH},{URI_CURPAGE},GALLERY,DESC,{VIEW_TYPE}|KAT_NAME={urllabel(V1)})}" {if CUR_SORT_GALLERY_DESC}selected="selected"{endif}>Meiste Bilder zuerst</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {if vendors}
+
+        {if VIEW_TYPE_LIST}
+        {vendors}
+        {else}
+        <div class="row">
+            {vendors}
+        </div>
+        {endif}
+
+        {pager}
+
+        {else}
+
+        <p>In dieser Kategorie wurden keine Anbieter gefunden.</p>
+
+        {endif}
+    </div>
+    <div class="design-page-menu design-page-menu-all-vendors">
+
+        {if CATEGORY_676}
+        {subtpl(tpl/{SYS_TPL_LANG}/vendor_search.htm,ID_KAT=676,ROW_COUNT_GROUPS=1,*)}
+        {else}2
+        {subtpl(tpl/{SYS_TPL_LANG}/vendor_search.htm,ID_KAT={ID_KAT},SEARCH_HASH={SEARCH_HASH},CACHE_LIFETIME=102,STYLE=default,GROUP_MIN_HEIGHT=100,ROW_COUNT_GROUPS=1,ROW_COUNT_VISIBLE=1)}
+        {endif}
+
+        {content_page(anbieter page right side)}
+
+       <!-- <div class="panel panel-primary check-filters-panel">
+            <div class="panel-body">
+                <h4>Filtern nach Schwerpunkten</h4>
+                <div class="all-filter-options">
+                    {list_keywords}
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+</div>

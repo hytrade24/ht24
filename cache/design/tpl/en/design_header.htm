@@ -1,0 +1,187 @@
+<div class="design-header design-container-highlight">
+    <div class="design-scroll-top">
+        <a class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-up"></i>
+        </a>
+    </div>
+    <div class="container">
+        <div class="design-header-search">
+            <div class="design-header-search-logo">
+                <a href="{uri_baseurl(/)}" class="design-header-logo">
+                    <img src="{uri_resource(/images/logo.png)}" alt="onlineSmalladds.com" />
+                </a>
+            </div>
+            <div class="design-header-nav">
+                <nav class="navbar navbar-default" role="navigation" id="headerMenuMainFirst">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapseMainFirst">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbarCollapseMainFirst">
+                        <ul class="nav navbar-nav">
+                            {navemb(0,2,1,neu)}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            {if USE_CART}
+            <div class="design-header-search-cart" id="ShoppingCartWidget">
+                <a href="{uri_action(cart)}">
+                    <i class="glyphicon glyphicon-shopping-cart"></i>
+                    <span id="ShoppingCartWidgetCountItems">{if CART_COUNT_ITEMS}{CART_COUNT_ITEMS}{else}0{endif}</span>
+                </a>
+            </div>
+            {endif}
+            {if !HIDE_SEARCH}
+            <div class="design-header-search-form">
+                <div class="headerSearchboxContainer {if !USE_CART}withoutCart{endif}">
+                    {subtpl(tpl/{SYS_TPL_LANG}/suchmaske_head.htm,CATEGORY=1,LAYOUT=minimal)}
+                </div>
+            </div>
+            {endif}
+        </div>
+    </div>
+    {if !HIDE_CATEGORY}
+    <nav class="navbar navbar-default" role="navigation" id="headerMenuMain">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapseMain">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarCollapseMain">
+                <ul class="nav navbar-nav navbar-left" id="navbarCategoriesHoverMain">
+                    {list_cat}
+                    <li class="childsHover" id="more-categories">
+                        <a href="{uri_action(marktplatz)}">Additional Categories</a>
+                        <div class="design-sub-menu">
+                            <ul class="subcategories"></ul>
+                        </div>
+                    </li>
+                </ul>
+                <script type="application/javascript">
+                    jQuery(function() {
+                        var navbarCollapseMainWidths = null;
+
+                        var initializeNavbarCollapseMain = function() {
+                            jQuery("#navbarCategoriesHoverMain > li").show();
+                            var navbarCollapseMainWidths = [];
+                            navbarCollapseMainWidths["menu-points"] = [];
+                            jQuery("#navbarCategoriesHoverMain > li").each(function( index ) {
+                                if(jQuery(this).attr('id') == "more-categories") {
+                                    navbarCollapseMainWidths["more-categories"] = jQuery(this).outerWidth();
+                                } else {
+                                    navbarCollapseMainWidths["menu-points"][index] = jQuery(this).outerWidth();
+                                }
+                            });
+                            return navbarCollapseMainWidths;
+                        };
+
+                        var resizeNavbarCollapseMain = function() {
+                            if(jQuery( window ).innerWidth() > 750) {
+                                // not mobile
+                                if (navbarCollapseMainWidths === null) {
+                                    navbarCollapseMainWidths = initializeNavbarCollapseMain();
+                                }
+
+                                var currentWidth = 0;
+                                var navbarCollapseMainStatus = [];
+                                var categoriesNotVisible = false;
+                                var maximumWidth = jQuery("#navbarCollapseMain").outerWidth();
+                                jQuery.each(navbarCollapseMainWidths["menu-points"], function( index, width ) {
+                                    currentWidth+=width;
+                                    if(currentWidth < maximumWidth) {
+                                        navbarCollapseMainStatus[index] = true;
+                                    } else {
+                                        navbarCollapseMainStatus[index] = false;
+                                        categoriesNotVisible = true;
+                                    }
+                                });
+
+                                if(categoriesNotVisible) {
+                                    // weitere Kategorienbutton wird eingeblendet, muss daher dazuaddiert werden
+                                    currentWidth = navbarCollapseMainWidths["more-categories"];
+                                    jQuery.each(navbarCollapseMainWidths["menu-points"], function( index, width ) {
+                                        currentWidth+=width;
+                                        if(currentWidth < maximumWidth) {
+                                            navbarCollapseMainStatus[index] = true;
+                                        } else {
+                                            navbarCollapseMainStatus[index] = false;
+                                            categoriesNotVisible = true;
+                                        }
+                                    });
+                                    // weitere Kategorienbutton eingeblenden
+                                    jQuery("#navbarCategoriesHoverMain #more-categories").show();
+                                } else {
+                                    // weitere Kategorienbutton ausblenden
+                                    jQuery("#navbarCategoriesHoverMain #more-categories").hide();
+                                }
+
+                                // Navigationselemente einbelnden oder verstecken
+                                jQuery("#navbarCategoriesHoverMain #more-categories ul").html("");
+                                var categoriesNotVisibleActive = false;
+                                jQuery.each(navbarCollapseMainStatus, function( index, visible ) {
+                                    var navElement = jQuery("#navbarCategoriesHoverMain > li:eq("+ index +")");
+                                    if(visible) {
+                                        navElement.show();
+                                    } else {
+                                        navElement.hide();
+                                        if(navElement.hasClass("active")) {
+                                            categoriesNotVisibleActive = true;
+                                        }
+                                        if(!navElement.is("#more-categories")) {
+                                            jQuery("#navbarCategoriesHoverMain #more-categories ul").append(navElement.clone().show());
+                                        }
+                                    }
+                                });
+                                // Aktiver Menüpunkt innerhalb des weiteren Kategorien-Hovers => weitere Kategorien aktiv
+                                if(categoriesNotVisibleActive) {
+                                    jQuery("#navbarCategoriesHoverMain #more-categories").addClass("active");
+                                } else {
+                                    jQuery("#navbarCategoriesHoverMain #more-categories").removeClass("active");
+                                }
+                                jQuery("#navbarCategoriesHoverMain #more-categories ul .design-sub-menu").remove();
+                            }
+                        };
+
+                        resizeNavbarCollapseMain();
+                        jQuery( window ).resize(function() {
+                            resizeNavbarCollapseMain();
+                        });
+                        jQuery("#navbarCategoriesHoverMain").menuAim({
+                            submenuDirection: "below",
+                            activate: function(item) {
+                                jQuery(item).addClass("hover").addClass("hoverRecent");
+                            },
+                            deactivate: function(item) {
+                                jQuery(item).removeClass("hover").removeClass("hoverRecent");
+                            },
+                            enter: function(item) {
+                                // Workaround for bug when deactivating a menu entry
+                                if (jQuery(item).hasClass("hoverRecent")) {
+                                    jQuery(item).addClass("hover");
+                                }
+                            },
+                            exitMenu: function(menu) {
+                                jQuery(menu).find(".hover").removeClass("hover");
+                            }
+                        });
+                        // Menü schließen wenn der Benutzer auf etwas anderes klickt
+                        jQuery(document).on("click", function(event) {
+                            jQuery("#navbarCategoriesHoverMain").find(".hover").removeClass("hover");
+                        });
+                    });
+                </script>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </nav>
+    {endif}
+</div>

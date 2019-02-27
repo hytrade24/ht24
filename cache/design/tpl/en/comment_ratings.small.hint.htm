@@ -1,0 +1,15 @@
+<div class="design-comments-rating-stats small design-subtpl"
+    data-content="comment_ratings" data-template="small.hint" data-table="{TABLE}" data-id="{FK}" data-id-str="{FK_STR}" data-show-empty-bars="{SHOW_EMPTY_BARS}">
+    {if RATING_AVG}
+    <div class="design-comment-ratings">
+        <img class="design-comment-ratings-label" src="{uri_baseurl(/gfx/stars_{RATING_AVG}.png)}" />
+        ({RATING_COUNT})
+    </div>
+    {else}
+        (No reviews available)
+    {endif}
+
+    {if !HIDE_ADMIN_CONFIG}
+        ^SUBTPL_ADMIN°
+    {endif}
+</div>

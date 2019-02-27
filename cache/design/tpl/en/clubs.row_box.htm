@@ -1,0 +1,199 @@
+{if BOX_BIG}
+<div class="col-xs-12 col-sm-12 col-md-8{if PUSH} col-md-push-4{endif}">
+	<div class="design-group-box top">
+	{if ADVERTISEMENT}
+		{content_page(Anbieter Top buchen)}
+	{else}
+	    <div class="row align-center">
+	    	<div class="design-group-box-logo col-xs-6">
+				<a href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}" title="View {htm(CLUB_NAME)}">
+				{if CLUB_LOGO}
+					<img src="{thumbnail(CLUB_LOGO,230,165)}" />
+				{else}
+					<img src="{uri_resource(/images/marketplace/nopic_club.jpg)}" vspace="5" />
+				{endif}
+				</a>
+	            {if RATING}
+	            	<img title="Average rating" src="{uri_baseurl(/gfx/stars_{RATING}.png)}" />
+	            {endif}
+	    	</div>
+	    	<div class="design-group-box-description col-xs-6">
+	    		<h4>{htm(CLUB_NAME)}</h4>
+	    		<p class="align-left text-muted">
+	    			{strip_tags(CLUB_SHORT_DESCRIPTION)} ...
+	    		</p>
+	    	</div>
+	    </div>
+		<div class="design-group-box-category align-left">
+			{if CLUB_CATEGORIES}<strong>Category: </strong>{CLUB_CATEGORIES}{endif}
+		</div>
+		<div class="clearfix">
+			<a class="btn pull-right clearfix" href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}">
+				View details
+			</a>
+		</div>
+	{endif}
+	</div>
+</div>
+{else}
+<div class="col-xs-6 col-sm-6 col-md-4{if PULL} col-md-pull-8{endif}">
+    <div class="design-group-box text-center">
+    	<div class="design-group-box-logo">
+			<a href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}" title="View {htm(CLUB_NAME)}">
+			{if CLUB_LOGO}
+				<img class="img-responsive" src="{thumbnail(CLUB_LOGO,300,166)}" />
+			{else}
+				<img class="img-responsive" src="{uri_resource(/images/marketplace/nopic_club.jpg)}" vspace="5" />
+			{endif}
+			</a>
+		</div>
+        <div>
+        	<div class="clubBoxItemName align-center">
+        		<a href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}" title="View {htm(CLUB_NAME)}">
+        			{htm(CLUB_NAME)}
+        		</a>
+				<div class="clubBoxShortDesc">
+					{if CLUB_SHORT_DESCRIPTION}"{strip_tags(CLUB_SHORT_DESCRIPTION)}"{endif}
+				</div>
+        		<div class="clubBoxItemInfo">
+					<ul>
+						{if MEMBERS}
+							<li>
+								<a href="{uri_action(group-member,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}">
+									<div class="row">
+										<div class="col-md-2">
+											<i class="glyphicon glyphicon-user"></i>
+										</div>
+										<div class="col-md-10 align-left">
+											<div>
+												{if MEMBERS==1}
+													1 Member
+												{else}
+													{MEMBERS} Members
+												{endif}
+											</div>
+										</div>
+									</div>
+							</a>
+							</li>
+						{endif}
+						{if ALLOW_COMMENTS && SYSTEM_ALLOW_COMMENTS}
+							<li>
+								<a href="{uri_action(group,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}#comments">
+									<div class="row">
+										<div class="col-md-2">
+											<i class="glyphicon glyphicon-comment"></i>
+										</div>
+										<div class="col-md-10 align-left">
+											<div>
+												{if COUNT_COMMENTS==1}
+													1 Comment
+												{else}
+													{if COUNT_COMMENTS}{COUNT_COMMENTS}{else}0{endif} Comments
+												{endif}
+											</div>
+										</div>
+									</div>
+								</a>
+							</li>
+						{endif}
+						{if COUNT_EVENTS}
+							<li>
+								<a href="{uri_action(group-calendar,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}">
+									<div class="row">
+										<div class="col-md-2">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</div>
+										<div class="col-md-10 align-left">
+											<div>
+												{if COUNT_EVENTS==1}
+													1 Event
+												{else}
+													{COUNT_EVENTS} Events
+												{endif}
+											</div>
+										</div>
+									</div>
+								</a>
+							</li>
+						{endif}
+						{if COUNT_GALLERY}
+							<li>
+								<a href="{uri_action(group,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}#gallery">
+									<div class="row">
+										<div class="col-md-2">
+											<i class="glyphicon glyphicon-picture"></i>
+										</div>
+										<div class="col-md-10 align-left">
+											<div>
+												{if COUNT_GALLERY==1}
+													1 Picture in the gallery
+												{else}
+													{COUNT_GALLERY} Pictures in the gallery
+												{endif}
+											</div>
+										</div>
+									</div>
+								</a>
+							</li>
+						{endif}
+						{if CLUB_CATEGORY}
+						<li>
+							<a href="{uri_action(clubs,{FK_KAT},{CLUB_CATEGORY})}">
+								<div class="row">
+									<div class="col-md-2">
+										<i class="glyphicon glyphicon-folder-open"></i>
+									</div>
+									<div class="col-md-10 align-left">
+										<div>{CLUB_CATEGORY}</div>
+									</div>
+								</div>
+							</a>
+						</li>
+						{endif}
+						{if ALLOW_MEMBER_REQUESTS==0 || ALLOW_MEMBER_REQUESTS==1 || ALLOW_MEMBER_REQUESTS==2}
+						<li>
+							<a href="{uri_action(clubs,{FK_KAT},{CLUB_CATEGORY})}">
+								{if ALLOW_MEMBER_REQUESTS==0}
+								<div class="row">
+									<div class="col-md-2">
+										<i class="fa fa-unlock-alt"></i>
+									</div>
+									<div class="col-md-10 align-left">
+										<div>Only with invite</div>
+									</div>
+								</div>
+								{endif}
+								{if ALLOW_MEMBER_REQUESTS==1}
+								<div class="row">
+									<div class="col-md-2">
+										<i class="fa fa-unlock"></i>
+									</div>
+									<div class="col-md-10 align-left">
+										<div>joining freely possible</div>
+									</div>
+								</div>
+								{endif}
+								{if ALLOW_MEMBER_REQUESTS==2}
+								<div class="row">
+									<div class="col-md-2">
+										<i class="fa fa-lock"></i>
+									</div>
+									<div class="col-md-10 align-left">
+										<div>Joining request requires confirmation</div>
+									</div>
+								</div>
+								{endif}
+							</a>
+						</li>
+						{endif}
+					</ul>
+                </div>
+			</div>
+        </div>
+		<div class="btn-container" style="text-align: center">
+			<a href="{uri_action(club,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}" class="btn btn-sm btn-info">Mehr erfahren</a>
+		</div>
+    </div>
+</div>
+{endif}

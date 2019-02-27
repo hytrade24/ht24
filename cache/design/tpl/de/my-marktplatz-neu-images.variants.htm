@@ -1,0 +1,44 @@
+<div id="ad-create-image-variant-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ad-create-image-variant-modal-label">
+  <div class="modal-dialog">
+    <div class="modal-content" role="document">
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 id="ad-create-image-variant-modal-label" class="modal-title">
+          Varianten zuordnen
+        </h4>
+      </div>
+      
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <img class="img-responsive-center" data-rel="variant-image" alt=""/>
+          </div>
+          <div class="col-sm-8">
+            
+            <form class="form-horizontal" action="{uri_baseurl(/index.php)}?page={curpage}&mode=ajax&do=imageVariants">
+              <input name="IMAGE_INDEX" type="hidden" />
+              {imageVariantInputs}
+            </form>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Abbrechen
+        </button>
+        <button type="button" class="btn btn-primary" onclick="submitImageVariant();">
+          Speichern
+        </button>
+      </div>
+      
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

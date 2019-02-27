@@ -1,0 +1,49 @@
+<tr class="zeile{even}" id="r_{ID_BILLING_INVOICE}">
+	<td nowrap="nowrap">		
+		<a href="index.php?page=invoice_view&ID_BILLING_INVOICE={ID_BILLING_INVOICE}" title="Rechnung ansehen">
+			<img src="{uri_baseurl(/gfx/btn.detail.gif)}" alt="view" />
+		</a>
+	</td>
+    <td>
+        {ID_BILLING_INVOICE}
+    </td>
+    <td>
+        {todate(STAMP_CREATE)}
+    </td>
+    <td>
+        {if STATUS == 0}<span class="error">unbezahlt</span>{endif}
+        {if STATUS == 1}<span class="ok">bezahlt</span>{endif}
+        {if STATUS == 2}<span>storniert</span> {endif}
+    </td>
+    <td>
+        {todate(STAMP_PAY)}
+    </td>
+    <td>
+        {todate(STAMP_CANCEL)}
+    </td>
+    <td>
+        <a href="index.php?page=user_edit&ID_USER={FK_USER}" title="User ansehen/bearbeiten">{FK_USER}</a>
+    </td>
+	<td>
+        <a href="index.php?page=user_edit&ID_USER={FK_USER}" title="User ansehen/bearbeiten">{USER_NAME}</a>
+	</td>
+    <td>
+        {if IS_OVERDUE}
+            <span class="error">{todate(STAMP_DUE)}</span>
+        {else}
+            {todate(STAMP_DUE)}
+        {endif}
+    </td>
+    <td>
+        {DUNNING_LEVEL}
+    </td>
+	<td style="text-align: right">
+        {topreis(TOTAL_PRICE_NET)} {CURRENCY_DEFAULT}
+	</td>
+    <td style="text-align: right">
+        {topreis(TOTAL_PRICE)} {CURRENCY_DEFAULT}
+    </td>
+    <td style="text-align: right">
+        {topreis(REMAINING_PRICE)} {CURRENCY_DEFAULT}
+    </td>
+</tr>

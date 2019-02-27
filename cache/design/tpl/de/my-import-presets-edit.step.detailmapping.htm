@@ -1,0 +1,43 @@
+<script>
+
+</script>
+
+
+<form action="{uri_baseurl(index.php)}?page=my-import-presets-edit&DO=SAVE_DATA" method="POST" class="form form-horizontal" id="importPresetEditorDetailmappingForm" enctype="multipart/form-data" onsubmit="return confirm('Bitte beachten Sie, dass nicht oder falsch zugewiesene Felder später zu fehlerhaften Imports führen können.')">
+
+	{if FLASHMESSAGES}
+	<div class="alert alert-danger">{FLASHMESSAGES}</div>
+	{endif}
+	
+	{if DETAILMAPPING_SPECIAL}{DETAILMAPPING_SPECIAL}{endif}
+	
+	<div class="design-import-preset-detail-mapping">
+		<div >
+			<p>
+				<strong>Hilfe:</strong>
+				Im Schritt "Feld Zuordnung" weisen Sie nun ähnlich wie bei der Basiszuordnung weitere Artikeleigenschaften Datenfeldern aus Ihren Quelldaten zu.
+				Die hier aufgeführten Felder sind Kategorieabhängige Artikeleigenschaften Ihrer zugewiesenen Kategorien.
+				<br />
+				Die einzelnen Artikeleigenschaften werden nach Ihrer Basistabelle gruppiert. Sie können die einzelnen Artikeltabellen ansehen, indem Sie die
+				Basistabellen in Ihrer blau unterlegten Boxen anklicken.
+			</p>
+		</div>
+	
+		{if TABLE_DEF_CONTENT}
+			<div class="accordion detailMappingTab" id="detailMappingContainer">
+				{TABLE_DEF_CONTENT}
+			</div>
+		{else}
+			<div class="alert alert-info">
+			Im Marktplatz sind keine weiteren Artikeleigenschaften hinterlegt. Sie können diesen Schritt daher überspringen
+			</div>
+		{endif}
+	</div>
+		
+	<div class="form-actions text-right">
+		<button type="submit" class="btn btn-primary">Weiter</button>
+		{if ID_IMPORT_PRESET}
+			<button class="btn btn-default" onclick="ipe.saveFormAndClose(); ">Speichern und schließen</button>
+		{endif}
+	</div>
+</form>

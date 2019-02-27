@@ -1,0 +1,370 @@
+{if userVersand_ReadOnly}
+<dl id="userVersand_Current" class="dl-table-horizontal">
+      <dt>Ihr Name:</dt>
+      <dd>
+      	<span id="userVersand_Current_Firstname">{htm(VERSAND_FIRSTNAME)}</span>
+      	<span id="userVersand_Current_Lastname">{htm(VERSAND_LASTNAME)}</span>
+	</dd>
+
+	<dt class="userVersand_CompanyBlock">Firma:</dt>
+	<dd class="userVersand_CompanyBlock">
+		<span id="userVersand_Current_Company">{htm(VERSAND_COMPANY)}</span>
+	</dd>
+
+      <dt>Anschrift:</dt>
+      <dd>
+		<span id="userVersand_Current_Street">{htm(VERSAND_STREET)}</span><br />
+		<span id="userVersand_Current_Zip">{htm(VERSAND_ZIP)}</span>
+		<span id="userVersand_Current_City">{htm(VERSAND_CITY)}</span><br />
+		<span id="userVersand_Current_Country">{print_fk(country,VERSAND_FK_COUNTRY)}</span>
+      </dd>
+
+	<dt class="userVersand_PhoneBlock">Telefon:</dt>
+	<dd class="userVersand_PhoneBlock">
+		<span id="userVersand_Current_Phone">{htm(VERSAND_PHONE)}</span>
+	</dd>
+</dl>
+<br />
+{else}
+<div>
+	<script type="text/javascript">
+	
+	userVersandMode = "view";
+	
+	jQuery(function() {
+		{if FK_USER_VERSAND > 0}
+			selectUserVersand({FK_USER_VERSAND});
+		{else}
+			jQuery("#userVersand_Edit").hide();
+			jQuery("#userVersand_Current").show();
+		{endif}
+	});
+	
+	function reloadVersand(id_selected) {
+		jQuery.get("{uri_baseurl(/index.php)}?page=user_versand&frame=ajax&ID_USER_VERSAND="+id_selected, function(result) {
+			jQuery("#userVersand_Container").html(jQuery(result).find("#userVersand_Container"));
+			selectUserVersand(id_selected);
+		});
+	}
+	
+	function createUserVersand() {
+		jQuery("#userVersand_Current").hide();
+		jQuery("#userVersand_Edit").show();
+		jQuery("#userVersand_Edit .titleCreate").show();
+		jQuery("#userVersand_Edit .titleEdit").hide();
+		jQuery("#userVersand_Edit_ID").val("");
+		jQuery("#userVersand_Edit_Company").val("");
+		jQuery("#userVersand_Edit_Firstname").val("");
+		jQuery("#userVersand_Edit_Lastname").val("");
+		jQuery("#userVersand_Edit_Street").val("");
+		jQuery("#userVersand_Edit_Zip").val("");
+		jQuery("#userVersand_Edit_City").val("");
+		jQuery("#userversand_edit_country").val(0);
+		jQuery("#userVersand_Edit_Phone").val("");
+	}
+	
+	function deleteUserVersand() {
+		if (jQuery("#userVersand_DeleteBtn").hasClass("disabled")) {
+			return;	// Not available
+		}
+		if (!confirm("Möchten Sie diese Adresse wirklich löschen?")) {
+			return false;
+		}
+		jQuery("#userVersand_Current").hide();
+		var id_user_versand = jQuery("#userVersand_List > option:selected").val();
+		jQuery("#userVersand_Edit .titleCreate").hide();
+		jQuery("#userVersand_Edit .titleEdit").show();
+		jQuery("#userVersand_Edit_ID").val(id_user_versand);
+		// Get selected address
+		jQuery.get("{uri_baseurl(/index.php)}?page=user_versand&mode=ajax&what=delete&id="+id_user_versand, function(json_result) {
+			if (json_result.success) {
+				reloadVersand(0);
+			} else {
+				alert("Fehler beim löschen der Adresse!");
+			}
+		});
+	}
+	
+	function editUserVersand() {
+		if (jQuery("#userVersand_EditBtn").hasClass("disabled")) {
+			return;	// Not available
+		}
+		jQuery("#userVersand_Current").hide();
+		var id_user_versand = jQuery("#userVersand_List > option:selected").val();
+		jQuery("#userVersand_Edit .titleCreate").hide();
+		jQuery("#userVersand_Edit .titleEdit").show();
+		jQuery("#userVersand_Edit_ID").val(id_user_versand);
+		// Get selected address
+		jQuery.get("{uri_baseurl(/index.php)}?page=user_versand&mode=ajax&what=getById&id="+id_user_versand, function(ar_address) {
+			if (ar_address.success) {
+				jQuery("#userVersand_Edit").show();
+				jQuery("#userVersand_DeleteBtn").removeClass("disabled");
+				jQuery("#userVersand_EditBtn").removeClass("disabled");
+				// Company
+				jQuery("#userVersand_Edit_Company").val(ar_address.COMPANY);
+				// Name
+				jQuery("#userVersand_Edit_Firstname").val(ar_address.FIRSTNAME);
+				jQuery("#userVersand_Edit_Lastname").val(ar_address.LASTNAME);
+				// Address
+				jQuery("#userVersand_Edit_Street").val(ar_address.STREET);
+				jQuery("#userVersand_Edit_Zip").val(ar_address.ZIP);
+				jQuery("#userVersand_Edit_City").val(ar_address.CITY);
+				jQuery("#userversand_edit_country").val(ar_address.FK_COUNTRY).selectpicker("refresh");
+				// Phone number
+				jQuery("#userVersand_Edit_Phone").val(ar_address.PHONE);
+			} else {
+				jQuery("#userVersand_Edit").hide();
+				jQuery("#userVersand_DeleteBtn").addClass("disabled");
+				jQuery("#userVersand_EditBtn").addClass("disabled");
+			}
+		});
+	}
+	
+	function editUserVersandCancel() {
+		var id_user_versand = jQuery("#userVersand_List > option:selected").val();
+		jQuery("#userVersand_Edit").hide();
+		if (id_user_versand > 0) {
+			// Es ist eine Adresse ausgewählt, aktuelle Auswahl wieder einblenden.
+			jQuery("#userVersand_Current").show();	
+		}
+	}
+	
+	function editUserVersandSubmit() {
+		if ((jQuery("#userVersand_Edit_Street").val().length <= 0) ||
+			(jQuery("#userVersand_Edit_Zip").val().length <= 0) ||
+			(jQuery("#userVersand_Edit_City").val().length <= 0) ||
+			(jQuery("#userversand_edit_country > option:selected").val() <= 0)) {
+						alert("Bitte geben Sie mindestens Name/Firma, Straße, PLZ, Ort und Land ein.");
+			return;
+		}
+		jQuery.post("{uri_baseurl(/index.php)}?page=user_versand&mode=ajax&what=edit", {
+			ID_USER_VERSAND: jQuery("#userVersand_Edit_ID").val(),
+			FIRSTNAME: jQuery("#userVersand_Edit_Firstname").val(),
+			LASTNAME: jQuery("#userVersand_Edit_Lastname").val(),
+			COMPANY: jQuery("#userVersand_Edit_Company").val(),
+			STREET: jQuery("#userVersand_Edit_Street").val(),
+			ZIP: jQuery("#userVersand_Edit_Zip").val(),
+			CITY: jQuery("#userVersand_Edit_City").val(),
+			FK_COUNTRY: jQuery("#userversand_edit_country").val(),
+			PHONE: jQuery("#userVersand_Edit_Phone").val()
+		}, function(ar_result) {
+			if (ar_result.success) {
+				jQuery("#userVersand_Edit").hide();
+				reloadVersand(ar_result.id);
+			} else {
+				alert("Bitte geben Sie mindestens Name/Firma, Straße, PLZ, Ort und Land ein.");
+			}
+		});
+	}
+	
+	function toggleUserVersandEdit() {
+		if (userVersandMode != "view") {
+			jQuery("#userVersand_Container .showOnView").show();
+			jQuery("#userVersand_Container .showOnEdit").hide();
+			userVersandMode = "view";
+		} else {
+			jQuery("#userVersand_Container .showOnEdit").show();
+			jQuery("#userVersand_Container .showOnView").hide();
+			userVersandMode = "edit";
+		}
+	}
+	
+	function selectUserVersand(id_user_versand) {
+		if (typeof id_user_versand == "undefined") {
+			id_user_versand = 0;
+		}
+		// Hide input form if visible
+		jQuery("#userVersand_Edit").hide();
+		jQuery("#userVersand_List > option").attr("selected", false);
+		jQuery("#userVersand_ListItem"+id_user_versand).attr("selected", true);
+		// Get selected address
+		jQuery.get("{uri_baseurl(/index.php)}?page=user_versand&mode=ajax&what=getById&id="+id_user_versand, function(ar_address) {
+			if (ar_address.success) {
+				jQuery("#userVersand_Current").show();
+				if (id_user_versand > 0) {
+					jQuery("#userVersand_DeleteBtn").removeClass("disabled");
+					jQuery("#userVersand_EditBtn").removeClass("disabled");
+				} else {
+					jQuery("#userVersand_DeleteBtn").addClass("disabled");
+					jQuery("#userVersand_EditBtn").addClass("disabled");
+				}
+				// Company
+				jQuery("#userVersand_Company").val(ar_address.COMPANY);
+				jQuery("#userVersand_Current_Company").html(ar_address.COMPANY);
+				if (typeof ar_address.COMPANY != "undefined") {
+					jQuery("#userVersand_List .userVersand_CompanyBlock").show();
+				} else {
+					jQuery("#userVersand_List .userVersand_CompanyBlock").hide();
+				}
+				// Name
+				jQuery("#userVersand_Firstname").val(ar_address.FIRSTNAME);
+				jQuery("#userVersand_Current_Firstname").html(ar_address.FIRSTNAME);
+				jQuery("#userVersand_Lastname").val(ar_address.LASTNAME);
+				jQuery("#userVersand_Current_Lastname").html(ar_address.LASTNAME);
+				// Address
+				jQuery("#userVersand_Street").val(ar_address.STREET);
+				jQuery("#userVersand_Current_Street").html(ar_address.STREET);
+				jQuery("#userVersand_Zip").val(ar_address.ZIP);
+				jQuery("#userVersand_Current_Zip").html(ar_address.ZIP);
+				jQuery("#userVersand_City").val(ar_address.CITY);
+				jQuery("#userVersand_Current_City").html(ar_address.CITY);
+				jQuery("#userVersand_Country").val(ar_address.FK_COUNTRY);
+				jQuery("#userVersand_Current_Country").html(ar_address.COUNTRY);
+				// Phone number
+				jQuery("#userVersand_Phone").val(ar_address.PHONE);
+				jQuery("#userVersand_Current_Phone").html(ar_address.PHONE);
+				if (typeof ar_address.PHONE != "undefined") {
+					jQuery("#userVersand_List .userVersand_PhoneBlock").show();
+				} else {
+					jQuery("#userVersand_List .userVersand_PhoneBlock").hide();
+				}
+			} else {
+				jQuery("#userVersand_Current").hide();
+				jQuery("#userVersand_DeleteBtn").addClass("disabled");
+				jQuery("#userVersand_EditBtn").addClass("disabled");
+			}
+		});
+	}
+	
+	</script>
+	<div id="userVersand_Container">	
+		<input id="userVersand_Company" name="VERSAND_COMPANY" value="{htm(VERSAND_COMPANY)}" type="hidden" />
+		<input id="userVersand_Firstname" name="VERSAND_FIRSTNAME" value="{htm(VERSAND_FIRSTNAME)}" type="hidden" />
+		<input id="userVersand_Lastname" name="VERSAND_LASTNAME" value="{htm(VERSAND_LASTNAME)}" type="hidden" />
+		<input id="userVersand_Street" name="VERSAND_STREET" value="{htm(VERSAND_STREET)}" type="hidden" />
+		<input id="userVersand_Zip" name="VERSAND_ZIP" value="{htm(VERSAND_ZIP)}" type="hidden" />
+		<input id="userVersand_City" name="VERSAND_CITY" value="{htm(VERSAND_CITY)}" type="hidden" />
+		<input id="userVersand_Country" name="VERSAND_FK_COUNTRY" value="{VERSAND_FK_COUNTRY}" type="hidden" />
+		<input id="userVersand_Phone" name="VERSAND_PHONE" value="{htm(VERSAND_PHONE)}" type="hidden" />
+		
+		<div class="showOnEdit display-none">
+			<div style="width: 90%;">
+				<select id="userVersand_List" name="ID_USER_VERSAND" class="form-control" required="required" onchange="selectUserVersand(this.value);">
+					<option id="userVersand_ListItem0" value="0"{if FK_USER_VERSAND==0} selected="selected"{endif}>
+						{if CURUSER_FIRMA}{htm(CURUSER_FIRMA)}, {endif}{if CURUSER_VORNAME}{htm(CURUSER_VORNAME)} {endif}{if CURUSER_NACHNAME}{htm(CURUSER_NACHNAME)} ,{endif}
+						{htm(CURUSER_STRASSE)} {htm(CURUSER_PLZ)} {htm(CURUSER_ORT)} {htm(CURUSER_COUNTRY)}
+					</option>
+					{liste}
+				</select>
+				<br />
+				
+				<a href="#" id="userVersand_DeleteBtn" class="btn btn-default disabled" onclick="deleteUserVersand(); return false;">
+					<i class="glyphicon glyphicon-remove"></i>
+					Löschen
+				</a>
+				<a href="#" id="userVersand_EditBtn" class="btn btn-default disabled" onclick="editUserVersand(); return false;">
+					<i class="glyphicon glyphicon-edit"></i>
+					Bearbeiten
+				</a>
+				<a href="#" class="btn btn-default" onclick="createUserVersand(); return false;">
+					<i class="glyphicon glyphicon-plus"></i>
+					Neue Adresse
+				</a>
+			</div>
+		</div>
+		<div>
+				<dl id="userVersand_Current" class="dl-horizontal" style="display: none;">
+						<dt>Ihr Name:</dt>
+						<dd>
+							<span id="userVersand_Current_Firstname">{htm(VERSAND_FIRSTNAME)}</span>
+							<span id="userVersand_Current_Lastname">{htm(VERSAND_LASTNAME)}</span>
+				</dd>
+		
+				<dt class="userVersand_CompanyBlock">Firma:</dt>
+				<dd class="userVersand_CompanyBlock">
+					<span id="userVersand_Current_Company">{htm(VERSAND_COMPANY)}</span>
+				</dd>
+		
+						<dt>Anschrift:</dt>
+						<dd>
+					<span id="userVersand_Current_Street">{htm(VERSAND_STREET)}</span><br />
+					<span id="userVersand_Current_Zip">{htm(VERSAND_ZIP)}</span>
+					<span id="userVersand_Current_City">{htm(VERSAND_CITY)}</span><br />
+					<span id="userVersand_Current_Country">{print_fk(country,VERSAND_FK_COUNTRY)}</span>
+						</dd>
+		
+				<dt class="userVersand_PhoneBlock">Telefon:</dt>
+				<dd class="userVersand_PhoneBlock">
+					<span id="userVersand_Current_Phone">{htm(VERSAND_PHONE)}</span>
+				</dd>
+				</dl>
+			<div id="userVersand_Edit" class="well well-small form-horizontal" style="display: none;">
+				<input id="userVersand_Edit_ID" type="hidden" value="{htm(VERSAND_ID_USER_VERSAND)}" />
+			
+				<h3 class="titleCreate">Neue Adresse hinzufügen</h3>
+				<h3 class="titleEdit">Adresse bearbeiten</h3>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userVersand_Edit_Firstname">
+						<strong>Ihr Vorname <span class="text-error">*</span></strong>
+					</label>
+					<div class="design-input-field">
+							<input placeholder="Vorname" class="form-control" type="text" id="userVersand_Edit_Firstname" value="{htm(VERSAND_FIRSTNAME)}" />
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userVersand_Edit_Lastname">
+						<strong>Ihr Nachname <span class="text-error">*</span></strong>
+					</label>
+					<div class="design-input-field">
+							<input placeholder="Nachname" class="form-control" type="text" id="userVersand_Edit_Lastname" value="{htm(VERSAND_LASTNAME)}" />
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userVersand_Edit_Company">
+						<strong>Firma</strong>
+					</label>
+					<div class="design-input-field">
+						<input placeholder="Firma" class="form-control" type="text" id="userVersand_Edit_Company" value="{htm(VERSAND_COMPANY)}" />
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userVersand_Edit_Street">
+						<strong>Straße <span class="text-error">*</span></strong>
+					</label>
+					<div class="design-input-field">
+						<input placeholder="Strasse" class="form-control" type="text" id="userVersand_Edit_Street" value="{htm(VERSAND_STREET)}" />
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userVersand_Edit_Zip">
+						<strong>PLZ & Ort <span class="text-error">*</span></strong>
+					</label>
+					<div class="design-input-field">
+						<div class="design-input-split">
+							<div class="design-input-zip">
+								<input placeholder="PLZ" class="form-control" type="text" id="userVersand_Edit_Zip" value="{htm(VERSAND_ZIP)}" />
+							</div>
+							<div class="design-input-city">
+								<input placeholder="Ort" class="form-control" type="text" id="userVersand_Edit_City" value="{htm(VERSAND_CITY)}" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userversand_edit_country">
+						<strong>Land <span class="text-error">*</span></strong>
+					</label>
+					<div class="design-input-field">
+										{select_country(userversand_edit_country,,,, class="form-control",---)}
+					</div>
+				</div>
+				<div class="form-group info">
+					<label class="control-label design-input-label" for="userVersand_Edit_Phone">
+						<strong>Telefon</strong>
+					</label>
+					<div class="design-input-field">
+						<input placeholder="Telefon" class="form-control" type="text" id="userVersand_Edit_Phone" value="{htm(VERSAND_PHONE)}" />
+					</div>
+				</div>
+				
+				<a onclick="editUserVersandCancel()" class="btn btn-danger">Abbrechen</a>
+				<a onclick="editUserVersandSubmit()" class="btn btn-success">Adresse speichern</a>
+			</div>
+		</div>
+		<div>
+			<a onclick="toggleUserVersandEdit()" style="margin-top: -40px;" class="btn btn-default pull-right showOnView">Ändern</a>
+		</div>
+		<br style="clear: both;" />
+	</div>
+</div>
+{endif}

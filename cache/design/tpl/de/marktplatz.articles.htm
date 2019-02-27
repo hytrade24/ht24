@@ -1,0 +1,130 @@
+<script type="text/javascript">
+    function market_order(elm)
+    {
+        window.location.href = elm.value;
+    }
+</script>
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+        {if FK_INFOSEITE && !SEARCH_HASH && CURPAGE<2}
+        <div class="marketplaceLeadStory design-content-box-unstyled">
+            {content_page({FK_INFOSEITE})}
+        </div>
+        {endif}
+        <div class="text-box design-location">
+            
+            <!-- Ariadne/Location and sorting/view -->            
+            <div class="row">
+                <div class="col-md-6 col-lg-7 clearfix">
+                    <div class="pull-left">
+                        {kat_ariadne_dynamic({ID_KAT},marketplace)}
+                    </div>
+                    <div class="pull-right">
+                        <span class="text-muted">{ALL_ADS} Angebote</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-5">
+                    <form method="get" action="{uri_baseurl(/index.php)}">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-9 col-md-8 col-xl-9 design-sort">
+                                <select class="form-control" name="ordering" onchange="market_order(this);">
+                                    {if SEARCH_AVAILABLILITY}
+                                    <option value="{uri_action(marktplatz,{ID_KAT}{if SEARCH_HASH},Suchergebniss,{SEARCH_HASH}{else},{urllabel(V1)},{endif},TIME_AVAILABLE,DESC,{CURPAGE},{VIEW_TYPE})}" {if CUR_ORDER_TIME_AVAILABLE_DESC}selected{endif}>Verfügbarkeit</option>
+                                    {endif}
+                                    <option value="{uri_action(marktplatz,{ID_KAT}{if SEARCH_HASH},Suchergebniss,{SEARCH_HASH}{else},{urllabel(V1)},{endif},RUNTIME,DESC,{CURPAGE},{VIEW_TYPE})}" {if CUR_ORDER_RUNTIME_DESC}selected{endif}>Neueste zuerst</option>
+                                    <option value="{uri_action(marktplatz,{ID_KAT}{if SEARCH_HASH},Suchergebniss,{SEARCH_HASH}{else},{urllabel(V1)},{endif},PRODUKTNAME,ASC,{CURPAGE},{VIEW_TYPE})}" {if CUR_ORDER_PRODUKTNAME_ASC}selected{endif}>Produktname</option>
+                                    <option value="{uri_action(marktplatz,{ID_KAT}{if SEARCH_HASH},Suchergebniss,{SEARCH_HASH}{else},{urllabel(V1)},{endif},COMMENTS,DESC,{CURPAGE},{VIEW_TYPE})}" {if CUR_ORDER_COMMENTS_DESC}selected{endif}>Meiste Kommentare</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4 col-sm-3 col-md-4 col-xl-3 design-view">
+                                <div class="btn-group">
+                                    <a class="btn btn-default {if VIEW_TYPE_LIST}active{endif}" href="{uri_action(marktplatz,{ID_KAT}{if SEARCH_HASH},Suchergebniss,{SEARCH_HASH}{else},{urllabel(V1)},{endif},{SORT_BY},{SORT_DIRECTION},1,LIST)}">
+                                        <span class="glyphicon glyphicon-th-list"></span>
+                                    </a>
+                                    <a class="btn btn-default {if VIEW_TYPE_BOX}active{endif}" href="{uri_action(marktplatz,{ID_KAT}{if SEARCH_HASH},Suchergebniss,{SEARCH_HASH}{else},{urllabel(V1)},{endif},{SORT_BY},{SORT_DIRECTION},1,BOX)}">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </a>
+                                </div>
+                            </div>      
+                        </div>
+                    </form>  
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Search parameters --> 
+        {if SEARCH_TEXT}
+        <div class="alert alert-info search-params">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h3>Suchparameter:</h3>
+            {SEARCH_TEXT}
+
+            <div class="pull-right text-right">
+                <a href="{uri_action(marktplatz,{ID_KAT},{urllabel(V1)})}" class="btn btn-default">
+                    Suche zurücksetzen
+                </a>
+                {if FK_AD_AGENT>0}
+                <a href="{uri_action(ad_agent,del,{FK_AD_AGENT})}" class="btn btn-danger ">
+                    Anzeigenagent löschen
+                </a>
+                {else}
+                <a href="{uri_action(ad_agent,add,{SEARCH_HASH})}" class="btn btn-success">
+                    Anzeigenagent hinzufügen
+                </a>
+                {endif}
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        {endif}
+
+        {if SEARCH_TYPE==2}
+        <div class="design-content-box">
+            {subtpl(tpl/{SYS_TPL_LANG}/ads_search.htm,SEARCH_HASH,ID_KAT,ROW_COUNT_GROUPS={SEARCH_COLUMNS})}
+        </div>
+        {endif}
+
+        {if ALL_ADS}
+            {if SHOW_MAP_REGIONS}
+                {plugin(GeoRegion,regions,{ID_KAT},{ID_GEO_REGION},{SEARCH_HASH})}
+            {endif}
+            {if SHOW_MAP}
+                {plugin(GeoRegion,map,marktplatz,{ID_KAT},{ID_GEO_REGION},{SEARCH_HASH},.design-page-content .design-search-market)}
+            {endif}
+            {if VIEW_TYPE_LIST}
+                {liste}
+            {else}
+                <div class="design-row design-row-xs-1 design-row-sm-3">
+                {liste}
+                </div>
+            {endif}
+        {else}
+            <h2>Leider keine Anzeigen gefunden</h2>
+            {if SEARCH_HASH}
+            <p>
+                Es wurden leider keine Artikel gefunden die zu Ihrer Suche passen.<br>
+                    Bitte versuchen Sie es mit anderen Suchbegriffen erneut.
+            </p>
+            {else}
+            <p>In dieser Kategorie befinden sich zur Zeit keine Anzeigen.</p>
+            <p>
+                Haben Sie ein passendes Produkt, welches Sie verkaufen möchten ?
+                    Dann <a href="{uri_action(my-marktplatz-neu)}">stellen Sie es jetzt im Marktplatz ein.</a>
+            </p>
+            {endif}
+        {endif}
+
+    {pager}
+    </div>
+    <div class="design-page-menu">
+        {subtpl(tpl/{SYS_TPL_LANG}/kat_left_2.htm,*)}
+        {content_page()}
+    </div>
+</div>
+
+{startblock(script)}
+{parentblock()}
+<script type="application/ld+json">
+    {kat_ariadne_dynamic_json_ld({ID_KAT},marketplace)},
+</script>
+{endblock(script)}

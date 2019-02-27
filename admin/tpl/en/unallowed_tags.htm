@@ -1,0 +1,31 @@
+<h1>Nicht erlaubte HTML Tags</h1>
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="unallowed_tags">
+<table class="formTable">
+ <tr>
+  <td colspan="2"><strong>Hier haben Sie die M&ouml;glichkeit bestimmte HTML Tags von der Bunutzung auszuschlie&szlig;en. 
+      Diese  k&ouml;nnen dann beim Schalten von Anzeigen nicht mehr verwendet werden! <br />
+	  Bitte geben Sie nur den namen des Tags an. z.B. &quot;img&quot; oder &quot;object&quot;
+	  Geben Sie bitte keine Zeichen wie &quot;&gt;,&lt;&quot; etc. ein. <br />
+	  Bitte beachten Sie dass, sehr viele Tags wieder geschlossen werden m&uuml;ssen. Wie z.B. 
+	  &lt;td&gt;TEXT&lt;/td&gt; Dieses k&ouml;nnen Sie separat vermerken. <br />
+	  Bei Tags wie &lt;td&gt;TEXT&lt;/td&gt; k&ouml;nnen Sie entscheiden, was mit den Inhalten zwischen dem &ouml;ffnenden und dem schlie&szlig;enden tag passieren soll. </strong>	  
+	  <hr noshade />
+  </td>
+ </tr>
+ <tr>
+  <td>Tag hinzuf&uuml;gen:</td>
+  <td><input type="text" name="TAG" value="{htm(TAG)}"> ( z.B. img )</td>
+ </tr>
+ <tr>
+   <td>Schlie&szlig;endes Tag erwartet? </td>
+   <td><input type="radio" name="ENDTAG" value="0" class="nob" {if !ENDTAG}checked{endif}> Nein
+    <input type="radio" name="ENDTAG" value="1" class="nob" {if ENDTAG}checked{endif}> Ja</td>
+ </tr>
+ <tr>
+   <td nowrap>Inhalt zwischen &ouml;ffnendem und schlie&szlig;endem&nbsp;<br>
+     Tag entfernen oder belassen </td>
+   <td width="100%">&nbsp;</td>
+ </tr>
+</table>	  
+</form>

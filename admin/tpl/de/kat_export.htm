@@ -1,0 +1,36 @@
+<h1>Kategorien exportieren</h1>
+
+<p>Hier haben Sie die Möglichkeit ihre vorhandene Kategorie-Struktur zu exportieren.</p>
+
+<form method="post">
+    <table class="liste" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>
+                <strong>Sprache:</strong>
+            </td>
+            <td>
+                <select name="language">
+                    <option value="">Alle Sprachen</option>
+                    {languages}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Format:</strong>
+            </td>
+            <td>
+                <select name="format">
+                    <option value="windows">Microsoft Excel-Kompatibel (Windows-Zeilenumbrüche, Semikolon als Trennzeichen)</option>
+                    <option value="linux">OpenOffice- / LibreOffice-Kompatibel (Linux-Zeilenumbrüche, Semikolon als Trennzeichen)</option>
+                    <option value="mac">OpenOffice- / LibreOffice-Kompatibel (Mac-Zeilenumbrüche, Semikolon als Trennzeichen)</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="footer">
+            <th colspan="2" style="text-align: right;">
+                <button>Kategorien exportieren</button>
+            </th>
+        </tr>
+    </table>
+</form>

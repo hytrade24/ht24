@@ -1,0 +1,55 @@
+	<h1>Mitgliedschaften</h1>
+<p>Hier k&ouml;nnen Sie Ihr Preismodel angeben.<br />
+Zu jeder Benutzergruppe k&ouml;nnen Mitgliedschaften angelegt werden. 
+</p>
+{if error_in_use}
+	<div class="error">
+		Die gew&auml;hlte Mitgliedschaft ist gerade in Verwendung und kann daher nicht gel&ouml;scht werden!
+	</div>
+	<br />
+{endif}
+
+<form action="index.php" method="post">
+	<input type="hidden" name="page" value="packet_membership">
+	<input type="hidden" name="action" value="sort">
+	<input type="hidden" name="npage" value="{curpage}">
+
+	<table class="liste" cellpadding="0" cellspacing="0">
+	  <tr>
+	  	<th class="first">
+	  		Aktion
+	  	</th>
+		<th>
+			Aktiv?
+		</th>
+		<th>
+			Abo?
+		</th>
+		<th>
+			Benutzergruppe
+		</th>
+		<th>
+			Name
+		</th>
+		<th>
+			Enth&auml;lt
+		</th>
+		<th class="last">
+			Preis(e)
+		</th>
+		<th>Anzahl<br />User</th>
+
+		 <th>Sortierung</th>
+	  </tr>
+	  {liste}
+	  {if pager}
+	  <tr>
+	  	<th colspan="9" class="footer">
+	  		{pager}
+	  	</th>
+	  </tr>
+	  {endif}
+	</table>
+	<input type="submit" value="Sortierung speichern">
+
+</form>

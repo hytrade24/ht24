@@ -1,0 +1,164 @@
+<h1>Zentrale Produktdatenbank</h1>
+
+<h2>Hersteller</h2>
+
+<p>
+	Damit beim Einstellen von neuen Artikeln der Hersteller abgefragt wird, muss mindestens eine
+	<a href="index.php?page=manufacturer_db_group">Hersteller-Gruppe</a> definiert und der entsprechenden Kategorie zugeordnet sein.
+</p>
+<div>
+	<a class="button" href="index.php?page=manufacturer_db_group">Hersteller-Gruppen</a>
+	<a class="button" href="index.php?page=manufacturer_db_category">Kategorie-Zuordnung</a>
+</div>
+<br />
+<br />
+
+{if success_mass}
+	<p class="ok">Es wurden {success_mass} Hersteller erfolgreich gespeichert</p>
+{endif}
+{if success_delete}
+	<p class="ok">Es wurden {success_delete} Hersteller erfolgreich gelöscht</p>
+{endif}
+{if success_merge}
+	<p class="ok">Hersteller wurden erfolgreich zusammengeführt</p>
+{endif}
+
+{if HDB_MERGE_MANUFACTURER_SESSION_ACTIVE}
+	<div class="hdb-merge-tool">
+		<form method="post" action="index.php" onsubmit="return confirm('Möchten Sie den Merge wirklich starten und alle in der Tabelle dargestellten Hersteller mit dem ausgewählten Ziel vereinigen?')">
+		  <input type="hidden" name="page" value="{curpage}" />
+			<h4>Merge Tool</h4>
+			<p>
+				Sie haben das Hersteller Datenbank Merge Tool aktiviert. Damit können Sie doppelte Hersteller zu einem zusammenfassen.
+				<ol><li>Wählen Sie aus der unten stehenden Tabelle alle Hersteller aus, die zusammengefasst werden sollen und fügen Sie diese mit dem Button
+				<strong>"Markierte Hersteller dem Merge Tool hinzufügen"</strong> dem Merge Tool hinzu.</li>
+				<li>Wählen Sie anschließend den Ziel-Hersteller über die vorangestellte Auswhalmöglichkeit im Merge Tool</li>
+				</ol>
+
+			</p>
+
+			<table class="liste">
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>Hersteller</th>
+					<th>Status</th>
+				</tr>
+				{if HDB_MERGE_MANUFACTURER_DATA}
+					{HDB_MERGE_MANUFACTURER_DATA}
+				{else}
+					<tr>
+						<td colspan="4">Bitte wählen Sie einen Hersteller und klicken auf "Zum Merge Tool hinzufügen"</td>
+					</tr>
+				{endif}
+			</table>
+			<br>
+			<a href="index.php?page=manufacturer_db&DO_CANCEL_MERGE=1" class="button">Abbrechen</a>
+			<input type="submit" name="DO_HDB_MERGE_RUN" value="Zusammenführung starten" class="button">
+
+		</form>
+	</div>
+{endif}
+{if unconfirmed}
+<div class="reiterPassiv">
+    <a href="index.php?page=manufacturer_db">Best&auml;tigte Hersteller</a>
+</div>
+<div class="reiterAktiv">
+    <a href="index.php?page=manufacturer_db&unconfirmed=1">Unbest&auml;tigte Hersteller</a>
+</div>
+{else}
+<div class="reiterAktiv">
+    <a href="index.php?page=manufacturer_db">Best&auml;tigte Hersteller</a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=manufacturer_db&unconfirmed=1">Unbest&auml;tigte Hersteller</a>
+</div>
+{endif}
+
+
+<form method="post" action="index.php">
+  <input type="hidden" name="page" value="{curpage}" />
+	{if unconfirmed}<input type="hidden" name="unconfirmed" value="1">{endif}
+
+	<table class="formTable" cellspacing="0" style="float: left;">
+		<tr>
+			<th colspan="2" style="border-bottom:1px #000099 solid;">Nach Herstellern suchen</th>
+		</tr>
+		<tr>
+			<th valign="top">Hersteller Bezeichnung</th>
+			<td>
+				<input type="text" name="SEARCH_NAME" value="{htm(SEARCH_NAME)}" size="45" />
+			</td>
+		</tr>
+		<tr>
+			<th valign="top">Herstellernummer</th>
+			<td>
+			  <input type="text" name="SEARCH_ID_MAN" value="{htm(SEARCH_ID_MAN)}" size="20" />
+			</td>
+		</tr>
+
+		<tr>
+			<td align="right" colspan="2" class="footer">
+				<a href="index.php?page={curpage}" title="Alle Anzeigen anzeigen">Alle anzeigen</a>
+				<input type="submit" value="Suchen" class="button" />
+			</td>
+		</tr>
+	</table>
+
+	<table cellspacing="0" class="liste" style="width: 447px;">
+		{if pager}
+		<tr>
+			<td colspan="6">
+				{pager}
+			</td>
+		</tr>
+		{endif}
+		<tr>
+			<th>
+				Ziel
+			</th>
+			<th>
+				Aktionen
+			</th>
+			<th>Status</th>
+			<th>ID</th>
+			<th>
+				Hersteller
+			</th>
+			<th>
+				Webseite
+			</th>
+		</tr>
+		{if liste}
+            {liste}
+        {else}
+            <tr><td colspan="6">Zur Zeit sind keine Hersteller vorhanden</td></tr>
+        {endif}
+		{if pager}
+		<tr>
+			<td colspan="6">
+				{pager}
+			</td>
+		</tr>
+		{endif}
+	</table>
+
+	<a href="#" onclick="jQuery('.manSelectCheckbox').attr('checked', true); return false;" class="button">alle markieren</a>
+	<a href="#" onclick="jQuery('.manSelectCheckbox').attr('checked', false); return false;" class="button">keine markieren</a>
+	<input type="submit"  class="button" name="DO_MASSCONFIRM" value="Markierte Hersteller freischalten">
+	<input type="submit"  class="button" name="DO_MASSUNCONFIRM" value="Markierte  Hersteller deaktivieren">
+	<input type="submit"  class="button" name="DO_MASSDELETE" onclick="return confirm('Möchten Sie die Markierten Hersteller und deren Produkte wirklich löschen ?')" value="Markierte  Hersteller Löschen">
+
+
+	{if !HDB_MERGE_MANUFACTURER_SESSION_ACTIVE}
+		<br><br>
+		<p>Wenn sie mehrere identische Hersteller Datensätze in der Datenbank haben, können Sie diese zusammenführen. Dabei werden auch dem Hersteller
+		zugewiesene Produkte zusammengeführt. Klicken Sie auf den unten stehenden Button "Prozess Hersteller zusammenführen starten" und wählen Sie anschließend
+		doppelte Hersteller aus.</p>
+		<br>
+		<a href="index.php?page=manufacturer_db&DO_START_MERGE=1" class="button">Prozess "Hersteller Zusammenführen" starten</a>
+	{else}
+	<br><br>
+		<input type="submit" name="DO_ADDMERGETOOL" class="button" value="Markierte Hersteller dem Merge Tool hinzufügen">
+	{endif}
+</form>

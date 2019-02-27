@@ -1,0 +1,10 @@
+<div>
+{if move_into}
+  Soll <strong>{KAT}</strong> wirklich in die Kategorie <strong>{KAT_TARGET}</strong> verschoben werden?
+{else}
+  Soll <strong>{KAT}</strong> wirklich vor die Kategorie <strong>{KAT_TARGET}</strong> verschoben werden?
+{endif}
+  <br />
+  <input type="button" onclick="modalWindow.close({ id: 'moveElements' }); moveTreeElements.onClickConfirmed({ID_TARGET}, {ID_CAT}, '{MOVE_TO}');" value="Ja">
+  <input type="button" onclick="modalWindow.close({ id: 'moveElements' });" value="Nein">
+</div>

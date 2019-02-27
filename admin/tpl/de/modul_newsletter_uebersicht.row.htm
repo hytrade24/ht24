@@ -1,0 +1,10 @@
+<tr>
+ <td>
+ <a href="index.php?page=modul_newsletter_edit&ID_NL={ID_NL}" title="Bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16"></a>{if TODO!=DONE}<a 
+   href="index.php?page=modul_newsletter_versand&ID_NL={ID_NL}" title="{htm(V1)} jetzt versenden"><img src="gfx/btn.mail.gif"></a>
+{endif}
+ </td>
+ <td>{todate(STAMP)}</td>
+ <td>{htm(V1)}</td>
+ <td align="center">{if TODO==DONE}<span class="ok">ja</span>{else}<span class="error">nein</span>{endif}</td>
+</tr>

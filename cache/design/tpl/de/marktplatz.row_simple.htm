@@ -1,0 +1,29 @@
+<div class="design-ad-row-simple clearfix{if (B_TOP&4)==4} top{endif}">
+    <div class="design-ad-image pull-left">
+        <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+            {if IMPORT_IMAGES}{thumbnail_article_loader(#row-img-{ID_AD},{ID_AD},88,80,crop)}{endif}
+            <img src="{if !IMG_DEFAULT_SRC}{thumbnail({uri_resource(/images/marketplace/nopic.jpg)},88,80,crop)}{else}{thumbnail_article({ID_AD},{IMG_DEFAULT_SRC},88,80,crop)}{endif}" id="row-img-{ID_AD}" data-watchlist="true" />
+        </a>
+    </div>
+    <h3 class="design-ad-name">
+        <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+            {htm(PRODUKTNAME)}
+        </a>
+    </h3>
+                
+    <div class="design-ad-description">
+    ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(BF_CONSTRAINTS_B2B)} == 0)°
+        {market_article_description({ID_AD})}
+    ^else°
+        Dieses Angebot richtet sich ausschließlich an <strong>Gewerbetreibende</strong>.<br>
+            Loggen Sie sich bitte als Händler ein, um alle Produktinformationen angezeigt
+            zu bekommen.
+    ^endif°
+    </div>
+    <div class="design-ad-category">
+        Kategorie:
+        <a title="Mehr aus der Kategorie {htm(KAT)}" href="{uri_action(marktplatz,{FK_KAT},{urllabel(KAT)})}">
+            {htm(KAT)}
+        </a>
+    </div>
+</div>

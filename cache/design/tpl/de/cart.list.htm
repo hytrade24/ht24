@@ -1,0 +1,53 @@
+<div class="design-cart-list-loading" style="display:none;">
+  <img src="{uri_baseurl(/gfx/ajax-loader.gif)}" alt="waiting">
+</div>
+<div class="design-user-cart-table design-grid-table table-striped">
+    <div class="design-grid-table-header hidden-xs hidden-sm">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-11 col-md-offset-1">
+                        <b>Anzeige</b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-6 text-right">
+                        <b>Verkäufer</b>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <b>Anzahl</b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-xs-6 text-right">
+                        <b>Stückpreis</b>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <b>Gesamtpreis</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="design-grid-table-body">
+        {if liste}
+            {liste}
+        {else}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-11 col-md-offset-1">
+                        <span class="text-muted">
+                            Zur Zeit haben Sie keine Artikel in Ihrem Warenkorb.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>    
+        {endif}
+    </div>
+</div>

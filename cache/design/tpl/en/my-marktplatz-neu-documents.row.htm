@@ -1,0 +1,18 @@
+<tr>
+	<td>
+		<a onclick="DocumentDelete({ID_AD}, {i});">Delete</a>
+	</td>
+	{if SHOW_PAID_DOCUMENT_DOWNLOAD_OPTION}
+	<td>
+		<input type="checkbox" name="IS_PAID[{i}]" onclick="removeWarningMsg(this);" value="1" {if IS_PAID}checked{endif} />
+	</td>
+	{endif}
+	<td>
+		<a href="{uri_baseurl(/index.php?page=ad_showup&INDEX={i})}" target="_blank" title="Show {FILENAME} file">
+			{if FILENAME != FILENAME_SHORT}{htm(FILENAME_SHORT)} ...{else}{htm(FILENAME)}{endif}
+		</a>
+	</td>
+	<td>
+		{EXT}
+	</td>
+</tr>

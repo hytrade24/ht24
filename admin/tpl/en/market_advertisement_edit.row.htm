@@ -1,0 +1,12 @@
+				<div style="float: left; width: 160px;">
+				{if LEVEL>0}
+					<span>{LEVEL}. Kategorie-Ebene</span>
+				{else}
+					<span>Grundpreis</span>
+				{endif}
+				</div>
+				<div style="float: left;">
+					<input type="text" name="PRICE[]" value="{topreis(PREIS)}" />
+					{CURRENCY_DEFAULT} / Tag
+				</div>
+				<br style="clear: both;" />

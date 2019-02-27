@@ -1,0 +1,62 @@
+<script type="text/javascript">
+    var tmpLang = '{sel_lang}';
+    function selectLang() {
+        if (confirm("Möchten Sie die Sprache wirklich ändern ? Gegebenenfalls getätigte Änderungen gehen dadurch verloren.")) {
+            var newLang = jQuery("#selectlang").val();
+            window.location.href = 'index.php?page={curpage}&design={DESIGN_ident}&tpl={tpl}&ROOT={ROOT}&sel_lang=' + newLang;
+        } else {
+            jQuery("#selectlang option[value='"+tmpLang+"']").attr('selected', 'selected');
+        }
+    }
+</script>
+
+<h1>
+	<img src="gfx/html_64.gif" width="64" height="64" alt="" border="0">
+	Modul Template &quot;{tpl}&quot; bearbeiten
+</h1>
+{if err}
+<div class="hinweis">
+	<span class="error">{err}</span>
+</div>
+{endif}
+{if OK}
+ <div class="hinweis"><span class="ok">{OK}</span></div>
+{endif}
+<p>
+	<strong>Bitte &uuml;berpr&uuml;fen Sie jede &Auml;nderung auf das Genaueste!</strong>
+</p>
+
+<form method="post" action="index.php">
+    <table>
+        <tr>
+            <td>Design:</td>
+            <td style="width: 200px;">
+                <strong>{DESIGN_name}</strong>
+            </td>
+            <td rowspan="2" style="width: 300px">
+                <p>
+                    Wenn Sie Änderungen dieser Datei in Ihrem Design verwerfen und das Standarddesign wiederherstellen möchten, klicken Sie bitte auf:
+                </p>
+                <strong><a href="./index.php?page={curpage}&modulname={modulname}&tpl={tpl}&ROOT={ROOT}&sel_lang={sel_lang}&action=recover" class="button_blank" onclick="return confirm('Selbst gemachte Änderungen gehen verloren! Möchten Sie die Seite aus dem Standard Design wirklich wiederherstellen?');">Standard wiederherstellen</a></strong>
+            </td>
+        </tr>
+        <tr>
+            <td>Sprache:</td>
+            <td>
+                <select name="sel_lang" id="selectlang" onchange="selectLang()">
+                    <option value="default">Alle Sprachen</option>
+                    {selectlang}
+                </select>
+            </td>
+        </tr>
+    </table>
+
+	<input type="hidden" name="page" value="{curpage}">
+	<input type="hidden" name="modulname" value="{modulname}">
+	<input type="hidden" name="tpl" value="{tpl}">
+
+
+	<textarea name="TPLCODE" rows="15" cols="80">{noparse(TPLCODE)}</textarea>
+	<br />
+	<input type="submit" value="&Auml;nderungen speichern" class="button" />
+</form>

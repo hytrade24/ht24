@@ -1,0 +1,95 @@
+<script type="text/javascript">
+	function confProduct(nummer)
+	{
+		req = new Ajax.Request('index.php?frame=ajax&page=article_db&confirm='+nummer,
+		{
+			method: 'get',
+			onSuccess: function(transport)
+			{
+				$('product_'+nummer).replace(transport.responseText);
+			}
+		})
+	}
+</script>
+
+<h1>Produktdatenbank</h1>
+
+<form method="post">
+  <table width="500" class="liste">
+    <tr>
+      <th colspan="4">Produkt suchen:</th>
+    </tr>
+    <tr>
+      <td><strong>Produktname</strong></td>
+      <td><strong>Bestell-Nr.</strong></td>
+      <td><strong>Hersteller</strong></td>
+      <td><strong>Status</strong></td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <input style="width:99%;" name="V1" value="{V1}">
+      </td>
+      <td valign="top">
+        <input style="width:99%;" name="ID_ORDER" value="{ID_ORDER}">
+      </td>
+      <td valign="top">
+        <select style="width:99%;" name="FK_MAN">
+          <option value="0">Alle Hersteller</option>
+  {liste_man}
+        </select>
+      </td>
+      <td valign="top" nowrap="nowrap">
+        <input id="ratio_confirmed" type="radio" name="unconfirmed" value="0" {if !unconfirmed}checked="checked" {endif}/>
+        <label for="ratio_confirmed">Best&auml;tigt</label><br />
+        <input id="ratio_unconfirmed" type="radio" name="unconfirmed" value="1" {if unconfirmed}checked="checked" {endif}/>
+        <label for="ratio_unconfirmed">Unbest&auml;tigt</label><br />
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:right;" colspan="4">
+        <input type="submit" value="Suche starten">
+      </td>
+    </tr>
+  </table>
+</form>
+<br /><br />
+
+{if please_start_search}
+<div style="font-weight: bold;">
+	Bitte wählen Sie oben die gewünschten Suchparameter und klicken Sie anschließend auf "Suchen".<br />
+	<br />
+	<span style="color:red">Achtung! Die Suche nach allen bekannten Produkten kann längere Zeit in anspruch nehmen!</span>
+</div>
+{else}
+
+{if unconfirmed}
+<div class="reiterPassiv">
+    <a href="index.php?page=article_db">Best&auml;tigte Produkte</a>
+</div>
+<div class="reiterAktiv">
+    <a href="index.php?page=article_db&unconfirmed=1">Unbest&auml;tigte Produkte</a>
+</div>
+{else}
+<div class="reiterAktiv">
+    <a href="index.php?page=article_db">Best&auml;tigte Produkte</a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=article_db&unconfirmed=1">Unbest&auml;tigte Produkte</a>
+</div>
+{endif}
+<table cellspacing="0" class="liste">
+  <tr>
+    <th>Aktionen</th>
+    <th>Produktname</th>
+    <th>Hersteller</th>
+    <th>Bestell-Nr.</th>
+    <th>Verkaufs-Preis</th>
+    <th>Einkaufs-Preis</th>
+  </tr>
+  {liste}
+</table>
+{endif}
+
+{if pager}
+  <br />{pager}<br /><br />
+{endif}

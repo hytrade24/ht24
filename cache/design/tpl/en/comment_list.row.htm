@@ -1,0 +1,80 @@
+<a name="{ID_COMMENT}"></a>
+<div class="row design-comment-row">
+	<div class="col-xs-12 col-sm-1">
+		<div>
+			{if FK_USER>0}
+			<a href="{uri_action(view_user,{USER_NAME},{FK_USER})}" >
+				<img src="{thumbnail({uri_baseurl(/cache/users/{USER_CACHE}/{FK_USER}/{FK_USER}.jpg)},48,48)}" alt="{USER_NAME}" class="design-comment-row-img">
+			</a>
+			{else}
+				<img src="{thumbnail({uri_baseurl(/uploads/users/no_FIRMA.jpg)},48,48)}" alt="{USER_NAME}" class="design-comment-row-img">
+			{endif}
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-11">
+		<div class="tooltip static right">
+			<a  name="#{ID_COMMENT}"></a>
+			<div class="tooltip-arrow"></div>
+			<div class="tooltip-inner">
+                {if RATING}
+                <div class="pull-right">
+                    <img src="{uri_baseurl(/gfx/stars_{RATING}.png)}" />
+                </div>
+                {endif}
+				{text(COMMENT)}
+				<div class="author text-muted">
+                    Written by
+					{if FK_USER>0}
+						<a href="{uri_action(view_user,{USER_NAME},{FK_USER})}">
+							{htm(USER_NAME)}
+						</a>
+					{else}
+						<strong>{htm(USER_NAME)}</strong>
+					{endif}
+                    At {todate(STAMP,1)}
+                {if LOGIN_ID_USER>0 && LOGIN_ID_USER==FK_USER}
+                    -
+                    <a href="{uri_action(my-comment-edit,{ID_COMMENT})}">edit</a>
+                {endif}
+				</div>
+			</div>
+		</div>
+		{if ANSWER_COMMENT}
+        <div class="row design-comment-row design-comment-answer">
+
+            <div class="col-xs-12 col-sm-1">
+                <div class="">
+                    {if FK_USER_OWNER>0}
+                    <a href="{uri_action(view_user,{ANSWER_USER_NAME},{FK_USER_OWNER})}">
+                        <img src="{thumbnail({uri_baseurl(/cache/users/{ANSWER_USER_CACHE}/{FK_USER_OWNER}/{FK_USER_OWNER}.jpg)},48,48)}" alt="{ANSWER_USER_NAME}" class="design-comment-row-img answer">
+                    </a>
+                    {else}
+                    <img src="{thumbnail({uri_baseurl(/uploads/users/no_FIRMA.jpg)},48,48)}" alt="{ANSWER_USER_NAME}" class="design-comment-row-img answer">
+                    {endif}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-11">
+                <div class="tooltip static right">
+                    <div class="tooltip-arrow"></div>
+                    <div class="tooltip-inner">
+                        {text(ANSWER_COMMENT)}
+                        <div class="author text-muted">
+                            Answered by
+                            {if FK_USER_OWNER>0}
+                            <a href="{uri_action(view_user,{ANSWER_USER_NAME},{FK_USER_OWNER})}">
+                                {htm(ANSWER_USER_NAME)}
+                            </a>
+                            {else}
+                            <strong>{htm(ANSWER_USER_NAME)}</strong>
+                            {endif}
+                            At {todate(ANSWER_STAMP,1)}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+	{endif}
+	</div>
+	<br style="clear: left;" />
+</div>

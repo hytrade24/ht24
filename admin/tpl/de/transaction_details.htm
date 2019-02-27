@@ -1,0 +1,239 @@
+<script type="text/javascript">
+	
+function ShowTab{ORDER_ID_AD_ORDER}(type) {
+	jQuery('.trans-tab-container').hide();
+	jQuery('#'+type+'_trans_{ORDER_ID_AD_ORDER}').show();
+	jQuery('.trans-tab').addClass("reiterPassiv");
+	jQuery('.trans-tab').removeClass("reiterAktiv");
+	jQuery('#'+type+'_btn_{ORDER_ID_AD_ORDER}').removeClass("reiterPassiv");
+	jQuery('#'+type+'_btn_{ORDER_ID_AD_ORDER}').addClass("reiterAktiv");
+}
+
+</script>
+{if !dialog}
+<div style="float:right;">
+	<a class="close" onclick="show_details({ORDER_ID_AD_ORDER});" title="Details ausblenden"><strong>X</strong></a>
+</div>
+{endif}
+<div class="reiter">
+    <div id="details_btn_{ORDER_ID_AD_ORDER}" class="reiterAktiv trans-tab">
+        <a onclick="ShowTab{ORDER_ID_AD_ORDER}('details');">
+			Details zu Transaktion {ORDER_ID_AD_ORDER}
+		</a>
+    </div>
+	<div id="items_btn_{ORDER_ID_AD_ORDER}" class="reiterPassiv trans-tab">
+		<a onclick="ShowTab{ORDER_ID_AD_ORDER}('items');">
+			Artikel
+		</a>
+	</div>
+    <div id="mails_btn_{ORDER_ID_AD_ORDER}" class="reiterPassiv trans-tab">
+        <a onclick="ShowTab{ORDER_ID_AD_ORDER}('mails');">
+			E-Mails
+		</a>
+    </div>
+</div>
+
+<table id="mails_trans_{ORDER_ID_AD_ORDER}" class="liste trans-tab-container" cellpadding="0" cellspacing="0" border="0"
+		style="width: 100%; max-height: 300px; overflow: auto; display: none; border: none; background-color: #fff; margin-bottom: 30px;">
+	{if liste_mails}
+		{liste_mails}
+	{else}
+		<tr>
+			<td colspan="2">Keine E-Mail vorhanden</td>
+		</tr>
+	{endif}
+</table>
+<div id="items_trans_{ORDER_ID_AD_ORDER}" class="trans-tab-container" style="display: none;  margin-bottom: 30px;">
+	<table class="liste">
+		<thead>
+			<tr>
+				<th style="width: 40px;"></th>
+				<th style="width: 350px">Artikel</th>
+				<th>Artikel-Nr. </th>
+				<th>Menge</th>
+				<th class="align-right">EP</th>
+				<th class="align-right">Gesamt</th>
+			</tr>
+		</thead>
+		{if orderItems}
+			{orderItems}
+		{else}
+			<tr>
+				<td colspan="6">In dieser Bestellung befinden sich keine Artikel</td>
+			</tr>
+		{endif}
+	</table>
+</div>
+<table id="details_trans_{ORDER_ID_AD_ORDER}" style="width: 100%; height: 300px;  margin-bottom: 30px;" border="0" class="trans-tab-container">
+	<tr class="nohover">
+		<td valign="top" width="33%">
+		 
+				<h3>
+					Bestellung
+				</h3>
+				<table cellspacing="5" style="margin-top:0px;">
+					<tr class="nohover">
+						<td>Bestellnummer:</td>
+						<td>
+							{ORDER_ORDER_ID_AD_ORDER}
+						</td>
+					</tr>
+                    <tr class="nohover">
+						<td>
+							Bestelldatum:
+						</td>
+						<td>
+							{todate(ORDER_STAMP_CREATE,1)}
+						</td>
+					</tr>
+					<tr class="nohover">
+						<td>
+							Gesamtbetrag:
+						</td>
+						<td>
+							<strong>{topreis(ORDER_TOTAL_PRICE)} {CURRENCY_DEFAULT}</strong>
+                            {if ORDER_SHOW_MWST}
+                            <span style="color: grey;">{if ORDER_MWST}inkl.{else}exkl.{endif} MwSt.</span>
+                            {endif}
+						</td>
+					</tr>
+					<tr class="nohover">
+						<td>
+							Versandkosten:
+						</td>
+						<td>
+							{topreis(ORDER_SHIPPING_PRICE)} {CURRENCY_DEFAULT}
+						</td>
+					</tr>
+
+					<tr class="nohover">
+						<td>
+							Artikelbetrag:
+						</td>
+						<td>
+							{topreis(ORDER_ITEM_PRICE)} {CURRENCY_DEFAULT}
+                            {if ORDER_SHOW_MWST}
+                            <span style="color: grey;">{if ORDER_MWST}inkl.{else}exkl.{endif} MwSt.</span>
+                            {endif}
+						</td>
+					</tr>
+
+					{if PAYMENT_ADAPTER_NAME}
+					<tr class="nohover">
+						<td>
+							Zahlungsweise:
+						</td>
+						<td>
+							{PAYMENT_ADAPTER_NAME}
+						</td>
+					</tr>
+					{endif}
+
+					{if ORDER_TRANSACTION_ID}
+					<tr class="nohover">
+						<td>
+							Transaktions-ID:
+						</td>
+						<td>
+							{ORDER_TRANSACTION_ID}
+						</td>
+					</tr>
+					{endif}
+
+					<tr class="nohover">
+						<td>Verkauf:</td>
+						<td>
+							{if ORDER_ORDER_CONFIRMED}<span class="label label-success">bestätigt</span>{endif}
+							{if ORDER_ORDER_CONFIRMATION_OPEN}<span class="label label-warning">unbestätigt</span>{endif}
+							{if ORDER_ORDER_DECLINED}<span class="label label-error">abgelehnt</span>{endif}
+
+							{if !ORDER_ORDER_CONFIRMED && ORDER_ORDER_PARTIAL_CONFIRMED}<span class="label label-success">teilweise bestätigt</span>{endif}
+							{if !ORDER_ORDER_CONFIRMATION_OPEN && ORDER_ORDER_CONFIRMATION_PARTIAL_OPEN}<span class="label label-warning">teilweise unbestätigt</span>{endif}
+							{if !ORDER_ORDER_DECLINED && ORDER_ORDER_PARTIAL_DESCLINED}<span class="label label-error">teilweise abgelehnt</span>{endif}
+						</td>
+					</tr>
+
+					<tr class="nohover">
+						<td>Versand:</td>
+						<td>
+							{if ORDER_STATUS_SHIPPING == 0}<span class="label ">offen</span>{endif}
+							{if ORDER_STATUS_SHIPPING == 1}<span class="label label-info">in Bearbeitung</span>{endif}
+							{if ORDER_STATUS_SHIPPING == 2}<span class="label label-success">versandt</span>{endif}
+						</td>
+					</tr>
+
+					<tr class="nohover">
+						<td>Zahlung:</td>
+						<td>
+							{if ORDER_STATUS_PAYMENT == 0}<span class="label">offen</span>{endif}
+							{if ORDER_STATUS_PAYMENT == 1}<span class="label label-success">bezahlt</span>{endif}
+							{if ORDER_STATUS_PAYMENT == 3}<span class="label label-success">Zahlung schwebend</span><br>{endif}
+						</td>
+					</tr>
+
+				</table>
+
+                {if !ORDER_SHOW_MWST}
+                <div class="error">
+                    Achtung! In der Bestellung sind sowohl Artikel mit, als auch ohne MwSt. enthalten!
+                </div>
+                {endif}
+		 	
+		</td>
+		<td valign="top" style="padding-left:30px;" width="33%">
+			<h3><img src="{uri_baseurl(/cache/users/{ORDER_SELLER_DATA_CACHE}/{ORDER_SELLER_DATA_ID_USER}/{ORDER_SELLER_DATA_ID_USER}_s.jpg)}" alt="" border="0" hspace="5" align="left" />
+				Kontaktdaten des Verk&auml;ufers<br>
+				<a target="_blank" href="{uri_baseurl(/view_user,{urllabel(ORDER_SELLER_DATA_NAME)},{ORDER_SELLER_DATA_ID_USER}.htm)}" title="Profil in einem neuen Fenster &ouml;ffnen">
+					{htm(ORDER_SELLER_DATA_USER_NAME)}
+				</a>
+			</h3>
+			<br><br>
+			<p>
+				{if ORDER_SELLER_DATA_FIRMA}{htm(ORDER_SELLER_DATA_FIRMA)}<br />{endif}
+				{htm(ORDER_SELLER_DATA_VORNAME)} {htm(ORDER_SELLER_DATA_NACHNAME)}<br />
+				{htm(ORDER_SELLER_DATA_STRASSE)}
+			</p>
+			<p>
+				{htm(ORDER_SELLER_DATA_PLZ)}, {htm(ORDER_SELLER_DATA_ORT)}<br />
+				{htm(ORDER_SELLER_DATA_LAND)}
+			</p>
+			<p>
+				{if ORDER_SELLER_DATA_TEL}Telefon: {htm(ORDER_SELLER_DATA_TEL)}{endif}
+				{if ORDER_SELLER_DATA_FAX}<br />Fax: {htm(ORDER_SELLER_DATA_FAX)}{endif}
+				{if ORDER_SELLER_DATA_MOBIL}<br />Mobil: {htm(ORDER_SELLER_DATA_MOBIL)}{endif}
+			</p>
+			<p>
+				Email: 
+				<a href="mailto:{htm(ORDER_SELLER_DATA_EMAIL)}">{htm(ORDER_SELLER_DATA_EMAIL)}</a>
+			</p>
+		</td>
+        <td valign="top" width="33%" style="padding-left:30px;">
+			<h3><img src="{uri_baseurl(/cache/users/{ORDER_BUYER_DATA_CACHE}/{ORDER_BUYER_DATA_ID_USER}/{ORDER_BUYER_DATA_ID_USER}_s.jpg)}" alt="" border="0" hspace="5" align="left" />
+				Kontaktdaten des K&auml;ufers<br>
+				<a target="_blank" href="{uri_baseurl(/view_user,{urllabel(ORDER_BUYER_DATA_NAME)},{ORDER_BUYER_DATA_ID_USER}.htm)}" title="Profil in einem neuen Fenster &ouml;ffnen">
+					{htm(ORDER_BUYER_DATA_USER_NAME)}
+				</a>
+			</h3>
+			<br><br>
+
+			<p>
+				{if ORDER_BUYER_DATA_FIRMA}{htm(ORDER_BUYER_DATA_FIRMA)}<br />{endif}
+				{htm(ORDER_BUYER_DATA_VORNAME)} {htm(ORDER_BUYER_DATA_NACHNAME)}<br />
+				{htm(ORDER_BUYER_DATA_STRASSE)}
+			</p>
+			<p>
+				{htm(ORDER_BUYER_DATA_PLZ)}, {htm(ORDER_BUYER_DATA_ORT)}<br />
+				{htm(ORDER_BUYER_DATA_LAND)}
+			</p>
+			<p>
+				{if ORDER_BUYER_DATA_TEL}Telefon: {htm(ORDER_BUYER_DATA_TEL)}{endif}
+				{if ORDER_BUYER_DATA_FAX}<br />Fax: {htm(ORDER_BUYER_DATA_FAX)}{endif}
+				{if ORDER_BUYER_DATA_MOBIL}<br />Mobil: {htm(ORDER_BUYER_DATA_MOBIL)}{endif}
+			</p>
+			<p>
+				Email: 
+				<a href="mailto:{htm(ORDER_BUYER_DATA_EMAIL)}">{htm(ORDER_BUYER_DATA_EMAIL)}</a>
+			</p>
+        </td>
+	</tr>
+</table>

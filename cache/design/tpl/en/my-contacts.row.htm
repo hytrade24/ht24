@@ -1,0 +1,36 @@
+<tr id="userContactRow{ID_USER_CONTACT}">
+	<td>
+	{if !showRequestsPending}
+		{if IS_CONTACT}
+			<a href="#" class="removeContactRequest btn btn-default" alt="{ID_USER_CONTACT}" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+		{else}
+			<a href="#" class="acceptContactRequest btn btn-default" alt="{ID_USER_CONTACT}" title="accept"><i class="glyphicon glyphicon-ok"></i></a>
+			<a href="#" class="declineContactRequest btn btn-default" alt="{ID_USER_CONTACT}" title="Decline"><i class="glyphicon glyphicon-remove"></i></a>
+		{endif}
+	{else}
+		<span class="text-muted">
+			Not confirmed yet
+		</span>
+	{endif}
+	</td>
+	<td style="vertical-align: top;text-align: center;" width="100">
+		<img src="{uri_baseurl(/cache/users/{USER_CACHE}/{USER_ID_USER}/{USER_ID_USER}.jpg)}" alt="" border="0" hspace="5" /><br />
+		{if RATING}
+			<img title="Average rating" src="{uri_baseurl(/gfx/stars_{RATING}.png)}" />
+		{endif}
+	</td>
+	<td style="vertical-align: top">
+	{if showRequestsPending}
+		<strong>
+			<a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID})}">{USER_NAME}</a>
+		</strong>
+		{if USER_FIRMA}<br />Firm: {USER_FIRMA}{endif}<br />
+		{if USER_STRASSE}<br />{USER_STRASSE}<br />{USER_PLZ} {USER_ORT}{endif}
+		<p class="text-muted">{if UEBER}{UEBER} {endif}</p>
+	{else}
+		<strong>{USER_VORNAME} {USER_NACHNAME} (<a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID})}">{USER_NAME}</a>)</strong>{if USER_FIRMA}<br />Firma: {USER_FIRMA}{endif}<br />
+		{if USER_STRASSE}<br />{USER_STRASSE}<br />{USER_PLZ} {USER_ORT}{endif}
+		<p class="text-muted">{if UEBER}{UEBER} {endif}</p>
+	{endif}
+	</td>
+</tr>

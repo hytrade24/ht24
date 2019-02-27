@@ -1,0 +1,125 @@
+<div class="row" id="cartArticleRow-{ID_AD}">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-1 hidden-sm">
+                <a href="#" onclick="removeArticleFromCart({ID_AD}, {ID_AD_VARIANT}); return false;" class="hidden-xs">
+                    <i class="glyphicon glyphicon-remove"></i>
+                </a>
+            </div>
+            <div class="col-md-3 pull-left">
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+                    <img src="{if SRC}{thumbnail_article({ID_AD},{SRC},80,80,crop)}{else}{thumbnail({uri_resource(/images/marketplace/nopic.jpg)},80,80,crop)}{endif}" alt="{htm(PRODUKTNAME)}" />
+                </a>
+            </div>
+            <div class="col-md-8">
+                <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+                    <strong>{htm(PRODUKTNAME)}</strong>
+                </a>
+                <div class="hidden-xs">
+                    <p>
+                        <br />
+                        {VARIANT_TEXT}
+                        {if AVAILABILITY}
+                        <br />
+                      {if AVAILABILITY_DATE_FROM}
+                            Zwischen dem {todate(AVAILABILITY_DATE_FROM)} und dem {todate(AVAILABILITY_DATE_TO)}
+                      {else}
+                            Bis zum {todate(AVAILABILITY_DATE_TO)}
+                      {endif}
+                        {if AVAILABILITY_TIME_FROM}
+                            ab {AVAILABILITY_TIME_FROM}Uhr
+                      {endif}
+                        {endif}
+                    </p>
+                    <p class="text-muted">
+                        {market_article_description({ID_AD})}
+                    </p>
+                </div>
+                <div class="visible-xs">
+                    <p>
+                        <br />
+                        <b>Verkäufer:</b>
+                        <br />
+                        <a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">{USER_NAME}</a>
+                    </p>
+                </div>
+                {if CART_PAYMENT_ADAPTER}
+                <div class="cart-item-payment-adapter">
+                    <label class="inline">Zahlungsweise: </label>
+                    <select name="payment_adapter[{ID_AD}][{ID_AD_VARIANT}]" onchange="updateCartItemPaymentAdapter(this, {ID_AD}, {ID_AD_VARIANT});">
+                        {CART_PAYMENT_ADAPTER}
+                    </select>
+                </div>
+                {endif}
+            </div>
+            <div class="col-xs-12 visible-xs visible-sm">
+                <a href="#" onclick="removeArticleFromCart({ID_AD}, {ID_AD_VARIANT}); return false;">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    <span>
+                        Artikel aus Warenkorb entfernen
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="row">
+            <div class="col-sm-6 col-sm-push-6 text-right">
+                <div class="visible-xs visible-sm">
+                    <b>Anzahl:</b>
+                </div>
+                <div class="input-group design-user-cart-table-quantity">
+                    <input type="text" name="DETAILS[{ID_AD}][{ID_AD_VARIANT}][QUANTITY]" class="form-control" value="{CART_QUANTITY}">
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-refresh"></i></button>
+                    </div>
+                </div>
+                {if MOQ > 1}
+                <br />
+                <span class="text-muted">
+                    Mindestens {MOQ}
+                </span>
+                {endif}
+            </div>
+            <div class="col-sm-6 col-sm-pull-6 text-right hidden-xs">
+                <div class="visible-sm">
+                    <b>Verkäufer:</b>
+                </div>
+                <a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}">{USER_NAME}</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="row">
+            <div class="col-xs-6 text-right">
+                <div class="visible-xs visible-sm">
+                    <b>Stückpreis:</b>
+                </div>
+                <strong>{topreis_ex(PREIS)} {CURRENCY_DEFAULT}</strong><br>
+                <span class="text-muted">({subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={MWST})})</span>
+            </div>
+            <div class="col-xs-6 text-right">
+                <div class="visible-xs visible-sm">
+                    <b>Gesamtpreis:</b>
+                </div>
+                <strong>{topreis_ex(CART_TOTAL_PRICE)} {CURRENCY_DEFAULT}</strong><br>
+                <span class="text-muted">({subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst_short.htm,VALUE={MWST})})</span>
+                <p>
+                {if VERSANDOPTIONEN==3}
+                    <span class="text-muted">
+                        zzgl. Versandkosten:
+                        {market_article_shipping(ID_AD,VERSANDKOSTEN,ID_AD_VARIANT,input,SHIPPING_COUNTRY,options_shippingProvider)}
+                    </span>
+                {else}
+                    {if VERSANDOPTIONEN==0}<span class="text-success">Versandkostenfrei</span>{endif}
+                    {if VERSANDOPTIONEN==1}<span class="text-error">Nur Selbstabholung</span>{endif}
+                    {if VERSANDOPTIONEN==2}<span class="text-error">Versandkosten auf Anfrage</span>{endif}
+                {endif}
+                {if VERSANDKOSTEN_INFO}
+                    <span class="text-muted">Versandkostenhinweis: {htm(VERSANDKOSTEN_INFO)}</span>
+                {endif}	
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

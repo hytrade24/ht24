@@ -1,0 +1,84 @@
+<div style="border-bottom:1px #{COLOR} solid; padding:5px;">
+	<table>
+		<tr>
+			<td class="img" rowspan="3" style="width:160px;">
+				<a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Look at {htm(PRODUKTNAME)}">
+						{if IMPORT_IMAGES}{thumbnail_article_loader(#row-img-{ID_AD},{ID_AD},165,150,crop)}{endif}
+						<img src="{if !IMG_DEFAULT_SRC}{uri_resource(/images/marketplace/nopic.jpg)}{else}{thumbnail_article({ID_AD},{IMG_DEFAULT_SRC},165,150,crop)}{endif}" id="row-img-{ID_AD}" data-watchlist="true" />
+				</a>
+			</td>
+			<td valign="top" colspan="2">
+				<h3>
+					<a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+						{htm(PRODUKTNAME)}
+					</a>
+					<span class="adid">
+						[{ID_AD}]
+					</span>
+				</h3>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" class="where">
+				<table>
+				^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(BF_CONSTRAINTS_B2B)} == 0)°
+					<tr height="28">
+						<th valign="top">
+							Preis:
+						</th>
+						<td valign="top">
+						{if VERKAUFSOPTIONEN!=3}
+							{topreis(PREIS)} {CURRENCY_DEFAULT}
+						{else}
+							From {topreis(PREIS)} {CURRENCY_DEFAULT} / day
+						{endif}
+							<br />
+							<div class="small">
+								({subtpl(tpl/{SYS_TPL_LANG}/marktplatz_mwst.htm,VALUE={MWST})})
+							</div>
+						</td>
+					</tr>
+					^endif°
+					<tr>
+						<th>
+							Eingestellt am:
+						</th>
+						<td>
+							{todate(STAMP_START)}
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td valign="top" class="where">
+				<table>
+					<tr height="28">
+						<th valign="top">Country:</th>
+						<td valign="top">{htm(LAND)}</td>
+					</tr>
+					<tr>
+						<th>
+							PLZ, Ort:
+						</th>
+						<td>
+							{htm(ZIP)}, {htm(CITY)}
+						</td>
+					</tr>
+				</table>				
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="padding:3px 0px 0px 4px; width:500px;">
+				<strong style="display:block; margin-bottom:5px;">Description:</strong>
+				{market_article_description({ID_AD})}
+				<p style="margin-bottom:3px;">
+					<strong>
+						Gefunden in: <a title="mehr aus der Kategorie {htm(KAT)}" href="{uri_action(marktplatz,{FK_KAT},{urllabel(KAT)})}">
+							{htm(KAT)}
+						</a>
+					</strong>
+				</p>
+			</td>
+		</tr>
+	</table>
+	<div style="clear:left;height:1px;"></div>
+</div>

@@ -1,0 +1,13 @@
+<li>
+    <div class="form-group">
+        <div class="col-sm-5">
+            <label for="subtpl_{SUBTPL_NAME}_{SUBTPL_INDEX}_{NAME}">
+                {LABEL}
+            </label>
+        </div>
+        <div class="col-sm-7">
+            <input id="subtpl_{SUBTPL_NAME}_{SUBTPL_INDEX}_{NAME}_FALLBACK" type="hidden" name="FALLBACK[{htm(NAME)}]" value="{htm_raw(DEFAULT)}">
+            <input id="subtpl_{SUBTPL_NAME}_{SUBTPL_INDEX}_{NAME}" type="number" class="form-control" name="OPTIONS[{htm(NAME)}]" placeholder="{htm_raw(DEFAULT)}" value="{htm_raw(VALUE_RAW)}" min="{VALUE_MIN}" max="{VALUE_MAX}">
+        </div>
+    </div>
+</li>

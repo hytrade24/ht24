@@ -1,0 +1,96 @@
+{if B_SALES && !SHIPPING_DISABLED}
+<div class="design-ad-create-shipping">
+    <h3>
+        Please set information for the shipment
+    </h3>
+    <div class="design-content-box">
+    {if !HIDE_SHIPPING}
+        <div id="VERSANDOPTIONEN_INPUT" class="form-group">
+            <label class="control-label design-input-label">
+                <strong>Shipping options <span class="text-error">*</span></strong>
+                <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Please choose the desired shipping option"></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[VERSANDOPTIONEN]" value="int">
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="VERSANDOPTIONEN0" name="VERSANDOPTIONEN" onchange="updateVersand();" value="0" class="nob"{if VERSANDOPTIONEN==0} checked="checked"{endif} />
+                        No tax
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="VERSANDOPTIONEN1" name="VERSANDOPTIONEN" onchange="updateVersand();" value="1" class="nob"{if VERSANDOPTIONEN==1} checked="checked"{endif} />
+                        Pickup only
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="VERSANDOPTIONEN2" name="VERSANDOPTIONEN" onchange="updateVersand();" value="2" class="nob"{if VERSANDOPTIONEN==2} checked="checked"{endif} />
+                        On request
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="VERSANDOPTIONEN3" name="VERSANDOPTIONEN" onchange="updateVersand();" value="3" class="nob"{if VERSANDOPTIONEN==3} checked="checked"{endif} />
+                        Price
+                    </label>
+                </div>
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div id="VERSANDKOSTEN_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="VERSANDKOSTEN">
+                <strong>Shippingcosts <span class="text-error">*</span></strong>
+                <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Shippingcosts in €"></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[VERSANDKOSTEN]" value="float">
+                <div class="input-group">
+                    <span class="input-group-addon">{CURRENCY_DEFAULT}</span>
+                    <input type="number" min="0" step="0.01" onchange="validateInput(this);" onkeyup="validateInputLive(this);"{if VERSANDOPTIONEN!=3} disabled="disabled"{endif} class="form-control" id="VERSANDKOSTEN" name="VERSANDKOSTEN" placeholder="Shippingcosts" title="Shippingcosts" value="{if VERSANDKOSTEN}{topreis(VERSANDKOSTEN)}{endif}" />
+                </div>
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div id="LIEFERTERMIN_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="LIEFERTERMIN">
+                <strong>Delivery date <span class="text-error">*</span></strong>
+                <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Hint the expected delivery date."></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[LIEFERTERMIN]" value="text">
+                <input type="text" onchange="validateInput(this);" onkeyup="validateInputLive(this);"{if VERSANDOPTIONEN!=1} required="required"{endif} class="form-control" id="LIEFERTERMIN" name="LIEFERTERMIN" placeholder="Delivery date" title="Delivery date" value="{htm(LIEFERTERMIN)}" />
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+    {else}
+        <input type="hidden" name="VERSANDOPTIONEN" value="2" />
+    {endif}
+        <div id="VERSANDKOSTEN_INFO_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="VERSANDKOSTEN_INFO">
+                <strong>more information to the shipment</strong>
+                <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="More information to the shipping."></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[VERSANDKOSTEN_INFO]" value="text">
+                <textarea onchange="validateInput(this);" id="VERSANDKOSTEN_INFO" name="VERSANDKOSTEN_INFO" class="form-control">{htm(VERSANDKOSTEN_INFO)}</textarea>
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    jQuery(function() {
+        updateVersand();
+    });
+</script>
+{endif}

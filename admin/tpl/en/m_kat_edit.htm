@@ -1,0 +1,290 @@
+{if ID_KAT}
+  <h1>Kategorie &quot;{htm(V1)}&quot; bearbeiten</h1>
+{else}
+  <h1>{if PARENT}Unter-{endif}Kategorie hinzuf&uuml;gen</h1>
+{endif}
+<p>
+	Hier k&ouml;nnen Sie die gew&auml;hlte Kategorie nach Ihren W&uuml;nschen und Anspr&uuml;chen ver&auml;ndern.
+</p>
+<script type="text/javascript">
+  var kat_name = "{htm(V1)}";
+  var kat_desc = "{htm(V2)}";
+  var kat_vis = {B_VIS};
+  
+  function field_change(id, checkbox) {
+    if (checkbox.checked) {
+      $("field_row_"+id).style.color = "black";
+      if ($("field_search_"+id)) $("field_search_"+id).disabled = false;
+      if ($("field_needed_"+id)) $("field_needed_"+id).disabled = false;
+    } else {
+      $("field_row_"+id).style.color = "grey";
+      if ($("field_search_"+id)) $("field_search_"+id).disabled = true;
+      if ($("field_needed_"+id)) $("field_needed_"+id).disabled = true;
+    }
+  }
+  
+  function ApplyTable(table) {
+    $("kat_edit_form").submit();
+  }
+  
+  function ApplyRecursive(enable) {
+	document.getElementById("warning_recurse").style.display = (enable ? "block" : "none");
+    var input_name = document.getElementsByName("V1")[0];
+    var input_icon = document.getElementsByName("ICON")[0];
+    var input_desc = document.getElementsByName("V2")[0];
+    var input_keywords = document.getElementsByName("T1")[0];
+    var input_meta = document.getElementsByName("META")[0];
+    var input_vis_yes = document.getElementById("VIS_YES");
+    var input_vis_no = document.getElementById("VIS_NO");
+    var input_vis_leave = document.getElementById("VIS_LEAVE");
+    if (enable) {
+      var bak_name = input_name.value; 
+      var bak_desc = input_desc.value; 
+      input_name.value = kat_name; 
+      input_name.disabled = true;
+      input_icon.disabled = true;
+      input_desc.value = kat_desc; 
+      input_desc.disabled = true;
+      //input_keywords.disabled = true;
+      //input_meta.disabled = true;
+      kat_vis = input_vis_yes.checked;  
+      kat_name = bak_name;
+      kat_desc = bak_desc; 
+      input_vis_leave.checked = true;   
+    } else {
+      var bak_name = input_name.value; 
+      var bak_desc = input_desc.value; 
+      input_name.value = kat_name; 
+      input_name.disabled = false;
+      input_icon.disabled = false;
+      input_desc.value = kat_desc; 
+      input_desc.disabled = false;   
+      if (kat_vis) {
+        input_vis_yes.checked = true;
+      } else {
+        input_vis_no.checked = true; 
+      }       
+      //input_keywords.disabled = false;
+      //input_meta.disabled = false;
+      kat_name = bak_name;
+      kat_desc = bak_desc; 
+    }
+  }
+
+  function addMeta()
+  {
+    var meta = document.getElementById('metatag').innerHTML;
+    meta = meta.replace(/<!--/i, " ");
+    meta = meta.replace(/-->/i, " ");
+    document.getElementById('META').value = meta;
+  }
+</script>
+
+<div id="metatag"><!--{META_DEF}--></div>
+{if errors}
+	<h2 class="error">
+		Fehler aufgetreten!
+	</h2>
+	<p class="error">
+		{errors}
+	</p>
+{endif}
+{if !IS_LOCKED}
+<form id="kat_edit_form" method="post" enctype="multipart/form-data" action="index.php">
+  <input type="hidden" name="ID_KAT" value="{ID_KAT}" />
+  <input type="hidden" name="PARENT" value="{PARENT}" />
+	<input type="hidden" name="page" value="{curpage}" />
+
+		<table width="600" class="formTable" cellspacing="0">
+			                       <tr  class="footer">
+                <td colspan="2">Allgemeine Beschreibung der Kategorie</td>
+            </tr>
+			<tr>
+				<th>Name der Kategorie</th>
+				<td>
+					<input type="text" name="V1" value="{htm(V1)}" class="input-xlarge" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					Kategorie-Icon
+					<p style="font-weight: normal; color: black;">
+						Ein kleines Icon das vor dem Namen der Kategorie angezeigt wird.
+					</p>
+				</th>
+				<td>
+					{if ICON}
+					<input type="checkbox" id="ICON_DEL" name="ICON_DEL" value="1" />
+					<label for="ICON_DEL">
+						Aktuelles Icon löschen: <img title="Kategorie-Icon" src="{ICON}" />
+					</label>
+					{endif}
+					<input type="file" name="ICON" />
+				</td>
+			</tr>
+			<tr>
+				<th valign="top">
+					Kurzbeschreibung<br />
+					(max 255 Zeichen)<br />
+					<p style="font-weight: normal; color: black;">
+						Wird als "Mouseover" verwendet. Diese Beschreibung wird angezeigt wenn
+						man mit dem Mauszeiger eine kurze Zeit &uuml;ber der Kategorie bleibt.
+					</p>
+				</th>
+				<td>
+					<textarea name="V2" rows="6" class="input-xlarge">{htm(V2)}</textarea>
+				</td>
+			</tr>
+			{add_rows}
+			<tr>
+				<th valign="top">
+					Stichworte f&uuml;r die Suche<br />
+					<p style="font-weight: normal; color: black;">
+						Alle Artikel in dieser Kategorie erhalten automatisch diese Stichworte und k&ouml;nnen
+						darüber gesucht werden. Gibt man Beispielsweise einer Kategorie "Handys" das Stichwort
+						"Mobiltelefone" werden bei der Suche nach letzterem alle Anzeigen in der Kategorie Handys
+						gefunden.
+					</p>
+				</th>
+				<td>
+					<textarea name="T1" rows="6" class="input-xlarge">{htm(T1)}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<th valign="top">
+					Meta-Tags<br />
+					<p style="font-weight: normal; color: black;">
+						Legt Meta-Tags fest die ausschlie&szlig;lich für diese Kategorie g&uuml;ltig sind.<br />
+						<strong>Wichtig!</strong> Auch das umschließende HTML-Element &lt;meta&gt; muss eingef&uuml;gt
+						werden, anderenfalls erscheint lediglich der eingegebene Text am oberen Rand der Seite.
+					</p>
+				</th>
+				<td>
+					<p>
+						Ändern der Standardwerte unter : 
+						<a href="index.php?page=meta_defaults" title="Meta Defaults bearbeiten" target="_blank">
+							<strong>Standard Metatags</strong>
+						</a>
+					</p>
+					<input type="button" onclick="addMeta();" value="Standard Meta Tags einf&uuml;gen" class="btn btn-success" /><br  />
+					<textarea id="META" name="META" rows="5" class="input-xlarge">{htm(META)}</textarea>
+				</td>
+			</tr>
+                       <tr  class="footer">
+                <td colspan="2">Verkaufsoptionen</td>
+            </tr> 
+			<tr>
+				<th>Kostenlose Anzeigen<br />in dieser Kategorie<br />erlauben?</th>
+				<td>
+					<input type="checkbox" name="B_FREE" value="1" class="nob" {if B_FREE}checked{endif} />
+					Ja, Kunden mit einer kostenlosen Mitgliedschaft dürfen in dieser Kategorie Artikel einstellen
+				</td>
+			</tr>
+			<tr>
+				<th>Verkaufsfunktion<br />in dieser Kategorie<br />erlauben?</th>
+				<td>
+					<input type="checkbox" name="B_SALES" value="1" class="nob" {if B_SALES || !ID_KAT}checked{endif} />
+					Ja verkaufen erlauben
+				</td>
+			</tr>
+            
+            <tr  class="footer">
+                <td colspan="2">Darstellung der Kategorie</td>
+            </tr>
+      <tr>
+        <th>Darstellung<br /><p style="font-weight: normal; color: black;">Sollen die Artikel oder einen Kategorieübersicht dargestellt werden</p></th>
+        <td>         
+          {lookup(KATART)}
+        </td>
+      </tr>
+   
+   
+         <tr>
+        <th>Seitenkopf<br /><p style="font-weight: normal; color: black;">Hier können Sie angeben, welcher Text (<a href="index.php?page=infoseiten&SHOWTYPE=1" target="_blank">Infobereich</a>) innerhalb einer bestimmten Artikeliste angezeigt werden soll.<br />Diese Einstellung ist nur für die Artikellisten relevant!</p></th>
+        <td>         
+          {select(infoseite,,,USETYPE='KATS',,,Kein Infobereich)}
+          <p>
+          <b>Anwenden auf:</b><br />
+          <input type="radio" value="DOONE" checked="checked" name="KATHEAD" /> nur für diese Kategorie verwenden<br />
+            <input type="radio" value="DOFILL" name="KATHEAD" /> Auf alle Unterkategorien anwenden die KEINEN Seitenkopf haben<br />
+            <input type="radio" value="DOALL" name="KATHEAD" />Auf alle Unterkategorien anwenden
+          </p>
+        </td>
+      </tr>   
+      
+       <tr  class="footer">
+                <td colspan="2">Inhalt der Kategorie / Feldauswahl / Suchfelder / Muss-Felder</td>
+            </tr>
+      
+      
+      <tr>
+        <th>
+        	Artikel-Tabelle
+        </th>
+        <td>
+          {if KAT_LOCKED}<input type="hidden" name="KAT_TABLE" value="{KAT_TABLE}">{endif}
+          <select onchange="ApplyTable(this.value)" style="width:99%;" name="KAT_TABLE"{if KAT_LOCKED} disabled{endif}>
+            {liste_def}
+          </select>
+        </td>
+      </tr>
+        <th>
+        	Feldauswahl<br />
+			<p style="font-weight: normal; color: black;">
+				Legt fest welche Felder beim Einstellen einer Anzeige benötigt und beim Suchen/Betrachten
+				sichtbar sind.
+			</p>
+        </th>
+        <td>
+          <table cellspacing="1" width="100%" class="liste">
+            <tr>
+             <th>Verwenden</th>
+              <th width="60" colspan="2">Feld-Typ</th>
+              <th width="160">Name</th>
+              <th width="60">Suchfeld</th>
+              <th width="60">Pflichtfeld</th>
+              <th width="0"></th>
+            </tr>
+          </table>
+          <div style="max-height: 500px; overflow: auto;">
+          <table cellspacing="0" width="100%" class="liste">
+            {liste_felder}
+          </table>
+          </div>
+        </td>
+      <tr>
+      </tr>
+      {if ID_KAT}
+      <tr>
+        <th>Vererbung</th>
+        <td>
+          <input onchange="ApplyRecursive(this.checked)" type="checkbox" id="RECURSIVE" name="RECURSIVE" value="1" {if RECURSIVE} checked{endif} />
+            <label for="RECURSIVE">&Auml;nderungen auf Unterkategorien &uuml;bertragen?</label><br />
+          <p class="error" id="warning_recurse" style="display: none;">
+          	Achtung! Durch die Vererbung auf Kind-Elemente überschreiben Sie ggf. ungewollt Einstellungen
+          	von Unterkategorien. Bitte benutzen Sie diese Funktion mit Vorsicht!
+          </p>
+        </td>
+      </tr>
+      {endif}
+			<tr>
+				<th>Sichtbar?</th>
+				<td>
+          <input type="radio" name="B_VIS" id="VIS_YES" value="1" class="nob" {if B_VIS==1} checked{endif} />
+            <label for="VIS_YES">Ja</label>
+          <input type="radio" name="B_VIS" id="VIS_NO" value="0" class="nob" {if B_VIS==0} checked{endif} />
+            <label for="VIS_NO">Nein</label>
+          {if ID_KAT}
+          <input type="radio" name="B_VIS" id="VIS_LEAVE" value="" class="nob" />
+            <label for="VIS_LEAVE">Keine &auml;nderung</label>
+          {endif}
+				</td>
+			</tr>
+			<tr class="footer">
+				<td colspan="2" align="right">
+					<input name="sent" type="submit" value="Kategorie speichern" class="btn" />
+				</td>
+			</tr>		
+		</table>
+</form>
+{endif}

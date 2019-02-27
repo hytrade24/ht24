@@ -1,0 +1,20 @@
+  <tr class="zeile{even}">
+    <td>
+		<a href="index.php?page=article_db_edit&ID_PRODUCT={ID_PRODUCT}"><img src="gfx/btn.edit.gif"></a>
+		<a href="index.php?page=article_db&DELETE={ID_PRODUCT}"><img src="gfx/btn.rm.gif"></a>
+		{if CONFIRMED}
+			<a id="product_{ID_PRODUCT}" title="Nicht best&auml;tigen" onclick="confProduct('{ID_PRODUCT}');">
+				<img src="gfx/set_ok.png" />
+			</a>
+        {else}
+			<a id="product_{ID_PRODUCT}" title="Best&auml;tigen" onclick="confProduct('{ID_PRODUCT}');">
+				<img src="gfx/set_notok.png" />
+			</a>
+        {endif}
+    </td>
+    <td title="{htm(V2)}">{htm(V1)}</td>
+    <td>{htm(MANUFACTURER)}</td>
+    <td>{FK_ORDER}</td>
+    <td>{topreis(PRICE)} {CURRENCY_DEFAULT}</td>
+    <td>{topreis(PRICE_MAN)} {CURRENCY_DEFAULT}</td>
+  </tr>

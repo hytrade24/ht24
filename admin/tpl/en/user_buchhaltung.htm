@@ -1,0 +1,110 @@
+<script type="text/javascript">
+	function s_inv(id_i)
+	{
+		$('s_page').value = 'buchhaltung';
+		$('s_id').name = 'ID_INVOICE';
+		$('s_id').value = id_i;
+		$('s_go').submit();
+	}
+</script>
+<h1><img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />Buchhaltung f&uuml;r User '{NAME}'  / #{ID_USER}
+</h1>
+<p>
+    Alle Rechnungen im Überblick
+</p>
+<p style="clear:left;margin:0px;">&nbsp;</p>
+
+<div class="reiterPassiv">
+    <a href="index.php?page=user_edit&ID_USER={ID_USER}">Stammdaten</a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=perm2user&ID_USER={ID_USER}">Rechte</a>
+</div>
+<div class="reiterAktiv">
+    <a href="index.php?page=user_buchhaltung&ID_USER={ID_USER}" title="Buchhalterische Dtaen einsehen"> Rechnungen </a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=user_billing_creditnote&ID_USER={ID_USER}" title="Buchhalterische Dtaen einsehen"> Gutschriften </a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=user_ads&ID_USER={ID_USER}">Anzeigen</a>
+</div>
+<div class="reiterPassiv">
+	<a href="index.php?page=user_transaktion&ID_USER={ID_USER}" title="K&auml;ufe und Verk&auml;ufe anzeigen">
+		Ein- und Verk&auml;ufe
+	</a>
+</div>
+<div class="reiterPassiv">
+	<a href="index.php?page=user_kontingent&ID_USER={ID_USER}" title="Anzeigenkontingent anzeigen">
+		Kontingent
+	</a>
+</div>
+<div class="reiterPassiv">
+			<a href="index.php?page=user_vendor&ID_USER={ID_USER}" title="Standorte und Anbieterdaten ändern">
+				Anbieter
+			</a>
+		</div>
+<div class="reiterPassiv">
+    <a title="&Ouml;ffentliches Profil ansehen" href="{uri_baseurl(/marktplatz/view_user,{urllabel(NAME)},{ID_USER}.htm)}" target="_blank">Profil</a>
+</div>
+<div style="float:left;clear:left;">
+	<table class="liste" cellspacing="0">
+
+    {if (npage<2) && liste}<tr>
+            <td colspan="7">
+            <div style="float: left;margin-left:10px;">
+            	<table class="formTable">
+            		<tr>
+            			<td colspan="2">
+            				<h3>Ums&auml;tze (Netto)</h3>
+            			</td>
+            		</tr>
+            		<tr>
+                    	<th>Umsatz bisher</th>
+            			<td align="right">{topreis(UMSATZ_GESAMT)} {CURRENCY_DEFAULT}</td>
+            		</tr>
+            		<tr>
+            			<th>Umsatz diesen Monat</th>
+            			<td align="right">{topreis(UMSATZ_THIS)} {CURRENCY_DEFAULT}</td>
+            		</tr>
+            		<tr>
+            			<th>Umsatz letzten Monat</th>
+            			<td align="right">{topreis(UMSATZ_LAST)} {CURRENCY_DEFAULT}</td>
+            		</tr>
+                    <tr>
+
+                    </tr>
+            	</table>
+                <p><a style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_overall&w=550&ID_USER={ID_USER}','600','250');" title="Statistik">
+							<strong>Historie</strong></a></p>
+            </div>
+            <div style="margin-left:10px;float: left;width: 301px;"><iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_offen&w=300&ID_USER={ID_USER}" width="300" height="250" frameborder="0"></iframe></div>
+
+            </td>
+        </tr>
+        {endif}
+
+		<tr>
+            <th></th>
+			<th title="Rechnungsnummer">Rech.-Nr.</th>
+			<th>Rech.-Datum</th>
+			<th>Status</th>
+			<th>Rech.-Betrag</th>
+			<th>F&auml;llig bis</th>
+			<th>Zahlungseingang</th>
+		</tr>
+		{if liste}
+
+			{liste}
+		{else}
+			<tr>
+				<td colspan="7" align="center" class="error">
+					Bisher keine Rechnungen
+				</td>
+			</tr>
+		{endif}
+	</table>
+	<p>{pager}</p>
+
+
+</div>

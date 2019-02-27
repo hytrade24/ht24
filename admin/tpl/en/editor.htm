@@ -1,0 +1,43 @@
+    <h1>Editor Beispielseite </h1>
+
+    <p>Diese Beispielseite dient der korrekten Einbindung des Editors in Ihre Anwendung. Bitte beachten Sie die ben&ouml;tigten Einstellungen</p>
+    <table class="liste" cellspacing="0">
+          <tr valign="top">
+            <th>Art</th>
+            <th>Ort</th>
+            <th>Beschreibung</th>
+          </tr>
+          <tr valign="top" class="zeile1">
+            <td style="padding-right:5px; border-right:1px #999999 solid">CHMOD 777 </td>
+            <td style="padding-right:5px; border-right:1px #999999 solid">Upload Ordner </td>
+            <td>Der Ordner muss von PHP schreibbar sein, da sonst keine Files hochgeladen werden k&ouml;nnen. </td>
+          </tr>
+          <tr valign="top">
+            <td style="padding-right:5px; border-right:1px #999999 solid">Upload Ordner anlegen </td>
+            <td style="padding-right:5px; border-right:1px #999999 solid">Hauptverzeichnis</td>
+            <td>Hier werden alles Files abgelegt, welche Ihre Benutzer &uuml;ber den Editor hochladen k&ouml;nnen. </td>
+          </tr>
+          <tr valign="top" class="zeile1">
+            <td style="padding-right:5px; border-right:1px #999999 solid">Upload Pfad speichern </td>
+            <td style="padding-right:5px; border-right:1px #999999 solid">Systemeinstellungen</td>
+            <td>Hier m&uuml;ssen Sie den Upload Pfad speichern. Dieser wird dann vom Editor verwendet. </td>
+          </tr>
+          <tr valign="top">
+            <td style="padding-right:5px; border-right:1px #999999 solid">CHMOD 777 </td>
+            <td style="padding-right:5px; border-right:1px #999999 solid">/fckeditor/fckstyles.xml</td>
+            <td>Diese Datei wird von PHP geschrieben, und mit Ihren CSS-Definitionen gef&uuml;ttert. </td>
+          </tr>
+          <tr valign="top" class="zeile1">
+            <td style="padding-right:5px; border-right:1px #999999 solid">Recht editor_images erstellen </td>
+            <td style="padding-right:5px; border-right:1px #999999 solid">Rollen &amp; Rechte </td>
+            <td>Mit diesem Recht bestimmen Sie welche User Bilder in welchem Umfang nutzen k&ouml;nnen. </td>
+          </tr>
+        </table>
+    <p>&nbsp;</p>
+    <hr>
+    <form action="index.php" method="post">
+    <input type="hidden" name="page" value="{curpage}">
+        <input type="hidden" name="SCHMALLE_TEST" value="TOLLER TEST">
+    {editor(GAGA,500px,400px)}
+    </form>
+

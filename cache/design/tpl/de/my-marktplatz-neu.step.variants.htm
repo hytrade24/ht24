@@ -1,0 +1,106 @@
+{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-neu.step.header_article.htm,*)}
+
+<p class="lead">
+	Bitte geben Sie die Preise und Mengen für die gewählten Produktvarianten ein
+</p>
+
+<p>
+    Definieren Sie die Verfügbarkeit und den Preis Ihrer Produktvarianten. Jede Zeile in der nachfolgenden Tabelle entspricht einer möglichen
+    Variantenkombination. Nicht verfügbare Kombinationen können
+</p>
+
+<form class="form-horizontal" onsubmit="SubmitVariants(); return false;">
+    <input type="hidden" name="step" value="{STEP_IDENT}" />
+
+    <table id="list"></table>
+    <div id="pager"></div>
+
+    <div class="well well-small">
+        <div class="control-group submit-step">
+            <div class="controls">
+            {if STEP_INDEX>0}
+                <input type="button" onclick="ShowStep({calc(STEP_INDEX-1)}); return false;" class="btn" value="Zurück" />
+            {endif}
+                <button type="submit" class="btn btn-primary">
+                    Weiter
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    var gridSelection = new Object();
+    var gridPostData = {'frame': 'ajax', 'page': 'my-imports-data-get', 'ID_IMPORT_FILE': '{ID_IMPORT_FILE}'};
+    var lastsel = 1;
+
+    function UpdateDefaultCheckbox() {
+        jQuery("#list input[name=IS_DEFAULT]").change(function() {
+            if (jQuery(this).is(":checked")) {
+                jQuery("#list input[name=IS_DEFAULT]").prop("checked", false);
+            }
+            jQuery(this).prop("checked", true);
+        });
+    }
+
+    function SubmitVariants() {
+        var table = jQuery('#list');
+        var data = {};
+        var ids = table.jqGrid('getDataIDs'), i, l = ids.length;
+        var stepData = [];
+        stepData.push("step="+encodeURIComponent("{STEP_IDENT}"));
+        for (i = 0; i < l; i++) {
+            var id = ids[i];
+            stepData.push(encodeURIComponent("variants["+id+"][id]")+"="+encodeURIComponent(id));
+            jQuery("#"+ids[i]).find("input").each(function(key, value) {
+                if(jQuery(value).is("[type='text']")) {
+                    stepData.push(encodeURIComponent("variants["+id+"]["+jQuery(value).attr('name')+"]")+"="+encodeURIComponent(jQuery(value).val()));
+                } else if(jQuery(value).is("[type='checkbox']")) {
+                    stepData.push(encodeURIComponent("variants["+id+"]["+jQuery(value).attr('name')+"]")+"="+encodeURIComponent(jQuery(value).is(':checked') ? 1 : 0));
+                }
+            });
+        }
+
+        SubmitStepRaw(stepData.join("&"));
+    }
+
+    jQuery(".reloadGrid").click(function() {
+        jQuery('#list').jqGrid().trigger("reloadGrid");
+    });
+
+    var colNames = {COLNAMES};
+    var colModel = {COLMODEL};
+
+    // Add default fields (prepend)
+    colNames.unshift("Standard-Variante");
+    colModel.unshift({ name: 'IS_DEFAULT', editable: true, sortable: false, edittype:"checkbox", editoptions: { value:"1" }, formatter: 'checkbox' });
+    // Add default fields (append)
+    colNames.push("Menge", "Preis in {CURRENCY_DEFAULT}", "Verfügbarkeit");
+    colModel.push({ name: 'MENGE', editable: true, sortable: false, formatter: 'integer'}, { name: 'PREIS', editable: true, sortable: false, formatter: 'currency'}, { name: 'STATUS', editable: true, sortable: false, edittype:"checkbox", editoptions: { value:"1:0" }, formatter: 'checkbox' });
+
+    jQuery("#list").jqGrid({
+        regional : 'de',
+        datatype: "local",
+        colNames: colNames,
+        colModel: colModel,
+        data: {VARIANTDATA},
+        pager: '#pager',
+        rowNum: 2000,
+        prmNames: {'page': 'npage', rows: 'rows', sort: 'sidx', order: 'sord', search: '_search', nd: 'nd', id: 'id', oper: 'oper', editoper: 'edit', addoper: 'add', deloper: 'del', subgridid: 'subid', npage: null, totalrows: 'totalrows'},
+        viewrecords: true,
+        autowidth: true,
+        shrinkToFit: true,
+        height: '500',
+        editurl: "index.php?page=my-marktplatz-neu&mode=ajax&do=savevariantstable&ID_AD={ID_AD_MASTER}",
+        emptyrecords: '<i>Leider keine Daten</i>',
+        loadComplete: function () {
+            var $this = $(this), ids = $this.jqGrid('getDataIDs'), i, l = ids.length;
+            for (i = 0; i < l; i++) {
+                $this.jqGrid('editRow', ids[i], false);
+            }
+
+            LoadingStop();
+            UpdateDefaultCheckbox();
+        }
+    });
+</script>

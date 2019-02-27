@@ -1,0 +1,89 @@
+<script type="text/javascript">
+ function ajaxOnOk()
+ {
+   alert('voller Erfolg');
+ }
+ 
+ onload = function()
+ {
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax{if FK_KAT}&ID_KAT={FK_KAT}{endif}&table=tutorial',0,false,'kat_ajax');
+ };
+
+ function kat_auswahl(kat)
+ {
+   //alert(kat);
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax&ID_KAT='+kat+'&table=tutorial',0,false,'kat_ajax');
+   if(kat)
+    document.getElementById('fkkat').value = kat;
+ } // kat_auswahl()
+
+</script>
+
+<h1>Tutorials</h1>
+<p>Das L öschen eines Tutorials hat zufolge das die Kommentare ebenfalls gelöscht werden</p>
+{if UPDATE}<h2 class="ok">Freischaltung erfolgreich</h2>{endif}
+
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="{curpage}" />
+ <input type="hidden" name="FK_USER" value="{FK_USER}" id="fkuser" />
+ <input type="hidden" name="FK_KAT" value="{FK_KAT}" id="fkkat" />
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th>Suche nach ID</th>
+   <td><input type="text" name="ID" value="{htm(ID)}" size="20" /></td>
+   <td rowspan="4">
+    <div id="kat_ajax" style="width:400px; height:130px; overflow:auto;">Kategorien werden geladen ...</div>   </td>
+  </tr>
+  <tr>
+   <th>Suche nach Name</th>
+   <td><input type="text" name="title" value="{htm(title)}" size="40" /></td>  
+  </tr>
+  <tr>
+    <th>Freigabe</th>
+    <td><input type="checkbox" name="RED_" value="1" class="nob" {if RED_} checked{endif} /> User
+	 <input type="checkbox" name="ADM_" value="1" class="nob" {if ADM_} checked{endif} /> Admin
+	 <input type="checkbox" name="ALL_" value="1" class="nob" {if ALL_} checked{endif} /> alle anzeigen	</td>
+  </tr>
+  <tr>
+   <th>Suche nach User</th>
+   <td><input type="text" name="_NAME" value="{htm(_NAME)}" size="40" /></td>
+  </tr>
+  <tr class="footer">
+   <td colspan="3" align="right"><input type="submit" value="Suchen" class="button" /></td>
+  </tr>
+ </table>
+</form>
+
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="frame" value="content" />
+  <input type="hidden" name="npage" value="{npage}">
+  <input type="hidden" name="nav" value="{curnav}" />
+  <input type="hidden" name="ID_S" value="{ID_S}" />
+
+<table class="liste" cellspacing="0">
+<tr>
+ <td colspan="11">{pager}</td></tr>
+<tr>	
+	<th>Aktionen</th>
+	<th>Datum</th>
+	<th>Autor</th>
+	<th>Kategorie</th>
+	<th>Titel</th>	
+	<th>Freigabe <br>
+	User </th>
+	<th>Freigabe <br>
+	Admin</th>
+	<th>Online</th>
+	<th>Kommentare</th>
+	<th>Letzter<br />Kommentar</th>
+</tr>
+{liste}
+<tr>
+<td class="footer" colspan="11" align="right"><input class="button" type="submit" value="ausgew&auml;hlte freischalten" name="save" /></td>
+</tr>
+<tr><td colspan="11">{pager}</td></tr>
+</table>
+</form>
+
+
+{subtpl(tpl/de/js_userbox.htm,*)}

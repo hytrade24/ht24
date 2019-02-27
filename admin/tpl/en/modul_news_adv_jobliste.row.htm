@@ -1,0 +1,44 @@
+<tr{if !(i&1)} bgcolor="#ffffff"{endif}>
+    <td>{if FK_PACKET_ORDER}€{endif}</td>
+    <td>{if is_active && (ok==3)}<img style="background:black;" src="gfx/mv1.v1.gif" width="16" height="16" alt="sichtbar" />{endif}</td>
+	<td>
+		<a name="A{ID_JOB}"></a>
+    	<a href="index.php?page=modul_news_adv_jobedit&ID_JOB={ID_JOB}&npage={npage}">
+    		<img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0" />
+    	</a>
+		<a id="coinback_{ID_JOB}" href="index.php?page={curpage}&DELME=DEL&ID_JOB={ID_JOB}&npage={npage}" onclick="if({NOU} > 0 && confirm('Es haben bereits {NOU} Benutzer diesen Artikel gekauft!\nKlicken Sie auf OK, um den Benutzern ihre Coins zurück zu erstatten oder klicken Sie auf Abbrechen, um den Benutzern die Coins nicht gutzuschreiben.')) {document.getElementById('coinback_{ID_JOB}').href += '&coinback=1'; if(!confirm('ACHTUNG\nDas Löschen kann nicht rückgängig gemacht werden!')){return false}}  else{ if(!confirm('ACHTUNG\nDas Löschen kann nicht rückgängig gemacht werden!')){return false}}">
+			<img src="gfx/btn.del.gif" width="32" height="16" alt="l&ouml;schen" border="0" />
+		</a>
+        {if !is_active}ausgelaufen 
+        {endif}
+	</td>
+	<td align="center">
+		{todate(STAMP)}
+	</td>
+	<td>
+		{if AUTOR}
+		<a href="#" onclick="document.forms[0].NAME_.value = '{AUTOR}';">
+			<img src="gfx/putfeld_8.gif" width="8" height="8" alt="" border="0">&nbsp;{AUTOR}&nbsp;
+		</a>
+		{endif}
+	</td>
+	<td>
+		<a href="index.php?page=modul_news_adv_jobliste&FK_KAT={FK_KAT}">{V1KAT}</a>
+	</td>
+	<td>
+		&nbsp;{htm(V1)}&nbsp;
+	</td>
+	<td>
+		&nbsp;{langs}&nbsp;
+	</td>
+	<td align="center">
+		<input type="hidden" class="nob" name="Okall[]"  value="{ID_JOB}" />
+		<input type="checkbox" class="nob" name="OK1[]" {if OK1}checked  {endif}value="{ID_JOB}" />
+	</td>
+	<td align="center">
+		<input type="checkbox" class="nob" name="OK2[]" {if OK2}checked {endif}value="{ID_JOB}" {if !perm_news_all_E} disabled{endif} />
+	</td>
+	<td style="text-align:right;">
+		{ID_JOB}&nbsp;
+	</td>
+</tr>

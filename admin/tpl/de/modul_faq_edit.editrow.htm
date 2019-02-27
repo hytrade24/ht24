@@ -1,0 +1,80 @@
+	<tr class="zeile{even}">
+	  <td>{ID_FAQKAT}</td>
+	  <td>
+			<label for="save{ID_FAQKAT}" style="cursor: pointer;">
+				<img src="gfx/save_16.gif" width="16" height="16" title="Speichern" alt="Speichern" />
+			</label>
+	    <a href="index.php?frame=content&page=modul_faq_edit" title="Abbruch">
+		  <img src="gfx/cancel_16.gif" width="16" height="16" alt="Abbruch" title="Abbruch" border="0" />
+		</a>
+	  </td>
+	  <td>
+			<form method="post" action="index.php">
+				<input type="hidden" name="frame" value="content" />
+				<input type="hidden" name="page" value="{curpage}" />
+				<input type="hidden" name="do" value="sv" />
+				<input type="hidden" name="ID_FAQKAT" value="{ID_FAQKAT}" />
+
+				<input type="submit" id="save{ID_FAQKAT}" style="display: none;" />
+				
+				<table>
+					<tr>
+						<td>
+							<strong>Name</strong>
+						</td>
+						<td>
+							<strong>Ziel-Seite</strong>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="text" name="V1" value="{htm(V1)}" class="inputfull" maxlength="63" />
+						</td>
+						<td>
+							<select name="FK_NAV">
+								<option value="">Auf allen Seiten Anzeigen</option>
+								{navlist}
+							</select>
+						</td>
+					</tr>
+				</table>
+			
+				{if ID_FAQKAT}
+				<strong>List der Themen</strong>
+				<br />
+				<table class="liste" style="width: 100%;">
+					<tr>
+						<th>ID</th>
+						<th>Aktionen</th>
+						<th>Thema</th>
+						<th>move</th>
+					</tr>
+					<tr>
+						<td><i>neu</i></td>
+						<td>
+							<a href="index.php?frame=content&page=modul_faq_thema_edit&FK_FAQKAT={ID_FAQKAT}" title="neues Thema anlegen"><img src="gfx/btn.ins.gif" width="13" height="12" alt="neues Thema anlegen" border="0" /></a>
+						</td>
+						<td><i>neues Thema</i></td>
+						<td>&nbsp;</td>
+					</tr>
+					{topiclist}
+				</table>
+				{endif}
+			</form>
+	  </td>
+	  <td style="text-align:right;">{topiccount:0}</td>
+	  <td style="text-align:right;">({activecount:0})</td>
+	  <td>
+	    {if POS>1}
+		<a href="index.php?frame={curframe}&page=modul_faq_edit&id={ID_FAQKAT}&do=up" class="mv"><img src="gfx/mv{even}.up.gif" width="16" height="16" border="0" alt="hoch" />
+		</a>
+		{else}
+		<img src="shim.gif" width="16" height="16" />
+		{endif}
+	    {if !islast && POS>0}
+		<a href="index.php?frame={curframe}&page=modul_faq_edit&id={ID_FAQKAT}&do=dn" class="mv"><img src="gfx/mv{even}.dn.gif" width="16" height="16" border="0" alt="runter" /></a>
+		{else}
+		<img src="shim.gif" width="16" height="16" />
+		{endif}
+	  </td>
+	</tr>

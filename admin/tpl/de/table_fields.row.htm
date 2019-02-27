@@ -1,0 +1,13 @@
+<tr class="zeile{even}">
+	<td style="border-bottom:1px #cccccc solid; text-align:center;">
+		{if IS_MASTER}
+			<span class="ok">Masterfeld</span>
+		{else}
+			<input title="Feld ausw&auml;hlen" type="checkbox" name="FELD[{Field}]" value="1" class="nob" {checked} />
+		{endif}
+	</td>
+	<td style="border-bottom:1px #cccccc solid;">
+		<strong>{htm(V1)}</strong>
+	</td>
+	<td>{htm(Field)}</td>
+</tr>

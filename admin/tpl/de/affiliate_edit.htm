@@ -1,0 +1,124 @@
+<script>
+	jQuery(function() {
+
+	});
+</script>
+
+<h1>
+	Affiliate Link {if ID_AFFILIATE}bearbeiten{else}erstellen{endif}
+</h1>
+
+{if SETTINGS_AFFILIATE}
+
+	{if err}
+		<div class="error">{err}</div>
+	{endif}
+	<table border="0" cellspacing="0" cellpadding="4" class="reiter">
+		<tr>
+			<th id="R1" class="reiterPassiv"><a href="#">Beschreibung</a> </th>
+		</tr>
+	</table>
+	<form method="post" action="index.php" style="display:inline;">
+		<input type="hidden" name="page" value="{curpagealias}" />
+		{if ID_AFFILIATE}<input type="hidden" name="ID_AFFILIATE" id="ID_AFFILIATE" value="{ID_AFFILIATE}" />{endif}
+
+		<input type="hidden" name="npage" value="{npage}">
+
+
+		<table border="0" width="950" class="formTable" style="border:1px #9A9A9A solid">
+			<tr>
+				<td valign="top">
+					<table border="0" cellspacing="0" class="formTable">
+						<tr>
+							<th>ID</th>
+							<td>{if ID_AFFILIATE}{ID_AFFILIATE}{else}<i>neu</i>{endif}</td>
+						</tr>
+						<tr>
+							<th>Status</th>
+							<td>
+								<label><input type="radio" name="STATUS" {if STATUS == 0}checked="checked"{endif} value="0"> deaktiviert </label>
+								<label><input type="radio" name="STATUS" {if STATUS == 2}checked="checked"{endif} value="2"> pausiert </label>
+                                <label><input type="radio" name="STATUS" {if STATUS == 3}checked="checked"{endif} value="3"> testen </label>
+								<label><input type="radio" name="STATUS" {if STATUS == 1}checked="checked"{endif} value="1"> aktiv </label>
+							</td>
+						</tr>
+						<tr>
+							<th>Bezeichnung</th>
+							<td>
+								<input type="text" name="DESCRIPTION" id="DESCRIPTION" size="60" class="inputfull" value="{htm(DESCRIPTION)}" />
+							</td>
+						</tr>
+						<tr>
+							<th>URL</th>
+							<td>
+								<input type="text" name="URL" id="URL" size="60" class="inputfull" value="{htm(URL)}" />
+							</td>
+						</tr>
+						<tr>
+							<th>letzte Ausführung</th>
+							<td>
+								<input type="text" name="STAMP_LAST" id="STAMP_LAST" size="60" class="inputfull" value="{htm(STAMP_LAST)}" />
+							</td>
+						</tr>
+						<tr>
+							<th>Typ</th>
+							<td>
+								<select name="ADAPTER">
+									{affiliate_types}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>Interval (Stunden)</th>
+							<td>
+								<input type="text" name="INTERVAL" id="INTERVAL" size="5" class="inputfull" value="{htm(INTERVAL)}" />
+							</td>
+						</tr>
+						<tr>
+							<th>User ID des Anzeigenbesitzers</th>
+							<td>
+								<input type="text" name="FK_USER" id="FK_USER" size="5" class="inputfull" value="{if !FK_USER}1{else}{htm(FK_USER)}{endif}" />
+							</td>
+						</tr>
+						<tr>
+							<th>Zeichensatz der Quelldatei</th>
+							<td>
+								<input type="text" name="CHARSET_SOURCE" id="CHARSET_SOURCE" size="60" class="inputfull" value="{if !CHARSET_SOURCE}UTF-8{else}{htm(CHARSET_SOURCE)}{endif}" />
+							</td>
+						</tr>
+						<tr>
+							<th>Fallback Kategorie</th>
+							<td>
+								<select name="FK_FALLBACK_KAT">
+									<option value="0">keine Fallback Kategorie</option>
+									{affiliate_fallback_kat}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="footer">
+								<input class="button" type="submit" value="speichern">
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td valign="top" style="width: 400px;">
+
+				</td>
+			</tr>
+		</table>
+
+
+	</form>
+
+{else}
+	<div class="error">
+		Mit unserem "Affiliate Plugin" können Sie kinderleicht Produktdaten aus Partnerprogrammen in Ihren Marktplatz integrieren.
+		Diese erscheinen als reguläre Artikel in Ihrem Marktplatz und verweisen bei Interesse des Kunden auf den Original Händler Shop. Sie erhalten
+		je nach Partnerprogramm Provision für Verkäufe oder Klicks.
+		<br><br>
+		Nähere Informationen zu dem Affiliate Plugin finden Sie unter <a href="http://www.ebiz-trader.de" target="_blank">ebiz-trader.de</a>.
+		<br><br>
+		Sofern Sie bereits einen Lizenzschlüssel für das Affiliate Programm besitzen, können Sie in den <a href="index.php?page=options&selectplugin=PLUGIN">erweiterten Einstellungen</a> das Plugin aktivieren.
+	</div>
+{endif}

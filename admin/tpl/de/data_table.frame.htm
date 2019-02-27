@@ -1,0 +1,85 @@
+<div id="datatable-{hash}" class="dataTableContainer" style="width: 900px;">
+    <div class="mdl-card__menu">
+    </div>
+    <div for="datatable-{hash}-filter">
+        {filter}
+    </div>
+
+    <table id="datatable-{hash}-table" class="liste" cellspacing="0" style="width: 100%;" data-container="#datatable-{hash}"{if ajaxUrl} data-ajax-url="{htm(ajaxUrl)}"{endif}{if jsonQueryOptions} data-query-options="{htm(jsonQueryOptions)}"{endif}>
+        <thead>
+            <tr>
+                {if selectable}
+                <th>
+                    <input data-action="select-toggle-all" type="checkbox" />
+                </th>
+                {endif}
+                {header}
+            </tr>
+        </thead>
+        {body}
+        <thead>
+            {if selectable}
+            <tr>
+                <th colspan="{calc(colCount)}" style="border-top: 1px #9A9A9A solid; border-bottom: none;  padding: 8px; line-height: 26px;">
+                    <div style="float: left;">
+                        <span data-value="select-count">0</span>&nbsp;ausgewählt
+                    </div>
+                    <div style="float: left;">
+                        {action}
+                    </div>
+                    <div style="float: right;">
+                        <button id="datatable-{hash}-select-all" data-action="select-all" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                            Alle auswählen
+                        </button>
+                        <button id="datatable-{hash}-select-none" data-action="select-none">
+                            Alle abwählen
+                        </button>
+                    </div>
+                    <br style="clear: both;" />
+                </th>
+            </tr>
+            {endif}
+            <tr>
+                <th colspan="{calc(colCount)}" style="border-top: 1px #9A9A9A solid; border-bottom: none; padding: 8px; line-height: 26px; text-align: right;">
+                    <div style="float: left;">
+                        <span>
+                            Elemente pro Seite:
+                        </span>
+                        <select id="datatable-{hash}-page-item-count" data-action="page-item-count">
+                            <option value="10"{if limit==10} selected="selected"{endif}>10</option>
+                            <option value="20"{if limit==20} selected="selected"{endif}>20</option>
+                            <option value="50"{if limit==50} selected="selected"{endif}>50</option>
+                            <option value="100"{if limit==100} selected="selected"{endif}>100</option>
+                        </select>
+                    </div>
+
+                    <div style="float: right;">
+                        <span>
+                            <span data-value="page-item-first">{resultFirst}</span>-<span data-value="page-item-last">{resultLast}</span>
+                            von <span data-value="result-count">{resultCount}</span>
+                        </span>
+
+                        <button class="mdl-button mdl-js-button mdl-button--icon" data-action="page-first" title="[[ translation : admin : dataTable.pager.first :: Erste Seite ]]">
+                            <i class="material-icons">&lt;&lt;</i>
+                        </button>
+                        <button class="mdl-button mdl-js-button mdl-button--icon" data-action="page-prev" title="[[ translation : admin : dataTable.pager.prev :: Vorherige Seite ]]">
+                            <i class="material-icons">&lt;</i>
+                        </button>
+                        <button class="mdl-button mdl-js-button mdl-button--icon" data-action="page-next" title="[[ translation : admin : dataTable.pager.next :: Nächste Seite ]]">
+                            <i class="material-icons">&gt;</i>
+                        </button>
+                        <button class="mdl-button mdl-js-button mdl-button--icon" data-action="page-last" title="[[ translation : admin : dataTable.pager.last :: Letzte Seite ]]">
+                            <i class="material-icons">&gt;&gt;</i>
+                        </button>
+                    </div>
+                    <br style="clear: both;" />
+                </th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery("#datatable-{hash}-table").dataTable();
+    });
+</script>

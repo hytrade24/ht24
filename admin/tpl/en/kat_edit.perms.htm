@@ -1,0 +1,47 @@
+
+<!--<h2>Rechte f&uuml;r &quot;{htm(V1)}&quot;</h2>
+{loadperm(admin_katperm)}
+ {if modhead}
+<script language="JavaScript" type="text/javascript">
+<!--
+var recurse = false;
+{jskids}
+function checkkatperm(catid, role, el)
+{
+//alert (ident +','+ role +','+ el.name+';'+recurse);
+  var ar = document.getElementsByName('mod['+role+']['+catid+']');
+  if (recurse)
+    var alle = document.getElementsByTagName('input');
+//alert(el.name+':'+ar.length+':'+alle.length+'::'+el.lft+'/'+el.rgt);
+  for (i=0; i<ar.length; i++) // if ('checkbox'==ar[i].type)
+  {
+    ar[i].checked = el.checked;
+    if (recurse)
+      for (k=0; k<alle.length; k++)
+        if ('checkbox'==alle[k].type
+          && 0<=alle[k].name.indexOf('d['+role+'][')
+          && parseInt(el.lft)<parseInt(alle[k].lft) && parseInt(el.rgt)>parseInt(alle[k].rgt)
+        )
+          alle[k].checked = el.checked;
+  }
+}
+//-->
+</script>{endif} -->
+
+<!--
+<table class="liste"><tr>
+  <th>Rolle</th>
+  <th>erlaubt?</th>
+</tr></table>
+-->
+{roles}
+
+<!-- {if modhead && perm_admin_katperm_E}
+<script language="JavaScript" type="text/javascript">
+<!--
+  var imgalt = new Array('Unterpunkte mit ändern: nein', 'Unterpunkte mit ändern: ja');
+  document.write('<img src="gfx/btn.layerlock'+ (recurse ? 1 : 0)+ '.gif"'
+    + ' width="16" height="16" alt="'+ imgalt[(recurse?1:0)]+ '"'
+    + ' onClick="recurse=!recurse;this.alt=imgalt[(recurse?1:0)];this.src=\'gfx/btn.layerlock\'+(recurse?1:0)+\'.gif\';" />');
+//-->
+</script>&nbsp;<input type="submit" class="button" value="Rechte &auml;ndern">{else}&nbsp;{endif} -->

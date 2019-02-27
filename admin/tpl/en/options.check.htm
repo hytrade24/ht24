@@ -1,0 +1,13 @@
+<b><tr{if even} bgcolor="#ffffff"{endif}>
+  <td>{typ}&nbsp;</td>
+  <input type="hidden" name="set[{plugin}][{typ}]" value="0" />
+  <td><input type="checkbox" name="set[{plugin}][{typ}]"  style="border:none;" id="opt{i}"
+    {if value}checked {endif}value="1" title="{htm(plugin)}/{htm(typ)}" />&nbsp;</td>
+  <td>
+    <a href="index.php?page={curpagealias}&set[{plugin}][{typ}]={htm(default_value)}"
+      title="Defaultwert eintragen"
+      onClick="this.href='javascript:;';document.getElementById('opt{i}').checked={default_value};"
+      >{if default_value}JA{else}NEIN{endif}</a>
+  &nbsp;</td>
+  <td>{nl2br(beschreibung)}</td>
+</tr></b>

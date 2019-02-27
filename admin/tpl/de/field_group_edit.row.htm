@@ -1,0 +1,10 @@
+{if !IS_SPECIAL}
+	<label>
+		<input type="checkbox" name="FELD[]" value="{ID_FIELD_DEF}" class="nob"{if FK_FIELD_GROUP==ID_FIELD_GROUP} checked="checked"{endif} />
+		{htm(V1)} {if F_DEC_INTERN}<span class="notizSmall">{htm(F_DEC_INTERN)}</span>{endif}
+		{if (FK_FIELD_GROUP>0) && (FK_FIELD_GROUP != ID_FIELD_GROUP)}
+		<span style="color:#909090;">(Aktuell: {htm(FIELD_GROUP)})</span>
+		{endif}
+		<br />
+	</label>
+{endif}

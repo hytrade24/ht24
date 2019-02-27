@@ -1,0 +1,61 @@
+<div>
+	<style type="text/css">
+		th {
+			text-align:left;
+		}
+		body {
+			font-family:{FONTFAMILY};
+			font-size:{FONTSIZE}px;
+			background:#{BGCOLOR};
+			color:#{COLOR};
+			margin:0px;
+			padding:0px;
+		}
+		#club-webservice-content {
+			width:{FRAME_W}px;
+			height:{FRAME_H}px;
+			background-color:#{BGCOLOR};
+		}
+		#club-webservice-content * {
+			font-family:{FONTFAMILY};
+			font-size:{FONTSIZE}px;
+		}
+
+		* a {
+			color:#{LINKCOLOR};
+			text-decoration:underline;
+		}
+	</style>
+
+	<script type="text/javascript">
+		jQuery(function() {
+			jQuery(".webservice-pager a").on('click', function() {
+				var link = jQuery(this);
+				jQuery.ajax({
+					url: link.attr('href'),
+					success: function(result) {
+						jQuery("#club-webservice-content").html(jQuery(result).find("#club-webservice-content").html());
+						window.location = "#club-webservice-content";
+					}
+				});
+				return false;
+			});
+		});
+	</script>
+
+
+	<div id="club-webservice-content">
+		{USER_ADS}
+
+		<div class="webservice-pager">
+			{pager}
+		</div>
+
+		<div class="clearfix"></div>
+		<p class="text-center">
+			<strong>
+                powered by <a href="{URI}">{htm(SITENAME)}</a>
+			</strong>
+		</p>
+	</div>
+</div>

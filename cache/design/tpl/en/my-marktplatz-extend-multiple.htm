@@ -1,0 +1,85 @@
+{if success}
+<div class="alert alert-success">
+	<h3>Advertisement extended</h3>
+	<p>{success} Advertisement(s) was/were extended successfully!</p>
+    {if warning}
+    <p>
+        <b>Attention!</b> {warning} Advertisements could not be extended. Your advertpackage may not be sufficient.
+    </p>
+    {endif}
+	<input class="btn pull-right" type="button" value="Fenster schließen" onclick="HideDialog();" />
+	<br style="clear: right;">
+</div>
+{else}
+<form action="{uri_action(my-marktplatz-extend-multiple)}" onsubmit="return ExtendAdSubmit(this);" method="post">
+    <input type="hidden" name="action" value="extend" />
+    <input type="hidden" name="filter" value="{filter}" />
+    <input type="hidden" name="ID_AD_MASTER" value="{ID_AD_MASTER}" />
+    <input type="hidden" name="PRODUKTNAME" value="{PRODUKTNAME}" />
+    <input type="hidden" name="FK_KAT" value="{FK_KAT}" />
+    {if HERSTELLER}
+    <input type="hidden" name="HERSTELLER" value="{HERSTELLER}" />
+    {endif}
+
+	{if err}
+		<div class="alert alert-danger">
+            {if err_menge}Please enter the available amount correctly in.{endif}
+            {if err_kat_paid}To extend one or more advertisements you will need a chargeable advertpackage!{endif}
+            {if err_unknown}Unexpected error while activating the advertisement!{endif}
+		</div>
+	{endif}
+
+
+	{if !FREE_ADS}
+
+		<p class="align-left">
+            <strong>Important advice:</strong> Extending one of your adverts
+                and the entry will cost an advert from your advertpackage.
+
+		</p>
+
+	{endif}
+
+	{if FREE_ADS}
+	<input type="hidden" name="FK_PACKET_ORDER" value="1" />
+	{endif}
+			
+	<div class="row">
+		{if !FREE_ADS}
+			<div class="col-xs-6">
+				<p id="article_packet" class="align-left">
+					<strong>Advertpackage:</strong>
+				</p>
+				<div id="packet_select" class="align-left">
+					{if liste_packets}
+						<select class="form-control" name="FK_PACKET_ORDER">
+								{liste_packets}
+						</select>
+					{else}
+						<div class="text-error">
+							You have an invalid amount of advertpackages.
+						</div>
+					{endif}
+				</div>
+				<h3 id="packet_current" style="display: none;"></h3>
+
+			</div>
+		{endif}
+		<div class="col-xs-6">
+			<p class="align-left">
+				<strong>Extend advertisement to:</strong>
+			</p>
+			{lookup(LAUFZEIT,,, class="form-control",F_ORDER ASC)}
+
+		</div>
+	</div>
+	<br />
+
+	<p class="text-right">
+		<input class="btn btn-default" type="button" value="Cancel" onclick="HideDialog();" />
+		{if liste_packets || FREE_ADS}
+		<input class="btn btn-success" type="submit" value="Extend {COUNT_ADS} advertisement(s)"{if COUNT_ADS<=0} disabled{endif} />
+		{endif}
+	</p>
+</form>
+{endif}

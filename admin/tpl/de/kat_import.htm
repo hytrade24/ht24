@@ -1,0 +1,93 @@
+<h1>Kategorien importieren</h1>
+	{if done}
+			<h1 class="ok">
+				<img src="../bilder/ok.png" />
+				Kategorien wurden erfolgreich importiert!
+			</h1>
+			{endif}
+
+<form action="index.php" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="page" value="kat_import" />
+	
+	<table class="liste" cellpadding="0" cellspacing="0">
+		<tr class="zeile1">
+			<td>Vorhandene löschen:</td>
+			<td>
+				<label>
+ 					<input type="checkbox" onchange="if (this.checked) jQuery('#DELETE_KATS_WARNING').show(); else jQuery('#DELETE_KATS_WARNING').hide();" name="DELETE_KATS"{if DELETE_KATS} checked="checked"{endif} />
+					Vor dem Import die bestehenden Kategorien löschen
+				</label>
+				<br />
+				<strong id="DELETE_KATS_WARNING" style="color: red;{if !DELETE_KATS} display: none;{endif}">
+					Achtung! Alle bestehenden Kategorien werden unwiderruflich gelöscht!!
+				</strong>
+			</td>
+		</tr>
+		<tr class="zeile0">
+			<td>Eigene Kategorie-Ids erlauben:</td>
+			<td>
+				<label>
+ 					<input type="checkbox" name="ALLOW_CUSTOM_IDS"{if ALLOW_CUSTOM_IDS} checked="checked"{endif} />
+					Erlaube den Import inklusive der Kategorie-Ids anstatt neue Ids zu generieren.
+				</label>
+			</td>
+		</tr>
+		<tr class="zeile1">
+			<td>Standard Artikel-Tabelle:</td>
+			<td>
+				<select name="KAT_TABLE">
+					{liste}
+				</select>
+			</td>
+		</tr>
+		<tr class="zeile0">
+			<td>CSV-Trennzeichen:</td>
+			<td>
+				<input type="text" name="CSV_SEPERATOR" style="text-align: center;" size="1" value="{htm(CSV_SEPERATOR)}" />
+			</td>
+		</tr>
+		<tr class="zeile1">
+			<td>CSV-Datei:</td>
+			<td>
+				<input type="file" name="CSV" id="CSV"  />
+			</td>
+		</tr>
+		<tr class="footer">
+			<th colspan="2" style="text-align: right;">
+				<input type="submit" value="CSV-Import starten" />
+			</th>
+		</tr>
+	</table>
+</form>
+
+<table>
+	<tr>
+		<td valign="top" colspan="2">
+	 
+			<h1>Beschreibung
+			</h1>
+ 
+			<p>
+				Hier haben Sie die Möglichkeit Kategorien aus einer CSV-Datei zu importieren. Diese lässt sich
+				einfach mithilfe von Excel (oder OpenOffice etc.) erzeugt werden.
+			</p>
+			<p>
+				Wichtig dabei ist das Sie eine gewisse Formatierung einhalten. Um die auf <strong>Abb. 1</strong> zu
+				sehende Kategorie-Struktur zu erzeugen müssen Sie ihre Kategorien wie auf <strong>Abb. 2</strong>
+				dargestellt anordnen.
+			</p>
+			<p>
+				Anschließen speichern Sie die Tabelle als "CSV"-Datei. <br />
+				Im Falle von Excel wählen Sie beim Speichern als Dateityp "CSV (Trennzeichen-getrennt) (*.csv)", bei OpenOffice wählen Sie "Text CSV (.csv) (*.csv)".
+				<br />
+				<strong>Wichtig:</strong> Wählen Sie als Zeichensatz "Unicode (UTF-8)" um sicherzustellen das Sonderzeichen (z.B. Umlaute) korrekt übernommen werden.
+			</p>
+		</td>
+	</tr>
+    <tr>
+     <td valign="top"><strong>Abb. 1</strong><br />
+			<img src="img/import_example_html.png" /></td>
+    <td valign="top"><strong>Abb. 2</strong><br />
+			<img src="img/import_example_csv.png" /></td>
+    </tr>
+</table>

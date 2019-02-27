@@ -1,0 +1,31 @@
+{if rel}
+<script type="text/javascript">
+ window.opener.location.href = 'index.php?page=scriptkats&ID_TREE_SCRIPT={ID_TREE_SCRIPT}';
+</script>
+<input type="button" class="button" value="Dieses Fenster schlie&szlig;en" onclick="window.close()">
+{endif}
+<h1>Kategorie {htm(V1)} verschieben</h1>
+<p>Bitte w&auml;hlen Sie die Kategorie aus, unter welche die Aktuelle geschoben werden soll.<br />
+Alle Kategorien unter <strong>{htm(V1)}</strong> werden ebenfalls verschoben.</p>
+<h2>Ziel w&auml;hlen</h2>
+{if moveable}
+<form method="post" action="index.php">
+ <input type="hidden" name="frame" value="{curframe}">
+ <input type="hidden" name="page" value="{curpage}">
+ <input type="hidden" name="ID_TREE_SCRIPT" value="{ID_TREE_SCRIPT}">
+ <input type="hidden" name="ID" value="{ID}">
+ <input type="submit" value="{htm(V1)} an die aktuelle Position verschieben" class="button">
+</form>
+{endif}
+  <table cellspacing="0" cellpadding="0" border="0" class="liste">
+   <tr>
+    <th>{if P_ID_COUNTRYTREE}<a href="index.php?page={curpage}&ID={P_ID_TREE_SCRIPT}&ID_TREE_SCRIPT={ID_TREE_SCRIPT}&frame={curframe}"><img src="gfx/path.64.png"> {htm(P_V1)}</a>{else}<a href="index.php?page={curpage}&frame={curframe}&ID_TREE_SCRIPT={ID_TREE_SCRIPT}"><img src="gfx/path.64.png"> alle Kategorien</a>{endif}</th>
+   </tr>
+   {if liste}
+    {liste}
+   {else}
+   <tr colspan="4">
+    <td class="error" align="center">Keine Kategorien gefunden.</td>
+   </tr>
+   {endif}
+  </table>

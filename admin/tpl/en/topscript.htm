@@ -1,0 +1,22 @@
+<h1>Script des Monats &Uuml;bersicht</h1>
+<p>Liste aller als Script des Monats markierter Scripte</p>
+
+<table class="liste">
+ <tr>
+  <th>Action</th>
+  <th>Jahr</th>
+  <th>KW</th>
+  <th>Von / Bis</th>
+  <th>Script</th>
+  <th>User</th>
+ </tr>
+ {if liste}
+  {liste}
+ {else}
+  <tr>
+   <td colspan="6" align="center" class="error">Keine Eintr&auml;ge</td>
+  </tr>
+ {endif}
+</table>
+{pager}
+<p>&nbsp;</p>

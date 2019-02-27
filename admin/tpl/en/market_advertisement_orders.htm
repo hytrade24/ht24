@@ -1,0 +1,205 @@
+<script src="{uri_baseurl(/js/jquery.js)}" type="text/javascript"></script>
+<script src="{uri_baseurl(/js/jquery-ui.js)}" type="text/javascript"></script>
+<script type="text/javascript" src="{uri_baseurl(/lib/swfobject.js)}"></script>
+<script type="text/javascript" src="{uri_baseurl(/js/categorys_noconflict.js)}"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+
+var confirm_id = 0; 
+
+function OrderConfirm(id_ad) {
+	jQuery('#confirm_url').val("index.php?page=market_advertisement_orders&confirm="+id_ad);
+	jQuery('#popup_confirm').dialog();
+}
+
+function OrderConfirmSubmit() {
+	var invoice = jQuery('#check_invoice:checked').length;
+	
+}
+
+function PreviewCode(id_ad) {
+	var code = document.getElementById("code"+id_ad).value;
+	var PreviewWindow = window.open("about:blank", "PreviewWindow", "width=500,height=300,left=80,top=80,location=no,menubar=no,toolbar=no,status=no");
+	PreviewWindow.focus();
+	PreviewWindow.document.open();
+	PreviewWindow.document.write(code);
+	PreviewWindow.document.close();
+}
+function s_inv(id_i)
+{
+	jQuery('#s_page').val('buchhaltung');
+	jQuery('#s_id').attr("name", 'ID_INVOICE');
+	jQuery('#s_id').val(id_i);
+	jQuery('#s_go').submit();
+}
+
+function trimNumber(s, maxLen) {
+	  //while (s.substr(0,1) == '0' && s.length>1) { s = s.substr(1, maxLen); }
+	  //return parseInt(s);
+	  return s;
+}
+
+function getDate(id_ad_user, name) {
+	var day = jQuery('#edit_content_'+id_ad_user+' select[name="'+name+'_d"] > option:selected').val();
+	var month = jQuery('#edit_content_'+id_ad_user+' select[name="'+name+'_m"] > option:selected').val();
+	var year = jQuery('#edit_content_'+id_ad_user+' select[name="'+name+'_y"] > option:selected').val();
+	return trimNumber(day,2)+"."+trimNumber(month,2)+"."+trimNumber(year,4);
+}
+
+function AdSave(id_ad_user, closeAfter) {
+	var confirm = jQuery('#edit_content_'+id_ad_user+' input[name="CONFIRMED"]:checked').length +
+		jQuery('#edit_content_'+id_ad_user+' input[name="ENABLED"]:checked').length * 2 +
+		jQuery('#edit_content_'+id_ad_user+' input[name="INVOICE"]:checked').length * 4;
+	var banner_value = jQuery('#edit_content_'+id_ad_user+' input[name="FK_ADVERTISEMENT"]:checked').val();
+	var code_value = jQuery('#edit_content_'+id_ad_user+' textarea[name="CODE"]').val();
+	var date_from_value = getDate(id_ad_user, "STAMP_START");
+	var date_to_value = getDate(id_ad_user, "STAMP_END");
+	AdSaveSetting(id_ad_user, "confirm", confirm, "#ad"+id_ad_user+"_confirm_saved", closeAfter == false);
+	AdSaveSetting(id_ad_user, "banner_set", banner_value, "#ad"+id_ad_user+"_banner_saved", closeAfter == false);
+	AdSaveSetting(id_ad_user, "code_set", code_value, "#ad"+id_ad_user+"_code_saved", closeAfter == false);
+	AdSaveSetting(id_ad_user, "date_from_set", date_from_value, "#ad"+id_ad_user+"_date_saved", closeAfter == false);
+	AdSaveSetting(id_ad_user, "date_to_set", date_to_value, "#ad"+id_ad_user+"_date_saved", closeAfter == false);
+	if (closeAfter) {
+		jQuery("#edit_"+id_ad_user).hide();
+	}
+}
+
+function AdSaveSetting(id_ad_user, name, value, elementConfirm, showConfirmation) {
+	jQuery.ajax({
+		url:		"index.php",
+		data:	{
+			page:	"market_advertisement_orders_edit",
+			ajax:	"ajax",
+			frame:	"ajax",
+			action:	name,
+			target:	value,
+			id:		id_ad_user
+		},
+		dataType:	"json",
+		success: function(response) {
+			if (showConfirmation) {
+				if (response.changed && response.success) {
+					var el = jQuery(elementConfirm+":hidden");
+					if (el.length > 0) el.clearQueue().fadeIn().delay(2000).fadeOut();
+				}	
+			}
+		}
+	});
+}
+
+function ChangeChecks(id_ad_user) {
+	var confirm = jQuery('#edit_content_'+id_ad_user+' input[name="ENABLED"]:checked').length +
+		jQuery('#edit_content_'+id_ad_user+' input[name="INVOICE"]:checked').length;
+	if (confirm > 0) {
+		jQuery('#edit_content_'+id_ad_user+' input[name="CONFIRMED"]').attr("checked", true);
+	}
+}
+
+function ToggleStats(id_ad_user) {
+	if (jQuery("#stats_content_"+id_ad_user).html() == "") {
+		// Not loaded yet
+		jQuery("#stats_content_"+id_ad_user).html("Wird geladen...");
+		jQuery("#stats_content_"+id_ad_user).load("index.php?page=advertisement_stat&frame=ajax&id_ad_user="+id_ad_user);
+	}
+	jQuery("#stats_"+id_ad_user).toggle();
+}
+
+function ToggleEdit(id_ad_user) {
+	if (jQuery("#edit_content_"+id_ad_user).html() == "") {
+		// Not loaded yet
+		jQuery("#edit_content_"+id_ad_user).html("Wird geladen...");
+		jQuery("#edit_content_"+id_ad_user).load("index.php?frame=ajax&lang=de&page=market_advertisement_orders_edit&id="+id_ad_user);
+	}
+	jQuery("#edit_"+id_ad_user).toggle();
+}
+
+function TogglePreview(id_ad_user) {
+	if (jQuery("#preview_content_"+id_ad_user).html() == "") {
+		// Not loaded yet
+		jQuery("#preview_content_"+id_ad_user).html("Wird geladen...");
+		jQuery("#preview_content_"+id_ad_user).load("index.php?page=advertisement_stat&frame=ajax&id_ad_user="+id_ad_user+"&code=1");
+	}
+	jQuery("#preview_"+id_ad_user).toggle();
+}
+
+function ShowPreview(id_ad_user) {
+	if (jQuery("#preview_content_"+id_ad_user).html() == "") {
+		// Not loaded yet
+		jQuery("#preview_content_"+id_ad_user).html("Wird geladen...");
+		jQuery("#preview_content_"+id_ad_user).load("index.php?page=advertisement_stat&frame=ajax&id_ad_user="+id_ad_user+"&code=1");
+	}
+	jQuery("#preview_"+id_ad_user).show();
+}
+
+function HidePreview(id_ad_user) {
+	jQuery("#preview_"+id_ad_user).hide();
+}
+
+</script>
+<link rel="stylesheet" href="{uri_baseurl(/skin/jquery/jquery.css)}" />
+
+<form method="post" action="index.php" id="s_go">
+	<input type="hidden" value="1" name="SCHNELLSUCHE" />
+	<input type="hidden" id="s_page" name="page" value="" />
+	<input type="hidden" id="s_id" name="" id="schnell_id" value="" />
+</form>
+
+<div id="popup_confirm" style="display: none;">
+	<h1>Bestellung bestätigen</h1>
+	
+	<p>
+		Bestellung wirklich bestätigen?<br />
+		<label>
+			<input id="check_invoice" type="checkbox" value="1" checked="checked" /> Rechnung stellen
+		</label>
+	</p>
+	
+	<div>
+		<input id="confirm_url" type="hidden" value="" /> 
+		<input type="button" value="Bestätigen" onclick="OrderConfirm(true);" />
+	</div>
+</div>
+
+<h1>Werbeanfragen</h1>
+
+<p>
+	Auf dieser Seite erhalten Sie eine &Uuml;bersicht &uuml;ber die von Mitgliedern gestellten Werbeanfragen. 
+	Unter Benutzer finden Sie den Namen des Mitglieds, das diese Werbeanfrage aufgegeben hat.<br />
+	<br />
+	Der Werbeplatz enspricht den zuvor festgelegten Werbemitteln und ist vor allem 
+	ausschlaggebend dar&uuml;ber, welche Gr&ouml;&szlig;e die angefragte Werbung haben sollte. 
+	In der Spalte Kategorien finden Sie die Anzahl der Kategorien, die bei der 
+	Anfrage gew&auml;hlt wurden. Darauf folgt der Zeitraum (Von, Bis), in dem die 
+	Werbung erscheinen soll, und der Preis, 
+	der f&uuml;r die angefragte Werbung zu zahlen ist.
+</p>
+
+<div class="reiter{if mode_unconfirmed}Aktiv{else}Passiv{endif}">
+	<a href="index.php?page=market_advertisement_orders&mode=unconfirmed">
+		Unbest&auml;tigt
+	</a>
+</div>
+<div class="reiter{if mode_confirmed}Aktiv{else}Passiv{endif}">
+	<a href="index.php?page=market_advertisement_orders&mode=confirmed">
+		Best&auml;tigt
+	</a>
+</div>
+<div class="reiter{if mode_paid}Aktiv{else}Passiv{endif}">
+	<a href="index.php?page=market_advertisement_orders&mode=paid">
+		Bezahlt
+	</a>
+</div>
+<br />
+<table class="liste" cellpadding="0" cellspacing="0">
+	<tr>
+		<th>Aktionen</th>
+		<th>Benutzer</th>
+		<th>Werbeplatz</th>
+		<th>Kategorien</th>
+		<th>Von</th>
+		<th>Bis</th>
+		<th>Preis</th>
+		<th>Statistik</th>
+	</tr>
+	{liste}
+</table>

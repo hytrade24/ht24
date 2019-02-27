@@ -1,0 +1,40 @@
+<tr class="zeile{even}">
+	{if !INVOICE_HIDE_CHECKBOX}
+	<td>
+		<input type="checkbox" name="selected_invoices[]" value="{ID_BILLING_INVOICE}" />
+	</td>
+	{endif}
+	<td>
+		{if ID_BILLING_CANCEL}
+			<span title="Beinhaltet Strornoanfragen" class="btn btn-default btn-sm" style="color: blue;">
+				<strong>!</strong>
+			</span>
+		{endif}
+		<span>{ID_BILLING_INVOICE}</span>
+	</td>
+	<td>
+        {todate(STAMP_CREATE)}
+	</td>
+    <td>
+        {todate(STAMP_DUE)}
+   	</td>
+	<td>
+        {if STATUS == 0}<span class="text-error">unbezahlt</span>{endif}
+        {if STATUS == 1}<span class="test-success">bezahlt (am {todate(STAMP_PAY)})</span>{endif}
+        {if STATUS == 2}<span>storniert (am {todate(STAMP_CANCEL)})</span> {endif}
+	</td>
+	<td class="text-right">
+		{topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT}
+	</td>
+	<td class="design-action-buttons">
+		<a title="Rechnung ansehen" href="{uri_action(invoice,{ID_BILLING_INVOICE})}" class="btn btn-default">
+			<i class="glyphicon glyphicon-eye-open"></i>
+		</a>
+		<a title="Rechnung drucken" href="{uri_action(invoice_print,{ID_BILLING_INVOICE})}" class="btn btn-default">
+			<i class="glyphicon glyphicon-print"></i>
+		</a>
+		<a title="Rechnungspositionen stornieren" href="{uri_action(invoice_cancel,{ID_BILLING_INVOICE},invoice)}" class="btn btn-default">
+			<i class="fa fa-eraser"></i>
+		</a>
+	</td>
+</tr>

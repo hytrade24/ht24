@@ -1,0 +1,191 @@
+<script>
+
+    function ShowPage(page) {
+        var form = jQuery("#form_search");
+        form.find("input[name=npage]").val(page);
+        form.submit();
+    }
+
+    function ReloadPage() {
+        jQuery("#form_search").submit();
+    }
+
+    function UnlockSuccess() {
+        document.location.href = "{uri_baseurl(/admin/)}index.php?page={curpage}&search={SEARCH_HASH}&npage={npage}&done=unlock";
+    }
+
+    function UnlockAccept(id_vendor, title, id_user, name) {
+        if (!confirm('Den Anbieter "'+title+'" wirklich bestätigen?')) {
+            return;
+        }
+        jQuery.post("index.php", "page={curpage}&confirm="+id_vendor, function(result) {
+            ReloadPage();
+        });
+    }
+
+    function UnlockDecline(id_vendor, title, id_user, name) {
+        jQuery("#modalVendorDecline").each(function() {
+            jQuery(this).find("input[name=decline]").val(id_vendor);
+            jQuery(this).find("input[name=decline_user]").val(id_user);
+            jQuery(this).find("textarea").val("");
+            jQuery(this).find("#modalVendorDeclineUserName").html(name);
+            jQuery(this).find("#modalVendorDeclineTitle").html(title);
+        });
+        jQuery("#modalVendorDecline").dialog({
+            autoOpen: true,
+            modal: true,
+            title: 'Freigabe ablehnen',
+            width: 600
+        });
+    }
+
+    function UnlockDeclineSubmit(form) {
+        jQuery.post(jQuery(form).attr("action"), jQuery(form).serialize(), function(result) {
+            ReloadPage();
+        });
+    }
+
+    function callbackEventNotAvailable() {
+        alert("Fehler!\nBitte loggen Sie sich im Frontend des ebiz-trader als Administrator ein um diese Anzeige zu betrachten.");
+    }
+
+
+    jQuery(function() {
+        var stampFrom = jQuery("#STAMP_START_GT");
+        var stampTo = jQuery("#STAMP_START_LT");
+        stampFrom.datepicker({
+            dateFormat: 'dd.mm.yy',
+            maxDate: stampTo.val(),
+            numberOfMonths: 2,
+            onClose: function(dateStart) {
+                stampTo.datepicker("option", "minDate", dateStart);
+            }
+        });
+        stampTo.datepicker({
+            dateFormat: 'dd.mm.yy',
+            minDate: stampFrom.val(),
+            numberOfMonths: 2,
+            onClose: function(dateEnd) {
+                stampFrom.datepicker("option", "maxDate", dateEnd);
+            }
+        });
+        jQuery("a[data-page]").removeAttr("href").click(function() {
+            var npage = jQuery(this).attr("data-page");
+            ShowPage(npage);
+            return false;
+        });
+    });
+</script>
+
+<div id="modalVendorDecline" style="display: none;">
+    <form method="post" onsubmit="UnlockDeclineSubmit(this); return false;">
+        <input type="hidden" name="page" value="{curpage}" />
+        <input type="hidden" name="decline" />
+        <h3>
+            Freigabe der Veranstaltung <b id="modalVendorDeclineTitle">Anzeigentitel</b> ablehnen
+        </h3>
+        <table width="100%">
+            <tr>
+                <th align="left" valign="top">Begründung:</th>
+                <td>
+                    <textarea name="REASON" style="height: 200px; width: 95%;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td align="right">
+                    <input onclick="jQuery('#modalVendorDecline').dialog('close'); return false;" type="button" value="Abbrechen" />
+                    <input type="submit" value="Ablehnen" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<style type="text/css">
+    .unapproved { background: #e9b4b4 !important; }
+</style>
+
+{if err}
+<div class="hinweis">
+    <span class="error">{err}</span>
+</div>{endif}
+
+<h1> Marktplatz Anbieter / Branchenbuch</h1>
+
+<p>Hier finden Sie eine Liste aller auf dem Marktplatz vorhandenen Anbieter und können diese verwalten.</p>
+
+<strong>Allgemeine Entwicklung</strong>
+<form id="form_search" method="post">
+    <input type="hidden" name="page" value="{curpage}" />
+    <input type="hidden" name="npage" value="{npage}" />
+    <table border="0" cellspacing="0" cellpadding="4" class="liste">
+        <tr>
+            <th colspan="{if MODERATE_VENDORS}9{else}6{endif}">
+                <label>
+                    Nr.:
+                    <input type="text" name="ID_VENDOR" value="{SEARCH_ID_VENDOR}" />
+                </label>
+                <label>
+                    User:
+                    <a href="#" onclick="popupfkt('users&frompopup=1','850','500');">
+                        <img src="gfx/users_16.gif" width="16" height="16" alt="user suchen" border="0" />
+                    </a>
+                    <input type="text" name="NAME_" value="{htm(SEARCH_NAME_)}" />
+                </label>
+                <label>
+                    Inhalt:
+                    <input type="text" name="TEXT" value="{htm(SEARCH_TEXT)}" />
+                </label>
+                {if MODERATE_VENDORS}
+                <label>
+                    Freischaltung:
+                    <select name="MODERATED">
+                        <option value="">Alle anzeigen</option>
+                        <option value="0"{if SEARCH_MODERATED_SET && SEARCH_MODERATED==0} selected="selected"{endif}>Nicht geprüft</option>
+                        <option value="1"{if SEARCH_MODERATED_SET && SEARCH_MODERATED==1} selected="selected"{endif}>Bestätigt</option>
+                        <option value="2"{if SEARCH_MODERATED_SET && SEARCH_MODERATED==2} selected="selected"{endif}>Abgelehnt</option>
+                    </select>
+                </label>
+                {endif}
+                <input type="submit" name="SEARCH" value="Suchen" />
+            </th>
+        </tr>
+        <tr class="footer">
+            <td colspan="9">
+                <a style="float: right;" href="index.php?page=vendor" class="button">Alle anzeigen</a>
+            </td>
+        </tr>
+        {if !SEARCH_RESULT && (npage<2)}
+        <tr style="background-color: #fdfdfd;">
+            <td colspan="7" align="center">
+                <iframe id="katframe" src="index.php?lang=de&frame=iframe&page=stats&show=vendor&;w=250" width="100%" height="180" frameborder="0"></iframe>
+
+            </td>
+        </tr>
+        {endif}
+        <tr>
+            <th>aktiv? / Aktionen</th>
+            <th>Nr.</th>
+            {if MODERATE_VENDORS}
+            <th colspan="3">
+                Freigabe
+            </th>
+            {endif}
+            <th>Letztes Update</th>
+            <th>User</th>
+            <th>Firmenname</th>
+            <th>Ort</th>
+            <th>Aufrufe</th>
+        </tr>
+        {liste}
+        <tr>
+            <td colspan="7">
+                {pager}
+            </td>
+        </tr>
+    </table>
+</form>
+<p>
+    Anzahl der Anbieter : <b>{all}</b>
+</p>

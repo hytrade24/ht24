@@ -1,0 +1,129 @@
+<div class="row">
+    <div class="col-md-4 col-sm-12"><a href="{{ uri_baseurl('/') }}" class="design-footer-logo"> <img src="{{ uri_resource('/images/logo.png') }}" alt="Hydromot" /> </a></div>
+    <div class="col-md-4">
+        <form method="post" action="{{ uri_action('newsletter') }}">
+            <div class="input-group">
+
+                <input name="EMAIL" class="form-control" value="{{ htm('EMAIL') }}" placeholder="Emailadresse" required="required" type="text">
+                <span class="input-group-addon"><button type="submit"><i class="fa fa-paper-plane"></i></button></span>
+
+            </div>
+            <div class="radio">
+                <label>
+                    <input checked="checked" name="mode" type="radio" id="optionsRadios1" value="optin"/>
+                    Subscribe to newsletter
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input name="mode" type="radio" id="optionsRadios2" value="optout"/>
+                    Unsubscribe to newsletter
+                </label>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4 col-sm-12">
+        {% if option_is_set('SITE', 'CONTACT_FACEBOOK') or option_is_set('SITE', 'CONTACT_GOOGLE') or option_is_set('SITE', 'CONTACT_TWITTER') %}
+        {% if option_is_set('SITE', 'CONTACT_FACEBOOK') %}
+      
+        <div class="footer-social-icon pull-left">
+            <a href="{{ option('SITE', 'CONTACT_FACEBOOK') }}">
+                <i class="fa fa-facebook"></i>
+          </a>
+        </div>
+       {% endif %}
+
+        {% if option_is_set('SITE', 'CONTACT_TWITTER') %}
+        <div class="footer-social-icon pull-left">
+            <a href="{{ option('SITE', 'CONTACT_TWITTER') }}">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </div>
+        {% endif %}
+
+        {% if option_is_set('SITE', 'CONTACT_GOOGLE') %}
+        <div class="footer-social-icon pull-left">
+            <a href="{{ option('SITE', 'CONTACT_GOOGLE') }}">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h3 class="heading">
+            <div>CONTACT</div>
+        </h3>
+      <table>
+        <thead>
+          <tr>
+          		<td><span> &nbsp; </span></td>
+          </tr>
+          <tr> <th><span class="icon-container"><i class="fas fa-map-marker"></i></span> </th> <th> </th> <th> hytrade24 GmbH </th> </tr>
+          
+        </thead>
+        <tbody>
+         <tr>
+           <td></td> <td width = "10%"> </td> <td> <span>Merkurstrasse 52</span> </td>
+         </tr>
+          <tr>
+            <td></td><td></td><td> <span> D-67663 Kaiserslautern</span></td>
+          </tr>
+          <tr>
+          		<td><span> &nbsp; </span></td>
+          </tr>
+ 
+            <tr>
+              <td><span class="icon-container"><i class="fas fa-envelope"></i></span></td> <td> </td> <td> <a href = "mailto:info@hytrade24.com" style="color:#6EAAC1">info@hytrade24.com</a></td>
+            </tr>
+         	<tr>
+          		<td><span> &nbsp; </span></td>
+        	</tr>
+            <tr>
+              <td><span class="icon-container"><i class="fas fa-phone"></i></span> </td> <td> </td> <td> <span>+49 631 370 926 95</span></td>
+       		</tr>
+          <tr>
+          </tr>
+            <!-- <tr>
+                            <div>
+                                <span class="icon-container"><i class="fa fa-fax"></i></span>
+                                <span>Fax: +49 (0) 631 370 926 95</span>
+                            </div>
+                        </tr> --> 
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="heading">
+                    <div>LINKS</div>
+                </h3>
+                <ul>
+                  	<li><a href="{{ uri_action('agb') }}">AGB</a></li>
+                  	<li><a href="{{ uri_action('datenschutzerklaerung') }}">Data protection</a></li>
+                    <li><a href="{{ uri_action('faq') }}">FAQ</a></li>
+                    <li><a href="{{ uri_action('about') }}">About us</a></li>
+                    <li><a href="{{ uri_action('kontakt') }}">Contact</a></li>
+                    <li><a href="{{ uri_action('impressum') }}">Imprint</a></li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h3 class="heading">
+                    <div>&nbsp;</div>
+                </h3>
+                <ul>
+                    <li><a href="{{ uri_action('news') }}">Blog and News</a></li>
+                    <li><a href="{{ uri_action('jobs') }}">Job offers</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h3 class="heading">
+            <div>LATEST NEWS</div>
+        </h3>
+        {{ subtpl('tpl/'~SYS_TPL_LANG~'/recent_news_list.htm', 'ID_KAT=0', 'COUNT=3', 'OFFSET=0', 'COUNT_PER_ROW=1', 'SHOW_PREVIEW_IMAGE=1', 'SHOW_TYPES', 'TEMPLATE=row_list', 'CACHE_LIFETIME=106', 'HIDE_PARENT=1') }}</div>
+</div>

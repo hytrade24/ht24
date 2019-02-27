@@ -1,0 +1,50 @@
+		<tr class="zeile{even}">
+			<td>
+				<a href="index.php?page=vertrag_edit&ID_PACKET_ORDER={ID_PACKET_ORDER}">
+					<img width="32" height="16" alt="edit" src="gfx/btn.edit.gif">
+				</a>
+			</td>
+			<td>
+				{htm(NAME)}<br />
+				{if RECURRING}(Abo){endif}
+			</td>
+			<td>
+				{if ACTIVE}
+					<span class="ok">Aktiv</span>
+				{else}
+					<span class="error">
+					{if PAID}
+						Abgelaufen / Gekündigt
+					{else}
+						Noch zu bezahlen
+					{endif}
+					</span>
+				{endif}
+			</td>
+			<td> 
+				{text(CONTENTS)}
+			</td>
+			<td>
+				{todate(STAMP_START)}
+			</td>
+			<td> 
+			{if RECURRING}
+				{if (STAMP_NEXT)}
+					<span style="color: red;">K&uuml;ndigungsfrist:&nbsp;{todate(STAMP_CANCEL_UNTIL)}</span>
+					<br />
+					Verl&auml;ngert&nbsp;sich&nbsp;zum&nbsp;{todate(STAMP_NEXT)}
+				{else}
+					{if STAMP_START}
+						Gek&uuml;ndigt&nbsp;am&nbsp;{todate(STAMP_CANCEL_UNTIL)}<br />
+						Gek&uuml;ndigt&nbsp;zum&nbsp;{todate(STAMP_END)}
+					{else}
+						<span class="error">
+							Noch nicht aktiv!
+						</span>
+					{endif}
+				{endif}
+			{else}
+				---
+			{endif}
+			</td>
+		</tr>

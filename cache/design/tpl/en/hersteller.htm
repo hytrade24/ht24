@@ -1,0 +1,21 @@
+{if !HIDE_TABS}
+<h2>{htm(KAT_V1)}</h2>
+<h3>Please choose a category or manufacturer.</h3>
+<ul class="nav nav-tabs">
+	<li>
+		<a href="{if ID_KAT}{uri_action(marktplatz,{ID_KAT})}{else}{uri_action(marktplatz)}{endif}" title="Category">
+			CATEGORY
+		</a>
+	</li>
+	<li class="active">
+		<a href="{if ID_KAT}{uri_action(hersteller,{ID_KAT})}{else}{uri_action(hersteller)}{endif}" title="Manufacturer">
+			MANUFACTURER
+		</a>
+	</li>
+</ul>
+{endif}
+
+<div class="design-hersteller-content">
+	{MANUFACTURERS_CONTENT}
+</div>
+

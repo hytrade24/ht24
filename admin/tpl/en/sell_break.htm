@@ -1,0 +1,158 @@
+<script src="{uri_baseurl(/js/jquery.js)}" type="text/javascript"></script>
+<script src="{uri_baseurl(/js/jquery-ui.js)}" type="text/javascript"></script>
+<link rel="stylesheet" href="{uri_baseurl(/skin/jquery/jquery.css)}" />
+<h1>
+	Verkaufsstorno<br />
+</h1>
+<h2>
+	Transaktions-Id: {ID_AD_SOLD}<br />
+	Artikel: {htm(PRODUKTNAME)}
+</h2>
+
+{if verworfen}
+	<h2 class="ok">Storno wurde verworfen</h2>
+{endif}
+
+{if gutgeschrieben}
+	<h2 class="ok">Storno wurde best&auml;tigt</h2>
+{endif}
+
+<table>
+	<tr>
+		<td valign="top">
+			<table class="liste">
+				<tr>
+					<td><strong>Datum des Kaufs:</strong></td>
+					<td>{todate(STAMP_BOUGHT)}</td>
+				</tr>
+				<tr>
+					<td><strong>Datum des Stornos:</strong></td>
+					<td>{todate(STAMP_STORNO)}</td>
+				</tr>
+				<tr>
+					<td><strong>Verkaufspreis:</strong></td>
+					<td align="right">{topreis(PREIS)} {CURRENCY_DEFAULT}</td>
+				</tr>
+				<tr>
+					<td><strong>Provision:</strong></td>
+					<td align="right">{topreis(PROV)} {CURRENCY_DEFAULT}</td>
+				</tr>
+			</table>
+		</td>
+		<td valign="top" style="padding-left:25px;">
+			<h3>Aktionen</h3>
+			<input onclick="anzeigeansehen();" type="button" value="Artikel anzeigen" title="Öffnet sich in einem neuen Fenster" class="jqb"/>
+			{if STAMP_STORNO && !STAMP_STORNO_OK}
+				<input onclick="storno_ok();" type="button" value="Storno best&auml;tigen" class="jqb" />
+				<input onclick="verwerfen();" type="button" value="Storno verwerfen" class="jqb"/>
+			{endif}
+		</td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<td valign="top"> 
+			<h2>Verk&auml;ufer</h2>
+			<p>
+				<a href="index.php?page=user_edit&ID_USER={ID_SELLER}" title="Profil bearbeiten">
+					{htm(sell_NAME)}
+				</a><br />
+				{htm(sell_FIRMA)}<br />
+				{htm(sell_VORNAME)} {htm(sell_NACHNAME)}<br />
+				{htm(sell_STRASSE)}<br />
+				{htm(sell_PLZ)}, {htm(sell_ORT)}<br />
+				{htm(sell_COUNTRY)}
+			</p>
+			<table class="liste">
+				<tr>
+					<td><strong>Bisherige Verk&auml;ufe</strong></td>
+					<td align="right">{sell_SALES}</td>
+				</tr>
+				<tr>
+					<td><strong>Bisherige Abbr&uuml;che</strong></td>
+					<td align="right">{sell_STORNOS}</td>
+				</tr>
+				<tr>
+					<td><strong>Erfolgreiche Verk&auml;ufe</strong></td>
+					<td align="right">{sell_ERFOLG}%</td>
+				</tr>
+			</table>
+		</td>
+		<td valign="top" style="padding-left:25px;">
+			<h2>K&auml;ufer</h2>
+			<p>
+				<a href="index.php?page=user_edit&ID_USER={ID_SELLER}" title="Profil bearbeiten">
+					{htm(buy_NAME)}
+				</a><br />
+				{htm(buy_FIRMA)}<br />
+				{htm(buy_VORNAME)} {htm(buy_NACHNAME)}<br />
+				{htm(buy_STRASSE)}<br />
+				{htm(buy_PLZ)}, {htm(buy_ORT)}<br />
+				{htm(buy_COUNTRY)}
+			</p>
+			<table class="liste">
+				<tr>
+					<td><strong>Bisherige Verk&auml;ufe</strong></td>
+					<td align="right">{buy_BOUGHTS}</td>
+				</tr>
+				<tr>
+					<td><strong>Bisherige Abbr&uuml;che</strong></td>
+					<td align="right">{buy_BOUGHTS_STORNOS}</td>
+				</tr>
+				<tr>
+					<td><strong>Erfolgreiche Verk&auml;ufe</strong></td>
+					<td align="right">{buy_ERFOLG}%</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<div id="ok" style="display:none;">
+	Wenn Sie das Storno best&auml;tigen, wird {htm(sell_NAME)} die Provision in H&ouml;he von 
+	{topreis(PROV)} {CURRENCY_DEFAULT} wieder gutgeschrieben. 
+</div>
+<div id="notok" style="display:none;">
+	{htm(sell_NAME)} wird per Email informiert, dass Sie das Storno verworfen haben.  
+</div>
+<script type="text/javascript">
+	onload=function(){
+		$('.jqb').button();
+	};
+	
+	function storno_ok() {
+		$('#ok').dialog({
+			title: 'Bitte beachten!',
+			modal: true,
+			buttons: {
+				'Gutschreiben': function() {
+					window.location.href = 'index.php?page={curpage}&ID_AD_SOLD={ID_AD_SOLD}&act=gutschreiben';
+				},
+				'Abberechen': function() {
+					$(this).dialog('destroy');
+				}
+			}
+		});
+	}
+	
+	function verwerfen() {
+		$('#notok').dialog({
+			title: 'Bitte beachten!',
+			modal: true,
+			buttons: {
+				'Verwerfen': function() {
+					window.location.href = 'index.php?page={curpage}&ID_AD_SOLD={ID_AD_SOLD}&act=verwerfen';
+				},
+				'Abberechen': function() {
+					$(this).dialog('destroy');
+				}
+			}
+		});
+	}
+	
+	function anzeigeansehen() {
+		var fenster = window.open('/marktplatz_anzeige,{FK_AD}.htm');
+		fenster.focus();
+	}
+</script>

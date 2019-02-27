@@ -1,0 +1,24 @@
+{if running}
+<script type="text/javascript">
+window.setTimeout("window.location.href = 'index.php?page={curpage}&frame=iframe&what={what}&running={running}&npage={npage}'", 1500);
+</script>
+<table  width="100%" cellpadding="20" bgcolor="#ffffff">
+	<tr>
+		<td>
+		
+		<p>News werden indiziert</p>
+<img src="gfx/animbar.gif" width="200" height="20" alt="" border="0">
+<p>noch weitere Seiten  : {mpage}<br>
+W&ouml;rter hinzugef&uuml;gt : {added}</p>
+		</td>
+	</tr>
+</table>
+{else}
+<table  width="100%" cellpadding="20" bgcolor="#ffffff">
+	<tr>
+		<td>
+<span class="ok">Vorgang abgeschlossen</span>
+		</td>
+	</tr>
+</table>
+{endif}

@@ -1,0 +1,12 @@
+{if liste}
+<div class="design-news-category-box design-subtpl">
+    <ul class="design-row design-row-xs-{COUNT_PER_ROW_xs} design-row-sm-{COUNT_PER_ROW_sm} design-row-md-{COUNT_PER_ROW_md} design-row-lg-{COUNT_PER_ROW_lg}">
+        {liste}
+    </ul>
+    ^SUBTPL_ADMIN°
+</div>
+{else}
+    {if HIDE_PARENT}
+    <div class="specialHideParent"></div>
+    {endif}
+{endif}

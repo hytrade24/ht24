@@ -1,0 +1,11 @@
+<h1>Error 404</h1>
+<div class="hinweis">Die gew&uuml;nschte Seite kann nicht angezeigt werden.</div>
+<div class="hinweis">
+<span class="error">Die gew&uuml;nschte Seite {if fnfpage}({fnfpage}) {endif}kann nicht angezeigt werden.
+  <br /><br />
+  Sie ist entweder noch nicht implementiert<br />
+  oder Sie haben keinen Zugriff darauf.</span></div>
+{if !is_home}
+<div class="hinweis">
+    <a  href="index.php" class="tiny">&lt;&lt;&lt; zur Startseite</a>
+  {else}&nbsp;</div>{endif}

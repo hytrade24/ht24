@@ -1,0 +1,40 @@
+<tr>
+	<td width="30" class="design-action-buttons">
+		<a style="cursor: pointer;" onclick="ToggleBids({FK_AD}, '{FK_AD_VARIANT}', '{FK_AD_REQUEST}');" class="btn btn-default">
+			<i class="glyphicon glyphicon-eye-open"></i>
+		</a>
+	</td>
+	<td nowrap>{todate(LAST_BID_DATE,1)}</td>
+	<td>
+		{if FK_AD_REQUEST>0}
+		<a href="{uri_action(marktplatz_anzeige,{FK_AD_REQUEST},{urllabel(REQUESTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT_REQUEST})})}" title="Zum Artikel" target="_blank">
+			<b>Gesuch:</b>
+			{htm(REQUESTNAME)}
+		</a>
+		<br />
+		{endif}
+		<a href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Zum Artikel" target="_blank">
+			<b>Artikel:</b>
+			{htm(PRODUKTNAME)}{if VARIANT} ({htm(VARIANT)}){endif}
+		</a>
+	</td>
+	<td align="right" nowrap>
+		{topreis_ex(MAXBID)} {CURRENCY_DEFAULT}
+	</td>
+	<td>
+		<a href="{uri_action(view_user,{urllabel(MAXBID_USERNAME)},{MAXBID_USER_ID})}" title="Profil anzeigen" target="_blank">
+			{htm(MAXBID_USERNAME)}
+		</a>
+	</td>
+    <td>{COUNTUSER}</td>
+	<td>
+		{if MYMAXBID}
+			{topreis_ex(MYMAXBID)} {CURRENCY_DEFAULT}
+		{else}
+			---
+		{endif}
+	</td>
+</tr>
+<tr id="bids_{FK_AD}_{FK_AD_VARIANT}" class="nohover" style="display: none;">
+	<td colspan="7" style="padding: 4px 4px 4px 32px;"></td>
+</tr>

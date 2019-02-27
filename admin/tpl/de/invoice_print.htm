@@ -1,0 +1,134 @@
+{if loading}
+	{if starting}
+	<div class="framed-block">
+		<div style="text-align: center;">
+			<h1>PDF-Rechnungen generieren</h1>
+			<h2>Warnung!</h2>
+		</div>
+		
+		<p>
+			Sie haben den Druck von <strong>{count} Rechnungen</strong> ausgeführt.<br />
+			<span class="error">
+				Dieser Vorgang kann längere Zeit in Anspruch nehmen!<br />
+				Geschätzte Dauer: {timeEstimate}
+			</span><br />
+			<br />
+			Möchten Sie den Vorgang fortsetzen?
+		</p>
+		<a class="button" href='javascript:history.back();'>
+			Zurück
+		</a>
+		<a class="button" href='index.php?page=invoice_print&{urlParams}'>
+			Vorgang jetzt starten!
+		</a>
+	</div>
+	{else}
+	<div class="framed-block">
+		<div style="text-align: center;">
+			<h1>PDF-Rechnungen werden generiert</h1>
+			<h2>Bitte warten...</h2>
+		</div>
+			
+		<div class="progress-block center-block">
+			<div>
+				<img src="gfx/animbar.gif" alt="" width="200" height="20">
+			</div>
+			<br />
+			
+			<div class="progress-bar" style="margin: 2px;">
+				<div class="fill" style="width: {progessPercent}%;">
+					{if countDone > countLeft}<span class="label">{progessPercent}%</span>{endif}
+				</div>
+				{if countDone <= countLeft}<span class="label">{progessPercent}%</span>{endif}
+			</div>			
+		</div>
+		<br />
+		<div class="center-block">
+			<table>
+				<tr>
+					<th align="right" valign="top">Fortschritt:</th>
+					<td>
+						{pageCur} / {pageMax} PDF-Dateien erzeugt.<br />
+						{countDone} / {count} Rechnungen erzeugt
+					</td>
+				</tr>
+				<tr>
+					<th align="right" valign="top">Geschätzte Restzeit:</th>
+					<td>
+						{if timeLeftMin>0}{timeLeftMin} Minuten und {endif}{timeLeftSec} Sekunden.
+					</td>
+				</tr>
+			</table>
+			<br />
+			<div class="center-block error-block strong">
+				<h3>Lassen Sie diese Seite geöffnet bis der Vorgang abgeschlossen ist!</h3>
+			</div>
+		</div>
+	</div>
+	<br style="clear: both;" />
+	<script type="text/javascript">
+	jQuery(function() {
+		window.setTimeout(function() {
+			document.location.href = 'index.php?page=invoice_print&{urlParams}';
+		}, 1000);
+	});
+	</script>
+	{endif}
+{else}
+	<script type="text/javascript">
+	delayBetweenDownloads = 2000;
+	
+	function downloadAll() {
+		var files = jQuery("#tablePDF a.download");
+		downloadBatch(files);
+	}
+	
+	function downloadBatch(links, indexCurrent) {
+		if (typeof indexCurrent == "undefined") {
+			// Default for optional parameter
+			indexCurrent = 0;
+		}
+		if (indexCurrent >= links.length) {
+			// Done!
+			return true;
+		} else {
+			downloadSingle(links[indexCurrent], indexCurrent, function() {
+				window.setTimeout(function() {
+					downloadBatch(links, indexCurrent+1);
+				}, delayBetweenDownloads);
+			});
+			return true;
+		}
+	}
+	
+	function downloadSingle(link, index, callbackDone) {
+		var linkCell = jQuery(link).parent();
+		var iframeSource = '<iframe id="frameDownload'+index+'" frameborder="0" src="'+jQuery(link).attr("href")+'" class="iframe-hidden"></iframe>';
+		var linkCell = jQuery(link).parent();
+		jQuery(linkCell).html(iframeSource+"<span class='ok'>Download gestartet...</span>");
+		// TODO: Find a way to check the download to be started/finished
+		if (typeof callbackDone == "function") {
+			callbackDone();
+		}
+		return false;
+	}
+	
+	</script>
+	
+	<h1>Rechnung(en) als PDF herrunterladen</h1>
+	
+	<p>
+		Die gewählten Rechungen mussten leider auf mehrere PDF-Dateien aufgeteilt werden.
+		Bitte klicken Sie auf die einzelnen Dateien oder auf "Alle Herunterladen" um den Download zu beginnen.
+	</p>
+	
+	<table id="tablePDF" class="liste">
+		<tr>
+			<th>Dateiname</th>
+			<th>Download</th>
+		</tr>
+		{liste}
+	</table>
+		
+	<button onclick="downloadAll();">Alle Herunterladen</button>
+{endif}

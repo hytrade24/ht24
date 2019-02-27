@@ -1,0 +1,285 @@
+<script type="text/javascript">
+
+function addMeta()
+{
+  var meta = document.getElementById('metatag').innerHTML;
+  meta = meta.replace(/<!--/i, " ");
+  meta = meta.replace(/-->/i, " ");
+  document.getElementById('T1').value = meta;
+}
+</script>
+
+<div id="metatag"><!--{META}--></div>
+
+{loadperm(edit_syspages)}
+
+<h1>
+    {if ID_NAV}Seite '{htm(IDENT)}' bearbeiten{else}Seite erstellen{endif}
+</h1>
+{if locked}
+<div class="hiweis"><span class="error">{locked}</span></div>
+{else}
+    {if msg}<span class="error">{msg}</span><br /><br />{endif}
+    {if !ID_NAV && !setroot}
+    <div {if ROOT ==1}class="reiterAktiv"{else}class="reiterPassiv"{endif}>
+        <a href="index.php?page={curpagealias}&ROOT=1">Standard Navigation</a>
+    </div>
+    <div {if ROOT ==2}class="reiterAktiv"{else}class="reiterPassiv"{endif}>
+        <a href="index.php?page={curpagealias}&ROOT=2">Administrator Navigation</a>
+    </div>
+    {endif}
+    {if B_SYS}
+    <br>
+    <br>
+    <fieldset style="border:1px #FF0000 solid;padding:7px">
+        <legend style="color:#FF0000; font-weight:bold;margin-bottom:8px">Systemseite! Jede &Auml;nderung kann zu Fehlfunktionen f&uuml;hren!</legend>
+    {endif}
+        <table width="100%" cellpadding="2" cellspacing="0" border="0" class="liste">
+            <form method="post" action="index.php">
+                <input type="hidden" name="nav" value="{curnav}" />
+                <input type="hidden" name="ID_NAV" value="{ID_NAV}" />
+                <input type="hidden" name="setroot" value="{setroot}" />
+                <tr>
+                    <td><strong>ID</strong></td>
+                    <td nowrap><strong>{if ID_NAV}{ID_NAV}{else}neu{endif}</strong></td>
+                    <td width="100%" rowspan="14" valign="top">
+                    {if !ID_NAV}
+                        <strong>Eltern Objekt wählen</strong>
+                        <div style="padding:10px; margin-top:4px; width:430px; height:750px; overflow:auto">
+                            <table class="pathtab" cellpadding="0" cellspacing="0" border="0" height="17">
+                                <tr>
+                                    <td style="height:17px;" colspan="3">
+                                        <input id="radio0" type="radio" name="trg" {if !trg}checked {endif}value="{ID_NAV_ROOT}" class="nob" />
+                                    </td>
+                                    <td>
+                                        <table class="pathtab" cellpadding="0" cellspacing="0" border="0">
+                                            <tr height="17">
+                                                <td width="19" height="17">
+                                                    <img src="gfx/path.{if baum}66{else}64{endif}.png" width="19" height="17" />
+                                                </td>
+                                                <td nowrap>
+                                                    &nbsp;<label for="radio0"><b>Root</b></label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                {baum}
+                            </table>
+                        </div>
+                    {else}
+                        {setroot}
+                        {if ROOT == 1}
+                        <div class="reiterAktiv">
+                            <img src="gfx/html_48x16.gif" alt="" height="16" width="48" border="0">
+                            <a href="index.php?page=template_edit&ROOT={ROOT}&tpl={IDENT}">HTML Bearbeiten</a>
+                        </div>
+                        <iframe src="{uri_baseurl(/index.php?page={IDENT})}" width="100%" height="700"></iframe>
+                        {endif}
+                    {endif}
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <strong><label for="ident">Filename*&nbsp;</label></strong>
+                </td>
+                <td>
+                    <input type="text" class="input3q" name="IDENT" id="ident" maxlength="32" value="{htm(IDENT)}" {if (ID_NAV && IDENT) || DISABLE_IDENT}style="color:#666;background-color:#CCCCCC" readonly {endif}/>
+                    <p class="notizSmall">Der Filename wird auch als Name für zur Seite gehörender Dateien verwendet und darf daher (wenn angegeben) nur aus Kleinbuchstaben, Ziffern, Unterstrich und Bindestrich bestehen.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong><label for="label">Menübeschriftung&nbsp;</label></strong>
+                </td>
+                <td>
+                    <input type="text" class="input3q" name="V1" id="label" maxlength="255" value="{htm(V1)}" />
+                    <p class="notizSmall">Für Ihre Kunden sichtbarer Menüpunkt</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong><label for="alias">Alias&nbsp;</label></strong>
+                </td>
+                <td>
+                    <input type="text" class="input3q" name="ALIAS" id="alias" maxlength="96" value="{htm(ALIAS)}" {if (B_SYS && !perm_edit_syspages_D) || DISABLE_ALIAS}style="color:#666;background-color:#CCCCCC"  readonly{endif} />
+                    <p class="notizSmall">Hiermit können Sie den Filenamen ändern.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong><label for="descr">Beschreibung (Hover)&nbsp;</label></strong>
+                </td>
+                <td>
+                    <input type="text" class="input3q" name="V2" id="descr" maxlength="255" value="{htm(V2)}" />
+                    <p class="notizSmall">Beschriftung und Titel einer Seite bzw. Menüpunktes</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong><label for="metatags">Meta Tags&nbsp;</label></strong>
+                </td>
+                <td>
+                    <p>
+                        Ändern der Standardwerte können Sie unter :
+                        <a href="index.php?page=meta_defaults" title="Meta Defaults bearbeiten" target="_blank">
+                            <strong>Standard Metatags</strong>
+                        </a>
+                    </p>
+                    <input type="button" class="button" onclick="addMeta();" value="Standard Meta Tags einf&uuml;gen ->" />
+                    <br  />
+                    <br  />
+                    <textarea name="T1" id="T1" cols="32" rows="5" class="input3q">{htm(T1)}</textarea>
+                </td>
+            </tr>
+            {if layoutopts}
+            <tr>
+                <td>
+                    <strong><label for="layout">Layout</label></strong>
+                </td>
+                <td>
+                    <select name="S_LAYOUT" id="s_layout">
+                        <option value="">Default</option>{layoutopts}
+                    </select>
+                </td>
+            </tr>
+            {endif}
+            <tr>
+                <td>
+                    <strong>Modul</strong>
+                </td>
+                <td>
+                    {if ROOT == 1}{select(modul,,,B_NOTINSTALLED=0,,,Kein Modul)}
+                    <p class="notizSmall">Das ändern eines Modulseite löscht die dazugehörige HTML-Seite!</p>
+                    {else}nicht m&ouml;glich
+                    {endif}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Infobereich</strong>
+                </td>
+                <td>
+                    {if ROOT == 1}{select(infoseite,,,USETYPE='STD',,,Kein Infobereich)}
+                    <p class="notizSmall">HTML-Baustein zuordnen</p>
+                    {else}nicht m&ouml;glich{endif}
+                </td>
+            </tr>
+            {if ALLOW_USER_SSL}
+            <tr>
+                <td valign="top">
+                    <strong>SSL</strong>
+                </td>
+                <td>
+                {if USE_SSL}
+                    {if USE_SSL_GLOBAL}
+                    <span class="ok">
+                        Die SSL-Verschlüsselung ist für den gesamten Marktplatz aktiviert!
+                        <a href="index.php?page=nav_ssl">Einstellung ändern</a>
+                    </span>
+                    {else}
+                    <label>
+                        <input type="radio" name="B_SSL" value="2"{if B_SSL==2} checked{endif} />
+                        Diese Seite immer per SSL verschlüsseln
+                    </label>
+                    <br />
+                    <label>
+                        <input type="radio" name="B_SSL" value="0"{if B_SSL==0} checked{endif} />
+                        Seite immer unverschlüsselt aufrufen
+                    </label>
+                    <br />
+                    <label class="error">
+                        <input type="checkbox" name="B_SSL_RECURSIVE" value="1" />
+                        Änderung rekursiv auf diese und alle Unterseiten anwenden
+                    </label>
+                    {endif}
+                {else}
+                    <span class="error">
+                        Die SSL-Verschlüsselung ist für den gesamten Marktplatz deaktiviert!
+                        <a href="index.php?page=nav_ssl">Einstellung ändern</a>
+                    </span>
+                {endif}
+                </td>
+            </tr>
+            {endif}
+            <tr>
+                <td>
+                    <strong>Sichtbarkeit</strong>
+                </td>
+                <td>
+                    <label>
+                        <input type="checkbox" name="B_VIS" value="1"{if B_VIS} checked="checked"{endif} />
+                        Als Navigationspunkt anzeigen
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Zugriffsrechte</strong>
+                </td>
+                <td>
+                    {listRoles}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Systemseite</strong>
+                </td>
+                <td>
+                {if ID_NAV}
+                    {if B_SYS}
+                        {if perm_edit_syspages_D}
+                            <input type="hidden" name="B_SYS" value="0">
+                        {endif}
+                        <input type="checkbox" name="B_SYS" value="1" class="nob"{if B_SYS} checked{endif} {if !perm_edit_syspages_D}disabled{endif}>
+                    {else}
+                        {if perm_edit_syspages_C}
+                            <input type="checkbox" name="B_SYS" value="1" class="nob"{if B_SYS} checked{endif}>
+                        {endif}
+                    {endif}
+                {else}
+                    {if perm_edit_syspages_C}
+                        <input type="checkbox" name="B_SYS" value="1" class="nob"{if B_SYS} checked{endif}></td>
+                    {else}
+                        <span class="error">Keine Berechtigung</span>
+                    {endif}
+                {endif}
+            </tr>
+            <tr>
+                <td>
+                    <strong>Bei der Suche verwenden</strong>
+                </td>
+                <td>
+                    <input type="checkbox" name="B_SEARCH" value="1" class="nob"{if B_SEARCH} checked{endif}>
+                    <p class="notizSmall">Nur bei HTML, NEWS und FAQ-Seiten</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" valign="top" nowrap>
+                    <input type="submit" class="button" value="speichern" />
+                    <input type="reset" class="button" value="Formular zur&uuml;cksetzen" />
+                {if setroot}
+                    <br>
+                    <input type="button" class="button" value="Fenster schließen" onclick="window.opener.location.reload();window.close()"/>
+                {endif}
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            </form>
+            <tr>
+                <td colspan="3" class="notizSmall">*
+                    Der Filename wird auch als Name f&uuml;r zur Seite geh&ouml;render Dateien verwendet
+                    und darf daher (wenn angegeben) nur aus
+                    Kleinbuchstaben, Ziffern, Unterstrich und Bindestrich bestehen.
+                </td>
+            </tr>
+        </table>
+        <table  class="footer" width="100%">
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    {if B_SYS}
+    </fieldset>
+    {endif}
+{endif}

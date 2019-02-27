@@ -1,0 +1,18 @@
+<tr>
+    <td>
+        <a href="{uri_baseurl(/index.php?page=ad_showup&INDEX={i})}" target="_blank" title="Show {FILENAME} file">
+            {if FILENAME != FILENAME_SHORT}{htm(FILENAME_SHORT)} ... {else}{htm(FILENAME)}{endif}.{EXT}
+        </a>
+    </td>
+	<td>
+		<a onclick="DocumentDelete({i});">Delete</a>
+	</td>
+    <td class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputUploadMetaTitle{i}">Title</label>
+            <div class="design-input-field">
+                <input class="form-control" type="text" id="inputUploadMetaTitle{i}" name="META[UPLOADS][{i}][TITLE]" value="{htm(META_TITLE)}" placeholder="Description" />
+            </div>
+        </div>
+    </td>
+</tr>

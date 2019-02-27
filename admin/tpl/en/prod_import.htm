@@ -1,0 +1,97 @@
+<h1>Produkt Import Schritt {STEP} / 3</h1>
+{if err}
+	<h2 class="error">Fehler aufgetreten!</h2>
+	<p class="error">
+		{err}
+	</p>
+{endif}
+{if STEP == 1}
+	<p>	
+		Um Produkte in die Datenbank zu importieren oder zu aktualisieren laden Sie bitte zun&auml;chst
+		eine CSV Datei mit den Produkten hoch. Im zweiten Schritt k&ouml;nnen Sie weitere Einstellungen
+		vornehmen.	
+	</p>
+	<form method="post" action="index.php" enctype="multipart/form-data">
+		<input type="hidden" name="page" value="{curpage}" />
+		<input type="hidden" name="STEP" value="1" />
+		<table class="formTable" cellspacing="0" />
+			<tr>
+				<th>CSV Datei von Ihrer Festplatte: </th>
+				<td>
+					<input type="file" name="csv" />
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">ODER</th>
+			</tr>
+			<tr>
+				<th>Datei ausw&auml;hlen</th>
+				<td>
+					<select name="DATEI">
+						<option value="">Bitte w&auml;hlen</option>
+						{files}
+					</select>
+				</td>
+			</tr>
+			<tr class="footer">
+				<td colspan="2" align="right">
+					<input type="submit" value="Datei hochladen" class="button" />
+				</td>
+			</tr>
+		</table>
+	</form>
+{endif}
+{if STEP == 2}
+	<p>
+		Hier sehen Sie eine kleine Auswahl an Produkten welche aus der CSV Datei gelesen wurden. 
+		Bitte entscheiden Sie f&uuml;r jede Spalte welche Werte sich hierin befinden.<br />
+		<strong>Sie m&uuml;ssen mind. Hersteller, Artikelnummer und Beschreibung ausw&auml;hlen!</strong>
+	</p>
+	{if lines}
+		<form method="post" action="index.php">
+			<p class="error">
+				ACHTUNG!<br />
+				Die tempor&auml;ren Daten &auml;lterer Imports werden automatisch gel&ouml;scht!
+			</p>
+			<input type="hidden" name="page" value="{curpage}" />
+			<input type="hidden" name="STEP" value="2" />
+			<input type="hidden" name="file" value="{file}" />
+			<table class="formTable" cellspacing="0">
+				<tr>
+					<th style="text-align:center">
+						<input type="checkbox" name="USE_TOP" value="1" class="nob" />
+					</th>
+					<th colspan="{CSPAN}">
+						Erste enth&auml;lt &Uuml;berschriften!
+					</th>
+				</tr>
+				{lines}
+				<tr class="footer">
+					<td>&nbsp;</td>
+					<td colspan="{CSPAN}" align="right">
+						<input type="submit" value="Import starten" class="button" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	{else}
+		<p class="error">Keine lesbaren Daten!</p>
+	{endif}
+{endif}
+{if STEP == 3}
+	<h1 class="error">Achtung Import l&auml;uft!</h1>
+	<p>
+		Bitte unterbrechen Sie diesen Vorgang nicht! Der Import kann unter Umst&auml;nden sehr
+		lange dauern. 
+	</p>
+	<p>
+		Bisher wurden <strong>{N_PRODS}</strong> Produkte importiert bzw. aktualisiert
+	</p>
+	<script type="text/javascript">
+		function goto()
+		{
+			window.location.href = 'index.php?page={curpage}&STEP=3&file={FILE}&RUN={RUN}';
+		}
+		window.setTimeout('goto()', 1000);
+	</script>
+{endif}

@@ -1,0 +1,23 @@
+<tr class="zeile{even}">
+ <td nowrap>
+  <a onclick="showdetails({ID_SCRIPT_WORK});" style="cursor:pointer;" title="Details direkt anzeigen"><img src="gfx/info_s.png" alt="info" width="20" height="16" /></a>
+  <a href="index.php?page=script_edit&ID_SCRIPT_WORK={ID_SCRIPT_WORK}" title="Script bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16" alt="edit" /></a>
+  <a href="index.php?page=scripte&del={ID_SCRIPT_WORK}" title="Script löschen" onclick="return confirm('Sicher dass sie das Script löschen möchten?');"><img src="gfx/btn.del.gif" width="32" height="16" alt="del" /></a>
+  </td>
+  <td><a id="b{NUMMER}" href="index.php?page=user_edit&ID_USER={FK_USER}" title="User bearbeiten"  name="{UNAME}">{htm(UNAME)}</a><div id="pb{NUMMER}" class="preview">Bitte warten ...</div></td>
+  <td>{todate(STAMP_UPDATE)}</td>
+ <td><a onclick="showdetails({ID_SCRIPT_WORK});" style="cursor:pointer;" title="Details direkt anzeigen">{htm(V1)}</a></td>
+ <td align="center" class="ok" {if OK1}title="User Freigabe"{endif}>{if OK1}&radic;{endif}&nbsp;</td>
+ <td align="center" class="ok" {if OK2}title="Admin Freigabe"{endif}>{if OK2}&radic;{endif}&nbsp;</td>
+ <td><a href="{LINK_DSC}" target="_blank" {if DEAD}class="error" title="Deadlink gemeldet am: {todate(DEAD)}"{else}title="Beschreibung ansehen"{endif}>{htm(shotlink)}...</a>
+  {if DEAD}<br /><span class="error">Deadlink gemeldet am {todate(DEAD)}</span>{endif}
+ </td>
+ <td align="center">{if LINK_DL}<span class="ok">&radic;</span>{endif}</td>  
+ <td>{htm(KV1)}</td>
+ <td align="center">{if ckomm}<a style="cursor:pointer;" onclick="popupfkt('kommentare&FK={ID_SCRIPT_WORK}&KOMM=script', 760, 550);" title="{ckomm} Kommentare anzeigen">{ckomm}</a>{else}&nbsp;{endif}</td>
+ <td>{if LAST_COMMENT}{todate(LAST_COMMENT)}{else}&nbsp;{endif}</td> 
+</tr>
+<tr id="scr_{ID_SCRIPT_WORK}" style="display:none;">
+ <td valign="top" align="center"><a onclick="document.getElementById('scr_{ID_SCRIPT_WORK}').style.display='none';" title="Ausblenden" style="cursor:pointer;"><br /><img src="gfx/btn.put.gif" alt="close" width="16" height="16" /></a></td>
+ <td colspan="11"><div id="details{ID_SCRIPT_WORK}"><h3>Bitte warten ...</h3></div></td>
+</tr>

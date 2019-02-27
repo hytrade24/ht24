@@ -1,0 +1,22 @@
+{if err}<div style="error">{err}</div>{endif}
+{if ok}<div style="ok">Eintrag erfolgreich geändert!</div>{endif}
+<form method="post" action="index.php">
+<input type="hidden" name="curpage" value="{curpage}" />
+<table width="100%" class="formTable" cellspacing="0">
+  <tr>
+    <th>Autor</th>
+	<th>Thema</th>
+	<th>Datum</th>
+  </tr>
+  <tr>
+    <td><input type="text" name="FK_USER" value="{print_fk(user,,NAME)}" /></td>
+	<td><input type="text" name="SUBJECT" value="{htm(SUBJECT)}" /></td>
+	<td><input type="text" name="STAMP" value="{STAMP}" /></td>
+  </tr>
+  <tr>
+    <td colspan="3">
+	  <textarea cols="90%" rows="15" name="BODY">{htm(BODY)}</textarea><br /><br />
+	  <input type="submit" value="&Auml;ndern" />
+	</td>
+  </tr>
+</table>

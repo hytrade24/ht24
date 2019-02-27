@@ -1,0 +1,33 @@
+ <div class="design-content-box">
+     <h3 class="heading">Newsletter</h3>
+     Register now for our newsletter!
+     <p></p>
+
+     <form method="post" action="{uri_action(newsletter)}">
+         <div class="row">
+             <div class="col-xs-6 col-sm-4 col-md-2">
+                 E-Mail address:
+             </div>
+             <div class="col-xs-6 col-sm-4 col-md-4">
+                 <input type="text" value="{htm(EMAIL)}" name="EMAIL" maxlength="255" class="form-control" />
+                 
+                 <div class="radio">
+                     <label for="nl_opt-in">
+                         <input type="radio" value="optin" name="mode" checked="checked" id="nl_opt-in" class="nob"/>
+                         Order newsletter
+                     </label>
+                 </div>
+                 <div class="radio">
+                     <label for="nl_opt-out">
+                         <input type="radio" value="optout" name="mode" id="nl_opt-out" class="nob"/>
+                         Cancel newsletter
+                     </label>
+                 </div>
+                 <div class="text-right">
+                     <input type="submit" value="EINTRAGEN" class="btn btn-default"/>
+                 </div>
+             </div>
+         </div>
+
+     </form>
+</div>

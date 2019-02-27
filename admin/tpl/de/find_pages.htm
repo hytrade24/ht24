@@ -1,0 +1,33 @@
+<h1>Nicht benutzte Templates auffinden</h1>
+
+<p>Hier k&ouml;nnen Sie ggf. Dateien aus den template Verzeichnissen l&ouml;schen, 
+ welche nicht benutzt werden.</p>
+
+<div {if ROOT ==1}class="reiterAktiv"{else}class="reiterPassiv"{endif}>
+  <a href="index.php?page={curpagealias}&ROOT=1">Standard Navigation</a>
+</div>
+<div {if ROOT ==2}class="reiterAktiv"{else}class="reiterPassiv"{endif}>
+  <a href="index.php?page={curpagealias}&ROOT=2">Administrator Navigation</a>
+</div>
+<form method="post" action="index.php"> 
+<input type="hidden" name="page" value="{curpage}" />
+<table class="liste" cellspacing="0">
+	<tr>
+		<th>Auswahl</th>
+		<th>Dateiname</th>
+	</tr> 	
+	{if liste}
+		{liste}
+		<tr class="footer">
+			<td colspan="2" align="right">
+				<input type="submit" value="Ausgew&auml;hlte l&ouml;schen" class="button" onclick="return confirm('Wirklich alle löschen?');" />
+			</td>
+		</tr>
+	{else}
+		<tr>
+			<td colspan="2" class="error" align="center">Keine Dateien gefunden</td>
+		</tr>
+	{endif}	
+</table>
+</form>
+<p>&nbsp;</p>

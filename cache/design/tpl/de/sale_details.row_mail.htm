@@ -1,0 +1,8 @@
+<tr class="{if FK_USERID_FROM==ID_USER}zeile0{else}zeile1{endif} nohover">
+	<td style="font-weight: bold;"  width="80px">
+		{todate(STAMP_CREATE,true)}
+	</td>
+	<td style="font-weight: bold;">
+		<a id="btn_{ID_MSG}" href="{uri_action(my-read-msg,{ID_CHAT})}#last">{htm(SUBJECT)}</a>
+	</td>
+</tr>

@@ -1,0 +1,5 @@
+{if is_current}
+          <td><img title="aktuelle Sprache: {htm(LABEL)}" class="langAktiv" src="../gfx/lang.{ABBR}.a.gif" alt="aktuelle Sprache: {htm(LABEL)}" width="16" height="10" />&nbsp;&nbsp;&nbsp;</td>
+{else}
+          <td title="Texte in {htm(LABEL)} bearbeiten"><a href="{curref()}lang={ABBR}"><img title="Texte in {htm(LABEL)} bearbeiten" src="../gfx/lang.{ABBR}.gif" class="lang" alt="Texte in {htm(LABEL)} bearbeiten" width="16" height="10" border="0" /></a>&nbsp;&nbsp;&nbsp;</td>
+{endif}

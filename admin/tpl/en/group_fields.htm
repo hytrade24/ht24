@@ -1,0 +1,89 @@
+<script type="text/javascript" src="{uri_baseurl(/lib/prototype.js)}"></script>
+<script type="text/javascript" src="sys/popup/popup.js"></script>
+<link rel="stylesheet" href="sys/popup/popup.css" />
+
+<script type="text/javascript">
+	function contentUpdate(ajax_url, chElement, meth)
+	{
+		if(!meth)
+		  meth = 'get';
+	  
+		req = new Ajax.Request(ajax_url, 
+		  {
+			  method: meth,
+				onCreate: function()
+				{					
+					//$(chElement).update('<p style="font-weight:bold;">Bitte warten ...</p>');
+				}, // create()
+				onSuccess: function(transport)
+				{
+					var write_in = $(chElement);
+					write_in.update(transport.responseText);
+				} // success
+		  } // ajax obj.
+		); // new Ajax
+	} // contentUpdate()
+
+	var myPopup = new JSpopup({ width: 800, height: 480});
+	var table = '{table}';
+	var id_table = {ID_TABLE_DEF};
+	var id_field = false;
+	
+	function save_group()
+	{
+		g_form = $('fgroup');
+		g_form.request({
+			method: 'post',
+			onSuccess: function(transport)
+			{
+				$('FGROUP').update(transport.responseText);
+			}
+		});
+	}
+</script>
+
+<h1>Felder gruppieren f&uuml;r Tabelle {htm(T_NAME)}</h1>
+
+<div class="reiterPassiv">
+	<a href="index.php?page=table_edit&table={ID_TABLE_DEF}" title="Felder bearbeiten">Felder bearbeiten</a>
+</div>
+<div class="reiterAktiv">
+	<a href="index.php?page=group_fields&table={ID_TABLE_DEF}" title="Felder gruppieren">Felder gruppieren</a>
+</div>
+<p style="clear:left;"></p>
+<table>
+	<tr>
+		<td valign="top">
+			{if liste}
+				<table class="liste" cellspacing="0">
+					<tr>
+						<th>&nbsp;</th>
+						<th>Gruppenname</th>
+						<th>Felder</th>
+					</tr>
+					{liste}
+				</table>
+			{else}
+				<p class="error">Keine Gruppen vorhanden</p>
+			{endif}
+		</td>
+		<td valign="top" style="padding-left:15px;">
+			<a id="NEW_GROUP" title="Hier klicken um eine neue Gruppe zu erzeugen" style="cursor:pointer;">
+				NEUE GRUPPE ANLEGEN
+			</a>
+			<script type="text/javascript">
+			      myPopup.add(
+			      {
+			          url: "index.php?page=field_group_edit&frame=ajax&F_NAME={F_NAME}&table={ID_TABLE_DEF}", 
+			          title: "Neue Feld-Gruppe anlegen", //optional
+			          target: "NEW_GROUP", //pflicht
+	              	id: "NF",
+					onClose: function()
+					{
+						window.location.reload();
+					}
+			        });
+			</script>
+		</td>
+	</tr>
+</table>

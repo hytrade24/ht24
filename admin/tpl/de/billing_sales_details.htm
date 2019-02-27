@@ -1,0 +1,168 @@
+<style type="text/css">
+
+input {
+    width: 180px;
+}
+
+input[type=checkbox] {
+    width: auto;
+}
+
+input.input-mini {
+    width: 84px;
+}
+
+</style>
+<script type="application/javascript">
+
+function CheckChangeAll(checkbox) {
+    var checked = jQuery(checkbox).prop("checked");
+    jQuery("#tableSalesInvoices input[type=checkbox]").prop("checked", checked);
+    UpdateProvSum();
+}
+
+function UpdateProvSum() {
+    var provisionSum = 0;
+    jQuery("#tableSalesInvoices input[data-prov][type=checkbox]:checked").each(function() {
+        provisionSum += parseFloat( jQuery(this).attr("data-prov") );
+    });
+    jQuery("#salesProvisionSelected").html(provisionSum.toFixed(2));
+    var provisionTax = parseFloat( jQuery("#salesProvisionSelectedBrutto").attr("data-tax") );
+    jQuery("#salesProvisionSelectedBrutto").html( (provisionSum * provisionTax).toFixed(2) );
+}
+
+</script>
+<h1>Vertrieb</h1>
+
+<p>
+    Hier erhalten Sie eine Übersicht über alle Geworbenen Kunden dieses Vertrieblers.
+</p>
+<p>
+    <a href="index.php?lang=de&page=billing_sales">Zurück zur Übersicht</a>
+</p>
+
+<h3>Vertriebler '{htm(SALES_NAME)}' - Benutzerdetails</h3>
+
+<p>
+    {if SALES_FIRMA}{htm(SALES_FIRMA)}<br />{endif}
+    {if SALES_VORNAME || SALES_NACHNAME}{htm(SALES_VORNAME)} {htm(SALES_NACHNAME)}<br />{endif}
+    {if SALES_STRASSE}{htm(SALES_STRASSE)}<br />{endif}
+    {if SALES_ORT || SALES_PLZ}{htm(SALES_PLZ)} {htm(SALES_ORT)}<br />{endif}
+</p>
+<p>
+    {if SALES_TEL}<strong>Tel:</strong> {htm(SALES_TEL)}<br />{endif}
+    {if SALES_FAX}<strong>Fax:</strong> {htm(SALES_FAX)}<br />{endif}
+    {if SALES_EMAIL}<strong>E-Mail:</strong> {htm(SALES_EMAIL)}<br />{endif}
+</p>
+
+<h3>Umsatz-Statistik</h3>
+
+<iframe id="katframe" src="index.php?frame=iframe&page=stats&show=sales&w=660&ID_USER={SALES_ID_USER}&range=month" width="660" height="300" frameborder="0"></iframe>
+
+<h3>Umsätze</h3>
+
+<form id="formSalesInvoices" method="post">
+    <table class="formTable">
+        <tr>
+            <th>Name/Firma</th>
+            <td>
+                <input type="text" name="SEARCH[NAME]" value="{htm(SEARCH_NAME)}" />
+            </td>
+            <th>Sortierung</th>
+            <td>
+                <select name="SEARCH[SORT]">
+                    <option value="STAMP_PAY+ASC"{if SEARCH_SORT_STAMP_PAY_ASC} selected{endif}>Bezahlt am (Älteste zuerst)</option>
+                    <option value="STAMP_PAY+DESC"{if SEARCH_SORT_STAMP_PAY_DESC} selected{endif}>Bezahlt am (Neuste zuerst)</option>
+                    <option value="FK_BILLING_INVOICE+ASC"{if SEARCH_SORT_FK_BILLING_INVOICE_ASC} selected{endif}>Rechnungs-Nr (Kleinste zuerst)</option>
+                    <option value="FK_BILLING_INVOICE+DESC"{if SEARCH_SORT_FK_BILLING_INVOICE_DESC} selected{endif}>Rechnungs-Nr (Größte zuerst)</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Ausgezahlt</th>
+            <td>
+                <select name="SEARCH[BILLED]">
+                    <option value="">Alle anzeigen</option>
+                    <option value="0"{if SEARCH_BILLED_0} selected="selected"{endif}>Nur nicht ausgezahlte</option>
+                    <option value="1"{if SEARCH_BILLED_1} selected="selected"{endif}>Nur ausgezahlte</option>
+                </select>
+            </td>
+            <th>Bezahlt am</th>
+            <td>
+                <input type="date" class="input-mini" name="SEARCH[STAMP_PAID_MIN]" value="{htm(SEARCH_STAMP_PAID_MIN)}" />
+                bis
+                <input type="date" class="input-mini" name="SEARCH[STAMP_PAID_MAX]" value="{htm(SEARCH_STAMP_PAID_MAX)}" />
+            </td>
+        </tr>
+        <tr class="footer">
+            <td colspan="4" style="text-align: right;">
+                <button>Suchen</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<br />
+{if DONE}
+<p class="ok">
+    {if DONE_STATUS}<strong>Status erfolgreich geändert.</strong>{endif}
+</p>
+{endif}
+
+<form method="post">
+    <table id="tableSalesInvoices" class="liste" cellspacing="0">
+        <thead>
+        <tr>
+            <th>
+                <input type="checkbox" onchange="CheckChangeAll(this);" />
+            </th>
+            <th>Benutzer</th>
+            <th>Rechnung bezahlt am</th>
+            <th>Rechnungs-Nr</th>
+            <th>
+                Rechnungs-Betrag<br />
+                (Netto)
+            </th>
+            <th>
+                Provision<br />
+                (Netto)
+            </th>
+            <th>Ausgezahlt?</th>
+        </tr>
+        </thead>
+        <tbody>
+        {if liste}
+        {liste}
+        {else}
+        <tr>
+            <td colspan="6" class="text-error">
+                Keine passendenen Umsätze gefunden.
+            </td>
+        </tr>
+        {endif}
+        </tbody>
+    </table>
+
+    <p>
+        {pager}
+    </p>
+
+    <p>
+        <p>
+            Die aktuell ausgewählten Umsätze ergeben eine Provision in höhe von
+            <strong>
+                <span id="salesProvisionSelected">0.00</span> {CURRENCY_DEFAULT} Netto
+                /
+                <span id="salesProvisionSelectedBrutto" data-tax="{TAX}">0.00</span> {CURRENCY_DEFAULT} Brutto
+            </strong>
+        </p>
+        <strong>
+            Status für Ausgewählte Umsätze ändern:
+        </strong>
+        <select name="SET_BILLED">
+            <option value="1">Ausgezahlt</option>
+            <option value="0">Nicht ausgezahlt</option>
+        </select>
+        <button>Ändern</button>
+    </p>
+</form>

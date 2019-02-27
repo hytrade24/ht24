@@ -1,0 +1,189 @@
+<h1>Script bearbeiten</h1>
+<p>Hier k&ouml;nnen Sie das Script bearbeiten, ver&auml;ndern und freischalten</p>
+<table>
+ <tr>
+  <td valign="top" style="width:760px;">
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="{curpage}" />
+ <input type="hidden" name="ID_SCRIPT_WORK" value="{ID_SCRIPT_WORK}" />
+ <input type="hidden" name="FK_KAT" value="{FK_KAT}" id="fkkat" />
+ <input type="hidden" name="what" value="script"> 
+
+<!-- JS -->
+<script src="{uri_baseurl(/sys/ajax/JsHttpRequest.js)}"></script>
+<script src="{uri_baseurl(/sys/ajax/kernel.js)}"></script>
+
+<script type="text/javascript">
+ function ajaxOnOk()
+ {
+   alert('voller Erfolg');
+ }
+ 
+ onload = function()
+ {
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax{if FK_KAT}&ID_KAT={FK_KAT}{endif}',0,false,'kat_ajax');
+ };
+
+ function kat_auswahl(kat)
+ {
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax&ID_KAT='+kat+'&table=script',0,false,'kat_ajax');
+   if(kat)
+    document.getElementById('fkkat').value = kat;
+ } // kat_auswahl()
+ 
+ function blender(part)
+ {
+   div = document.getElementById(part);
+   neu = 'block';
+   if(div.style.display != 'none')
+     neu = 'none';
+   div.style.display = neu;
+ } //
+ 
+ function openAll()
+ {
+   for(i=0; i<ausblenden.length; i++)
+   {
+     dname = ausblenden[i];
+	 //alert(dname);
+	 div = document.getElementById(dname);
+	 div.style.display='block';
+   }
+ } // openAll
+  
+</script>
+
+{if err}
+ <h2 class="error">Fehler aufgetreten!</h2><p class="error">{err}</p>
+{endif}
+{if SAVED}
+ <h2 class="ok">Ihr Script wurde gespeichert!</h2>
+{endif}
+<input type="hidden" class="nob" name="OK[]" value="0" />
+<table class="formTable" cellspacing="0" width="100%">
+ <tr>
+  <th>Online Version</th>
+  <td colspan="3">{if ONLINE == 3}<a href="{uri_baseurl(/scripte/script,{ID_SCRIPT_WORK}.htm)}" target="_blank">In &ouml;ffentlicher Ansicht ansehen</a>
+   {else}<span class="error">Nicht &ouml;ffentlich sichtbar!</span>{endif}</td>
+ </tr>
+ <tr>
+  <th>User</th>
+  <td><a onclick="popupfkt('user_edit&ID_USER={FK_USER}',700,400);" style="cursor:pointer;" title="user bearbeiten">{htm(UNAME)}</a>
+ </tr>
+ <tr>
+  <th>Freigabe</th>
+ 
+  <td><input type="checkbox" class="nob" name="OK[]" {if OK&1}checked {endif}value="1"  /> User 
+   <input type="checkbox" class="nob" name="OK[]" {if OK&2}checked {endif}value="2" /> Admin  </td>  
+  <th colspan="2">Kategorie</th>
+  </tr>
+ <tr>
+   <th>Script als bezahlt markieren</th>
+   <td><input type="checkbox" value="1" name="PAID" class="nob" {if PAID} checked{endif} /></td>
+   <td colspan="2" rowspan="5" valign="top">
+    <div id="kat_ajax" style="width:200px; height:140px; overflow:auto;">Bitte warten - die Kategorien werden geladen ...</div>   </td>
+   </tr>
+ <tr>
+   <th>Script ist kostenpflichtig?</th>
+   <td><input type="radio" value="1" name="KOSTEN" class="nob" {if kosten == 1} checked{endif} />
+kostenpflichtig
+  <input type="radio" value="2" name="KOSTEN" class="nob" {if kosten == 2} checked{endif} />
+kostenlos </td>
+   </tr>
+ <tr>
+   <th>Name des Scripts</th>
+   <td><input type="text" name="V1" value="{htm(V1)}" size="50" /></td>
+   </tr>
+ <tr>
+   <th>Link zur Homepage </th>
+   <td><input type="text" name="LINK_DSC" value="{htm(LINK_DSC)}" size="50" />
+     - <a href="{LINK_DSC}" target="_blank">Link aufrufen</a></td>
+   </tr>
+ <tr>
+   <th>Direkter Download </th>
+   <td><input type="text" name="LINK_DL" value="{htm(LINK_DL)}" size="50" />
+     {if LINK_DL} - <a href="{LINK_DL}" target="_blank">Link aufrufen</a>{endif}</td>
+   </tr>
+{if VKAT}
+ <tr>
+   <td colspan="4"><span class="error">{htm(UNAME)} hat eine neue Kategorie vorgeschlagen!</span></td>
+   </tr>
+
+ <tr>
+   <th>Name der Kategorie</th>
+   <td><span style="font-weight:bold">{htm(VKAT)} <a target="_blank" href="index.php?page=scriptkats&amp;ID_TREE_SCRIPT={FK_KAT}&amp;V1={htm(VKAT)}" title="Im neuen Fenster Kategorie anlegen">=&gt; Diese Kategorie anlegen</a></span></td>
+   <th>&nbsp;</th>
+   <td>&nbsp;</td>
+ </tr> 
+
+ <tr>
+   <th>Vorschlag verwerfen</th>
+   <td><input type="checkbox" name="KILL_VKAT" value="1" class="nob" {if kill_vkat} checked{endif} /></td>
+   <th>&nbsp;</th>
+   <td>&nbsp;</td>
+ </tr>
+{endif}   
+ <tr class="footer">
+   <td colspan="4" align="right"><input type="submit" value="Speichern" class="button" /></td>
+ </tr>
+ <tr>
+   <td colspan="4"><h3>Kurzbeschreibung</h3></td>
+   </tr>
+ <tr>
+   <td colspan="4"><textarea name="V2" rows="4" cols="70">{htm(V2)}</textarea></td>
+   </tr>
+ <tr>
+   <td colspan="4"><h3>Vollst&auml;ndige Beschreibung</h3></td>
+   </tr>
+ <tr>
+   <td colspan="4">{editor(T1,100%, 400)}</td>
+   </tr>
+ <tr>
+   <td colspan="4"><h3>Bilder</h3></td>
+   </tr>
+ <tr>
+   <td colspan="4"><ul style="margin:0px;padding:0px;list-style-type:none;">
+    {bilder}
+   </ul></td>
+   </tr>
+ <tr class="footer">
+   <td colspan="4" align="right"><input type="submit" value="Speichern" class="button" /></td>
+ </tr>
+</table>
+<p>&nbsp;</p>
+
+</div>
+</form> 
+  </td>
+  <td valign="top">
+   <h2>Statistik &amp; User</h2>
+   <table cellspacing="0" class="formTable">
+    <tr>
+	 <th>Eingestellt</th>
+	 <td>{todate(STAMP)}</td>
+	</tr>
+    <tr>
+	 <th>Ge&auml;ndert</th>
+	 <td {if NEW}class="error"{endif}>{todate(STAMP_UPDATE)}</td>
+	</tr>
+	<tr>
+	 <th>Views (gesamt)</th>
+	 <td align="right">{VIEWS}</td>
+	</tr>	
+	<tr>
+	 <th>Klicks (gesamt)</th>
+	 <td align="right">{CLICKS}</td>
+	</tr>		
+   </table>
+   {if user_liste}
+    <table class="liste" cellspacing="0">
+	 <tr>
+	  <th>Weitere Scripte von {htm(UNAME)}</th>
+	 </tr>
+	 {user_liste}
+	</table>
+   {endif}
+
+  </td>
+ </tr>
+</table>

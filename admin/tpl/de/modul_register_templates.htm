@@ -1,0 +1,59 @@
+<h1>Templates des Registrierungs Moduls</h1>
+<table border="0" width="100%" >
+	<tr>
+		<td valign="top" width="50%">
+		
+		
+		
+		
+		
+		
+{if liste}<h2>Ihre bereits zugeordneten Seiten</h2>
+<p>Auf diesen Seiten erscheint das ausgewählte Modul!</p>
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktionen</th>
+  <th>Ansicht zugeordnete Seite</th>
+ </tr>
+{liste}
+</table>
+{endif}
+<h2>Aussehen der Bausteine</h2>
+{if templates}
+<p>Diese Templates beschreiben das Aussehen der einzelnen Bausteine des Moduls.</p>
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Edit</th>
+  <th>Name &amp; Beschreibung</th>
+ </tr>
+{templates}
+</table>
+{else}
+<h3 class="error">Modul templates nicht gefunden!</h3>
+{endif}
+
+
+
+
+
+</td>
+		<td valign="top" width="50%">
+		{subtpl(tpl/de/modul_templates_warning.htm)}
+		
+		
+		<h2><strong>Weitere Links zum Registrierungs Modul </strong></h2>
+<table cellspacing="2" cellpadding="2" border="0">
+
+<tr>
+    <td><img src="gfx/neu_32.gif" width="32" height="32" alt="neue Seite erstellen" border="0"></td>
+    <td><a href="#" onclick="popupfkt('page_edit&setroot=1&FK_MODUL={IDM}','700','480');" title="Neue Registrierungs Seite erstellen"><b>Neue Seite mit diesem Modul erstellen</b></a>
+    <br>
+    Erstellen Sie eine neue Seite mit dem Registrierungs Modul</td>
+</tr>
+</table>
+		
+		
+		
+		</td>
+	</tr>
+</table>

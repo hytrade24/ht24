@@ -1,0 +1,8 @@
+<?php
+
+
+echo "TEST";
+
+
+
+die();

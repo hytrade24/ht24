@@ -1,0 +1,8 @@
+<li class="{if is_inpath}active {endif}{if is_current} current{endif}{if sub}hasSubmenu {endif}">
+ <a title="{if V2}{htm(V2)}{else}{htm(V1)}{endif}" href="{href}">{htm(LABEL)}</a>
+ {if sub}
+ <ul class="nav2">
+  {sub}
+ </ul>
+ {endif}  
+</li>

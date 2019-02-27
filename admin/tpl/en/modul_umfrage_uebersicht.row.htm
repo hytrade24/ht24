@@ -1,0 +1,6 @@
+<tr class="zeile{even}">
+  <td></a>&nbsp;<a href="index.php?page=modul_umfrage_edit&ID_POLL_QUESTIONS={ID_POLL_QUESTIONS}" title="Umfrage editieren"><img src="gfx/btn.edit.gif" width="32" height="16" alt="" border="0"></a>&nbsp;<a href="index.php?page=modul_umfrage_uebersicht&del={ID_POLL_QUESTIONS}" title="Diese Umfrage l&ouml;schen" onClick="return confirm('Die Umfrage endgültig löschen?');"><img src="gfx/btn.del.gif" width="32" height="16"></a>&nbsp;<a href="index.php?page=modul_umfrage_uebersicht&active={if AKTIV}0{else}1{endif}&poll={ID_POLL_QUESTIONS}" title="{if AKTIV}Inaktiv{else}Aktiv{endif} schalten." class="mv"><img src="gfx/poll.{if !AKTIV}in{endif}active{even}.gif" width="16" height="16" alt="" border="0"></a></td>
+  <td><a href="index.php?page=modul_umfrage_details&ID_POLL_QUESTIONS={ID_POLL_QUESTIONS}" title="Details zu '{htm(V1)}'">{V1}</a></td>
+	<td>{SUMME}</td>
+  <td>{todate(DATUM)}</td>
+</tr>

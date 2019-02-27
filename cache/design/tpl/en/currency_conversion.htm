@@ -1,0 +1,28 @@
+{if liste}
+<script type="text/javascript" src="{uri_resource(lib/jquery.cookie/jquery.cookie.js)}"></script>
+<script type="text/javascript">
+
+function updateCurrencyConversion(input) {
+    var currencyDiv = jQuery(input).closest(".currencyConversion");
+    var currencyOption = jQuery(input).find("option:selected");
+    var currencyValue = parseFloat( currencyDiv.attr("data-value") );
+    var currencyRate = parseFloat( currencyOption.attr("data-ratio").replace(",", "\.") );
+    var currencySymbol = currencyOption.attr("data-symbol");
+    var currencyValueConverted = Math.round( currencyValue * currencyRate * 100 ) / 100;
+    currencyDiv.find(".currencyConversionResult").html( currencyValueConverted.toFixed(2) );
+    // Save selected currency to cookie
+    jQuery.cookie('currencyConversion', currencyOption.attr("data-id"));
+}
+
+</script>
+<div class="currencyConversion" data-value="{topreis(PRICE)}">
+    Convert currency:<br />
+    <div>
+        <span class="currencyConversionLead">ca.</span>
+        <span class="currencyConversionResult">{topreis_ex(CONVERTED_VALUE)}</span>
+        <select class="input-mini" onchange="updateCurrencyConversion(this);">
+            {liste}
+        </select>
+    </div>
+</div>
+{endif}

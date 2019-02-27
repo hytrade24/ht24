@@ -1,0 +1,9 @@
+<tr class="zeile{even}">
+ <td>{if !SYSTEM}<a href="index.php?page=bildformat_edit&ID_BILDFORMAT={ID_BILDFORMAT}" title="Bearbeiten">
+ <img src="gfx/btn.edit.gif" width="32" height="16"></a><a href="index.php?page=bildformate&del={ID_BILDFORMAT}"
+ onClick="return confirm('Wirklich löschen?')" title="löschen"><img src="gfx/btn.del.gif" width="32" height="16"></a>{else}<img src="gfx/achtung.gif" alt="Systemformat" />{endif}</td>
+ <td>{htm(LABEL)}</td>
+ <td>{if MAX_B}{MAX_B} Pixel{else}beliebig{endif} x {if MAX_H}{MAX_H} Pixel{else}beliebig{endif}</td>
+ <td>{if MAX_TB}{MAX_TB} x {MAX_TH} Pixel{else}wird nicht erzeugt{endif}</td>
+ <td>{if LU_RGBFARBE}{FARBE} :: <span style="background-color:rgb({WERT});border:1px #000 solid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{else}keine{endif}</td>
+</tr>

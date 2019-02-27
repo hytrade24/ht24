@@ -1,0 +1,16 @@
+<link href="{uri_resource(lib/jqTree/jqTree.css)}" rel="stylesheet">
+<link href="{uri_resource(lib/jqTreeSelect/jqTreeSelect.css)}" rel="stylesheet">
+<script src="{uri_resource(lib/jqTree/jqTree.js)}" type="application/javascript"></script>
+<script src="{uri_resource(lib/jqTreeSelect/jqTreeSelect.js)}" type="application/javascript"></script>
+
+<script>
+	jQuery(function() {
+		jQuery("#TMP_TREEESELECT_{TABLE_DEF}_{FIELD_NAME}_DEFAULTVALUE").jqTreeSelect({
+			ajaxUrl: '{uri_baseurl(index.php?page=my-import-presets-edit&DO=LOAD_CATEGORIES)}'
+		});
+	});
+</script>
+
+
+<div class="categoryDropdown" id="TMP_TREEESELECT_{TABLE_DEF}_{FIELD_NAME}_DEFAULTVALUE" data-name="DEFAULTVALUE[{TABLE_DEF}][{FIELD_NAME}]" data-defaultvalue="{htm(DEFAULT_VALUE)}"></div>
+<input type="button" class="btn btn-default" onclick="ipe.saveDefaultFieldValue('{FIELD_NAME}', '{TABLE_DEF}'); return false;" value="Speichern" id="TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_DEFAULTVALUE">

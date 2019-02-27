@@ -1,0 +1,70 @@
+	<tr class="zeile{even}">
+		<td class="first" nowrap="nowrap">
+			<a onclick="show_details({ID_AD_ORDER});" title="Details ein-/ausblenden">
+				<img alt="[Details]" src="{uri_baseurl(/gfx/btn.detail.gif)}" />
+			</a>
+		</td>
+		<td>
+				{ID_AD_ORDER}
+		</td>
+		<td>
+			{todate(STAMP_CREATE, 1)}
+		</td>
+		<td style="text-align: right">
+			{topreis(TOTAL_PRICE)} {CURRENCY_DEFAULT}
+		</td>
+		<td style="text-align: right">
+			{topreis(ORDER_PROV)} {CURRENCY_DEFAULT}
+		</td>
+		<td>
+			<a href="index.php?page=user_edit&ID_USER={FK_USER_VK}">
+				{htm(USER_VK_NAME)}
+			</a>
+		</td>
+		<td>
+			<a href="index.php?page=user_edit&ID_USER={FK_USER}">
+				{htm(USER_EK_NAME)}
+			</a>
+		</td>
+		<td nowrap="nowrap" align="center">
+			{if ORDER_CONFIRMATION_PARTIAL_OPEN}
+				<img src="gfx/sym_question.png" title="unbestätigt" width="20" height="20" alt="?" />
+			{else}
+				{if ORDER_CONFIRMED==1}
+					<img src="gfx/sym_check.png" title="bestätigt" width="20" height="20" alt="!" />
+				{endif}
+				{if ORDER_DECLINED==1}
+					<img src="gfx/sym_stop.png" title="abgelehnt" width="20" height="20" alt="!" />
+				{endif}
+			{endif}
+		</td>
+		<td nowrap="nowrap" align="center">
+		{if ORDER_CONFIRMED==1}
+			{if STATUS_PAYMENT==0}
+				offen
+			{endif}
+			{if STATUS_PAYMENT==2}
+				schwebend
+			{endif}
+			{if STATUS_PAYMENT==1}
+				erhalten
+			{endif}
+		{endif}
+		</td>
+		<td class="last" nowrap="nowrap" align="center">
+		{if ORDER_CONFIRMED==1}
+			{if STATUS_SHIPPING==0}
+				offen
+			{endif}
+			{if STATUS_SHIPPING==1}
+				in bearbeitung
+			{endif}
+			{if STATUS_SHIPPING==2}
+				versand
+			{endif}
+		{endif}
+		</td>
+	</tr>
+	<tr class="zeile{even}">
+		<td colspan="14" id="details_{ID_AD_ORDER}" style="display: none;"></td>
+	</tr>

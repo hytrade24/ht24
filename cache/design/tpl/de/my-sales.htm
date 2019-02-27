@@ -1,0 +1,145 @@
+<script type="application/javascript">
+
+function UpdateContactDate(button) {
+    var idUser = parseInt( jQuery(button).attr("data-user") );
+    jQuery.post("{uri_action(my-sales)}", { action: 'updateUser', idUser: idUser }, function(result) {
+        if (result.success) {
+            jQuery(button).parent(".popover-content").find(".contactDate").html(result.today);
+        }
+    });
+}
+
+jQuery(function() {
+    jQuery(".salesUserInfo").each(function() {
+        jQuery(this).popover({
+            html: true,
+            title: "Informationen",
+            content: jQuery(this).find("script").html()
+        });
+    });
+});
+
+</script>
+<h1>Vertrieb</h1>
+
+<p>
+    Hier erhalten Sie eine auflistung aller Benutzer die Sie geworben haben.
+</p>
+
+<form method="post">
+    <div class="design-content-box">
+        <div class="row design-sales-filter">
+            <div class="form-group design-sales-filter-name">
+                <label class="control-label">Name/Firma</label>
+                <div class="design-input-field">
+                    <input class="form-control" type="text" name="SEARCH[NAME]" value="{htm(SEARCH_NAME)}" />
+                </div>
+            </div>
+            <div class="form-group design-sales-filter-sort">
+                <label>Sortierung</label>
+                <div class="design-input-field">
+                    <select class="form-control" name="SEARCH[SORT]">
+                        <option value="STAMP_REG+ASC"{if SEARCH_SORT_STAMP_REG_ASC} selected{endif}>Reg. Datum (Älteste zuerst)</option>
+                        <option value="STAMP_REG+DESC"{if SEARCH_SORT_STAMP_REG_DESC} selected{endif}>Reg. Datum (Neuste zuerst)</option>
+                        <option value="STAMP_TURNOVER+ASC"{if SEARCH_SORT_STAMP_TURNOVER_ASC} selected{endif}>Letzter Umsatz (Älteste zuerst)</option>
+                        <option value="STAMP_TURNOVER+DESC"{if SEARCH_SORT_STAMP_TURNOVER_DESC} selected{endif}>Letzter Umsatz (Neuste zuerst)</option>
+                        <option value="TURNOVER+ASC"{if SEARCH_SORT_TURNOVER_ASC} selected{endif}>Umsatz (Geringster zuerst)</option>
+                        <option value="TURNOVER+DESC"{if SEARCH_SORT_TURNOVER_DESC} selected{endif}>Umsatz (Größter zuerst)</option>
+                        <option value="PROVISION+ASC"{if SEARCH_SORT_PROVISION_ASC} selected{endif}>Provision erhalten (Geringste zuerst)</option>
+                        <option value="PROVISION+DESC"{if SEARCH_SORT_PROVISION_DESC} selected{endif}>Provision erhalten (Höchste zuerst)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group design-sales-filter-membership">
+                <label class="control-label">Mitgliedschaft</label>
+                <div class="design-input-field">
+                    <select class="form-control" name="SEARCH[MEMBERSHIP]">
+                        <option>---</option>
+                        {options_membership}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group design-sales-filter-membership-status">
+                <label class="control-label">
+                    <span class="visible-lg">
+                        Mitgliedschafts-Status
+                    </span>
+                    <span class="hidden-lg">
+                        Status
+                    </span>
+                </label>
+                <div class="design-input-field">
+                    <select class="form-control" name="SEARCH[MEMBERSHIP_STATUS]">
+                        <option>---</option>
+                        <option value="1"{if SEARCH_MEMBERSHIP_STATUS_1} selected{endif}>Aktiv</option>
+                        <option value="0"{if SEARCH_MEMBERSHIP_STATUS_0} selected{endif}>Gekündigt</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group design-sales-filter-turnover">
+                <label class="control-label">Umsatz</label>
+                <div class="input-group design-input-field">
+                    <input type="text" class="form-control" name="SEARCH[TURNOVER_MIN]" value="{htm(SEARCH_TURNOVER_MIN)}" placeholder="{htm(CURRENCY_DEFAULT)}" />
+                    <div class="input-group-addon">bis</div>
+                    <input type="text" class="form-control" name="SEARCH[TURNOVER_MAX]" value="{htm(SEARCH_TURNOVER_MAX)}" placeholder="{htm(CURRENCY_DEFAULT)}" />
+                </div>
+            </div>
+            <div class="form-group design-sales-filter-provision">
+                <label class="control-label">Provision erhalten</label>
+                <div class="input-group design-input-field">
+                    <input type="text" class="form-control" name="SEARCH[PROVISION_MIN]" value="{htm(SEARCH_PROVISION_MIN)}" placeholder="{htm(CURRENCY_DEFAULT)}" />
+                    <div class="input-group-addon">bis</div>
+                    <input type="text" class="form-control" name="SEARCH[PROVISION_MAX]" value="{htm(SEARCH_PROVISION_MAX)}" placeholder="{htm(CURRENCY_DEFAULT)}" />
+                </div>
+            </div>
+            <div class="form-group design-sales-filter-last-contact">
+                <label class="control-label">Letzter Kontakt</label>
+                <div class="input-group design-input-field">
+                    <input type="date" class="form-control" name="SEARCH[LAST_CONTACT_MIN]" value="{htm(SEARCH_LAST_CONTACT_MIN)}" placeholder="tt.mm.yyyy" />
+                    <div class="input-group-addon">bis</div>
+                    <input type="date" class="form-control" name="SEARCH[LAST_CONTACT_MAX]" value="{htm(SEARCH_LAST_CONTACT_MAX)}" placeholder="tt.mm.yyyy" />
+                </div>
+            </div>
+            <div class="form-group design-sales-filter-submit">
+                <div class="design-input-notice text-right">
+                    <button clasS="btn btn-primary">Suchen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>Aktion</th>
+            <th>Benutzer</th>
+            <th>Reg. Datum</th>
+            <th>Letzter Umsatz</th>
+            <th>Umsatz</th>
+            <th>Provision</th>
+            <th>Mitgliedschaft</th>
+            <th>Status</th>
+            <th>Notiz</th>
+        </tr>
+    </thead>
+    <tbody>
+    {if liste}
+        {liste}
+    {else}
+        <tr>
+            <td colspan="9" class="text-error">
+                Sie haben bisher keine Benutzer geworben.
+            </td>
+        </tr>
+    {endif}
+    </tbody>
+</table>
+
+<p>
+    {pager}
+</p>
+
+<h3>Statistik</h3>
+
+<iframe src="{uri_baseurl(index.php)}?frame=stats&page=ui_stats&show=user_vertrieb&range=month" frameborder="0" style="width: 100%; height: 300px;"></iframe>

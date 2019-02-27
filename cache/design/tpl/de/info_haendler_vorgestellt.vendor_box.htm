@@ -1,0 +1,11 @@
+<div class="design-vendor-box">
+	<div class="design-vendor-box-logo text-center">
+		<a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{VENDOR_USER_ID})}" title="{htm(VENDOR_NAME)} ansehen">
+			{if VENDOR_LOGO}
+			<img src="{thumbnail(VENDOR_LOGO,230,170)}" data-watchlist="true" />
+			{else}
+			<img src="{uri_resource(/images/marketplace/nopic_vendor.jpg)}" />
+			{endif}
+		</a>
+	</div>
+</div>

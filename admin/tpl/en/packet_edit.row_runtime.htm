@@ -1,0 +1,40 @@
+
+					<tr>
+						<td>
+							<a onclick="RuntimeEdit({ID_PACKET_RUNTIME});" title="bearbeiten">
+								<img src="gfx/btn.edit.gif" />
+							</a>
+							{if i>0}
+							<a onclick="RuntimeDelete({ID_PACKET_RUNTIME});" title="löschen">
+								<img src="gfx/btn.del.gif" />
+							</a>
+							{endif}
+						</td>
+						<td>
+						{if CYCLE_ONCE}
+							---
+						{else}
+							{RUNTIME}
+							{if CYCLE_DAY}Tag(e){endif}
+							{if CYCLE_WEEK}Woche(n){endif}
+							{if CYCLE_MONTH}Monat(e){endif}
+							{if CYCLE_QUARTER}Quartal(e){endif}
+							{if CYCLE_YEAR}Jahr(e){endif}
+						{endif}
+						</td>
+						<td>
+						{if CYCLE_ONCE}
+							Einmalig
+						{else}
+							{BILLING_FACTOR}
+							{if CYCLE_DAY}Tag(e){endif}
+							{if CYCLE_WEEK}Woche(n){endif}
+							{if CYCLE_MONTH}Monat(e){endif}
+							{if CYCLE_QUARTER}Quartal(e){endif}
+							{if CYCLE_YEAR}Jahr(e){endif}
+						{endif}
+						</td>
+						<td>
+							{topreis(BILLING_PRICE)} {CURRENCY_DEFAULT}
+						</td>
+					</tr>

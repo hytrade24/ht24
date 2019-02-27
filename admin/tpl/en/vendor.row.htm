@@ -1,0 +1,25 @@
+<tr class="zeile{even} {if !STATUS}unapproved{endif}">
+    <td>
+        <a href="index.php?page=vendor_edit&ID_VENDOR={ID_VENDOR}">
+            <img src="gfx/btn.edit.gif" width="32" height="16" alt="Bearbeiten">
+        </a>
+        {if !STATUS}
+        <a onclick="return confirm('Soll der Anbieter aktiviert werden?')" href="index.php?page=vendor_edit&ajax=enable&ID_VENDOR={ID_VENDOR}">
+            <img border="0" src="gfx/ad_locked.png" alt="gesperrt">
+        </a>
+        {else}
+        <a onclick="return confirm('Soll der Anbieter deaktiviert werden?')" href="index.php?page=vendor_edit&ajax=disable&ID_VENDOR={ID_VENDOR}">
+            <img border="0" src="gfx/ad_unlocked.png" alt="freigeschaltet">
+        </a>
+        {endif}
+    </td>
+    <td>{ID_VENDOR}</td>
+    <td>{todate(CHANGED)}</td>
+    <td>
+        <a href="index.php?page=user_edit&ID_USER={USER_ID_USER}">{htm(USER_NAME)}</a>
+    </td>
+    <td>
+        {htm(VENDOR_FIRMA)}
+    </td>
+    <td>{htm(VENDOR_ORT)}</td>
+</tr>

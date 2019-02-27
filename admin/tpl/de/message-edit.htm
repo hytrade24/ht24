@@ -1,0 +1,25 @@
+<h1>{if ID_MESSAGE}Meldung bearbeiten{else}Neue Meldung anlegen{endif}</h1>
+<p>Nutzen Sie dieses Formular um Meldungen im System anzugelen, zu bearbeiten und zu &uuml;bersetzen!</p>
+<p>Der Ident ist eine eundeutige Kennung, anhand dessen der die Meldung passend &uuml;bersetzt
+	ausgegeben wird.<p/>
+<form method="post" action="index.php">
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th>Function<br />
+   <span style="font-weight:normal;">Bestehende Funktion ausw&auml;hlen oder neue anlegen</span></th>
+   <td valign="top"><select name0"FKT_SELECT" onchange="chFKT()">{liste_fkt}</select></td>
+   <td valign="top"><input type="text" name="FKT" value="{htm(FKT)}" size="35"></td>
+  </tr>
+  <tr>
+   <th>Ident</th>
+   <td colspan="2"><input type="text" name="ERR" value="{htm(ERR)}" size="35"></td>
+  </tr>
+  <tr>
+   <th valign="top">Meldungstext</th>
+   <td colspan="2"><textarea name="V1" rows="4" cols="55">{htm(V1)}</textarea></td>
+  </tr>
+  <tr class="footer">
+   <td colspan="3" align="right"><input type="submit" value="Speichern" class="button"></td>
+  </tr>
+ </table>
+</form>

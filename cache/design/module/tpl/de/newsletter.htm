@@ -1,0 +1,38 @@
+{if err}
+    <div class="alert alert-danger">
+        <h3>Es ist ein Fehler aufgetreten</h3>
+        {err}
+    </div>
+    {subtpl(module/tpl/de/newsletter_form.htm,*)}
+{endif}
+{if mode_order && !err}
+    <div class="alert alert-info">
+        <h3>
+            Wir haben Ihre Bestellung zu unserem Newsletter unter der E-Mail-Adresse '{EMAIL}' erhalten.
+        </h3>
+        
+        Sie erhalten in den nächsten Minuten eine E-Mail mit einem Link,
+            über den Sie Ihre Bestellung bestätigen können.<br>
+            Sollten Sie sich anders entscheiden, unterlassen Sie einfach die Bestätigung;
+            Ihre Bestellung wird dann nach einiger Zeit gelöscht.
+    </div>
+{endif}
+{if mode_confirm && !err}
+    <div class="alert alert-success">
+        <h3>
+            Vielen Dank für die Bestätigung Ihrer Newsletter-Bestellung.
+        </h3>
+        
+        Sie können sich über unser Portal jederzeit aus unserer Mailing-Liste austragen.
+        <br>
+    </div>
+{endif}
+{if mode_remove && !err}
+    <div class="alert alert-success">
+        <h3>
+            Ihre Adresse wurde aus unserer Mailing-Liste entfernt..
+        </h3>
+        
+        Sie können unseren Newsletter jederzeit wieder abonnieren.
+    </div>
+{endif}

@@ -1,0 +1,27 @@
+<tr class="zeile{even}">
+	<td>
+		<a title="details ansehen" href="index.php?page=sell_break&ID_AD_SOLD={ID_AD_SOLD}">
+			<img src="gfx/btn.edit.gif" width="32" height="16" alt="details" />
+		</a>
+	</td>
+	<td>{ID_AD_SOLD}</td>
+	<td>{todate(STAMP_STORNO)}</td>
+	<td>
+		<a href="{uri_baseurl(/marktplatz_anzeige,{FK_AD}.htm)}" title="Anzeige &ouml;ffnen" target="_blank">
+			{htm(PRODUKTNAME)}
+		</a>
+	</td>
+	<td>
+		<a title="Profil ansehen" href="index.php?page=user_edit&ID_USER={ID_SELLER}">
+			{htm(SELLER)}
+		</a>
+	</td>
+	<td align="right">
+		{topreis(PROV)} {CURRENCY_DEFAULT}
+	</td>
+	<td>
+		<a title="Profil ansehen" href="index.php?page=user_edit&ID_USER={ID_BUYER}">
+			{htm(BUYER)}
+		</a>
+	</td>
+</tr>

@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="sys/popup/popup.css" />
+<script type="text/javascript">
+  
+function vendorHomepageDecline(targetId) {
+  var reason = prompt("Aus welchem Grund möchten Sie diese Homepage/Domain ablehnen? (Wird dem Benutzer mitgeteilt)");
+  if (reason !== null) {
+    jQuery("#datatable-{dataTableHash}-table").dataTable("executeAction", "decline", [ targetId ], reason);
+  }
+}
+
+function vendorHomepageConfirm(targetId) {
+  if (confirm("Möchten Sie diese Homepage/Domain wirklich bestätigen?")) {
+    jQuery("#datatable-{dataTableHash}-table").dataTable("executeAction", "confirm", [ targetId ]);
+  }
+}
+
+function vendorHomepageDelete(targetId) {
+  if (confirm("Möchten Sie diese Homepage/Domain wirklich löschen?")) {
+    jQuery("#datatable-{dataTableHash}-table").dataTable("executeAction", "delete", [ targetId ]);
+  }
+}
+  
+</script>
+
+<h1>Domains / Homepages</h1>
+
+<p>
+  
+</p>
+
+{dataTable}
+
+<script src="{uri_resource(/lib/datatable/jqDataTable.js)}"></script>

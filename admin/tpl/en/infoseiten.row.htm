@@ -1,0 +1,11 @@
+ <tr class="zeile{even}">
+  <td><a href="index.php?page=infoseiten_edit&ID_INFOSEITE={ID_INFOSEITE}" title="Bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16" /></a>
+  {if !(B_SYS || inuse)}<a href="index.php?page={curpage}&delete={ID_INFOSEITE}&SHOWTYPE={SHOWTYPE}" onclick="return confirm('Wirklich löschen?')" title="L&ouml;schen">
+  <img src="gfx/btn.del.gif" width="32" height="16" /></a>{else}<img src="gfx/achtung.gif" width="16" height="16" />{endif}</td>
+  <td><a href="index.php?page=infoseiten&ID_INFOSEITE={ID_INFOSEITE}&from={TXTTYPE}" onclick="return confirm('TEXT-Art ändern?');">{TXTTYPE}</a> {if okID==ID_INFOSEITE}<br /><small>geändert</small>{endif}</td>
+  <td align="right">{if inuse}{inuse}x{endif}</td>
+  <td><a href="index.php?page=infoseiten_edit&ID_INFOSEITE={ID_INFOSEITE}" title="Bearbeiten">{htm(V1)}</a></td>
+  {if !SHOWTYPE}<td><input type="text" value="{CODE}" size="40" /></td>{endif}
+  <td align="right">{langs}</td>
+ </tr>
+

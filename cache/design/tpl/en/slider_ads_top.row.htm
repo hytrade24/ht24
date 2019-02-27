@@ -1,0 +1,7 @@
+		<div class="design-row-item">
+            {subtpl(tpl/{SYS_TPL_LANG}/marktplatz.row_box.htm,*)}
+		</div>
+	{if (liste_count > (i+1)) && (((i+1) % MAX_PER_PAGE)==0)}
+	</div>
+	<div class="item design-row design-row-md-{MAX_PER_PAGE}">
+	{endif}

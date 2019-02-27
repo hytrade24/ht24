@@ -1,0 +1,182 @@
+
+<script type="text/javascript" src="{uri_resource(lib/jqSortable/jqSortable.js)}"></script>
+<link rel="stylesheet" href="{uri_resource(lib/jqSortable/jqSortable.css)}" />
+
+<script type="text/javascript" src="{uri_baseurl(/lib/prototype.js)}"></script>
+<script type="text/javascript" src="sys/popup/popup.js"></script>
+<link rel="stylesheet" href="sys/popup/popup.css" />
+
+<script type="text/javascript">
+	function contentUpdate(ajax_url, chElement, meth)
+	{
+		if(!meth)
+		  meth = 'get';
+	  
+		req = new Ajax.Request(ajax_url, 
+		  {
+			  method: meth,
+				onCreate: function()
+				{					
+					//$(chElement).update('<p style="font-weight:bold;">Bitte warten ...</p>');
+				}, // create()
+				onSuccess: function(transport)
+				{
+					var write_in = $(chElement);
+					write_in.update(transport.responseText);
+				} // success
+		  } // ajax obj.
+		); // new Ajax
+	} // contentUpdate()
+
+	var myPopup = new JSpopup({ width: 800, height: 480});
+	var table = '{table}';
+	var id_table = {ID_TABLE_DEF};
+	var id_field = false;
+
+    function save_group()
+    {
+        g_form = $('fgroup');
+        g_form.request({
+            method: 'post',
+            onSuccess: function(transport)
+            {
+                $('FGROUP').update(transport.responseText);
+            }
+        });
+    }
+
+    function save_tab()
+    {
+        g_form = $('ftab');
+        g_form.request({
+            method: 'post',
+            onSuccess: function(transport)
+            {
+                $('FTAB').update(transport.responseText);
+            }
+        });
+    }
+
+    jQuery(function() {
+        jQuery("#sortableSearchGroups").sortable();
+    });
+</script>
+
+{if SHOW_GROUPS}
+<h1>Tabelle {htm(V1)} ({htm(T_NAME)}): Felder gruppieren</h1>
+<p>Hier können Sie die Felder, die Sie bereits definiert haben, zu einer Gruppe zusammenfassen.<br />Die Felder werden in der Eingabemaskte sowie in der Artikelansicht als EInheit dargestellt.</p>
+{subtpl(tpl/de/group_fields.nav.htm,*)}
+<div>
+    <div>
+        <table class="liste" cellspacing="0" style="min-width: 500px;">
+            <tr>
+                <th>&nbsp;</th>
+                <th>Gruppenname</th>
+                <th>Felder</th>
+                <th>Sortierung</th>
+            </tr>
+        {if liste}
+            {liste}
+        {else}
+            <tr>
+                <td colspan="4">
+                    <p class="error">Keine Feldgruppen vorhanden</p>
+                </td>
+            </tr>
+        {endif}
+        </table>
+    </div>
+    <div>
+        <p>Die Reihenfolge kann bei in der Gruppendefinition angegeben werden</p>
+        <a id="NEW_GROUP" title="Hier klicken um eine neue Gruppe zu erzeugen" class="button">
+            Feldgruppe anlegen
+        </a>
+        <script type="text/javascript">
+            myPopup.add(
+                    {
+                        url: "index.php?page=field_group_edit&frame=ajax&F_NAME={F_NAME}&table={ID_TABLE_DEF}",
+                        title: "Neue Feld-Gruppe anlegen", //optional
+                        target: "NEW_GROUP", //pflicht
+                        id: "NF",
+                        onClose: function()
+                        {
+                            window.location.reload();
+                        }
+                    });
+        </script>
+    </div>
+</div>
+{endif}
+
+{if SHOW_SEARCH}
+<div>
+    <h1>Tabelle {htm(V1)} ({htm(T_NAME)}): Suchmaske Konfigurieren</h1>
+
+    <p>
+        Hier können Sie bestimmen welche Feldgruppen in der Suche dargestellt werden sollen und in welcher Reihenfolge.<br />
+        <b>Klicken</b> Sie auf den Namen (oder die Checkbox) <b>um einer Feldgruppe ein- oder auszublenden.</b><br />
+        <b>Halten Sie die Maustaste gedrückt um eine Feldgruppe zu verschieben.</b>
+    </p>
+
+    {subtpl(tpl/de/group_fields.nav.htm,*)}
+
+    <form method="post">
+        <input type="hidden" name="do" value="updateSearchGroups" />
+        <ul id="sortableSearchGroups" style="min-width: 500px; margin-top: 0;">
+            {liste_search_groups}
+        </ul>
+        <br />
+        <button type="submit">Änderung speichern</button>
+    </form>
+</div>
+{endif}
+
+{if SHOW_INPUT}
+<div>
+    <h1>Tabelle {htm(V1)} ({htm(T_NAME)}): Eingabe-Schritte definieren</h1>
+    <p>
+        Hier können Sie die zuvor definierten Feldgruppen in einzelne Schritte aufteilen.
+    </p>
+
+    {subtpl(tpl/de/group_fields.nav.htm,*)}
+
+    <div>
+        <table class="liste" cellspacing="0" style="min-width: 500px;">
+            <tr>
+                <th>&nbsp;</th>
+                <th>Schritt</th>
+                <th>Feldgruppen</th>
+                <th>Sortierung</th>
+            </tr>
+            {if liste_tabs}
+            {liste_tabs}
+            {else}
+            <tr>
+                <td colspan="4">
+                    <p class="error">Keine Eingabebereiche vorhanden</p>
+                </td>
+            </tr>
+            {endif}
+        </table>
+    </div>
+    <div>
+        <a id="NEW_TAB" title="Hier klicken um einen neuen Eingabe-Schritt zu erzeugen" class="button">
+            Eingabebereich anlegen
+        </a>
+        <p>Die Reihenfolge kann bei in der Gruppendefinition angegeben werden</p>
+        <script type="text/javascript">
+            myPopup.add(
+                    {
+                        url: "index.php?page=field_tab_edit&frame=ajax&F_NAME={F_NAME}&table={ID_TABLE_DEF}",
+                        title: "Neuen Eingabe-Schritt anlegen", //optional
+                        target: "NEW_TAB", //pflicht
+                        id: "NF",
+                        onClose: function()
+                        {
+                            window.location.reload();
+                        }
+                    });
+        </script>
+    </div>
+</div>
+{endif}

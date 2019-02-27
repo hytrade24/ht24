@@ -1,0 +1,45 @@
+<h1>{if !ID_KAT_OPTION}Neue Kategorie Option{else}Kategorie Option bearbeiten{endif}</h1>
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="{curpage}">
+ <input type="hidden" name="ID_KAT_OPTION" value="{ID_KAT_OPTION}">
+{if err || msg}
+<div class="hinweis">
+{if err}
+<span class="error">{err}</span>
+{else}
+<span class="ok">Speichervorgang erfolgreich</span>
+{endif}
+</div>
+{endif}
+<table class="formTable">
+ <tr>
+  <th style="text-align:left">Name</th>
+  <td><input type="text" name="V1" value="{V1}"></td>
+ </tr>
+ <tr>
+  <th style="text-align:left">Indent</th>
+  <td><input type="text" name="IDENT" value="{IDENT}" {if ID_KAT_OPTION && B_SYS}disabled{endif}></td>
+ </tr>
+ <tr>
+  <td colspan="2" class="notizSmall">Der IDENT dient der Erkennung im System. Er muss eindeutig sein, und ist nur in einer Sprache verf&uuml;gbar! </td>
+ </tr>
+ <tr>
+   <th valign="top" style="text-align:left">Zuordnung</th>
+   <td><select name="ROOT" {if B_SYS && ID_KAT_OPTION}disabled{endif}>
+   <option value="1" {if ROOT==1}selected{endif}>Anzeigen</option>
+   <option value="2" {if ROOT==2}selected{endif}>News</option>
+   </select></td>
+ </tr>
+ <tr>
+  <th valign="top" style="text-align:left">Beschreibung</th>
+  <td><textarea name="T1" cols="40" rows="5">{T1}</textarea></td>
+ </tr>
+ <tr class="footer">
+  <td colspan="2" align="right"><div style="float:left; padding-top:5px;">
+  <input type="checkbox" name="B_SYS" value="1" class="nob" {if B_SYS}checked {if ID_KAT_OPTION}disabled{endif}{endif}>
+  System*</div><input type="submit" value="Speichern" class="button">
+  </td>
+ </tr>
+</table>
+<div class="notizSmall">* Kann nicht wieder gel&ouml;scht werden</div>
+</form>

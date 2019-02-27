@@ -1,0 +1,21 @@
+<h1>Bewertungen<br />
+	
+</h1>
+<p>Ihre erhaltenen und vergebenen Bewertungen</p>
+<p>
+     Bitte bewerten Sie nach jedem Verkauf bzw Einkauf Ihren Gesch&auml;ftspartner. <br />
+    Bleiben Sie dabei stets fair!
+</p>
+<ul class="nav nav-tabs userTabsTable">
+	<li {if show_in}class="active"{endif}>
+		<a href="{uri_action(my-ratings,in)}">Erhaltene Bewertungen</a>
+	</li>
+	<li {if show_out}class="active"{endif}>
+		<a href="{uri_action(my-ratings,out)}">Abgegebene Bewertungen</a>
+	</li>
+</ul>
+
+{if show_in}{subtpl(tpl/{SYS_TPL_LANG}/my-ratings-in.htm)}{endif}
+{if show_out}{subtpl(tpl/{SYS_TPL_LANG}/my-ratings-out.htm)}{endif}
+
+

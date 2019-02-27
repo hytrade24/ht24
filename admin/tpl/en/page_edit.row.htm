@@ -1,0 +1,13 @@
+<tr>
+  <td width="19" height="17">111111111111<img src="gfx/path.{path1}.png" width="19" height="17" /></td>
+  <td width="19" height="17"><img src="gfx/path.{path2}.png" width="19" height="17" /></td>
+  <td>&nbsp;{htm(file)}&nbsp;</td>
+  <td>{if ID_TPLFILE}
+    <a href="{pageref(file_edit)}&ID_TPLFILE={ID_TPLFILE}"><img
+      src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0" /></a>{endif}{if b_put}
+    <a href="{curref()}do=put&ID_TPLFILE={ID_TPLFILE}"><img
+      src="gfx/btn.put.gif" width="16" height="16" alt="Datei ver&ouml;ffentlichen" border="0" />{endif}{if b_get}
+    <a href="{curref()}do=get&{if ID_TPLFILE}ID_TPLFILE={ID_TPLFILE}{else}file={url(file)}{endif}"><img
+      src="gfx/btn.get.gif" width="16" height="16" alt="Datei in DB importieren" border="0" /></a>{endif}
+  &nbsp;</td>
+</tr>

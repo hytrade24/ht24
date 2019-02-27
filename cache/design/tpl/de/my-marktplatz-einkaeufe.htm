@@ -1,0 +1,197 @@
+{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+<script>
+	function payOrder(orderId) {
+		ShowDialog("{uri_action(my-marktplatz-einkaeufe-action)}", "Bestellung bezahlen", "auto", "auto", {}, {
+			'type': "POST",
+			'data': { 'DO': 'PAY', 'ID_AD_ORDER': orderId }
+		});
+	}
+
+	function splitOrder(orderId) {
+		jQuery.ajax({
+			'url': '{uri_action(my-marktplatz-einkaeufe-action)}',
+			'type': "POST",
+			'data': { 'DO': 'SPLIT', 'ID_AD_ORDER': orderId },
+			'dataType': 'json',
+			'success': function(response) {
+				if(response.success) {
+					alert("Die Bestellung wurde erfolgreich geteilt. Alle z.Z. nicht bestätigten Artikeleinkäufe werden separat bearbeitet.");
+					location.reload();
+				}
+			}
+		});
+	}
+
+	function showSellerInformation(userId) {
+		ShowDialog("index.php?page=uprofil&SELLER_ID=" + userId + "&frame=ajax", "Verkäuferinformation");
+	}
+
+	function showPaymentInformation(orderId) {
+		ShowContentDialog(jQuery("#paymentInformation-" + orderId).html(), "Informationen zur Zahlung", "auto", "auto");
+	}
+	
+	function showAgb(itemId) {
+		ShowDialog("{uri_action(my-marktplatz-einkaeufe-action)}", "AGB anzeigen", "auto", "auto", {}, {
+			'type': "POST",
+			'data': { 'DO': 'SHOW_AGB', 'ID_AD_SOLD': itemId }
+		}, function(modal) {
+			var content = modal.find('#modalDialogContent').html();
+			if (content == "") {
+				modal.find('#modalDialogContent').html("Zu diesem Artikel wurden leider keine AGB hinterlegt.");
+			}
+		});
+	}
+	
+	function showWiderruf(itemId) {
+		ShowDialog("{uri_action(my-marktplatz-einkaeufe-action)}", "Widerrufs-/Rückgabebelehrung anzeigen", "auto", "auto", {}, {
+			'type': "POST",
+			'data': { 'DO': 'SHOW_WIDERRUF', 'ID_AD_SOLD': itemId }
+		}, function(modal) {
+			var content = modal.find('#modalDialogContent').html();
+			if (content == "") {
+				modal.find('#modalDialogContent').html("Zu diesem Artikel wurden leider keine Widerrufs-/Rückgabebelehrung hinterlegt.");
+			}
+		});
+	}
+
+    jQuery(function() {
+			// Datepicker im Suchformular
+			var stampFrom = jQuery("#STAMP_CREATE_FROM");
+			var stampTo = jQuery("#STAMP_CREATE_TO");
+			jQuery(".userSearchForm").datepicker({
+				clearBtn: true,
+				keepEmptyValues: true,
+				format: 'dd.mm.yyyy',
+				inputs: [ stampFrom, stampTo ]
+			});
+    });
+</script>
+
+<style type="text/css">
+	.highlight {
+		background-color: #FFFBCC !important;
+	}
+	.table thead tr {
+		background-color: #ccc !important;
+	}
+	.table tbody tr:nth-child(odd) {
+		background-color: #fff !important;
+	}
+	.table tbody tr:nth-child(even) {
+		background-color: #eee !important;
+	}
+</style>
+
+<h1>
+	Meine Eink&auml;ufe<br />
+	<span class="lead">
+		Von Ihnen gekaufte Artikel
+	</span>
+</h1>
+<p>
+	Hier finden Sie alle von Ihnen gekauften Artikel. Bei Kommunikation mit dem Verk&auml;ufer oder dem
+		Support bitte immer die Bestell-Nr. angeben.
+</p>
+
+<ul class="nav nav-tabs userAdsTabs">
+	<li {if show_open}class="active"{endif}>
+		<a href="{uri_action(my-marktplatz-einkaeufe)}">Meine Eink&auml;ufe</a>
+	</li>
+	<li {if show_done}class="active"{endif}>
+		<a href="{uri_action(my-marktplatz-einkaeufe,,,,show_done)}">Archivierte Eink&auml;ufe</a>
+	</li>
+	<li {if show_digital_downloads}class="active"{endif}>
+		<a href="{uri_action(my-marktplatz-einkaeufe,,,,show_digital_downloads)}">Meine Digital Eink&auml;ufe</a>
+	</li>
+</ul>
+
+	<form class="userSearchForm" method="get" action="{if show_done}{uri_action(my-marktplatz-einkaeufe,,,,show_done)}{else}{uri_action(my-marktplatz-einkaeufe)}{endif}">
+		<div class="design-content-box">
+			<h4><strong>Einkäufe suchen</strong></h4>
+
+			<div class="row">
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Bestell-Nr.</strong></label>
+                        <input type="text" name="ID_AD_ORDER" value="{ID_AD_ORDER}" class="form-control" />
+                    </div>
+				</div>
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Verkäufer</label>
+					    <input type="text" name="NAMESELLER" value="{NAMESELLER}" class="form-control" />
+                    </div>
+				</div>
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Datum von</label>
+												<input type="text" class="form-control" id="STAMP_CREATE_FROM" name="STAMP_CREATE_FROM" placeholder="Datum von" value="{todate(STAMP_CREATE_FROM)}" />
+                    </div>
+				</div>
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label class="control-label">Datum bis</label>
+												<input type="text" class="form-control" id="STAMP_CREATE_TO" name="STAMP_CREATE_TO" placeholder="Datum von" value="{todate(STAMP_CREATE_TO)}" />
+                    </div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+                    <div class="form-group">
+                        <label>Zahlung</label>
+                        <select name="SEARCH_ORDER_PAYMENT_STATUS" class="form-control">
+                            <option value="-1">-- alle --</option>
+                            <option value="0" {if SEARCH_ORDER_PAYMENT_STATUS == 0}selected="selected"{endif}>offen</option>
+                            <option value="1" {if SEARCH_ORDER_PAYMENT_STATUS == 1}selected="selected"{endif}>bezahlt</option>
+                        </select>
+                    </div>
+				</div>
+				<div class="col-xs-2 col-xs-offset-7 design-form-group-search">
+					<input type="submit" value="Suchen" class="btn btn-primary">
+				</div>
+			</div>
+			<br>
+		</div>
+	</form>
+
+{if COUNT_UNPAID_ORDERS}
+	<div class="alert alert-info">
+		Sie haben insgesamt <a href="{uri_action(my-marktplatz-einkaeufe)}?SEARCH_ORDER_PAYMENT_STATUS=0">
+			{COUNT_UNPAID_ORDERS} Einkäufe</a>, die noch nicht bezahlt wurden.
+
+	</div>
+{endif}
+
+{if orders}
+	{orders}
+
+	{pager}
+{else}
+	<div class="design-content-box">
+    {if show_open}
+		Sie haben keine aktuellen Einkäufe.
+    {else}
+        Sie haben keine archivierten Einkäufe.
+    {endif}
+	</div>
+{endif}
+
+<script type="application/javascript">
+
+    var get_vars = [];
+
+    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+        function decode(s) {
+            return decodeURIComponent(s.split("+").join(" "));
+        }
+
+        get_vars[decode(arguments[1])] = decode(arguments[2]);
+    });
+
+    if ( get_vars["highlight"] != undefined ) {
+        var id = get_vars["highlight"];
+
+        $("div.marketplaceOrder[data-id-order='"+id+"']").addClass('highlight');
+    }
+
+</script>

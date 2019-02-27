@@ -1,0 +1,46 @@
+  <tr class="zeile{even}">
+  	<td>
+  	  <a href="#A52" onclick="popupfkt('kommentar_view&id_comment={id_comment}&fk={FK}&table={table}', 700, 490)" title="Kommentar Ansehen">{htm(VORSCHAU)}</a>
+    </td>
+	  <td>
+      {if ID_NEWS}
+        <a target="_blank" href="{uri_baseurl(/news/news,{FK},{urllabel(ARTIKEL)}.htm)}" title="Artikel ansehen">ansehen</a>
+      {endif}
+      {if ID_TUTORIAL}
+        <a target="_blank" href="{uri_baseurl(/tutorials/tutorial,{FK},{urllabel(ARTIKEL)},1.htm)}" title="Tutorial ansehen">ansehen</a>
+      {endif}
+      {if ID_SCRIPT}
+        <a target="_blank" href="{uri_baseurl(/scripte/script,{FK},{urllabel(ARTIKEL)},1.htm)}" title="Script ansehen">ansehen</a>
+      {endif}
+      {if ID_KOMMENTAR_HANDBUCH}
+        <a target="_blank" href="{uri_baseurl(/handbuch/{htm(FK)}.htm)}" title="Handbuch ansehen">ansehen</a>
+      {endif}
+    </td>
+	  <td>{todate(STAMP,1)}</td>
+	  <td><a href="index.php?page=user_edit&ID_USER={FK_USER}" name="{USER}" id="b{NUMMER}">{USER}</a></td>
+	  {if ID_NEWS}
+      <td>
+        <a href="index.php?page=modul_news_adv_edit&ID_NEWS={FK}&npage=1">{htm(ARTIKEL)}</a>
+        <div id="pb{NUMMER}" class="preview">Bitte warten ...</div>
+      </td>
+    {endif}
+    {if ID_TUTORIAL}
+      <td>
+        <a href="index.php?page=modul_tutorial_edit&ID_TUTORIAL={FK}&npage=1">{htm(ARTIKEL)}</a>
+        <div id="pb{NUMMER}" class="preview">Bitte warten ...</div>
+      </td>
+    {endif}
+    {if ID_SCRIPT}
+      <td>
+        <a href="index.php?page=script_edit&ID_SCRIPT_WORK={FK}&npage=1">{htm(ARTIKEL)}</a>
+        <div id="pb{NUMMER}" class="preview">Bitte warten ...</div>
+      </td>
+    {endif}
+	  {if ID_KOMMENTAR_HANDBUCH}
+      <td>
+        <a href="{uri_baseurl(/handbuch/{FK}.htm)}" target="_blank" title="Zum Handbuch">Zum Handbuch ({htm(FK)})</a>
+        <div id="pb{NUMMER}" class="preview">Bitte warten ...</div>
+      </td>
+    {endif}
+  </tr>
+ 

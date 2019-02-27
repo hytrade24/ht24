@@ -1,0 +1,21 @@
+<tr class="zeile{even}">
+	<td>
+		<input type="checkbox" name="SELECT_MANUFACTURER[]" class="manSelectCheckbox" value="{ID_MAN}" {if IS_MAN_SELECTED}checked{endif} >
+	</td>
+	<td>
+        <a href="index.php?page=manufacturer_db_edit&ID_MAN={ID_MAN}"><img src="gfx/btn.edit.gif"></a>
+		<a href="index.php?page=manufacturer_db&SELECT_MANUFACTURER[]={ID_MAN}&DO_MASSDELETE=DELETE" onclick="return alert('ACHTUNG!! Möchten Sie den Hersteller wirklich löschen ? Alle Produkte zu diesem Hersteller werden ebenfalls entfernt. Dieser Schritt ist unwiderruflich.');"><img src="gfx/btn.rm.gif"></a>
+	</td>
+	<td>
+		<div class="hdb-product-status {if CONFIRMED}status-confirmed{else}status-unconfirmed{endif}" title="{if CONFIRMED}Produkt bestätigt{else}Produkt unbestätigt{endif}"></div>
+    </td>
+	<td>
+		{ID_MAN}
+	</td>
+    <td>
+        {NAME}
+    </td>
+    <td>
+        {URL}
+    </td>
+</tr>

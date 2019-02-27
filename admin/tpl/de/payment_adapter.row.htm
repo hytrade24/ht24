@@ -1,0 +1,15 @@
+<tr class="zeile{even}" >
+    <td>
+        <a href="index.php?page=payment_adapter_edit&ID_PAYMENT_ADAPTER={ID_PAYMENT_ADAPTER}" title="Adapter ansehen">
+            <img src="{uri_baseurl(/gfx/btn.edit.gif)}" alt="view" />
+        </a>
+		<a href="index.php?page=payment_adapter_edit&ID_PAYMENT_ADAPTER={ID_PAYMENT_ADAPTER}&action=delete" onclick="return confirm('Möchten Sie diesen Adapter wirklich löschen ?')" title="Adapter löschen">
+			<img src="gfx/btn.del.gif" alt="view" />
+		</a>
+    </td>
+    <td>{ID_PAYMENT_ADAPTER}</td>
+    <td>{ADAPTER_NAME}</td>
+    <td>{NAME}</td>
+	<td>{if STATUS}aktiv{else}inaktiv{endif}</td>
+	<td>{if STATUS_USER}aktiv{else}inaktiv{endif}</td>
+</tr>

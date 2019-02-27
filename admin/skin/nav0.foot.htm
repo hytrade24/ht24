@@ -1,0 +1,7 @@
+{if POS>1}
+&middot;
+{endif}
+{if is_current}
+<span class="isActive">{htm(LABEL)}</span>
+{else}
+<a href="index.php?{PAGE}">{htm(LABEL)}</a>{endif}

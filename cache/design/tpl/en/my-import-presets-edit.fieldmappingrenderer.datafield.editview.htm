@@ -1,0 +1,29 @@
+<tr class="">
+	<td>
+		{subtpl(tpl/{SYS_TPL_LANG}/my-import-presets-edit.fieldmappingrenderer.partial.buttons.htm,*)}
+	</td>
+	<td>
+		<b>Field assignment</b>
+	</td>
+	<td>
+		<div class="input-group">
+			<select class="form-control" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}]" onchange="ipe.saveMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', {POS}); return false;">
+				<option value="">Please choose</option>
+				{SELECT_DATAFIELD}
+			</select>
+	
+			{if FIELD_MAPPING_VALUE_IDENTIFIER != -1}
+				<span class="input-group-btn">
+					<a href="#" onclick="ipe.showDataFieldTable('{FIELD_MAPPING_VALUE_IDENTIFIER}'); return false;" class="btn btn-default"><i class="glyphicon glyphicon-list"></i></a>
+				</span>
+			{else}
+				<br>
+				<small>
+					Choose a column in your list from your CSV or XML file to fill the article-description with their
+						contained values
+
+				</small>
+			{endif}
+		</div>
+	</td>
+</tr>

@@ -1,0 +1,55 @@
+<tr class="zeile{even}">
+	<td>
+		{if !NO_CHANGE || ID_USER == 1}
+			{if IS_MASTER && ID_TABLE_DEF != 1}
+				<span class="ok">Masterfeld</span>
+				<input type="hidden" value="1" name="FELD[{Field}]" />
+			{else}
+				<a style="cursor:pointer" id="EDIT_{ID_FIELD_DEF}" title="Feld bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16" alt="edit" /></a>
+				<script type="text/javascript">
+			      myPopup.add(
+			      {
+			          url: "index.php?page=field_edit&frame=ajax&F_NAME={F_NAME}&table="+table, 
+			          title: "Tabellenfeld verändern", //optional
+			          target: "EDIT_{ID_FIELD_DEF}", //pflicht
+	              		id: "NF",
+						onLoad: function()
+					  	{
+							vonbis($('ftypen').value);
+						}
+			        });
+			    </script>
+
+                <a style="cursor:pointer" id="DELETE_{ID_FIELD_DEF}" href="index.php?page=field_delete&F_NAME={F_NAME}&table={table}" title="Feld löschen" class="DELETE_FIELD"><img src="gfx/btn.del.gif" width="32" height="16" alt="del" /></a>
+			{endif}
+		{else}
+			<span class="error">x</span>
+		{endif}
+		<div id="debug"></div>
+	</td>
+	<td>
+        <input type="checkbox" name="ENABLED[{ID_FIELD_DEF}]" value="1" {if B_ENABLED} checked="checked"{endif}/>    
+	</td>
+	<td>
+		{htm(V1)}
+	</td>
+	<td>{htm(F_TYP)}</td>
+	<td>{htm(FIELD_GROUP)}</td>
+	<td><a title="{F_DEC_INTERN}">{htm(Field)}</a></td>
+    <td><span class="notizSmall">{htm(F_DEC_INTERN)}</span></td>
+	<td align="center">
+		{if !is_first}
+			<a style="font-weight:bold;" href="index.php?page={curpage}&order=up&id={ID_FIELD_DEF}&table={FK_TABLE_DEF}" title="Position nach untenverschieben">
+				&uarr;
+			</a> 
+		{endif}
+		{if !is_last}
+			<a style="font-weight:bold;" href="index.php?page={curpage}&order=down&id={ID_FIELD_DEF}&table={FK_TABLE_DEF}" title="Position nach oben verschieben">
+				&darr;
+			</a>
+		{endif}
+	</td>
+	<td>
+		<input tabindex="100{F_ORDER}" type="text" name="ORDERS[{ID_FIELD_DEF}]" value="{htm(F_ORDER)}" class="input-mini" title="Reihenfolge angeben" />
+	</td>
+</tr>

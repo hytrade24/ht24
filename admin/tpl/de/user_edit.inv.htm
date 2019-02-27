@@ -1,0 +1,29 @@
+<tr>
+	<td>
+        <a href="index.php?page=invoice_view&ID_BILLING_INVOICE={ID_BILLING_INVOICE}" title="Rechnung ansehen">
+            <img src="{uri_baseurl(/gfx/btn.detail.gif)}" alt="view" />
+        </a>
+	</td>
+	<td style="font-weight:normal">
+		{ID_BILLING_INVOICE}
+	</td>
+	<td style="font-weight:normal">
+		{todate(STAMP_CREATE)}
+	</td>	
+	<td>
+        {if STATUS == 0}<span class="error">unbezahlt</span>{endif}
+        {if STATUS == 1}<span class="ok">bezahlt</span>{endif}
+        {if STATUS == 2}<span>storniert</span> {endif}
+	</td>
+	<td align="right" style="font-weight:normal">
+		{topreis(TOTAL_PRICE)} {CURRENCY_DEFAULT}
+	</td>
+	<td>
+		{todate(STAMP_DUE)}
+	</td>
+	<td>
+		{if STAMP_PAY}
+			{todate(STAMP_PAY)}
+		{endif}
+	</td>
+</tr>

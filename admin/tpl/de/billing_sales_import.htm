@@ -1,0 +1,296 @@
+<script type="text/javascript">
+
+function ImportCheckAll(link) {
+    var checked = jQuery(link).prop("checked");
+    jQuery("#IMPORT_LIST input.IMPORT_CHECK").prop("checked", checked);
+}
+
+function SetImportant(id_import, link) {
+    var value = jQuery(link).attr("data-important");
+    jQuery.post("index.php?page={curpage}", {
+        action: 'important',
+        id:     id_import,
+        value:  value
+    }, function(result) {
+        if (result.success) {
+            var actionRow = jQuery(link).closest("tr");
+            if (value == 0) {
+                actionRow.removeClass("important1").removeClass("important2").removeClass("important3").addClass("important0");
+            } else if (value == 1) {
+                actionRow.removeClass("important0").removeClass("important2").removeClass("important3").addClass("important1");
+            } else if (value == 2) {
+                actionRow.removeClass("important0").removeClass("important1").removeClass("important3").addClass("important2");
+            } else if (value == 3) {
+                actionRow.removeClass("important0").removeClass("important1").removeClass("important2").addClass("important3");
+            }
+        }
+    });
+}
+
+function CheckFormAction(form) {
+    var action = jQuery(form).find("select[name=action] option:selected");
+    var confirmText = action.attr("data-confirm");
+    if (typeof confirmText != "undefined") {
+        return confirm( confirmText );
+    }
+    return true;
+}
+
+function SendFormAction(form) {
+    if (CheckFormAction(form)) {
+        jQuery.post( jQuery(form).attr("action"), jQuery(form).serialize(), function(result) {
+            if (result.success) {
+                jQuery(form).find("select[name=action]").val("");
+                jQuery(form).submit();
+            }
+        })
+    }
+    return false;
+}
+
+</script>
+
+<h1>Umsätze importieren</h1>
+
+<p>
+    Hier haben Sie die Möglichkeit die Umsätze ihres Kontos hochzuladen um Zahlungseingänge automatisch zu verbuchen.
+</p>
+
+{if DONE}
+    <p class="ok">
+        {if DONE_CONFIG}Konfiguration erfolgreich gespeichert!{endif}
+        {if DONE_CONFIG_RESET}Konfiguration erfolgreich zurückgesetzt!{endif}
+        {if DONE_IMPORT}Umsätze erfolgreich Importiert! ({PROCESS_COUNT_SUCCESS} erfolgreich, {PROCESS_COUNT_NOTICE} mit Hinweis, {PROCESS_COUNT_SKIP} ignoriert und {PROCESS_COUNT_ERROR} mit Fehler.){endif}
+    </p>
+    {if NOTICES}
+    <p>
+        <strong>Hinweise:</strong>
+        <br />
+        {NOTICES}
+    </p>
+    {endif}
+{endif}
+{if errors}
+    <p class="error">
+        {errors}
+    </p>
+{endif}
+
+{if CONFIGURED}
+<form action="index.php" method="post">
+    <input type="hidden" name="page" value="{curpage}" />
+    <table class="formTable">
+        <tr>
+            <th>Ergebnis</th>
+            <td>
+                <select name="SEARCH[TYPE]">
+                    <option value="">Alle anzeigen {if COUNT_NEW_ALL>0}({COUNT_NEW_ALL} Neu){endif}</option>
+                    <option value="SUCCESS"{if SEARCH_TYPE_SUCCESS} selected="selected"{endif}>Erfolgreich {if COUNT_NEW_SUCCESS>0}({COUNT_NEW_SUCCESS} Neu){endif}</option>
+                    <option value="NOTICE"{if SEARCH_TYPE_NOTICE} selected="selected"{endif}>Hinweis {if COUNT_NEW_NOTICE>0}({COUNT_NEW_NOTICE} Neu){endif}</option>
+                    <option value="SKIP"{if SEARCH_TYPE_SKIP} selected="selected"{endif}>Ignoriert {if COUNT_NEW_SKIP>0}({COUNT_NEW_SKIP} Neu){endif}</option>
+                    <option value="ERROR"{if SEARCH_TYPE_ERROR} selected="selected"{endif}>Fehler {if COUNT_NEW_ERROR>0}({COUNT_NEW_ERROR} Neu){endif}</option>
+                </select>
+            </td>
+            <th>Status</th>
+            <td>
+                <select name="SEARCH[IMPORTANT]">
+                    <option value="show_all">Alle anzeigen</option>
+                    <option value="3"{if SEARCH_IMPORTANT==3} selected="selected"{endif}>Neu</option>
+                    <option value="1"{if SEARCH_IMPORTANT==1} selected="selected"{endif}>Wichtig</option>
+                    <option value="0"{if SEARCH_IMPORTANT==0} selected="selected"{endif}>Unwichtig</option>
+                    <option value="2"{if SEARCH_IMPORTANT==2} selected="selected"{endif}>Abgeschlossen</option>
+                </select>
+            </td>
+            <th>Rechnungs-/Bestell-Nr.</th>
+            <td>
+                <input type="number" name="SEARCH[FK]" value="{htm(SEARCH_FK)}">
+            </td>
+        </tr>
+        <tr>
+            <th>Verwendungszweck</th>
+            <td>
+                <input type="text" name="SEARCH[SUBJECT]" value="{htm(SEARCH_SUBJECT)}">
+            </td>
+            <th>Datum von</th>
+            <td>
+                <input type="date" name="SEARCH[DATE_FROM]" placeholder="TT.MM.JJJJ" value="{SEARCH_DATE_FROM}" />
+            </td>
+            <th>Datum bis</th>
+            <td>
+                <input type="date" name="SEARCH[DATE_UNTIL]" placeholder="TT.MM.JJJJ" value="{SEARCH_DATE_UNTIL}" />
+            </td>
+        </tr>
+        <tr>
+            <th>Auftraggeber</th>
+            <td>
+                <input type="text" name="SEARCH[NAME]" value="{htm(SEARCH_NAME)}">
+            </td>
+            <th>Kontonummer/IBAN</th>
+            <td>
+                <input type="text" name="SEARCH[ACCOUNT]" value="{htm(SEARCH_ACCOUNT)}">
+            </td>
+            <th>Bankleitzahl/BIC</th>
+            <td>
+                <input type="text" name="SEARCH[BANK]" value="{htm(SEARCH_BANK)}">
+            </td>
+        </tr>
+        <tr class="footer">
+            <td colspan="6" align="right">
+                <a href="index.php?page={curpage}">Alle anzeigen</a>
+                <button>Suchen</button>
+            </td>
+        </tr>
+    </table>
+    <br />
+
+    <table id="IMPORT_LIST" class="liste" cellspacing="0">
+        <tr>
+            <th>
+                <input type="checkbox" class="INPUT_CHECK_ALL" onchange="ImportCheckAll(this);" />
+            </th>
+            <th>Status</th>
+            <th>Ergebnis</th>
+            <th>Datum</th>
+            <th>Hinweis</th>
+            <th>Betrag</th>
+            <th>Verwendungszweck</th>
+            <th>Auftraggeber</th>
+            <th>Kontonummer/IBAN</th>
+            <th>Bankleitzahl/BIC</th>
+        </tr>
+    {if processed}
+        {processed}
+    {else}
+        <tr>
+            <td colspan="7" class="error">
+                Keine Umsätze gefunden.
+            </td>
+        </tr>
+    {endif}
+    </table>
+
+    <p>
+        <select name="action">
+            <option value="">Ausgewählte Umsätze ...</option>
+            <option value="delete" data-confirm="Möchten Sie die ausgewählten Umsätze wirklich löschen?">Ausgewählte Umsätze löschen</option>
+        </select>
+        <button onclick="return SendFormAction(form);">Ausführen</button>
+    </p>
+
+    {pager}
+</form>
+
+<div>
+    <h3>Legende</h3>
+
+    <img width="16" height="16" src="gfx/btn.important3.png" /> = Neu,
+    <img width="16" height="16" src="gfx/btn.important1.png" /> = Wichtig,
+    <img width="16" height="16" src="gfx/btn.important0.png" /> = Unwichtig,
+    <img width="16" height="16" src="gfx/btn.important2.png" /> = Abgeschlossen
+</div>
+{endif}
+
+<form action="index.php" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="page" value="{curpage}" />
+{if !CONFIGURED}
+    <h3>Import von Umsätzen konfigurieren</h3>
+
+    <p class="error">
+        Der Import von Umsätzen ist derzeit noch nicht konfiguriert!
+        Bitte laden Sie eine Beispiel-Datei hoch um die Konfiguration vorzunehmen.
+    </p>
+
+    {if CONFIG_FIELDS}
+        <input type="hidden" name="CSV_HEADERS" value="{CSV_HEADERS}" />
+        <input type="hidden" name="CSV_DELIMITER" value="{CSV_DELIMITER}" />
+        <table class="formTable">
+            <tr>
+                <th>
+                    Spalte
+                </th>
+                <th colspan="2">
+                    Beispiel-Daten
+                </th>
+                <th>
+                    Enthält
+                </th>
+            </tr>
+            {CONFIG_FIELDS}
+            <tr class="footer">
+                <td colspan="4" align="right">
+                    <button>Konfiguration speichern</button>
+                </td>
+            </tr>
+        </table>
+    {else}
+        <table class="formTable">
+            <tr>
+                <th>
+                    CSV-Spaltennamen
+                </th>
+                <td>
+                    <label>
+                        <input type="checkbox" name="CSV_HEADERS" value="1" />
+                        CSV-Datei enthält Spaltenbezeichnung als erste Zeile
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    CSV-Trennzeichen
+                </th>
+                <td>
+                    <input name="CSV_DELIMITER" value="," size="1" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    CSV-Datei
+                </th>
+                <td>
+                    <input type="file" name="FILE" required="required" />
+                </td>
+            </tr>
+            <tr class="footer">
+                <td colspan="2" align="right">
+                    <button>Konfiguration vornehmen</button>
+                </td>
+            </tr>
+        </table>
+    {endif}
+{else}
+    <h3>Neue Umsätze importieren</h3>
+
+    <p>
+        Wählen Sie die CSV-Datei von ihrer Bank aus um neue Umsätze zu importieren.
+    </p>
+
+    <input type="file" name="FILE" required="required" />
+    <button>Umsätze importieren</button>
+</form>
+
+<h3>Aktuelle Konfiguration</h3>
+
+<p>
+    Hier finden Sie die aktuelle Konfiguration für den Import von Umsätzen.
+    Klicken Sie auf "Konfiguration zurücksetzen" um die aktuelle Konfiguration zu löschen und anschließend eine neue vorzunehemen.
+</p>
+
+<table class="liste" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Spalten</th>
+            <th>Inhalt</th>
+        </tr>
+    </thead>
+    <tbody>
+        {config_fields}
+    </tbody>
+</table>
+
+<form method="post">
+    <button name="RESET_CONFIG" onclick="return confirm('Die Konfiguration für den Import von Umsätzen wirklich zurücksetzen?');">
+        Konfiguration zurücksetzen
+    </button>
+</form>
+{endif}

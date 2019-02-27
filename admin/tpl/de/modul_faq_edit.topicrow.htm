@@ -1,0 +1,25 @@
+<tr class="zeile{even}">
+      <td>{ID_FAQ}</td>
+      <td>
+	  <a href="index.php?frame=content&page=modul_faq_thema_edit&ID_FAQ={ID_FAQ}" title="Thema bearbeiten">
+	    <img src="gfx/btn.edit.gif" width="32" height="16" alt="Thema bearbeiten" border="0" />
+	  </a>
+	  <a href="index.php?frame=content&page=modul_faq_edit&ID_FAQKAT={FK_FAQKAT}&do=rmt&ID_FAQ={ID_FAQ}" onClick="return confirm('Dieses Thema löschen?');" title="Thema l&ouml;schen">
+	    <img src="gfx/btn.del.gif" width="32" height="16" alt="Thema l&ouml;schen" border="0" />
+	  </a>
+	  <a href="index.php?frame={curframe}&page=modul_faq_edit&do=v{if POS}0{else}1{endif}&what=faq&id={ID_FAQ}" class="mv{if !POS}0{endif}"><img src="gfx/mv{even}.v{if POS}1{else}0{endif}.gif" width="16" height="16" border="0" alt="{if POS}verstecken{else}sichtbar machen{endif}" /></a>
+	  </td>
+      <td>{htm(V1)}</td>
+      <td>
+        {if POS>1}
+		<a href="index.php?frame={curframe}&page=modul_faq_edit&what=faq&id={ID_FAQ}&do=up" class="mv"><img src="gfx/mv{even}.up.gif" width="16" height="16" border="0" alt="hoch" /></a>
+		{else}
+		<img src="shim.gif" width="16" height="16" />
+		{endif}
+        {if !islast && POS>0}
+		<a href="index.php?frame={curframe}&page=modul_faq_edit&what=faq&id={ID_FAQ}&do=dn" class="mv"><img src="gfx/mv{even}.dn.gif" width="16" height="16" border="0" alt="runter" /></a>
+		{else}
+		<img src="shim.gif" width="16" height="16" />
+		{endif}
+      </td>
+</tr>

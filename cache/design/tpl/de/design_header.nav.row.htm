@@ -1,0 +1,42 @@
+<li class="childsHover^if ({ID_KAT} == ID_KAT_SEL) || (({LFT} <= KAT_SEL_LFT) && ({RGT} >= KAT_SEL_RGT))° active^endif°"{if i>5} style="display:none"{endif}>
+    <a href="{uri_action(marktplatz,{ID_KAT},{urllabel(V1)})}">{htm(V1)}</a>
+    <div class="design-sub-menu">
+        <div class="row">
+            <div class="col-sm-12 col-md-9">
+                <h4 class="text-uppercase">Übersicht unserer Kategorien</h4>
+                {if hover}
+                    <ul class="subcategories">
+                        {hover}
+                    </ul>
+                {else}
+                Keine weiteren Unterkategorien vorhanden.<br><a href="{uri_action(marktplatz,{ID_KAT},{urllabel(V1)})}" class="btn btn-info">Zur aktuellen Kategorie wechseln</a>
+                {endif}
+            </div>
+            <div class="col-sm-12 col-md-3">
+                <div class="row">
+                    <div class="col-sm-6 col-md-12">
+                        <h4 class="text-uppercase">Weitere Kategorien</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-12">
+                        <div class="description">
+                            {htm(V2)}
+                        </div>
+                        <div>
+                            <a href="{uri_action(marktplatz,{ID_KAT},{urllabel(V1)})}" class="btn btn-info">Weitere Unterkategorien</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-12">
+                        <div>
+                            Einen Überblick über unsere Kategorien erhalten Sie hier:
+                        </div>
+                        <div>
+                            <a href="{uri_action(marktplatz)}" class="btn btn-danger">Alle Kategorien</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>

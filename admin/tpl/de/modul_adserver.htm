@@ -1,0 +1,106 @@
+<script type="text/javascript">
+
+function katRcv(id_kat)
+{
+  document.forms[0].FK_KAT.value = id_kat;
+  document.forms[0].submit();
+}
+</script>
+
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="frame" value="content" />
+  <input type="hidden" name="npage" value="{npage}">
+  <input type="hidden" name="nav" value="{curnav}" />
+  <input type="hidden" name="do" value="setok" />
+  <input type="hidden" name="getcode" value="1" />  
+<input type="hidden" name="FK_KAT" id="fk_kat" onChange="document.forms[0].submit()" value="{FK_KAT}" />
+
+<h1>Adserver<br>
+Bannermanagement</h1>
+<p>Alle Werbemittel (Banner) im System. Die Banner k&ouml;nnen l&auml;nderspezifisch angegeben werden. <br>
+Bitte w&auml;hlen Sie eine Kategorie aus.</p>
+<table class="liste" cellspacing="0">
+<tr><td colspan="8">
+
+
+<table border="0"  width="100%">
+	<tr>
+		<td valign="top" width="310"><iframe id="katframe" src="index.php?frame=iframe&page=kat_select&ID_KAT={FK_KAT}&ROOT=3&npage={npage}" width="300" height="110" frameborder="0">Kategorie-Auswahl erfordert iFrames und JavaScript!</iframe>
+<a href="index.php?page=kat_edit&ROOT=3">Kategorien verwalten</a>
+</td>
+		<td valign="top">
+		
+		<b>Nach Werbemittel suchen:</b>
+		
+		<table border="0">
+	<tr>
+		<td>Name</td>
+		<td><input type="text" name="adname_" size="30" value="{htm(adname_)}"></td>
+		<td>ID</td>
+		<td><input type="text" name="ID_ADS_" size="4" value="{ID_ADS_}"></td>
+	</tr>
+	<tr>
+		<td>Im Bannertag</td>
+		<td><input type="text" name="banner_" size="30" value="{banner_}"></td>
+		<td>Vorschau</td>
+		<td><input type="checkbox" class="nob" name="preview" {if preview}checked{endif} value="1" /></td>
+	</tr>
+	<tr>
+		<td>Format</td>
+		<td>{lookup(BANNER,,,id="LU_BANNER",,ALLE)}</td>
+		<td>Topbanner</td>
+		<td><input type="checkbox" class="nob" name="top_" {if top_}checked{endif} value="1" /></td>
+	</tr>
+	
+		<tr>
+		<td>Codegenerator</td>
+		<td>{if getcode}<input type="text" name="code" size="30" value="{codetouse}">{else}klicken Sie <b>SUCHEN</b>{endif}<td>
+		<td align="right" valign="middle" colspan="2"><input type="submit" value="suchen" name="suchen" class="button"> &nbsp;&nbsp;&nbsp;<a href="index.php?page=modul_adserver"> <b>alle anzeigen</b></a></td>
+	</tr>
+	
+</table>
+		
+		
+		
+		
+		
+		</td>
+	</tr>
+</table>
+
+
+</th>
+</tr>
+
+<tr><td colspan="13" align="left"><hr noshade>Werbemittel : <b>{summeshow} von {summenews}</b> </td></tr>
+<tr>
+  <th>Aktionen</th>
+  <th>&nbsp;Datum&nbsp;</th>
+  <th>&nbsp;Kategorie&nbsp;</th>
+  <th>&nbsp;Titel&nbsp;</th>
+  <th>&nbsp;Format / Area</th>  
+    <th>&nbsp;Statistik&nbsp;</th>  
+    <th>&nbsp;Vorschau&nbsp;</th>
+  <th>&nbsp;Anzeigen&nbsp;</th>
+  <th>&nbsp;Top&nbsp;</th>
+    <th>&nbsp;Start&nbsp;</th>
+    <th>&nbsp;End&nbsp;</th>
+    <th>&nbsp;Restlaufzeit (Tage)</th>
+    <th></th>
+</tr>
+<tr><td>{liste}</td></tr>
+<tr>
+<td class="footer" colspan="13" align="right"><input class="button" type="submit" value="ausgew&auml;hlte freischalten" name="save" /></td>
+</tr>
+
+<tr><th colspan="13">{pager}
+</th></tr>
+</table>
+</form>
+<p><b>TIPP!</b> Sie k&ouml;nnen Spachabh&auml;ngige Banner mit den Kategorien verwalten! D.h. jeder Spache eine Kategorie zuordnen. </p>
+<h2>Wann werden Banner ausgeliefert?</h2>
+1. Das Feld "Anzeigen" muss auf ON stehen<br>
+2. Das aktuelle Datum muss im Zeitraum "Start" - "Ende" liegen. <br>
+<br>
+Wenn Sie einen Banner pausieren wollen, dann stellen Sie "Anzeigen" auf OFF
+<p><img src="gfx/warnung.png"><b>Wenn die Restlaufzeit 0 oder einen negativen Wert anzeigt, dann werde diese Banner nicht mehr angezeigt. Auch dann nicht, wenn "Aktiv" auf ON steht</b></p>

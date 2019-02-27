@@ -1,0 +1,138 @@
+{if error_noaddress}
+<div class="alert alert-danger" role="alert">
+    <h2>Hinweis</h2>
+    <p>
+        Bitte ergänzen Sie folgende Angaben in ihrem <a href="{uri_action(my-profil)}">Profil</a> bevor Sie etwas verkaufen:<br />
+    <ul>
+        {if error_addr_first}<li>Vorname</li>{endif}
+        {if error_addr_last}<li>Nachname</li>{endif}
+        {if error_addr_street}<li>Straße</li>{endif}
+        {if error_addr_zip}<li>Postleitzahl</li>{endif}
+        {if error_addr_city}<li>Wohnort</li>{endif}
+    </ul>
+    </p>
+</div>
+{else}
+{startblock(script)}
+    {parentblock()}
+    {javascript_google_maps()}
+    <!-- Javascript includes (create article) -->
+    <link rel="stylesheet" href="{uri_resource(/lib/jqgrid/css/ui.jqgrid.css)}" />
+    <script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+    <script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+    <link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+    <script type="text/javascript" src="{uri_resource(/lib/twitter/typeahead.bundle.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/ajaxfileupload.js)}"></script>
+    {javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+    <script type="text/javascript" src="{uri_resource(/lib/jqgrid/js/i18n/grid.locale-de.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/lib/jqgrid/js/jquery.jqGrid.min.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/load-image.min.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.ui.widget.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.iframe-transport.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-process.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-image.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-audio.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-video.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-validate.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/jQueryFileUpload/jquery.fileupload-ui.js)}"></script>
+    <script type="text/javascript">
+        jQuery(function() {
+            var navbarHeight = (jQuery(".navbar-fixed-top").length > 0 ? jQuery(".navbar-fixed-top").height() : 0);
+            var footerHeight = (jQuery("#footer").length > 0 ? jQuery("#footer").height() : 0);
+            var posMenu = jQuery("#content").position();
+            jQuery("#adCreateStepList").affix({
+               offset: { top: posMenu.top - navbarHeight }
+            });
+            jQuery(window).scroll(function() {
+                if (!jQuery("#adCreateStepList").hasClass("affix-top")) {
+                    var posMenuList = jQuery("#adCreateStepList").offset();
+                    var posStop = jQuery(document).height() - footerHeight + navbarHeight;
+                    if (jQuery("#adCreateStepList").hasClass("affix-bottom") && (jQuery(window).scrollTop() < (posMenuList.top - navbarHeight))) {
+                        jQuery("#adCreateStepList").removeClass("affix-bottom");
+                    } else if ((jQuery("#adCreateStepList").height() + posMenu.top + posMenuList.top) >= posStop) {
+                        jQuery("#adCreateStepList").addClass("affix-bottom");
+                    } else {
+                        jQuery("#adCreateStepList").removeClass("affix-bottom");
+                    }
+                } else if (jQuery("#adCreateStepList").hasClass("affix-bottom")) {
+                    jQuery("#adCreateStepList").removeClass("affix-bottom");
+                }
+            });
+            jQuery(window).on("unload beforeunload", function() {
+                return "Wenn Sie diese Seite verlassen, gehen alle bisher gemachten Eingaben verloren! Trotzdem fortfahren?";
+            });
+        });
+    </script>
+{endblock(script)}
+
+    <div id="modal_loading" class="modal fade" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 align="center">Wird geladen... Bitte warten Sie.</h3>
+                </div>
+                <div class="modal-body">
+                    <p align="center">
+                        <img src="{uri_baseurl(/gfx/ajax-loader.gif)}" alt="waiting">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div id="modal_step_dirty" class="modal fade" style="display:none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 align="center">
+                        Nicht gespeicherte Änderungen vorhanden!
+                    </h3>
+                </div>
+                <div class="modal-body">
+                    <p align="center">
+                        Sie haben noch nicht gespeicherte Änderungen auf der aktuellen Seite. 
+                            Sollen diese gespeichert werden, bevor Sie den Schritt wechseln?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-action="cancel" data-dismiss="modal" title="Abbrechen und aktuellen Schritt weiter bearbeiten">
+                        Abbrechen
+                    </button>
+                    <button type="button" class="btn btn-danger" data-action="discard" title="Änderungen verwerfen und zum gewählten Schritt wechseln">
+                        Änderungen verwerfen
+                    </button>
+                    <button type="button" class="btn btn-success" data-action="save" title="Änderungen speichern und zum gewählten Schritt wechseln">
+                        Änderungen speichern
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_notice_fixed" style="display: none;">
+        <div class="container">
+            <div class="alert alert-info alert-saving" role="alert" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Eingaben werden gespeichert...</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="adCreate row design-ad-create-form">
+        <div class="design-ad-create-form-steps">
+            <div id="adCreateStepList" class="design-content-box">
+                {STEPS_LIST}
+            </div>
+        </div>
+        <div class="design-ad-create-form-content">
+            <div id="adCreateStepContent" data-step="{STEPS_INDEX}">
+                {STEPS_CUR}
+            </div>
+        </div>
+    </div>
+{endif}

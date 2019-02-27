@@ -1,0 +1,16 @@
+{if fresh}
+<h1>Vielen Dank f&uuml;r Ihre Anmeldung</h1>
+<p> Wir haben Ihnen eine E-Mail mit Ihrem pers&ouml;nlichen Best&auml;tigungs-Code zugeschickt. 
+Bitte folgen Sie dem angegebenen Link, um Ihre Anmeldung zu vervollst&auml;ndigen.</p>
+{else}
+
+  {if err}
+  <h1>Anmeldung best&auml;tigen</h1>
+   <div class="hinweis"><span class="error">{err}</span></div>
+  {endif}
+  {if ready}
+  <h1>Herzlich willkommen!</h1>
+  <p>Ihre Anmeldung wurde erfolgreich abgeschlossen!<br />
+  Wir senden Ihnen soeben eine E-Mail mit Ihren Zugangsdaten zu. Sie können sich nun <a href="{uri_action(login)}">einloggen</a>!
+  {endif}
+{endif}

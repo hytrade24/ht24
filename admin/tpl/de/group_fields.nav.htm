@@ -1,0 +1,13 @@
+<div class="{if SHOW_FIELDS}reiterAktiv{else}reiterPassiv{endif}">
+    <a href="index.php?page=table_edit&table={ID_TABLE_DEF}" title="Felder bearbeiten">Felder bearbeiten</a>
+</div>
+<div class="{if SHOW_GROUPS}reiterAktiv{else}reiterPassiv{endif}">
+    <a href="index.php?page=group_fields&table={ID_TABLE_DEF}" title="Felder gruppieren">Felder gruppieren</a>
+</div>
+<div class="{if SHOW_SEARCH}reiterAktiv{else}reiterPassiv{endif}">
+    <a href="index.php?page=group_fields&table={ID_TABLE_DEF}&show=search" title="Suchmaske konfigurieren">Suchmaske</a>
+</div>
+<div class="{if SHOW_INPUT}reiterAktiv{else}reiterPassiv{endif}">
+    <a href="index.php?page=group_fields&table={ID_TABLE_DEF}&show=input" title="Eingabe-Schritte definieren">Eingabe-Schritte</a>
+</div>
+<br style="clear:left;" />

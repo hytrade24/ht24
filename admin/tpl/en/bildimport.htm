@@ -1,0 +1,61 @@
+<h1><img src="gfx/mediadb.gif" width="64" height="64" alt="" border="0" align="left">Bilder importieren</h1>
+<p>Sie k&ouml;nnen Bilder direkt per FTP auf Ihren Server laden, und dise dann von dieser Seite aus in Ihre Medien datenbank aufnehmen. 
+<br>Die Bilder m&uuml;ssen in dem Ordner &quot;import/image/&quot; liegen!</p>
+{if err}<div class="error">{err}</div>{endif}
+{if IMG}
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="bildimport">
+<table class="formTable" cellspacing="0">
+ <tr>
+  <th>Galerie Auswahl:</th>
+  <td>{select(galerie,,,,,,Keine Galerie zuordnen)}</td>
+ </tr>
+ <tr>
+   <th>Beschreibung (Optional)</th>
+   <td><input type="text" name="ALT" value="{htm(ALT)}" size="45"></td>
+ </tr>
+ <tr>
+  <th>Speicherort</th>
+  <td>../uploads/<input type="text" name="DIR" /> <a href="#" onclick="popupfkt('folder_browser&frompopup=1','450','450');"><img src="gfx/ordner_16.gif" width="16" height="16" title="Durchsuchen" alt="Durchsuchen" align="top"></a> <a href="#" onclick="popupfkt('folder_browser&frompopup=1','450','450');">Durchsuchen</a></td>
+ </tr>
+ <tr>
+  <th>Zuschnitt</th>
+  <td>{select(bildformat)}</td>
+ </tr>
+ <tr>
+  <th>Bildname</th>
+  <td><a href="../uploads/import/image/{IMG}" title="Bild in voller Gr&ouml;&szlig;e ansehen" target="_blank">{IMG}</a></td>
+ </tr>
+ <tr>
+  <th>Vorschau</th>
+  <td><iframe style="width:600px;height:200px;" src="../uploads/import/image/{IMG}"></iframe>
+  <input type="hidden" name="IMG" value="{IMG}">
+  </td>
+ </tr>
+ <tr>
+  <th>Info</th>
+  <td><strong>Abmessungen:</strong> {w}x{h}<br />
+  <strong>Gr&ouml;&szlig;e:</strong> {filesize} KB</td>
+ </tr>
+ <tr>
+   <th>Besitzer</th>
+   <td>
+    <a href="#" onclick="popupfkt('users&frompopup=1','650','500');">
+	<img src="gfx/users_16.gif" width="16" height="16" alt="" border="0"></a> <input type="text" name="NAME_" value="{htm(NAME_)}" />
+    <input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" />
+   </td>
+ </tr>
+ <tr>
+  <th>Aktion</th> 
+  <td>{if TOBIG}<span class="error">Bild kann nicht importiert werden, weil es zu gro&szlig; ist</span>
+  {else}<input type="radio" name="do" value="im" class="nob" checked > Importieren {endif}
+    <input type="radio" name="do" value="rm" class="nob"> L&ouml;schen</td>
+ </tr>
+ <tr class="footer">
+  <td colspan="2" align="right"><input type="submit" value="Aktion durchf&uuml;hren" class="button"></td>
+ </tr>
+</table>
+</form>
+{else}
+<div class="hinweis"><span class="error">Der Import Ordner ist leider leer</span></div>
+{endif}

@@ -1,0 +1,249 @@
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery("#invoicePaymentAdapterSelector").change(function() {
+            if(confirm("Möchten Sie Ihre bevorzugte Zahlungsweise wirklich ändern?")) {
+                jQuery("#settingForm").submit();
+            }
+        });
+    })
+</script>
+
+<h1>
+	<img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="10" />
+	{htm(NAME)}, Ihre persönlichen Einstellungen<br />
+</h1>
+<p>Hier können Sie Ihre persönlichen Einstellungen vornehmen</p>
+<p>
+    Diese Einstellungen nehmen direkten Einfluss die Sichtbarkeit Ihrer persönlichen Daten. <br />
+    Die Einstellungen werden umgehend übernommen und können jederzeit rückgängig gemacht werden.
+</p>
+<br />
+{if ok}
+<div class="alert alert-success">
+   Ihre Einstellungen wurden erfolgreich gespeichert!
+</div>
+{endif}
+{if err}
+<div class="alert alert-danger">
+    Es ist ein Fehler aufgetreten. Bitte überprüfen Sie Ihre Eingaben.
+</div>
+{endif}
+<form method="post" action="my-settings.htm" id="settingForm">
+    <input type="hidden" name="GET_MAIL_MSG" value="0" /><input type="hidden" name="ALLOW_CONTACS" value="0" />
+    {subtpl(tpl/{SYS_TPL_LANG}/my-settings-nav.htm,*)}
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr>
+            <th colspan="2">
+                Meine Daten
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <strong>Anzeigen meiner Kontaktdaten / Adresse</strong>
+                <br />
+                Meine persönlichen Daten folgenden Personen zeigen <br />(Es wird nur die Anschrift / Firmenname angezeigt)
+            </td>
+            <td valign="top">
+                <select class="form-control" name="LU_SHOWCONTAC">
+                    {s_kontakt}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Kontakt aufnehmen</strong>
+                <br />
+                Andere User dürfen Ihnen eine Nachricht über unser System schicken.
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="ALLOW_CONTACS" value="1" {if  ALLOW_CONTACS}checked{endif}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Als Kontakt hinzufügen</strong>
+                <br />
+                Andere User dürfen Ihnen eine Kontaktanfrage schicken.
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="ALLOW_ADD_USER_CONTACT" value="1" {if  ALLOW_ADD_USER_CONTACT}checked{endif}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>User Online anzeigen</strong>
+                <br />
+                Andere User dürfen sehen, wenn Sie online sind.
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="SHOW_STATUS_USER_ONLINE" value="1" {if  SHOW_STATUS_USER_ONLINE}checked{endif}>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Kommentare
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <strong>Voreinstellungen für Kommentare</strong>
+                <br />
+                Legt fest ob Kommentare zu ihren Anzeigen/Veranstaltungen/... standardmäßig erlaubt
+                sind oder nicht.
+            </td>
+            <td valign="top">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ALLOW_COMMENTS[]" value="1" {if (ALLOW_COMMENTS&1)==1}checked{endif}>
+                        Anzeigen
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ALLOW_COMMENTS[]" value="2" {if (ALLOW_COMMENTS&2)==2}checked{endif}>
+                        Veranstaltungen
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ALLOW_COMMENTS[]" value="4" {if (ALLOW_COMMENTS&4)==4}checked{endif}>
+                        Gruppen
+                    </label>
+                </div>
+
+				<span class="text-error">
+					<strong>Achtung:</strong>
+                    Bestehende Anzeigen / Veranstaltungen / Gruppen bleiben unverändert!
+				</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Kommentare zum Firmeneintrag</strong>
+                <br />
+                Legt fest ob Kommentare zu ihrem Firmeneintrag geschrieben werden dürfen.
+            </td>
+            <td valign="top">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ALLOW_COMMENTS[]" value="8" {if (ALLOW_COMMENTS&8)==8}checked{endif}>
+                        Firmeneintrag
+                    </label>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Kommentare manuell bestätigen</strong>
+                <br />
+                Kommentare von anderen Benutzern werden erst dann sichtbar, wenn Sie diese überprüft haben.
+            </td>
+            <td valign="top">
+            {if COMMENT_CONFIRM}
+                <input type="hidden" name="SET_COMMENT_MANUAL" value="0" />
+            	<strong class="text-error">
+            	    Der Marktplatzbetreiber setzt eine manuelle Bestätigung der Kommentare vorraus,
+            		daher ist diese Einstellung nicht verfügbar.
+            	</strong>
+            {else}
+                <input type="checkbox" name="SET_COMMENT_MANUAL" value="1" {if  SET_COMMENT_MANUAL}checked{endif}>
+            {endif}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Meldungen
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <strong>Emailempfang bei neuen Nachrichten</strong>
+                <br />
+                Möchten Sie eine Email erhalten, wenn Ihnen jemand eine neue Nachricht schickt?
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="GET_MAIL_MSG" value="1" {if  GET_MAIL_MSG}checked{endif}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Emailempfang bei neuen Foren-Beiträgen</strong>
+                <br />
+                Möchten Sie eine Email erhalten, wenn auf Ihne Foren-Beiträge geantwortet wird?
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="ABO_FORUM" value="1" {if  ABO_FORUM}checked{endif}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Benachichtigung bevor eine Anzeige ausläuft</strong>
+                <br>
+                Möchten Sie eine Email erhalten, kurz bevor eine von ihnen aufgegebene Anzeige ausläuft?
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="GET_MAIL_AD_TIMEOUT" value="1" {if  GET_MAIL_AD_TIMEOUT}checked{endif}>
+            </td>
+        </tr>
+       <!-- <tr>
+            <th colspan="2">
+               Anzeigen und Verkäufe
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <strong>Den Verkauf von eingestellten Produkten automatisch bestätigen</strong>
+                <br />
+                Achtung: Mit dieser Option kommt ein rechtsverbindlicher Kauf zustande
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="SET_AUTOCONFIRM" value="1" {if  SET_AUTOCONFIRM}checked{endif}>
+            </td>
+        </tr>
+        {if AD_CONSTRAINTS}
+        <tr>
+            <td>
+                <strong>Neue Artikel als B2B-Artikel</strong>
+                <br />
+                Sollen neue Artikel standardmäßig als B2B-Artikel eingestellt werden?
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="DEFAULT_CONSTRAINTS[]" value="1"{if DEFAULT_CONSTRAINTS_B2B} checked="checked"{endif}>
+            </td>
+        </tr>-->
+		{endif}
+        <tr>
+            <th colspan="2">
+                Adressen
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <strong>Standard Rechnungsadresse</strong>
+                <br />
+                Welche Rechnungsadresse soll standardmäßig verwendet werden?
+              
+            </td>
+           	    <td valign="top">
+				{subtpl(tpl/{SYS_TPL_LANG}/user_invoice.htm,*)}
+            	</td>
+        	</tr>
+      			
+       		 <tr>
+         <!--   <td>
+                <strong>Standard Versandadresse</strong>
+                <br />
+                Welche Versandadresse soll standardmäßig verwendet werden?
+            </td>
+          <td valign="top">
+				{subtpl(tpl/{SYS_TPL_LANG}/user_versand.htm,*)}
+            </td>-->
+            
+            <th colspan="2" class="text-right">
+                <input name="reset" type="reset" class="btn btn-default" value="Reset" />
+                <input name="button" type="submit" class="btn btn-success" value="Speichern" />
+            </th>
+        </tr>
+    </table>
+</form>

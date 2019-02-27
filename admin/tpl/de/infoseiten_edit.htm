@@ -1,0 +1,101 @@
+{if !bUSETYPE}<h1>Kategorie-Infobereich bearbeiten</h1>
+<p>Diese Inforbereiche können den <a href="index.php?page=m_kats">Kategorien</a> zugeordnet werden. Sie erscheinen auf der ersten Seite einer ausgewählten Kategorie</p>
+{else}
+<h1>Infobereich {if ID_INFOSEITE}bearbeiten{else}anlegen{endif}</h1>
+<p>Mit Hilfe der Infoseiten können Sie einen Text/Bild oder HTML auf verschiedene Seiten darstellen.</p>
+{endif}
+{if err || msg}
+<div class="hinweis">
+{if err}<span class="error">{err}</span>
+{else}<span class="ok">{msg}</span>{endif}
+</div>
+{endif}
+<form method="post" accept-charset="utf-8" action="index.php">
+ <input type="hidden" name="page" value="{curpage}" />
+ <input type="hidden" name="frame" value="{curframe}" />
+ <input type="hidden" name="V2" value="{V2}" />
+<input type="hidden" name="V1" value="{htm(V1)}" />
+
+ {if ID_INFOSEITE}
+ <input type="hidden" name="ID_INFOSEITE" value="{ID_INFOSEITE}" />
+    {else}
+    <div class="reiterAktiv">
+        <a href="index.php?page=infoseiten&SHOWTYPE=0" title="Allgemeine">Allgemeine-Inforbereiche anzeigen</a>
+    </div>
+    <div class="reiterPassiv">
+        <a href="index.php?page=infoseiten&SHOWTYPE=1" title="Kategorie">Kategorie-Inforbereiche anzeigen</a>
+    </div>
+    {endif}
+ <table class="formTable" cellspacing="0">
+ {if ID_INFOSEITE}
+  <tr>
+   <th>Code f&uuml;r die Webseite</th>
+   <td><input type="text" value="{CODE}" size="45" /></td>
+  </tr>
+ {endif}
+  <tr>
+   <th style="text-align:left;width:140px;">Name:</th>
+   <th style="text-align:left;"><input {if B_SYS}type="hidden" {else} type="text" {endif} name="V1" value="{htm(V1)}" size="40">{if B_SYS}{htm(V1)}{endif}     Typ: {lookup(INFO_BEREICHE,,,id="INFO_BEREICHE" tabindex="6",,- nicht zugeordnet -)}</th>
+  </tr>
+  <tr>
+  <th>Wie wollen Sie einen HTML Editor verwenden</th>
+  <td><input type="radio" value="HTML" name="TXTTYPE" {if bTXTTYPE} checked="checked" {endif} /> JA 
+<input type="radio" value="TXT" name="TXTTYPE" {if !bTXTTYPE} checked="checked" {endif} /> Nein<br />(Änderungen werden erst nach dem speichern sichtbar!)</td>
+  </tr>
+  <tr>
+    {if !ID_INFOSEITE}
+  <th>zur Verwendung in<br /><span class="notizSmall">Achtung: Zuordnung kann nachträglich nicht geändert werden!</span></th>
+  <td>
+    <input type="radio" value="STD" {if bUSETYPE} checked="checked" {endif} name="USETYPE" /> Standard Infobereich<br />
+    <input type="radio" value="KATS" {if !bUSETYPE} checked="checked" {endif} name="USETYPE" /> Kategorie Infobereich (Kann im Kopf einer Marktplatz-Kategorie angezeigt werden)</td>
+  </tr>
+  {endif}
+  <tr>
+   <td colspan="2">{if bTXTTYPE}
+   {editor(T1,780px,335px)}
+   {else}
+       <script src="{uri_resource(/lib/codemirror/lib/codemirror.js)}"></script>
+       <link rel="stylesheet" href="{uri_resource(/lib/codemirror/lib/codemirror.css)}">
+       <script src="{uri_resource(/lib/codemirror/mode/xml/xml.js)}"></script>
+       <script src="{uri_resource(/lib/codemirror/mode/javascript/javascript.js)}"></script>
+       <script src="{uri_resource(/lib/codemirror/mode/css/css.js)}"></script>
+       <script src="{uri_resource(/lib/codemirror/mode/htmlmixed/htmlmixed.js)}"></script>
+
+       <div class="codeMirrorEditor">
+           <textarea name="T1" id="T1" rows="20" cols="90">{htm(T1)}</textarea>
+
+           <script type="text/javascript">
+               var codeMirror = CodeMirror.fromTextArea(document.getElementById("T1"), {
+                   mode: "text/html",
+                   lineNumbers: true,
+                   fixedGutter: true
+               });
+           </script>
+       </div>
+   {endif}
+   </td>
+  </tr>
+  <tr class="footer">
+   <td colspan="2" align="right"><a href="index.php?page=infoseiten&SHOWTYPE=&LU_INFO_BEREICHE={LU_INFO_BEREICHE}" class="button">Zur Liste</a> <input type="submit" value="Speichern" class="button" /></td>
+  </tr>
+ </table>
+</form>
+<h1>Weitere Infobereiche des gleichen Typs</h1>
+<table class="liste">
+    <tr>
+        {seiten}
+    </tr>
+
+</table>
+
+<h1>Templatescode</h1>
+<h2>Dynamsichen Link einfügen &#x7B;uri_action(info)&#x7D;</h2>
+Wenn Sie zu bestimmten Seiten verlinken möchten, dann empfehlen wir Ihnen die ULR wie gezeigt anzugeben. Dadurch stellen Sie sicher, dass die URL immer eindeutig ist.
+<p>&#x3C;a href=&#x22;&#x7B;uri_action(info)&#x7D;&#x22;&#x3E;zur Seite Info&#x3C;/a&#x3E;</p>
+<h2>Bild einfügen &#x7B;uri_resource(images/demo/anbieter.png)&#x7D;</h2>
+Wenn Sie ein Bild per FTP in das Verzeichnis /design/user/default/resources/images/ kopiert haben, dann können Sie das Bilder folgendermaßen einbinden:
+
+<p>&#x3C;img src=&#x22;&#x7B;uri_resource(images/anbieter.png)&#x7D;&#x22;</p>
+<p>/design/user/default/resources/images/ kann durch eine sprachabhängige Variante ersetzt werden. z.B. /design/user/en/resources/images/</p>
+
+

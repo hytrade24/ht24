@@ -1,0 +1,49 @@
+{if ok}
+	<div class="hinweis">
+	<span class="ok">Aktualisierung erfolgreich!</span>
+	</div>
+{endif}
+{if !deleted}
+<h2>Kommentar &quot;{htm(SUBJECT)}&quot; bearbeiten</h2>
+<form method="post" action="index.php">
+<input type="hidden" name="frame" value="{curframe}" />
+<input type="hidden" name="page" value="{curpage}" />
+<input type="hidden" name="ID_COMMENT" value="{ID_COMMENT}" />
+<input type="hidden" name="ID_NEWS" value="{ID_NEWS}" />
+<table class="formTable" cellspacing="0" width="100%">
+ <tr>
+  <td><strong>Autor:</strong></td>
+  <td>{htm(USER)}</td>
+ </tr>
+ <tr>
+   <td><strong>Datum</strong></td>
+   <td>{todate(STAMP)}</td>   
+ </tr>
+ <tr>
+  <td><strong>Betreff</strong></td>
+  <td><input type="text" name="SUBJECT" value="{htm(SUBJECT)}" size="40" /></td>
+ </tr>
+ <tr>
+  <td colspan="2"><textarea name="BODY" cols="60" rows="10" style="width:100%">{htm(BODY)}</textarea></td>  
+ </tr>
+ <tr class="footer">
+  <td><input type="checkbox" name="DELETE" value="1" class="nob" />
+   Beitrag endg&uuml;ltig l&ouml;schen?</td>
+  <td align="right"><input type="submit" value="Aktualisieren" class="button" /></td>
+ </tr>
+</table>
+</form>
+{else}
+<div class="hinweis">
+<span class="ok">Der Beitrag wurde entfernt! 
+ <a href="javascript:window.close()" title="Fenster schlie&szlig;en">Sie k&ouml;nnen dieses 
+  Fenster schlie&szlig;en</a>
+</span>
+<script type="text/javascript">
+if(window.opener.document.forms[0])
+{
+  window.opener.document.forms[0].submit();
+}
+</script>
+</div>
+{endif} 

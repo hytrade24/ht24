@@ -1,0 +1,130 @@
+		<tr>
+			<td nowrap="nowrap" class="design-action-buttons">
+            {if !TYPE_SENT}
+                {if !HIDE_ACTIONS}
+                    {if IS_PUBLIC}
+                        <a onclick="return CommentAction(this);" href="{uri_action(my-comments,{npage},{SHOW},hide,{ID_COMMENT})}" title="Kommentar sperren/ausblenden" class="btn btn-info">
+                            <i class="glyphicon glyphicon-eye-open"></i>
+                        </a>
+                    {else}
+                        <a onclick="return CommentAction(this);" href="{uri_action(my-comments,{npage},{SHOW},show,{ID_COMMENT})}" title="Kommentar entsperren/einblenden" class="btn btn-default">
+                            <i class="glyphicon glyphicon-eye-close"></i>
+                        </a>
+                    {endif}
+                    {if IS_REVIEWED}
+                        <a onclick="return CommentAction(this);" href="{uri_action(my-comments,{npage},{SHOW},lock,{ID_COMMENT})}" class="btn btn-default" title="Kommentar sperren">
+                            <i class="glyphicon glyphicon-ok"></i>
+                        </a>
+                    {else}
+                        <a onclick="return CommentAction(this);" href="{uri_action(my-comments,{npage},{SHOW},unlock,{ID_COMMENT})}" class="btn btn-default" title="Kommentar freischalten">
+                            <i class="glyphicon glyphicon-lock"></i>
+                        </a>
+                    {endif}
+                    {if !ANSWER_COMMENT}
+                        <a href="#" class="btn btn-default" id="reply{ID_COMMENT}" onclick="replyToComment({ID_COMMENT});" title="Auf den Kommentar antworten">
+                            <i class="glyphicon glyphicon-retweet"></i>
+                        </a>
+                    {endif}
+                {endif}
+            {else}
+                {if IS_PUBLIC}
+                <a class="btn btn-info disabled" title="Kommentar sichtbar">
+                    <i class="glyphicon glyphicon-eye-open"></i>
+                </a>
+                {else}
+                <a class="btn btn-info disabled" title="Kommentar ausgeblendet">
+                    <i class="glyphicon glyphicon-eye-close"></i>
+                </a>
+                {endif}
+                {if IS_REVIEWED}
+                <a class="btn btn-default disabled" title="Kommentar freigeschaltet">
+                    <i class="glyphicon glyphicon-ok"></i>
+                </a>
+                {else}
+                <a class="btn btn-default disabled" title="Kommentar gesperrt / nicht freigeschaltet">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </a>
+                {endif}
+            {endif}
+            {if CURUSER_ID_USER==FK_USER}
+                <a class="btn btn-default" href="{uri_action(my-comment-edit,{ID_COMMENT})}" title="bearbeiten">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+            {endif}
+			</td>
+			<td>
+                {if RATING}
+                <div class="pull-right">
+                    <img src="{uri_baseurl(/gfx/stars_{RATING}.png)}"/>
+                </div>
+                {endif}
+				<a href="{TARGET_LINK}">
+					{htm(TABLE_DESC)}:
+					{htm(TITLE)}
+				</a>
+			</td>
+			<td>
+            {if !TYPE_SENT}
+    			{if FK_USER>0}
+                    <a title="Nachricht schreiben" href="#" onclick="SendMail({FK_USER}, '', 0, 0, 0); return false;">
+    				<i class="glyphicon glyphicon-envelope"></i>
+    			    </a>
+    				<a href="{uri_action(view_user,{urllabel(USER_NAME)},{FK_USER})}">
+    					{htm(USER_NAME)}
+    				</a>
+    			{else}
+    				<strong>{htm(USER_NAME)}</strong>
+    			{endif}
+            {else}
+                {if FK_USER_OWNER>0}
+                <a title="Nachricht schreiben" href="#" onclick="SendMail({FK_USER_OWNER}, '', 0, 0, 0); return false;">
+                    <i class="glyphicon glyphicon-envelope"></i>
+                </a>
+                <a href="{uri_action(view_user,{urllabel(ANSWER_USER_NAME)},{FK_USER_OWNER})}">
+                    {htm(ANSWER_USER_NAME)}
+                </a>
+                {else}
+                <strong>{htm(ANSWER_USER_NAME)}</strong>
+                {endif}
+            {endif}
+                <br />
+                <small>{todate(STAMP,1)}</small>
+			</td>
+			<td>
+                {htm(SHORT_COMMENT)}
+				<br>
+				{if ANSWER_COMMENT}
+					<a class="label label-info" data-toggle="popover-{ID_COMMENT}" data-original-title="Kommentar zu {htm(TITLE)}">
+                        geantwortet
+                    </a>
+					<div id="content-{ID_COMMENT}" class="display-none">
+
+						<div>
+							<div class="author text-muted">
+                            {if !TYPE_SENT}
+								Sie haben am {todate(ANSWER_STAMP,1)} geantwortet:
+                            {else}
+                                <a href="{uri_action(view_user,{urllabel(ANSWER_USER_NAME)},{FK_USER_OWNER})}">
+                                    {htm(ANSWER_USER_NAME)}
+                                </a>
+                                hat am {todate(ANSWER_STAMP,1)} geantwortet:
+                            {endif}
+							</div>
+							{htm(ANSWER_COMMENT)}
+						</div>
+					</div>
+					<script>
+						jQuery("a[data-toggle=popover-{ID_COMMENT}]").popover({
+							'trigger': 'hover',
+							'placement': 'left',
+							'html': true,
+							'content': jQuery('div#content-{ID_COMMENT}').html()
+						});
+					</script>
+				{endif}
+				{if IS_PUBLIC && IS_REVIEWED}
+                <a href="{TARGET_LINK_WITH_PAGER}#{ID_COMMENT}" class="label label-success">
+                    zum Kommentar</a>
+                {endif}
+			</td>
+		</tr>

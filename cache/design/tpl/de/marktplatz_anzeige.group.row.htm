@@ -1,0 +1,21 @@
+{if IS_SET}
+    <div class="row table-color-row">
+        <div class="col-md-6">{htm(V1)}:</div>
+        <div class="col-md-6">
+            {if VALUE_TPL}
+                {VALUE_TPL}
+            {else}
+                {if TYPE_CHECKBOX}
+                    {if VALUE}Ja {else}Nein{endif}
+                {else}
+                    {if ID_MANUFACTURER}
+                        <a href="{uri_action(hersteller_details,{ID_MANUFACTURER})}">{htm(VALUE)}</a>
+                    {else}
+                        {htm(VALUE)}
+                    {endif}
+                    {htm(V2)}
+                {endif}
+            {endif}
+        </div>
+    </div>
+{endif}

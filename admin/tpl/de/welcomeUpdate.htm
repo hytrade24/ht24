@@ -1,0 +1,247 @@
+<link href="{uri_baseurl(design/default/default/resources/lib/codemirror/lib/codemirror.css)}" rel="stylesheet">
+<link href="{uri_baseurl(design/default/default/resources/lib/codemirror/addon/merge/merge.css)}" rel="stylesheet">
+<script type="application/javascript" src="{uri_baseurl(design/default/default/resources/lib/google/diff_match_patch.js)}"></script>
+<script type="application/javascript" src="{uri_baseurl(design/default/default/resources/lib/codemirror/lib/codemirror.js)}"></script>
+<script type="application/javascript" src="{uri_baseurl(design/default/default/resources/lib/codemirror/mode/xml/xml.js)}"></script>
+<script type="application/javascript" src="{uri_baseurl(design/default/default/resources/lib/codemirror/mode/css/css.js)}"></script>
+<script type="application/javascript" src="{uri_baseurl(design/default/default/resources/lib/codemirror/mode/javascript/javascript.js)}"></script>
+<script type="application/javascript" src="{uri_baseurl(design/default/default/resources/lib/codemirror/mode/htmlmixed/htmlmixed.js)}"></script>
+<script type="application/javascript" src="{uri_baseurl(design/default/default/resources/lib/codemirror/mode/clike/clike.js)}"></script>
+<script type="application/javascript" src="{uri_baseurl(design/default/default/resources/lib/codemirror/mode/php/php.js)}"></script>
+<script type="application/javascript" src="{uri_baseurl(design/default/default/resources/lib/codemirror/mode/sql/sql.js)}"></script>
+<script type="application/javascript" src="{uri_baseurl(design/default/default/resources/lib/codemirror/addon/merge/merge.js)}"></script>
+<style type="text/css">
+
+div.diffLead { font-size: 20px; }
+
+div.diff pre { margin: 0; }
+div.diff pre.diffEqual { color: silver; }
+div.diff pre.diffModified { color: orange; }
+div.diff pre.diffAdded { color: green; }
+div.diff pre.diffRemoved { color: red; }
+
+</style>
+<script type="text/javascript">
+
+function UpdateSkipStep() {
+    var url = "index.php?page=welcome&doUpdate=stepSkip";
+    jQuery.get(url, function(result) {
+        if (result.success) {
+            UpdateStart();
+        }
+    });
+}
+
+function UpdateDesignSkip(filename) {
+    var url = "index.php?page=welcome&doUpdate=designSkip&filename="+encodeURIComponent(filename);
+    jQuery.get(url, function(result) {
+        UpdateResponse(result)
+        if (result.success) {
+            UpdateStart();
+        }
+    });
+}
+
+function UpdateFilesSkip(source, filename) {
+    var url = "index.php?page=welcome&doUpdate=filesSkip&source="+encodeURIComponent(source)+"&filename="+encodeURIComponent(filename);
+    jQuery.get(url, function(result) {
+        UpdateResponse(result)
+        if (result.success) {
+            UpdateStart();
+        }
+    });
+}
+
+function UpdateFilesReplace(source, filename) {
+    var url = "index.php?page=welcome&doUpdate=filesReplace&source="+encodeURIComponent(source)+"&filename="+encodeURIComponent(filename);
+    jQuery.get(url, function(result) {
+        UpdateResponse(result);
+        if (result.success) {
+            UpdateStart();
+        }
+    });
+}
+
+function UpdateRefresh() {
+    jQuery.get("index.php?page=welcome&doUpdate=status", function(result) {
+        jQuery("#updateStep").html(result.step.description);
+        jQuery("#updateStepNumber").html(result.step.index + 1);
+    });
+}
+
+function UpdateStart() {
+    hideHelp();
+    jQuery.get("index.php?page=welcome&doUpdate=start", function(result) {
+        // Update done or error!
+        window.clearInterval(updateTimer);
+        if (result.success) {
+            if (typeof result.timeout == "undefined") {
+                jQuery("#updateInput").html("");
+                jQuery("#updateStep").html("");
+                jQuery("#updateProgress").html("Update abgeschlossen!");
+                jQuery("#updateButton").html("Update abgeschlossen!").prop("disabled", true);
+            } else {
+                UpdateStart();
+            }
+        } else {
+            UpdateResponse(result)
+            jQuery("#updateButton").html("Update fortsetzen").prop("disabled", false);
+        }
+    });
+    // Start update
+    jQuery("#updateButton").html("Update läuft...").prop("disabled", true);
+    var updateTimer = window.setInterval(function() {
+        UpdateRefresh();
+    }, 1000);
+    UpdateRefresh()
+}
+
+function UpdateResponse(result) {
+    if (result.error) {
+        jQuery("#updateInput").html('<div class="error" style="width: 928px;">'+result.error+'</div>');
+        return;
+    }
+    if (result.message) {
+        jQuery("#updateInput").html('<div style="width: 100%;">'+result.message+'</div>');
+        return;
+    }
+    jQuery("#updateInput").html('');
+}
+
+function showDiff(link, diffClass) {
+    var errorDiv = jQuery(link).parents(".error");
+    jQuery(link).parent().parent().find(".diff").hide();
+    errorDiv.find(".diff."+diffClass).show();
+    errorDiv.find(".reiterAktiv").removeClass("reiterAktiv").addClass("reiterPassiv");
+    jQuery(link).parent().removeClass("reiterPassiv").addClass("reiterAktiv");
+}
+
+function showHelp(helpClass) {
+    hideHelp();
+    jQuery("#updateHelp .help."+helpClass).show();
+}
+
+function hideHelp() {
+    jQuery("#updateHelp .help").hide();
+}
+
+
+</script>
+
+<h1>Update durchführen</h1>
+<h2>Bitte folgen Sie den Anweisungen um das Update durchzuführen.</h2>
+
+<p class="error">
+    Stellen Sie vor dem Update sicher das Sie ein vollständiges Backup des Marktplatz vorliegen haben!
+</p>
+
+<table class="tableForm">
+    <thead>
+        <tr>
+            <th>Fortschritt gesamt</th>
+            <th>Aktueller Schritt</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td id="updateProgress">
+                Schitt <span id="updateStepNumber">{if updateStepStart>0}{updateStepStart}{else}0{endif}</span> von {updateSteps}
+            </td>
+            <td id="updateStep">{if updateStepStart>0}{updateStepDesc}{else}Noch nicht gestartet.{endif}</td>
+        </tr>
+    </tbody>
+</table>
+
+<button id="updateButton" onclick="UpdateStart();">{if updateStepStart>0}Update fortsetzen{else}Update starten{endif}</button>
+
+<div id="updateHelp">
+    <div class="help help-merge-filesUpdate" style="display: none;">
+        <h3>Hinweis: Zusammenführen von Dateien</h3>
+        <div>
+            Aufgrund von Änderungen die Sie am ebiz-trader vorgenommen haben ist es notwenig mindestens eine Datei zusammenzuführen.
+            Dazu erhalten Sie unterhalb dieser Erklärung mehrere Versionen der entsprechenden Datei(en) angezeigt:
+            <p>
+                <strong>Original-Version (vor dem Update)</strong><br />
+                In diesem Bereich sehen Sie die Datei ihrer aktuellen ebiz-trader Version ohne ihre Anpassungen.
+            </p>
+            <p>
+                <strong>Neue Version (nach dem Update)</strong><br />
+                In diesem Bereich sehen Sie die neue Version der Datei, wie Sie mit dem Update ausgeliefert wird.
+                Vergleichen Sie diese mit der Original-Version um festzustellen welchen Änderungen im Zuge des Updates vorgenommen wurden.
+            </p>
+            <p>
+                <strong>Aktuelle Version (modifiziert)</strong><br />
+                In diesem Bereich sehen Sie aktuelle Version der Datei, wie Sie in ihrer ebiz-trader Version vorliegt.
+                Vergleichen Sie diese mit der Neuen Version oder Original-Version um festzustellen welchen Änderungen Sie an dieser Datei vorgenommen haben.
+            </p>
+            <p>
+                <strong>Bearbeiten und Speichern</strong><br />
+                Die Bearbeitung erfolgt immer im linken (bei 2 Datei-Versionen) bzw. mittleren (bei 3 Datei-Versionen) Bereich. (Auch zu erkennen am helleren/weißen Hintergrund)
+                <br />
+                Sie können ihre Änderungen jederzeit speichern und zu einem anderen Zeitpunkt fortsetzen.
+            </p>
+            <p>
+                <strong>Bereiche tauschen</strong><br />
+                Zwischen den Überschriften der Bereiche "Neue Version" und "Aktuelle Version" haben Sie die Möglichkeit diese Bereiche zu tauschen um,
+                anstelle auf Basis der neuen Version, das Update auf Basis ihrer aktuellen Version vorzunehmen.
+            </p>
+            <p>
+                <strong>Abschließen</strong><br />
+                Wenn Sie die Änderungen vollständig zusammengeführt haben, klicken Sie auf den Button "Jetzt abschließen!" um die Änderungen engültig zu speichern.
+                Sobald Sie dies machen wird die aktuelle Datei ihrer ebiz-trader Installation unwiderruflich durch die von ihnen zusammengeführte Datei ersetzt!
+                Stellen Sie daher zuvor sicher, dass Sie auch wirklich alle nötigen Änderungen übertragen haben.
+            </p>
+            <p>
+                <strong>Probleme beim Scrollen?</strong><br />
+                Sollten Sie Probleme beim Scrollen der einzelnen Bereiche haben können Sie das "Syncronisierte Scrollen" zwischen zwei Bereichen abschalten.<br />
+                Klicken Sie dazu auf die Pfeile (⇛⇚) am unteren Ende zwischen den Bereichen. 
+            </p>
+        </div>
+    </div>
+    <div class="help help-merge-designUpdate" style="display: none;">
+        <h2>Hinweis: Design anpassen</h2>
+        <div>
+            Aufgrund von Änderungen die Sie am ebiz-trader vorgenommen haben ist es notwenig mindestens ein Template ihres User-Designs anzupassen.
+            Dazu erhalten Sie unterhalb dieser Erklärung mehrere Versionen der entsprechenden Datei(en) angezeigt:
+            <p>
+                <strong>Original-Version (vor dem Update)</strong><br />
+                In diesem Bereich sehen Sie die Datei ihrer aktuellen ebiz-trader Version ohne ihre Anpassungen.
+            </p>
+            <p>
+                <strong>Neue Version (nach dem Update)</strong><br />
+                In diesem Bereich sehen Sie die neue Version der Datei, wie Sie mit dem Update ausgeliefert wird.
+                Vergleichen Sie diese mit der Original-Version um festzustellen welchen Änderungen im Zuge des Updates vorgenommen wurden.
+            </p>
+            <p>
+                <strong>User-Design</strong><br />
+                In diesem Bereich sehen Sie aktuelle Version der Datei, wie Sie in ihrem eigenen Design vorliegt.
+                Vergleichen Sie diese mit der Neuen Version oder Original-Version um festzustellen welchen Änderungen Sie an dieser Datei vorgenommen haben.
+            </p>
+            <p>
+                <strong>Bearbeiten und Speichern</strong><br />
+                Die Bearbeitung erfolgt immer im linken (bei 2 Datei-Versionen) bzw. mittleren (bei 3 Datei-Versionen) Bereich. (Auch zu erkennen am helleren/weißen Hintergrund)
+                <br />
+                Sie können ihre Änderungen jederzeit speichern und zu einem anderen Zeitpunkt fortsetzen.
+            </p>
+            <p>
+                <strong>Bereiche tauschen</strong><br />
+                Zwischen den Überschriften der Bereiche "Neue Version" und "Aktuelle Version" haben Sie die Möglichkeit diese Bereiche zu tauschen um,
+                anstelle auf Basis der neuen Version, das Update auf Basis ihrer aktuellen Version vorzunehmen.
+            </p>
+            <p>
+                <strong>Abschließen</strong><br />
+                Wenn Sie die Änderungen vollständig zusammengeführt haben, klicken Sie auf den Button "Jetzt abschließen!" um die Änderungen engültig zu speichern.
+                Sobald Sie dies machen wird die aktuelle Datei ihrer ebiz-trader Installation unwiderruflich durch die von ihnen zusammengeführte Datei ersetzt!
+                Stellen Sie daher zuvor sicher, dass Sie auch wirklich alle nötigen Änderungen übertragen haben.
+            </p>
+            <p>
+                <strong>Probleme beim Scrollen?</strong><br />
+                Sollten Sie Probleme beim Scrollen der einzelnen Bereiche haben können Sie das "Syncronisierte Scrollen" zwischen zwei Bereichen abschalten.<br />
+                Klicken Sie dazu auf die Pfeile (⇛⇚) am unteren Ende zwischen den Bereichen. 
+            </p>
+        </div>
+    </div>
+    <div class="help help-merge-mails" style="display: none;">
+    </div>
+</div>
+<div id="updateInput"></div>

@@ -1,0 +1,22 @@
+<h1>Texte &uuml;bersetzen</h1>
+{if err}<div class="error">{err}</div><br />{endif}
+<table border="0" cellspacing="0" cellpadding="4" class="reiter"><tr>
+  <th id="R1" class="reiterPassiv"><a href="javascript:reiterwechsel(1);">&Uuml;bersicht</a>&nbsp;</th>
+  <th id="R2" class="reiterPassiv"><a href="javascript:reiterwechsel(2);">Texte suchen</a>&nbsp;</th>{if results}
+  <th id="R3" class="reiterPassiv"><a href="javascript:reiterwechsel(3);">auflisten</a>&nbsp;</th>{endif}{if itemdata}
+  <th id="R4" class="reiterPassiv"><a href="javascript:reiterwechsel(4);">bearbeiten</a>&nbsp;</th>{endif}
+</tr></table>
+<div id="reiter1" style="display:none;"><table class="liste">{stat_head}{stat_list}</table><br /></div>
+<div id="reiter2" style="display:none;" class="formTable">{subtpl(tpl/de/translate.search.htm,*)}</div>
+<div id="reiter3" style="display:none;" class="formTable">
+<h3>{if listmode_qry}Suche nach "{htm(qry)}"{else}alle Datens&auml;tze{endif} in Tabelle `{result_table}`</h3>
+{results}
+</div>
+<div id="reiter4" style="display:none;" class="formTable">{subtpl(tpl/de/translate.edit.htm,*)}</div>
+
+<script type="text/javascript">
+<!--
+  reiterwechsel({gotab:1});
+  do_select(document.getElementById('select_table'));
+//-->
+</script><br />

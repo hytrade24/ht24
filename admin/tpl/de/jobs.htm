@@ -1,0 +1,135 @@
+
+<script type="text/javascript">
+ function ajaxOnOk()
+ {
+   alert('voller Erfolg');
+ }
+ 
+ onload = function()
+ {
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax&table=job{if FK_KAT}&ID_KAT={FK_KAT}{endif}',1,false,'kat_ajax');
+ };
+
+ function kat_auswahl(kat)
+ {
+   //alert(kat);
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax&ID_KAT='+kat+'&table=job',0,false,'kat_ajax');
+   if(kat)
+    document.getElementById('fkkat').value = kat;
+ } // kat_auswahl()
+ 
+ function showdetails(scr)
+ {
+   //alert(scr);
+   tr = document.getElementById('scr_'+scr);
+   //alert(tr.style.display);
+   if(tr.style.display == 'none') {
+     tr.style.display = '';
+     ajaxSubmit(null,'index.php?frame=ajax&page=job_edit&ID_JOB='+scr,0,false,'details'+scr);
+   }
+   else
+     tr.style.display='none';
+ } // showdetails()
+ 
+ function showBewerbung(scr)
+ {
+   //alert(scr);
+   tr = document.getElementById('scr_'+scr);
+   //alert(tr.style.display);
+   tr.style.display = '';
+   ajaxSubmit(null,'index.php?frame=ajax&page=job_bewerbungen&ID_JOB='+scr,0,false,'details'+scr);
+ } // showdetails() 
+ 
+ function pdfdel(id, divid)
+ {
+   ask = confirm('PDF wirklich löschen?');
+	 if(ask)
+	   ajaxSubmit(null,'index.php?frame=ajax&page=job_edit&delpdf='+id+'&ID_JOB='+divid,0,false,'details'+divid);
+ }
+ 
+ function dropdownBlender(param)
+ {
+   var p = param.split("|");
+   var selectfield = document.getElementById(p[2]);
+
+   for (i=0; i<selectfield.length; i++)
+   {
+     if(document.getElementById(p[1]+'_'+selectfield.options[i].value))
+       document.getElementById(p[1]+'_'+selectfield.options[i].value).style.display = 'none';
+   }
+   //******** HomeOffice
+   if(document.getElementById(p[1]+'_'+p[0]))
+     document.getElementById(p[1]+'_'+p[0]).style.display = 'block';
+   
+ } // 
+  
+</script>
+<h1>Jobs</h1>
+<p>Alle im System gespeicherten Jobs. Noch nicht freigeschaltete Angebote haben weder Start- noch Enddatum! </p>
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="jobs">
+ <table class="formTable" cellspacing0"0">
+  <tr>
+	 <th>Suche nach Titel</th>
+	 <td><input type="text" size="35" name="JOBTITLE" value="{htm(JOBTITLE)}" /></td>
+	 <td  colspan="3">
+	  <input type="checkbox" name="ACTIVE" value="1" {if ACTIVE} checked{endif} /> Nur aktive anzeigen	 </td>
+	 <td rowspan="3" valign="top"><div id="kat_ajax" style="width:300px; height:130px; overflow:auto;">Kategorien werden geladen ...</div></td>
+	</tr>
+	<tr>
+	 <th>Freigabe</th>
+	 <td><input type="checkbox" name="RED_" class="nob" value="1" {if RED_}checked{endif} /> User	
+    <input type="checkbox" name="ADM_" class="nob" value="2" {if ADM_}checked{endif}> Admin		
+    <input type="checkbox" name="ALL" class="nob" value="1" {if ALL}checked{endif} /> Alle anzeigen   </td>
+	 <th>User</th>
+	 <td colspan="2"><input type="text" name="_NAME" value="{htm(_NAME)}" size="30" /></td>
+	</tr>
+	<tr>
+	  <th>Sortierung</th>
+	  <td><select name="orderby">{orders}</select></td>
+	  <th>Auf/Absteigend</th>
+	  <td colspan="2"><input type="radio" name="updown" value="ASC" class="nob" {if updown_ASC} checked{endif} /> aufsteigend
+       <input type="radio" name="updown" value="DESC" class="nob" {if updown_DESC || !updown} checked{endif} /> absteigend</td>
+	  </tr>
+	<tr>
+	  <th>Zeige</th>
+	  <td colspan="2">
+		 <input type="radio" name="SHOW" value="0" class="nob" {if !SHOW} checked{endif} /> alle
+		 <input type="radio" name="SHOW" value="1" class="nob" {if SHOW == 1} checked{endif} /> nur abgeschlossene
+		 <input type="radio" name="SHOW" value="2" class="nob" {if SHOW == 2} checked{endif} /> nicht abgeschlossene		</td>
+	  <td colspan="2">&nbsp;</td>
+	  <td valign="top">&nbsp;</td>
+	  </tr>
+		<tr class="footer">
+		 <td align="right" colspan="6"><input type="submit" value="Suchen" class="button" /></td>
+		</tr>
+ </table>
+</form>
+
+{if liste}
+ <table class="liste" cellspacing="0">
+  <tr>
+	 <th>Aktion</th>
+	 <th>Noch<br />Aktiv</th>
+	 <th><img src="tpl/role3.png"></th>
+	 <th><img src="tpl/role2.png"></th>
+	 <th>Titel</th>
+	 <th>User</th>
+	 <th>Beginn</th>
+	 <th>Ende</th>
+	 <th>Gebote</th>
+	 <th>H&ouml;chstes</th>
+	 <th>Niedrigstes</th>
+	 <th>Gewinner</th>
+	 <th>Endbetrag</th>
+	</tr>
+	{liste}
+ </table>
+{else}
+ <p class="error">Keine Jobs gefunden!</p>
+{endif}
+{pager}
+
+
+<p>&nbsp;</p>
+{subtpl(tpl/de/js_userbox.htm,*)}

@@ -1,0 +1,108 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+	<form action="{uri_action(club-member-request)}?frame=ajax" method="post" id="clubMemberRequestFormular" class="form-horizontal modal-form design-club-join-request">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="modalDialogTitle">
+                Application
+            </h3>
+		</div>
+
+		<div class="modal-body" id="modalDialogContent">
+
+			{if sent}
+				<script>
+					jQuery("#modalDialog .modal-footer [type=submit]").detach();
+				</script>
+				<p>
+                    Your message was sent successfully
+				</p>
+			{else}
+
+				<input type="hidden" name="ID_CLUB" size="20" value="{CLUB_ID_CLUB}" />
+
+				{if err_failure}
+					<div class="alert alert-danger">
+						<p><strong>An error has occurred!</strong></p>
+
+						{if err_not_found}The group was not found. Please try the application again.{endif}
+						{if err_member_request_not_allowed}An application is not allowed for this group.{endif}
+						{if err_member_already}You are already a member of this group.{endif}
+						{if err_membership_request_already}An application is currently open or a past application was denied.{endif}
+
+					</div>
+				{else}
+					{if REQUEST_MEMBERSHIP}
+						<input type="hidden" name="do"  value="request_membership" />
+
+						{if err}
+							<div class="alert alert-danger">
+                            {if err_reason}
+                                Please reason your application. Write at least 50 characters for this.
+                            {endif}
+							</div>
+						{endif}
+
+						<div class="form-group">
+							<label class="control-label design-input-label">Group:</label>
+
+							<div class="design-input-field">
+								<label class="form-control-static">
+									<div class="text-left">{CLUB_NAME}</div>
+								</label>
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="control-label design-input-label">Reason your application:</label>
+
+							<div class="design-input-field">
+								<textarea id="REASON" name="REASON" rows="10" class="form-control">{htm(REASON)}</textarea>
+							</div>
+						</div>
+					{endif}
+					{if REQUEST_MEMBERSHIP_SUCCESS}
+						<div class="alert alert-success">
+                            Your application was sent to the Group-leader.
+                                You will be informed after a successful confirmation.
+
+						</div>
+					{endif}
+					{if MEMBERSHIP_SUCCESS}
+						<div class="alert alert-success">
+                            You successfully joined the group <strong>{CLUB_NAME}</strong>.
+						</div>
+					{endif}
+
+				{endif}
+
+			{endif}
+		</div>
+		<div class="modal-footer">
+			<a href="#" onclick="HideDialog(); return false;" class="btn btn-default">Close window</a>
+			{if show_send_button}
+				<input type="submit" class="btn btn-primary" value="Send application">
+			{endif}
+		</div>
+	</form>
+	<script type="text/javascript">
+		jQuery("#clubMemberRequestFormular").submit(function(e) {
+
+			var data = jQuery("#clubMemberRequestFormular").serialize();
+			jQuery.ajax({
+				url: jQuery("#clubMemberRequestFormular").attr('action'),
+				type: 'POST',
+				data: data,
+				success: function(result) {
+					$('#modalDialog .modal-content').replaceWith( jQuery(result).find(".modal-content") );
+				}
+			});
+
+			e.preventDefault();
+			return false;
+		});
+	</script>
+  </div>
+</div>
+	

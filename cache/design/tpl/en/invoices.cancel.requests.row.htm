@@ -1,0 +1,45 @@
+<tr data-row-cancel-requests="{ID_BILLING_CANCEL}">
+    <td>{ID_BILLING_CANCEL}</td>
+    <td>
+        {if TYPE == "1"}
+            <a href="{uri_action(invoice,{LINK_ID})}?highlight={ID_BILLING_INVOICE_ITEM}">
+                {RELATED_TO}
+            </a>
+        {else}
+            {if TYPE == "2"}
+                {if REF_TYPE == "4" && REF_FK != "" }
+                    <a href="{uri_action(sale_details_seller)}?ID_AD_ORDER={FK_AD_ORDER}">
+                        {RELATED_TO}
+                    </a>
+                {else}
+                    {RELATED_TO}
+                {endif}
+            {endif}
+        {endif}
+    </td>
+    <td>
+        {if STATUS_pending}
+            Pending
+        {endif}
+        {if STATUS_rejected}
+            Rejected
+        {endif}
+        {if STATUS_shelve}
+            Pending
+        {endif}
+        {if STATUS_done}
+            Accepted
+        {endif}
+    </td>
+    <td>{CUSTOMER_REMARKS}</td>
+    <td>{ADMIN_REMARKS}</td>
+    <td>{date_format(LAST_MODIFIED,d.m.Y)}</td>
+    <td>{date_format(CREATED_AT,d.m.Y)}</td>
+    <td>
+        {if !STATUS_done && !STATUS_rejected}
+            <a href="{uri_action(invoice_cancel,{EDIT_LINK})}" class="btn btn-default" title="Edit">
+                <i class="fa fa-pencil"></i>
+            </a>
+        {endif}
+    </td>
+</tr>

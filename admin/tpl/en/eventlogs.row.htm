@@ -1,0 +1,15 @@
+<tr class="zeile{even}">
+ <td class="event_{EVENT}" valign="top" align="center"><img width="32" height="25" src="gfx/{EVENT}.png" alt="{EVENT}" title="{EVENT}" /></td>
+ <td nowrap>{todate(STAMP,1)}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+ <td>{htm(S_INFO)}</td>
+ <td>{if USER}<a id="b{NUMMER}" name="{USER}" onclick="popupfkt('user_edit&ID_USER={FK_USER}',750,500);" style="cursor:help;" title="{USER} ansehen">{htm(USER)}</a>
+  {else}&nbsp;{endif}
+ {if NUMMER}<div id="pb{NUMMER}" class="preview">Bitte warten ...</div>{endif}</td>
+</tr>
+{if S_ERR}
+ <tr class="zeile{even}">
+  <td>&nbsp;</td>
+  <td class="error" valign="top">Fehlermeldung</td>
+  <td colspan="2" class="error"><pre>{text(S_ERR)}</pre></td>
+ </tr>
+{endif}

@@ -1,0 +1,29 @@
+<tr>
+    <td class="design-action-buttons" colspan="2">
+        <a title="Change this search" href="{uri_action(gesuch_neu,{ID_AD_REQUEST})}" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+		</a>
+        <a title="Delete this search" onclick="return confirm('Do you really want to delete this search?');" href="{uri_action(my-ad-request,{npage},delete,{ID_AD_REQUEST})}" class="btn btn-default">
+            <i class="glyphicon glyphicon-remove"></i>
+		</a>
+	</td>
+
+	<td align="left" style="padding-right:20px;"  >
+		{ID_AD_REQUEST}
+	</td>
+    <td>
+        {todate(STAMP_START)}
+    </td>
+    <td>
+        {KAT_NAME}
+    </td>
+    <td>
+        {if !STATUS}
+        	<em>(checking)</em>
+        {else}
+        	<a href="{uri_action(gesuch_anzeigen,{ID_AD_REQUEST},{urllabel(PRODUKTNAME)})}" target="_blank">
+        		{PRODUKTNAME}
+        	</a>
+        {endif}
+    </td>
+</tr>

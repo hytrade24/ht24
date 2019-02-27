@@ -1,0 +1,3 @@
+
+  <td{if page} title="{if anz==1||end==ofs+1}{end}{else}{=1+ofs} bis {end} von {anz}{endif}"{endif} class="browse{if is_current}x{else}{=delta&1}{endif}"
+    >{if page}{if is_current}{page}{else}<a href="{browseref}{ofs}">{page}</a>{endif}{else}&nbsp;{endif}</td>

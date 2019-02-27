@@ -1,0 +1,43 @@
+	<h1>Mitgliedschaften</h1>
+
+{if error_in_use}
+	<div class="error">
+		Die gew&auml;hlte Mitgliedschaft ist gerade in Verwendung und kann daher nicht gel&ouml;scht werden!
+	</div>
+	<br />
+{endif}
+	
+	<table class="liste" cellpadding="0" cellspacing="0">
+	  <tr>
+	  	<th class="first">
+	  		Aktion
+	  	</th>
+		<th>
+			Aktiv?
+		</th>
+		<th>
+			Abo?
+		</th>
+		<th>
+			Benutzergruppe
+		</th>
+		<th>
+			Name
+		</th>
+		<th>
+			Enth&auml;lt
+		</th>
+		<th class="last">
+			Preis(e)
+		</th>
+        <th>Anzahl<br />User</th>
+	  </tr>
+	  {liste}
+	  {if pager}
+	  <tr>
+	  	<th colspan="8" class="footer">
+	  		{pager}
+	  	</th>
+	  </tr>
+	  {endif}
+	</table>

@@ -1,0 +1,39 @@
+
+{if range}
+<div>
+  <div class="{if range_day}reiterAktiv{else}reiterPassiv{endif}">
+    <a href="index.php?frame=iframe&page=stats&show={show}&range=day{if params}&{params}{endif}" target="_self">
+      Pro Tag
+    </a>
+  </div>
+  <div class="{if range_month}reiterAktiv{else}reiterPassiv{endif}">
+    <a href="index.php?frame=iframe&page=stats&show={show}&range=month{if params}&{params}{endif}" target="_self">
+      Pro Monat
+    </a>
+  </div>
+  <div class="reiterPassiv" style="float: right;">
+    <a href="index.php?frame=iframe&page=stats&show={show}&range={range}&recache=1{if params}&{params}{endif}" target="_self">
+      Aktualisieren
+    </a>
+  </div>
+</div>
+{endif}
+<div align="center" style="position: absolute; top: {if range}24px{else}0px{endif}; left: 0px; right: 0px; bottom: 0px;">
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="{uri_resource(/lib/jquery/jquery.js)}"></script>
+<script src="{uri_baseurl(js/Chart.bundle.min.js)}"></script>
+<script type="text/javascript">
+  
+{if CHART_JSON}
+  var myPieChart = new Chart("myChart", {CHART_JSON});
+{else}
+  var myPieChart = new Chart("myChart",{
+      type: '{CHART_TYPE}',
+      data: {DATA_JSON},
+      options: {OPTIONS}
+  });
+{endif}
+  
+</script>

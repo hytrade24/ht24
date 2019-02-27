@@ -1,0 +1,23 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="148"{endif}>
+    {if tpl_option_is_set(SITE,CONTACT_FACEBOOK) || tpl_option_is_set(SITE,CONTACT_GOOGLE) || tpl_option_is_set(SITE,CONTACT_TWITTER)}
+<p>Also visit our social media pages</p>
+<div class="btn-group">
+  {if tpl_option_is_set(SITE,CONTACT_FACEBOOK)}
+    <a href="{option(SITE,CONTACT_FACEBOOK)}" class="btn btn-default" target="_blank" rel="nofollow">
+        <img src="{uri_resource(/images/icons/facebook_color02_32x32.png)}" width="32" height="32"/>
+    </a>
+  {endif}
+  {if tpl_option_is_set(SITE,CONTACT_GOOGLE)}
+    <a href="{option(SITE,CONTACT_GOOGLE)}" class="btn btn-default" target="_blank" rel="nofollow">
+        <img src="{uri_resource(/images/icons/google_color02_32x32.png)}" width="32" height="32"/>
+    </a>
+  {endif}
+  {if tpl_option_is_set(SITE,CONTACT_TWITTER)}
+    <a href="{option(SITE,CONTACT_TWITTER)}" class="btn btn-default" target="_blank" rel="nofollow">
+        <img src="{uri_resource(/images/icons/twitter02_color_32x32.png)}" width="32" height="32"/>
+    </a>
+  {endif}
+</div>
+{endif}
+</div>

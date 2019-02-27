@@ -1,0 +1,110 @@
+<h1><img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />User '{NAME}'  / #{ID_USER} {if ID_USER}bearbeiten{else}erstellen{endif}</h1>
+<p>
+    Bitte geben Sie hier die Benutzerdaten ein.
+</p>
+{if err || msg}
+<div class="hinweis">
+    <span class="error">{err}</span>
+    <span class="ok">{msg}</span>
+</div>
+{endif}
+<p style="clear:left;margin:0px;">&nbsp;</p>
+<div style="float:left;">
+        <input type="hidden" name="dummy" value="" /><input type="hidden" name="nav" value="{curnav}" /><input type="hidden" name="ID_USER" value="{ID_USER}" /><input type="hidden" name="frame" value="{curframe}" />{if ID_USER}
+        <div class="reiterPassiv">
+            <a href="index.php?page=user_edit&ID_USER={ID_USER}">Stammdaten</a>
+        </div>
+        <div class="reiterPassiv">
+            <a href="index.php?page=perm2user&ID_USER={ID_USER}">Rechte</a>
+        </div>
+        <div class="reiterPassiv">
+            <a href="index.php?page=user_buchhaltung&ID_USER={ID_USER}" title="Buchhalterische Dtaen einsehen"> Rechnungen </a>
+        </div>
+        <div class="reiterPassiv">
+            <a href="index.php?page=user_billing_creditnote&ID_USER={ID_USER}" title="Buchhalterische Dtaen einsehen"> Gutschriften </a>
+        </div>
+        <div class="reiterPassiv">
+            <a href="index.php?page=user_ads&ID_USER={ID_USER}">Anzeigen</a>
+        </div>
+        <div class="reiterPassiv">
+            <a href="index.php?page=user_transaktion&ID_USER={ID_USER}" title="K&auml;ufe und Verk&auml;ufe anzeigen">
+                Ein- und Verk&auml;ufe
+            </a>
+        </div>
+        <div class="reiterPassiv">
+            <a href="index.php?page=user_kontingent&ID_USER={ID_USER}" title="Anzeigenkontingent anzeigen">
+                Kontingent
+            </a>
+        </div>
+        <div class="reiterAktiv">
+            <a href="index.php?page=user_vendor&ID_USER={ID_USER}" title="Standorte und Anbieterdaten ändern">
+                Anbieter
+            </a>
+        </div>
+        <div class="reiterPassiv">
+            <a title="&Ouml;ffentliches Profil ansehen" href="{uri_baseurl(/marktplatz/view_user,{urllabel(NAME)},{ID_USER}.htm)}" target="_blank">Profil</a>
+        </div>
+        {endif}
+ </div><br style="clear: both;" />
+ <table border="0" cellspacing="1" cellpadding="4" class="formTable" style="border:1px #9A9A9A solid">
+
+        <tr>
+            <td style="width: 200px;"><b>Anbieteransicht aktiv? :</b></td>
+            <td>
+                <input type="checkbox" name="STATUS" {if vSTATUS} checked="checked"{endif} value="{vSTATUS}" />
+            </td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td>{vNAME}
+            </td>
+        </tr>
+
+        <tr>
+            <td>Straße:</td>
+            <td>{vSTRASSE}
+            </td>
+        </tr>
+        <tr>
+            <td>PLZ:</td>
+            <td>{vPLZ}
+            </td>
+        </tr>
+        <tr>
+            <td>Ort:</td>
+            <td>{vORT}
+            </td>
+        </tr>
+        <tr>
+            <td>Land:</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Telefon:</td>
+            <td>{vTEL}
+            </td>
+        </tr>
+        <tr>
+            <td>Fax:</td>
+            <td>{vFAX}
+            </td>
+        </tr>
+        <tr>
+            <td>Web:</td>
+            <td>{vURL}
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">Firmenlogo:</td>
+            <td>
+
+                    <img src="{uri_baseurl(/cache/vendor/logo/{LOGO})}" />
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">Folgende <a href="index.php?page=kat_edit&ROOT=4">Kategorien</a> wurden zugeordnet</td>
+            <td><ul>{kats}</ul></td>
+        </tr>
+    </table>
+
+

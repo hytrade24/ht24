@@ -1,0 +1,14 @@
+<tr>
+    <td>
+        {if DOWNLOAD_ALLOWED}
+        <a class="dropdown-item" href="index.php?page=ad_showup&ID_AD_UPLOAD={ID_AD_UPLOAD}">
+            {FILENAME}
+        </a>
+        {else}
+            {FILENAME}
+        {endif}
+    </td>
+    <td>
+        {EXT}
+    </td>
+</tr>

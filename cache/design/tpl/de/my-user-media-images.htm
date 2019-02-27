@@ -1,0 +1,15 @@
+<p id="uploadImageNoneYet" class="text-error"{if liste} style="display: none"{endif}>
+Sie haben noch keine Bilder hochgeladen.
+</p>
+<table id="uploadImageTable" class="table table-bordered table-striped table-condensed"{if !liste} style="display: none"{endif}>
+    <thead>
+        <tr>
+            <th>Vorschau</th>
+            <th>Aktionen</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {liste}
+    </tbody>
+</table>

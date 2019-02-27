@@ -1,0 +1,358 @@
+<script type="text/javascript">
+
+function UpdateAbo() {
+	var checked = (jQuery("#B_ABO").attr("type") == "hidden" ? jQuery("#B_ABO").val() == 1 : jQuery("#B_ABO").attr("checked"));
+	if (checked) {
+		jQuery("#RUNTIME_FACTOR").attr("disabled", false);
+		jQuery("#BILLING_FACTOR").attr("disabled", false);
+		jQuery("#BILLING_CYCLE").attr("disabled", false);
+		jQuery("#BILLING_CANCEL_DAYS").attr("disabled", false);
+		jQuery(".content_once input.enabled").attr("disabled", true);
+		jQuery(".content_once").hide();
+		jQuery(".content_abo input.enabled").attr("disabled", false);
+		jQuery(".content_abo").show();
+		var runtime = (jQuery("#BILLING_FACTOR").val() * jQuery("#RUNTIME_FACTOR").val()) + " " + jQuery("#BILLING_CYCLE option:selected").html();
+		jQuery("#runtime").html(runtime);
+	} else {
+		jQuery("#RUNTIME_FACTOR").attr("disabled", true);
+		jQuery("#BILLING_FACTOR").attr("disabled", true);
+		jQuery("#BILLING_CYCLE").attr("disabled", true);
+		jQuery("#BILLING_CANCEL_DAYS").attr("disabled", true);
+		jQuery(".content_abo input.enabled").attr("disabled", true);
+		jQuery(".content_abo").hide();
+		jQuery(".content_once input.enabled").attr("disabled", false);
+		jQuery(".content_once").show();
+		jQuery("#runtime").html("---");
+	}
+}
+
+function UpdateFlat(id) {
+	var checked = jQuery("#flat"+id).attr("checked");
+	if (checked) {
+		jQuery("#edit"+id).removeClass("enabled").attr("disabled", true);
+	} else {
+		jQuery("#edit"+id).addClass("enabled").attr("disabled", false).val(0);
+	}
+}
+
+function RuntimeAdd() {
+	UpdateAbo();
+	// Load default values
+	jQuery("#RUNTIME_FACTOR").val(1);
+	jQuery("#BILLING_FACTOR").val(1);
+	jQuery("#BILLING_CYCLE option:selected").attr("selected", false);
+	jQuery("#BILLING_CANCEL_DAYS").val(7);
+	jQuery("#BILLING_PRICE").val( jQuery("#PRICE").val() );
+	jQuery("#ID_PACKET_RUNTIME").val(0);
+	// Show dialog
+	jQuery("#dialog_runtime").dialog("option", "title", "Neue Laufzeit hinzufügen");
+	jQuery("#dialog_runtime").dialog("open");
+}
+
+function RuntimeEdit(id_packet_runtime) {
+	jQuery.post("index.php", { "action": "runtime_get", "page": "packet_edit", "ID_PACKET_RUNTIME": id_packet_runtime }, 
+		function(result) {
+			jQuery("#ID_PACKET_RUNTIME").val(result.runtime.ID_PACKET_RUNTIME);
+			jQuery("#RUNTIME_FACTOR").val(result.runtime.RUNTIME_FACTOR);
+			jQuery("#BILLING_FACTOR").val(result.runtime.BILLING_FACTOR);
+			jQuery("#BILLING_CYCLE").val(result.runtime.BILLING_CYCLE);
+			jQuery("#BILLING_CANCEL_DAYS").val(result.runtime.BILLING_CANCEL_DAYS);
+			jQuery("#BILLING_PRICE").val(result.runtime.BILLING_PRICE);
+			jQuery("#B_ABO").attr("checked", result.runtime.B_ABO);
+			UpdateAbo();
+			jQuery("#dialog_runtime").dialog("option", "title", "Laufzeit bearbeiten");
+			jQuery("#dialog_runtime").dialog("open");
+		});
+}
+
+function RuntimeDelete(id_packet_runtime) {
+	if (!confirm("Möchten Sie dieses Angebot wirklich löschen?")) {
+		return false;
+	}
+	jQuery.post("index.php", { "action": "runtime_rem", "page": "packet_edit", "FK_PACKET": {if !ID_PACKET}0{else}{ID_PACKET}{endif}, "ID_PACKET_RUNTIME": id_packet_runtime }, 
+	function(result) {
+		if (result.success) {
+			document.location.reload();
+		} else {
+			alert("Fehler beim Löschen des Angebots!");
+		}
+	});
+}
+
+function RuntimeAddSubmit() {
+	var action = jQuery("#form_runtime").attr("action");
+	var params = jQuery("#form_runtime").serialize();
+	jQuery.post(action, params, function(result) {
+		if (result.success) {
+			jQuery("#dialog_runtime").dialog("close");
+			document.location.reload();
+		}
+	});
+}
+
+jQuery(function() {
+	UpdateAbo();
+	jQuery("#dialog_runtime").dialog({ autoOpen: false, title: "Neue Laufzeit hinzufügen", minWidth: 720 });
+
+    jQuery(".membershipUpgradeableCheckbox").change(function() {
+        if(jQuery(this).is(':checked')) {
+            jQuery('#MEMBERSHIPUPGRADE_UNLOCK_MANUAL-' + jQuery(this).attr('rel')).attr("disabled", false);
+        } else {
+            jQuery('#MEMBERSHIPUPGRADE_UNLOCK_MANUAL-' + jQuery(this).attr('rel')).attr("disabled", "disabled");
+        }
+    })
+});
+
+</script>
+
+{if ID_PACKET && B_ABO}
+<div id="dialog_runtime">
+	<form id="form_runtime" action="index.php" method="post">
+		<input type="hidden" name="action" value="runtime_add" />
+		<input type="hidden" name="page" value="{curpage}" />
+		<input type="hidden" id="ID_PACKET_RUNTIME" name="ID_PACKET_RUNTIME" value="{ID_PACKET_RUNTIME}" />
+		<input type="hidden" name="FK_PACKET" value="{ID_PACKET}" />
+		<input type="hidden" id="B_ABO" name="B_ABO" value="1" />
+		<table class="formTable" width="100%">
+			<tr>
+				<th style="vertical-align:top;padding-top:2px;">
+					Abrechnungszeitraum
+				</th>
+				<td>
+					<input type="number" id="BILLING_FACTOR" name="BILLING_FACTOR" onchange="UpdateAbo();" placeholder="Anzahl" min="1" value="{BILLING_FACTOR}" />
+					<select id="BILLING_CYCLE" name="BILLING_CYCLE" onchange="UpdateAbo();"{if !B_ABO} disabled="disabled"{endif}>
+						<option value='DAY'{if BILLING_DAY} selected="selected"{endif}>Tag(e)</option>
+						<option value='WEEK'{if BILLING_WEEK} selected="selected"{endif}>Woche(n)</option>
+						<option value='MONTH'{if BILLING_MONTH} selected="selected"{endif}>Monat(e)</option>
+						<option value='QUARTER'{if BILLING_QUARTER} selected="selected"{endif}>Quartal(e)</option>
+						<option value='YEAR'{if BILLING_YEAR} selected="selected"{endif}>Jahr(e)</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th style="vertical-align:top;padding-top:2px;">
+					Anzahl der Zahlungen
+				</th>
+				<td>
+					<input type="number" id="RUNTIME_FACTOR" name="RUNTIME_FACTOR" onchange="UpdateAbo();" placeholder="Anzahl Zahlungen" min="1" value="{RUNTIME_FACTOR}" />
+				</td>
+			</tr>
+			<tr>
+				<th style="vertical-align:top;padding-top:2px;">
+					K&uuml;ndigungsfrist
+				</th>
+				<td>
+					<input type="number" id="BILLING_CANCEL_DAYS" name="BILLING_CANCEL_DAYS" placeholder="Anzahl Tage" min="1" value="{BILLING_CANCEL_DAYS}" />
+					(in Tagen)
+				</td>
+			</tr>
+			<tr>
+				<th style="vertical-align:top;padding-top:2px;">
+					Vertragslaufzeit
+				</th>
+				<td>
+					<span id="runtime"></span>
+				</td>
+			</tr>
+			<tr>
+				<th style="vertical-align:top;padding-top:2px;">Netto Preis</th>
+				<td>
+					<input style="width:100px;" id="BILLING_PRICE" name="BILLING_PRICE" value="{topreis(BILLING_PRICE)}">
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2" align="right">
+					<input type="button" value="Speichern" onclick="RuntimeAddSubmit()" />
+				</th>
+			</tr>
+		</table>
+	</form>
+</div>
+{endif}
+
+<form action="index.php" method="post">
+	{if ID_PACKET}
+		<h1>Mitgliedschaft bearbeiten</h1>
+		<input type="hidden" name="ID_PACKET" value="{ID_PACKET}" />
+	{else}
+		<h1>Mitgliedschaft hinzuf&uuml;gen</h1>
+	{endif}
+	{if saved}
+		<h2 class="ok">Erfolgreich gespeichert!</h2>
+	{endif}
+	{if errors}
+	<div class="error">
+		<h2>Fehler!</h2>
+		{errors}
+	</div>
+	{endif}
+
+	<input type="hidden" name="page" value="{curpage}" />
+	<table class="formTable" width="600">
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Name der Mitgliedschaft</th>
+			<td>
+				<input style="width:100%;" name="V1" value="{htm(V1)}">
+				<br />z.B. Gold-Mitglied
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Benutzergruppe</th>
+			<td>
+				<select name="FK_USERGROUP">
+					{liste_groups}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Mitgliedschaft aktiv?</th>
+			<td>
+				<label>
+					<input type="checkbox" name="B_AKTIV" value="1" class="nob" {if (STATUS&1)} checked{endif} />
+					Aktivieren um die Mitgliedschaft &ouml;ffentlich anzubieten
+				</label>
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Beschreibung</th>
+			<td>
+				<textarea style="width:100%;" name="T1">{htm(T1)}</textarea><br />
+				Beschreiben Sie hier die Features des Basispakets.
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">
+				Inhalt
+			</th>
+			<td>
+				<table class="liste" cellpadding="0" cellspacing="0">
+					<tr>
+						<th>Anzahl</th>
+						<th>Typ</th>
+					</tr>
+					{liste}
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Mehrwertsteuersatz</th>
+			<td>
+				{select(tax,FK_TAX,TXT)}
+			</td>
+		</tr>
+		{if ID_PACKET}
+			{if B_ABO}
+			<tr>
+				<th style="vertical-align:top;padding-top:2px;">
+					Laufzeit(en)
+				</th>
+				<td>
+					<table class="liste" cellpadding="0" cellspacing="0">
+						<tr>
+							<th>Aktion</th>
+							<th>Laufzeit</th>
+							<th>Abrechnungszeitraum</th>
+							<th>Preis</th>
+						</tr>
+						{liste_runtimes}
+						<tr>
+							<th class="footer" colspan="4">
+								<input onclick="RuntimeAdd();" type="button" name="runtime_add" value="Neue Laufzeit hinzufügen" />
+							</th>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			{else}
+			<tr>
+				<th style="vertical-align:top;padding-top:2px;">Netto Preis</th>
+				<td>
+					<input type="hidden" id="B_ABO" name="B_ABO" value="0" />
+					<input style="width:100px;" id="BILLING_PRICE" name="BILLING_PRICE" value="{topreis(BILLING_PRICE)}">
+					{CURRENCY_DEFAULT}
+				</td>
+			</tr>
+			{endif}
+		{else}
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">
+				Als Abo verwenden?
+			</th>
+			<td>
+				<label>
+					<input type="checkbox" id="B_ABO" name="B_ABO" value="1" class="nob" onchange="UpdateAbo();" {if B_ABO} checked="checked"{endif} />
+					Dieses Paket wird in regelm&auml;&szlig;igen Abst&auml;nden abgerechnet. (Monatlich/.../Jährlich)
+				</label> 
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">
+				Abrechnungszeitraum
+			</th>
+			<td>
+				<input type="number" id="BILLING_FACTOR" name="BILLING_FACTOR" onchange="UpdateAbo();" placeholder="Anzahl" min="1" value="{BILLING_FACTOR}" />
+				<select id="BILLING_CYCLE" name="BILLING_CYCLE" onchange="UpdateAbo();"{if !B_ABO} disabled="disabled"{endif}>
+					<option value='DAY'{if BILLING_DAY} selected="selected"{endif}>Tag(e)</option>
+					<option value='WEEK'{if BILLING_WEEK} selected="selected"{endif}>Woche(n)</option>
+					<option value='MONTH'{if BILLING_MONTH} selected="selected"{endif}>Monat(e)</option>
+					<option value='QUARTER'{if BILLING_QUARTER} selected="selected"{endif}>Quartal(e)</option>
+					<option value='YEAR'{if BILLING_YEAR} selected="selected"{endif}>Jahr(e)</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">
+				Anzahl der Zahlungen
+			</th>
+			<td>
+				<input type="number" id="RUNTIME_FACTOR" name="RUNTIME_FACTOR" onchange="UpdateAbo();" placeholder="Anzahl Zahlungen" min="1" value="{RUNTIME_FACTOR}" />
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">
+				K&uuml;ndigungsfrist
+			</th>
+			<td>
+				<input type="number" id="BILLING_CANCEL_DAYS" name="BILLING_CANCEL_DAYS" onchange="UpdateAbo();" placeholder="Anzahl Tage" min="1" value="{BILLING_CANCEL_DAYS}" />
+				(in Tagen)
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">
+				Vertragslaufzeit
+			</th>
+			<td>
+				<span id="runtime"></span>
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Netto Preis</th>
+			<td>
+				<input style="width:100px;" id="BILLING_PRICE" name="BILLING_PRICE" value="{topreis(BILLING_PRICE)}">
+				{CURRENCY_DEFAULT}
+			</td>
+		</tr>
+		{endif}
+        <tr>
+            <th style="vertical-align:top;padding-top:2px;">
+                Mitgliedschaftsupgrade
+            </th>
+            <td>
+                <table class="liste" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th>auf Mitgliedschaft</th>
+                        <th>Upgradefähig</th>
+                        <th>manuelle Freischaltung</th>
+                    </tr>
+                    {liste_upgrades}
+                </table>
+            </td>
+        </tr>
+        <tr>
+			<th class="footer" colspan="2">
+				<input type="submit" value="Speichern" />
+			</th>
+		</tr>
+
+	</table>
+</form>

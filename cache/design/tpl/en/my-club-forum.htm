@@ -1,0 +1,170 @@
+<script type="text/javascript">
+
+    function forum_order(input) {
+        var url = jQuery(input).val();
+        document.location.href = url;
+    }
+
+    function forum_moderation(input) {
+        var url = jQuery(input).val();
+        document.location.href = url;
+    }
+
+</script>
+
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}Group discussions</h1>
+{if saved}
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Settings saved!</h4>
+    </div>
+{endif}
+{if errors}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Error!</h4>
+        <ul>
+            {errors}
+        </ul>
+    </div>
+{endif}
+
+{if CLUB_ID_CLUB}
+    {subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+
+    {if !HIDE_SORT}
+        <div class="breadcrumb clearfix">
+            <div class="pull-left">
+                <span class="text-muted">{ALL_THREADS} Threads</span>
+            </div>
+            <div class="pull-right">
+            </div>
+        </div>
+    {endif}
+    <p>
+        {if NOTICE_CLOSED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Thread closed</strong>
+            It is not possible to reply to this thread anymore
+        </div>
+        {endif}
+        {if NOTICE_OPENED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Thread opened again</strong>
+            It is possible to reply to this thread again
+        </div>
+        {endif}
+        {if NOTICE_SAVED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Changes saved</strong>
+            The changes in your post were saved successfully
+        </div>
+        {endif}
+        {if NOTICE_REVIEWED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Release granted</strong>
+            The selected Post was released and is visible now
+        </div>
+        {endif}
+    </p>
+    <table class="table table-bordered table-striped table-condensed userList">
+        <tr>
+            <th colspan="2">
+                Release:
+            </th>
+            <th colspan="2">
+                Public:
+            </th>
+            <th colspan="2">
+                Sorting:
+            </th>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <form method="get" action="{uri_baseurl(/index.php)}">
+                    <select name="ordering" onchange="forum_moderation(this);" class="form-control">
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},unconfirmed,{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}" {if CUR_FILTER_UNCONFIRMED}selected="selected"{endif}>Do not release</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},confirmed,{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}" {if CUR_FILTER_CONFIRMED}selected="selected"{endif}>Release</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},all,{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}" {if CUR_FILTER_ALL}selected="selected"{endif}>All threads</option>
+                    </select>
+                </form>
+            </td>
+            <td colspan="2">
+                <form method="get" action="{uri_baseurl(/index.php)}">
+                    <select name="ordering" onchange="forum_moderation(this);" class="form-control">
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}" {if CUR_PUBLIC_ANY}selected="selected"{endif}>Show all</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}?PUBLIC=1" {if CUR_PUBLIC_ONLY}selected="selected"{endif}>Public only</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},{CLUB_FORUM_SORT_FIELD},{CLUB_FORUM_SORT_ORDER})}?PUBLIC=0" {if CUR_PUBLIC_HIDE}selected="selected"{endif}>Private only</option>
+                    </select>
+                </form>
+            </td>
+            <td colspan="2">
+                <form method="get" action="{uri_baseurl(/index.php)}">
+                    <select name="ordering" onchange="forum_order(this);" class="form-control">
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},STAMP_UPDATE,DESC)}" {if CUR_SORT_CHANGED_DESC}selected="selected"{endif}>Newest first</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},STAMP_UPDATE,ASC)}" {if CUR_SORT_CHANGED_ASC}selected="selected"{endif}>Oldest first</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},NAME,ASC)}" {if CUR_SORT_NAME_ASC}selected="selected"{endif}>alphabetically ascending</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},NAME,DESC)}" {if CUR_SORT_NAME_DESC}selected="selected"{endif}>Descending alphabet</option>
+                        <option value="{uri_action(my-club-forum,{CLUB_ID_CLUB},{CLUB_FORUM_FILTER},{URI_SEARCHHASH},{URI_CURPAGE},COMMENTS,DESC)}" {if CUR_SORT_COMMENTS_DESC}selected="selected"{endif}>Most comments first</option>
+                    </select>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <th>Actions</th>
+            <th colspan="4">Topic</th>
+            <th>Author</th>
+        </tr>
+        {liste}
+    </table>
+
+    <p>{pager}</p>
+    <div class="design-content-box design-icon-legend">
+        <div class="pull-left">
+            <a class="btn btn-default">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a> = Edit
+        </div>
+        <div class="pull-left">
+            <a class="btn btn-default">
+                <i class="glyphicon glyphicon-lock"></i>
+            </a>
+            = Close
+        </div>
+        <div class="pull-left">
+            <a class="btn btn-default">
+                <i class="glyphicon glyphicon-asterisk"></i>
+            </a>
+            = Open again
+        </div>
+        <div class="pull-left">
+            <a class="btn btn-danger">
+                <i class="glyphicon glyphicon-remove"></i>
+            </a>
+            = Delete
+        </div>
+        <div class="pull-left">
+            <a class="btn btn-success">
+                <i class="glyphicon glyphicon-ok"></i>
+            </a>
+            = Release
+        </div>
+        <br style="clear: left;">
+
+        <div class="pull-left">
+            <i class="glyphicon glyphicon-bullhorn" title="Announcement"></i>
+            = Announcement
+        </div>
+        <div class="pull-left">
+            <i class="glyphicon glyphicon-warning-sign" title="Sticky"></i>
+            = Sticky
+        </div>
+        <div class="pull-left">
+            <span class="label label-warning">123</span> = Wait for release
+        </div>
+    </div>
+{endif}

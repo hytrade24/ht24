@@ -1,0 +1,68 @@
+<h1>Anbieterverzeichnis</h1>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-vendor-nav.htm,*)}
+<span class="lead">
+    Die Öffnungszeiten werden in Ihrem Anbieterverzeichnis aufgeführt.
+</span>
+
+{if NOTIFICATION_SUCCESS}
+<div class="alert alert-success">
+    <b>Änderung gespeichert!</b> Ihre Öffnungszeiten wurden erfolgreich aktualisiert.
+</div>
+{endif}
+{if NOTIFICATION_ERROR}
+<div class="alert alert-success">
+    <b>Änderung konnte nicht gespeichert werden!</b>
+</div>
+{endif}
+
+<form method="post" action="{uri_baseurl(/index.php)}" id="vendorFormular" enctype="multipart/form-data">
+    <input type="hidden" name="page" value="{curpage}"/>
+    <input type="hidden" name="DO" value="SAVE" />
+
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr class="visibleOnEnabledVendor">
+            <td>Montag:</td>
+            <td>
+                <input class="form-control" type="text" name="BUSINESS_HOURS[0]" value="{htm(BUSINESS_HOURS_0)}" />
+            </td>
+        </tr>
+        <tr class="visibleOnEnabledVendor">
+            <td>Dienstag:</td>
+            <td>
+                <input class="form-control" type="text" name="BUSINESS_HOURS[1]" value="{htm(BUSINESS_HOURS_1)}" />
+            </td>
+        </tr>
+        <tr class="visibleOnEnabledVendor">
+            <td>Mittwoch:</td>
+            <td>
+                <input class="form-control" type="text" name="BUSINESS_HOURS[2]" value="{htm(BUSINESS_HOURS_2)}" />
+            </td>
+        </tr>
+        <tr class="visibleOnEnabledVendor">
+            <td>Donnerstag:</td>
+            <td>
+                <input class="form-control" type="text" name="BUSINESS_HOURS[3]" value="{htm(BUSINESS_HOURS_3)}" />
+            </td>
+        </tr>
+        <tr class="visibleOnEnabledVendor">
+            <td>Freitag:</td>
+            <td>
+                <input class="form-control" type="text" name="BUSINESS_HOURS[4]" value="{htm(BUSINESS_HOURS_4)}" />
+            </td>
+        </tr>
+        <tr class="visibleOnEnabledVendor">
+            <td>Samstag:</td>
+            <td>
+                <input class="form-control" type="text" name="BUSINESS_HOURS[5]" value="{htm(BUSINESS_HOURS_5)}" />
+            </td>
+        </tr>
+        <tr class="visibleOnEnabledVendor">
+            <td>Sonntag:</td>
+            <td>
+                <input class="form-control" type="text" name="BUSINESS_HOURS[6]" value="{htm(BUSINESS_HOURS_6)}" />
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Öffnungszeiten speichern" class="btn btn-success pull-right visibleOnEnabledVendor"/>
+</form>

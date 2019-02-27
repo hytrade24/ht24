@@ -1,0 +1,70 @@
+{if ID_ROLE}
+
+<h1><img src="gfx/pagerights_64.gif" width="64" height="64" alt="" border="0" align="left">Rolle bearbeiten</h1>
+<p>Hier können Sie Rollen bearbeiten. Änderungen werde sofort übernommen.<br>
+Bitte beachten Sie die Rechte der Rolle!</p>
+
+{else}
+
+<h1><img src="gfx/pagerights_64.gif" width="64" height="64" alt="" border="0" align="left">Neue Rolle definieren</h1>
+<p>Hier können Sie neue Rollen definieren. Die benutzer müssen den Rollen danach zugeordnet werden.<br>
+Bitte beachten Sie die Rechte der neuen Rolle!</p>
+
+
+<h2>Folgende Rollen wurde bereits angelegt</h2>
+<table class="liste" cellspacing="0"><tr>
+  <th>Aktion</th>
+  <th>Rolle</th>
+  <th>Beschreibung</th>
+    <th>Anzahl der User</th>
+</tr>
+<tr>{roles}</tr>
+</table>
+Summer der User : {anzahluser}
+<h2>Neue Rolle Anlegen</h2>
+<p>Sinnvolle Namen erleichter das handling der Software. <br>
+Rollen nur dann definieren wenn es unbedingt nötig ist!</p>
+{endif}
+
+{if err}
+<div class="hinweis"><span class="error">{err}</span></div>{endif}
+
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="nav" value="{curnav}" />
+  <input type="hidden" name="ID_ROLE" value="{ID_ROLE}" />
+  <input type="hidden" name="do" value="sv" />
+
+<table class="formTable" cellspacing="0"><tr>
+  <th>ID</th>
+  <td>{if ID_ROLE}{ID_ROLE}{else}neu{endif}</td>
+</tr><tr>
+  <th>Label</th>
+  <td><input type="text" name="LABEL" value="{htm(LABEL)}" maxlength="32" /></td>
+</tr>
+<tr>
+  <th>Beschreibung</th>
+  <td><input type="text" name="DESCR" value="{htm(DESCR)}" maxlength="150"  size="50"/></td>
+</tr><tr>
+  <th class="footer">&nbsp;</th>
+  <td class="footer"><input type="submit" value="speichern" class="button" /></td>
+</tr></table></form>
+{if ID_ROLE && perms}
+<br />
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="nav" value="{curnav}" />
+  <input type="hidden" name="ID_ROLE" value="{ID_ROLE}" />
+  <input type="hidden" name="do" value="rt" />
+<table class="liste" cellspacing="0"><tr>
+  <th>Recht</th>
+  <th>Kategorie</th>
+  <th>DELETE</th>{if 0}
+  <th>DEL</th>{endif}
+  <th>EDIT</th>
+  <th>CREATE</th>
+  <th>READ</th>
+</tr>{perms}<tr>
+  <td colspan="2" class="footer"><input type="submit" value="Rechte zuweisen" class="button" /></td>
+  <td colspan="4" class="footer">&nbsp;</td>
+</tr></table></form>
+{endif}
+

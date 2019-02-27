@@ -1,0 +1,13 @@
+<tr>
+	<th>
+		<img src="{uri_baseurl(/gfx/lang.{ABBR}.gif)}" /> ({ABBR})
+	</th>
+	<td>
+	    <script type="text/javascript">
+	        jQuery(function() {
+	            InitializeEditor(true, "T1_{BITVAL}");
+	        })
+	    </script>
+		<textarea style="width: 100%; height: 100px" name="T1[{BITVAL}]" id="T1_{BITVAL}">{htm(CLUB_DESCRIPTION)}</textarea>
+	</td>
+</tr>

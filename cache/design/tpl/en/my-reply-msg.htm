@@ -1,0 +1,50 @@
+{if notfound}
+	<h1 class="error">Source message not found</h1>
+{else}
+	<h1>Answer message</h1>
+	{if err}
+		<p class="error">
+		    {err}
+		</p>
+		{endif}
+	<form method="post" action="{uri_action(my-reply-msg)}" style="display: inline;">
+		<input type="hidden" value="send" name="do" />
+	    <table width="100%" class="mytable">
+	        <tr>
+	            <th style="text-align:left">
+	                Receiver
+	            </th>
+	            <td width="100%">
+                <input type="hidden" name="FK_TRANS_ID" size="20" value="{FK_TRANS_ID}" />
+                <input type="hidden" name="FK_AD" size="20" value="{FK_AD}" />
+	                <input type="hidden" name="FK_USERID_TO" size="20" value="{FK_USERID_TO}" />
+                    <img src="{uri_baseurl(/cache/users/{CACHE}/{FK_USERID_TO}/{FK_USERID_TO}.jpg)}" /><br />
+                    <a href="{uri_action(member,{FK_USERID_TO})}" title="Zum Profil von {htm(NAMETO)}">{NAMETO}</a>
+	            </td>
+	        </tr>
+	        <tr>
+	            <th style="text-align:left">
+	                Subject
+	            </th>
+	            <td>
+	                {if read} {htm(SUBJECT)}{else} <input type="text" name="SUBJECT" size="100" value="{SUBJECT}"> {endif}
+	            </td>
+	        </tr>
+	        <tr>
+	            <th colspan="2" style="text-align:left">
+	                Message 
+	            </th>
+	        </tr>
+	        <tr>
+	            <td colspan="2" align="center">
+	                <textarea rows="20" name="BODY" style="width: 98%;">{htm(BODY)}</textarea>
+	            </td>
+	        </tr>
+	        <tr class="footer">
+	            <th colspan="2" style="text-align:right">
+	                <input style="border:none;" src="{uri_baseurl(/bilder/send.png)}" type="image" onclick="return confirm('really send message?');">
+	            </th>
+            </tr>
+        </table>
+	</form> 
+{endif}

@@ -1,0 +1,14 @@
+<tr{if (i&1)} class="zeile1"{endif}>
+ <td>
+     <a href="index.php?page={curpagealias}&ID_LANG={ID_LANG}" {if ID_LANG}title="{V1} bearbeiten"><img
+   src="gfx/btn.edit.gif"{else}title="Sprache erstellen"><img
+   src="gfx/btn.ins.gif"{endif} border="0" /></a>
+ </td>
+ <td>{if ABBR}<img src="../gfx/lang.{ABBR}.gif" alt="{htm(V1)}" width="16" height="10" /> {endif}{ABBR}</td>
+ <td>{htm(V1)}</td>
+ <td>{BITVAL}</td>
+ <td>{if ABBR}{if B_PUBLIC}<b>&radic;</b>{else}-{endif}{endif}</td>
+<td>{DOMAIN}</td>
+<td>{BASE_URL}</td>
+
+</tr>

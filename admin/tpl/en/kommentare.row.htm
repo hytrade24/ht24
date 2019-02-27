@@ -1,0 +1,9 @@
+<tr class="zeile{even}">
+ <td><a href="#A52" onclick="popupfkt('kommentar_view&id_comment={id_comment}&fk={FK}&table={KOMM}', 700, 490)" title="Kommentar Ansehen">{KOMMENTAR_PARSED}</a></td>
+ <td>{todate(STAMP,1)}</td>
+ <td><a href="index.php?page=user_edit&ID_USER={FK_USER}" name="{USRNAME}" id="b{NUMMER}">{USRNAME}</a></td>
+ {if ID_NEWS}<td><a href="index.php?page=modul_news_adv_edit&ID_NEWS={FK}&npage=1">{htm(ARTIKEL)}</a><div id="pb{NUMMER}" class="preview">Bitte warten ...</div></td>{endif}
+ {if ID_TUTORIAL}<td><a href="index.php?page=modul_tutorial_edit&ID_TUTORIAL={FK}&npage=1">{htm(ARTIKEL)}</a><div id="pb{NUMMER}" class="preview">Bitte warten ...</div></td>{endif}
+ {if ID_SCRIPT}<td><a href="index.php?page=script_edit&ID_SCRIPT_WORK={FK}&npage=1">{htm(ARTIKEL)}</a><div id="pb{NUMMER}" class="preview">Bitte warten ...</div></td>{endif}
+ {if ID_KOMMENTAR_HANDBUCH}<td><a href="{uri_baseurl(/handbuch/{FK}.htm)}" target="_blank" title="Zum Handbuch">Zum Handbuch ({htm(FK)})</a><div id="pb{NUMMER}" class="preview">Bitte warten ...</div></td>{endif}
+</tr>

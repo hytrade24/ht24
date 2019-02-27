@@ -1,0 +1,216 @@
+<script type="text/javascript">
+
+function updatePacket() {
+	jQuery("#book input[name=PRICE]").val("");
+	jQuery('#book').submit();
+}
+function updateMembership() {
+	jQuery("#membership input[name=PRICE]").val("");
+	jQuery('#membership').submit();
+}
+
+</script>
+
+<h1><img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />Abzeigenkontingent des User '{NAME}'  / #{ID_USER}
+</h1>
+<p>
+    Alle Anzeigenpakete
+</p>
+<p style="clear:left;margin:0px;">&nbsp;</p>
+<h3>Bisherige Pakete</h3>
+<p>
+	Freie Anzeigen: <b>{free_ads}</b><br />
+	Freie Bilder: <b>{free_img}</b>
+</p>
+{if err}
+	<h1 class="error">
+		Nicht erfolgreich!
+	</h1>
+	<p class="error">
+		{err}
+	</p>
+{endif}
+{if inserted}
+	<h2 class="ok">
+		Buchung erfolgreich!
+	</h2>
+{endif}
+
+{subtpl(tpl/de/user_edit.nav.htm,*)}
+<div style="clear:left;float:left;">
+	<table class="liste">
+		<tr>
+			<th>
+				&nbsp;
+			</th>
+			<th>
+				Paketname
+			</th>
+			<th>
+				Status
+			</th>
+			<th>
+				Inhalt
+			</th>
+			<th>
+				Freigeschaltet am
+			</th>
+			<th>
+				Kündigungsfrist
+			</th>
+		</tr>
+		{if liste}
+			{liste}
+		{else}
+			<tr>
+				<td colspan="4" align="center" class="error">
+					Der User hat keine Anzeigenpakete
+				</td>
+			</tr>
+		{endif}
+	</table>
+</div>
+<div style="float:left; padding-left:10px;">
+	<form method="post" action="index.php" id="book">
+		<input type="hidden" name="page" value="{curpage}" />
+		<input type="hidden" name="ID_USER" value="{ID_USER}" />
+		<input type="hidden" name="FK_USER" value="{ID_USER}" />
+		<table class="formTable" cellspacing="0">
+			<tr>
+				<th colspan="2"><h3>Paket hinzubuchen</h3></th>
+			</tr>
+			<tr>
+				<th>
+					Paketvorauswahl
+				</th>
+				<td>
+					<select name="FK_PACKET" onchange="updatePacket();">
+						<option>---</option>
+						{liste_pakete}
+					</select>
+				</td>
+			</tr>
+			{if PACKET_ID_PACKET > 0}
+			<tr>
+				<th>
+					Laufzeit
+				</th>
+				<td>
+					<select name="FK_PACKET_RUNTIME" onchange="updatePacket();">
+						{liste_runtime}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					Inhalt
+				</th>
+				<td>
+					{text(PACKET_CONTENT)}
+				</td>
+			</tr>
+			<tr>
+				<th valign="top" rowspan="2">
+					Netto Preis
+				</th>
+				<td>
+					<input type="text" name="PRICE" value="{if PRICE>0}{topreis(PRICE)}{endif}" placeholder="Kostenlos" />
+					<br />
+					{if RUNTIME_CYCLE_ONCE}
+						(Einmalig)
+					{else}
+						(berechnet alle {RUNTIME_BILLING_FACTOR}
+						{if RUNTIME_CYCLE_DAY}Tag(e){endif}
+						{if RUNTIME_CYCLE_WEEK}Woche(n){endif}
+						{if RUNTIME_CYCLE_MONTH}Monat(e){endif}
+						{if RUNTIME_CYCLE_QUARTER}Quartal(e){endif}
+						{if RUNTIME_CYCLE_YEAR}Jahr(e){endif}
+						)
+					{endif}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<br />
+					<small>
+						<strong>Hinweis:</strong> Bei einem Preis von 0<br />
+						wird keine Rechnung gestellt.
+					</small>
+				</td>
+			</tr>
+			{endif}
+			<tr class="footer">
+				<td colspan="2" align="right">
+					<input type="submit" name="SUB" value="BUCHEN"{if !PACKET_ID_PACKET} disabled="disabled"{endif} class="button" />
+				</td>
+			</tr>
+		</table>
+	</form>
+	
+	<form method="post" action="index.php" id="membership">
+		<input type="hidden" name="page" value="{curpage}" />
+		<input type="hidden" name="ID_USER" value="{ID_USER}" />
+		<input type="hidden" name="FK_USER" value="{ID_USER}" />
+		<table class="formTable" cellspacing="0">
+			<tr>
+				<th colspan="2"><h3>Mitgliedschaft ändern</h3></th>
+			</tr>
+			<tr>
+				<th>
+					Aktuelle Mitgliedschaft
+				</th>
+				<td>
+				{if MEMBERSHIP_ACTIVE_NAME}
+					{htm(MEMBERSHIP_ACTIVE_NAME)}
+				{else}
+					Keine aktive Mitgliedschaft
+				{endif}
+				</td>
+			</tr>
+			<tr>
+				<th>
+					Neue Mitgliedschaft
+				</th>
+				<td>
+					<select name="FK_MEMBERSHIP" onchange="updateMembership();">
+						<option>---</option>
+						{liste_memberships}
+					</select>
+				</td>
+			</tr>
+			{if MEMBERSHIP_ID_PACKET > 0}
+			<tr>
+				<th>
+					Preis / Laufzeit
+				</th>
+				<td>
+					<select name="FK_MEMBERSHIP_RUNTIME" onchange="updateMembership();">
+						{liste_membership_runtime}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					Inhalt
+				</th>
+				<td>
+					{text(MEMBERSHIP_CONTENT)}
+				</td>
+			</tr>
+			{endif}
+			<tr>
+				<td colspan="2">
+					<strong class="error">
+						Achtung! Durch das ändern der Mitgliedschaft<br /> 
+						können dem betroffenen Kunden kosten entstehen!
+					</strong>
+				</td>
+			</tr>
+			<tr class="footer">
+				<td colspan="2" align="right">
+					<input type="submit" name="SUB" value="BUCHEN"{if !MEMBERSHIP_ID_PACKET} disabled="disabled"{endif} class="button" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>

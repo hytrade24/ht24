@@ -1,0 +1,14 @@
+        <tr>
+          <td>{NAME}</td>
+          <td>{TYPE}</td>
+          <td>{AUTHOR}</td>
+          <td>{if COMMERCE}<strong>Ja</strong>{else}Nein{endif}</td>
+          <td>
+            {if LINK_DSC}<a target="_blank" title="Link zur Beschreibung des Scripts" href="{LINK_DSC}">DESC</a>&nbsp;{endif}
+            {if LINK_DL}<a target="_blank" title="Link zum Download des Scripts" href="{LINK_DL}">DL</a>&nbsp;{endif}
+          </td>
+          <td>{todate(DATE)}</td>
+          <td>
+            <a href="index.php?page=welcome&unlock={TYPE}&id={ID}">Freischalten</a>
+          </td>
+        </tr>

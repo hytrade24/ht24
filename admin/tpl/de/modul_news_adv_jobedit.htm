@@ -1,0 +1,166 @@
+{loadperm(news_all)}
+<script type="text/javascript">
+<!--
+function katReset()
+{//
+  katRcv({FK_KAT},'{print_fk(kat)}');
+  document.getElementById('katframe').src='index.php?frame=iframe&page=kat_select&ID_KAT={FK_KAT}';
+}
+function katRcv(id_kat, label)
+{
+  document.getElementById('fk_kat').value = id_kat;
+  document.getElementById('kat').innerHTML = label;
+}
+
+function filebrowser()
+{
+ //alert('start');
+ image = document.forms[0].versteckt.value;
+ imgh = imgw = '';
+ if(document.getElementById('newImg').style.display != 'none')
+ {
+   //alert ('hier angekommen');
+   image = (document.forms[0].versteckt.value ? document.forms[0].versteckt.value : document.getElementById('newImg').src);
+   imgw = document.forms[0].IMGW.value;
+   imgh = document.forms[0].IMGH.value;
+ }
+ meinlink = 'index.php?page=file_browser&frame=popup&sess={sess}&image='+image+'&IMGH='+imgh+'&IMGW='+imgw;
+ //alert(meinlink);
+ browser = window.open(meinlink, 'fenster', 'width=950,height=580,resizable=yes,scrollbars=yes');
+ //oFCKeditor.Create();
+}
+
+
+
+//-->
+</script>
+<h1>
+	Job {if ID_JOB}bearbeiten{else}erstellen{endif}
+</h1>
+<p>
+	Artikel werden erst durch die Freigabe des Administrators auf der Webseite sichtbar
+</p>
+{if err}
+	<div class="error">{err}</div>
+{endif}
+<table border="0" cellspacing="0" cellpadding="4" class="reiter">
+	<tr>
+		<th id="R1" class="reiterPassiv"><a href="#" onclick="reiterwechsel(1);">Kategorie, Titel und Texte</a> </th>
+	</tr>
+</table>
+<form method="post" action="index.php" style="display:inline;">
+	<input type="hidden" name="versteckt" id="saveme" value="{IMG}">
+	<input type="hidden" name="dummy" value="dummy" />
+	<input type="hidden" name="frame" value="content" />
+	<input type="hidden" name="page" value="{curpagealias}" />
+	{if ID_JOB}<input type="hidden" name="ID_JOB" value="{ID_JOB}" />{endif}
+	<input type="hidden" name="FK_KAT" id="fk_kat" value="{FK_KAT}" />
+	{if !(perm_news_all & 8)}<input type="hidden" name="OK" value="{if OK & 2}{OK}{else}0{endif}" />{endif}
+	<input type="hidden" name="tab" id="tabno" value="{tab}" />
+	<input type="hidden" name="npage" value="{npage}">
+	<div id="reiter1" style="display:none;">
+		<table border="0" width="750" class="formTable" style="border:1px #9A9A9A solid">
+			<tr>
+				<td valign="top">
+					<table border="0" cellspacing="0" class="formTable">
+						<tr>
+							<th>ID</th>
+							<td>{if ID_JOB}{ID_JOB}{else}<i>neu</i>{endif}</td>
+						</tr>
+						<tr>
+							<th>Datum</th>
+							<td>{datedrop(STAMP)}</td>
+						</tr>
+						<tr>
+							<th>Ablaufdatum Datum</th>
+							<td>{if STAMPEND}{datedrop(STAMPEND)}{else}nicht gesetzt{endif}</td>
+						</tr>                        
+						<tr>
+							<th>Top Job /<br />Oben festhalten</th>
+							<td>
+								<input type="checkbox" name="B_TOP" value="1" class="nob"{if B_TOP} checked{endif} />
+							</td>
+						</tr>
+						<tr>
+							<th>ver&ouml;ffentlichen</th>
+							<td>
+								{if perm_news_all & 8}
+								<input type="hidden" class="nob" name="OK[]" value="0" />
+								<input type="checkbox" class="nob" name="OK[]" {if OK&1}checked {endif}value="1" onChange="setFlag(1);" />
+									redaktionelle Freigabe<br>
+								<input type="checkbox" class="nob" name="OK[]" {if OK&2}checked {endif}value="2" onChange="setFlag(1);" />
+									administrative Freigabe
+								{else}
+									{if OK<3}
+									<input type="checkbox" class="nob" name="OK" {if OK&1}checked {endif}value="{=1+{={OK}&2}}" onChange="setFlag(1);" />
+									{else}
+									&radic;
+									{endif}
+								{endif}
+							</td>
+						</tr>
+						<tr>
+							<th>Autor &auml;ndern</th>
+							<td>
+								<a href="#" onclick="popupfkt('users&frompopup=1','850','500');">
+									<img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+								</a>
+								<input type="text" name="NAME_" value="{htm(NAME_)}" readonly="readonly" />
+								<input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="footer">
+								<input class="button" type="submit" value="speichern">
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td valign="top">
+					<table class="formTable">
+						<tr>
+							<th valign="top">Kategorie</th>
+							<td>
+							  	<span id="kat">{print_fk(kat)}</span><br />
+							    <iframe id="katframe" src="index.php?frame=iframe&page=kat_select&ID_KAT={FK_KAT}&ROOT=6" width="320" height="200" frameborder="0">Kategorie-Auswahl erfordert iFrames und JavaScript!</iframe>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<table border="0" cellspacing="0" class="formTable" width="750">
+			<tr>
+				<th><label for="v1">Titel</label></th>
+				<td>
+					<input type="text" name="V1" id="v1" size="60" class="inputfull" value="{htm(V1)}" onChange="setFlag(1);" />
+				</td>
+			</tr>
+			<tr>
+				<th><label for="v2">Kurztext</label></th>
+				<td>
+					<textarea name="V2" id="v2" rows="5" cols="55" onChange="setFlag(1);" onKeyDown="showlen(this, 'v2len', 255);" onChange="setFlag(1);">{htm(V2)}</textarea>
+					<br />
+					<span id="v2len">max. 255 Zeichen</span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				{if 0}
+					<textarea name="T1" rows="10" cols="55" onChange="setFlag(1);">{htm(T1)}</textarea>
+				{else}
+					{editor(T1,100%,400px)}
+				{endif}
+					<br />
+				</td>
+			</tr>
+		</table>
+		<br /><br />
+	</div>
+
+</form>
+<script type="text/javascript">
+<!--
+  reiterwechsel({tab:1});
+//-->
+</script>

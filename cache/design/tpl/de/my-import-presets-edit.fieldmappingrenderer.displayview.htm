@@ -1,0 +1,30 @@
+<div class="fieldMappingDisplayViewContainer" id="FIELD_MAPPING_DISPLAYVIEW_{TABLE_DEF}_{FIELD_NAME}" onclick="ipe.editMappingField('{FIELD_NAME}', '{TABLE_DEF}'); ">
+	{if NO_MAPPING && !TABLE_FIELD_DEFAULTVALUE_ISSET}
+		<div class="">
+			<em>
+				Dieses Feld wurde noch nicht zugewiesen. Klicken Sie hier um eine Zuordnung vorzunehmen
+			</em>
+		</div>
+	{else}
+		{if !NO_MAPPING}
+		<ul class="fieldMappingDisplayViewValueList list-unstyled">
+			{VALUE_OUTPUT}
+		</ul>
+		{endif}
+
+		{if TABLE_FIELD_DEFAULTVALUE_ISSET}
+		<p><span class="label label-success">
+			Standardwert:
+			{if FIELD_TYPE_CHECKBOX}
+				{if TABLE_FIELD_DEFAULTVALUE}
+					Ja
+				{else}
+					Nein
+				{endif}
+			{else}
+				{htm(TABLE_FIELD_DEFAULTVALUE)}
+			{endif}
+		</span></p>
+		{endif}
+	{endif}
+</div>

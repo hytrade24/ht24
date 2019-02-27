@@ -1,0 +1,27 @@
+<tr>
+
+	<td>
+		{if AD_ID}
+			<strong>{htm(AD_PRODUKTNAME)} {htm(VARIANT)}</strong>
+			<p class="marketplaceOrderItemDescription muted">
+				{htm(AD_BESCHREIBUNG)}
+			</p>
+		{else}
+			<p class="marketplaceOrderItemTitle">
+				{htm(PRODUKTNAME)}
+			</p>
+		{endif}
+	</td>
+	<td>
+		{if AD_ID}{AD_ID}{else}<span class="text-muted">n.v.</span>{endif}
+	</td>
+	<td>
+		{MENGE}
+	</td>
+	<td class="text-right">
+		{topreis_ex(PREIS_STUECK)} {CURRENCY_DEFAULT}
+	</td>
+	<td class="text-right">
+		{topreis_ex(PREIS)} {CURRENCY_DEFAULT}
+	</td>
+</tr>

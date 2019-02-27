@@ -1,0 +1,34 @@
+<script>
+	jQuery(function() {
+		var loaderElement = jQuery("#LOADER_{RAND}");
+		var destElement = jQuery("{HTML_ID}");
+
+		loaderElement.width(destElement.width());
+		loaderElement.height(destElement.height());
+
+		loaderElement.insertAfter(destElement);
+		loaderElement.show();
+		destElement.detach();
+
+		jQuery.ajax({
+			url: '{uri_baseurl(index.php)}?page=helper-article-image-loader&frame=ajax',
+			type: 'POST',
+			async: true,
+			data: { 'ID_AD': '{AD_ID}', WIDTH: '{WIDTH}', HEIGHT: '{HEIGHT}', 'CROP': '{CROP}' },
+			dataType: 'json',
+			success: function(result) {
+				if(result.success) {
+					destElement.attr('src', result.image);
+				}
+
+				destElement.insertBefore(loaderElement);
+				loaderElement.remove();
+			}
+		})
+
+	})
+</script>
+
+<figure id="LOADER_{RAND}" class="articleImageLoader">
+	<img src="{uri_baseurl(gfx/ajax-loader.gif)}" title="Bild wird geladen">
+</figure>

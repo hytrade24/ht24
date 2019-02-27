@@ -1,0 +1,21 @@
+<option{if BILLING_PRICE>0} data-paid="1"{endif} value="{ID_PACKET_RUNTIME}"{if ID_PACKET_RUNTIME==FK_PACKET_RUNTIME_DEFAULT} selected="selected"{endif}>
+    {htm(V1)}:
+{if CYCLE_ONCE}
+    {if BILLING_PRICE>0}
+        {topreis(BILLING_PRICE)} {CURRENCY_DEFAULT}
+    {endif}
+    Einmalig
+{else}
+    {if BILLING_PRICE>0}
+        {topreis(BILLING_PRICE)} {CURRENCY_DEFAULT} /
+    {else}
+        Laufzeit:
+    {endif}
+    {BILLING_FACTOR}
+    {if CYCLE_DAY}Tag(e){endif}
+    {if CYCLE_WEEK}Woche(n){endif}
+    {if CYCLE_MONTH}Monat(e){endif}
+    {if CYCLE_QUARTER}Quartal(e){endif}
+    {if CYCLE_YEAR}Jahr(e){endif}
+{endif}
+</option>

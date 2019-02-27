@@ -1,0 +1,25 @@
+    <tr>
+      <td>
+        {plugin(Hydromot,ProductImage,IMPORT_IMAGES,80,60)}
+      </td>
+      <td>
+        <a href="{uri_action(product_details,{FK_KAT},{ID_PRODUCT}|PRODUKTNAME={urllabel(PRODUKTNAME)})}">
+          {htm(PRODUKTNAME)}
+        </a>
+      </td>
+      <td>
+      {if ARTICLE_COUNT > 0}
+        <a href="{uri_action(product_details,{FK_KAT},{ID_PRODUCT}|PRODUKTNAME={urllabel(PRODUKTNAME)})}">
+        {if ARTICLE_COUNT == 1}
+          {int(ARTICLE_COUNT)} Angebot
+        {else}
+          {int(ARTICLE_COUNT)} Angebote
+        {endif}
+        </a>
+      {else}
+        <div class="text-muted">
+          Keine Angebote vorhanden
+        </div>
+      {endif}
+      </td>
+    </tr>

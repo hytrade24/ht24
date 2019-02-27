@@ -1,0 +1,256 @@
+<script type="text/javascript">
+	function UpdateFlat(packetId) {
+		if (jQuery("#flat"+packetId).prop("checked")) {
+			jQuery("#edit"+packetId).prop("disabled", true).removeClass("enabled").val(-1);
+		} else {
+			jQuery("#edit"+packetId).prop("disabled", false).addClass("enabled").val(0);
+		}
+	}
+</script>
+<h1>
+	Paket-Bestellung #{ID_PACKET_ORDER} bearbeiten
+</h1>
+<p>
+	Hier k&ouml;nnen Sie die Daten des gew&auml;hlten Pakets zu &auml;mndern. Die hier vorgenommenen
+	Änderungen gelten nur für exakt diese Bestellung des Kundens!
+</p>
+{if error}
+	<h2 class="error">
+		Fehler aufgetreten!
+	</h2>
+	<p class="error"">
+		{error}
+	</p>
+{endif}
+{if ok}
+	<h2 class="ok">
+		Änderungen durchgeführt
+	</h2>
+{endif}
+<form method="post" action="index.php">
+	
+	<input type="hidden" name="page" value="{curpage}" />
+	<input type="hidden" name="ID_PACKET_ORDER" value="{ID_PACKET_ORDER}" />
+	<table>
+		<tr>
+			<td valign="top">
+				<h3>Aktuelle Paketinformationen</h3>
+				<table class="formTable" cellspacing="0">
+					<tr>
+						<th>
+							Vertragsnummer
+						</th>
+						<td>
+							{ID_PACKET_ORDER}
+						</td>
+					</tr>
+					<tr>
+						<th>Kundennummer</th>
+						<td>{USER_PACKET_ID_USER}</td>
+					</tr>
+					<tr>
+						<th>
+							Kunde
+						</th>
+						<td>
+							<a href="index.php?page=user_kontingent&ID_USER={USER_PACKET_ID_USER}" title="Kunde bearbeiten">
+								{htm(USER_PACKET_VORNAME)} {htm(USER_PACKET_NACHNAME)} 
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							Preis
+						</th>
+						<td>
+							{topreis(BILLING_PRICE)} {CURRENCY_DEFAULT}
+							{CYCLE}
+							{if CYCLE_ONCE}
+								(Einmalig)
+							{else}
+								/ {BILLING_FACTOR}
+								{if CYCLE_DAY}Tag(e){endif}
+								{if CYCLE_WEEK}Woche(n){endif}
+								{if CYCLE_MONTH}Monat(e){endif}
+								{if CYCLE_QUARTER}Quartal(e){endif}
+								{if CYCLE_YEAR}Jahr(e){endif}
+							{endif}
+						</td>
+					</tr>
+					<tr>
+						<th>Vertrag abgeschlossen am</th>
+						<td>
+							{if STAMP_START}
+								{todate(STAMP_START)}
+							{else}
+								<span class="error">
+									Noch nicht aktiv!
+								</span>
+							{endif}
+						</td>
+					</tr>
+					<tr>
+						<th>{if STAMP_NEXT}Kündigung möglich bis{else}Gekündigt am{endif}</th>
+						<td>
+							{if STAMP_START}
+								{if STAMP_NEXT}
+									{todate(STAMP_CANCEL_UNTIL)}
+								{else}
+									{if CYCLE_ONCE}
+									<span class="error">Einmaliges Paket / Keine automatische Verlängerung</span>
+									{else}
+									<span class="error">bereits gekündigt</span>
+									{endif}
+								{endif}
+							{else}
+								<span class="error">
+									Noch nicht aktiv!
+								</span>
+							{endif}
+						</td>
+					</tr>
+					<tr>
+						<th>Gekündigt zum</th>
+						<td>
+							{if STAMP_START}
+								{if !STAMP_NEXT}
+									<span class="error">{todate(STAMP_END)}</span>
+								{else}
+									-
+								{endif}
+							{else}
+								<span class="error">
+									Noch nicht aktiv!
+								</span>
+							{endif}
+						</td>
+					</tr>
+					<tr>
+						<th>
+							Nächste Abrechnung
+						</th>
+						<td>
+							{if STAMP_START}
+								{if STAMP_NEXT}
+									{todate(STAMP_NEXT)}
+								{else}
+									{if CYCLE_ONCE}
+									<span class="error">Einmaliges Paket / Keine automatische Verlängerung</span>
+									{else}
+									<span class="error">gekündigt</span>
+									{endif}
+								{endif}
+							{else}
+								<span class="error">
+									Noch nicht aktiv!
+								</span>
+							{endif}
+						</td>
+					</tr>
+					<tr>
+						<th>Automatische Verlängerung am</th>
+						<td>
+							{if STAMP_START}
+								{if STAMP_NEXT}
+									{todate(STAMP_END)}
+								{else}
+									{if CYCLE_ONCE}
+									<span class="error">Einmaliges Paket / Keine automatische Verlängerung</span>
+									{else}
+									<span class="error">gekündigt</span>
+									{endif}
+								{endif}
+							{else}
+								<span class="error">
+									Noch nicht aktiv!
+								</span>
+							{endif}
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td valign="top">
+				<h3>Paket bearbeiten</h3>
+				<table class="formTable" cellspacing="0">
+					<tr>
+						<th>
+							Netto Preis
+						</th>
+						<td>
+							<input name="PRICE" value="{topreis(BILLING_PRICE)}" />
+							{CURRENCY_DEFAULT}
+							{if CYCLE_ONCE}
+								(Einmalig)
+							{else}
+								/ {BILLING_FACTOR}
+								{if CYCLE_DAY}Tag(e){endif}
+								{if CYCLE_WEEK}Woche(n){endif}
+								{if CYCLE_MONTH}Monat(e){endif}
+								{if CYCLE_QUARTER}Quartal(e){endif}
+								{if CYCLE_YEAR}Jahr(e){endif}
+							{endif}
+						</td>
+					</tr>
+					<tr>
+						<th style="vertical-align:top;padding-top:2px;">
+							Inhalt
+						</th>
+						<td>
+							<table class="liste" cellpadding="0" cellspacing="0">
+								<tr>
+									<th>Anzahl</th>
+									<th>Typ</th>
+									<th>In Verwendung</th>
+								</tr>
+								{liste}
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th valign="top">Abo Kündigen?</th>
+						<td>
+						{if STAMP_START}
+							{if STAMP_NEXT}
+								<label>
+									<input type="radio" name="DO_CANCEL" value="0" class="nob"{if DO_CANCEL==0} checked="checked"{endif} />
+									<b>Nicht kündigen.</b>
+								</label>
+								<br />
+								
+								<label>
+									<input type="radio" name="DO_CANCEL" value="1" class="nob"{if DO_CANCEL==2} checked="checked"{endif} />
+									<b>Am Ende der Laufzeit kündigen. ({todate(STAMP_END)})</b>
+								</label>
+								<br />
+								
+								<label>
+									<input type="radio" name="DO_CANCEL" value="2" class="nob"{if DO_CANCEL==1} checked="checked"{endif} />
+									<b>Sofort kündigen.</b>
+								</label>
+							{else}
+									{if CYCLE_ONCE}
+									<span class="error">Einmaliges Paket / Keine automatische Verlängerung</span>
+									{else}
+									<span class="error">gekündigt</span>
+									{endif}
+							{endif}
+						{else}
+							<span class="error">
+								Noch nicht aktiv!
+							</span>
+						{endif}
+						</td>
+					</tr>
+					<tr class="footer">
+						<td colspan="2" align="right">
+							<input type="submit" value="Änderungen durchführen" class="button" />
+						</td>
+					</tr>
+				</table>
+				
+			</td>
+		</tr>
+	</table>
+</form>
+<h2>Informationen zum Kunden</h2>
+ <iframe id="katframe" src="index.php?lang=de&frame=iframe&page=stats&show=buchhaltungumsatz_overall&ID_USER={USER_PACKET_ID_USER}" width="600" height="300" frameborder="0"></iframe></td>

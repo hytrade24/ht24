@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<style type="text/css">
+	    p, td, th, body { font-family: dejavu sans, dejavu serif, Arial, Helvetica; font-size: 12px;  }
+
+		@page printpage {
+		  size: A4 portrait;
+		  margin: 2cm;
+        }
+
+        .page {
+		   page: printpage;
+		   display:block; font-family: dejavu sans, dejavu serif, Arial, Helvetica; font-size: 12px;   padding: 20px 20px 30px 30px;
+		}
+
+
+	    .invoice_header { width: 100%; border-bottom: 1px solid black; }
+
+	    .invoice_address { vertical-align: top; text-align: left; }
+	    .invoice_table {
+	        border: 1px #7C95A3 solid;
+	        clear: both;
+	        width:100%;
+	    }
+	    .invoice_table th {
+	        background: #e7eef1;
+	    	padding:10px 2px 5px 2px;
+	    	border-bottom:#7e96a4 1px solid;
+	    	vertical-align:bottom;
+	    }
+
+	    .invoice_table td {
+	        padding:2px;
+	    }
+	    .invoice_table tr.zeile0 td {
+	    	background:#eeeeee;
+	    }
+		.text-right {
+			text-align: right;
+		}
+		.text-error {
+			color: #D00000;
+		}
+	</style>
+</head>
+<body>
+	{PAGES}
+</body>
+</html>

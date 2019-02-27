@@ -1,0 +1,53 @@
+// Forum threads
+.design-forum-thread {
+  // General css styles
+  .design-content-base;
+  background: @design-group-forum-background;
+  color: @design-group-forum-text-color;
+  // Group title
+  .design-forum-thread-name {
+    font-weight: bold;
+  }
+}
+
+// Forum threads (row view)
+.design-forum-thread-row {
+  .design-forum-thread;
+}
+
+.design-group-forum {
+  .design-group-forum-btn-reply,
+  .design-group-forum-btn {
+    margin: @padding-small-vertical 0;
+  }
+  .design-group-forum-thread {
+    .design-group-forum-post {
+      &:last-child {
+        .tooltip-inner {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.design-group-forum-counter{
+  text-align: center;
+  .design-group-forum-counter-views{
+    background: @design-group-forum-background-bright;
+    color:@design-group-forum-text-color;
+  }
+  .design-group-forum-counter-comment{
+    background: @design-group-forum-background-dark;
+    color:@design-group-forum-text-color;
+  }
+  .design-group-forum-counter-value{
+    font-weight: bold;
+  }
+}
+
+.design-group-forum-post{
+  .tooltip.right .tooltip-arrow{
+    top:24px;
+  }
+}

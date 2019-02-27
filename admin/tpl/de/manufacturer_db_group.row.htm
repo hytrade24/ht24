@@ -1,0 +1,17 @@
+    <tr class="zeile{even}">
+      <td>
+          <a href="index.php?page=manufacturer_db_group_edit&ID_MAN_GROUP={ID_MAN_GROUP}">
+              <img src="gfx/btn.edit.gif" alt="bearbeiten"/>
+          </a>
+          <a href="index.php?page=manufacturer_db_group&DELETE={ID_MAN_GROUP}" onclick="return confirm('Möchten Sie die Hersteller-Gruppe &quot;{htm(V1)}&quot; wirklich löschen?');">
+              <img src="gfx/btn.del.gif" alt="löschen"/>
+          </a>
+      </td>
+      <td>
+        {htm(V1)}
+      </td>
+      <td>
+        {htm(TXT_MANUFACTURERS)}
+      </td>
+    </tr>
+    

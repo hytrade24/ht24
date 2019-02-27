@@ -1,0 +1,28 @@
+{if rel}
+<script type="text/javascript">
+ window.opener.location.href = 'index.php?page=modul_tutorial_katbaum&ID_TREE_TUTORIAL={ID_TREE_TUTORIAL}';
+</script>
+<input type="button" class="button" value="Dieses Fenster schlie&szlig;en" onclick="window.close()">
+{endif}
+<h1>Kategorie &quot;{htm(V1)}&quot; bearbeiten</h1>
+{if err}
+ <p class="error">{err}</p>
+{endif}
+  <form method="post" action="index.php"> 
+   <input type="hidden" name="ID_TREE_TUTORIAL" value="{ID_TREE_TUTORIAL}">
+   <input type="hidden" name="page" value="{curpage}">
+   <input type="hidden" name="frame" value="{curframe}">
+   <table class="formTable" cellspacing="0">
+    <tr>
+	 <th>Name der Kategorie</th>
+	 <td><input type="text" name="V1" value="{htm(V1)}" size="35"></td>
+	</tr>
+	<tr>
+	 <th>Sichtbar</th>
+	 <td><input type="checkbox" name="VISIBILITY" value="1" class="nob"{if VISIBILITY} checked{endif} /></td>
+	</tr>
+	<tr class="footer">
+	 <td colspan="2" align="right"><input type="submit" value="Speichern" class="button"></td>
+	</tr>
+   </table>
+  </form>

@@ -1,0 +1,65 @@
+<div class="chatMessageItem {if MARK_UNREAD}unread{endif}">
+	<div class="row design-user-message">
+		<div class="design-user-message-logo">
+			{if MARK_UNREAD}
+			<div class="design-user-message-logo-new">
+				<span class="label label-danger">ungelesen</span>
+			</div>
+			{endif}
+			{if USER_ID}<img src="{thumbnail({USER_LOGO},58,60)}">{endif}
+		</div>
+		<div class="design-user-message-header">
+			<div class="chatMessageItemHeader">
+				<a href="{uri_action(my-ad-read-msg,{ID_CHAT})}">
+					<strong>{if SUBJECT}{htm(SUBJECT)}{else}kein Betreff{endif}</strong>
+				</a>
+			</div>
+			
+			<span class="chatMessageItemSender">
+				<span class="">{if modus <= 1}Von{else}An{endif}:</span>
+
+				{if USER_ID && !USER_VIRTUAL}
+					 <a href="{uri_action(view_user,{htm(USER_NAME)},{USER_ID})}" target="_blank">{if USER_FIRMA}{USER_VORNAME} {USER_NACHNAME} ({USER_FIRMA}){else}{USER_NAME}{endif}</a>
+				{else}
+					{USER_NAME} (kein Mitglied)
+				{endif}
+			</span>
+			<span class="chatMessageItemStatus">
+				{if modus <= 1 && IS_LASTMESSAGE_FROM_ME}<i class="glyphicon glyphicon-arrow-right"></i>{endif}
+			</span>
+
+			<div class="chatMessageItemPreview">
+				{LASTMESSAGE}
+			</div>
+		</div>
+		<div class="design-user-message-related">
+			<p class="text-right chatMessageItemDate">{todate(STAMP_CHANGED,1)}</p>
+
+			<div class="text-right">
+				{if FK_AD}
+					<strong>Anzeige #{FK_AD}:</strong><br>
+					{if FK_AD_NAME}
+					<a href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(FK_AD_NAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" target="_blank">
+						{htm(FK_AD_NAME)}
+					</a>
+					{else}
+						<span class="text-error">Anzeige gelöscht</span>
+					{endif}
+				{endif}
+
+				{if FK_TRANS}
+					<strong>Trans. {FK_TRANS}</strong>
+				{else}
+					{if FK_AD_ORDER}
+						{if AD_ORDER_FK_USER_VK != ID_USER}
+							<a href="{uri_action(my-marktplatz-einkaeufe)}?ID_AD_ORDER={FK_AD_ORDER}">Bestellung #{FK_AD_ORDER}</a>
+						{else}
+							<a href="#" onclick="ShowDialog(ebiz_trader_baseurl + 'index.php?page=sale_details_seller&frame=ajax&ID_AD_ORDER={FK_AD_ORDER}','Bestellung Nr. {FK_AD_ORDER}', 800, 600); return false;">Bestellung #{FK_AD_ORDER}</a>
+						{endif}
+					{endif}
+				{endif}
+			</div>
+
+		</div>
+	</div>
+</div>

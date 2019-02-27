@@ -1,0 +1,8 @@
+<tr class="{if FK_USERID_FROM==ID_USER}zeile0{else}zeile1{endif} nohover">
+	<td style="font-weight: bold;" nowrap="nowrap">
+		{todate(STAMP_CREATE,1)}
+	</td>	
+	<td style="font-weight: bold;">
+		<a id="btn_{ID_MSG}" href="index.php?page=chat_messages&ID_CHAT={ID_CHAT}">{htm(SUBJECT)}</a>
+	</td>
+</tr>

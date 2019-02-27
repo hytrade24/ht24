@@ -1,0 +1,73 @@
+<h1>Währungen</h1>
+
+<div class="status-after-updating"></div>
+
+<p>
+    Hier können Sie die verfügbaren Währungen für ihren Marktplatz konfigurieren.
+    Für alle hier eingetragenen Währungen steht ihren Benutzer automatisch ein Währungsrechner zur Verfügung.
+</p>
+
+<table class="liste" width="1000" cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Aktionen</th>
+            <th>Währung</th>
+            <th colspan="2">Umrechnung in {CURRENCY_DEFAULT}</th>
+            <th>ISO Währungs Format</th>
+            <th>Letzte Aktualisierung</th>
+            <th>Kann automatisch aktualisiert werden</th>
+        </tr>
+    </thead>
+    <tbody>
+    {if liste}
+        {liste}
+    {else}
+        <tr>
+            <td colspan="4">Noch keine Währungen vorhanden.</td>
+        </tr>
+    {endif}
+    </tbody>
+</table>
+<br /><br />
+<button onclick="update_all_currencies_ratios()" class="btn">Aktualisiere Währungsquoten</button>
+
+<script type="application/javascript">
+
+    function update_all_currencies_ratios() {
+        jQuery.ajax({
+            type: "GET",
+            dataType: "JSON",
+            url: "index.php?page=currency&type=cur",
+            success: function( resp ) {
+                window.location.reload();
+                if ( resp.success ) {
+                    var html = '<h2 class="ok">';
+                    html += 'Erfolgreich gespeichert!';
+                    html += '</h2>';
+                }
+                else {
+                    var html = '<h2 class="error">';
+                    html += 'Fehler aufgetreten';
+                    html += '</h2>';
+                }
+                jQuery(".status-after-updating").html( html );
+            },
+            error: function( resp ) {
+                var html = '<h2 class="error">';
+                html += 'Fehler aufgetreten';
+                html += '</h2>';
+
+                jQuery(".status-after-updating").html( html );
+            }
+        });
+    }
+
+    function confirm_delete_currency( $link ) {
+        var conf = confirm("Möchten Sie diese Währung wirklich löschen?");
+
+        if ( conf == true ) {
+            window.location = $link;
+        }
+    }
+
+</script>

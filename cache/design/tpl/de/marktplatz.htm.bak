@@ -1,0 +1,13 @@
+<div class="row">
+
+<div class="col-xs-12 col-md-12">
+ 	<h1>{V1}</h1>
+	<h3>{V2}</h3>
+  <p>{kat_ariadne_dynamic({ID_KAT},marketplace)}</p>
+  {subtpl(tpl/{SYS_TPL_LANG}/kat_boxes.htm,ID_KAT,COLUMNS=2)}
+</div>
+ 
+</div>
+
+
+{subtpl(tpl/{SYS_TPL_LANG}/top-vendor-slider.htm)}

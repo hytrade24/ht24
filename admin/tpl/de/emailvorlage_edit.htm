@@ -1,0 +1,113 @@
+<script>
+
+function reiterAnzeigen(linkReiter) {
+    jQuery(linkReiter).parent().find(".reiterAktiv").each(function() {
+        jQuery( jQuery(this).attr("data-target") ).hide();
+        jQuery(this).removeClass("reiterAktiv").addClass("reiterPassiv");
+    });
+    jQuery(linkReiter).removeClass("reiterPassiv").addClass("reiterAktiv")
+    jQuery( jQuery(linkReiter).attr("data-target") ).show();
+}
+
+</script>
+<h1>{if ID_MAILVORLAGE}E-Mailvorlage &quot;{SYS_NAME}&quot; bearbeiten{else}Neue E-Mailvorlage anlegen{endif}</h1>
+<p>Hier k&ouml;nnen Sie Ihre Mailvorlagen bearbeiten und nach Ihren W&uuml;nschen anpassen</p>
+{if err}
+<div class="hinweis">
+ <span class="error">{err}</span>
+<div>
+{endif}
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="{curpage}">
+ <input type="hidden" name="ID_MAILVORLAGE" value="{ID_MAILVORLAGE}">
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th><strong>System Name</strong>&nbsp;</th>
+   <td><input type="text" name="SYS_NAME" value="{htm(SYS_NAME)}" size="65"></td>   
+  </tr>
+  <tr>
+   <th><strong>Beschreibung</strong></th>
+   <td><input type="text" name="BESCHREIBUNG" size="65" value="{htm(BESCHREIBUNG)}"></td>   
+  </tr>
+  <tr>
+   <th><strong>Modulzuordnung</strong></th>
+   <td>{select(modul,,,B_NOTINSTALLED=0,,,Kein Modul)}</td>
+  </tr>
+  <tr>
+    <th>Mail- Betreff</th>
+    <td><input type="text" name="V1" value="{htm(V1)}" size="65"></td>
+  </tr>
+  <tr>
+    <th valign="top">HTML-Email bearbeiten</th>
+    <td>
+        <label>
+            <input type="radio" name="HTML_EDITOR" value="1"{if HTML_EDITOR} checked="checked"{endif} />
+            Word-Ähnlichen Editor ("WYSIWYG-Editor") verwenden
+        </label>
+        <br />
+        <label>
+            <input type="radio" name="HTML_EDITOR" value="0"{if !HTML_EDITOR} checked="checked"{endif} />
+            HTML-Quellcode bearbeiten
+        </label>
+        (Änderung wird erst nach dem speichern sichtbar!)
+    </td>
+  </tr>
+  <tr>
+      <th>E-Mailtext</th>
+      <td>
+        <div>
+            <a class="{if HTML}reiterPassiv{else}reiterAktiv{endif}" onclick="reiterAnzeigen(this);" data-target="#mailEditText">
+                Text E-Mail
+            </a>
+            <a class="{if HTML}reiterAktiv{else}reiterPassiv{endif}" onclick="reiterAnzeigen(this);" data-target="#mailEditHtml">
+                HTML E-Mail
+            </a>
+        </div>
+        <br style="clear: both;" />
+        <div id="mailEditText">
+            <textarea name="T1" style="width: 800px; height: 300px;">{htm(T1)}</textarea>
+        </div>
+        <div id="mailEditHtml">
+        {if HTML_EDITOR}
+            {editor(HTML,640,300)}
+        {else}
+            <script src="{uri_resource(/lib/codemirror/lib/codemirror.js)}"></script>
+            <link rel="stylesheet" href="{uri_resource(/lib/codemirror/lib/codemirror.css)}">
+            <script src="{uri_resource(/lib/codemirror/mode/xml/xml.js)}"></script>
+            <script src="{uri_resource(/lib/codemirror/mode/javascript/javascript.js)}"></script>
+            <script src="{uri_resource(/lib/codemirror/mode/css/css.js)}"></script>
+            <script src="{uri_resource(/lib/codemirror/mode/htmlmixed/htmlmixed.js)}"></script>
+
+            <div class="codeMirrorEditor" style="border: 1px solid black;">
+                <textarea id="HTML" name="HTML">{htm(HTML)}</textarea>
+
+                <script type="text/javascript">
+                    var codeMirror = CodeMirror.fromTextArea(document.getElementById("HTML"), {
+                        mode: "text/html",
+                        lineNumbers: true,
+                        fixedGutter: true
+                    });
+                </script>
+            </div>
+        {endif}
+            <script type="text/javascript">
+                // Hide tab after initializing editor
+                {if HTML}jQuery("#mailEditText").hide();{else}jQuery("#mailEditHtml").hide();{endif}
+            </script>
+        </div>
+      </td>
+  </tr>
+ <tr>
+	 <th>Benachrichtigungsgruppe</th>
+	 <td>
+		 <select name="FK_MAILVORLAGE_NOTIFICATION_GROUP">
+			 <option value="0">---</option>
+			 {notification_groups}
+		 </select>
+	 </td>
+ </tr>
+  <tr class="footer">
+   <td colspan="2" align="right"><input type="submit" value="Speichern" class="button"></td>
+  </tr>
+ </table>
+</form>

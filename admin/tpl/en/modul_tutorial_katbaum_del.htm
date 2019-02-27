@@ -1,0 +1,30 @@
+{if !DELETED}
+<h1>{htm(V1)} l&ouml;schen</h1>
+<p>Bitte beachten Sie, dass eine L&ouml;schung unwideruflich ist!</p>
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="{curpage}">
+ <input type="hidden" name="frame" value="{curframe}">
+ <input type="hidden" name="ID_TREE_TUTORIAL" value="{ID_TREE_TUTORIAL}">
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th colspan="2">L&ouml;schoptionen:</th>
+  </tr>
+  <tr>
+   <td><input type="radio" name="DEL" value="THIS" class="nob" checked /></td>
+	 <td>Nur diese Kategorie <strong>(Untergeordnete bleiben erhalten)</strong></td>
+  </tr>
+  <tr>
+   <td><input type="radio" name="DEL" value="ALL" class="nob"></td>
+	 <td>Auch die untergeordneten Kategorien l&ouml;schen</td>
+  </tr>
+  <tr class="footer">
+   <td align="right" colspan="2"><input type="submit" value="L&ouml;schen" class="button"></td>
+  </tr>
+ </table>
+</form>
+{else}
+<script type="text/javascript">
+  window.opener.location.href='index.php?page=modul_tutorial_katbaum';
+  window.close();
+</script>
+{endif}

@@ -1,0 +1,707 @@
+<h1>Anzeige bearbeiten</h1>
+
+  <div style="position: absolute; display: none; width: 300px;" id="blob">
+    <img style="position: absolute; left: 0px; top: 0px;" src="{uri_baseurl(/gfx/blob_top_left.png)}">
+    <img style="position: absolute; right: 0px; top: 0px;" src="{uri_baseurl(/gfx/blob_top_right.png)}">
+    <img style="position: absolute; left: 0px; bottom: 0px;" src="{uri_baseurl(/gfx/blob_bottom_left.png)}">
+    <img style="position: absolute; right: 0px; bottom: 0px;" src="{uri_baseurl(/gfx/blob_bottom_right.png)}">
+    <table style="width: 300px;" cellpadding="0" cellspacing="0" class="blob" id="blobtable">
+      <tr>
+        <td></td>
+        <td class="top"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="left"></td>
+        <td class="fill" id="blobtext"></td>
+        <td class="right"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="bottom"></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+  
+<script type="text/javascript" src="{uri_baseurl(/resources/js/ad.js)}"></script>
+<script type="text/javascript" src="http://maps.google.com/maps?file=api&v=2&key=ABQIAAAA0tXF1tJR1QgSG9HJf4lrjBQdTyYrkQQbm1riap6HwRLyrDuwORSeu-Ruz3kTCR15xMQx2T0Hea0TaQ"></script>
+<!--
+  <script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAA0tXF1tJR1QgSG9HJf4lrjBQdTyYrkQQbm1riap6HwRLyrDuwORSeu-Ruz3kTCR15xMQx2T0Hea0TaQ"></script>
+-->
+
+  <script type="text/javascript">
+    var api_key = 'ABQIAAAA0tXF1tJR1QgSG9HJf4lrjBQdTyYrkQQbm1riap6HwRLyrDuwORSeu-Ruz3kTCR15xMQx2T0Hea0TaQ';
+    var timer_qs;
+    var row_selection = -1;
+    var row_count = 0;
+    var row_list;
+    
+    function presearch_quick(text_element, e, do_search) {
+      var key = (e ? (e.which ? e.which : e.keyCode) : 0);
+      var text = text_element.value;
+      
+      // Key controls     
+      if ((key == 13) || (key == 27) || (key == 38) || (key == 40)) {
+        if (key == 13) {
+          // Return
+          if (row_selection >= 0) {
+            text_element.value = row_list[row_selection];
+          }
+          $('SEARCH').value = text_element.value;
+          $('SEARCH_FORM').submit();
+          return;
+        }
+        if (key == 27) {
+          // Escape
+          window.setTimeout(function() { 
+            $('list_offers').style.display = "none";
+          }, 300);
+          return;
+        }
+        if (key == 38) row_selection = row_selection - 1;                       // Up
+        if (key == 40) row_selection = row_selection + 1;                       // Down
+        
+        if (row_selection >= row_count) row_selection = row_count - 1;
+        if (row_selection < 0) row_selection = -1;
+        
+        // Update selection
+        var rows = $('list_offers').getElementsByTagName("tr");
+        for (var row in rows) {
+          if (row == row_selection) 
+            rows[row].className = "selected";
+          else
+            rows[row].className = "";
+        }
+        return;
+      }
+      
+      $('SEARCH').value = text;
+      
+      // Hack for reducing request count
+      if (!do_search && (text.length >= 3)) {
+        window.clearTimeout(timer_qs);
+        timer_qs = window.setTimeout(function() { 
+            presearch_quick(text_element, false, true);
+          }, 500);
+        return;
+      }
+    
+      if (text.length >= 2) {
+        new Ajax.Request("/index.php?page=artikel-suche&frame=ajax&SEARCH_AJAX=" + encodeURI(text), {
+          method: 'get',
+          onSuccess: function(transport){
+            if (transport.responseJSON.fail) {
+              $('list_offers').style.display = "none";
+            } else {
+              var table = document.createElement("table");
+              table.id = "list_offers";
+              table.className = "list_offers";
+              table.cellPadding = 0;
+              table.cellSpacing = 0;
+              table.style.position = "absolute";
+              $('div_offers').innerHTML = "";
+              $('div_offers').appendChild(table);
+              
+              row_count = 0;
+              row_list = new Array();
+              
+              for (var offer in transport.responseJSON.offers) {
+                var text = transport.responseJSON.offers[offer];
+                var row = document.createElement("tr");
+                var col = document.createElement("td");
+                var link = document.createElement("a");
+                // Click event
+                link.href = "javascript: $('SEARCH').value = \""+text.replace('"','\"')+"\"; $('SEARCH_FORM').submit();";
+                link.innerHTML = text;
+                // Add to table
+                col.appendChild(link);
+                row.appendChild(col);
+                if (row_count == row_selection) row.className = "selected";
+                table.appendChild(row);
+                // Update "cache"
+                row_count = row_count + 1;
+                row_list.push(text);
+              }
+              Element.clonePosition($('list_offers'), text_element, { offsetTop: 20 });
+              $('list_offers').style.display = "";
+            }
+          }
+        });
+      } else {
+        $('list_offers').style.display = "none";
+      }
+      
+      return;
+    }
+    
+    function setBlobText(button, text, visible) {
+      var div_blob = $('blob');
+      var tbl_blob = $('blobtable');
+      var txt_blob = $('blobtext');
+      
+      if ((visible == true) && (text.length > 0)) {
+        div_blob.show();
+        div_blob.observe("click", function() {
+          // initially hide all containers for tab content
+          setBlobText(button, "", false);
+        });
+      } else {
+        div_blob.hide();
+      }
+      
+      txt_blob.update(text.replace("||", "<br />"));
+      
+      var height = txt_blob.getHeight() + 47;
+      var width = 300;
+      
+      div_blob.clonePosition(button, { setWidth: false, setHeight: false, offsetLeft: 8, offsetTop: -height });
+      tbl_blob.clonePosition(div_blob);
+      
+      tbl_blob.style.height = div_blob.style.height = height+"px";
+      tbl_blob.style.width = div_blob.style.width = width+"px";
+    }
+  </script>  
+<script>
+  var products = new Array();
+  var timer_hide;
+  var map;
+  var geocoder;
+
+  function validateInput(input) {
+	var name = input.name;
+	var value = input.value;
+	var needed = 0;
+		
+    var tmp_needed = document.getElementById('tmp_needed');
+    var fields = tmp_needed.value.split(',');
+    for (var field in fields) {
+		if (fields[field] == name) {
+			needed = 1;
+		}
+    }
+		
+    new Ajax.Request("/index.php?page=marktplatz_neu_desc_ajax&frame=ajax&type=validate&needed="+needed+"&name="+encodeURIComponent(name)+"&value="+encodeURIComponent(value), {
+      method : 'get',
+      onSuccess : function(transport)
+      {
+        var obj = transport.responseJSON;
+				if (!obj.valid) {
+					$(name+'_ERROR').title = obj.error_msg;
+					$(name+'_ERROR_IMG').src = "/bilder/stop_check.png";
+					
+			    $("submit_button").disabled = true;
+				} else {
+					$(name+'_ERROR').title = "";
+					$(name+'_ERROR_IMG').src = "/bilder/ok.png";
+				}
+      }
+    });
+  }
+  
+  function getProductsByManufacturer(id_man, dont_show) {
+    if (id_man == 0) {
+      $('HERSTELLER').disabled = false;
+      $('HERSTELLER_NEU').show();
+      return;      
+    }
+    $('HERSTELLER').disabled = true;
+    $('HERSTELLER_NEU').hide();
+    new Ajax.Request("/index.php?page=marktplatz_neu_desc_ajax&frame=ajax&find_by_man="+id_man, {
+      method : 'get',
+      onSuccess : function(transport)
+      {
+        obj = transport.responseJSON;
+        products = obj.products;
+        getProductsByName(null, $("PRODUKTNAME").value, dont_show);
+      }
+    });
+    checkNeededFields();
+  }
+  
+  function checkNewManufacturer(e, name, sent) {
+    var key = (e ? (e.which ? e.which : e.keyCode) : 0);
+    if (key == 13) {
+      return checkNewManufacturer(null, name, true);
+    }
+    if (sent) {
+      new Ajax.Request("/index.php?page=marktplatz_neu_desc_ajax&frame=ajax&new_man="+encodeURI(name)+(sent ? "&done=1" : ""), {
+        method : 'get',
+        onSuccess : function(transport)
+        {
+          obj = transport.responseJSON;
+          if (obj.okay == 1) {
+            // Hersteller existiert bereits
+            if (obj.fk_man) {
+              list_man = $("FK_MAN").getElementsByTagName('option');
+              for (index_man = 0; index_man < list_man.length; index_man++) {
+                if (list_man[index_man].value == obj.fk_man) {
+                  $("FK_MAN").selectedIndex = index_man;
+                  getProductsByManufacturer(obj.fk_man);
+                  checkNeededFields();
+                }
+              }           
+            }            
+          }
+          if (obj.okay == 2) {
+            // Hersteller wurde hinzugef�gt
+            if (obj.manufacturers) {
+              var options = "\n<option value=\"0\">- Hersteller nicht aufgef�hrt -</option>\n";
+              for (var id_man in obj.manufacturers) {
+                options = options+"<option value='"+id_man+"'>"+obj.manufacturers[id_man]+"</option>\n";
+              }
+              $("FK_MAN").innerHTML = options+"\n";
+            }
+            if (obj.fk_man) {
+              list_man = $("FK_MAN").getElementsByTagName('option');
+              for (index_man = 0; index_man < list_man.length; index_man++) {
+                if (list_man[index_man].value == obj.fk_man) {
+                  $("FK_MAN").selectedIndex = index_man;
+                  getProductsByManufacturer(obj.fk_man);
+                  checkNeededFields();
+                }
+              }           
+            }            
+          }
+        }
+      });
+    } else {
+      if (name.length > 0) {
+        $("HERSTELLER_OK").disabled = false;
+      } else {
+        $("HERSTELLER_OK").disabled = true;
+      }
+    }
+  }
+  
+  function getProductsByName(e, name, dont_show) {
+    var matches_options = $("articles_known");
+    var key = (e ? (e.which ? e.which : e.keyCode) : 0);
+    if (key == 13) {
+      // Accept selection
+      setProductByIndex(matches_options.selectedIndex);
+      return;
+    }
+    if ((key == 38) || (key == 40)) {
+      var new_index = matches_options.selectedIndex;
+      if (key == 38) {
+        // Selection up
+        new_index--;
+      } else {
+        // Selection down
+        new_index++;
+      }
+      if (new_index >= matches_options.length) {
+        new_index = matches_options.length - 1;
+      }
+      if (new_index < 0) {
+        new_index = 0;
+      }
+      matches_options.selectedIndex = new_index;
+      return;
+    }
+    if ((name.length > 0) && (dont_show != 1)) {
+      matches_options.innerHTML = "";
+      matches_options.style.display = "none";
+      for (var i = 0; i < products.length; i++) {
+        if (products[i]['V1'].toLowerCase().indexOf(name.toLowerCase()) == 0) {  
+          var new_option = new Option(products[i]['V1'], i, false, false);
+          matches_options.options[matches_options.options.length] = new_option;
+          matches_options.style.display = "";   
+        }
+      } 
+    } else {
+      hideProducts();
+    }
+    $("PRODUKTNAME").value = $("_T").getElementsByTagName('input')[0].value;
+  }
+  function setProductByIndex(index) {
+    $('_T').getElementsByTagName('input')[0].value = products[index]['V1'];
+    $("PRODUKTNAME").value = $("_T").getElementsByTagName('input')[0].value;
+    tinyMCE.activeEditor.setContent(products[index]['T1'], {format : 'bbcode'});
+    //$("BESCHREIBUNG").innerHTML = products[index]['T1'];
+    
+    var matches_options = $("articles_known");
+    matches_options.style.display = "none";
+  }
+  
+  function hideProducts() {
+    timer_hide = window.setTimeout("$('articles_known').style.display = 'none';", 200);
+    $("PRODUKTNAME").value = $("_T").getElementsByTagName('input')[0].value;
+  }
+  
+  function unhideProducts() {
+    window.clearTimeout(timer_hide);
+    $('articles_known').style.display = '';    
+  }
+  
+  function checkFieldValue(self, needed) {
+    if (self.id == "_T") {
+      // Pfusch
+      self = self.getElementsByTagName('input')[0];      
+    }
+    if (self.id == "BESCHREIBUNG") {
+      // TinyMCE
+      if (tinyMCE.activeEditor) tinyMCE.activeEditor.save();     
+    }
+    if (validateFieldValue(self.className, self.value, needed)) {
+      if ($(self.name+'_ERROR')) {
+        $(self.name+'_ERROR').title = "";
+        $(self.name+'_ERROR_IMG').src = "/bilder/ok.png";
+      }
+      self.style.border = "1px solid black";
+      return true;
+    } else {
+      if ($(self.name+'_ERROR')) {
+        $(self.name+'_ERROR_IMG').src = "/bilder/stop_check.png";
+      }
+      self.style.border = "1px solid red";
+      return false;
+    }
+  }
+  
+  function checkNeededFields() {
+    var valid = true;
+    var tmp_needed = document.getElementById('tmp_needed');
+    var tmp_optional = document.getElementById('tmp_optional');
+    if (!tmp_needed || !tmp_optional) return;
+    var fields = tmp_needed.value.split(',');
+    var fields_opt = tmp_optional.value.split(',');
+    for (var field in fields) {
+      var input_field = $(fields[field]);
+      if (input_field && (typeof input_field == "object"))
+        if (!checkFieldValue(input_field, true))
+          valid = false;     
+    }
+    for (var field in fields_opt) {
+      var input_field = $(fields_opt[field]);
+      if (input_field && (typeof input_field == "object"))
+        if (!checkFieldValue(input_field, false))
+          valid = false;     
+    }
+    var submit_button = document.getElementById("submit_button");
+    submit_button.disabled = (valid ? false : true);
+  }
+  
+  function validateFieldValue(type, value, needed) {
+    if ((value.length > 0) || needed) {
+      if (type == "field_float") {
+        if ((needed || (value != "")) && isNaN(value.replace(/,/, '.'))) 
+          return false;
+      }
+      if (type == "field_int") {
+        if ((needed || (value != "")) && isNaN(value)) 
+          return false;
+      }
+      if (type == "field_list") {
+        if ((needed || (value != "")) && (value == 0)) 
+          return false;
+      }
+    }
+    if (needed && !value) {
+      return false;
+    }
+    return true;
+  }
+  
+  function showMap(container) {
+    container.style.width = "99%";
+    container.style.height = "400px";
+    map = new GMap2(container);
+    map.setCenter(new GLatLng(0,0), 1);
+    map.addControl(new GLargeMapControl);
+    GEvent.addListener(map, "click", getPosition);
+    geocoder = new GClientGeocoder();
+    point = new GLatLng($('LATITUDE').value, $('LONGITUDE').value);
+    map.setCenter(point, 12);
+    marker = new GMarker(point);
+    map.addOverlay(marker);
+  }
+  
+  function getPosition(overlay, latlng) {
+    if (latlng != null) {
+      address = latlng;
+      geocoder.getLocations(latlng, showPosition);
+    }
+  }
+  
+  function showPosition(response) {
+    map.clearOverlays();
+    if (response && response.Status.code == 200) {        
+      place = response.Placemark[0];
+      point = new GLatLng(place.Point.coordinates[1],
+                          place.Point.coordinates[0]);
+      marker = new GMarker(point);
+      map.addOverlay(marker);
+      setPosition(place);
+    }
+  }
+  
+  function setPosition(place) {
+    var country = place.AddressDetails.Country.CountryName;
+    var city = "";
+    var zip = "";
+    // City
+    if (place.AddressDetails.Country.AdministrativeArea) {
+      // ZIP Code
+      if (place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea) {
+        city = (place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea ? place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.LocalityName : place.AddressDetails.Country.AdministrativeArea.Locality.LocalityName);
+        if (place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality) { 
+          if (place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.PostalCode) {
+            zip = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.PostalCode.PostalCodeNumber;
+          } else if ((place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.DependentLocality) &&
+                     (place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.DependentLocality.PostalCode)) {
+            zip = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.DependentLocality.PostalCode.PostalCodeNumber;
+          }
+        } 
+      } else {
+        if (place.AddressDetails.Country.AdministrativeArea.Locality) {
+          if (place.AddressDetails.Country.AdministrativeArea.Locality.PostalCode) {
+            zip = place.AddressDetails.Country.AdministrativeArea.Locality.PostalCode.PostalCodeNumber;
+          } else if ((place.AddressDetails.Country.AdministrativeArea.Locality.DependentLocality) && 
+                      (place.AddressDetails.Country.AdministrativeArea.Locality.DependentLocality.PostalCode)) {
+            zip = place.AddressDetails.Country.AdministrativeArea.Locality.DependentLocality.PostalCode.PostalCodeNumber;
+          }
+        }
+      }
+    }
+    
+    var country_dropdown = $('fk_country');
+    var country_options = country_dropdown.getElementsByTagName("option");
+    
+    for (var fk_country = 0; fk_country < country_options.length; fk_country++) {
+      if (country_options[fk_country].text == country) {
+        country_dropdown.selectedIndex = fk_country;
+      }
+    }
+    
+    $('LONGI').innerHTML = place.Point.coordinates[0]; 
+    $('LATI').innerHTML = place.Point.coordinates[1];
+    
+    $('LONGITUDE').value = place.Point.coordinates[0]; 
+    $('LATITUDE').value = place.Point.coordinates[1];
+    $('ZIP').value = zip;
+    $('CITY').value = city; 
+  }
+</script>
+
+{if errors}<div class="error">{errors}</div><br />{endif}
+
+<form method="post" action="{uri_baseurl(/admin/index.php)}">
+  <input type="hidden" name="edit" value="{ID_ANZEIGE}" />
+  <input type="hidden" name="ID_KAT" value="{ID_KAT}" />
+  <input type="hidden" name="page" value="{curpage}" />
+  <input type="hidden" id="LATITUDE" name="LATITUDE" value="{LATITUDE}" />
+  <input type="hidden" id="LONGITUDE" name="LONGITUDE" value="{LONGITUDE}" />
+	<table class="formTable" cellspacing="0" width="650">
+    <tr>
+      <th colspan="4">Artikeldaten</th>
+    </tr>
+    <tr>
+      <td>
+        <strong>Hersteller <span style="color: red;">*</span></strong>
+        <a onmouseover="setBlobText(this, 'Bitte w&auml;hlen Sie hier den Hersteller des zu verkaufenden Artikels aus.', true);"
+					onmouseout="setBlobText(this, '', false);"
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+        <br />Hersteller des Artikels
+      </td>
+			<td valign="middle">
+				<a id="MANUFACTURER_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="MANUFACTURER_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+				</a>
+			</td>
+      <td>
+        <strong>{MANUFACTURER}</strong>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Artikelbezeichnung <span style="color: red;">*</span></strong>
+        <a onmouseover="setBlobText(this, 'Geben Sie hier den vollst&auml;ndigen Namen des Artikels ein.', true);"
+					onmouseout="setBlobText(this, '', false);" style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+        <br />Name / Bezeichnung des Artikels
+      </td>
+			<td valign="middle">
+				<a id="PRODUKTNAME_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="PRODUKTNAME_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+				</a>
+			</td>
+      <td id="_T">
+        <input onchange="checkNeededFields(); validateInput(this);" style="width:99%;" id="PRODUKTNAME" name="PRODUKTNAME" value="{PRODUKTNAME}">
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Beschreibung <span style="color: red;">*</span></strong>
+        <a onmouseover="setBlobText(this, 'Bitte beschreiben Sie den Artikel hier m�glichst ausf�hrlich.', true);"
+					onmouseout="setBlobText(this, '', false);" 
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+        <br />Vollst&auml;ndige Beschreibung des Artikels
+      </td>
+			<td valign="middle">
+				{if BESCHREIBUNG}
+				<a id="BESCHREIBUNG_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="BESCHREIBUNG_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+				</a>
+				{else}
+				<a title="Bitte geben Sie eine Beschreibung ein." id="BESCHREIBUNG_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="BESCHREIBUNG_ERROR_IMG" src="{uri_baseurl(/bilder/stop_check.png)}">
+				</a>
+				{endif}
+			</td>
+      <td>
+        <!--<textarea id="BESCHREIBUNG" name="BESCHREIBUNG">{htm(BESCHREIBUNG)}</textarea>-->
+        {editor_bb(BESCHREIBUNG,99%,280px,/style/de/style.css,onchange="checkNeededFields();validateInput(this);")}
+      </td>
+      <td></td>
+    </tr>
+		<tr>
+      <th colspan="4">Preis &amp; Versandkosten</th>
+    </tr>
+  	<tr>
+      <td>
+        <strong>Verkaufspreis <span style="color: red;">*</span></strong>
+        <a onmouseover="setBlobText(this, 'Bitte geben Sie hier den Verkaufspreis in Euro ein.', true);"
+					onmouseout="setBlobText(this, '', false);" 
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+        <br />Verkaufspreis in Euro &nbsp;
+      </td>
+			<td valign="middle">
+				<a id="PREIS_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="PREIS_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+				</a>
+			</td>
+      <td>
+        <input type="hidden" name="tmp_type[PREIS]" value="float">
+        <input style="width:99%;" onchange="checkNeededFields(); validateInput(this);" id="PREIS" name="PREIS" value="{PREIS}">
+      </td>
+      <td><strong>Euro</strong></td>
+    </tr>
+		<tr>
+			<td><strong>MwSt. ausweisbar</strong></td>
+			<td valign="middle">
+				<a id="MWST_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="MWST_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+				</a>
+			</td>
+			<td colspan="2">
+        <input type="hidden" name="tmp_type[MWST]" value="checkbox">
+				<input type="hidden" name="MWST" value="0" />
+				<input onchange="checkNeededFields(); validateInput(this);" type="checkbox" id="MWST" name="MWST" value="1" class="nob"{if MWST} checked="checked"{endif} />
+				<label for="MWST">Der Preis enth&auml;lt Mehrwertsteuer</label>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong>Versandkosten</strong>
+				<br />Versankosten in Euro
+			</td>
+			<td valign="middle">
+				<a id="VERSANDKOSTEN_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="VERSANDKOSTEN_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+				</a>
+			</td>
+			<td>
+        <input type="hidden" name="tmp_type[VERSANDKOSTEN]" value="float">
+				<input style="width:99%;" onchange="checkNeededFields(); validateInput(this);" type="text" name="VERSANDKOSTEN" value="{htm(VERSANDKOSTEN)}" />
+			</td>
+			<td>
+				<strong>EUR</strong>
+			</td>
+		</tr>
+    <tr>
+      <th colspan="4">Artikelstandort</th>
+    </tr>
+    <tr>
+      <td>
+        <strong>Land</strong>
+        <a onmouseover="setBlobText(this, 'W�hlen Sie hier das Land in dem sich der Artikel befindet.', true);"
+					onmouseout="setBlobText(this, '', false);" 
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+      </td>
+			<td>
+				<a id="COUNTRY_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="COUNTRY_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+				</a>
+			</td>
+      <td>{select(country,,,,, style="width:99%;" onchange="getLatiLongi();checkNeededFields();validateInput(this);" id="COUNTRY")}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>PLZ &amp; Ort</strong>
+        <a onmouseover="setBlobText(this, 'Geben Sie hier den Ort ein an dem sich der Artikel befindet. ', true);"
+					onmouseout="setBlobText(this, '', false);" 
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+      </td>
+			<td valign="middle">
+				<a id="ZIP_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="ZIP_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+				</a>
+			</td>
+      <td>
+        <input type="text" name="ZIP" id="ZIP" value="{htm(ZIP)}" style="width:30%;" onchange="getLatiLongi();checkNeededFields();validateInput(this);" />
+				<a id="CITY_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="CITY_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+				</a>
+        <input type="text" name="CITY" id="CITY" value="{htm(CITY)}" style="width:60%;" onchange="getLatiLongi();checkNeededFields();validateInput(this);" />
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Auf Karte w�hlen</strong>
+        <a onmouseover="setBlobText(this, 'Hier k&ouml;nnen Sie den Artikelstandort auf einer Karte w�hlen.', true);"
+					onmouseout="setBlobText(this, '', false);" 
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+      </td>
+			<td></td>
+      <td>
+        <div id="googleMap"><a onclick="showMap($('googleMap'));" style="cursor: pointer;">Karte anzeigen</a></div>
+      </td>
+      <td></td>
+    </tr>
+		<tr>
+			<td>DEBUG Lati.</td>
+      <td></td>
+			<td colspan="2" id="LATI">&nbsp;</td>
+		</tr>
+		<tr>
+			<td>DEBUG Longi.</td>
+      <td></td>
+			<td colspan="2" id="LONGI">&nbsp;</td>
+		</tr>
+    {if liste_fields}  
+      <tr>
+        <th colspan="4">Artikeldetails</th>
+      </tr>
+      {liste_fields}
+    {endif} 
+    <tr>
+      <th colspan="4">
+        <input id="submit_button" type="submit" value="Speichern" disabled="true">
+      </th>
+    </tr>
+	</table>
+  </form>
+<script type="text/javascript">
+document.observe("dom:loaded", function() {
+    if ((!$("LATI").value) || (!$("LONGI").value)) {
+      getLatiLongi(); 
+    }
+    //getProductsByManufacturer($('FK_MAN').value, 1);
+    //google.load("maps", "2");
+    window.waitMCE = window.setInterval(function() {
+      if (tinyMCE.activeEditor != null) {
+    		checkNeededFields();
+        window.clearInterval(window.waitMCE);
+        tinyMCE.activeEditor.onChange.add(function(ed) {
+           checkNeededFields();
+						 validateInput($('BESCHREIBUNG'));
+        }); 
+      }
+    }, 1000)
+  });
+</script>

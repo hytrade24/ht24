@@ -1,0 +1,29 @@
+
+	<tr>
+		<td class="first">
+			{if RATING>0}
+				<a onclick="return confirm('Bewertung wirklich entfernen?');" href="index.php?page={curpage}&action=remove&rating={ID_AD_SOLD_RATING}">Bewertung entfernen</a>
+			{endif}
+		</td>
+		<td>{FK_AD_SOLD}</td>
+		<td>
+			{todate(STAMP_BOUGHT)}
+		</td>
+		<td>
+			<a target="_blank" href="{uri_baseurl(/view_user,{urllabel(USERNAME_FROM)},{FK_USER_FROM}.htm)}">{htm(USERNAME_FROM)}</a>
+		</td>
+		<td>
+			<a target="_blank" href="{uri_baseurl(/view_user,{urllabel(USERNAME)},{FK_USER}.htm)}">{htm(USERNAME)}</a>
+		</td>
+		<td>
+			<a target="_blank" href="{uri_baseurl(/marktplatz_anzeige,{FK_AD},{FK_KAT},{urllabel(PRODUKTNAME)}.htm)}">
+				{htm(PRODUKTNAME)}
+			</a>
+		</td>
+		<td>
+			<img src="/gfx/stars_{if RATING>0}{RATING}{else}removed{endif}.png">
+		</td>
+		<td class="last">
+			{htm(COMMENT)}
+		</td>
+	</tr>

@@ -1,0 +1,84 @@
+{if err}<br />
+<span class="error">{err}</span>{endif}
+{if step1}
+<form action="index.php" method="post" name="ins_poll">
+<input type="hidden" name="lang" value="de" />
+<input type="hidden" name="page" value="{curpage}" />
+<input type="hidden" name="done" value="1" />
+<h1>Umfrage erstellen</h1>
+<h3>Schritt 1 von 3</h3>
+<p>Bitte geben Sie die Frage für Ihre Umfrage an<br>
+und wieviele Antwortmöglichkeiten es geben soll.</p>
+<table class="liste">
+	<tr>
+		<td><strong>Frage:</strong></td>
+		<td><input type="text" name="QUESTION" id="QUESTION" size="75" /></td>
+	</tr>
+	<tr>
+		<td><strong>Anzahl der Antworten:</strong></td>
+		<td><input type="text" name="anz_answers" id="anz_answers" size="10" /></td>
+	</tr>
+	<tr>
+		<td colspan="2"><input type="submit" name="Eintragen" value="Weiter" /></td>
+	</tr>
+</table>
+</form>
+{endif}
+{if step2}
+<form action="index.php" method="post" name="ins_poll">
+<input type="hidden" name="lang" value="de" />
+<input type="hidden" name="page" value="{curpage}" />
+<input type="hidden" name="done" value="2" />
+<input type="hidden" name="QUESTION" value="{question}" />
+<input type="hidden" name="anz_answers" value="{anz_answers}" id="anz_answers" />
+<h1>Umfrage erstellen</h1>
+<h3>Schritt 2 von 3</h3>
+<p>Bitte geben Sie die m&ouml;glichen Antworten zu Ihrer Frage ein.<br>
+Sie haben weniger Antworten als Felder? Kein Problem. Füllen Sie einfach 
+alle Felder aus, die Sie brauchen, die restlichen lassen Sie leer.<p>
+<p>Ihre Frage lautet: <strong>{question}</strong></p>
+<table class="liste" id="answerTable">
+	
+	{liste}
+	<tr>
+		<td>&nbsp;</td>
+		<td><a href="javascript:addRow2()">Antworten hinzufügen</a></td>
+	</tr>
+	<tr>
+	  <td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+	  <td><input type="submit" name="Eintragen" value="Weiter" /></td>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+</form>
+{endif}
+{if step3}
+<form action="index.php" method="post" name="ins_poll">
+<input type="hidden" name="lang" value="de" />
+<input type="hidden" name="page" value="{curpage}" />
+<input type="hidden" name="done" value="3" />
+<input type="hidden" name="QUESTION" value="{question}" />
+<input type="hidden" name="anz_answers" value="{anz_answers}" />
+<input type="hidden" name="ID_POLL_QUESTIONS" value="{ID_POLL_QUESTIONS}" />
+
+<h1>Umfrage erstellen</h1>
+<h3>Schritt 3 von 3</h3>
+<p>Noch ist die Umfrage nicht aktiv und nicht auf der Webseite zu sehen.<br>
+Soll die Umfrage aktiv geschaltet und somit auf der Webseite angezeigt werden?<p>
+<p>Diese Umfrage heißt: <strong>{question}</strong> </p>
+
+<br>
+<input type="Radio" name="AKTIV" value="1">Aktiv schalten<br>
+<input type="Radio" name="AKTIV" value="0" checked>Inaktiv belassen<br><br>
+<input type="submit" name="Eintragen" value="Weiter" />
+{endif}
+{if step4}
+<input type="hidden" name="done" value="3" />
+<h1>Umfrage erstellen</h1>
+<p class="ok">Ihre Umfrage wurde erfolgreich eingetragen.</p>
+<a href="index.php?page=modul_umfrage_uebersicht">Zur&uuml;ck zur &Uuml;bersicht</a>
+{endif}
+

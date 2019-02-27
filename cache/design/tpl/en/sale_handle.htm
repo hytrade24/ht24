@@ -1,0 +1,159 @@
+{if not_found}
+<h1>The article could not be found!</h1>
+<p> 
+    The desired article could not be found. It may be that it is no longer available.
+</p>
+{else}
+
+{if accept}
+<img style="float: left;" src="{uri_baseurl(/bilder/symbol_check.png)}" />
+<div style="margin-left: 96px;">
+	<div class="katbox topad" style="border-color: rgb(204, 204, 204); width: 90%; margin: 15px;">
+		<table>
+			<tr>
+				<th>K&auml;ufer</th>
+				<td>
+				{if ID_AD_SOLD>0}
+					<a style="font-weight:bold;" href="{uri_action(view_user,{urllabel(USER)},{ID_BUYER})}" target="_blank" title="To buyers profile">
+						{htm(USER)}
+					</a>
+				{else}
+					{BUYER_COUNT} Buyer
+				{endif}
+				</td>
+			</tr>
+	        <tr>
+	            <th>Article</th>
+	            <td>
+	            	<a href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Open advert" target="_blank">
+	            		{htm(PRODUKTNAME)}
+	            	</a>
+	            </td>
+	        </tr>
+	        <tr>
+	            <th>Article-number</th>
+	            <td>{ID_AD_MASTER}</td>
+	        </tr>
+	        {if ID_AD_SOLD}
+	        <tr>
+	            <th>Amount</th>
+	            <td>{MENGE_SOLD}</td>
+	        </tr>
+	        <tr>
+	            <th>Totalprice</th>
+	            <td>{topreis_ex(PREIS)} {CURRENCY_DEFAULT}</td>
+	        </tr>
+	        {endif}
+		</table>
+		{if batch}
+		<div class="alert alert-danger">
+			<strong>Attention!</strong>
+			Hereby you will accept <u>all</u> open purchases for this article!
+
+		</div>
+		{endif}
+	</div>
+</div>
+<br style="clear: left;" />
+<div>
+{if done || error}
+	{if done}
+		<h2>{if batch}All sales were accepted!
+       {else}Sale was accepted!{endif}</h2>
+		<input class="btn btn-success pull-right" type="button" value="Close window" data-dismiss="modal" />
+	{endif}
+	{if error}
+		<h2>An unexpecting error occurred!</h2>
+		<input class="btn btn-danger pull-right" type="button" value="Close window" data-dismiss="modal" />
+	{endif}
+{else}
+	<div class="align-right">
+		<input class="btn" type="button" value="Abort" data-dismiss="modal" />
+		<input class="btn btn-success" type="button" value="{if batch}All sales{else}Sale{endif} akzeptieren!" onclick="verkauf_bestaetigen_post({ID_AD_MASTER}{if ID_AD_SOLD}, {ID_AD_SOLD}{endif});" />
+	</div>
+{endif}
+</div>
+{endif}
+{if decline}
+<img style="float: left;" src="{uri_baseurl(/bilder/stop-no-access.jpg)}" />
+<div style="margin-left: 96px;">
+	<div class="katbox topad" style="border-color: rgb(204, 204, 204); width: 90%; margin: 15px;">
+		<table>
+			<tr>
+				<th>K&auml;ufer</th>
+				<td>
+				{if ID_AD_SOLD>0}
+					<a style="font-weight:bold;" href="{uri_action(view_user,{urllabel(USER)},{ID_BUYER})}" target="_blank" title="To buyers profile">
+						{htm(USER)}
+					</a>
+				{else}
+					{BUYER_COUNT} Buyer
+				{endif}
+				</td>
+			</tr>
+	        <tr>
+	            <th>Article</th>
+	            <td><a href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Open advert" target="_blank">{htm(PRODUKTNAME)}</a></td>
+	        </tr>
+	        <tr>
+	            <th>Articlenumber</th>
+	            <td>{ID_AD_MASTER}</td>
+	        </tr>
+	        {if ID_AD_SOLD}
+	        <tr>
+	            <th>Amount</th>
+	            <td>{MENGE_SOLD}</td>
+	        </tr>
+	        <tr>
+	            <th>Totalprice</th>
+	            <td>{PREIS} {CURRENCY_DEFAULT}</td>
+	        </tr>
+	        {endif}
+		</table>
+		{if batch}
+		<div class="alert alert-danger">
+			 <strong>Attention!</strong>
+			Hereby you will decline <u>all</u> open purchases for this article!
+
+		</div>
+		{endif}
+	</div> 
+</div>
+<div>
+{if done || error}
+	{if done}
+		<h2>{if batch}
+        All sales were declined!{else}
+        Sale was declined!{endif}</h2>
+	{endif}
+	{if error}<h2>An unexpected error has occurred!</h2>{endif}
+{else}
+	<h2>Choose a reason:</h2>
+	<label class="radio" for="reason_not_available">
+		<input onchange="$('#reason_custom').attr('disabled', 'disabled');" type="radio" name="reason" id="reason_not_available" value="The desired article is no longer available." />
+		The desired article is no longer available.
+	</label>
+	
+	<label class="radio" for="reason_other">
+		<input onchange="$('#reason_custom').removeAttr('disabled').focus();" type="radio" name="reason" id="reason_other" value="" />
+		Choose a different reason:
+	</label>
+	
+	<input disabled="disabled" class="input-xxlarge" type="text" id="reason_custom" value="" placeholder="Choose a different reason." />
+	<br />	
+	
+	<label class="radio" for="disable_ad" style="font-weight: bold;">
+		<input type="checkbox" name="disable" id="disable_ad" value="1" />
+		Deaktivate advert so it can not be bought again.
+	</label>
+	<br />
+	<div class="align-right">
+		<input class="btn" type="button" value="Abort" data-dismiss="modal" />
+		<input class="btn btn-danger" type="button" value="
+        {if batch}All sales{else}Sale{endif} decline!" onclick="verkauf_ablehnen_post({ID_AD_MASTER}{if ID_AD_SOLD}, {ID_AD_SOLD}{endif});" />
+	</div>
+{endif}
+</div>
+{endif}
+
+{endif}

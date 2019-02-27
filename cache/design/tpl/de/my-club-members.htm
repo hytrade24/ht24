@@ -1,0 +1,165 @@
+<script type="text/javascript">
+    jQuery(function() {
+    	function setClubFormular(d) {
+            if(d) {
+                jQuery(".visibleOnEnabledClub").show();
+            } else {
+                jQuery(".visibleOnEnabledClub").hide();
+            }
+        }
+
+        jQuery("#clubFormular input[name=STATUS]").change(function(){ setClubFormular(this.checked); })
+
+        setClubFormular({if CLUB_STATUS}true{else}false{endif});
+    });
+
+	function showMemberRequestReason(clubMemberRequestId) {
+		ShowContentDialog(jQuery("#clubMemberRequestReason-" + clubMemberRequestId).html(), "Beitrittsbegründung");
+	}
+    
+function ToggleStats(link) {
+	if ($("#stats iframe").attr("src") == "about:blank") {
+		// Not loaded yet
+    jQuery("#stats iframe").attr("src", "{uri_baseurl(index.php?frame=stats&page=ui_stats&show=user_anmeldungen)}&club={CLUB_ID_CLUB}");
+	}
+	$("#stats iframe").toggle();
+}
+</script>
+
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}Gruppenverzeichnis</h1>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-club-members.modal.htm,*)}
+
+{if saved | added | kicked | uninvited | promoted | request_declined | request_accepted | request_blocked}
+<div class="alert alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	{if saved}<h4>Änderungen gespeichert!</h4>{endif}
+	{if added}<h4>Benutzer eingeladen!</h4>{endif}
+	{if kicked}<h4>Benutzer wurde aus der Gruppe entfernt!</h4>{endif}
+	{if uninvited}<h4>Einladung erfolgreich widerrufen!</h4>{endif}
+	{if promoted}<h4>Gruppenleitung erfolgreich übergeben!</h4>{endif}
+	{if mod_added}<h4>Mitglied erfolgreich zum Moderator ernannt!</h4>{endif}
+	{if mod_removed}<h4>Dem Mitglied wurden die Moderations-Rechte entzogen!</h4>{endif}
+	{if request_accepted}<h4>Die Beitrittsanfrage wurde akzeptiert.</h4>{endif}
+	{if request_declined}<h4>Die Beitrittsanfrage wurde abgelehnt.</h4>{endif}
+	{if request_blocked}<h4>Die Beitrittsanfrage wurde abgelehnt und der User blockiert</h4>{endif}
+
+
+</div>
+{endif}
+{if saved}
+<div class="alert alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+
+</div>
+{endif}
+{if errors}
+<div class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4>Fehler!</h4>
+	<ul>
+		{errors}
+	</ul>
+</div>
+{endif}
+
+{if CLUB_ID_CLUB || CLUB_NEW}
+	{subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+
+	{if liste_requests}
+		<h3>Beitrittsanfragen</h3>
+		<p>Sie haben {count_member_requests} Beitrittsanfragen für diese Gruppe. Die Beitrittsbedingungen können Sie in den <a href="{uri_action(my-group,{CLUB_ID_CLUB},view)}">Gruppeneinstellungen</a> konfigurieren.</a> </p>
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th>Aktionen</th>
+					<th>Benutzername</th>
+					<th>Anfrage am</th>
+					<th>Begründung</th>
+				</tr>
+			</thead>
+			<tbody>
+				{liste_requests}
+			</tbody>
+		</table>
+
+		{if count_member_requests > 1 && !request_view}
+			<p><a href="{uri_action(my-group-members,{CLUB_ID_CLUB},request_view)}">alle Beitrittsanfragen anzeigen</a></p>
+		{endif}
+
+		{if request_view}
+			<p class="pager">{pager}</p>
+		{endif}
+	{endif}
+
+	{if !hide_members}
+		<p>
+			Die Gruppe {htm(CLUB_NAME)} besteht derzeit aus folgenden Mitgliedern:
+		</p>
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th colspan="2">Aktionen</th>
+					<th>Benutzername</th>
+					<th>Klarname</th>
+					<th>Mitglied seit</th>
+					<th>Online</th>
+				</tr>
+			</thead>
+			<tbody>
+				{liste}
+			</tbody>
+		</table>
+
+		<p class="pager">{pager}</p>
+
+		{if CLUB_MODERATOR}
+		<p class="btn-group" style="float: right;">
+			<a class="btn btn-success" onclick="addUser();">
+				<i class="icon icon-plus icon-white"></i>
+				Neues Mitglied hinzufügen
+			</a>
+		</p>
+	{endif}
+	<br style="clear: both;" />
+
+<div id="stats" class="alert alert-success">
+	Klicken Sie hier, um Ihre Memberstatistik anzuzeigen
+	<a href="#statistics" onclick="return ToggleStats(this);">
+		<img src="{uri_resource(/images/icons/stats-s.png)}" />
+	</a>
+	<iframe src="about:blank" frameborder="0" style="width: 100%; height: 240px; display: none;"></iframe>
+</div>
+
+	{endif}
+	<div class="design-content-box design-icon-legend">
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-envelope"></i></a> = Nachricht schreiben
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-share-alt"></i></a> = Gruppenleitung übergeben
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-star"></i></a> = Moderationsrechte erteilen
+		</div>
+		<br style="clear: left;" />
+
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-star-empty"></i></a> = Moderationsrechte entziehen
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-danger"><i class="glyphicon glyphicon-trash icon-white"></i></a> = Mitglied entfernen
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-danger"><i class="glyphicon glyphicon-remove icon-white"></i></a> = Einladung widerrufen
+		</div>
+		<br style="clear: left;" />
+
+		<div class="pull-left clearfix">
+			<i class="glyphicon glyphicon-star"></i> = ist Gruppen-Leiter
+		</div>
+		<div class="pull-left clearfix">
+			<i class="glyphicon glyphicon-bullhorn"></i> = Moderator
+		</div>
+	</div>
+{endif}

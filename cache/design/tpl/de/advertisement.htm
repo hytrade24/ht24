@@ -1,0 +1,562 @@
+
+{if (error_noaddress)}
+{if error_noaddress}
+<div class="alert alert-danger">
+    <h2>Hinweis</h2>
+    <p>
+        Bitte erg&auml;nzen Sie folgende Angaben in ihrem <a href="{uri_action(my-profil)}">Profil</a> bevor Sie Werbung buchen:
+        <br />
+    <ul>
+        {if error_addr_first}<li>Vorname</li>{endif}
+        {if error_addr_last}<li>Nachname</li>{endif}
+        {if error_addr_street}<li>Straße</li>{endif}
+        {if error_addr_zip}<li>PLZ</li>{endif}
+        {if error_addr_city}<li>Ort</li>{endif}
+    </ul>
+    </p>
+</div>
+{endif}
+{else}
+{if done}
+<h2>Bestellung abgeschlossen</h2>
+
+<p class="lead">
+    Vielen Dank f&uuml;r Ihre Bestellung!
+</p>
+<p>
+    Ein Administrator wird ihre Anfrage in K&uuml;rze &uuml;berpr&uuml;fen. Sobald dies geschehen ist, erhalten
+    Sie die Rechnung. Erst nachdem auch die Zahlung der Rechnung best&auml;tigt wurde, wird ihre Werbung auch
+    angezeigt.
+</p>
+
+<ul class="list-unstyled">
+    <li>
+        <a href="{uri_action(advertisement_list)}">
+            Meine Bannerwerbung anzeigen
+        </a>
+    </li>
+    <li>
+        <a href="{uri_action(advertisement)}">
+            Weitere Werbung buchen
+        </a>
+    </li>
+</ul>
+{else}
+{if ajax}
+{liste_kat}
+{else}
+<script type="text/javascript" src="{uri_baseurl(/js/categorys.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/jquery-ui/jquery-ui.min.js)}"></script>
+<script type="text/javascript">
+
+    var date_okay = false;
+    var input_timer = false;
+    var img_link = '';
+
+    $(function() {
+        UpdateSummary();
+
+    });
+
+    $(document).ready(function() {
+
+        jQuery("#date-from").datepicker({
+            dateFormat: 'dd.mm.yy',
+            numberOfMonths: 3,
+            onClose: function(dateStart) {
+                jQuery("#date-to").datepicker("option", "minDate", dateStart).change();
+            },
+            onSelect: function(dateStart, instance) {
+                jQuery(this).change();
+            }
+        });
+        jQuery("#date-to").datepicker({
+            dateFormat: 'dd.mm.yy',
+            numberOfMonths: 3,
+            onClose: function(dateEnd) {
+                jQuery("#date-from").datepicker("option", "maxDate", dateEnd).change();
+            },
+            onSelect: function(dateEnd, instance) {
+                jQuery(this).change();
+            }
+        });
+
+        $("#banner-img").change(function(){
+            readURL(this);
+        });
+
+        $('#redirect-link, #redirect-link-title').on("keyup",function() {
+            generate_bannercode(
+                $('#redirect-link').val(),
+                $('#redirect-link-title').val(),
+                img_link
+            );
+        });
+    });
+
+    function generate_bannercode(link,title,img) {
+        if ( link == "" || title == "" || img == "" ) {
+            return;
+        }
+        else {
+            if (!link.match(/^https?:\/\/.*/)) {
+                link = 'http://' + link;
+            }
+            var html = '<a target="_blank" href="'+link+'" title="'+title+'">';
+            html += '<img src="'+img+'" />';
+            html += '</a>';
+
+            $('#AD_CODE').val( html );
+
+            SaveBannerCode();
+        }
+    }
+
+    function readURL(input) {
+        var fileTypes = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            var extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+                isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+
+            if ( isSuccess ) {
+                reader.onload = function (e) {
+                    save_banner_image(e);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                alert("Selected file is not image");
+            }
+        }
+    }
+
+    function save_banner_image(e) {
+        var fileInput = document.getElementById('banner-img');
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append('file', file);
+
+        var url = ebiz_trader_baseurl    + "index.php?page=advertisement&frame=ajax&action=save_banner_img";
+
+        var spinner = '<span class="spin-holder" style="color: orangered;"><i class="fa fa-spinner fa-spin" style="font-size:24px"></i><span>  Image is uploading</span></span>';
+        $('.file-holder').prepend( spinner );
+        $('#image-upload-error').html( "" );
+
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            url: url,
+            data: formData,
+            success: function( resp ) {
+
+                if ( resp.success ) {
+                    $('#image-upload-error').html( "" );
+
+                    var img_tag = '<img style="max-width: 100%;" src="'+ e.target.result+'" />';
+
+                    var element = $('#blah');
+                    element.empty();
+                    element.append( img_tag );
+
+                    img_link = resp.img_link;
+                    generate_bannercode(
+                        $('#redirect-link').val(),
+                        $('#redirect-link-title').val(),
+                        resp.img_link
+                    );
+                }
+                else {
+                    $('#image-upload-error').html( resp.msg );
+                }
+                $('.file-holder .spin-holder').remove();
+            },
+            error: function( resp ) {
+                $('#image-upload-error').html( "Failed to upload image." );
+                $('.file-holder .fa-spin').remove();
+            }
+        });
+    }
+
+    function PreviewCode() {
+        var code = $('#AD_CODE').val();
+
+        ShowContentDialog(code, 'Vorschau der Werbung', 500, 300);
+    }
+
+    function CheckInput(what) {
+        if (what == 'kat') UpdateSummary();
+        if (what == 'banner') SaveBanner();
+        if (what == 'code') SaveBannerCode();
+        if ((what == 'from') || (what == 'until')) SaveDate();
+    }
+
+    function CheckInputTimed(what) {
+        if (input_timer != false) {
+            window.clearTimeout(input_timer);
+            input_timer = false;
+        }
+        input_timer = window.setTimeout(function() {
+            if (what == 'kat') UpdateSummary();
+            if (what == 'banner') SaveBanner();
+            if (what == 'code') SaveBannerCode();
+            if ((what == 'from') || (what == 'until')) SaveDate();
+        }, 700);
+    }
+
+    function SaveBanner() {
+        var id = $("input[name=FK_ADVERTISEMENT]:checked").val();
+        $.get(ebiz_trader_baseurl + "index.php?page=advertisement&action=banner_set&target="+encodeURIComponent(id), function() {
+            UpdateSummary();
+        });
+    }
+
+    function SaveBannerCode() {
+        var code = $('#AD_CODE').val();
+        $.get(ebiz_trader_baseurl + "index.php?page=advertisement&action=code_set&target="+encodeURIComponent(code), function() {
+            UpdateSummary();
+        });
+    }
+
+    function SaveDate() {
+        var dateFrom = $("select[name=STAMP_START_d]").val()+"."+
+            $("select[name=STAMP_START_m]").val()+"."+$("select[name=STAMP_START_y]").val();
+        $.get(ebiz_trader_baseurl + "index.php?page=advertisement&action=date_from_set&target="+encodeURIComponent(dateFrom), function(result) {
+            date_okay = (result.date_okay == 1 ? true : false);
+            SaveDateUntil();
+        });
+    }
+
+    function SaveDateFrom() {
+        $.get(ebiz_trader_baseurl + "index.php?page=advertisement&action=date_from_set&target="+encodeURIComponent($("#date-from").val()), function(result) {
+            date_okay = (result.date_okay == 1 ? true : false);
+            UpdateSummary();
+        });
+    }
+
+    function SaveDateUntil() {
+        $.get(ebiz_trader_baseurl + "index.php?page=advertisement&action=date_to_set&target="+encodeURIComponent($("#date-to").val()), function(result) {
+            date_okay = (result.date_okay == 1 ? true : false);
+            UpdateSummary();
+        });
+    }
+
+    function UpdateSummary() {
+        var pos = $("input[name=FK_ADVERTISEMENT]:checked");
+        var code = $('#AD_CODE').val();
+        var dateFrom = $("select[name=STAMP_START_y]").val()+"-"+
+            $("select[name=STAMP_START_m]").val()+"-"+$("select[name=STAMP_START_d]").val();
+        var dateUntil = $("select[name=STAMP_END_y]").val()+"-"+
+            $("select[name=STAMP_END_m]").val()+"-"+$("select[name=STAMP_END_d]").val();
+        var cats = $("#step2 input:checked");
+        var ready = true;
+
+        // Bannerposition
+        if (pos.length == 0) {
+            ready = false;
+            jQuery("#ad_banner_error").show();
+            jQuery(".input-step-1 input.btn-success").attr("disabled", true);
+        } else {
+            $("#ad_banner_error").hide();
+            jQuery(".input-step-1 input.btn-success").attr("disabled", false);
+        }
+        // Inhalt
+        if (code.length < 1) {
+            ready = false;
+            $("#ad_code_error").show();;
+            jQuery(".input-step-2 input.btn-success").attr("disabled", true);
+        } else {
+            $("#ad_code_error").hide();
+            jQuery(".input-step-2 input.btn-success").attr("disabled", false);
+        }
+        // Laufzeit
+        if (date_okay == 1) {
+            $("#ad_date_error").hide();
+            jQuery(".input-step-3 input.btn-success").attr("disabled", false);
+        } else {
+            ready = false;
+            $("#ad_date_error").show();;
+            jQuery(".input-step-3 input.btn-success").attr("disabled", true);
+        }
+        // Kategorien
+        if (cats.length == 0) {
+            ready = false;
+            $("#ad_kat_error").show();;
+            jQuery(".input-step-4 input.btn-success").attr("disabled", true);
+        } else {
+            $("#ad_kat_error").hide();
+            jQuery(".input-step-4 input.btn-success").attr("disabled", false);
+        }
+
+        var url = ebiz_trader_baseurl + "index.php?page=advertisement_summary&frame=ajax&id={ID_ADVERTISEMENT_USER}";
+        $.get(url, function(result) {
+            $("#summary").html(result);
+            if (ready == false) {
+                $("#summary input[type=submit]").attr("disabled", true);
+            }
+        });
+    }
+
+</script>
+
+<h1>
+    Werben Sie auf unserer Webseite
+    <p class="lead">Zielgerichtete Werbung für Ihr Unternehmen</p>
+</h1>
+
+<ul class="nav nav-tabs userTabs">
+    <li>
+        <a href="{uri_action(advertisement_list)}" title="Meine Bannerwerbung anzeigen">
+            Meine Bannerwerbung anzeigen
+        </a>
+    </li>
+    <li class="active">
+        <a href="{uri_action(advertisement)}" title="Weitere Werbung buchen">
+            Weitere Werbung buchen
+        </a>
+    </li>
+</ul>
+
+<div id="message_box" style="display:none;" title="Fehler!">
+
+</div>
+
+<div class="progress-description progress-5 clearfix">
+    <div class="progress-desc-1 pull-left active">
+        <p>Bannerposition</p>
+    </div>
+    <div class="progress-desc-2 pull-left pending">
+        <p>Inhalt</p>
+    </div>
+    <div class="progress-desc-3 pull-left pending">
+        <p>Zeitraum</p>
+    </div>
+    <div class="progress-desc-4 pull-left pending">
+        <p>Kategorien</p>
+    </div>
+    <div class="progress-desc-5 pull-left pending">
+        <p>Bestätigen</p>
+    </div>
+</div>
+<div class="progress progress-5">
+    <div class="progress-step-1 progress-bar progress-bar-warning">
+        <strong>Schritt 1</strong>
+    </div>
+    <div class="progress-step-2 progress-bar progress-bar-danger">
+        <strong>Schritt 2</strong>
+    </div>
+    <div class="progress-step-3 progress-bar progress-bar-danger">
+        <strong>Schritt 3</strong>
+    </div>
+    <div class="progress-step-4 progress-bar progress-bar-danger">
+        <strong>Schritt 4</strong>
+    </div>
+    <div class="progress-step-5 progress-bar progress-bar-danger">
+        <strong>Schritt 5</strong>
+    </div>
+</div>
+
+<form id="form_ad" action="{uri_action(advertisement)}" method="post" class="design-user-advertisement">
+    <input type="hidden" name="action" value="save" />
+    <input type="hidden" name="id_ad_user" value="{ID_ADVERTISEMENT_USER}" />
+
+    <div class="input-step input-step-1">
+        <div class="design-content-box">
+            <legend style="font-size: 20px; font-weight: bold;">
+                1. Bannerposition
+            </legend>
+            <p>
+                Um Werbung im Anzeigenmarkt zu schalten w&auml;hlen Sie bitte zun&auml;chst eine <strong>Bannerposition</strong> aus.
+                Diese entscheidet wo ihre Werbung dargestellt wird.<br />
+            </p>
+            <!-- POSITION / WERBEPLATZ -->
+            <div>
+                <div>
+                    {liste_pos}
+                </div>
+            </div>
+            <!-- POSITION / WERBEPLATZ -->
+        </div>
+        <p class="pull-right">
+            <input type="button" class="btn btn-success" onclick="StepsShow(2);" value="Weiter" />
+        </p>
+    </div>
+    <div class="input-step input-step-2" style="display: none;">
+        <div class="design-content-box">
+            <legend style="font-size: 20px; font-weight: bold;">
+                2. Inhalt
+            </legend>
+            <p>
+                Bitte f&uuml;gen Sie den HTML-Code ihres Banners unter <strong>Inhalt</strong> in das Eingabefeld ein.
+                Um sicherzustellen dass ihr Banner wie gewünscht dargestellt wird können Sie über die Schaltfläche
+                direkt unter dem Eingabefeld eine <strong>Vorschau</strong> anzeigen lassen.<br />
+            </p>
+            <!-- INHALT -->
+            <div>
+                <div class="form-group">
+                    <textarea class="form-control" id="AD_CODE" name="CODE" onchange="CheckInput('code');" onkeyup="CheckInputTimed('code');">{htm(CODE)}</textarea>
+                </div>
+            </div>
+            <!-- INHALT -->
+
+            <div class="alert alert-info">
+                <p class="lead">Beispiel für einen HTML-Bannercode</p>
+
+                &lt;a href="https://www.hytrade24.com/" target="_blank" title="marktplatz"&gt;&lt;img src="https://www.hytrade24.com/gfx/banner_adv_1.png" &nbsp;border="0" /&gt;&lt;/a&gt;
+            </div>
+
+            <legend style="font-size: 20px; font-weight: bold;">
+                Schreiben Sie Redirect Link, Titel und Upload-Banner-Bild
+
+            </legend>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="redirect-link">
+                        URL für den Banner-Link
+                    </label>
+                </div>
+                <div class="col-md-9">
+                    <input autocomplete="off" id="redirect-link" name="redirect-link" type="text" style="width: 100%;" />
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+                <div class="col-md-3">
+                    <label for="redirect-link-title">
+                        Titel des Banners
+                    </label>
+                </div>
+                <div class="col-md-9">
+                    <input autocomplete="off" id="redirect-link-title" name="redirect-link-title" type="text" style="width: 100%;" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="banner-img">
+                        Bild des Banners
+                    </label>
+                    <div class="file-holder"></div>
+                </div>
+                <div class="col-md-9">
+                    <input type="file" name="banner-img" id="banner-img" />
+                    <span style="color: #9e9e9e;">* Maximale Dateigröße ist 2,5 MB und erlaubte Bilddatei-Erweiterungen sind jpg, jpeg, png und gif</span>
+                </div>
+            </div>
+            <div class="row">
+                <div id="image-upload-error" class="col-md-push-3 col-md-9" style="color: red;"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="blah"></div>
+            </div>
+
+        </div>
+
+        <p class="pull-right">
+            <input type="button" class="btn btn-default" onclick="StepsShow(1);" value="Zurück" />
+            <input type="button" class="btn btn-default" onclick="PreviewCode();" value="Vorschau" />
+            <input type="button" class="btn btn-success" onclick="StepsShow(3);" value="Weiter" />
+        </p>
+
+    </div>
+    <div class="input-step input-step-3" style="display: none;">
+        <div class="design-content-box">
+            <legend style="font-size: 20px; font-weight: bold;">
+                3. Zeitraum
+            </legend>
+            <p>
+                Bitte w&auml;hlen Sie den <strong>Zeitraum</strong> in dem die Anzeige dargestellt werden soll.
+                Beachten Sie dass die Anzeige zunächst von einem Administrator &uuml;berpr&uuml;ft und best&auml;tigt wird.<br />
+            </p>
+            <!-- ZEITRAUM -->
+            <div class="clearfix">
+                <div class="form-group">
+                    <label class="control-label design-input-label">Von</label>
+                    <div class="design-input-field">
+                        <div class="design-input-date-drop">
+                            <input onchange="SaveDateFrom()" style="margin-left: 13px; width: 30%;" type="text" name="STAMP_START" class="form-control" id="date-from" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label design-input-label">Bis</label>
+                    <div class="design-input-field">
+                        <div class="design-input-date-drop">
+                            <input onchange="SaveDateUntil()" style="margin-left: 13px; width: 30%;" type="text" name="STAMP_END" class="form-control" id="date-to" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ZEITRAUM -->
+        </div>
+
+        <p class="pull-right">
+            <input type="button" class="btn btn-danger" onclick="StepsShow(2);" value="Zurück" />
+            <input type="button" class="btn btn-success" onclick="StepsShow(4);" value="Weiter" />
+        </p>
+    </div>
+    <div class="input-step input-step-4" style="display: none;">
+        <div class="design-content-box">
+            <legend style="font-size: 20px; font-weight: bold;">
+                4. Kategorien
+                <span id="step2_cur"></span>
+            </legend>
+            <p>
+                Zuletzt markieren Sie die <strong>Kategorien</strong> in denen ihre Anzeige dargestellt werden soll.<br />
+                <strong class="text-error">
+                    Die Anzeige wird ausschließlich in den ausgewählten Kategorien eingeblendet,
+                    Unterkategorien sind nicht inbegriffen und müssen explizit ausgewählt werden!
+                </strong>
+            </p>
+            <!-- KATEGORIEN -->
+            <div id="step2" style="height: 90%;">
+                <div style="height: 100%; overflow: auto; margin-bottom: -24px;">
+                    {liste_kat}
+                </div>
+                <br />
+            </div>
+            <!-- KATEGORIEN -->
+        </div>
+        <div class="design-content-box design-icon-legend">
+            <div class="pull-left">
+                <img src="{uri_baseurl(/gfx/all_uncheck.gif)}" /> = Alle abw&auml;hlen
+            </div>
+            <div class="pull-left">
+                <img src="{uri_baseurl(/gfx/all_check.gif)}" /> = Alle ausw&auml;hlen
+            </div>
+            <div class="pull-left">
+                <img src="{uri_baseurl(/bilder/icon_minus.png)}" /> = Unterkategorien ausblenden
+            </div>
+            <div class="pull-left clearfix">
+                <img src="{uri_baseurl(/bilder/icon_plus.png)}" /> = Unterkategorien anzeigen
+            </div>
+        </div>
+
+        <p class="pull-right">
+            <input type="button" class="btn btn-danger" onclick="StepsShow(3);" value="Zurück" />
+            <input type="button" class="btn btn-success" onclick="StepsShow(5);" value="Weiter" />
+        </p>
+
+    </div>
+    <div class="input-step input-step-5" style="display: none;">
+        <div class="design-content-box">
+            <legend style="font-size: 20px; font-weight: bold;">
+                Zusammenfassung
+            </legend>
+            <!-- ZUSAMMENFASSUNG -->
+            <div id="summary"></div>
+            <!-- ZUSAMMENFASSUNG -->
+        </div>
+        <div class="align-right">
+            <input type="button" class="btn btn-danger" onclick="StepsShow(4);" value="Zurück" />
+            <input type="submit" class="btn btn-success" value="Werbung kostenpflichtig buchen" />
+        </div>
+    </div>
+</form>
+<div id="steps_loading" style="cursor: wait; display: none; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 100;" ></div>
+{endif}
+{endif}
+{endif}

@@ -1,0 +1,114 @@
+<script type="text/javascript" src="{uri_baseurl(/lib/prototype.js)}"></script>
+<script type="text/javascript" src="sys/popup/popup.js"></script>
+<link rel="stylesheet" href="sys/popup/popup.css" />
+<script type="text/javascript">
+  var myPopup = new JSpopup(480, 400);
+  {if ID_EDIT}
+  jQuery(function() {
+      myPopup.add({
+          url: "index.php?page=auswahllisten_edit&ID_LISTE={ID_EDIT}&frame=ajax",
+          title: "Auswahlliste bearbeiten", //optional
+          target: "LINKED",
+          id: "linked_list",
+          width: 480,
+          height: 400,
+          onClose: function() {
+              document.location.href = "index.php?page=auswahllisten";
+          }
+      });
+      $("LINKED").click();
+  });
+  {endif}
+</script>
+
+<h1>Auswahllisten</h1>
+<p>Auswahllisten für die Kategorien. Man kann Globale oder Lokale Listen erstellen.</p>
+
+{if ID_EDIT}
+<a id="LINKED"></a>
+{endif}
+
+{if delete_ok}
+<div class="hinweis">
+  <h2>Ausswahlliste erfolgreich gel&ouml;scht.</h2>
+</div>
+{endif}
+<table>
+<tr>
+<td valign="top">
+
+
+<form method="post">
+<table cellspacing="0" class="liste">
+  <tr>
+    <th colspan="2">Auswahlliste suchen</th>
+  </tr>
+  <tr class="zeile1">
+    <td><strong>Global</strong></td>
+    <td>
+      <input type="radio" name="search[global]" value="1" id="search_global_yes"{if (search_global==1)} checked{endif}>
+        <label for="search_global_yes"> Ja</label>
+      <input type="radio" name="search[global]" value="0" id="search_global_no"{if (search_global==0)} checked{endif}>
+        <label for="search_global_no"> Nein</label>
+      <input type="radio" name="search[global]" value="" id="search_global_ignore"{if (search_global == -1)} checked{endif}>
+        <label for="search_global_ignore"> Alle</label>
+    </td>
+  </tr>
+  <tr class="zeile0">
+    <td><strong>Listen-Name</strong></td>
+    <td>
+      <input style="width:99%;" name="search[name]" value="{search_name}" id="search_name">
+    </td>
+  </tr>
+  <tr>
+    <th align="center" colspan="2">
+      <input type="submit" value="Suche starten">
+      <a href="index.php?page=auswahllisten">Alle anzeigen</a>
+    </th>
+  </tr>
+</table>
+</form>
+
+</td>
+<td valign="top"><h2>Neue Auswahlliste anlegen</h2>
+<p>klicken Sie hier, um eine neue Liste zu definieren:</p>
+<input type="button" id="addNewListe" value="Neue Auswahlliste hinzuf&uuml;gen">
+</td>
+</tr>
+</table>
+
+<h2>Liste</h2>
+<table cellspacing="0" class="liste">
+  <tr>
+    <td colspan="6">{if pager}{pager}{endif}</td>
+  </tr>
+  <tr>
+    <th>Aktion</th>
+    <th>Global</th>
+    <th>Listen-Name</th>
+    <th>Optionen</th>
+    <th>Angelegt</th>
+    <th>Ver&auml;ndert</th>
+  </tr>
+  {if liste}
+    {liste}
+  {else}
+    <tr>
+      <td align="center" colspan="6" class="error">
+        Leider keine Auswahllisten gefunden
+      </td>
+    </tr>
+  {endif}
+  <tr>
+    <td colspan="6">{if pager}{pager}{endif}</td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+          myPopup.add(
+          {
+              url: "index.php?page=auswahllisten_edit&frame=ajax", 
+              title: "Neue Auswahlliste Hinzuf&uuml;gen", //optional
+              target: "addNewListe" //pflicht
+            });
+        </script>

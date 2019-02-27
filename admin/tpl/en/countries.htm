@@ -1,0 +1,25 @@
+<h1><img src="gfx/sprachen_64.gif" width="64" height="64" alt="Weltkugel" title="Sprachen" border="0" align="left">L&auml;nder bearbeiten</h1>
+<p>Achtung, L&auml;nder sind mehrsprachfähig.<br>
+Bitte klicken Sie auf die jeweiligen Landesfahnen um weitere Sprachvarianten einzugeben</p>
+{if msg || err}<div class="hinweis">
+{if err}<div class="error">{err}</div>{endif}
+{if msg}<div class="ok">{ok}</div>{endif}
+</div>{endif}
+
+<table border="0" cellspacing="0" cellpadding="4" class="liste">
+<tr>
+{bereiche}
+</tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="4" class="liste">
+<tr>
+ {head}
+ <th>Aktionen&nbsp;</th>
+</tr>{liste}
+<tr class="footer">
+ <td colspan="{cols}">&nbsp;</td>
+</tr>
+</table>
+
+

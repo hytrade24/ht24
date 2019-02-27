@@ -1,0 +1,38 @@
+<h1>Einstellungen f&uuml;r die Seite {htm(SEITE)}!</h1>
+{if ok}<p class="ok">Speichervorgang erfolgreich!</p>
+<script type="text/javascript">
+if(window.opener)
+{
+  //alert(window.opener.location);
+  //dahin = window.opener.location+'&a=b';
+  //check = window.opener.location.href = dahin;
+  //alert (check);
+  window.opener.location.reload();
+  window.close()
+}
+</script>
+{endif}
+<form method="post" action ="index.php" style="display:inline">
+ <input type="hidden" name="FK_NAV" value="{ID_NAV}">
+ <input type="hidden" name="id" value="{ID_NAV}"> 
+ <input type="hidden" name="page" value="{curpage}">
+ <input type="hidden" name="frame" value="{curframe}" />
+ <table class="formTable" cellspacing="0" border="1">
+  <tr>
+   <th>Kategorie:&nbsp;</th>
+   <th>{select(kat,ID_KAT,LABEL,ROOT=2)}</th>
+  </tr>
+  <tr>
+   <th>Beitr&auml;ge pro Seite</th>
+   <th><input type="text" name="INT_LIMIT" size="10" value="{if INT_LIMIT}{INT_LIMIT}{else}4{endif}"></th>
+  </tr>
+  <tr>
+   <th>Darstellung</th>
+   <td>{select}</td>
+  </tr>
+  <tr class="footer">
+   <td colspan="2" align="right"><input type="submit" value="&Auml;ndern" class="button"></td>
+  </tr>
+ </table>
+ </form>
+ 

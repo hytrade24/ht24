@@ -1,0 +1,59 @@
+{if PROCESSING}
+  {startblock(head)}
+    {parentblock()}
+    <!-- Redirect for next step -->
+    <meta http-equiv="refresh" content="1;url={uri_action_full(my-marktplatz,enable,process)}" />
+  {endblock(head)}
+  <h3>Ausgewählte Anzeigen aktivieren</h3>
+  <p>
+  Bitte warten Sie während die Artikel aktiviert werden ... ({PROCESS_DONE} von {PROCESS_COUNT} fertig)
+  </p>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{PROCESS_PERCENT}" aria-valuemin="0" aria-valuemax="100"
+         style="min-width: 3em; width: {PROCESS_PERCENT}%;">
+      {PROCESS_PERCENT}%
+    </div>
+  </div>
+  <div class="text-right">
+    <a href="{uri_action(my-marktplatz,enable,cancel)}" class="btn btn-danger" 
+       onclick="return confirm('Möchten Sie die Aktivierung der Artikel wirklich abbrechen?');">
+      Abbrechen
+    </a>
+  </div>
+{else}
+<form id="formActionBack" action="{REFERER}" method="POST">
+    {HIDDEN_INPUT_SELECTED}
+</form>
+<form method="POST">
+    <input type="hidden" name="action" value="{action}" />
+    <input type="hidden" name="SUCCESS" value="{SUCCESS}" />
+    <h3>Ausgewählte Anzeigen aktivieren</h3>
+    
+    <p>
+        Die ausgewählten Anzeigen werden aktiviert. Dabei werden die Anzeigen mit der selben Restlaufzeit online genommen,
+            mit der sie deaktiviert wurden.
+    </p>
+            
+    <div class="text-box">
+    {if countDisabled > 0}
+        <b>Es werden {countDisabled} Anzeigen aktiviert.</b>
+        {if countEnabled > 0}
+        {countEnabled} Anzeigen sind bereits aktiv und bleiben unverändert.
+        {endif}
+    {else}
+        <b>Die von ihnen ausgewählten Anzeigen sind alle bereits aktiv oder ausgelaufen.</b>
+    {endif}
+    {if countTimeout > 0}
+        <br />
+        {countTimeout} Anzeigen sind ausgelaufen und müssen verlängert werden um diese wieder zu aktivieren.
+    {endif}
+    </div>
+            
+    <div class="pull-right">
+        <button class="btn btn-danger" onclick="jQuery('#formActionBack').submit(); return false;">Zurück</button>
+    {if countDisabled > 0}
+        <button class="btn btn-success" name="confirm" value="1" type="submit">Ausgewählte Anzeigen aktivieren</button>
+    {endif}
+    </div>
+</form>
+{endif}

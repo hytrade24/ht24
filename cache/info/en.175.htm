@@ -1,0 +1,104 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="175"{endif}>
+    <div class="row design-page-with-menu">
+  <div class="design-page-content">
+    <div id="demoLead" class="carousel slide" >
+        <div class="carousel-inner">
+          <div class="active item">
+                <a href="{uri_action(info)}"><img src="{uri_resource(images/demo/lead3.jpg)}" /></a>
+            </div>
+            <div class="item">
+              <a href="{uri_action(info)}"><img src="{uri_resource(images/demo/lead4.jpg)}" /></a>
+            </div>
+            <div class="item">
+              <a href="{uri_action(info)}"><img src="{uri_resource(images/demo/lead5.jpg)}" /></a>
+            </div>          
+        </div>
+        <a class="carousel-control left" href="#demoLead" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control right" href="#demoLead" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <script type="text/javascript">// <![CDATA[
+        jQuery(function() {
+            $('#demoLead').carousel({
+                interval: 9000 // in milliseconds  
+            })
+        });
+    // ]]>
+    </script>
+    
+    <div class="row">
+     <div class="col-xs-12 col-md-6">
+            <!-- Top Anzeigen -->
+{subtpl(tpl/{SYS_TPL_LANG}/slider_ads_top.htm,ID_KAT={ID_KAT},MAX_PER_PAGE=1,MAX_PAGES=3,INTERVAL=5000,HIDE_INDICATOR=1)}
+<!-- // Top Anzeigen -->
+     </div>
+     <div class="col-xs-12 col-md-6">
+       
+       <div class="panel panel-primary design-index-check-panel">
+         <div class="panel-body">
+         
+   <div class="design-content-box-ico">
+    <div class="el-ico">
+        <i class="glyphicon glyphicon-ok"></i>
+    </div>
+    <div class="el-body">
+        <h2>Vielfälltige Verkaufsfunktionen</h2>
+        <p>Verkaufen, handeln, vermieten und Anfragen</p>
+    </div>
+   </div>
+       
+   <div class="design-content-box-ico">
+    <div class="el-ico">
+        <i class="glyphicon glyphicon-ok"></i>
+    </div>
+    <div class="el-body">
+        <h2>Multilingual</h2>
+        <p>bis zu 8 Spachen sind möglich</p>
+    </div>
+   </div>   
+       
+   <div class="design-content-box-ico">
+    <div class="el-ico">
+        <i class="glyphicon glyphicon-ok"></i>
+    </div>
+    <div class="el-body">
+        <h2>Importfunktionen</h2>
+        <p>über XML- und CSV-Dateien</p>
+    </div>
+   </div> 
+       
+   <div class="design-content-box-ico">
+    <div class="el-ico">
+        <i class="glyphicon glyphicon-ok"></i>
+    </div>
+    <div class="el-body">
+        <h2>Auch für mobile Endgeräte</h2>
+        <p>Wir nutzen Bootstrap 3 / LESS</p>
+    </div>
+   </div>         
+
+       </div>
+       </div>
+       
+       
+     </div>
+    </div>
+    
+  </div>
+  <div class="design-page-menu">
+    {subtpl(tpl/{SYS_TPL_LANG}/kat_left_2.htm,SHOW_AD_COUNT=1,CHILDREN_HOVER=1,TEMPLATE=panel)}   
+    {subtpl(tpl/{SYS_TPL_LANG}/nummernsuche.htm)}
+    <div class="alert alert-info">
+
+       <a href="{uri_action(info)}"><img src="{uri_resource(images/demo/logos.png)}" class="img-responsive-center" /></a>
+	</div>
+    
+  </div>
+</div>
+</div>

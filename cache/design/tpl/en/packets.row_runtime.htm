@@ -1,0 +1,95 @@
+<label class="radio">
+    <input name="FK_PACKET_RUNTIME" type="radio" value="{ID_PACKET_RUNTIME}" {if FK_PACKET_RUNTIME==ID_PACKET_RUNTIME}checked{endif} />
+	{if CYCLE_ONCE}
+        Cycle once
+	{else}
+	    {RUNTIME_NUM}
+        {if CYCLE_DAY}
+            {if RUNTIME_NUM==1}
+                Day
+            {else}
+                Days
+            {endif}
+        {endif}
+        {if CYCLE_WEEK}
+            {if RUNTIME_NUM==1}
+                Week
+            {else}
+                Weeks
+            {endif}
+        {endif}
+        {if CYCLE_MONTH}
+            {if RUNTIME_NUM==1}
+                Month
+            {else}
+                Months
+            {endif}
+        {endif}
+        {if CYCLE_QUARTER}
+            {if RUNTIME_NUM==1}
+                Quarter
+            {else}
+                Quarters
+            {endif}
+        {endif}
+        {if CYCLE_YEAR}
+            {if RUNTIME_NUM==1}
+                Year
+            {else}
+                Years
+            {endif}
+        {endif}
+	    Runtime
+	{endif}
+	<br>
+    {if PRICE_SHOW_NETTO}
+        {topreis_ex(BILLING_PRICE)}
+    {else}
+        {topreis_ex(BILLING_PRICE_BRUTTO)}
+    {endif}
+    {CURRENCY_DEFAULT}
+	{if !CYCLE_ONCE}
+	    /
+	    {if BILLING_FACTOR > 1}
+	        {BILLING_FACTOR}
+	    {endif}
+        {if CYCLE_DAY}
+            {if BILLING_FACTOR==1}
+                Day
+            {else}
+                Days
+            {endif}
+        {endif}
+        {if CYCLE_WEEK}
+            {if BILLING_FACTOR==1}
+                Week
+            {else}
+                Weeks
+            {endif}
+        {endif}
+        {if CYCLE_MONTH}
+            {if BILLING_FACTOR==1}
+                Month
+            {else}
+                Months
+            {endif}
+        {endif}
+        {if CYCLE_QUARTER}
+            {if BILLING_FACTOR==1}
+                Quarter
+            {else}
+                Quarters
+            {endif}
+        {endif}
+        {if CYCLE_YEAR}
+            {if BILLING_FACTOR==1}
+                Year
+            {else}
+                Years
+            {endif}
+        {endif}
+	{endif}
+    {if PRICE_SHOW_NETTO}
+        plus {TAX_PERCENT}% taxes
+    {endif}
+</label>

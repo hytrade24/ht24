@@ -1,0 +1,70 @@
+<h2>Bildupload</h2>
+<form method="post" target="_self" action="index.php" enctype="multipart/form-data">
+<input type="hidden" name="id" value="{id}" />
+<input type="hidden" name="page" value="{curpage}" />
+<input type="hidden" name="frame" value="{curframe}" />
+
+<p>W&auml;hlen Sie ein Bild von Ihrer Festplatte, um dieses in die Bilddatenbank aufzunehmen.<br>
+Sofern Sie es direkt einer Galerie zuordnen m&ouml;chten, w&auml;hlen Sie bitte eine solche aus.</p>
+
+<table class="formTable" cellspacing="0">
+ <tr>
+  <td><br>
+  <strong>Bild ausw&auml;hlen:</strong>&nbsp;</td>
+  <td><br>
+  <input type="file" name="BILD" size="35"/></td>
+ </tr>
+ <tr>
+  <td><strong>Titel</strong> (Optional)</td>
+  <td><input type="text" name="ALT" value="{htm(ALT)}" size="35" /></td>
+ </tr>
+ <tr>
+  <td valign="top"><strong>Beschreibung</strong> (Optional)</td>
+  <td><textarea name="IMG_TEXT" cols="40" rows="6">{IMG_TEXT}</textarea></td>
+ </tr>
+ <tr>
+  <td><strong>Speicherort:</strong></td>
+  <td>
+    {UPLOADPATH}/ <input type="text" name="DIR" value="{DIR}" /><br />
+    <a style="cursor:pointer" style="cursor:hand" onclick="popupfkt('folder_browser&frompopup=1&dir={UPLOADPATH}/{DIR}','650','500');">
+    <img src="gfx/ordner_16.gif" width="16" height="16" title="Durchsuchen" alt="Durchsuchen" align="top" /> Durchsuchen</a>
+  </td>
+ </tr>
+ <tr>
+  <td><strong>Bildformat</strong></td>
+  <td>{select(bildformat)}</td>
+ </tr>
+ {if !MEDIADATENBANK}
+ <tr> 
+  <td><strong>Bild sofort freigeben</strong></td>
+  <td><input type="checkbox" {if OK}checked="checked"{endif} name="OK" value="1" class="nob"></td>  
+ </tr>
+ {endif}
+ <tr>
+  <td><strong>Galerie</strong><br /><span class="notizSmall">Optional</span></td>
+  <td>{select(galerie,,,,,,keine Galerie zuordnen)}</td>
+ </tr>
+  <tr>
+   <td><strong>Besitzer</strong></td>
+   <td>
+    <a name="test"></a>
+	<a style="cursor:pointer" onclick="popupfkt('users&frompopup=1','650','500');">
+	<img src="gfx/users_16.gif" width="16" height="16" alt="" border="0" /></a> <input type="text" name="NAME_" value="{htm(NAME_)}" />
+    <input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" />
+   </td>
+ </tr>
+ <tr class="footer">
+  <td colspan="2" align="right"><input type="submit" value="Speichern" class="button"></td>
+ </tr>
+</table>
+</form>
+{if !MEDIADATENBANK}
+  <br />
+  {if bilder}
+  <table style="border:1px #CCCCCC solid; border-collapse:collapse" cellpadding="3">
+  {bilder}
+  </table>
+  {else}
+  <div class="hinweis"><span class="error">Dieser Galerie wurden (noch) keine Bilder zugef&uuml;gt</span></div>
+  {endif}  
+{endif}

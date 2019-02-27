@@ -1,0 +1,49 @@
+{if indexing}
+<h1>Die Informationen werden aufbereitet<br>
+Diesen Vorgang nicht unterbrechen!!!!</h1>
+<iframe src="index.php?page=searching_do_indexing&frame=iframe&what={what}&start={start}" width="400" height="150" frameborder="0"></iframe>
+{else}
+<h1>Interne Suchmaschine ({slang})</h1>
+<p>Auf den folgenden Seiten können Sie die Eigenschaften Ihrer Suchmaschine angeben.</p>
+
+<h2>Datenbankgrößen und Anzahl der Einträge</h2>
+<table cellspacing="10">
+	<tr>
+		<td valign="top">
+            <table class="formTable" style="border:1px #9A9A9A solid">
+	<tr>
+		<th>Tabelle</th>
+		<th>Einträge</th>
+		<th>Größe</th>
+	</tr>
+	{liste}
+</table></td>
+		<td><p><span class="error">ACHTUNG!!</span><br>Die Funktion "bereinigen" löscht den Inhalt Ihrer Suchdatenbank vollständig und unwiederrufbar</p>
+Diese Funktion sollten nur dann verwenden, wenn Sie<br>
+- viele neue Badwords hinzugefügt bzw gelöscht haben<br>
+- wenn Sie Daten übernommen haben (Import)<br>
+
+<h2>Löschen</h2>
+<table>
+{delmebuttons}
+</table>
+
+</td>
+	</tr>
+</table>
+<h1>Reindexing<br>
+Wiederherstellung der Suchdatenbank</h1>
+<p>Diese Funktion benötigt je nach Datenvolumen <b>sehr viel Rechenzeit.</b><br>
+Führen Sie diese Funktion  nur dann aus, wenn der Server wenig belastet wird.</p>
+<p>Folgende Datenbanken werden in den Index aufgenommen werden</p>
+<div class="hinweis">
+<p>Um nur einzelne Bereich Ihrer Webseite neu zu spidern, klicken Sie bitte auf die Links in der Liste.
+</p>
+</div>
+<ul type="square">
+	<li><a class="button" href="index.php?page={curpage}&do=build_index&what=news" title="Index f&uuml;r News erstellen">News</a></li>
+	<li><a class="button" href="index.php?page={curpage}&do=build_index&what=pages" title="Index f&uuml;r Webseiten erstellen">Webseiten</a></li>
+  <li><a class="button" href="index.php?page={curpage}&do=build_index&what=faq" title="Index f&uuml;r FAQ erstellen">FAQ</a></li>
+</ul>
+
+{endif}

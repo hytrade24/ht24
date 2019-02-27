@@ -1,0 +1,70 @@
+<tr class="zeile{even}">
+	<td nowrap="nowrap">
+		<a title="Kommentar {if IS_PUBLIC}ausblenden{else}anzeigen{endif}" onclick="toggleCommentPublic({ID_COMMENT});" class="mv">
+			<img src="gfx/mv{even}.v{if IS_PUBLIC}1{else}0{endif}.gif" width="16" height="16" border="0" alt="Kommentar {if IS_PUBLIC}ausblenden{else}anzeigen{endif}" style="width: 16px;" />
+		</a>
+		<a title="Kommentar bearbeiten" onclick="popupfkt('comment_edit&frompopup=1&ID_COMMENT={ID_COMMENT}',650,650);">
+			<img src="gfx/btn.edit.gif" width="32" height="16">
+		</a>
+		<a title="Kommentar löschen" onclick="deleteComment({ID_COMMENT});">
+			<img src="gfx/btn.del.gif" width="32" height="16">
+		</a>
+		{if IS_REVIEWED}
+		<a title="Kommentar sperren" onclick="lockComment({ID_COMMENT});">
+			<img src="gfx/ad_unlocked.png" width="16" height="16">
+		</a>
+		{else}
+		<a title="Kommentar freischalten" onclick="unlockComment({ID_COMMENT});">
+			<img src="gfx/ad_locked.png" width="16" height="16">
+		</a>
+		{endif}
+	</td>
+	<td nowrap="nowrap">{todate(STAMP,1)}</td>
+	<td>
+		{if RATING}
+		<div style="float: right;">
+			<img src="{uri_baseurl(/gfx/stars_{RATING}.png)}"/>
+		</div>
+		{endif}
+		<a href="#A{ID_COMMENT}" title="Kommentar ansehen" onclick="popupfkt('comment_edit&frompopup=1&ID_COMMENT={ID_COMMENT}','650','650');">
+			{COMMENT_SHORT}
+		</a>
+	</td>
+	<td>
+		{if ANSWER_COMMENT}
+			Ja
+		{else}
+			Nein
+		{endif}
+	</td>
+	<td>
+		{if ANSWER_STAMP}
+		{todate(ANSWER_STAMP,1)}
+		{endif}
+	</td>
+	<td>
+		{if FK_USER > 0}
+		<a href="index.php?page=user_edit&ID_USER={FK_USER}" name="{USER_NAME}">{USER_NAME}</a>
+		{else}
+		<strong>{USER_NAME}</strong>
+		<a href="mailto:{USER_MAIL}" name="{USER_NAME}">
+			<img src="gfx/mail.gif" /></a>
+		</a>
+		{endif}
+	</td>
+    <td>
+
+            {if FK>0}
+            {htm(TABLE_DESC)}
+            {else}
+            {htm(TABLE_DESC_STR)}
+            {endif}
+
+    </td>
+
+	<td>
+		<a href="{TARGET_LINK}" target="_blank">{htm(TITLE)}
+	
+		</a>
+	</td>
+</tr>

@@ -1,0 +1,18 @@
+<h1><img src="gfx/modul_archiv_64.gif" width="64" height="64" alt="" border="0"  align="left">Sendeberichte</h1>
+<p>Hier sehen Sie alle im System gespeicherten Newsletter in einer &Uuml;bersicht. Mit einem Klick auf <img src="gfx/btn.mail.gif" width="13" height="11" alt="Beispiel"> gelangen Sie zu den Versandoptionen. Dieses ist nat&uuml;rlich nur m&ouml;glich, wenn der Newsletter nicht bereits versendet wurde! Bereits gesendete Newsletter werden entsprechend markiert. Unvollst&auml;ndig versendete Newsletter k&ouml;nnen Sie an dieser Stelle fertigstellen. Es werden nur Newsletter an Benutzer gesendet, die noch keinen Newsletter bekommen haben!</p>
+<p>Newsletter, welche bereits versendet wurden, sollten Sie nach einiger Zeit l&ouml;schen, da sie nicht mehr ben&ouml;tigt werden, und nur unn&ouml;tig Speicherplatz verbrauchen. Mit einem Klick auf <img src="gfx/btn.del.gif" width="32" height="16" alt="Beispiel"> l&ouml;schen Sie den Newsletter inkl. dem Sendebericht! </p>
+<table class="liste" cellspacing="0" cellpadding="3">
+ <tr>
+  <th>Aktion</th>
+  <th>Bericht vom</th>
+  <th>Betreff</th>
+  <th>Gesendet</th>
+ </tr>
+ {if liste}
+ {liste}
+ {else}
+ <tr>
+  <td colspan="5" align="center" class="error">Keine Berichte gefunden</td>
+ </tr>
+ {endif}
+</table>

@@ -1,0 +1,18 @@
+<tr class="zeile{=i&1}">
+  <td>{htm(VORNAME)} {htm(NACHNAME)}</td>
+  <td>{NAME}</td>
+  <td>{htm(roles)}</td>
+  <td align="center"><img src="gfx/ico.{if INHERIT}up{else}dn{endif}.gif" width="11" height="11"></td>
+  <td align="center"><b>{if perm_admin_pageperm_E}
+    {if B_OVR>0}<img src="gfx/ico.up.gif" width="11" height="11">{else}<a
+      href="index.php?page=pageperm2user&frame=popup&ident={url(ident)}&do=%2B&fk_user={ID_USER}{s_param}"
+      >+</a>{endif}
+    {if (0>B_OVR)}<img src="gfx/ico.eq.gif" width="11" height="11">{else}<a
+      href="index.php?page=pageperm2user&frame=popup&ident={url(ident)}&do=0&fk_user={ID_USER}{s_param}"
+      >o</a>{endif}
+    {if !B_OVR}<img src="gfx/ico.dn.gif" width="11" height="11">{else}<a
+      href="index.php?page=pageperm2user&frame=popup&ident={url(ident)}&do=-&fk_user={ID_USER}{s_param}"
+      >-</a>{endif}{else}
+    <img src="gfx/ico.{if B_OVR>0}up{endif}{if !B_OVR}dn{endif}{if (0>B_OVR)}eq{endif}.gif" width="11" height="11">{endif}
+  </b></td>
+</tr>

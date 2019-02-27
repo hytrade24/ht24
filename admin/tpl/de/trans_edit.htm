@@ -1,0 +1,49 @@
+<div class="formTable">
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="frame" value="{curframe}" />
+  <input type="hidden" name="page" value="{curpage}" />
+  <input type="hidden" name="do" value="edit" />
+  <input type="hidden" name="tbl" value="{edit_tbl}" />
+  <input type="hidden" name="id" value="{edit_id}" />
+<center>
+<b>&Uuml;bersetzen&nbsp;</b>
+    &nbsp;<b>von</b> {select(lang,L0_ID_LANG)}
+    &nbsp;<b>nach</b> {select(lang,L1_ID_LANG,,,BITVAL desc,onChange="if(this.selectedIndex==this.form.l0_id_lang.selectedIndex)this.form.l0_id_lang.selectedIndex=(this.selectedIndex?0:1);")}
+    &nbsp;
+  <input type="submit" value="Sprachen wechseln" />
+</center>
+</form>
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="frame" value="{curframe}" />
+  <input type="hidden" name="page" value="{curpage}" />
+  <input type="hidden" name="do" value="sv" />
+  <input type="hidden" name="tbl" value="{edit_tbl}" />
+  <input type="hidden" name="id" value="{edit_id}" />
+  <input type="hidden" name="editlang" value="{E1_BITVAL}" />
+<table class="formTable"><tr>
+  <th>Tabelle `<b>{edit_tbl}</b>` ({edit_lbl})</th>
+  <th>&nbsp;</th>{if E0_ID_LANG}
+  <th>{htm(E0_LABEL)}</th>{endif}
+  <th>{htm(E1_LABEL)}</th>
+</tr><tr>
+  <td rowspan="3" valign="top"><table class="liste">{itemdata}</table></td>
+  <th>V1</th>{if E0_ID_LANG}
+  <td>{if null_v1}<i>null</i>{else}<input type="text" readonly value="{htm(E0_V1)}" class="inputfull" />{endif}</td>{endif}
+  <td>{if null_V1}<i>null</i>{else}<input tabindex="1" type="text" name="V1" value="{htm(E1_V1)}" class="inputfull" />{endif}</td>
+</tr><tr>
+  <th>V2</th>{if E0_ID_LANG}
+  <td>{if null_v2}<i>null</i>{else}<input type="text" readonly value="{htm(E0_V2)}" class="inputfull" />{endif}</td>{endif}
+  <td>{if null_V2}<i>null</i>{else}<input tabindex="2" type="text" name="V2" value="{htm(E1_V2)}" class="inputfull" />{endif}</td>
+</tr><tr>
+  <th>T1</th>{if E0_ID_LANG}
+  <td>{if null_t1}<i>null</i>{else}<textarea readonly class="inputfull" rows="25">{htm(E0_T1)}</textarea>{endif}</td>{endif}
+  <td>{if null_T1}<i>null</i>{else}<textarea tabindex="3" name="T1" class="inputfull" rows="25">{htm(E1_T1)}</textarea>{endif}</td>
+</tr><tr>
+  <th colspan="{if E0_ID_LANG}4{else}3{endif}" class="footer"><input tabindex="4" type="submit" value="&Auml;nderungen speichern" /></th>
+</tr><tr>
+  <td height="1"></td>
+  <td height="1"></td>{if E0_ID_LANG}
+  <td height="1"><img src="shim.gif" width="1" class="inputfull" /></td>{endif}
+  <td height="1"><img src="shim.gif" width="1" class="inputfull" /></td>
+</tr></table></form>
+</div>

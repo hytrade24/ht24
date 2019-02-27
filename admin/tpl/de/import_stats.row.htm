@@ -1,0 +1,28 @@
+<tr class="zeile{even}">
+    <td>{ID_IMPORT_PROCESS}</td>
+    <td>
+        <a href="index.php?page=user_edit&ID_USER={FK_USER}">{NAME}</a>
+    </td>
+    <td>
+        <a href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{FK_USER})}">{VENDOR_FIRMA}</a>
+    </td>
+    <td>{STATS_ALL}</td>
+    <td>{STATS_NEW}</td>
+    <td>{STATS_UPDATED}</td>
+    <td>{STATS_DELETED}</td>
+    <td>{SOURCE_NAME}</td>
+    <td data-CRON_START="{CRON_STAT}">
+        {if CRON_STAT}
+        Automatisch
+        {else}
+        Manuell
+        {endif}
+    </td>
+    <td>{DURATION}</td>
+    <td>{date_format(STAMP_CREATE,d.m.Y H:i)}</td>
+    <td>
+        {if DOWNLOAD_INTERVAL}
+            {DOWNLOAD_INTERVAL} Stunde
+        {endif}
+    </td>
+</tr>

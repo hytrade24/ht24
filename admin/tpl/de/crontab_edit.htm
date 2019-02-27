@@ -1,0 +1,49 @@
+<h1>{if ID_CRONTAB}Cronjob bearbeiten{else}Neuen Cronjob anlegen{endif}</h1>
+{if err}
+<h2 class="error">Fehler aufgetreten</h2>
+<p class="error">{err}</p>
+{endif}
+{if ok}
+<h2 class="ok">Speichervorgang erfolgreich!</h2>
+{endif}
+<p>Bitte beachten Sie, dass Änderungen an bestehenden Eintr&auml;gen erheblich Flgen f&uuml;r das gesamte System haben kann.</p>
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+<input type="hidden" name="ID_CRONTAB" value="{ID_CRONTAB}">
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th>Beschreibung</th>
+   <td><input type="text" name="DSC" value="{htm(DSC)}" size="45"></td>
+  </tr>
+  <tr>
+   <th>Erstmaliger Aufruf</th>
+   <td>{if !LAST_RUN}{datedrop(FIRST)} Uhrzeit: {timedrop(FIRST)}{else}{todate(FIRST,1)}{endif}</td>
+  </tr>
+  <tr>
+   <th>Regelm&auml;&szlig;igkeit</th>
+   <td>alle <input type="text" name="ALL_X" size="5" value="{htm(ALL_X)}"> <select name="EINHEIT">{liste_einheit}</select> ausf&uuml;hren</td>
+  </tr>
+  <tr>
+   <th>Priorit&auml;t</th>
+   <td><input type="radio" name="PRIO" value="1" class="nob" {if PRIO_1 || !PRIO}checked{endif}> 1
+      <input type="radio" name="PRIO" value="2" class="nob" {if PRIO_2}checked{endif}> 2
+	  <input type="radio" name="PRIO" value="3" class="nob" {if PRIO_3}checked{endif}> 3
+  </tr>
+  <tr>
+   <th>Datei</th>
+   <td><input type="text" name="DATEI" value="{htm(DATEI)}" size="45"></td>
+  </tr>
+  <tr>
+   <th>Funktionsaufruf</th>
+   <td><input type="text" name="FUNKTION" value="{htm(FUNKTION)}" size="45"></td>
+  </tr>
+  <tr>
+   <th valign="top">Ausf&uuml;hrbarer php-code</th>
+   <td><textarea name="CODE" rows="10" cols="60">{htm(CODE)}</textarea>
+  </tr>
+  <tr class="footer">
+   <td align="right" colspan="2"><input type="submit" class="button" value="Speichern"></td>
+  </tr>
+ </table>
+</form>
+<p>&nbsp;</p>

@@ -1,0 +1,137 @@
+<h1>Abrechnungsfähige Posten</h1>
+<p>Hier finden Sie eine Auflistung aller Posten, die bisher noch nicht in Rechnung gestellt wurden.<br />
+    Diese werden bei dem nächsten Rechnungslauf zusammengefasst
+als Rechnung versendet werden.</p>
+
+{if done_add}
+  <p class="ok">
+    <strong>Rechnungsposition hinzugefügt!</strong>
+    <br />
+    Die von ihnen eingetragene Rechnungsposition wurde erfolgreich hinzugefügt und wird mit dem nächsten
+    Rechnungslauf automatisch mit abgerechnet.
+  </p>
+{endif}
+
+<form id="invoices" method="get" action="index.php" />
+<input type="hidden" name="page" value="billing_billableitem" />
+<input type="hidden" name="lang" value="{lang}"  />
+	<table cellspacing="0" class="formTable">
+		<tr>
+			<th>ID</th>
+			<td>
+				<input type="text" value="{htm(ID_BILLING_BILLABLEITEM)}" name="ID_BILLING_BILLABLEITEM" size="35" />
+			</td>
+            <th>User</th>
+            <td>
+                <input type="text" name="NAME_" value="{htm(NAME_)}" readonly="readonly" />
+                <input type="hidden" name="FK_USER" value="{FK_USER}" />
+                <a style="cursor:pointer" onclick="popupfkt('users&frompopup=1','850','500');" title="User ausw&auml;hlen">
+                  <img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+                </a>
+            </td>
+		</tr>
+		<tr>
+			<th>nicht älter als</th>
+			<td>
+				<select name="OLDER_AS">
+					<option value="">alle anzeigen</option>
+                    <option value="1 WEEK" {if OLDER_AS_1_WEEK}selected="selected"{endif}>Eine Woche</option>
+                    <option value="1 MONTH" {if OLDER_AS_1_MONTH}selected="selected"{endif}>Ein Monat</option>
+                    <option value="6 MONTH" {if OLDER_AS_6_MONTH}selected="selected"{endif}>Ein Halbes Jahr</option>
+                    <option value="1 YEAR" {if OLDER_AS_1_YEAR}selected="selected"{endif}>Ein Jahr</option>
+				</select>
+			</td>
+            <th>Sortieren nach</th>
+            <td >
+                <select name="SORT">
+                    <option value="SORT_STAMP_CREATE_DESC" {if SORT_STAMP_CREATE_DESC}selected="selected"{endif}>Neuste zuerst</option>
+                    <option value="SORT_STAMP_CREATE_ASC" {if SORT_STAMP_CREATE_ASC}selected="selected"{endif}>Älteste zuerst</option>
+                    <option value="SORT_ID_BILLING_BILLABLEITEM_DESC" {if SORT_ID_BILLING_INVOICE_DESC}selected="selected"{endif}>ID absteigend</option>
+                    <option value="SORT_ID_BILLING_BILLABLEITEM_ASC" {if SORT_ID_BILLING_INVOICE_ASC}selected="selected"{endif}>ID aufsteigend</option>
+                </select>
+            </td>
+		</tr>
+		<tr class="footer">
+			<td colspan="4" align="right"><a href="index.php?page=billing_billableitem">Alle anzeigen</a> 
+				<input type="submit" value="Suchen" class="button"  />
+			</td>
+		</tr>
+	</table>
+</form>
+<br />
+
+<table class="liste" cellspacing="0" id="invoice_list">
+    <tr>
+        <th>Aktion</th>
+        <th>ID</th>
+        <th>Leistungsdatum</th>
+        <th>Beschreibung</th>
+        <th>nicht abrechnen bis</th>
+        <th>Kunde</th>
+        <th>Nr.</th>        
+        <th style="text-align: right">Anzahl Positionen</th>
+        <th style="text-align: right">EP (netto)</th>
+        <th style="text-align: right">Steuer</th>
+        <th style="text-align: right">Gesamt (brutto)</th>
+        <th></th>
+    </tr>
+    {liste}
+</table>
+
+{pager}
+
+<p>klicken Sie auf einen Usernamen um nur Rechnungen des betreffenden Users anzuzeigen</p>
+
+<div style="display: none;">
+    <div id="dialogCancelPositionContainer">
+        <form action="index.php" method="post">
+            <input type="hidden" name="page" value="{curpage}">
+            <input type="hidden" name="ID_BILLING_BILLABLEITEM" value="">
+            <input type="hidden" name="action" value="stornieren" />
+
+            <p>
+                Was soll mit ?
+            </p>
+
+            <label>
+                <input type="radio" name="performances" value="0" checked/>
+                Leistungen entziehen <br>(Achtung kann zum Daten werden ggf. gelöscht! (<a href="https://www.ebiz-trader.de/marktplatz-faq/?action=search&search=invoice_view" target="_blank">Info</a>))
+            </label>
+            <br/>
+            <label>
+                <input type="radio" name="performances" value="1"/>
+                Leistungen beibehalten
+            </label>
+
+            <br />
+
+            <div style="text-align: right;">
+                <button onclick="jQuery('#dialog').dialog('close'); return false;" name="cancel" value="1">Abbrechen</button>
+                <button type="submit" name="confirm" value="1">Rechnung position stornieren</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="dialog" style="display: none;"></div>
+
+<script type="application/javascript">
+    function cancelPosition( id_billing_billableitem ) {
+        jQuery("#dialog").dialog("close");
+        jQuery("#dialog").html(jQuery("#dialogCancelPositionContainer"));
+        jQuery("#dialog").dialog({
+            title: "Rechnung position : " + id_billing_billableitem,
+            width: 370,
+            height: 200,
+            modal: true
+        });
+        var id_billing_billableitem_input = jQuery("#dialogCancelPositionContainer").find("input[name='ID_BILLING_BILLABLEITEM']");
+        id_billing_billableitem_input.val( id_billing_billableitem );
+        console.log( id_billing_billableitem_input.val() );
+        return false;
+    }
+
+    jQuery(function() {
+        jQuery("#dialog").dialog({}).dialog("close");
+    });
+
+</script>

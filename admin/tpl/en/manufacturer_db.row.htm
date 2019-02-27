@@ -1,0 +1,23 @@
+<tr class="zeile{even}">
+    <td>
+        <a href="index.php?page=manufacturer_db_edit&ID_MAN={ID_MAN}"><img src="gfx/btn.edit.gif"></a><a href="index.php?page=manufacturer_db&DELETE={ID_MAN}"><img src="gfx/btn.rm.gif"></a>
+		{if CONFIRMED}
+			<a id="hersteller_{ID_MAN}" title="Nicht best&auml;tigen" onclick="confHersteller('{ID_MAN}');">
+				<img src="gfx/set_ok.png" />
+			</a>
+        {else}
+			<a id="hersteller_{ID_MAN}" title="Best&auml;tigen" onclick="confHersteller('{ID_MAN}');">
+				<img src="gfx/set_notok.png" />
+			</a>
+        {endif}
+    </td>
+    <td>
+        {NAME}
+    </td>
+    <td>
+        <a href="index.php?page=article_db&FK_MAN={ID_MAN}">{NUM_PRODUCTS}</a>
+    </td>
+    <td>
+        {URL}
+    </td>
+</tr>

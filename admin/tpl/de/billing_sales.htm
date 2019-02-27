@@ -1,0 +1,132 @@
+<style type="text/css">
+
+input {
+    width: 180px;
+}
+
+input.input-mini {
+    width: 84px;
+}
+
+</style>
+<h1>Vertrieb</h1>
+
+<p>
+    Hier erhalten Sie eine Übersicht über alle Benutzer die bisher Kunden geworben haben und deren Umsätze.
+    <br />
+    <ul>
+        <li>
+            <strong>Geworbene Kunden</strong>
+            -
+            Anzahl der vom Vertriebler insgesamt geworbenen Kunden.
+        </li>
+        <li>
+            <strong>Aktive Kunden</strong>
+            -
+            Anzahl der vom Vertriebler geworbenen Kunden mit einer aktiven Mitgliedschaft.
+        </li>
+    </ul>
+</p>
+
+<form method="post">
+    <table class="formTable">
+        <tr>
+            <th>Name/Firma</th>
+            <td>
+                <input type="text" name="SEARCH[NAME]" value="{htm(SEARCH_NAME)}" />
+            </td>
+            <th>Sortierung</th>
+            <td>
+                <select name="SEARCH[SORT]">
+                    <option value="STAMP_TURNOVER+DESC"{if SEARCH_SORT_STAMP_TURNOVER_DESC} selected{endif}>Letzter Umsatz (Neuste zuerst)</option>
+                    <option value="STAMP_TURNOVER+ASC"{if SEARCH_SORT_STAMP_TURNOVER_ASC} selected{endif}>Letzter Umsatz (Älteste zuerst)</option>
+                    <option value="USER_COUNT+ASC"{if SEARCH_SORT_USER_COUNT_ASC} selected{endif}>Geworbene Kunden (Wenigste zuerst)</option>
+                    <option value="USER_COUNT+DESC"{if SEARCH_SORT_USER_COUNT_DESC} selected{endif}>Geworbene Kunden (Meiste zuerst)</option>
+                    <option value="USER_COUNT_ACTIVE+ASC"{if SEARCH_SORT_USER_COUNT_ACTIVE_ASC} selected{endif}>Aktive Kunden (Geringste zuerst)</option>
+                    <option value="USER_COUNT_ACTIVE+DESC"{if SEARCH_SORT_USER_COUNT_ACTIVE_DESC} selected{endif}>Aktive Kunden (Höchste zuerst)</option>
+                    <option value="TURNOVER+ASC"{if SEARCH_SORT_TURNOVER_ASC} selected{endif}>Umsatz (Geringster zuerst)</option>
+                    <option value="TURNOVER+DESC"{if SEARCH_SORT_TURNOVER_DESC} selected{endif}>Umsatz (Größter zuerst)</option>
+                    <option value="PROVISION+ASC"{if SEARCH_SORT_PROVISION_ASC} selected{endif}>Provision (Geringste zuerst)</option>
+                    <option value="PROVISION+DESC"{if SEARCH_SORT_PROVISION_DESC} selected{endif}>Provision (Größte zuerst)</option>
+                    <option value="PROVISION_OPEN+ASC"{if SEARCH_SORT_PROVISION_OPEN_ASC} selected{endif}>Noch auszuzahlen (Wenigste zuerst)</option>
+                    <option value="PROVISION_OPEN+DESC"{if SEARCH_SORT_PROVISION_OPEN_DESC} selected{endif}>Noch auszuzahlen (Meiste zuerst)</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Geworbene Kunden</th>
+            <td>
+                <input type="number" class="input-mini" name="SEARCH[USER_COUNT_MIN]" value="{htm(SEARCH_USER_COUNT_MIN)}" />
+                bis
+                <input type="number" class="input-mini" name="SEARCH[USER_COUNT_MAX]" value="{htm(SEARCH_USER_COUNT_MAX)}" />
+            </td>
+            <th>Aktive Kunden</th>
+            <td>
+                <input type="number" class="input-mini" name="SEARCH[USER_COUNT_ACTIVE_MIN]" value="{htm(SEARCH_USER_COUNT_ACTIVE_MIN)}" />
+                bis
+                <input type="number" class="input-mini" name="SEARCH[USER_COUNT_ACTIVE_MAX]" value="{htm(SEARCH_USER_COUNT_ACTIVE_MAX)}" />
+            </td>
+        </tr>
+        <tr>
+            <th>Umsatz</th>
+            <td>
+                <input type="number" class="input-mini" name="SEARCH[TURNOVER_MIN]" value="{htm(SEARCH_TURNOVER_MIN)}" />
+                bis
+                <input type="number" class="input-mini" name="SEARCH[TURNOVER_MAX]" value="{htm(SEARCH_TURNOVER_MAX)}" />
+            </td>
+            <th></th>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <th>Provision erhalten</th>
+            <td>
+                <input type="text" class="input-mini" name="SEARCH[PROVISION_MIN]" value="{htm(SEARCH_PROVISION_MIN)}" />
+                bis
+                <input type="text" class="input-mini" name="SEARCH[PROVISION_MAX]" value="{htm(SEARCH_PROVISION_MAX)}" />
+            </td>
+            <th>Noch auszuzahlen</th>
+            <td>
+                <input type="text" class="input-mini" name="SEARCH[PROVISION_OPEN_MIN]" value="{htm(SEARCH_PROVISION_OPEN_MIN)}" />
+                bis
+                <input type="text" class="input-mini" name="SEARCH[PROVISION_OPEN_MAX]" value="{htm(SEARCH_PROVISION_OPEN_MAX)}" />
+            </td>
+        </tr>
+        <tr class="footer">
+            <td colspan="4" style="text-align: right;">
+                <a class="button" href="index.php?page={curpage}">Alle anzeigen</a>
+                <button>Suchen</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<table class="liste" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Aktion</th>
+            <th>Vertriebler</th>
+            <th>Letzter Umsatz</th>
+            <th>Geworbene Kunden</th>
+            <th>Aktive Kunden</th>
+            <th>Umsatz</th>
+            <th>Provision</th>
+            <th>Noch auszuzahlen</th>
+        </tr>
+    </thead>
+    <tbody>
+    {if liste}
+        {liste}
+    {else}
+        <tr>
+            <td colspan="9" class="text-error">
+                Keine passenden Benutzer gefunden.
+            </td>
+        </tr>
+    {endif}
+    </tbody>
+</table>
+
+<p>
+    {pager}
+</p>

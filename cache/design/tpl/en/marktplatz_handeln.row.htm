@@ -1,0 +1,60 @@
+<tr class="{if !BID_STATUS_ACTIVE}error{endif}">
+	<td>
+		{todate(STAMP_BID,1)}
+	</td>
+	<td>
+		{if OWN}
+			Own proposal
+ 		{else}
+			{if !my}
+				<span class="text-error">Counter proposal</span>
+			{else}
+				Price proposal
+			{endif}
+		{endif}
+	</td>
+	<td class="align-right">
+		{AMOUNT}
+	</td>
+	<td class="align-right">
+		{topreis_ex(BID)} {CURRENCY_DEFAULT}
+		<a style="cursor: help;" onmouseout="setBlobText(this, '', false);" 
+			onmouseover="setBlobText(this, 'Total amount: {topreis(BID_FULL)} {CURRENCY_DEFAULT}', true);">
+			<img border="0" src="{uri_baseurl(/gfx/ico.i.gif)}">
+		</a>
+	</td>
+	<td>
+		{if BID_STATUS_ACTIVE}
+			{if FK_USER_FROM != ID_USER}
+				<a onclick="return confirm('Do you want to accept the price proposal of {topreis(BID)} {CURRENCY_DEFAULT}?');" href="{uri_action(marktplatz_handeln,{FK_AD},{FK_AD_VARIANT},a,{ID_TRADE})}" title="Accept the price negotiation">
+					accept
+				</a>
+            {else}
+                <strong>Active</strong>
+			{endif}
+		{endif}
+		{if BID_STATUS_ACCEPTED}
+			<span class="text-success">Accepted</span>
+		{endif}
+		{if BID_STATUS_ENDED}
+			Closed
+		{endif}
+		{if BID_STATUS_REQUEST}
+			<i>Gesuch</i>
+		{endif}
+		{if BID_STATUS_CANCEL}
+			<span class="text-error">
+				Secluded
+			</span>
+		{endif}
+	</td>
+</tr>
+{if REMARKS}
+<tr class="{if !BID_STATUS_ACTIVE}error{endif}">
+	<td></td>
+	<td colspan="4">
+		Remarks:
+		<i>{text(REMARKS)}</i>
+	</td>
+</tr>	
+{endif}

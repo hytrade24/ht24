@@ -1,0 +1,196 @@
+<h1>Artikel-Bezeichnung</h1>
+
+<p class="lead">
+	Bitte geben Sie die grundlegenden Informationen zu ihrer Anzeige ein
+</p>
+
+<form class="form-horizontal" onsubmit="SubmitStep(this, { callbackPre: SubmitEditorContents }); return false;">
+    <input type="hidden" name="step" value="{STEP_IDENT}" />
+    <div class="design-content-box">
+        {if USE_PRODUCT_DB}
+        <div id="HERSTELLER_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="HERSTELLER">
+                <strong>Hersteller</strong>
+				<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Geben Sie hier den Hersteller des Artikels ein."></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[HERSTELLER]" value="text">
+                <input type="text" id="HERSTELLER" name="HERSTELLER" value="{htm(HERSTELLER)}" autocomplete="off" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        {endif}
+        <div id="PRODUKTNAME_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="PRODUKTNAME">
+                <strong>Artikelbezeichnung <span class="text-error">*</span></strong>
+				<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Geben Sie hier den vollständigen Namen des Artikels ein."></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[PRODUKTNAME]" value="text">
+                <input type="text" id="PRODUKTNAME" name="PRODUKTNAME" value="{htm(PRODUKTNAME)}" autocomplete="off" class="form-control" required="required" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+
+        <div id="FK_ARTICLE_EXT_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="FK_ARTICLE_EXT">
+                <strong>Ext. Artikel-Nr</strong>
+				<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Die Artikel-Nr des Produkts z.B. aus ihrer Warenwirtschaft"></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[FK_ARTICLE_EXT]" value="text">
+                <input type="text" id="FK_ARTICLE_EXT" name="FK_ARTICLE_EXT" value="{htm(FK_ARTICLE_EXT)}" autocomplete="off" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+
+		{if OPTIONS_USE_ARTICLE_EAN}
+		<div id="EAN_INPUT" class="form-group">
+			<label class="control-label design-input-label" for="EAN">
+				<strong>EAN Nummer</strong>
+				<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="EAN-13 oder ISBN Nummer des Artikels"></i>
+			</label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[EAN]" value="text">
+            				<input type="text" id="EAN" name="EAN" value="{htm(EAN)}" autocomplete="off" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+		</div>
+		{endif}
+
+        <div id="NOTIZ_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="NOTIZ">
+
+                <strong>Persönliche Notiz</strong>
+				<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="z.B. Ihre Inventarnummer"></i>
+            </label>
+            <div class="design-input-field">
+                <input type="hidden" name="tmp_type[NOTIZ]" value="text">
+                <input type="text" id="NOTIZ" name="NOTIZ" value="{htm(NOTIZ)}" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);"/>
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+
+        <div id="BESCHREIBUNG_INPUT" class="form-group">
+            <label class="control-label design-input-label" for="BESCHREIBUNG">
+                <strong>Beschreibung <span class="text-error">*</span></strong>
+				<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Bitte beschreiben Sie den Artikel hier m&ouml;glichst ausf&uuml;hrlich."></i>
+            </label>
+            <div class="design-input-field">
+                <a id="BESCHREIBUNG_ANCHOR"></a>
+                <input type="hidden" name="tmp_type[BESCHREIBUNG]" value="text">
+                <textarea onchange="validateInput(this);" id="BESCHREIBUNG" name="BESCHREIBUNG" class="form-control">{htm(BESCHREIBUNG)}</textarea>
+            </div>
+            <div class="design-input-help">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="design-input-notice">
+            Mit einem <span style="color: red;">*</span> gekennzeichnete Felder sind
+                Pflichtfelder und müssen ausgefüllt werden.
+            </div>
+        </div>
+    </div>
+    <div class="design-content-box">
+        <div class="submit-step">
+        {if STEP_INDEX>0}
+            <input type="button" onclick="ShowStep({calc(STEP_INDEX-1)}); return false;" class="btn btn-default" value="Zurück" />
+        {endif}
+            <input type="submit" class="btn btn-primary" value="Weiter" />
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+
+function GetManufacturers(query, callback) {
+    if (manufacturer_list !== null) {
+        var listFiltered = [];
+        var listSize = 0;
+        var queryLower = query.toLowerCase();
+        for (var manufacturer_index in manufacturer_list) {
+            var manufacturer_detail = manufacturer_list[manufacturer_index];
+            if (manufacturer_detail.name.toLowerCase().indexOf(queryLower) >= 0) {
+                listFiltered.push(manufacturer_detail);
+                if (++listSize >= 20) {
+                    break;
+                }
+            }
+        }
+        callback(listFiltered);
+        return;
+    }
+    if (typeahead_timer != false) {
+        window.clearTimeout(typeahead_timer);
+        typeahead_timer = false;
+    }
+    if (query.length >= 2) {
+        typeahead_timer = window.setTimeout(function() {
+            var url = ebiz_trader_baseurl + "index.php?page=my-marktplatz-neu&mode=ajax&do=typeahead_manufacturer&query="+encodeURIComponent(query);
+            jQuery.get(url, function(result) {
+                callback(result);
+            });
+        }, 500);
+    }
+}
+
+function GetProducts(query, callback) {
+    if (typeahead_timer != false) {
+        window.clearTimeout(typeahead_timer);
+        typeahead_timer = false;
+    }
+    if (query.length >= 2) {
+        typeahead_timer = window.setTimeout(function() {
+            var manufacturer = jQuery("#HERSTELLER").val();
+            var url = ebiz_trader_baseurl + "index.php?page=my-marktplatz-neu&mode=ajax&do=typeahead_product&query="+encodeURIComponent(query)
+                    + "&man="+encodeURIComponent(manufacturer);
+            jQuery.get(url, function(result) {
+                callback(result);
+            });
+        }, 500);
+    }
+}
+
+jQuery(function() {
+    InitializeEditor(true);
+    // Hersteller Eingabefeld
+    if (jQuery('#HERSTELLER').length > 0) {
+        // Herstellerdatenbank aktiv
+        manufacturer_list = null;
+        var manufacturer_url = ebiz_trader_baseurl + "index.php?page=my-marktplatz-neu&mode=ajax&do=typeahead_manufacturer&list=1";
+        jQuery.get(manufacturer_url, function(result) {
+            if ((typeof result.list != "undefined") && (result.list !== null)) {
+                manufacturer_list = result.list;
+            }
+            jQuery('#HERSTELLER').typeahead({
+                hint: true,
+                highlight: true,
+                    minLength: (manufacturer_list === null ? 2 : 1)
+            }, {
+                name: "manufacturers",
+                source: GetManufacturers
+            });
+        });
+        jQuery('#PRODUKTNAME').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 2
+        }, {
+            name: "products",
+            source: GetProducts
+        });
+    }
+    jQuery(".js-tooltip").tooltip();    
+});
+</script>

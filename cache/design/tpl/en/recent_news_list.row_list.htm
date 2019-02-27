@@ -1,0 +1,32 @@
+<li class="design-row-item clearfix design-user-news-shortlist ">
+    {if SHOW_PREVIEW_IMAGE}
+    {if PREVIEW_TYPE_VIDEO}
+        <div class="design-user-news-small-image pull-left design-user-news-shortlist thumbnail-video">
+            <a href="{URL}">
+                <img class="img-responsive-center design-user-news-shortlist" src="https://i{PREVIEW_SERVER}.ytimg.com/vi/{PREVIEW_CODE}/default.jpg"/>
+            </a>
+            <div class="video_play">
+                <a href="{URL}">
+                    <img src="{uri_baseurl(/bilder/play.png)}"/>
+                </a>
+            </div>
+        </div>
+    {endif}
+    {if PREVIEW_TYPE_IMAGE}
+        <div class="design-user-news-small-image design-user-news-shortlist pull-left">
+            <a href="{URL}">
+                <img class="img-responsive design-user-news-shortlist" src="{thumbnail({PREVIEW_PATH},90,60,crop,Center)}" title="{htm(V1)}" />
+            </a>
+        </div>
+    {endif}
+    {endif}
+
+
+        <h3 class="design-user-news-shortlist">
+            <a href="{URL}">{htm(V1)}</a>
+        </h3>
+        <p class="recent-list-block design-user-news-shortlist text-muted">
+            <small>{date_format(STAMP,d.m.Y)} - {htm(AUTOR)}</small>
+        </p>
+
+</li>

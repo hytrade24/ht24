@@ -1,0 +1,102 @@
+<script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+<script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+
+<div class="row design-page-with-menu design-group-forum">
+    <div class="design-page-content">
+        <h1>{htm(CLUB_NAME)}</h1>
+
+        <h3>
+            <a href="{uri_action(club-forum,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}">Gruppenforum</a>
+            -
+            <a href="{uri_action(club-forum-view,{urllabel(THREAD_NAME)},{THREAD_ID_CLUB_DISCUSSION},1)}">{htm(THREAD_NAME)}</a>
+        </h3>
+
+
+        {if NOTICE_CLOSED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Thema geschlossen</strong>
+            Es ist nun nicht mehr möglich weitere Antworten zu diesem Thema zu verfassen
+        </div>
+        {endif}
+        {if NOTICE_OPENED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Thema erneut geöffnet</strong>
+            Es ist nun wieder möglich Antworten zu diesem Thema zu verfassen
+        </div>
+        {endif}
+        {if NOTICE_SAVED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Änderungen gespeichert</strong>
+            Die Änderungen an ihrem Beitrag wurden erfolgreich gespeichert
+        </div>
+        {endif}
+
+        <div class="text-right design-group-forum-btn design-group-forum-btn-reply">
+        {if THREAD_CLOSED}
+            <a class="btn btn-success btn-small disabled">
+                <i class="glyphicon glyphicon-lock"></i>
+                Thema geschlossen
+            </a>
+        {else}
+            {if USER_IS_MEMBER}
+            <a href="{uri_action(group-forum-new,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},reply,{THREAD_ID_CLUB_DISCUSSION})}" class="btn btn-success btn-small">
+                <i class="glyphicon glyphicon-share-alt"></i>
+                Antworten
+            </a>
+            {endif}
+        {endif}
+        </div>
+
+        {pager}
+
+        <div class="design-group-forum-thread">
+            {liste}
+        </div>
+
+		{pager}
+
+        <div class="text-right design-group-forum-btn design-group-forum-btn-reply">
+        {if CLUB_IS_ADMIN || CLUB_IS_MODERATOR}
+            <form method="POST" class="inline pull-left">
+                {if THREAD_CLOSED}
+                <button name="OPEN" value="1" class="btn btn-small">
+                    <i class="glyphicon glyphicon-asterisk"></i>
+                    Erneut öffnen
+                </button>
+                {else}
+                <button name="CLOSE" value="1" class="btn btn-small">
+                    <i class="glyphicon glyphicon-lock"></i>
+                    Schließen
+                </button>
+                {endif}
+                <button onclick="return confirm('Möchten Sie dieses Thema inklusive aller Antworten wirklich löschen?');" name="DELETE" value="1" class="btn btn-danger btn-small">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    Löschen
+                </button>
+            </form>
+        {endif}
+        {if THREAD_CLOSED}
+            <a class="btn btn-success btn-small disabled">
+                <i class="glyphicon glyphicon-lock"></i>
+                Thema geschlossen
+            </a>
+        {else}
+            {if USER_IS_MEMBER}
+            <a href="{uri_action(group-forum-new,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},reply,{THREAD_ID_CLUB_DISCUSSION})}" class="btn btn-success btn-small">
+                <i class="glyphicon glyphicon-share-alt"></i>
+                Antworten
+            </a>
+            {endif}
+        {endif}
+        </div>
+    </div>
+    <div class="design-page-menu">
+        {subtpl(tpl/{SYS_TPL_LANG}/club.info.htm,*)}
+        {content_page()}
+    </div>
+</div>

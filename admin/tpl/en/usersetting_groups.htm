@@ -1,0 +1,24 @@
+<h1>Einstellungsgruppen</h1>
+<p>Hier definieren Sie die Gruppen für Usereinstellungen. Sie erleichtern den usern mittels der Gruppen
+ das Auffinden von möglichen Einstellungen. <br />
+ Gruppen können nur gelöscht werden, wenn Ihnen keine Einstellungen mehr zugeordnet sind!
+ </p>
+<p><a href="index.php?page=usersetting_group_edit" title="Neue Grupp">Neue Einstellungsgruppe anlegen</a></p>
+ <table class="liste" cellspacing="0">
+  <tr>
+   <th>Aktion</th>
+   <th>Sichtbar</th>
+   <th>Name / bweschreibung</th>
+   <th>Einstellungen</th>
+  </tr>
+  {if liste}
+  {liste}
+  {else}
+  <tr>
+   <td colspan="4" align="center" class="error">
+    Keine Einstellungsgruppen gefunden
+   </td>
+  </tr>
+  {endif}
+ </table>
+ <p>&nbsp;</p>

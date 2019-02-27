@@ -1,0 +1,27 @@
+{if liste_own}
+<div class="alert alert-info">
+  <p>
+    Folgende Produkte in Ihrem Warenkorb werden von Ihnen selbst angeboten und wurden aus diesem Grund
+        aus dem Warenkorb entfernt.
+  </p>
+  <ul>
+    {liste_own}
+  </ul>
+</div>
+{endif}
+
+<h2>Bestellübersicht</h2>
+        
+{if liste}
+  {liste}
+  <p class="align-right pull-right">
+    Gesamtpreis inkl. Versand:<br />
+        <strong>{topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT}</strong><br />
+        bei allen oben aufgeführten Verkäufern
+  </p>
+  <br style="clear: both;" />
+{else}
+  <p class="text-error">
+    Zur Zeit haben Sie keine Artikel in Ihrem Warenkorb.
+  </p>
+{endif}

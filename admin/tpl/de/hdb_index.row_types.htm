@@ -1,0 +1,7 @@
+<tr class="zeile{even}">
+	<td>{ID_TABLE_DEF}</td>
+	<td><a href="index.php?page=hdb_products&hdb_table={HDB_TABLE}">{DESCRIPTION} ({T_NAME})</a></td>
+	<td>{ANZ_GESAMT}</td>
+	<td>{if ANZ_NOT_CONFIRMED}<a href="index.php?page=hdb_products&hdb_table={HDB_TABLE}&SEARCH[CONFIRMED]=8">{ANZ_NOT_CONFIRMED} Zu Prüfen</a>{endif}</td>
+	<td>{if ANZ_USERDATA}<a href="index.php?page=hdb_products&hdb_table={HDB_TABLE}&SEARCH[HAS_USER_DATA]=1">{ANZ_USERDATA} Uservorschläge</a>{endif}</td>
+</tr>

@@ -1,0 +1,26 @@
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery("#direktnummer").submit(function() {
+            location.href= ebiz_trader_baseurl + 'marktplatz/marktplatz_anzeige,'+jQuery("#adiddirekt").val()+'.htm';
+            return false;
+        });
+    });
+</script>
+<div class="panel panel-primary">
+    <div class="panel-heading"> Quicksearch</div>
+    <div class="panel-body">
+        <p>
+            Enter the referencenumber, you want to see.
+        </p>
+        <form method="post" id="direktnummer" action="#">
+    	    <div class="form-group">
+                <div class="input-group">
+                    <input class="form-control" id="adiddirekt"  type="number" name="SEARCH" placeholder="Advertisement Nr." required="required" />
+                    <div class="input-group-btn">
+                        <input class="btn btn-success" type="submit" value="To advert" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

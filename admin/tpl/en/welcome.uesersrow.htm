@@ -1,0 +1,35 @@
+<tr class="zeile{even}">
+    <td>
+        {if !STAT}<img src="gfx/locked.gif" width="16" height="16" alt="gesperrt" border="0">{endif} {if STAT == 2}<img title="Nicht best&auml;tigt" src="gfx/not_confirmed.gif" width="16" height="16" alt="gesperrt" border="0">{endif}
+    </td>
+	
+    <td>
+        <a href="index.php?page=user_edit&ID_USER={ID_USER}" id="b{NUMMER}" style="cursor:help;" name="{NAME}">{NAME}</a>
+        <div id="pb{NUMMER}" class="preview">
+            Bitte warten ...
+        </div>
+    </td>
+    <td>
+        {VORNAME} {NACHNAME}
+    </td>
+	<td>
+		{htm(GROUPNAME)}
+	</td>
+    <td>
+        {EMAIL}
+    </td>
+    <td align="right">
+        {if ADS}
+			<a title="Anzeigen des Users" href="index.php?page=articles&quicksearch=1&FK_AUTOR={ID_USER}">
+				{ADS}
+			</a>
+		{endif}
+    </td>
+	<td align="right">
+		{if EINKAUF}
+			<a title="Eink&auml;ufe anzeigen" href="index.php?page=articles_sold&FK_USER={ID_USER}">
+				{EINKAUF}
+			</a>
+		{endif}
+	</td>
+</tr>

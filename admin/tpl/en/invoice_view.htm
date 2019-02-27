@@ -1,0 +1,237 @@
+<script type="text/javascript">
+    function addInvoiceTransaction() {
+        jQuery("#dialog").dialog("close");
+        jQuery("#dialog").html(jQuery("#dialogAddTransactionContainer"));
+        jQuery("#dialog").dialog({ title: "Zahlungseingang hinzufügen", width: 600, height: 180, modal: true });
+        return false;
+    }
+
+    function applyCreditnote() {
+        jQuery("#dialog").dialog("close");
+        jQuery("#dialog").html(jQuery("#dialogApplyCreditnoteContainer"));
+        jQuery("#dialog").dialog({ title: "Gutschrift einlösen", width: 380, height: 150, modal: true });
+        return false;
+    }
+</script>
+
+<h1>Rechnung</h1>
+
+{if INVOICE_ID_BILLING_INVOICE}
+    <table cellspacing="0">
+        <tr>
+            <td style="width: 250px; vertical-align: top;" rowspan="6">
+                <strong>Rechnungsempfänger</strong><br />
+                {nl2br(INVOICE_ADDRESS)}
+            </td>
+            <td style="vertical-align: top; width: 150px;">
+                <strong>Rechnungs-Nr.:</strong>
+            </td>
+            <td style="vertical-align: top;">
+                {INVOICE_ID_BILLING_INVOICE}
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <strong>Rechnungsdatum:</strong>
+            </td>
+            <td style="vertical-align: top;">
+                {todate(INVOICE_STAMP_CREATE)}
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <strong>Kunden Nr.:</strong>
+            </td>
+            <td style="vertical-align: top;">
+                <a href="index.php?page=user_edit&ID_USER={INVOICE_FK_USER}">{INVOICE_FK_USER}</a> / <a href="index.php?page=user_buchhaltung&ID_USER={INVOICE_FK_USER}">Übersicht</a> / <a style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_offen&w=550&ID_USER={INVOICE_FK_USER}','600','250');" title="Statistik">
+							<b>Umsatz</b></a> / <a style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_overall&w=550&ID_USER={INVOICE_FK_USER}','600','250');" title="Statistik">
+							<strong>Historie</strong></a>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <strong>Status:</strong>
+            </td>
+            <td style="vertical-align: top;">
+                {if INVOICE_STATUS == 0}
+                    <span class="error">unbezahlt</span>
+                {endif}
+
+                {if INVOICE_STATUS == 1}
+                    <span class="ok">bezahlt</span>
+                {endif}
+
+                {if INVOICE_STATUS == 2}
+                    <strong>storniert</strong>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <strong>Zahlungsziel:</strong>
+            </td>
+            <td>
+                {todate(INVOICE_STAMP_DUE)}
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <strong>Zahlungsart:</strong>
+            </td>
+            <td>
+                {INVOICE_PAYMENT_ADAPTER_NAME}
+            </td>
+        </tr>
+    </table><br />
+    <div>
+        <a href="index.php?page=invoice_print&lang={lang}&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}" class="button">Rechnung Drucken</a>
+
+        {if INVOICE_STATUS == 2}
+            <a href="#" class="button disabled">Als unbezahlt markieren</a>
+            <a href="#" class="button disabled">Als bezahlt markieren</a>
+            <a href="#" class="button disabled">Stornieren</a>
+        {else}
+            <a href="{if INVOICE_STATUS == 0}#{else}index.php?page=invoice_view&lang={lang}&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}&action=setstatus&status=0{endif}" {if INVOICE_STATUS != 0}onclick="return confirm('Soll die Rechnung wirklich als unbezahlt markiert werden?')"{endif} class="button {if INVOICE_STATUS == 0}disabled{endif}">Als unbezahlt markieren</a>
+            <a href="{if INVOICE_STATUS == 1}#{else}index.php?page=invoice_view&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}&action=setstatus&status=1{endif}" {if INVOICE_STATUS != 1}onclick="return confirm('Soll die Rechnung wirklich als bezahlt markiert werden?')"{endif} class="button {if INVOICE_STATUS == 1}disabled{endif}">Als bezahlt markieren</a>
+            <a href="{if INVOICE_STATUS == 2}#{else}index.php?page=invoice_view&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}&action=setstatus&status=2{endif}" {if INVOICE_STATUS != 2}onclick="return confirm('Soll die Rechnung wirklich storniert werden?')"{endif} class="button {if INVOICE_STATUS == 2}disabled{endif}">Stornieren</a>
+        {endif}
+    </div>
+    <div style="clear: both"></div>
+    <br /><br />
+    <table cellspacing="0"  class="liste">
+        <tr>
+            <th>Pos.</th>
+            <th>Posten</th>
+            <th style="text-align:right">Menge</th>
+            <th style="text-align:right">
+                Einzelpreis<br/>
+                (netto)
+            </th>
+            <th style="text-align:right">MwSt.</th>
+            <th style="text-align:right">
+                Gesamtpreis<br/>
+                (brutto)
+            </th>
+        </tr>
+        {if INVOICE_ITEMS}
+        {INVOICE_ITEMS}
+        <tr>
+            <th colspan="5" style="text-align:right">Gesamt Netto:</th>
+            <th style="text-align:right;">{topreis(INVOICE_TOTAL_PRICE_NET)} {CURRENCY_DEFAULT}</th>
+        </tr>
+        {INVOICE_TAXES}
+        <tr>
+            <th colspan="5" style="text-align:right">Gesamt Brutto:</th>
+            <th style="text-align:right;">{topreis(INVOICE_TOTAL_PRICE)} {CURRENCY_DEFAULT}</th>
+        </tr>
+        {else}
+        <tr>
+            <td colspan="6" align="center">
+                <span class="error">Fehler! Keine Rechnungsposten gefunden</span>
+            </td>
+        </tr>
+        {endif}
+    </table>
+    <br />
+    <p>{if INVOICE_STATUS == 1}<span class="ok">Die Rechnung ist vollständig bezahlt</span>{else}<span class="error">Es sind noch {topreis(INVOICE_REMAINING_PRICE)} {CURRENCY_DEFAULT} offen</span>{endif}</p>
+
+    <h2>Zahlungseingänge</h2>
+    {if TRANSACTIONS}
+        <table cellspacing="0" class="liste">
+            <tr>
+                <th></th>
+                <th>Nr.</th>
+                <th>Datum</th>
+                <th>Notiz</th>
+                <th>Transaktionsreferenz</th>
+                <th style="text-align:right">Betrag</th>
+            </tr>
+            {TRANSACTIONS}
+        </table>
+        <br>
+    {else}
+        <p>Noch keine Zahlungseingänge vermerkt</p>
+    {endif}
+    {if INVOICE_STATUS !== 1}
+    <a href="#" onclick="addInvoiceTransaction(); return false;" class="button">Zahlungseingang hinzufügen</a>
+    {if creditnotes}<a href="#" onclick="applyCreditnote(); return false;" class="button">Gutschrift anwenden</a>{endif}
+    <br>
+    {endif}
+
+<br>
+<br>
+
+    <div>
+        <a href="index.php?page=invoice_print&lang={lang}&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}" class="button">Rechnung Drucken</a>
+        {if INVOICE_STATUS == 2}
+            <a href="#" class="button disabled">Als unbezahlt markieren</a>
+            <a href="#" class="button disabled">Als bezahlt markieren</a>
+            <a href="#" class="button disabled">Stornieren</a>
+        {else}
+            <a href="{if INVOICE_STATUS == 0}#{else}index.php?page=invoice_view&lang={lang}&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}&action=setstatus&status=0{endif}" {if INVOICE_STATUS != 0}onclick="return confirm('Soll die Rechnung wirklich als unbezahlt markiert werden?')"{endif} class="button {if INVOICE_STATUS == 0}disabled{endif}">Als unbezahlt markieren</a>
+            <a href="{if INVOICE_STATUS == 1}#{else}index.php?page=invoice_view&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}&action=setstatus&status=1{endif}" {if INVOICE_STATUS != 1}onclick="return confirm('Soll die Rechnung wirklich als bezahlt markiert werden?')"{endif} class="button {if INVOICE_STATUS == 1}disabled{endif}">Als bezahlt markieren</a>
+            <a href="{if INVOICE_STATUS == 2}#{else}index.php?page=invoice_view&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}&action=setstatus&status=2{endif}" {if INVOICE_STATUS != 2}onclick="return confirm('Soll die Rechnung wirklich storniert werden?')"{endif} class="button {if INVOICE_STATUS == 2}disabled{endif}">Stornieren</a>
+        {endif}
+    </div>
+    <div class="clear"></div>
+
+
+    <div style="display: none;">
+        <div id="dialogAddTransactionContainer">
+            <form action="index.php" method="post">
+                <input type="hidden" name="page" value="{curpage}">
+                <input type="hidden" name="ID_BILLING_INVOICE" value="{INVOICE_ID_BILLING_INVOICE}">
+                <input type="hidden" name="action" value="addpayment">
+
+                <table class="formTable">
+                    <tr>
+                        <th>Datum:</th>
+                        <td>{datedrop(STAMP_CREATE)}</td>
+                        <th>Betrag (noch offen {topreis(INVOICE_REMAINING_PRICE)} {CURRENCY_DEFAULT}):</th>
+                        <td><input type="text" name="PRICE"> {CURRENCY_DEFAULT}</td>
+                    </tr>
+                    <tr>
+                        <th>Notiz:</th>
+                        <td><input type="text" name="DESCRIPTION"></td>
+                        <th>Transaktion-Referenz:</th>
+                         <td><input type="text" name="TRANSACTION_ID"></td>
+                    </tr>
+                    <tr>
+                        <td class="footer" style="text-align: right;" colspan="4">
+                            <input type="submit" value="Speichern">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div id="dialogApplyCreditnoteContainer">
+            <form action="index.php" method="post">
+                <input type="hidden" name="page" value="{curpage}">
+                <input type="hidden" name="ID_BILLING_INVOICE" value="{INVOICE_ID_BILLING_INVOICE}">
+                <input type="hidden" name="action" value="applycreditnote">
+
+                <table class="formTable">
+                    <tr>
+                        <th>Gutschrift auswählen:</th>
+                        <td>
+                            {if creditnotes}
+                            <select name="FK_BILLING_CREDITNOTE">
+                                {creditnotes}
+                            </select>
+                            {endif}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="footer" style="text-align: right;" colspan="2">
+                            <input type="submit" value="Anwenden">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div id="dialog" style="display: none;"></div>
+
+
+{endif}

@@ -1,0 +1,12 @@
+<tr{if even} bgcolor="#ffffff"{endif}>
+  <td>{plugin}&nbsp;</td>
+  <td>{typ}&nbsp;</td>
+  <td>{input}&nbsp;</td>
+  <td>
+    <a href="index.php?page={curpagealias}&set[{plugin}][{typ}]={htm(default_value)}"
+      title="Defaultwert eintragen"
+      onClick="{if b_multi}setmselect('opt{i}',new Array({default_value})){else}setselect('opt{i}','{htm(default_value)}'){endif};return false;"
+      >{htm(default_text)}</a>
+  &nbsp;</td>
+  <td>{beschreibung}</td>
+</tr>

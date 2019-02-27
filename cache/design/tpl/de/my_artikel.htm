@@ -1,0 +1,84 @@
+<script type="text/javascript">
+var neu;
+
+function showComment(id) {
+	var div = jQuery("#news"+id);
+	var row = jQuery("#news"+id+"_row");
+	if (row.css("display") == 'none') {
+		div.html('Bitte warten...');
+		div.load(ebiz_trader_baseurl + 'index.php?page=showcomment_ajax&frame=ajax&kat=news&id='+id);
+		row.show();
+	} else {
+		row.hide();
+	}
+}
+
+</script>
+<style type="text/css">
+.showComment {
+	height: 150px;
+	overflow: auto;
+	display: none;
+	width: 100%;
+	border: 1px #cccccc solid;
+}
+</style>
+  
+<h1>Meine geschriebenen Artikel</h1>
+<p>
+    Hier finden Sie alle Artikel, die Sie bisher verfasst haben! Neue Artikel k&ouml;nnen Sie <a href="{uri_action(artikel_edit)}" title="Jetzt neuen Artiekl schreiben">hier</a> anlegen.
+        <br />Ihre Artikel bekommen erst ein ver&ouml;ffentlichungsdatum, wenn Sie selbst eine Freigabe gesetzt haben!
+ </p>
+<p align="right">
+	<a href="{uri_action(artikel_edit)}" class="btn btn-info">
+		<i class="glyphicon glyphicon-pencil"></i> Neuen Artikel einstellen
+	</a>
+</p>
+ {if err}
+<div class="alert alert-danger">{err}
+</div>
+{endif}
+<table class="table table-bordered table-striped table-condensed">
+	<tr>
+		<th colspan="3">Aktion</th>
+		<th>Status</th>
+		<th>Artikel</th>
+		<th>Datum</th>
+		<th></th>
+		<th>&nbsp;</th>   
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+	<tr>
+		<td colspan="8" align="center">
+			<span class="text-error">Keine Artikel</span>
+		</td>
+	</tr>
+	{endif}
+</table>
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Bearbeiten
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>  = löschen (wenn noch nicht veröffentlicht)
+	</div>
+	<div class="pull-left">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-fullscreen"></i></a>  = Online ansehen
+	</div>
+	<div class="pull-left clearfix">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-retweet"></i></a> = Kommentare vorhanden
+	</div>
+    <br style="clear: left;" />
+	<div class="pull-left clearfix">
+		<a class="btn btn-default"><i class="glyphicon glyphicon-hand-right"></i></a> = muss von Ihnen freigegeben werden
+	</div>
+	<div class="pull-left clearfix">
+		<a class="btn btn-info"><i class="glyphicon glyphicon-user"></i></a> = Auf Freigabe warten
+	</div>
+    <br style="clear: left;" />
+</div>
+<div class="pager">
+{pager}
+</div>

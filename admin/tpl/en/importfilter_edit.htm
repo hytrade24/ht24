@@ -1,0 +1,116 @@
+{if ID_IMPORT_FILTER}
+	<h1>Import Filter bearbeiten</h1>
+{else}
+	<h1>Neuen import Filter anlegen</h1>
+{endif}
+{if err}
+	<h2 class="error">Fehler aufgetreten!</h2>
+	<p class="error">
+		{err}
+	</p>
+{endif}
+{if ok}
+	<h2 class="ok">Filter wurde gespeichert!!</h2>
+{endif}
+<p>
+	Hier werden die Grundlegenden Eigenschaften des Filter festgelegt. Der Eindeutige Name des Filters
+	kann aus technischen Gründen <b>nicht mehr geändert werden!</b><br />
+	Sofern Sie die Zuordnung der Datentabelle ändern (bestehender Filter), <b>werden alle bereits
+	zugeordneten Felder gelöscht!</b>
+</p>
+<form method="post" action="index.php">
+	<input type="hidden" name="page" value="{curpage}" />
+	<input type="hidden" name="ID_IMPORT_FILTER" value="{ID_IMPORT_FILTER}" />
+	<div class="reiterAktiv">
+		<a>Basisdaten bearbeiten</a>
+	</div>
+	{if ID_IMPORT_FILTER}<div class="reiterPassiv">
+		<a href="index.php?page=importfilter_settings&ID_IMPORT_FILTER={ID_IMPORT_FILTER}">
+			Einstellungen bearbeiten
+		</a>		
+		
+	</div>{endif}
+	<table class="formTable" cellspacing="0">
+		<tr>
+			<th>Beschreibender Name des Filters</th>
+			<td>
+				<input type="text" name="V1" value="{htm(V1)}" size="45" />
+			</td>
+		</tr>
+		{if !ID_IMPORT_FILTER}
+			<tr>
+				<td colspan="2">
+					Bitte verwenden Sie nur Buchstaben für den technischen Namen!
+				</td>
+			</tr>
+		{endif}
+		<tr>
+			<th>Eindeutiger technischer Name des Filters</th>
+			<td>
+				{if ID_IMPORT_FILTER}
+					{htm(IDENT)}
+					<span class="error">(Nicht mehr änderbar)</span>
+				{else}
+					<input type="text" name="IDENT" value="{htm(IDENT)}" size="45" />
+				{endif}
+			</td>
+		</tr>
+		<tr>
+			<th>Filter &ouml;ffentlich verwenden?</th>
+			<td>
+				<input type="checkbox" name="B_AKTIV" value="1" class="nob" {if B_AKTIV} checked{endif} />
+			</td>
+		</tr>
+		<tr>
+			<th colspan="2">
+				Kurzbeschreibung für Nutzer des Importfilters
+			</th>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<textarea name="T1" cols="55" rows="5">{htm(T1)}</textarea>
+			</td>
+		</tr>
+		{if ID_IMPORT_FILTER}
+			<tr>
+				<td colspan="2" style="font-weight:bold;">
+					Beim Wechsel der Tabelle, werden alle Feldzuordnungen gelöscht!
+				</td>
+			</tr>
+		{endif}
+		<tr>
+			<th>Zu verwendende Tabelle</th>
+			<td>
+				{select(table_def)}
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				In der Regel wird das Semikolon <b>(;)</b> verwendet.
+			</td>
+		</tr>
+		<tr>
+			<th>CSV-Trennzeichen Spalten</th>
+			<td>
+				<input type="text" name="TRENNER" value="{htm(TRENNER)}" size="10" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				Viele Anbieter exportieren leere Felder mit einem Platzhalter -
+				z.B. <b>~</b>
+			</td>
+		</tr>
+		<tr>
+			<th>Zeichen f&uuml;r leere Spalten</th>
+			<td>
+				<input type="text" name="ISEMPTY" value="{htm(ISEMPTY)}" size="10" />
+			</td>
+		</tr>
+		<tr class="footer">
+			<td colspan="2" align="right">
+				<input type="submit" value="Speichern" class="button" />
+			</td>
+		</tr>
+	</table>
+</form>

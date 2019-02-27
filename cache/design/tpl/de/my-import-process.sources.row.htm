@@ -1,0 +1,31 @@
+<tr>
+	<td>
+		<a href="{uri_action(my-import-process,{ID_IMPORT_SOURCE},1,0)}" class="btn btn-info" title="Imports einsehen">
+			<i class="glyphicon glyphicon-eye-open"></i>
+		</a>
+		<a href="{uri_action(my-import-process,{ID_IMPORT_SOURCE},1,1)}" class="btn btn-info" title="Import hinzufügen">
+			<i class="glyphicon glyphicon-plus"></i>
+		</a>
+		<a href="{uri_action(my-import-run)}?ID_IMPORT_SOURCE={ID_IMPORT_SOURCE}" class="btn btn-default" title="Prozess Protokoll ansehen"><i class="glyphicon glyphicon-edit"></i></a>
+		<button type="button" onclick="show_or_decide_modal( this, '{ID_IMPORT_SOURCE}' )" class="btn btn-default">
+			<i class="glyphicon glyphicon-remove"></i>
+		</button>
+	</td>
+	<td>{htm(SOURCE_NAME)}</td>
+	<td>{htm(PRESET_NAME)}</td>
+	<td class="ad_count">{SOURCE_AD_COUNT}</td>
+	<td>
+		{if DOWNLOAD_INTERVAL>0}
+			Alle {DOWNLOAD_INTERVAL} Stunden
+		{else}
+			<div class="text-muted">Deaktiviert</div>
+		{endif}
+	</td>
+	<td>
+		{if DOWNLOAD_NEXT}
+			{todate(DOWNLOAD_NEXT,1)}
+		{else}
+			<div class="text-muted">---</div>
+		{endif}
+	</td>
+</tr>

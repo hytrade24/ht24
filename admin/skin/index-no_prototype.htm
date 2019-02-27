@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>ADMIN {curpage}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="no-cache">
+        <meta http-equiv="Expires" content="-1">
+        <meta http-equiv="Cache-Control" content="no-cache">
+        <link rel="stylesheet" type="text/css" href="skin/ebiz.css" />
+        <link rel="stylesheet" type="text/css" href="skin/ebiz_nav.css">
+        <script type="text/javascript" src="sys/misc.js">
+        </script>
+        <script type="text/javascript" src="sys/ajax/kernel.js">
+        </script>
+        <script language="JavaScript" type="text/javascript">
+            <!--
+            function checkPFlag(){
+                return true;
+            }
+            
+			function schnellsuche() 
+			{
+				var cur_style = $('schnellsuche').style.display;
+				var new_style = 'block';
+				if(cur_style == 'block')
+				{
+					new_style = 'none';
+				}		
+				$('schnellsuche').style.display = new_style;		
+			}
+			
+            //-->
+			function schnellsuchen(feld)
+			{
+				var page = false;
+				if(feld == 'ART_ID')
+				{
+					page = 'articles';
+				}
+				if(feld == 'ID_INVOICE')
+				{
+					page = 'buchhaltung';
+				}
+				if(feld == 'USER')
+				{
+					page = 'users';
+				}
+				if(feld == 'ID_AD_ORDER')
+				{
+					page = 'transactions';
+				}
+				if(page)
+				{
+					$('s_page').value = page;
+					$('s_id').name = feld;
+					$('s_id').value = $(feld).value;
+					$('s_go').submit();
+				}
+			}
+        </script>
+    </head>
+    <body onLoad="setFlag({if savefail}true{else}false{endif})">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" background="skin/head-line.gif">
+            <tr>
+                <td valign="bottom">
+                    &nbsp;
+                </td>
+                <td align="left">
+                  <a href="http://www.ebiz-trader.de" target="_blank" title="zu ebiz-trader.de">
+                    	<img src="gfx/ebiz-trader.png"  alt="Zur Webseite wechseln" border="0" width="227" height="54">
+					</a>
+                </td>
+            </tr>
+        </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td style="border-bottom: 1px solid white;">
+                    <img src="shim.gif" width="50" height="2" />
+                </td>
+                <td valign="bottom">
+                    {if ID_USER}
+                    <ul id="nav">
+                        {navemb(0,3,1,emb)}
+                         <li><a>HIS</a>
+                            <ul class="nav1">
+                            {historie}
+                            </ul>
+                        </li>
+                    </ul>
+                    {else}&nbsp;
+                    {endif}
+                </td>
+                {if languages}
+                <td align="right" style="vertical-align:middle;" class="navLevel1" style="border-bottom: 1px solid white;">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <b>{curtime}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                            </td>{if ID_USER}{languages}{endif}
+                        </tr>
+                    </table>
+                </td>
+                {endif}
+            </tr>
+        </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td class="navLevel2">
+                    <img src="shim.gif" width="42" height="2" />
+                </td>
+                <td width="100%" class="navLevel2">
+                    {nav(1,1,2)}
+                </td>
+            </tr>
+        </table>
+        {if ID_USER}<img src="skin/user-bottom-line.gif" width="100%" height="4" />
+        <br>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="userInfo" style="width:220px;">
+                    {if VORNAME||NACHNAME}{htm(VORNAME)} {htm(NACHNAME)} ({htm(NAME)}){else}{htm(NAME)}{endif}
+                </td>
+				<td class="userInfo">
+					<table cellspacing="0" cellpadding="0" border="0">
+						<tr>
+							<td>
+								<a class="fast_img" onclick="schnellsuche();" title="Schnellsuche &ouml;ffnen und schlie&szlig;en">
+									&nbsp;
+								</a>
+							</td>
+							<td>
+								<a onclick="schnellsuche();" title="Schnellsuche &ouml;ffnen und schlie&szlig;en">
+									SCHNELLSUCHE
+								</a>	
+							</td>
+						</tr>
+					</table>
+					<div id="schnellsuche" style="display:none;">
+						<h3>Schnellsuche nach Anzeigen, Rechnungen, Benutzern oder Transaktionen</h3>
+						<table>
+							<tr>
+								<th>
+									Artikelnummer
+								</th>
+								<td>
+									<input type="text" id="ART_ID" size="35" title="Geben Sie die Anzeigen/Artikelnummer an" />
+								</td>
+								<td>
+									<a onclick="schnellsuchen('ART_ID');" title="Suchen">
+										<img src="./gfx/schnell.png" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									Rechnungsnummer
+								</th>
+								<td>
+									<input type="text" id="ID_INVOICE" size="35" title="Geben Sie die Rechnungsnumer an" />
+								</td>
+								<td>
+									<a onclick="schnellsuchen('ID_INVOICE');" title="Suchen">
+										<img src="./gfx/schnell.png" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									Benutzer/Kunde
+								</th>
+								<td>
+									<input type="text" id="USER" size="35" title="Geben Sie Benutzernamen, Email oder Kundennummer an" />
+								</td>
+								<td>
+									<a onclick="schnellsuchen('USER');" title="Suchen">
+										<img src="./gfx/schnell.png" />
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									Bestell-Nr.
+								</th>
+								<td>
+									<input type="text" id="ID_AD_ORDER" size="35" title="Geben Sie eine Transaktionsnummer an" />
+								</td>
+								<td>
+									<a onclick="schnellsuchen('ID_AD_ORDER');" title="Suchen">
+										<img src="./gfx/schnell.png" />
+									</a>
+								</td>
+							</tr>
+						</table>
+					</div>						
+				</td>
+                <td align="right" class="userInfo">
+                    <a href="{uri_baseurl(/index.php)}" title="Zur Webseite" target="_blank"><img src="gfx/menu_gostart.gif" width="85" height="15" alt="" border="0"></a>{if favpage}<img src="gfx/menu_trennung.gif" width="5" height="16" alt="" border="0"><a href="#" title="per&ouml;nliche Startseite definieren" onclick="popupfkt('setdefaultpage&cure={curpage}&ID_USER={ID_USER}','300','300');"><img src="gfx/menu_addfav.gif" width="61" height="16" alt="" border="0"></a>{endif}<img src="gfx/menu_trennung.gif" width="5" height="16" alt="per&ouml;nliche Startseite definieren" border="0"><a href="index.php?page={DEFAULTPAGE}" onclick="return checkFlag()"><img src="gfx/menu_gofav.gif" width="48" height="16" alt="Gehe zu : {DEFAULTPAGE}" border="0"></a><img src="gfx/menu_trennung.gif" width="5" height="16" alt="" border="0"><a href="logout.php" onclick="return checkFlag()"><img src="gfx/menu_logout.gif" width="74" height="16" alt="vom System abmelden" border="0"></a><img src="gfx/menu_trennung.gif" width="5" height="16" alt="" border="0"><a href="#" onclick="popupfkt('hilfenavi&IDENT={curpagealias}&frompopup=1','700','500');"><img src="gfx/menu_hilfe.gif" width="57" height="16" alt="Hilfe" border="0"></a><img src="gfx/menu_trennung.gif" width="5" height="16" alt="" border="0">
+                </td>
+            </tr>
+        </table> {endif}<img src="skin/user-bottom-line-bottom.gif" width="100%" height="5" />
+        <br>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+            <tr>
+                {if nav_links || content_links}
+                <td valign="top" width="180">
+                    {if nav_links}
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        {nav(2,3,0)}
+                    </table>
+                    {endif}
+                    {if content_links}
+                    <div class="kontrast">
+                        {content_links}
+                    </div>
+                    {endif}
+                </td>
+                {endif}
+                <td valign="top" class="content">
+                    <div id="debug">
+                    </div>
+                    {content}
+                </td>
+                {if content_rechts}
+                <td valign="top" class="contentAussen">
+                    <div class="kontrast">
+                        {content_rechts}
+                    </div>
+                </td>
+                {endif}
+            </tr>
+        </table>
+        <table width="100%" border="0" cellspacing="0" background="skin/footer-line.gif" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="227">
+                    <a href="http://www.ebiz-consult.de/"><img src="skin/footer-logo.gif" width="227" height="57" alt="" border="0"></a>
+                </td>
+                <td align="right" style="padding-right:15px;">
+                    &copy; 2003 - 2014
+                    <br>
+                    <a href="http://www.ebiz-consult.de/">ebiz-consult e.K.</a>
+                    <br>
+                    All rights reserved.
+                </td>
+            </tr>
+        </table>
+        <div id="WAIT" style="display:none;">
+            Bitte warten ...
+        </div>
+        <!-- Schnellsuche -->
+		<form action="index.php">
+			<!-- -->
+		</form>
+		<form method="post" action="{uri_baseurl(/admin/index.php)}" id="s_go">
+			<input type="hidden" value="1" name="SCHNELLSUCHE" />
+			<input type="hidden" id="s_page" name="page" value="">
+			<input type="hidden" id="s_id" name="" id="schnell_id" value="" />
+		</form>
+		<form action="index.php">
+			<!-- -->
+		</form>
+    </body>
+</html>

@@ -1,0 +1,437 @@
+{if done || error_not_found}
+	{if error_not_found} 
+		<div class="error">Bestellung nicht gefunden!</div>
+	{endif}
+	{if done}
+		<h1>Bestellung abgeschlossen</h1>
+		
+		<p>
+			Vielen Dank f&uuml;r Ihre Bestellung!<br />
+			Ein Administrator wird ihre Anfrage in K&uuml;rze &uuml;berpr&uuml;fen. Sobald dies geschehen ist, erhalten
+			Sie die Rechnung. Erst nachdem auch die Zahlung der Rechnung best&auml;tigt wurde, wird ihre Werbung auch
+			angezeigt.
+		</p>
+	{endif} 
+{else}
+	{if ajax}
+	{liste_kat}
+	{else}
+	<script type="text/javascript">
+
+	id_advertisement_user = {if ID_ADVERTISEMENT_USER}{ID_ADVERTISEMENT_USER}{else}-1{endif};
+	categorys = { count: {CATEGORYS} };
+	
+	jQuery(function() {
+		jQuery('#message_box').dialog( {
+			modal: true,
+			autoOpen: false,
+			buttons: {
+				Ok: function() {
+					jQuery( this ).dialog( "close" );
+				}
+			}
+		} );
+		//jQuery("#datepick_range").datepicker("disable");
+		// -- Initialisierung der voreingestellten
+		// 1. Banner 
+		{if FK_ADVERTISEMENT>0}
+			GotoCategory(true);
+			// 2. Kategorien
+			{if CATEGORYS>0}
+			// Kategorien ausgewählt
+				{if CODE}
+				// Bannercode vorhanden
+				jQuery('#step3_cur').html(" - Vorhanden");
+				{if (STAMP_START && STAMP_END)}
+				ChangeDateFrom("{todate(STAMP_START)}", false);
+				ChangeDateTo("{todate(STAMP_END)}", false);
+				jQuery('#steps').accordion("option", "active", 4);
+				{else}
+				jQuery('#steps').accordion("option", "active", 3);
+				{endif}
+				{else}
+				// Bannercode nicht eingegeben
+				jQuery('#steps').accordion("option", "active", 2);
+				{endif}
+			{endif}
+		{endif}
+		KatUpdate();
+		// -- Ende initialisierung
+	});
+
+	function KatUpdate() {
+		var cat_selected = KatGetSelected();
+		jQuery.ajax({
+			url:		"index.php",
+			data:		{
+				page:	"market_advertisement_orders_edit",
+				frame:	"ajax",
+				action:	"update",
+				id:		id_advertisement_user
+			},
+			dataType:	"json",
+			success: function(response) {
+				KatUpdate_Display(response);
+			}
+		});
+	}
+	
+	function GotoCategory(no_change) {
+		var el_selected = jQuery('input[name="FK_ADVERTISEMENT"]:checked');
+		if (el_selected.length == 0) {
+			jQuery('#steps').accordion("option", "active", 0);
+			return;
+		} else {
+			var id_selected = el_selected.attr("id");
+			var value_selected = el_selected.attr("value");
+			var label = jQuery('label[for="'+id_selected+'"] > span');
+			jQuery('#step1_cur').html(" - Gew&auml;hlt: "+label.html());
+			// Request change
+			if (!no_change) {
+				jQuery("#steps_loading").show();
+				// Banner may have changed, request an update
+				jQuery.ajax({
+					url:		"index.php",
+					data:	{
+						page:	"market_advertisement",
+						frame:	"ajax",
+						action:	"banner_set",
+						target:	value_selected,
+						id: id_advertisement_user
+					},
+					dataType:	"json",
+					success: function(response) {
+						if (!response.success) {
+							// Error changing selection
+							jQuery('#steps').accordion("option", "active", 0);
+							jQuery('input[name="FK_ADVERTISEMENT"]').attr("checked", false);
+							jQuery('#ad'+response.previous).attr("checked", true);
+						} else {
+							// Change successful, update price
+							jQuery('#steps').accordion("option", "active", 1);
+							KatUpdate();
+						}
+						jQuery("#steps_loading").hide();
+					},
+					error: function() {
+						// Request failed
+						jQuery('#steps').accordion("option", "active", 0);
+						jQuery("#steps_loading").hide();
+					}
+				});
+			} else {
+				jQuery("#steps_loading").hide();
+			}
+			return;
+		}
+	}
+	
+	function GotoCode() {
+		if ((categorys == null) || (categorys.count == 0)) {
+			jQuery('#steps').accordion("option", "active", 1);
+			alert("Bitte wählen Sie zunächst mindestens eine Kategorie aus!");
+			return;
+		} else {
+			jQuery('#steps').accordion("option", "active", 2);
+			if (categorys.count == 1) {
+				jQuery('#step2_cur').html(" - Gew&auml;hlt: 1 Kategorie");
+			} else {
+				jQuery('#step2_cur').html(" - Gew&auml;hlt: "+categorys.count+" Kategorien");
+			}
+			return;
+		}
+		jQuery("#steps_loading").hide();
+	}
+	
+	function PreviewCode(id_ad_user) {
+		var code = jQuery('#AD'+id_ad_user+'_CODE').val();
+		var PreviewWindow = window.open("about:blank", "PreviewWindow", "width=500,height=300,left=80,top=80,location=no,menubar=no,toolbar=no,status=no");
+		PreviewWindow.focus();
+		PreviewWindow.document.open();
+		PreviewWindow.document.write(code);
+		PreviewWindow.document.close();
+	}
+	
+	function SaveCode() {
+		var code = jQuery('#CODE').val();
+		if (code.length > 0) {
+			jQuery('#step3_cur').html(" - Vorhanden");
+			// Request change
+			jQuery("#steps_loading").show();
+			// Banner may have changed, request an update
+			jQuery.ajax({
+				url:		"index.php",
+				data:	{
+					page:	"market_advertisement",
+					frame:	"ajax",
+					action:	"code_set",
+					target:	code,
+					id: id_advertisement_user
+				},
+				dataType:	"json",
+				success: function(response) {
+					jQuery("#steps_loading").hide();
+				},
+				error: function() {
+					// Request failed
+					jQuery("#steps_loading").hide();
+				}
+			});
+			return;
+		} else {
+			jQuery("#steps_loading").hide();
+		}
+	}
+	
+	function GotoDate() {
+		jQuery('#steps').accordion("option", "active", 3);
+		return;
+	}
+	
+	function ChangeDateFrom(date_text, save) {
+		jQuery("#steps_loading").show();
+		jQuery("#date_to").datepicker("option", "minDate", date_text);
+		jQuery("#date_range").datepicker("option", "minDate", date_text);
+		jQuery("#date_range").datepicker("setDate", null);
+		if (save) {
+			jQuery.ajax({
+				url:		"index.php",
+				data:	{
+					page:	"market_advertisement",
+					frame:	"ajax",
+					action:	"date_from_set",
+					target:	date_text,
+					id: id_advertisement_user
+				},
+				dataType:	"json",
+				success: function(response) {
+					jQuery("#steps_loading").hide();
+				},
+				error: function() {
+					// Request failed
+					jQuery("#steps_loading").hide();
+				}
+			});
+		} else {
+			jQuery("#steps_loading").hide();
+		}
+	}
+	
+	function ChangeDateTo(date_text, save) {
+		jQuery("#steps_loading").show();
+		jQuery("#date_from").datepicker("option", "maxDate", date_text);
+		jQuery("#date_range").datepicker("option", "maxDate", date_text);
+		jQuery("#date_range").datepicker("setDate", null);
+		if (save) {
+			jQuery.ajax({
+				url:		"index.php",
+				data:	{
+					page:	"market_advertisement",
+					frame:	"ajax",
+					action:	"date_to_set",
+					target:	date_text,
+					id: id_advertisement_user
+				},
+				dataType:	"json",
+				success: function(response) {
+					jQuery("#steps_loading").hide();
+				},
+				error: function() {
+					// Request failed
+					jQuery("#steps_loading").hide();
+				}
+			});
+		} else {
+			jQuery("#steps_loading").hide();
+		}
+	}
+	
+	function GotoFinish() {
+		jQuery('#steps').accordion("option", "active", 4);
+		return;
+	}
+	
+	</script>
+	
+	<div id="message_box" style="display:none;" title="Fehler!">
+		
+	</div>
+	
+	<table style="width: 100%; height: 600px; overflow: auto;" cellpadding="0" cellspacing="0">
+		<tr>
+			<td valign="top">
+				<fieldset>
+					<legend style="font-size: 20px; font-weight: bold;">
+						Freischaltung / Rechnung
+					</legend>
+					<!-- FREISCHALTUNG / RECHNUNG -->
+					<div>
+					{if !FK_INVOICE || !CONFIRMED}
+						<label>
+							<input onclick="ChangeChecks({ID_ADVERTISEMENT_USER});" type="checkbox" name="CONFIRMED" value="1"{if CONFIRMED} checked="checked" {endif}/>
+							Banner best&auml;tigen
+						</label>
+						<br />
+					{else}
+						<label>
+							<input type="checkbox" name="CONFIRMED" value="1" checked="checked" disabled="disabled" />
+							Banner wurde bereits best&auml;tigt.
+						</label>
+					{endif}
+					{if !FK_INVOICE}
+						<label>
+							<input onclick="ChangeChecks({ID_ADVERTISEMENT_USER});" type="checkbox" name="INVOICE" value="1" />
+							Rechnung stellen
+						</label>
+						<br />
+					{else}
+						<div style="height: 14px; margin-top: 6px;">
+							<span style="float: left; margin: -2px 4px 0px 3px;" class="ui-icon ui-icon-info"></span>
+							Rechnung wurde gestellt.
+							<a onclick="s_inv({FK_INVOICE});" title="Rechnung anzeigen">
+								Rechnung Nr. {FK_INVOICE}
+							</a>
+						</div>
+						<br />
+					{endif}
+						<br />
+						<label>
+							<input onclick="ChangeChecks({ID_ADVERTISEMENT_USER});" type="checkbox" name="ENABLED" value="1"{if ENABLED} checked="checked" {endif}/>
+							Banner angezeigen (nur im eingestellten Zeitraum)
+						</label>
+						<br />
+					</div>
+					<div>
+						<div style="height: 24px;">
+							<div id="ad{ID_ADVERTISEMENT_USER}_confirm_saved" class="ui-widget" style="display: none;">
+								<div style="padding: 2px; font-weight: bold;" class="ui-state-highlight ui-corner-all"> 
+									<span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-info"></span>
+									&Auml;nderung gespeichert!
+								</div>
+							</div>
+						</div>
+						
+						<input style="float: right; margin: 2px 0px 2px 2px;" type="button" onclick="AdSave({ID_ADVERTISEMENT_USER}, true);" value="Speichern und schlie&szlig;en" />
+						<input style="float: right; margin: 2px 0px 2px 2px;" type="button" onclick="AdSave({ID_ADVERTISEMENT_USER}, false);" value="Speichern" />
+					</div>
+					<!-- FREISCHALTUNG / RECHNUNG -->
+				</fieldset>
+			</td>
+			<td valign="top" rowspan="4" width="50%">
+				<fieldset style="height: 600px;">
+					<legend style="font-size: 20px; font-weight: bold;">
+						Kategorien
+						<span id="step2_cur"></span>
+					</legend>
+					<!-- KATEGORIEN -->
+					<div style="color: red; font-weight: bold;">
+						ACHTUNG! &Auml;nderungen werden sofort &uuml;bernommen!
+					</div>
+					<div id="step2" style="height: 100%;">
+						<div style="height: 100%; overflow: auto;">
+						{liste_kat}
+						</div>
+					</div>
+					<!-- KATEGORIEN -->
+				</fieldset>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">
+				<fieldset>
+					<legend style="font-size: 20px; font-weight: bold;">
+						Bannerposition
+					</legend>
+					<!-- POSITION / WERBEPLATZ -->
+					<div>
+						<div>
+						{liste_pos}
+						</div>
+					</div>
+					<!-- POSITION / WERBEPLATZ -->
+					<div>
+						<div style="height: 24px;">
+							<div id="ad{ID_ADVERTISEMENT_USER}_banner_saved" class="ui-widget" style="display: none;">
+								<div style="padding: 2px; font-weight: bold;" class="ui-state-highlight ui-corner-all"> 
+									<span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-info"></span>
+									&Auml;nderung gespeichert!
+								</div>
+							</div>
+						</div>
+						
+						<input style="float: right; margin: 2px 0px 2px 2px;" type="button" onclick="AdSave({ID_ADVERTISEMENT_USER}, true);" value="Speichern und schlie&szlig;en" />
+						<input style="float: right; margin: 2px 0px 2px 2px;" type="button" onclick="AdSave({ID_ADVERTISEMENT_USER}, false);" value="Speichern" />
+					</div>
+				</fieldset>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<fieldset>
+					<legend style="font-size: 20px; font-weight: bold;">
+						Inhalt
+					</legend>
+					<!-- INHALT -->
+					<div>				
+						<div>
+							<textarea style="width: 100%; height: 120px;" id="AD{ID_ADVERTISEMENT_USER}_CODE" name="CODE">{htm(CODE)}</textarea>
+						</div>		
+						<div style="float: right; text-align: right;">
+							<div style="height: 24px;">
+								<div id="ad{ID_ADVERTISEMENT_USER}_code_saved" class="ui-widget" style="display: none;">
+									<div style="padding: 2px; font-weight: bold;" class="ui-state-highlight ui-corner-all"> 
+										<span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-info"></span>
+										&Auml;nderung gespeichert!
+									</div>
+								</div>
+							</div>
+							
+							<input style="float: right; margin: 2px 0px 2px 2px;" type="button" onclick="AdSave({ID_ADVERTISEMENT_USER}, true);" value="Speichern und schlie&szlig;en" />
+							<input style="float: right; margin: 2px 0px 2px 2px;" type="button" onclick="AdSave({ID_ADVERTISEMENT_USER}, false);" value="Speichern" />
+							<input style="float: right; margin: 2px 0px 2px 2px;" type="button" onclick="PreviewCode({ID_ADVERTISEMENT_USER});" value="Vorschau" />
+						</div>
+					</div>
+					<!-- INHALT -->
+				</fieldset>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<fieldset>
+					<legend style="font-size: 20px; font-weight: bold;">
+						Zeitraum
+					</legend>
+					<!-- ZEITRAUM -->
+					<div>
+						<div style="float: left; width: 50%; padding-bottom: 16px;">
+							<strong>Beginn</strong><br />
+							{datedrop(STAMP_START)}
+						</div>
+						
+						<div style="float: left; width: 50%; padding-bottom: 16px;">
+							<strong>Ende</strong><br />
+							{datedrop(STAMP_END)}
+						</div>			
+						<div style="float: right; text-align: right;">
+							<div style="height: 24px;">
+								<div id="ad{ID_ADVERTISEMENT_USER}_date_saved" class="ui-widget" style="display: none;">
+									<div style="padding: 2px; font-weight: bold;" class="ui-state-highlight ui-corner-all"> 
+										<span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-info"></span>
+										&Auml;nderung gespeichert!
+									</div>
+								</div>
+							</div>
+							
+							<input style="float: right; margin: 2px 0px 2px 2px;" type="button" onclick="AdSave({ID_ADVERTISEMENT_USER}, true);" value="Speichern und schlie&szlig;en" />
+							<input style="float: right; margin: 2px 0px 2px 2px;" type="button" onclick="AdSave({ID_ADVERTISEMENT_USER}, false);" value="Speichern" />
+						</div>
+					</div>	
+					<!-- ZEITRAUM -->						
+				</fieldset>	
+              
+			</td>
+		</tr>
+	</table>
+	<div id="steps_loading" style="cursor: wait; display: none; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 100;" ></div>	
+	{endif}
+{endif}

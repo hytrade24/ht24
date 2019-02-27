@@ -1,0 +1,10 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="221"{endif}>
+    {subtpl(tpl/{SYS_TPL_LANG}/recent_event_list.htm,ID_KAT={ID_KAT},START_DATE=,COUNT=2,OFFSET=0,COUNT_PER_ROW=2,TEMPLATE=row_img1,CACHE_LIFETIME=102,HIDE_PARENT=)}
+
+{subtpl(tpl/{SYS_TPL_LANG}/recent_event_list.htm,ID_KAT={ID_KAT},COUNT=6,OFFSET=1,COUNT_PER_ROW=3)}
+
+{if SHOW_MAP}
+	{subtpl(tpl/{SYS_TPL_LANG}/googlemaps.htm,type=event,ident={MAP_IDENT},height=300)}
+{endif}
+</div>

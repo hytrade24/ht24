@@ -1,0 +1,64 @@
+	<tr class="zeile{even}">
+		<td class="first" nowrap="nowrap">
+			<a onclick="show_details({ID_SOLD});" title="Details ein-/ausblenden">
+				<img alt="[Details]" src="{uri_baseurl(/gfx/btn.detail.gif)}" />
+			</a>
+			{if CONFIRMED==2}
+			<a onclick="return confirm('Möchten Sie den Kauf des Artikels {PRODUKTNAME} wirklich aus dem System löschen?')"
+					href="index.php?page={curpage}&action=delete&id={ID_SOLD}">
+				<img border="0" src="gfx/btn.del.gif" />
+			</a>
+			{endif}
+		</td>
+        <td>
+            {ID_SOLD}
+        </td>
+        <td>
+            {ID_ARTIKEL}
+        </td>
+		<td>
+			<a href="{uri_baseurl(/marktplatz_anzeige,{ID_ARTIKEL},{FK_KAT},{urllabel(PRODUKTNAME)}.htm)}">
+				{htm(PRODUKTNAME)}
+			</a>
+		</td>
+		<td>
+			{todate(STAMP_BOUGHT)}
+		</td>
+		<td>
+			{MENGE}
+		</td>
+		<td>
+			{topreis(PREIS)} {CURRENCY_DEFAULT}
+		</td>
+		<td>
+			{topreis(PREIS_GESAMT)} {CURRENCY_DEFAULT}
+		</td>
+		<td>
+			{topreis(PROV)} {CURRENCY_DEFAULT}
+		</td>
+		<td>
+			<a href="index.php?page=user_edit&ID_USER={FK_USER_VK}">
+				{htm(USERNAME_VK)}
+			</a>
+		</td>
+		<td>
+			<a href="index.php?page=user_edit&ID_USER={FK_USER}">
+				{htm(USERNAME_EK)}
+			</a>
+		</td>
+		<td class="last" nowrap="nowrap" align="center">
+			{if CONFIRMED==0}	
+					<img src="gfx/sym_question.png" width="20" height="20" alt="?" />	
+			{else}
+				{if CONFIRMED==1}
+						<img src="gfx/sym_check.png"  width="20" height="20" alt="!" />
+				{endif}
+				{if CONFIRMED==2}
+						<img src="gfx/sym_stop.png" width="20" height="20" alt="X" />
+				{endif}
+			{endif}
+		</td>
+	</tr>
+	<tr class="zeile{even}">
+		<td colspan="12" id="details_{ID_SOLD}" style="display: none;"></td>
+	</tr>

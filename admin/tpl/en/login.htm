@@ -1,0 +1,37 @@
+<div align="center"><img src="shim.gif" width="1" height="100" alt="" border="0">
+{if err}
+<table border="1" cellspacing="0" cellpadding="0"><tr>
+  <td >{err_title:Login-Meldung}</td>
+</tr></table>
+<table width="500" border="0" cellspacing="0" cellpadding="0"><tr>
+  <td height="50" bgcolor="#FFFFFF">
+    <table width="100%" border="0" cellspacing="0" cellpadding="5"><tr>
+      <td>{err}</td>
+    </tr></table>
+  </td>
+</tr><tr>
+  <td >&nbsp;</td>
+</tr></table>
+<br>
+{endif}
+	<table border="0" cellspacing="0" cellpadding="5" style="BORDER: #408080 1px dotted; BACKGROUND-COLOR: #f5f5f5">
+	<form method="post" target="_top" action="login.php">
+  <input type="hidden" name="dummy" value="" />
+  <input type="hidden" name="forward" value="{htm(forward)}" />
+	<tr><td><img src="skin/login.gif" width="48" height="48" alt="login" border="0"></td><td>Gesch&uuml;tzter Bereich. <br>
+	Bitte einloggen.</td></tr>
+	<tr>
+      <td valign="top" ><label for="loginname"><strong>Username</strong></label></td>
+      <td valign="top" ><input type="text" name="user" id="loginname" maxlength="30" /></td>
+    </tr><tr>
+      <td valign="top" ><label for="loginpass"><strong>Passwort</label></strong></td>
+      <td valign="top" ><input type="password" name="pass" id="loginpass" maxlength="64" /></td>
+    </tr>
+		<tr><td colspan="2" align="right">    <input name="submit" type="submit"  value="Einloggen" /></td></tr>
+</form>
+	</table>
+  
+
+
+
+</div>

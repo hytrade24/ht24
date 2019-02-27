@@ -1,0 +1,59 @@
+<script type="text/javascript">
+
+function ChangeKatQuick(link) {
+	jQuery(link).hide();
+	jQuery('#category_text').hide();
+	jQuery('#kat_list').show();
+}
+
+function UpdateKatSelectorQuickedit(id_kat, name_current, root_kat, table, b_done) {
+	if (!b_done) {
+		var url = ebiz_trader_baseurl + "index.php?page=my-marktplatz-quickedit-kat&mode=ajax&do=kats&exclusiveTable=" + table + "&root=" + id_kat + "&paid=" + (kat_is_paid ? 1 : 0);
+		jQuery.get(url, function(result) {
+			var html_result = result.tree;
+			jQuery("#kat_list").html(html_result);
+			GetCategorysDone();
+		});
+	} else {
+		// Deactivate possibly active categories
+		jQuery("#kat_list a.active").removeClass("active");
+		var selection = jQuery("#row" + id_kat);
+		var link = selection.children("a");
+		if (id_kat > 0) {
+			link.addClass("active");
+			if (confirm('Möchten Sie "' + name_current + '" als Kategorie wählen?')) {
+				jQuery("#kat_list").hide();
+				jQuery("#category_change").show();
+				jQuery('#category_text').show();
+				SetCategory(id_kat, name_current, jQuery("#form_ID_AD").val());
+			} else {
+				link.removeClass("active");
+			}
+		}
+	}
+}
+
+kat_is_paid = 1;
+
+</script>
+<div>
+	<legend>Bitte Kategorie wählen</legend>
+	
+	<div class="design-content-box	">
+		<div id="FK_KAT_INPUT" class="form-group info">
+			<label class="control-label" for="category_change">
+				<strong>Aktuelle Kategorie</strong>
+			</label>
+			<div class="form-control">
+				<span id="category_text">{htm(kat_current)}</span>
+				<br />
+				<a id="category_change" onclick="ChangeKatQuick(this);">Kategorie ändern</a>
+				
+				<ul id="kat_list" style="list-style-type: none; display: none;" class="katleft">
+					{kat_head}
+					{baum}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

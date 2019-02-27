@@ -1,0 +1,22 @@
+<tr>
+	<td class="design-action-buttons">
+		<a href="{if !USER_CONNECTED}{uri_action(my-profil-social-media)}?ACTION=connect&SOCIAL_MEDIA_PROVIDER={PROVIDERNAME}{else}#{endif}" class="btn btn-default {if USER_CONNECTED}disabled{endif} js-tooltip"  data-toggle="tooltip" title="Verbindung herstellen">
+			<i class="glyphicon glyphicon-retweet"></i>
+		</a>
+		<a href="{if USER_CONNECTED}{uri_action(my-profil-social-media)}?ACTION=disconnect&SOCIAL_MEDIA_PROVIDER={PROVIDERNAME}{else}#{endif}" onclick="return confirm('Möchten Sie die Verbindung zu Ihrem Social Media Profil wirklich entfernen ?')" class="btn btn-default {if !USER_CONNECTED}disabled{endif} js-tooltip" data-toggle="toolip" title="Verbindung entfernen">
+			<i class="glyphicon glyphicon-remove"></i>
+		</a>
+	</td>
+	<td>
+		{PROVIDERNAME}
+	</td>
+	<td>
+		{if USER_CONNECTED}<span class="label label-success">verbunden</span>{else}<span class="label label-danger">nicht verbunden{endif}
+	</td>
+	<td>
+		{DISPLAY_NAME}
+	</td>
+	<td>
+		{PROVIDER_EMAIL}
+	</td>
+</tr>

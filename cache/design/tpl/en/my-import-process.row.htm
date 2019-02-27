@@ -1,0 +1,21 @@
+<tr>
+	<td>
+		<a href="{uri_action(my-import-run)}?ID_IMPORT_PROCESS={ID_IMPORT_PROCESS}" class="btn btn-default" title="View process log"><i class="glyphicon glyphicon-edit"></i></a>
+		<a href="{uri_action(my-import-run)}?DO=DELETE&ID_IMPORT_PROCESS={ID_IMPORT_PROCESS}" onclick="return confirm('Do you really want to the delete the import {htm(PROCESS_NAME)}? Please keep in mind, that not already imported datesets will be deleted.');" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+	</td>
+	<td>{htm(PROCESS_NAME)}</td>
+	<td>
+		{if STATUS > 0 && STATUS < 100}in process{endif}
+		{if STATUS == 1000}finished{endif}
+		{if STATUS == 500}Error{endif}
+	</td>
+	<td>
+		{if STATS_NEW}<span class="badge badge-success js-tooltip" title="{STATS_NEW} new datasets imported">{STATS_NEW}</span>{endif}
+		{if STATS_UPDATED}<span class="badge badge-warning js-tooltip" title="{STATS_UPDATED} datasets updated">{STATS_UPDATED}</span>{endif}
+		{if STATS_DELETED}<span class="badge badge-important js-tooltip" title="{STATS_DELETED} datasets deleted">{STATS_DELETED}</span>{endif}
+		{if STATS_PAUSED}<span class="badge badge-info js-tooltip" title="{STATS_PAUSED} datasets paused">{STATS_PAUSED}</span>{endif}
+		{if STATS_STARTED}<span class="badge badge-info js-tooltip" title="{STATS_STARTED} datasets enabled">{STATS_STARTED}</span>{endif}
+	</td>
+	<td>{todate(STAMP_CREATE,1)}</td>
+	<td>{todate(STAMP_UPDATE,1)}</td>
+</tr>

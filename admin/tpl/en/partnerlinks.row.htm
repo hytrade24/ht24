@@ -1,0 +1,14 @@
+<tr class="zeile{even}">
+		<td><a href="index.php?page=partnerlinks_edit&ID_PARTNERLINKS={ID_PARTNERLINKS}"><img src="gfx/btn.edit.gif" border="0" height="16" width="32"></a> 
+		<a href="index.php?page=partnerlinks&del={ID_PARTNERLINKS}" onclick="return confirm('Diesen Link ( {LINKTITEL} ) löschen?');"><img src="gfx/btn.rm.gif" border="0" height="16" width="32"></a></td>
+		<td>{ID_PARTNERLINKS}</td>
+		<td><a href="index.php?page=partnerlinks_edit&ID_PARTNERLINKS={ID_PARTNERLINKS}">{LINKTITEL}</a></td>
+		<td><a href="{LINK}" target="_blank" title="Link besuchen">{LINK}</a></td>
+		<td align="center">{if VISIBLE}&#8730;{endif}</td>
+		<td align="center">{if PAID}&#8730;{endif}</td>
+		<td align="center">{if PAIDTIL}{todate(PAIDTIL)}{endif}</td>
+		<td align="center">{if TOPLINK}&#8730;{endif}</td>
+		<td align="center">{if RAWLINK}&#8730;{endif}</td>
+		<td>{todate(INSDATE)}</td>
+		<td  align="right">{if HITSOUT}{HITSOUT}{endif}</td>
+	</tr>

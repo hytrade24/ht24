@@ -1,0 +1,14 @@
+<h1>Templates des Login- Moduls</h1>
+{subtpl(tpl/de/modul_templates_warning.htm)}
+
+{if templates}
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Edit</th>
+  <th>Name &amp; Beschreibung</th>
+ </tr>
+{templates}
+</table>
+{else}
+<h3 class="error">Modul templates nicht gefunden!</h3>
+{endif}

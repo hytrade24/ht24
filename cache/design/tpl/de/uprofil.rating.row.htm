@@ -1,0 +1,14 @@
+<tr>
+    <td>
+        {htm(USERNAME_FROM)}
+    </td>
+	<td>
+        <i>am {todate(STAMP_BOUGHT)}</i>
+    </td>
+    <td>
+		<img src="{uri_baseurl(/gfx/stars_{if RATING>0}{RATING}{else}removed{endif}.png)}" />
+    </td>
+	<td>
+		{htm(COMMENT)}
+	</td>
+</tr>

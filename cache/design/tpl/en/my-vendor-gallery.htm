@@ -1,0 +1,91 @@
+<script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+<script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+<script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery("#vendorGalleryAddFormular").submit(function() {
+            jQuery("#loading").show();
+        })
+    })
+</script>
+<h1>Vendor directory Images and Videos</h1>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-vendor-nav.htm,*)}
+<p>
+    You can add up to {maxbilder} images/videos<br />
+        These images will appear below your description on the public area
+
+</p>
+
+<table class="mytable table table-bordered table-striped table-condensed">
+<tr>
+	<td>
+		{if liste}
+		<ul class="design-vendor-gallery design-row design-row-sm-2 design-row-md-4 design-row-lg-5">
+		    {liste}
+		</ul>
+		{endif}
+		{if !liste}
+		    <p>No images available yet</p>
+		{endif}
+		<div style="clear: both"></div>
+		<br />
+        {if !maxbilder_voranden}
+		<h2>Add new image</h2>
+		<form method="post" action="{uri_baseurl(/index.php)}" id="vendorGalleryAddFormular" enctype="multipart/form-data">
+		    <input type="hidden" name="gallery_type" value="image" />
+			<input type="hidden" name="page" value="my-vendor-gallery-update" />
+		    <input type="hidden" name="DO" value="ADD" />
+
+			<table class="mytable table table-bordered table-striped table-condensed">
+				<tr>
+					<td>File:</td>
+					<td>
+						<input type="file" name="FILENAME" />
+					</td>
+				</tr>
+			</table>
+			<input type="submit" value="Save image" class="btn btn-success pull-right" />
+		</form>
+		<br />
+		
+		{videos}
+		
+		<h2>Add new YouTube video</h2>
+		<form method="post" action="{uri_baseurl(/index.php)}" id="vendorGalleryAddFormular" enctype="multipart/form-data">
+		    <input type="hidden" name="gallery_type" value="video" />
+		    <input type="hidden" name="page" value="my-vendor-gallery-update" />
+		    <input type="hidden" name="DO" value="ADD" />
+
+			<table class="mytable table table-bordered table-striped table-condensed">
+		        <tr>
+		            <td>Youtube Link:</td>
+		            <td>
+		                {youtube_input(youtubelink,,,,vendor)}
+		            </td>
+		        </tr>
+		    </table>
+		    <input type="submit" value="Save video" class="btn btn-success pull-right" />
+		</form>
+        {else}
+        <div class="alert alert-danger">
+            You have reached the maximal amount of images/videos!<br>
+                To upload more images, you have to delete at least one image
+
+        </div>
+        {endif}
+	</td>
+</tr>
+</table>
+
+<div id="loading" style="display: none; position: fixed; left: 0px; right: 0px; top: 0px; bottom: 0px;">
+    <div style="opacity: 0.4; background-color: white; position: fixed; left: 0px; right: 0px; top: 0px; bottom: 0px;">
+    </div>
+    <table height="100%" width="100%">
+        <td style="text-align: center; vertical-align: middle;">
+            <img style="position: relative; z-index: 99;" src="{uri_baseurl(/gfx/ajax-loader.gif)}">
+        </td>
+    </table>
+</div>

@@ -1,0 +1,252 @@
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery("#invoicePaymentAdapterSelector").change(function() {
+            if(confirm("Do you really want to change the payment method?")) {
+                jQuery("#settingForm").submit();
+            }
+        });
+    })
+</script>
+
+<h1>
+	<img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="10" />
+	{htm(NAME)}, Your personal settings<br />
+</h1>
+<p>Here you can change your personal settings</p>
+<p>
+    These settings will effect the visibility of your personal data. <br />
+    These settings will be applied instantly and can be changed back everytime.
+
+</p>
+<br />
+{if ok}
+<div class="alert alert-success">
+   Your settings were saved successfully!
+</div>
+{endif}
+{if err}
+<div class="alert alert-danger">
+    An error has occurred. Please check your entries.
+</div>
+{endif}
+<form method="post" action="my-settings.htm" id="settingForm">
+    <input type="hidden" name="GET_MAIL_MSG" value="0" /><input type="hidden" name="ALLOW_CONTACS" value="0" />
+    {subtpl(tpl/{SYS_TPL_LANG}/my-settings-nav.htm,*)}
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <tr>
+            <th colspan="2">
+                My data
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <strong>Display my contactdata / address</strong>
+                <br />
+                Show my personal data to the following persons <br />(Only the address / companyname will be displayed)
+            </td>
+            <td valign="top">
+                <select class="form-control" name="LU_SHOWCONTAC">
+                    {s_kontakt}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Contact</strong>
+                <br />
+                Other users can send you messages via our system.
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="ALLOW_CONTACS" value="1" {if  ALLOW_CONTACS}checked{endif}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Add as contact</strong>
+                <br />
+                Other users can send me a contact request.
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="ALLOW_ADD_USER_CONTACT" value="1" {if  ALLOW_ADD_USER_CONTACT}checked{endif}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Show user online</strong>
+                <br />
+                Othehr users can see you online, if you are.
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="SHOW_STATUS_USER_ONLINE" value="1" {if  SHOW_STATUS_USER_ONLINE}checked{endif}>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Comments
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <strong>Presetting for comments</strong>
+                <br />
+                Sets if comments are standardly allowed to your adverts/events/...
+                or not allowed.
+
+            </td>
+            <td valign="top">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ALLOW_COMMENTS[]" value="1" {if (ALLOW_COMMENTS&1)==1}checked{endif}>
+                        Adverts
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ALLOW_COMMENTS[]" value="2" {if (ALLOW_COMMENTS&2)==2}checked{endif}>
+                        Events
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ALLOW_COMMENTS[]" value="4" {if (ALLOW_COMMENTS&4)==4}checked{endif}>
+                        Groups
+                    </label>
+                </div>
+
+				<span class="text-error">
+					<strong>Attention:</strong>
+                    Existing adverts / events / groups stay unchanged!
+				</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Comments to the company</strong>
+                <br />
+                Sets if people can write comments about your company.
+            </td>
+            <td valign="top">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ALLOW_COMMENTS[]" value="8" {if (ALLOW_COMMENTS&8)==8}checked{endif}>
+                        Company entry
+                    </label>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Confirm comments manually</strong>
+                <br />
+                Other users comments are visible once you checked them.
+            </td>
+            <td valign="top">
+            {if COMMENT_CONFIRM}
+                <input type="hidden" name="SET_COMMENT_MANUAL" value="0" />
+            	<strong class="text-error">
+            	    The markteplaceowner sets a manually confirmation for comments,
+            		that is why this setting ins unavailable.
+
+            	</strong>
+            {else}
+                <input type="checkbox" name="SET_COMMENT_MANUAL" value="1" {if  SET_COMMENT_MANUAL}checked{endif}>
+            {endif}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Notifications
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <strong>E-Mail notification on new messages</strong>
+                <br />
+                Do you want to receive an E-Mail, if someone sends you a message?
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="GET_MAIL_MSG" value="1" {if  GET_MAIL_MSG}checked{endif}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>E-mail notification about new forum posts</strong>
+                <br />
+                Do you want to get an E-Mail, if someone answered on your forum post?
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="ABO_FORUM" value="1" {if  ABO_FORUM}checked{endif}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Notify me before an advert runs out</strong>
+                <br>
+                Do you want to recieve an E-Mail, if one of your adverts run out?
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="GET_MAIL_AD_TIMEOUT" value="1" {if  GET_MAIL_AD_TIMEOUT}checked{endif}>
+            </td>
+        </tr>
+       <!-- <tr>
+            <th colspan="2">
+               Adverts and sales
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <strong>Confirm the sale of added products automatically</strong>
+                <br />
+                Attention: A legally binding purchase will happen with this option
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="SET_AUTOCONFIRM" value="1" {if  SET_AUTOCONFIRM}checked{endif}>
+            </td>
+        </tr>
+        {if AD_CONSTRAINTS}
+        <tr>
+            <td>
+                <strong>New articles as B2B-article</strong>
+                <br />
+                Do you want to set new articles to B2B-articles by default?
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="DEFAULT_CONSTRAINTS[]" value="1"{if DEFAULT_CONSTRAINTS_B2B} checked="checked"{endif}>
+            </td>
+        </tr>-->
+		{endif}
+        <tr>
+            <th colspan="2">
+                Adresses
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <strong>Standard billing address</strong>
+                <br />
+                Which standard billing address shall be used?
+              
+            </td>
+           	    <td valign="top">
+				{subtpl(tpl/{SYS_TPL_LANG}/user_invoice.htm,*)}
+            	</td>
+        	</tr>
+      			
+       		 <tr>
+         <!--   <td>
+                <strong>Standard delivery address</strong>
+                <br />
+                Which standard delivery address shall be used?
+            </td>
+          <td valign="top">
+				{subtpl(tpl/{SYS_TPL_LANG}/user_versand.htm,*)}
+            </td>-->
+            
+            <th colspan="2" class="text-right">
+                <input name="reset" type="reset" class="btn btn-default" value="Reset" />
+                <input name="button" type="submit" class="btn btn-success" value="Save" />
+            </th>
+        </tr>
+    </table>
+</form>

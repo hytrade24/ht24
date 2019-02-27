@@ -1,0 +1,16 @@
+<div class="watchlistWidgetListItem">
+	<span class="watchlistWidgetListItemTitle">{LISTNAME} {if numberOfLinks}({numberOfLinks}){else}{endif}</span>
+	<a onclick="Watchlist_addItem('{WATCHLIST_CURURL}', '{WATCHLIST_REF_TYPE}', '{WATCHLIST_REF_FK}', '{htm(WATCHLIST_TITLE)}', '{ID_WATCHLIST_USER}',null,true); return false;"
+	   title="aktuelle Seite unter {LISTNAME} speichern" class="pull-right" href="#">
+		<i class="glyphicon glyphicon-plus-sign"></i>
+	</a>
+	<div class="clearfix"></div>
+
+	{if watchlist_liste_links}
+	<ul class="watchlistWidgetListLinks">
+		{watchlist_liste_links}
+	</ul>
+	{else}
+		<small>Noch keine gemerkten Seiten</small>
+	{endif}
+</div>

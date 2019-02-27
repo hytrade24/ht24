@@ -1,0 +1,67 @@
+<h1>Kategorie Baum</h1>
+<div>Alle angelegten Kategorien in der Baumansicht. Aus Gr&uuml;nden der Perfomance werden jeweils nur 2 Ebenen dargestellt.<br />
+Die Zahl in Klammern hinter Knoten gibt die Anzahl der direkten Kinder an.</div>
+{if err}
+	<div class="error">{err}</div>
+{endif}
+<div>&nbsp;</div>
+<table>
+	<tr>
+		<td valign="top">
+	
+			<br />
+			<div style="background-color:#EEEEEE;border:1px #9A9A9A solid;padding:5px;"><strong>Pfad:</strong><br />
+			{pfad}</div>
+			<br />
+			
+			
+			
+						<table cellspacing="0" cellpadding="0" border="0" class="liste" width="100%">
+				<tr>
+					<th>Aktion</th>
+					<th>Sichtbar</th>
+					<th>{if P_ID_TREE_JOB}<a href="index.php?page={curpage}&ID_TREE_JOB={P_ID_TREE_JOB}"><img src="gfx/path.64.png"> {htm(P_V1)}</a>{else}<a href="index.php?page={curpage}"><img src="gfx/path.64.png"> alle Kategorien</a>{endif}</th>
+				</tr>
+				{if liste}
+				{liste}
+				{else}
+				<tr colspan="4">
+					<td class="error" align="center">Keine Kategorien gefunden.</td>
+				</tr>
+				{endif}
+			</table>
+			
+			
+			
+			
+					<h2>Neue Kategorie anlegen</h2>
+  		{if P_ID_TREE_REZENSION}<div>Die neue Kategorie wird unter <strong>{htm(THIS)}</strong> eingeordnet!</div>{endif}
+			<form method="post" action="index.php"> 
+			<input type="hidden" name="ID_TREE_JOB" value="{ID_TREE_JOB}">
+			<input type="hidden" name="do" value="insert">
+ 			<input type="hidden" name="page" value="{curpage}">
+			<table class="formTable" cellspacing="0">
+				<tr>
+					<th>Name der Kategorie</th>
+					<td><input type="text" name="V1" value="{htm(V1)}" size="35"></td>
+				</tr>
+				<tr>
+					<th>Sichtbar</th>
+					<td><input type="checkbox" name="VISIBILITY" value="1" class="nob"{if VISIBILITY} checked{endif} /></td>
+				</tr>
+				<tr class="footer">
+					<td colspan="2" align="right"><input type="submit" value="Anlegen" class="button"></td>
+				</tr>
+			</table>
+			</form>
+			
+			
+			
+			
+			
+			
+
+		</td>
+		
+	</tr>
+</table>

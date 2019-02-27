@@ -1,0 +1,32 @@
+<h1>Lookups bearbeiten</h1>
+<p>Achtung, Lookups sind mehrsprachfähig.<br>
+Bitte klicken Sie auf die jeweiligen Landesfahnen um weitere Sprachvarianten einzugeben</p>
+{if msg || err}<div class="hinweis">
+{if err}<div class="error">{err}</div>{endif}
+{if msg}<div class="ok">{ok}</div>{endif}
+</div>{endif}
+
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}" />
+<select name="selectart" size="1">
+  <option value="*alle*">-- Alles Anzeigen --</option>
+  {opts_art}
+</select> <input type="submit" value="Ausw&auml;hlen" />
+
+</form>
+
+<table border="0" cellspacing="0" cellpadding="4" class="liste">
+<tr>
+{bereiche}
+</tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="4" class="liste">
+<tr>
+ {head}
+ <th>Aktionen&nbsp;</th>
+</tr>{liste}
+<tr class="footer">
+ <td colspan="{cols}">&nbsp;</td>
+</tr>
+</table>

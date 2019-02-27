@@ -1,0 +1,37 @@
+<h1>USt.-ID Optionen</h1>
+
+{if ok || err}
+    <div class="hinweis">
+        {if err}<div class="error">{err}</div>{endif}
+        {if ok}<div class="ok">{ok}</div>{endif}
+    </div>
+{endif}
+
+
+
+<form action="index.php" method="post">
+    <input type="hidden" name="page" value="ust_id"/>
+
+
+	<p>
+		Stellen Sie hier für einzelne Länder ein, ob Kunden aus diesen Ländern mit oder ohne USt. abgerechnet werden sollen.
+	</p>
+
+    <table border="0" cellspacing="0" cellpadding="4" class="liste">
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>USt.-ID</th>
+        </tr>
+		{liste}
+    </table>
+
+	<br>
+
+	<h2>Konfiguration des USt-Id. Prüfungsdienstes "{TAX_EXEMPT_CONFIG_ADAPTER_NAME}"</h2>
+	<p>Bitte bearbeiten Sie die Konfiguration nur, wenn Sie sich über die Auswirkungen der einzelnen Optionen sicher sind.</p>
+	<textarea name="ADAPTER_CONFIG" rows="5" cols="50">{TAX_EXEMPT_CONFIG_ADAPTER_CONFIG}</textarea>
+	<br><br>
+	<input type="submit" value="Speichern" name="save"/>
+
+</form>

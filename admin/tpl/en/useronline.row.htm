@@ -1,0 +1,11 @@
+<tr class="zeile{even}">
+		<td>{counter}</td>
+		<td>{if ID_USER}<a name="{USER}" id="b{NUMMER}" style="cursor:help;" onclick="popupfkt('user_edit&ID_USER={ID_USER}', 760, 500);">{USER}</a>{endif}</td>
+		<td><a href="http://{PAGENAME}" target="_blank">{PAGENAME}</a></td>
+		<td>{HOST}</td>
+		<td><a href="http://www.geoiptool.com/de/?IP={USERIP}" target="_blank">{USERIP}</a></td>
+		<td>{S_LANG}</td>
+		<td>{inactivsince}
+		 <div id="pb{NUMMER}" class="preview">Bitte warten ...</div>
+		</td>
+	</tr>

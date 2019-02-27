@@ -1,0 +1,33 @@
+<h1>Statistiken zur Buchhaltung</h1>
+<p>Die Zahlen berücksichtigen immer einen bestimmten Zeitraum!!</p>
+
+<table  cellspacing="10">
+    <tr>
+        <td><p><b>Übersicht Rechnungs-Status</b><br />
+        Zeigt die Anzahl der unterschiedlichen Rechnungenstati an
+        </p>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltung&w=300" width="300" height="200" frameborder="0"></iframe>
+        </td>
+        <td>
+    <p><b>Beträge nach Rechnungs-Status</b><br />
+    Zeigt die Beträge der unterschiedlichen Rechnungenstati an
+    </p>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_offen&w=300" width="300" height="200" frameborder="0"></iframe>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><b>Umsatzentwicklung (12 Monate)</b><br />pro Monat</td>
+    </tr>
+    <tr>
+        <td colspan="2"><iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_overall&w=660" width="660" height="200" frameborder="0"></iframe></td>
+    </tr>    
+    <tr>
+        <td colspan="2"><iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_status&w=660&STATUS=1" width="660" height="200" frameborder="0"></iframe></td>
+    </tr>
+    <tr>
+        <td colspan="2"><iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_status&w=660&STATUS=0" width="660" height="200" frameborder="0"></iframe></td>
+    </tr>
+    <tr>
+        <td colspan="2"><iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_status&w=660&STATUS=2" width="660" height="200" frameborder="0"></iframe></td>
+    </tr>        
+</table>

@@ -1,0 +1,157 @@
+<script type="text/javascript" src="{uri_resource(lib/modernizr/modernizr.js)}"></script>
+<script type="text/javascript">
+    function sendKontakt() {
+        var data = jQuery("#kform").serialize();
+        jQuery.ajax({
+            url: jQuery("#kform").attr('action'),
+            type: 'POST',
+            data: data,
+            success: function(result) {
+                jQuery("#sendContactButton").detach();
+                $('#modalDialogContent').html(result);
+            }
+        });
+
+        return false;
+    }
+
+    jQuery(function() {
+        jQuery("#kform_embedded").submit(function(event) {
+            event.preventDefault();
+            var form = this;
+            var data = jQuery(form).serialize();
+            jQuery.ajax({
+                url: jQuery(form).attr('action'),
+                type: 'POST',
+                data: data,
+                success: function(result) {
+                    if (result.success) {
+                        jQuery(form).find(".text-danger").hide();
+                        jQuery(form).find(".text-success").show();
+                        jQuery(form).find(".design-contact-form-content").hide();
+                    } else {
+                        jQuery(form).find(".text-success").hide();
+                        jQuery(form).find(".text-danger").html(result.error).show();
+                    }
+                }
+            });
+        });
+        if (!Modernizr.inputtypes.date) {
+            jQuery("#CONTACT_RENT_DATE_FROM").datepicker({
+                dateFormat: 'dd.mm.yy',
+                minDate: '{todate(DATE_MIN)}',
+                numberOfMonths: 2,
+                onClose: function (dateStart) {
+                    jQuery("#RENT_DATE_TO").datepicker("option", "minDate", dateStart);
+                }
+            });
+            jQuery("#CONTACT_RENT_DATE_TO").datepicker({
+                dateFormat: 'dd.mm.yy',
+                minDate: '{todate(DATE_MIN)}',
+                numberOfMonths: 2,
+                onClose: function (dateStart) {
+                    jQuery("#RENT_DATE_FROM").datepicker("option", "maxDate", dateStart);
+                }
+            });
+        }
+    });
+</script>
+
+{if ERR_AD_NOT_FOUND}
+<div class="alert alert-danger">
+    <h2>Fehler aufgetreten!</h2>
+    <p>Die Anzeige konnte nicht gefunden werden.</p>
+</div>
+{else}
+
+<form action="{uri_baseurl(/index.php)}" method="post" id="kform_embedded" class="form-horizontal">
+    <input type="hidden" name="page" value="marktplatz_kontakt" />
+    <input type="hidden" name="frame" value="ajax" />
+    <input type="hidden" name="ID_AD" value="{ID_AD}" />
+    <input type="hidden" name="ID_KAT" value="{FK_KAT}" />
+    <input type="hidden" name="FK_USER" value="{FK_USER}" />
+    <input type="hidden" name="RETURN" value="json" />
+
+    <p class="text-success" style="display: none;">
+        Ihre Nachricht wurde erfolgreich zugestellt!
+    </p>
+
+    <p class="text-danger" style="display: none;">
+        Fehler aufgetreten!
+    </p>
+    
+    <div class="design-contact-form-content">
+        {if !ID_USER}
+        <p>Sie sind nicht als Benutzer angemeldet. Bitte geben Sie Ihren Namen und Ihre Emailadresse an!</p>
+    
+        <div class="control-group">
+            <label class="control-label">Ihr Name:</label>
+    
+            <div class="controls">
+                <input class="form-control" type="text" name="SENDER" value="{htm(SENDER)}"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Ihre E-Mail Adresse:</label>
+    
+            <div class="controls">
+                <input class="form-control" type="email" name="SENDER_MAIL" value="{htm(SENDER_MAIL)}" required />
+            </div>
+        </div>
+        {endif}
+    
+        <div class="control-group">
+            <label class="control-label">Betreff:</label>
+    
+            <div class="controls">
+                <input class="form-control" type="text" name="SUBJECT" value="{htm(SUBJECT)}"/>
+            </div>
+        </div>
+        {if AD_VERKAUFSOPTIONEN==3}
+        <div class="control-group">
+            <label class="control-label">Start:</label>
+    
+            <div class="controls">
+                <input class="form-control" type="date" min="{htm(DATE_MIN)}" id="CONTACT_RENT_DATE_FROM" name="RENT_FROM" value="{htm(RENT_FROM)}"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Rückgabe:</label>
+    
+            <div class="controls">
+                <input class="form-control" type="date" min="{htm(DATE_MIN)}" id="CONTACT_RENT_DATE_TO" name="RENT_TO" value="{htm(RENT_TO)}"/>
+            </div>
+        </div>
+        {endif}
+    
+        <div class="control-group">
+            <label class="control-label">Ihre Nachricht:</label>
+    
+            <div class="controls">
+                <textarea class="form-control" id="CONTACT_BODY" name="BODY" rows="5">{htm(BODY)}</textarea>
+            </div>
+        </div>
+    
+    
+        {if !ID_USER}
+        <p><strong>Bitte beantworten Sie die Sicherheitsfrage:</strong></p>
+    
+        <div class="control-group">
+            <label class="control-label">{question()}:</label>
+    
+            <div class="controls">
+                <input class="form-control" type="text" name="ANSWER"/>
+            </div>
+        </div>
+        {endif}
+        {endif}
+        <div class="control-group">
+            <div class="control-label">
+                <button type="submit" class="btn btn-primary">
+                    Nachicht abschicken
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+{endif}

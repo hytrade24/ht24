@@ -1,0 +1,167 @@
+{startblock(script)}
+    {parentblock()}
+    {javascript_google_maps()}
+
+    <script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+    <script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+    <script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+    <link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+
+	<script type="text/javascript">
+        ebizGoogleMapCallback(function() {
+            {if CLUB_PLZ||CLUB_ORT}
+			jQuery(".design-group-map-container").height(jQuery('.design-group-details-info').height() + 'px');
+	        // Google Maps
+	        var bounds = new google.maps.LatLngBounds();
+
+	        var latlng = new google.maps.LatLng({CLUB_LATITUDE}, {CLUB_LONGITUDE});
+	        bounds.extend(latlng);
+
+	        var myOptions = {
+	            zoom: 13,
+                zoomMax:15,
+	            center: latlng,
+	            mapTypeId: google.maps.MapTypeId.ROADMAP
+	        };
+
+
+	        var map = new google.maps.Map(document.getElementById("clubMap"), myOptions);
+
+	        // Marker
+	        var marker = new Array();
+	        var infowindow = new Array();
+
+	        marker[0] = new google.maps.Marker({
+	            position: latlng,
+	            map: map
+	        });
+	        infowindow[0] = new google.maps.InfoWindow({
+	            content: "<p><strong>{CLUB_NAME}</strong><br />{CLUB_STRASSE}, {CLUB_PLZ} {CLUB_ORT}, {CLUB_COUNTRY}</p>"
+	        });
+
+	        google.maps.event.addListener(marker[0], 'click', function() {
+	            infowindow[0].open(map,marker[0]);
+	        });
+			{endif}
+	    });
+
+	</script>
+{endblock(script)}
+
+    <div class="row design-page-with-menu design-group-details">
+        <div class="design-page-content">
+			<div class="text-box design-location">
+				<div class="design-ariande design-ariande-club">
+					{kat_ariadne_dynamic({ID_KAT},club,{CLUB_NAME})}
+				</div>
+			</div>
+			
+			<h1>{CLUB_NAME}</h1>
+            <div class="advertisement-box">{adserver(,1780,)}</div>
+            <div class="row ">
+                <div class="col-xs-12 col-md-6 design-group-details-info" >
+                    <div class="design-content-box">
+                        <dl class="dl-table-horizontal">
+                            <dt>Name:</dt>
+                            <dd class="separator">{CLUB_NAME}</dd>
+
+                            {if CLUB_STRASSE || CLUB_PLZ || CLUB_ORT}
+                            <dt>Anschrift:</dt>
+                            <dd>
+                                <p>{htm(CLUB_STRASSE)}<br />{htm(CLUB_PLZ)} {htm(CLUB_ORT)}<br>
+                                {print_fk(country,CLUB_FK_COUNTRY)}</p>
+                            </dd>
+                            {endif}
+
+                            {if CLUB_TEL}
+                                <dt>Telefon:</dt>
+                                <dd>{htm(CLUB_TEL)}</dd>
+                            {endif}
+                            {if CLUB_FAX}
+                                <dt>Fax:</dt>
+                                <dd>{htm(CLUB_FAX)}</dd>
+                            {endif}
+                            {if CLUB_URL}
+                                <dt>Web:</dt>
+                                <dd><a href="{CLUB_URL}">{htm(CLUB_URL)}</a></dd>
+                            {endif}
+
+                            {if searchwords}
+                            <dt>Suchwörter:</dt>
+                            <dd>
+                                <div class="design-btn-small">
+                                    {searchwords}
+                                </div>
+                            </dd>
+                            {endif}
+
+                            {if CLUB_CATEGORIES}
+                            <dt>Kategorien:</dt>
+                            <dd>{CLUB_CATEGORIES}</dd>
+                            {endif}
+                        </dl>
+
+                        {if ID_USER}
+                            {if IS_CLUB_INVITE}
+                                <br>
+                                <span>Sie haben eine Einladung in diesen Club erhalten.</span>
+                                <a href="{uri_action(my-club,{CLUB_ID_CLUB},accept)}" class="btn btn-success">Gruppe beitreten</a>
+                                <a href="{uri_action(my-club,{CLUB_ID_CLUB},decline)}" class="btn btn-danger">Gruppeneinladung ablehnen</a>
+                            {else}
+                                {if !IS_MEMBER_IN_CLUB && CLUB_ALLOW_MEMBER_REQUESTS > 0 && !IS_MEMBER_REQUEST_OPEN_IN_CLUB && !IS_MEMBER_REQUEST_BLOCKED_IN_CLUB}
+                                    <br>
+                                    <span>Möchten Sie ebenfalls dieser Gruppe beitreten?</span>
+                                    <a href="#" onclick="requestClubMembership('{CLUB_ID_CLUB}'); return false;" class="btn btn-success">
+                                        {if CLUB_ALLOW_MEMBER_REQUESTS == 1}Gruppe beitreten{endif}
+                                        {if CLUB_ALLOW_MEMBER_REQUESTS == 2}Gruppenbeitritt beantragen{endif}
+                                    </a>
+                                {endif}
+                                {if IS_MEMBER_REQUEST_OPEN_IN_CLUB}
+                                    <span class="btn btn-success disabled">
+                                        Gruppenbeitrittsanfrage wird bearbeitet
+                                    </span>
+                                {endif}
+                            {endif}
+                        {endif}
+                    </div>
+                </div>
+                <div id="map_container" class="col-xs-12 col-md-6">
+                    {if CLUB_LATITUDE}
+                        <div id="clubMap" class="design-group-map-container">
+
+                        </div>
+                    {endif}
+                </div>
+            </div>
+            <div>
+				{if CLUB_T1}
+                    <h3>Gruppenbeschreibung:</h3>
+                    <div class="design-content-box">
+                        {CLUB_T1}
+                    </div>
+				{endif}
+
+				{if CLUB_GALLERY || CLUB_GALLERY_VIDEO}
+                <a name="gallery"></a>
+                <h3>Galerie:</h3>
+				<div class="galleryImagePreviewContainer">
+                    {if CLUB_GALLERY_VIDEO}
+                        {CLUB_GALLERY_VIDEO}
+                    {endif}
+                    {if CLUB_GALLERY}
+                        {CLUB_GALLERY}
+                    {endif}
+	            </div>
+	            {endif}
+
+				{if comments_enabled}
+                    <a name="comments"></a>
+                    {subtpl(tpl/{SYS_TPL_LANG}/comment_standard_view.htm,ID_USER,TABLE=club,FK={CLUB_ID_CLUB},LABEL={CLUB_NAME})}
+				{endif}
+            </div>
+		</div>
+        <div class="design-page-menu">
+			{subtpl(tpl/{SYS_TPL_LANG}/club.info.htm,*)}
+			{content_page()}
+		</div>
+	</div>

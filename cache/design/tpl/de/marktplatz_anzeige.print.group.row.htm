@@ -1,0 +1,15 @@
+{if IS_SET}
+<strong>{htm(V1)}:</strong>
+<span>
+    {if VALUE_TPL}
+    {VALUE_TPL}
+    {else}
+    {if TYPE_CHECKBOX}
+    {if VALUE}Ja {else}Nein{endif}
+    {else}
+    {htm(VALUE)}
+    {htm(V2)}
+    {endif}
+    {endif}
+</span>
+{endif}

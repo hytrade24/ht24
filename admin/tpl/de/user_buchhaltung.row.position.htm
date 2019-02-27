@@ -1,0 +1,27 @@
+<tr class="zeile{even}" id="r_{ID_BILLING_BILLABLEITEM}">
+	<td>
+		{ID_BILLING_BILLABLEITEM}
+	</td>
+	<td>
+		{todate(STAMP_CREATE)}
+	</td>
+	<td>
+		{htm(DESCRIPTION)}
+	</td>
+	<td>
+		{todate(STAMP_DONT_BILL_UNTIL)}
+	</td>
+
+	<td style="text-align: right">
+		{QUANTITY}
+	</td>
+	<td style="text-align: right">
+		{topreis(PRICE)} {CURRENCY_DEFAULT}
+	</td>
+	<td style="text-align: right">
+		{TAX_VALUE} %
+	</td>
+	<td style="text-align: right">
+		{topreis(TOTAL_PRICE)} {CURRENCY_DEFAULT}
+	</td>
+</tr>

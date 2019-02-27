@@ -1,0 +1,61 @@
+<script type="text/javascript">
+	
+</script>
+
+<form action="{uri_baseurl(index.php)}?page=my-import-presets-edit&DO=SAVE_DATA" method="POST" class="form form-horizontal" id="importPresetEditorBasemappingForm" enctype="multipart/form-data"{if !BASEMAPPING_SPECIAL} onsubmit="return confirm('Bitte beachten Sie, dass nicht oder falsch zugewiesene Felder später zu fehlerhaften Imports führen können.')"{endif}>
+
+	{if FLASHMESSAGES}
+	<div class="alert alert-danger">{FLASHMESSAGES}</div>
+	{endif}
+	
+	{if BASEMAPPING_SPECIAL}{BASEMAPPING_SPECIAL}{endif}
+
+	<div class="design-import-preset-base-mapping">
+		<p>
+				In diesem Schritt machen Sie eine Zuordnung zwischen den Artikeleigenschaften, die Sie auf der einen Seite in Ihrem
+				Quellsystem (z.B. WaWi, Onlineshop, ..) konfiguriert haben und denenen des Marktplatzes.<br>
+				In der unten stehenden Tabelle sehen Sie in der linken Seite alle Basisfelder des Marktplatzes wie z.B.
+				Kategorie, Produktbezeichnung etc. Ordnen Sie nun diesen Feldern nun entweder Informationen
+				aus Ihrer Quelldatei (Feldzuordnung) zu oder hinterlegen Sie feste Standardwerte.
+			</p>
+	
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>
+						Feld / Artikeleigenschaft des Marktplatzes
+					</th>
+					<th>
+						Ihre Zuordnungen aus der Quelldatei
+					</th>
+				</tr>
+			</thead>
+			{if TABLE_FIELDS}
+				{TABLE_FIELDS}
+			{else}
+				<tr>
+					<td colspan="2">
+						FEHLER: Es wurden keine Artikeleigenschaften gefunden. Bitte wenden Sie sich an den Seitenbetreiber
+					</td>
+				</tr>
+			{endif}
+		</table>
+	</div>
+	
+	{if TABLE_FIELDS}
+	<div class="form-actions text-right">
+		{if STEP_MAX>2}
+			<input type="submit" class="btn btn-primary" value="Weiter" data-action="loading-modal">
+			{if ID_IMPORT_PRESET}
+				<button class="btn btn-default" onclick="ipe.saveFormAndClose(); ">
+					Speichern und schließen
+				</button>
+			{endif}
+		{else}
+			<button class="btn btn-default" onclick="ipe.saveFormAndClose(); ">
+				Speichern und schließen
+			</button>
+		{endif}
+	</div>
+	{endif}
+</form>

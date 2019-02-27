@@ -1,0 +1,43 @@
+<tr class="">
+	<td>
+		{subtpl(tpl/{SYS_TPL_LANG}/my-import-presets-edit.fieldmappingrenderer.partial.buttons.htm,*)}
+	</td>
+	<td><b>Function</b></td>
+	<td>
+		<script>
+
+			function TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_changeType(me) {
+
+				if(confirm('Do you really want to change the function-type? Already saved assigned values will be lost')) {
+					ipe.saveMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', {POS});
+				} else {
+					jQuery(me).val('{CURRENT_FUNCTION_CLASS}');
+				}
+			}
+
+
+		</script>
+
+
+		<div>
+			<select class="form-control" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}][FUNCTION]" id="TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_select" onchange="return TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_changeType(this);">
+				<option value="">Please choose function</option>
+				{SELECT_FUNCTION}
+			</select>
+		</div>
+
+		<p><small class="">With the dissecting function you can split the characters string based on the delimiter</small></p>
+
+		<div class="form-group">
+			<div class="col-xs-12">
+				<label class="control-label">Delimiter:</label>
+				<div class="input-group">
+					<input class="form-control" type="text" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}][CONFIG][DELIMITER]" value="{htm(EXPLODE_DELIMITER)}" onkeypress="jQuery('#TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_{POS}').attr('disabled', false);">
+					<div class="input-group-btn">
+						<input type="button" class="btn btn-default" onclick="ipe.saveMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', {POS}); return false;" value="Save" id="TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_{POS}" disabled>
+					</div>
+				</div>
+			</div>
+		</div>
+	</td>
+</tr>

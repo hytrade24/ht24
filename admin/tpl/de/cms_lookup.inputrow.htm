@@ -1,0 +1,17 @@
+<form method="post" action="index.php">
+  <input type="hidden" name="dummy" value="" />
+  <input type="hidden" name="selectart" value="{selectart}" />
+  <input type="hidden" name="nav" value="{curnav}" />{if ID_LOOKUP}
+  <input type="hidden" name="ID_LOOKUP" value="{ID_LOOKUP}" />{endif}{order_hid}
+<tr class="zeilex">
+  <td>{if ID_LOOKUP}{ID_LOOKUP}{else}neu{endif}&nbsp;</td>
+  <td style="text-align:center;">{if f_system}&radic;{else}x{endif}</td>
+  <td>{htm(art)}</td>
+  <td><input type="text" name="VALUE" value="{htm(VALUE)}" /></td>
+	<td><input type="text" name="V1" maxlength="100" value="{htm(V1)}" /></td>
+	<td><input type="text" name="F_ORDER" maxlength="5" value="{htm(F_ORDER)}" /></td>
+  <td>
+    <input class="button" type="submit" value="speichern" />{if ID_LOOKUP}
+    <button class="button" onClick="location.href='index.php?page={curpagealias}{order_ref}';">abbrechen</button>{endif}
+  </td>
+</tr></form>

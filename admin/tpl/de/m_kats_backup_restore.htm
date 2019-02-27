@@ -1,0 +1,20 @@
+<h1>Marktplatz Kategorien - Backups verwalten</h1>
+
+<p>Hier k&ouml;nnen Sie ein Backup der Kategorien wiederherstellen.</p>
+
+{if error}
+<div class="error">
+  <h1 class="error">Fehler beim löschen des Backups</h1>
+  Sie haben nicht die Rechte dieses Backup zu l&ouml;schen.
+</div><br />
+{endif}
+
+<table cellspacing="0" class="liste">
+  <tr>
+    <th>Aktionen</th>
+    <th>Erstellt am</th>
+    <th>Erstellt von</th>
+    <th>Beschreibung</th>
+  </tr>
+  {liste}
+</table>

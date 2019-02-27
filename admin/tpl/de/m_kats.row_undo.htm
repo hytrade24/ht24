@@ -1,0 +1,42 @@
+{if IS_MOVE}
+<tr class="zeile{even}">
+  <td nowrap="nowrap">
+    {if ID_UNDO != ID_UNDO_PARAM}
+    <a href="index.php?page=m_kats&UNDO_PREVIEW={ID_UNDO}&id={FK_KAT}">Undo!</a>
+    {else}
+    <strong>&lt;&lt; Vorschau</strong>
+    {endif}
+  </td>
+  <td width="100%" align="center">
+    <a href="index.php?page=m_kats&UNDO_PREVIEW={ID_UNDO}&id={FK_KAT}">
+      <strong><u>{KAT_NAME}</u></strong>
+    </a>
+  </td>
+</tr>
+<tr class="zeile{even}">
+  <td colspan="2">
+    <span class="notizSmall">Verschoben von <strong>{PARENT_PREV_NAME}</strong> in <strong>{PARENT_NAME}</strong></span>
+  </td>
+</tr>
+{endif}
+{if IS_RESTORE}
+<tr class="zeile{even}">
+  <td nowrap="nowrap">
+    {if ID_UNDO != ID_UNDO_PARAM}
+    <a href="index.php?page=m_kats&BACKUP_PREVIEW={FK_KAT}&UNDO_BACKUP=1">Undo!</a>
+    {else}
+    <strong>&lt;&lt; Vorschau</strong>
+    {endif}
+  </td>
+  <td width="100%" align="center">
+    <a href="index.php?page=m_kats&BACKUP_PREVIEW={FK_KAT}&UNDO_BACKUP=1">
+      <strong><u>Backup eingespielt</u></strong>
+    </a>
+  </td>
+</tr>
+<tr class="zeile{even}">
+  <td colspan="2">
+    <span class="notizSmall"><strong>[{todate(BACKUP_STAMP)}]</strong>&nbsp;{BACKUP_NAME}</span>
+  </td>
+</tr>
+{endif}

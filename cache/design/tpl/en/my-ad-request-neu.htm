@@ -1,0 +1,164 @@
+<link href="{uri_baseurl(/js/tree/skin/ui.dynatree.css)}" rel="stylesheet" type="text/css" />
+<script src="{uri_baseurl(/js/tree/jquery.dynatree.min.js)}" type="text/javascript"></script>
+
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+
+<script type="text/javascript">
+
+    jQuery(function() {
+        jQuery("#STREET, #CITY, #ZIP, #fk_country").change(function() {
+            if(jQuery("#STREET").val() != "" && jQuery("#ZIP").val() != "" && jQuery("#CITY").val() != "") {
+                getLatiLongi();
+            }
+        });
+
+        var categoryTree = {CATEGORY_JSON_TREE};
+        tree = $("#vendorCategoryTree").dynatree({
+            checkbox: true,
+            selectMode: 1,
+            autoCollapse: true,
+            debugLevel: 0,
+            children: categoryTree,
+            onSelect: function(select, node) {
+
+                var l = node.tree.getSelectedNodes().length;
+
+                if(l == 0) { node.select(true); }
+
+                var selKeys = jQuery.map(node.tree.getSelectedNodes(), function(item){
+                    jQuery("#FK_KAT").val(item.data.key);
+                });
+            }
+        });
+
+                                       
+        InitializeEditor(true);
+
+	});
+</script>
+
+{if error_noaddress}
+	<div class="alert alert-danger">
+		<h2>Hint</h2>
+		<p>
+		Please add the following details on your <a href="{uri_action(my-profil)}">profile</a> before you publish something:<br />
+		<ul>
+			{if error_addr_first}<li>Forename</li>{endif}
+			{if error_addr_last}<li>Surname</li>{endif}
+			{if error_addr_street}<li>Street</li>{endif}
+			{if error_addr_zip}<li>Postcode</li>{endif}
+			{if error_addr_city}<li>Residence</li>{endif}
+
+		</ul>
+		</p>
+	</div>
+{else}
+
+	{if ID_AD_REQUEST}
+		<h1>Search request{PRODUKTNAME} edit</h1>
+	{else}
+		<h1>Add new searchings</h1>
+	{endif}
+
+	{if err}
+		<div class="alert alert-danger">
+			<h2>An error has occurred!</h2>
+			<p>
+				{if ERR_PRODUKTNAME}Please state a title<br>{endif}
+				{if ERR_FK_KAT}Please choose a category<br>{endif}
+				{if ERR_BESCHREIBUNG}Please give a description<br>{endif}
+			</p>
+		</div>
+	{endif}
+	{if OK}<div class="alert alert-success">The searchings were added successfully.</div>{endif}
+
+
+	<form id="form_step2" method="post" action="{uri_baseurl(/index.php)}">
+		<input type="hidden" name="ID_AD_REQUEST" value="{ID_AD_REQUEST}" />
+		<input type="hidden" name="page" value="my-ad-request-neu" />
+		<input type="hidden" name="FK_KAT" id="FK_KAT" value="{FK_KAT}" />
+		<input type="hidden" name="DO" value="update" />
+
+        <input type="hidden" id="LATITUDE" name="LATITUDE" value="{LATITUDE}" />
+        <input type="hidden" id="LONGITUDE" name="LONGITUDE" value="{LONGITUDE}" />
+
+		<div class="well">
+			<legend>Category</legend>
+
+			<table class="table table-bordered table-striped table-condensed">
+				<tr>
+					<td style="vertical-align: top;">
+						<strong>Category<span class="text-error">*</span></strong>
+						<br/>
+						Category of search
+					</td>
+					<td>
+						<div id="vendorCategoryTree" style="overflow: auto; height: 200px;"></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="well">
+			<legend>Describe your searching</legend>
+
+			<table class="table table-bordered table-striped table-condensed">
+				<tr>
+					<td>
+						<strong>Label<span class="text-error">*</span></strong>
+						<br/>
+						Name of the article
+					</td>
+					<td>
+						<input class="form-control" onchange="checkNeededFields(); validateInput(this);" onkeyup="validateInputLive(this);" id="PRODUKTNAME" name="PRODUKTNAME" value="{htm(PRODUKTNAME)}">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<strong>Description<span style="color: red;">*</span></strong>
+						<br/>
+						Complete description of the article
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="padding-bottom:5px;">
+						<textarea class="form-control" style="height: 280px;" onchange="checkNeededFields();validateInput(this);" id="BESCHREIBUNG" name="BESCHREIBUNG">{htm(BESCHREIBUNG)}</textarea>
+					</td>
+				</tr>
+
+
+                <tr>
+                    <td>Street:</td>
+                    <td>
+                        <input class="form-control" type="text" name="STREET" id="STREET" value="{STREET}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zip:</td>
+                    <td>
+                        <input class="form-control" type="text" name="ZIP" id="ZIP" value="{ZIP}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td>
+                        <input class="form-control" type="text" name="CITY" id="CITY" value="{CITY}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td>
+                        {select_country(,,,, class="form-control" onchange="" id="COUNTRY",----)}
+                    </td>
+                </tr>
+
+
+			</table>
+		</div>
+
+		<div class="text-right">
+			<input type="submit" class="btn btn-success" id="button_done" value="Save" />
+		</div>
+
+	</form>
+{endif}

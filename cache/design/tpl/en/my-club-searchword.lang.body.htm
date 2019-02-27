@@ -1,0 +1,20 @@
+<div id="searchword-lang-{BITVAL}">
+    <script type="text/javascript">
+        jQuery(function() {
+        	reloadClubSearchWordList("#clubSearchList{BITVAL}", {BITVAL});
+        })
+    </script>
+
+    <form action="#" id="clubSearchWordFormular{BITVAL}" class="clubSearchWordFormular form-inline">
+        <input type="hidden" name="do" value="ADD" />
+        <input type="hidden" name="ID_CLUB" value="{CLUB_ID_CLUB}" />
+        <input type="hidden" name="LANG" value="{BITVAL}" />
+
+        <p id="clubSearchList{BITVAL}" class="clubSearchList design-btn-small"></p>
+
+		{if CLUB_MODERATOR}
+      	<input class="form-control" type="text" name="SEARCHWORD" />
+      	<input type="submit" class="btn btn-success" value="Add searchword" accept="" />
+      	{endif}
+    </form>
+</div>

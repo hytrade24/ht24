@@ -1,0 +1,27 @@
+<tr class="zeile{even}">
+	<td>
+		<a id="NEW_GROUP_{ID_FIELD_GROUP}" style="cursor:pointer;">
+			<img src="gfx/btn.edit.gif" width="32" height="16" alt0"edit" />
+		</a>
+		<a title="Gruppe löschen" onclick="return confirm('Die Gruppierung löschen?');" href="index.php?table={FK_TABLE_DEF}&page=group_fields&del={ID_FIELD_GROUP}">
+			<img src="gfx/btn.del.gif" width="32" height="16" alt0"edit" />
+		</a>
+		<script type="text/javascript">
+		      myPopup.add(
+		      {
+		          url: "index.php?page=field_group_edit&frame=ajax&ID_FIELD_GROUP={ID_FIELD_GROUP}&table={FK_TABLE_DEF}", 
+		          title: "Neue Feld-Gruppe anlegen", //optional
+		          target: "NEW_GROUP_{ID_FIELD_GROUP}", //pflicht
+              id: "NF",
+					onClose: function()
+					{
+						window.location.reload();
+					}
+		        });
+		</script>
+	</td>
+	<td valign="top">
+		{htm(V1)}
+	</td>
+	<td>...</td>
+</tr>

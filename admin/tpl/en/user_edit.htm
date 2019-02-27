@@ -1,0 +1,508 @@
+<h1>
+	<img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />
+	User {if ID_USER}'{NAME}' / #{ID_USER} bearbeiten{else}erstellen{endif}
+</h1>
+<p>Bitte geben Sie hier die Benutzerdaten ein!.</p>
+{if err || msg}
+	<div class="hinweis">
+		<span class="error">{err}</span>
+		<span class="ok">{msg}</span>
+	</div>
+{endif}
+<br style="clear: left;" />
+<div style="float: left;">
+	<form method="post" action="index.php" style="display: inline;">
+		<input type="hidden" name="dummy" value="" />
+		<input type="hidden" name="nav" value="{curnav}" />
+		<input type="hidden" name="ID_USER" value="{ID_USER}" />
+		<input type="hidden" name="frame" value="{curframe}" />
+		{if ID_USER}
+			<div class="reiterAktiv">
+				<a href="index.php?page=user_edit&ID_USER={ID_USER}">Stammdaten</a>
+			</div>
+			<div class="reiterPassiv">
+				<a href="index.php?page=perm2user&ID_USER={ID_USER}">Rechte</a>
+			</div>
+			<div class="reiterPassiv">
+				<a href="index.php?page=user_buchhaltung&ID_USER={ID_USER}" title="Buchhalterische Dtaen einsehen"> Rechnungen </a>
+			</div>
+            <div class="reiterPassiv">
+                <a href="index.php?page=user_billing_creditnote&ID_USER={ID_USER}" title="Buchhalterische Dtaen einsehen"> Gutschriften </a>
+            </div>
+			<div class="reiterPassiv">
+				<a href="index.php?page=user_ads&ID_USER={ID_USER}">Anzeigen</a>
+			</div>
+			<div class="reiterPassiv">
+				<a href="index.php?page=user_transaktion&ID_USER={ID_USER}" title="K&auml;ufe und Verk&auml;ufe anzeigen"> Ein- und Verk&auml;ufe </a>
+			</div>
+			<div class="reiterPassiv">
+				<a href="index.php?page=user_kontingent&ID_USER={ID_USER}" title="Anzeigenkontingent anzeigen"> Kontingent </a>
+			</div>
+			<div class="reiterPassiv">
+				<a href="index.php?page=user_vendor&ID_USER={ID_USER}" title="Standorte und Anbieterdaten ändern"> Anbieter </a>
+			</div>
+			<div class="reiterPassiv">
+				<a title="&Ouml;ffentliches Profil ansehen" href="{uri_baseurl(/marktplatz/view_user,{urllabel(NAME)},{ID_USER}.htm)}" target="_blank">Profil</a>
+			</div>
+		{endif}
+		<table border="0" cellspacing="1" cellpadding="4" class="formTable" style="border: 1px #9A9A9A solid">
+			<!-- edit-Formular -->
+			{if STAT == 2}
+			<tr>
+				<td class="error">Achtung! Dieser Benutzer ist noch nicht best&auml;tigt</td>
+			</tr>
+			{endif}
+			<tr>
+				<th style="background-color: #CBCFD3;"><b>Userdaten</b></th>
+			</tr>
+			<tr>
+				<td>
+					<!-- U S E R D A T E N -->
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td valign="top">
+								<label for="uname">
+									<strong>Username<span style="color: #FF0000">*</span></strong>
+								</label>
+								<br />
+								<input type="text" id="uname" name="NAME" maxlength="20" tabindex="1" onchange="setFlag(1);" value="{htm(NAME)}" />
+								<br />
+								<br />
+
+								<label for="fk_lang">
+									<strong>Sprache</strong>
+								</label>
+								<br />
+								{select(lang,FK_LANG,,,,,)}
+							</td>
+							<td valign="top">
+								<label for="email">
+									<strong>E-Mail<span style="color: #FF0000">*</span></strong>
+								</label>
+								<br />
+								<input type="text" name="EMAIL" id="email" maxlength="255" onchange="setFlag(1);" tabindex="2" value="{htm(EMAIL)}" />
+								<br />
+								<br />
+
+								<label for="stat">
+									<strong><font color="#FF0000">User kann sich <br> anmelden? </font> </strong>
+								</label>
+
+								{if 1==ID_USER}
+									&radic;
+								{else}
+									<input type="hidden" name="STAT" value="0" />
+									<input type="checkbox" name="STAT" id="stat" tabindex="3" {checked(STAT,1)}value="1" onchange="setFlag(1);" class="nob" />
+								{endif}
+							</td>
+							<td valign="top">
+								<label for="pass1">
+									<b>Passwort{if !ID_USER}<span style="color: #FF0000">*</span>{else}*{endif}</b>
+								</label>
+								<br />
+								<input type="password" name="pass1" id="pass1" onchange="setFlag(1);" maxlength="64" tabindex="4" />
+								<br />
+								<br />
+
+								<label for="pass2">
+									<b>Passwort Wiederholung{if !ID_USER}<span style="color: #FF0000">*</span>{else}*{endif}</b>
+								</label>
+								<br />
+								<input type="password" onchange="setFlag(1);" name="pass2" id="pass2" maxlength="64" tabindex="5" />
+								<br />
+								<br />
+
+								<span class="NotizSmall">
+									* Passwort nur angeben, <br />
+									wenn &Auml;nderung gew&uuml;nscht
+								</span>
+							</td>
+							<td valign="top">
+								<b>Geboren</b>
+								<br />
+								{datedrop(GEBDAT,1920..-10)}
+								<br />
+								<br />
+
+							{if ID_USER}
+								<label for="">
+									<b>Anmeldung</b>
+								</label>
+								<br />
+								{todate(STAMP_REG)}
+								<br />
+								<br />
+
+								<b>letzte Aktivit&auml;t</b>
+								<br />
+								{todate(LASTACTIV,1)}
+							{endif}
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<th style="background-color: #CBCFD3;"><b>Einstellungen</b></th>
+			</tr>
+			<tr>
+				<td>
+					<!-- E I N S T E L L U N G E N -->
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td valign="top">
+								<label for="fk_usergroup">
+									<strong>Benutzergruppe:</strong>
+								</label>
+								<br />
+								{select(usergroup,FK_USERGROUP,,,,,)}
+								<br />
+								<br />
+							</td>
+							<td valign="top">
+								<label>
+									<strong>Benutzervorsellung:</strong>
+									<br />
+
+									<input type="checkbox" id="TOP_USER" name="TOP_USER" value="1" {if TOP_USER}checked="checked" {endif} />
+									<img src="gfx/TOP_USER.1.png" width="16" height="16" alt="Top User" /> Auf Startseite vorstellen
+                                    <br />
+                                    <input type="checkbox" id="PROOFED" name="PROOFED" value="1" {if PROOFED}checked="checked" {endif} />
+									<img src="gfx/PROOFED.1.png" width="16" height="16" alt="Top User" /> geprüft
+                                    <br />
+                                    <input type="checkbox" id="TOP_SELLER" name="TOP_SELLER" value="1" {if TOP_SELLER}checked="checked" {endif} />
+									<img src="gfx/TOP_SELLER.1.png" width="16" height="16" alt="Top User" /> Top Seller
+								</label>
+							</td>
+							<td valign="top">
+									<strong>Rechnungen:</strong>
+									<br />
+
+									<label>
+										<input type="hidden" name="CHARGE_AT_ONCE" value="0" />
+										<input type="checkbox" id="CHARGE_AT_ONCE" name="CHARGE_AT_ONCE" value="1" {if CHARGE_AT_ONCE}  checked="checked" {endif} />
+										Rechnungen sofort stellen
+									</label>
+									<br />
+	
+									<label>
+										<input type="hidden" name="PROV_PREPAID" value="0" />
+										<input type="checkbox" id="PROV_PREPAID" name="PROV_PREPAID" value="1" {if PROV_PREPAID}  checked="checked" {endif} />
+										Provisionen sofort abrechnen
+									</label>
+							</td>
+							<td valign="top">
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<th style="background-color: #CBCFD3;">
+					<b>Notizen / Tags</b> - <span style="color: red;">Nur für Administratoren sichtbar!</span>
+				</th>
+			</tr>
+			<tr>
+				<td align="center">
+					<!-- E I N S T E L L U N G E N -->
+					<textarea rows="5" name="NOTIZEN_ADMIN" cols="60">{htm(NOTIZEN_ADMIN)}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<th style="background-color: #CBCFD3;">
+					<b>Personendaten</b>
+				</th>
+			</tr>
+			<tr>
+				<td>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td valign="top">
+								<label for="anrede">
+									<strong>Anrede</strong>
+								</label>
+								<br />
+								{lookup(ANREDE,,,id="anrede" tabindex="6")}
+								<br />
+								<br />
+
+								<label for="strasse">
+									<strong>Stra&szlig;e</strong>
+								</label>
+								<br />
+								<input type="text" name="STRASSE" id="strasse" onchange="setFlag(1);" maxlength="60" tabindex="9" value="{htm(STRASSE)}" />
+								<br />
+								<br />
+
+								<label for="FIRMA">
+									<strong>Firma</strong>
+								</label>
+								<br />
+								<input type="text" onchange="setFlag(1);" name="FIRMA" id="FIRMA" maxlength="60" tabindex="13" value="{htm(FIRMA)}" />
+							</td>
+							<td valign="top">
+								<label for="vorname">
+									<strong>Vorname</strong>
+								</label>
+								<br />
+								<input type="text" name="VORNAME" id="vorname" maxlength="60" onchange="setFlag(1);" tabindex="7" value="{htm(VORNAME)}" />
+								<br />
+								<br />
+
+								<label for="plz">
+									<strong>PLZ</strong>
+								</label>
+								<br />
+								<input type="text" name="PLZ" id="plz" onchange="setFlag(1);" maxlength="15" tabindex="10" value="{htm(PLZ)}" />
+								<br />
+								<br />
+
+								<label for="UMST">
+									<strong>UMST</strong>
+								</label>
+								<br />
+								<input type="text" onchange="setFlag(1);" name="UMST" id="UMST" maxlength="60" tabindex="14" value="{htm(UMST)}" />
+							</td>
+							<td valign="top">
+								<label for="nachname">
+									<strong>Nachname</strong>
+								</label>
+								<br />
+								<input type="text" onchange="setFlag(1);" name="NACHNAME" id="nachname" maxlength="60" tabindex="8" value="{htm(NACHNAME)}" />
+								<br />
+								<br />
+
+								<label for="ort">
+									<strong>Ort</strong>
+								</label>
+								<br />
+								<input type="text" onchange="setFlag(1);" name="ORT" id="ort" maxlength="63" tabindex="11" value="{htm(ORT)}" />
+								<br />
+								<br />
+
+								<label for="land">
+									<strong>Land</strong>
+								</label>
+								<br />
+								{select(country,,,,,id="land" tabindex="12")}
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<th style="background-color: #CBCFD3;">
+					<b>Kontaktdaten</b>
+				</th>
+			</tr>
+			<tr>
+				<td>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td valign="top">
+								<label for="TEL">
+									<strong>Telefon</strong>
+								</label>
+								<br />
+								<input type="text" name="TEL" id="TEL" maxlength="60" onchange="setFlag(1);" tabindex="15" value="{htm(TEL)}" />
+								<br />
+								<br />
+
+								<label for="URL">
+									<strong>URL</strong>
+								</label>
+								<br />
+								<input type="text" name="URL" id="URL" maxlength="60" onchange="setFlag(1);" tabindex="18" value="{htm(URL)}" />
+								<br />
+								<br />
+							</td>
+							<td valign="top">
+								<label for="FAX">
+									<strong>Fax</strong>
+								</label>
+								<br />
+								<input type="text" name="FAX" id="FAX" maxlength="60" onchange="setFlag(1);" tabindex="16" value="{htm(FAX)}" />
+								<br />
+								<br />
+							</td>
+							<td valign="top">
+								<label for="MOBIL">
+									<strong>Mobil</strong>
+								</label>
+								<br />
+								<input type="text" name="MOBIL" id="MOBIL" maxlength="60" onchange="setFlag(1);" tabindex="17" value="{htm(MOBIL)}" />
+								<br /><br />
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+            <tr>
+                <th style="background-color: #CBCFD3;">
+                    <b>Zahlungsweise</b>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                Standard Zahlungsweise
+                            </td>
+                            <td>
+                                <select name="PAYMENT_ADAPTER" id="invoicePaymentAdapterSelector">
+                                   <option value="">---</option>
+                                   {PAYMENT_ADAPTER}
+                                </select>
+                            </td>
+                        </tr>
+                        {if PAYMENT_ADAPTER_ADMIN_CONFIG}
+                            {PAYMENT_ADAPTER_ADMIN_CONFIG}
+                        {endif}
+                    </table>
+                </td>
+            </tr>
+			<tr>
+				<th style="background-color: #CBCFD3;">
+					<b>Info</b>
+				</th>
+			</tr>
+			<tr>
+				<td align="center">
+					<textarea rows="5" name="UEBER" cols="60">{htm(UEBER)}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<th style="background-color: #CBCFD3;">
+					<b>AGB</b>
+				</th>
+			</tr>
+			<tr>
+				<td align="center">
+					<textarea rows="5" name="AGB" cols="60">{htm(AGB)}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<th style="background-color: #CBCFD3;"><b>Wiederuf</b></th>
+			</tr>
+			<tr>
+				<td align="center">
+					<textarea rows="5" name="WIDERRUF" cols="60">{htm(WIDERRUF)}</textarea>
+				</td>
+			</tr>
+
+			<!-- Ende edit-Formular -->
+			<tr class="footer">
+				<td align="right">
+					<span class="footer">
+						<input name="button" type="submit" class="button" tabindex="116" value="Speichern" />
+						<input name="reset" type="reset" class="button" tabindex="117" value="Reset" />
+					{if ID_USER}
+						<input name="button" type="button" class="button" tabindex="118" onClick="location.href='{pageref(users)}';" value="Abbruch" />
+					{endif}
+					</span>
+				</td>
+			</tr>
+		</table>
+		<!-- Ende Maske -->
+	</form>
+	<!-- Ende Tabelle um Maske -->
+</div>
+
+<div style="float: left; padding-left: 10px; width: 200px;">
+	<h3 style="margin-top: 0px; margin-bottom: 7px;">
+		Informationen zum User {htm(NAME)}
+	</h3>
+
+     <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=user_views&ID_USER={ID_USER}&w=200" width="240" height="200" frameborder="0"></iframe>
+	<table class="formTable" cellspacing="0" cellpadding="0" style="border: 1px #9A9A9A solid">
+	{if ID_USER>1}
+		<tr>
+			<th style="background-color:{if OPEN}#FF0000;color:#FFFFFF;{else}#CBCFD3;{endif}">Unterst&uuml;tzung</th>
+		</tr>
+		<tr>
+			<th>
+		    	<a target="userlogin" href="{uri_baseurl(login.php?user={ID_USER}&sig={SIG})}" title="Als dieser Benutzer einloggen">
+		   			<img src="gfx/btn.put.gif" width="16" height="16" alt="einloggen" border="0" />
+		   			Als dieser Benutzer einloggen
+		    	</a>
+			</th>
+		</tr>
+	{endif}
+		<tr>
+			<th style="background-color:{if OPEN}#FF0000;color:#FFFFFF;{else}#CBCFD3;{endif}">Unbezahlte Rechnungen</th>
+		</tr>
+		<tr>
+			<th>
+			{if OPEN || UMSATZ}
+				{if OPEN}
+					<h3 class="error">{topreis(OPEN)} {CURRENCY_DEFAULT} &uuml;berf&auml;llige Posten</h3>
+				{endif}
+				{if UMSATZ}
+					<h3>{topreis(UMSATZ)} {CURRENCY_DEFAULT} Umsatz bisher</h3>
+				{endif}
+				<p align="right">
+					<a href="index.php?page=user_buchhaltung&FK_USER={ID_USER}" title="Buchhaltung f&uuml;r diesen Benutzer">
+						Zur Buchhaltung
+					</a>
+				</p>
+			{else}
+				<p>Bisher keine Ums&auml;tze</p>
+			{endif}
+			</th>
+		</tr>
+		<tr>
+			<th style="background-color: #CBCFD3;">Anzeigen im Markt</th>
+		</tr>
+		<tr>
+			<th>
+			{if ACTIVE_ADS}
+				<h3>{ACTIVE_ADS} aktive Anzeigen im Markt</h3>
+				<p align="right">
+					<a href="index.php?page=articles&FK_AUTOR={ID_USER}&NAME_={url(NAME)}" title="Anzeigen&uuml;bersicht des Users">
+						Alle anzeigen
+					</a>
+				</p>
+			{else}
+				<p>Derzeit keine Anzeigen geschaltet</p>
+			{endif}
+			</th>
+		</tr>
+		<tr>
+			<th style="background-color: #CBCFD3;">K&auml;ufe &amp; Verk&auml;ufe</th>
+		</tr>
+		<tr>
+			<th>
+			{if sales}
+				<h3>
+					{sales} Verk&auml;ufe <br />mit einem Umsatz von
+					{topreis(sales_sum)} {CURRENCY_DEFAULT}
+				</h3>
+				<p align="right">
+					<a href="index.php?page=user_transaktion&ID_USER={ID_USER}&what=1" title="Alle Verk&auml;ufe anzeigen"> Alle ansehen </a>
+				</p>
+			{else}
+				<p>Bisher keine Verk&auml;ufe</p>
+			{endif}
+			{if shopping}
+				<h3>
+					{shopping} K&auml;ufe<br /> mit einem Umsatz von
+					{topreis(shopping_sum)} {CURRENCY_DEFAULT}
+				</h3>
+				<p align="right">
+					<a href="index.php?page=user_transaktion&ID_USER={ID_USER}&what=2" title="Alle K&auml;ufe anzeigen"> Alle ansehen </a>
+				</p>
+			{else}
+				<p>Bisher keine K&auml;ufe</p>
+			{endif}
+			</th>
+		</tr>
+		<tr>
+			<th style="background-color: #CBCFD3;">Bewertung</th>
+		</tr>
+		<tr>
+			<th><img src="{uri_baseurl(/gfx/stars_{RATING}.png)}" alt=""></th>
+		</tr>
+	</table>
+</div>
+<br />

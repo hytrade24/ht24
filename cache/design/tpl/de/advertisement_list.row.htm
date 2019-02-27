@@ -1,0 +1,49 @@
+	<tr class="zeile{even}">
+		<td rowspan="2" nowrap="nowrap" class="design-action-buttons">
+			<input id="code{ID_ADVERTISEMENT_USER}" type="hidden" value="{htm(CODE)}" />
+			<a href="#" onclick="PreviewCode({ID_ADVERTISEMENT_USER}); return false;" class="btn btn-default">
+				<i class="glyphicon glyphicon-eye-open"></i>
+			</a>
+			<a href="#" onclick="showAdvertisementUserInfo({ID_ADVERTISEMENT_USER}); return false;" class="btn btn-default">
+				<i class="glyphicon glyphicon-info-sign"></i>
+			</a>
+		</td>
+		<td rowspan="2">
+			{htm(AD_NAME)}
+		</td>
+		<td rowspan="2" nowrap="nowrap">
+			{if ENABLED}
+            <span class="label label-success">Ja</span>
+            {else}
+            <span class="label label-important">Nein</span>
+            {endif}
+		</td>
+		<td rowspan="2">
+			{if CONFIRMED==1}
+				{if PAID==1}
+                    Bezahlt
+				{else}
+					<span class="text-error">Unbezahlt</span>
+				{endif}
+			{else}
+                Unbestätigt
+			{endif}
+		</td>
+		<td rowspan="2">{NUM_KATS}</td>
+		<td rowspan="2">{todate(STAMP_START)}</td>
+		<td rowspan="2">{todate(STAMP_END)}</td>
+		<td rowspan="2">{topreis_ex(PRICE_SUM)} {CURRENCY_DEFAULT}</td>
+		<td rowspan="2" class="design-action-buttons">
+			<a href="#" onclick="ToggleStats({ID_ADVERTISEMENT_USER}); return false;" class="btn btn-default">
+				<i class="glyphicon glyphicon-signal"></i>
+			</a>
+		</td>
+	</tr>
+	<tr>
+		<!-- Kleiner hack damit die Farben der Zeilen passen -->
+	</tr>
+	<tr class="zeile{even}" id="stats_{ID_ADVERTISEMENT_USER}" style="display: none;">
+		<td colspan="9" id="stats_content_{ID_ADVERTISEMENT_USER}">
+			<iframe src="about:blank" frameborder="0" style="width: 100%; height: 240px;"></iframe>
+		</td>
+	</tr>

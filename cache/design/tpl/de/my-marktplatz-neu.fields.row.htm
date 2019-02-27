@@ -1,0 +1,161 @@
+{if i==0}
+<p class="lead">{htm(field_group)}</p>
+<div class="design-content-box ad-group-{group_id}">
+{endif}
+<div id="{field_field}_INPUT" class="form-group">
+	<label class="control-label design-input-label" for="{field_field}">
+	    <strong>{htm(field_name)}{if field_needed==1} <span class="text-error">*</span>{endif}</strong>
+		{if field_desc_p2}
+		<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="{htm(field_desc_p2)}"></i>
+		{endif}
+	</label>
+	<div class="design-input-field">
+    {if field_type==1}
+		<!-- Unknown type - DEBUG: {field_debug} -->
+    {endif}
+    {if field_type==2}
+		<!-- Text -->
+		<input type="hidden" name="tmp_type[{field_field}]" value="text" />
+		{if field_unit}<div class="input-group">{endif}
+		{if field_unit}
+			<span class="input-group-addon">{htm(field_unit)}</span>
+		{endif}
+		<input type="text" {if field_needed==1} required="required"{endif} onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="{field_field}" name="{field_field}" placeholder="{htm(field_desc)}" title="{htm(field_desc)}" value="^{field_field}°" />
+		{if field_unit}</div>{endif}
+    {endif}
+    {if field_type==3}
+		<!-- Int -->
+		<input type="hidden" name="tmp_type[{field_field}]" value="int" />
+		{if field_unit}<div class="input-group">{endif}
+		{if field_unit}
+			<span class="input-group-addon">{htm(field_unit)}</span>
+		{endif}
+		<input type="number" {if field_needed==1} required="required"{endif} onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="{field_field}" name="{field_field}" placeholder="{htm(field_desc)}" title="{htm(field_desc)}" value="^{field_field}°" />
+		{if field_unit}</div>{endif}
+    {endif}
+    {if field_type==4}
+		<!-- Float -->
+		<input type="hidden" name="tmp_type[{field_field}]" value="float" />
+		{if field_unit}<div class="input-group">{endif}
+		{if field_unit}<span class="input-group-addon">{htm(field_unit)}</span>{endif}
+		<input type="text" {if field_needed==1} required="required"{endif} onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="{field_field}" name="{field_field}" placeholder="{htm(field_desc)}" title="{htm(field_desc)}" value="^{field_field}°" />
+		{if field_unit}</div>{endif}
+    {endif}
+    {if field_type==6}
+		<!-- List -->
+		<input type="hidden" name="tmp_type[{field_field}]" value="liste" />
+		<select class="form-control"{if field_needed==1} required="required"{endif} onchange="validateInput(this);" class="form-control" id="{field_field}" name="{field_field}" title="{htm(field_desc)}">
+			{field_options}
+		</select>
+    {endif}
+    {if field_type==7}
+		<!-- Checkbox -->
+		<input type="hidden" name="tmp_type[{field_field}]" value="checkbox" />
+        <div class="checkbox">
+            <label>
+                <input class="field_check" type="checkbox" id="{field_field}" name="{field_field}" value="1" ^if {field_field}°checked="checked"^endif° />
+                {text(field_desc_p1)}
+            </label>
+        </div>
+    {endif}
+    {if field_type==8}
+		<!-- Long Text -->
+		<input type="hidden" name="tmp_type[{field_field}]" value="text" />
+		<textarea rows="7" {if field_needed==1} required="required"{endif} onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="{field_field}" name="{field_field}" placeholder="{htm(field_desc)}" title="{htm(field_desc)}">^htm({field_field})°</textarea>
+    {endif}
+	{if field_type==9}
+		<!-- Variant -->
+		<input type="hidden" name="tmp_type[{field_field}]" value="variant" />
+		<div class="input-multicheckbox-large">
+		{field_options}
+		</div>
+	{endif}
+    {if field_type==10}
+        <!-- Multi-Checkbox OR -->
+        <input type="hidden" name="tmp_type[{field_field}]" value="multicheckbox" />
+		<div class="input-multicheckbox-large">
+        {field_options}
+		</div>
+    {endif}
+    {if field_type==11}
+        <!-- Multi-Checkbox AND -->
+        <input type="hidden" name="tmp_type[{field_field}]" value="multicheckbox_and" />
+		<div class="input-multicheckbox-large">
+        {field_options}
+		</div>
+    {endif}
+    {if field_type_HTMLTEXT}
+        <input type="hidden" name="tmp_type[{field_field}]" value="multicheckbox_and" />
+        <textarea rows="7" {if field_needed==1} required="required"{endif} onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="{field_field}" name="{field_field}" placeholder="{htm(field_desc)}" title="{htm(field_desc)}">^htm({field_field})°</textarea>
+        <script type="text/javascript">
+				jQuery(function() {
+            InitializeEditor(true, '{field_field}');
+				    AddStepChangeCallback(function(options) {
+				        if (options.action == "submit") {
+										// TinyMCE
+										if ((typeof tinyMCE.editors["{field_field}"] != "undefined") && tinyMCE.editors["{field_field}"].isDirty()) {
+												tinyMCE.editors["{field_field}"].save();
+												window.setTimeout(function() {
+														SubmitStep(options.form);
+												});
+												return false;
+										} else {
+												return true;
+										}
+								}
+				        return false;
+						});
+				});
+        </script>
+    {endif}
+    {if field_type_DATE}
+				<!-- Date (Full) -->
+				{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+				<input type="hidden" name="tmp_type[{field_field}]" value="date" />
+				<input type="text" name="{field_field}" {if field_needed==1} required="required"{endif} onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="{field_field}" value="^if {field_field}°^date_format({field_field},d.m.Y)°^endif°" />
+				<script type="text/javascript">
+				jQuery(function() {
+						jQuery("#{field_field}").datepicker({
+								clearBtn: true,
+								format: 'dd.mm.yyyy'
+						});
+				});
+				</script>
+		{endif}
+    {if field_type_DATE_MONTH}
+				<!-- Date (Month) -->
+				{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+				<input type="hidden" name="tmp_type[{field_field}]" value="date_month" />
+				<input type="text" name="{field_field}" {if field_needed==1} required="required"{endif} onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="{field_field}" value="^if {field_field}°^date_format({field_field},m.Y)°^endif°" />
+				<script type="text/javascript">
+				jQuery(function() {
+						jQuery("#{field_field}").datepicker({
+								clearBtn: true,
+								format: 'mm.yyyy',
+                viewMode: 'months',
+                minViewMode: 'months'
+						});
+				});
+				</script>
+		{endif}
+    {if field_type_DATE_YEAR}
+				<!-- Date (Year) -->
+				{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+				<input type="hidden" name="tmp_type[{field_field}]" value="date_year" />
+				<input type="text" name="{field_field}" {if field_needed==1} required="required"{endif} onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="{field_field}" value="^if {field_field}>0°^htm({field_field})°^endif°" />
+				<script type="text/javascript">
+				jQuery(function() {
+						jQuery("#{field_field}").datepicker({
+								clearBtn: true,
+								format: 'yyyy',
+                viewMode: 'years',
+                minViewMode: 'years'
+						});
+				});
+				</script>
+		{endif}
+    </div>
+    <div class="design-input-help">
+		<span class="help-inline"></span>
+	</div>
+</div>

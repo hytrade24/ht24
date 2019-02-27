@@ -1,0 +1,46 @@
+<h1><img src="gfx/icon_fehlt_64.gif" width="64" height="64" alt="" border="0" align="left"> Transaktion hinzuf&uuml;gen</h1>
+<p>Sie k&ouml;nnen hier eine Transaktion hinzuf&uuml;gen.</p>
+&nbsp;
+
+{if err}
+<div class="hinweis">
+	<span class="error">{err}</span>
+</div>
+{endif}
+
+<form action="index.php" method="post">
+<input type="hidden" name="page" value="transaction_edit" />
+<table class="formTable" cellspacing="0">
+	<tr>
+		<th>Empf&auml;nger</th>
+		<td><select name="FK_USER">
+			{USER_LIST}
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<th>Verwendungszweck</th>
+		<td><input type="text" name="REASON_FOR_TRANSFER" style="width:330px;" value="{REASON_FOR_TRANSFER}" /></td>
+	</tr>
+	<tr>
+		<th>Anzahl Coins</th>
+		<td><input type="text" name="NUMBER_OF_COINS" style="width:330px;" value="{NUMBER_OF_COINS}" /></td>
+	</tr>
+	<tr>
+		<th>Typ</th>
+		<td><input type="radio" name="TYPE" value="in" /> Haben <input type="radio" name="TYPE" value="out" /> Soll</td>
+	</tr>
+	<tr>
+		<th>Datum</th>
+		<td>{datedrop()}</td>
+	</tr>
+	<tr>
+		<th>Uhrzeit</th>
+		<td>{timedrop()}</td>
+	</tr>
+	<tr class="footer">
+  		<th>&nbsp;</th>
+		<td align="right"><input class="button" name="send" type="submit" value="Transaktion hinzuf&uuml;gen" /></td>
+	</tr>
+</table>
+</form>

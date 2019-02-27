@@ -1,0 +1,172 @@
+.vendor-list-top-row .fa {
+    color: #c1c1c1;
+}
+
+.design-container-spaceless-top {
+    height: 390px;
+}
+
+
+.design-container-spaceless-top {
+    margin-bottom: 0px;
+}
+
+
+
+.design-container-spaceless-top .right-div {
+    background: rgba(11, 169, 188, 0.7);
+    margin: 5% 15px 20px 15px;
+}
+
+
+
+.panel-primary > .panel-heading {
+    color: #fff;
+    background-color: #444648;
+    border-color: #444648;
+}
+
+
+.panel {
+    box-shadow: none;
+}
+
+
+.panel-primary {
+    border-color: #d8d8d8;
+}
+
+ul.menu-box > li.active > a {
+    color: #6faabc;
+}
+
+ul.menu-box.menu-box-striped > li:nth-child(2n+1) {
+    background: #f5f5f5;
+}
+
+ul.menu-box.menu-box-striped > li:nth-child(2n+1) > a:hover {
+    background: #6faabc;
+    color: white;
+}
+
+ul.menu-box.menu-box-striped > li:nth-child(2n) > a:hover {
+    background: #6faabc;
+    color: white;
+}
+
+ul.menu-box-special {
+    font-size: 14px;
+}
+ul.menu-box-special > li.childsHover > .design-sub-menu > ul > li a:before {
+    content: "- ";
+    display: inline;
+}
+ul.menu-box-special > li.childsHover > .design-sub-menu > ul > li {
+    margin-bottom: 4px;
+}
+
+.marke-and-typ .m-heading {
+     font-size: 13px;
+ }
+
+.suchoptionen .such-heading {
+    font-size: 13px;
+}
+
+@media (min-width: 768px){
+ul.menu-box-special > li.childsHover > .design-sub-menu {
+    background: #f5f5f5;
+    color: #2b2a29;
+    min-width: 600px;
+}}
+
+@media (min-width: 768px)
+{ul.menu-box-special > li.childsHover > .design-sub-menu > .heading {
+    font-size: 18px;
+    border-bottom: 1px solid #6faabc;
+    padding: 10px 16px;
+    background: #6faabc;
+    color: white;
+    margin-bottom: 10px;
+}
+}
+
+
+@media (min-width: 768px) {
+    ul.menu-box-special > li.childsHover > .design-sub-menu > ul {
+        column-count: 2;
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+    }
+}
+
+.design-row-item .new .design-ad-status {
+    border-top: 60px solid #444548;
+}
+
+.design-row-item .new .design-ad-status > div {
+    background-color: #444548;
+}
+
+
+#headerMenuMainFirst .nav li a:hover {
+    color: #E00000;
+    border-top: solid 4px #6fa9bc;
+    border-bottom: solid 2px #6fa9bc;
+}
+
+
+.alert-info {
+    background-color: #6fa9bc;
+    border-color: #444648;
+    color: #ffffff;
+}
+
+
+#footer .container ul li {
+    padding-bottom: 0px;
+}
+
+.design-search-base .design-search-group-header, .design-search-market .design-search-group-header {
+    border-bottom: 1px solid #fff;
+}
+
+
+.design-page-content .pagination ul li a {
+    margin-left: 10px;
+    border-color: #6fa9bc;
+    background-color: #6fa9bc;
+    color: #ffffff;
+}
+
+.design-page-content .pagination ul li.active a {
+    background-color: #444548 !important;
+    border-color: #444548 !important;
+    color: #ffffff !important;
+}
+
+.design-page-content .pagination ul li a {
+    margin-left: 10px;
+    border-color: #6fa9bc;
+    background-color: #6fa9bc;
+    color: #ffffff;
+}
+
+.design-page-content .pagination ul li:first-child > *, .design-page-content .pagination ul li:last-child > * {
+    border-color: #6fa9bc;
+    background-color: #6fa9bc;
+    color: #ffffff;
+}
+
+
+.design-page-content .pagination ul li:first-child > *:hover, .design-page-content .pagination ul li:last-child > *:hover {
+    background-color: #e00000;
+    border-color: #e00000;
+    color: #ffffff;
+}
+
+.design-page-content .pagination ul li a:hover {
+    background-color: #e00000;
+    border-color: #e00000;
+    color: #ffffff;
+}

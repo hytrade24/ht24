@@ -1,0 +1,37 @@
+<h1>Datenbank pr&uuml;fen</h1>
+
+<p>Die Datenbank wird automatisch auf zu reparierende Datens&auml;tze &uuml;berpr&uuml;ft. Sie k&ouml;nnen diese mit einem einfachen Klick reparieren lassen, wenn entsprechende Datens&auml;tze gefunden werden.. </p>
+
+{if REPAIR}
+ <h2 class="ok">{REPAIR} Datens&auml;tze korrigiert!</h2>
+{endif}
+
+<form method="get" action="index.php">
+<input type="hidden" name="DO" value="REPAIR">
+<input type="hidden" name="page" value="{curpage}">
+<table class="formTable" cellspacing="0">
+ <tr>
+  <th colspan="2"><h2>Ergebnis der &Uuml;berpr&uuml;fung</h2></th>  
+ </tr>
+ <tr>
+  <th>Zu reparierende Datens&auml;tze</th>
+  <td>{if NUM}<span class="error">{NUM} Datens&auml;tze sollten korrigiert werden</span>
+   {else}<span class="ok">Es ist alles in Ordnung</span>{endif}</td>
+ </tr>
+ {if NUM}
+ <tr class="footer">
+  <td colspan="2" align="right"><input type="submit" value="Datens&auml;tze jetzt korrigieren" class="button"></td>
+ </tr>
+ {endif}
+</table>
+</form>
+<h2>Erweiterte Informationen &uuml;ber Ihre Datenbank</h2>
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Tabellenname</th>
+  <th>Datens&auml;tze</th>
+  <th>Physikalische Gr&ouml;&szlig;e</th>
+  <th>&Uuml;berhang</th>
+ </tr>
+ {liste}
+</table>

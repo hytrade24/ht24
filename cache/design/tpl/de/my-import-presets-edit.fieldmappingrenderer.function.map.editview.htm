@@ -1,0 +1,117 @@
+<tr class="">
+	<td>
+		{subtpl(tpl/{SYS_TPL_LANG}/my-import-presets-edit.fieldmappingrenderer.partial.buttons.htm,*)}
+	</td>
+	<td><b>Funktion</b></td>
+	<td>
+		<script>
+			/**
+			 * adds new tr input fields
+			 * @constructor
+			 * @private
+			 */
+			function TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_updateNewInputFields() {
+				var el = jQuery("#TMP_MAP_TABLE_{TABLE_DEF}_{FIELD_NAME}_{POS}");
+				var emptyfieldexists = false;
+				el.find("input.mapTableKeyInput").each(function() {
+					if(!jQuery.trim(jQuery(this).val()).length) { emptyfieldexists = true; }
+				});
+
+
+				if(!emptyfieldexists) {
+					var trClone = el.find("tr:last-child").clone();
+					trClone.find("input").on('paste', onPasteEventFunction);
+
+					jQuery(trClone).find("input").val('');
+					el.append(trClone);
+				}
+
+				jQuery('#TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_{POS}').attr('disabled', false);
+			}
+
+			function TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_reset() {
+				if(confirm('Möchten Sie wirklich die gesamte Zuordnung entfernen?')) {
+					var el = jQuery("#TMP_MAP_TABLE_{TABLE_DEF}_{FIELD_NAME}_{POS}");
+					el.find("input").val('');
+					var trClone = el.find("tr:last-child").clone();
+					trClone.find("input").on('paste', onPasteEventFunction);
+
+					el.find("tr").detach();
+					el.append(trClone);
+
+
+					jQuery('#TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}').attr('disabled', false);
+				}
+			}
+
+			function TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_changeType(me) {
+
+				if(confirm('Möchten Sie den Funktionstyp wirklich ändern? Bereits gespeicherte Wertzuordnungen gehen dabei verloren')) {
+					ipe.saveMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', {POS});
+				} else {
+					jQuery(me).val('{CURRENT_FUNCTION_CLASS}');
+				}
+			}
+
+			jQuery(function() {
+				var table = jQuery("#TMP_MAP_TABLE_{TABLE_DEF}_{FIELD_NAME}_{POS}");
+
+				onPasteEventFunction = function(event) {
+					var input = jQuery(this);
+					var row = input.closest("tr");
+					var lastRow = row;
+
+					clipText = event.originalEvent.clipboardData.getData('text/plain');
+					clipRows = clipText.split("\n");
+
+					if(clipRows.length > 1) {
+						for (i=0; i< clipRows.length; i++) {
+							var cells = clipRows[i].split(String.fromCharCode(9));
+
+							if(i == 0) {
+								row.find(".mapTableKeyInput").val(cells[0]);
+								row.find(".mapTableValueInput").val(cells[1]);
+							} else {
+								var newRow = row.clone();
+								newRow.find(".mapTableKeyInput").val(cells[0]);
+								newRow.find(".mapTableValueInput").val(cells[1]);
+								newRow.find("input").on('paste', onPasteEventFunction);
+
+								lastRow.after(newRow);
+
+
+								lastRow = newRow;
+							}
+						}
+
+						event.preventDefault();
+					}
+				};
+
+				table.find("input").on('paste', onPasteEventFunction)
+			});
+		</script>
+
+
+		<div>
+			<select class="form-control" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}][FUNCTION]" id="TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_select" onchange="return TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_changeType(this);">
+				<option value="">Bitte Funktion auswählen</option>
+				{SELECT_FUNCTION}
+			</select>
+		</div>
+
+		<small class="">Mit der Funktion Wertzuordnung weisen Sie einer Menge von Ausgangswerten (aus Ihrer Quelldatei) neuen Werten zu.</small>
+
+
+		<table style="width: 100%" id="TMP_MAP_TABLE_{TABLE_DEF}_{FIELD_NAME}_{POS}">
+			{if MAP}{MAP}{endif}
+			<tr>
+				<td><input type="text" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}][CONFIG][MAP][KEY][]" class="mapTableKeyInput form-control" placeholder="Ausgangswert" onkeyup="TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_updateNewInputFields();"></td>
+				<td><input type="text" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}][CONFIG][MAP][VALUE][]" class="mapTableValueInput form-control" placeholder="Neuer Wert"  onkeyup="TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_updateNewInputFields();"></td>
+			</tr>
+		</table>
+
+		<input type="button" class="btn btn-default" onclick="ipe.saveMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', {POS}); return false;" value="Speichern" id="TMP_SAVEBUTTON_{TABLE_DEF}_{FIELD_NAME}_{POS}" disabled>
+		<input type="button" class="btn btn-default" onclick="TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_reset(); return false;" value="Zuordnung löschen">
+	</td>
+</tr>

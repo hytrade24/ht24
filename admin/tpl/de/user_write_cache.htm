@@ -1,0 +1,22 @@
+<h1>Usercache erneuern</h1>
+
+{if indexing}
+<h1>Die Informationen werden aufbereitet<br>
+Diesen Vorgang nicht unterbrechen!!!!</h1>
+<iframe src="index.php?page=user_do_write_cache&frame=iframe&start={start}" width="400" height="150" frameborder="0"></iframe>
+{else}
+
+
+
+
+<p>Diese Funktion schreibt den Usercache aller aktiven User neu. Dabei werden lediglich  die Benutzereinstellungen reorganisiert.<br>
+Diese Funktion sollte vor allem dann aufgerufen werde, wenn neue Optionen hinzugef&uuml;gt werden</p>
+<h2>ACHTUNG :</h2>
+<p>Bei gro&szlig;er Anzahl von Usern kann dieser Vorgang l&auml;ngere Zeit in Anspruch nehmen</p>
+<p>Klicken Sie den Startbutton um den Vorgang zu starten</p>
+<form method="POST" action="index.php">
+<input type="hidden" name="page" value="user_write_cache">
+<input type="hidden" name="do" value="build_index">
+<input type="submit" value="CACHING STARTEN" name="B1" onclick="if (!confirm('ACHTUNG\nDieser Prozess sollte nicht unterbrochen werden!!\nIndexing starten?')){return false}">
+</form>
+{endif}

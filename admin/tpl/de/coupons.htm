@@ -1,0 +1,58 @@
+{if err}
+<div class="hinweis">
+    <span class="error">{err}</span>
+</div>
+{endif}
+
+<h1>Gutscheine</h1>
+
+	<form method="get" action="index.php">
+		<input type="hidden" name="page" value="coupons">
+
+	<table border="0" cellspacing="0" cellpadding="4" class="liste">
+		<tr>
+			<th colspan="6">
+				<label>
+					Nr.:
+					<input type="text" name="ID_COUPON" value="{ID_COUPON}" />
+				</label>
+				<label>
+					Bezeichnung:
+					<input type="text" name="COUPON_NAME" value="{htm(COUPON_NAME)}" />
+				</label>
+				<label>
+					Code:
+					<input type="text" name="COUPON_CODE" value="{htm(COUPON_CODE)}" />
+				</label>
+				<label>
+					Art:
+					<select name="TYPE">
+						<option value="">- alle -</option>
+						<option value="Coupon_Type_AbsoluteValueCouponType" {if SEARCH_TYPE_Coupon_Type_AbsoluteValueCouponType}selected{endif}>Absoluter Betrag</option>
+						<option value="Coupon_Type_PercentageValueCouponType" {if SEARCH_TYPE_Coupon_Type_PercentageValueCouponType}selected{endif}>Prozentualer Wert</option>
+					</select>
+				</label>
+				<input type="submit" name="SEARCH" value="Suchen" />
+			</th>
+		</tr>
+		<tr>
+			<th>Aktionen</th>
+			<th>Nr.</th>
+			<th>Bezeichnung</th>
+			<th>Typ</th>
+			<th>Status</th>
+			<th>erstellt am</th>
+			<th>Anz. Codes</th>
+			<th>Anz. Verwendungen</th>
+		</tr>
+		{liste}
+		<tr>
+			<td colspan="5">
+				{pager}
+			</td>
+		</tr>
+	</table>
+	</form>
+	<p>
+		Anzahl der Gutscheine : <b>{all}</b>
+	</p>

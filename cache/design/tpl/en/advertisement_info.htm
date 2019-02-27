@@ -1,0 +1,74 @@
+<script type="text/javascript" src="{uri_baseurl(/js/categorys.js)}"></script>
+
+<script type="text/javascript">
+	// sichere die allgemeien KatToggle Funktion und überschreibe Sie dann
+	DefaultKatToggle = KatToggle;
+	KatToggle = function (id_kat, id_ad_user, callback) {
+		DefaultKatToggle(id_kat, id_ad_user, function() {
+			$("#advertisementCategoryTree input[type=checkbox]").attr("disabled", "disabled");
+			$("#advertisementCategoryTree a[id*='btn_check'], #advertisementCategoryTree a[id*='btn_uncheck']").attr("onclick", "")
+		})
+	}
+	
+	$(function() {
+		$("#advertisementCategoryTree input[type=checkbox]:checked").each(function(key, element) {
+			var elementValue = $(this).attr('value');
+			KatToggle(elementValue, 9);
+		});
+
+	})
+</script>
+
+<div style="float: left; width: 380px">
+	<table style="width: 100%">
+		<tr>
+            <td>
+                <strong>Advertisement Nr.:</strong>
+            </td>
+            <td>
+                {ID_ADVERTISEMENT_USER}
+            </td>
+        </tr>
+		<tr>
+            <td>
+                <strong>Display-type:</strong>
+            </td>
+            <td>
+                {AD_NAME}
+            </td>
+        </tr>
+		<tr>
+			<td>
+                <strong>Status:</strong>
+            </td>
+			<td>
+            {if CONFIRMED==1}
+				{if PAID==1}
+					{if ENABLED==1}
+                        Activ
+					{else}
+                        Paid
+					{endif}
+				{else}
+                    Confirmed
+				{endif}
+			{else}
+                Unconfirmed
+			{endif}
+			</td>
+		</tr>
+		<tr>
+            <td>
+                <strong>Runtime:</strong>
+            </td>
+            <td>
+                {todate(STAMP_START)} to {todate(STAMP_END)}
+            </td>
+        </tr>
+	</table>
+</div>
+<div id="advertisementCategoryTree" style="float: left; width: 300px; overflow: auto; height: 350px;">
+{liste}
+</div>
+
+<div style="clear: both"></div>

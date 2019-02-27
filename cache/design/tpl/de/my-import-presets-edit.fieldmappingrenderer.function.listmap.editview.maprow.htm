@@ -1,0 +1,10 @@
+<tr>
+	<td>
+		<input type="text" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}][CONFIG][MAP][KEY][]" class="form-control mapTableKeyInput" value="{htm(KEY)}" placeholder="Ausgangswert" onkeyup="TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_updateNewInputFields();">
+	</td>
+	<td>
+		<select name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}][CONFIG][MAP][VALUE][]" class="form-control mapTableValueInput" onchange="TMP_{TABLE_DEF}_{FIELD_NAME}_{POS}_updateNewInputFields();">
+			{TABLE_FIELD_ACCEPTED_VALUES}
+		</select>
+	</td>
+</tr>

@@ -1,0 +1,102 @@
+<script type="text/javascript">
+
+function UpdateDisabled(id) {
+	var checked = jQuery("#disable"+id).attr("checked");
+	if (checked) {
+		jQuery("#edit"+id).removeClass("enabled").attr("disabled", true);
+	} else {
+		jQuery("#edit"+id).addClass("enabled").attr("disabled", false).val(0);
+	}
+}
+
+</script>
+
+<form action="index.php" method="post">
+	{if ID_PACKET}
+		<h1>Basispaket bearbeiten</h1>
+		<input type="hidden" name="ID_PACKET" value="{ID_PACKET}" />
+	{else}
+		<h1>Basispaket hinzuf&uuml;gen</h1>
+	{endif}
+	{if saved}
+		<h2 class="ok">Erfolgreich gespeichert!</h2>
+	{endif}
+	{if errors}
+	<div class="error">
+		<h2>Fehler!</h2>
+		{errors}
+	</div>
+	{endif}
+
+	<input type="hidden" name="page" value="{curpage}" />
+	<table class="formTable" width="600">
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Name des Basispakets</th>
+			<td>
+				<input style="width:100%;" name="V1" value="{htm(V1)}">
+				<br />In Einzahl - z.B. Anzeige oder Bild
+				<input style="width:100%;" name="V2" value="{htm(V2)}">
+				<br />In Mehrzahl - z.B. Anzeigen oder Bilder
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Basispakets verwendbar?</th>
+			<td>
+				<input type="checkbox" name="B_AKTIV" value="1" class="nob" {if B_AKTIV} checked{endif} />
+				<br />Beim Zusammenstellen von Paketen verf&uuml;gbar
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Beschreibung</th>
+			<td>
+				<textarea style="width:100%;" name="T1">{htm(T1)}</textarea><br />
+				Beschreiben Sie hier die Features des Basispakets.
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">
+				Einmalig / Abo
+			</th>
+			<td>
+				<select name="TYPE">
+					<option value='BASE'{if TYPE_BASE} selected="selected"{endif}>Einmalig</option>
+					<option value='BASE_ABO'{if TYPE_BASE_ABO} selected="selected"{endif}>An Zeitraum gebunden</option>
+				</select>
+				<br />Aktivieren um das Paket &ouml;ffentlich anzubieten
+			<!-- 
+				<select name="RECURRING">
+					<option value='ONCE'>Einmalig</option>
+					<option value='WEEK'>Wöchentlich</option>
+					<option value='MONTH'>Monatlich</option>
+					<option value='QUATER_YEAR'>Vierteljährlich</option>
+					<option value='HALF_YEAR'>Halbjährlich</option>
+					<option value='YEAR'>Jährlich</option>
+				</select>
+			-->
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Mehrwertsteuersatz</th>
+			<td>
+				{select(tax,FK_TAX,TXT)}
+			</td>
+		</tr>
+		<tr>
+			<th style="vertical-align:top;padding-top:2px;">Netto Preise</th>
+			<td>
+				<table class="liste" cellpadding="0" cellspacing="0">
+					<tr>
+						<th>Benutzergruppe</th>
+						<th>Preis</th>
+					</tr>
+					{liste}
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<th class="footer" colspan="2">
+				<input type="submit" value="Speichern" />
+			</th>
+		</tr>
+	</table>
+</form>

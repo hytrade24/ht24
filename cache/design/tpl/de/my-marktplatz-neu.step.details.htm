@@ -1,0 +1,24 @@
+{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-neu.step.header_article.htm,*)}
+
+<form class="form-horizontal" onsubmit="SubmitStep(this); return false;">
+    <input type="hidden" name="step" value="{STEP_IDENT}" />
+
+    {FIELDS}
+
+    <div class="design-content-box">
+        <div class="submit-step">
+            <div class="controls">
+            {if STEP_INDEX>0}
+                <input type="button" onclick="ShowStep({calc(STEP_INDEX-1)}); return false;" class="btn" value="Zurück" />
+            {endif}
+                <button type="submit" class="btn btn-primary">
+                    Weiter
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+
+	jQuery(".js-tooltip").tooltip();
+</script>

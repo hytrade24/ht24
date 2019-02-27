@@ -1,0 +1,19 @@
+<tr>
+	<td class="design-action-buttons">
+		<a title="Konfiguration bearbeiten" href="#" onclick="editPaymentAdapterConfig('{ID_PAYMENT_ADAPTER}'); return false;" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+	</td>
+	<td>
+		{NAME}
+	</td>
+	<td>
+		{if CONFIG_STATUS}<i class="glyphicon glyphicon-ok"></i>{else}<i class="glyphicon glyphicon-remove"></i>{endif}
+	</td>
+	<td>
+		{if CONFIG_VALID}<i class="glyphicon glyphicon-ok"></i>{else}<i class="glyphicon glyphicon-remove"></i>{endif}
+	</td>
+	<td>
+		{if CONFIG_AUTOCHECK}<i class="glyphicon glyphicon-ok"></i>{else}<i class="glyphicon glyphicon-remove"></i>{endif}
+	</td>
+</tr>

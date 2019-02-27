@@ -1,0 +1,20 @@
+<h1>Bildformate</h1>
+<p>Um Ihnen das Hochladen von Bildern zu vereinfachen und zu vereinheitlichen k&ouml;nnen Sie 
+hier eigene Formatvorlagen anlegen. Bei jedem neuen Bild werden somit immer die selben 
+Einstellungen verwendet. Dieses erm&ouml;glicht zum Beispiel, dass in einer Galerie alle 
+Vorschaubilder immer die selbe Gr&ouml;&szlig;e haben.</p>
+{if formate}
+<table class="liste">
+<tr>
+ <th>Aktion</th>
+ <th>Format</th>
+ <th>Max Breite x H&ouml;he</th>
+ <th>Vorschaubild</th>
+ <th>Hintergrundfarbe</th>
+</tr>
+{formate}
+</table>
+{else}
+<div class="hinweis"><span class="error">Sie haben noch keine Formate angelegt!</span>
+<br /><br /><a href="index.php?page=bildformat_edit"><strong>- Jetzt eues Format anlegen</strong></a></div>
+{endif}

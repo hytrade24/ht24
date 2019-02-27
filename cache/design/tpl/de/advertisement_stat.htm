@@ -1,0 +1,16 @@
+			<div id="stats_flash_{ID_ADVERTISEMENT_USER}">test</div>
+			<script type="text/javascript">
+			var so = new SWFObject("{uri_baseurl(/open-flash-chart.swf?t=12)}", "ofc", "100%", "200", "9", "#FFFFFF");
+			so.addVariable("variables","true");
+			so.addVariable("line_dot","2,0x000099,Anzahl der Darstellungen,10,5");
+			so.addVariable("values","{VIEWS}");
+			so.addVariable("x_label_style","10,0x000000,2");
+			so.addVariable("x_legend","Datum,12,#736AFF");
+			so.addVariable("x_axis_steps","1");
+			so.addVariable("x_labels","{DATES}");
+			so.addVariable("y_legend","Anzeigen,12,#736AFF");
+			so.addVariable("y_ticks","5,10,5");
+			so.addVariable("y_min","0");
+			so.addVariable("y_max","{VIEWS_MAX}");
+			so.write("stats_flash_{ID_ADVERTISEMENT_USER}");
+			</script>

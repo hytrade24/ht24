@@ -1,0 +1,13 @@
+<tr{if even} bgcolor="#ffffff"{endif}>
+  <td>{plugin}&nbsp;</td>
+  <td>{typ}&nbsp;</td>
+  <td><input type="text" name="set[{plugin}][{typ}]"  id="opt{i}"
+    {if maxlen}maxlength="{maxlen}" {endif}value="{htm(value)}" title="{htm(plugin)}/{htm(typ)}">&nbsp;</td>
+  <td>
+    <a href="index.php?page={curpagealias}&set[{plugin}][{typ}]={htm(default_value)}"
+      title="Defaultwert eintragen"
+      onClick="this.href='javascript:;';settext('opt{i}','{htm(default_value)}');"
+      >{htm(default_value)}</a>
+  &nbsp;</td>
+  <td>{beschreibung}</td>
+</tr>

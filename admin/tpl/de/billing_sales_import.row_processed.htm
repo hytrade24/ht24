@@ -1,0 +1,46 @@
+<tr class="important{IMPORTANT}">
+    <td>
+        <input type="checkbox" class="IMPORT_CHECK" name="SELECTED[]" value="{ID_BILLING_IMPORT}" />
+    </td>
+    <td nowrap="nowrap">
+        <a onclick="SetImportant({ID_BILLING_IMPORT}, this);" data-important="3" title="Als neu markieren">
+            <img width="16" height="16" src="gfx/btn.important3.png" />
+        </a>
+        <a onclick="SetImportant({ID_BILLING_IMPORT}, this);" data-important="1" title="Als wichtig markieren">
+            <img width="16" height="16" src="gfx/btn.important1.png" />
+        </a>
+        <a onclick="SetImportant({ID_BILLING_IMPORT}, this);" data-important="0" title="Als unwichtig markieren">
+            <img width="16" height="16" src="gfx/btn.important0.png" />
+        </a>
+        <a onclick="SetImportant({ID_BILLING_IMPORT}, this);" data-important="2" title="Als abgeschlossen markieren">
+            <img width="16" height="16" src="gfx/btn.important2.png" />
+        </a>
+    </td>
+    <td>
+        {if TYPE_SKIP}Ignoriert{endif}
+        {if TYPE_ERROR}<span class="error">Fehler</span>{endif}
+        {if TYPE_NOTICE}<strong>Hinweis</strong>{endif}
+        {if TYPE_SUCCESS}<span class="ok">Erfolgreich</span>{endif}
+    </td>
+    <td>
+        {todate(DATE)}
+    </td>
+    <td style="min-width: 128px;">
+        {NOTICE}
+    </td>
+    <td>
+        {topreis(AMOUNT)} {CURRENCY_DEFAULT}
+    </td>
+    <td>
+        {htm(SUBJECT)}
+    </td>
+    <td>
+        {htm(NAME)}
+    </td>
+    <td>
+        {htm(ACCOUNT)}
+    </td>
+    <td>
+        {htm(BANK)}
+    </td>
+</tr>

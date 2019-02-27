@@ -1,0 +1,40 @@
+<tr class="zeile{even}">
+    <td>
+		<a href="index.php?page=articles_edit&show_kat={ID_KAT}&ID_KAT={FK_KAT}&edit={ID_AD_MASTER}">
+			<img border="0" src="gfx/btn.edit.gif">
+		</a>
+		{if (STATUS&3)==1}
+			<a title="Topanzeige Ja/nein" style="cursor:pointer; float: right;" onclick="ad_top({if B_TOP}false{else}true{endif}, {ID_AD_MASTER}, {FK_KAT}, '{AD_TABLE}');" id="top_a_{ID_AD_MASTER}_{FK_KAT}" >
+				<img id="top_i_{ID_AD_MASTER}_{FK_KAT}" src="gfx/top{B_TOP}.png" width="32" height="16" alt="top" />
+			</a>
+		{endif}
+    </td>
+	<td>
+		{ID_AD_MASTER}
+	</td>
+    <td>
+        {todate(STAMP_START)}
+    </td>
+    <td>
+        <a style="cursor: pointer;" onclick="window.open('/index.php?page=marktplatz_anzeige&ID_ANZEIGE={ID_AD_MASTER}', 'Anzeige betrachten', 'width=1000,height=880,left=20,top=20,scrollbars=yes');">
+			{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}
+        </a>
+    </td>
+    <td>
+        <a href="index.php?page=articles&quicksearch=1&ID_KAT={FK_KAT}">
+          {htm(KAT_NAME)}
+        </a>
+    </td>
+    <td>
+        <a href="index.php?page=user_edit&ID_USER={FK_USER}">{htm(USERNAME)}</a>
+    </td>
+    <td>
+        {topreis(PREIS)}&nbsp;{CURRENCY_DEFAULT}
+    </td>
+    <td align="center">
+        <a onmouseover="PreviewImages({ID_AD_MASTER}, this);" onmouseout="HideImages({ID_AD_MASTER});">
+          {IMAGE_COUNT}
+        </a>
+        <div class="preview" id="image_preview{ID_AD_MASTER}" style="width: 180px; position: absolute; background-color: white; border: 1px solid black;"></div>
+    </td>
+</tr>

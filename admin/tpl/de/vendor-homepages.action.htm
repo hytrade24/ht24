@@ -1,0 +1,15 @@
+<td align="right" class="actions-icons">
+    {if (row_ACTIVE==0) || (row_ACTIVE==2)}
+    <a id="datatable-{hash}-ad-enable" onclick="return vendorHomepageConfirm({row_ID_VENDOR_HOMEPAGE});">
+        <img src="./gfx/isok.png" alt="Bestätigen" title="Bestätigen">
+    </a>
+    {endif}
+    {if (row_ACTIVE==0) || (row_ACTIVE==1)}
+    <a id="datatable-{hash}-ad-disable" onclick="return vendorHomepageDecline({row_ID_VENDOR_HOMEPAGE});">
+        <img src="./gfx/btn.cancel.gif" alt="Ablehnen" title="Ablehnen">
+    </a>
+    {endif}
+    <a id="datatable-{hash}-ad-delete" onclick="return vendorHomepageDelete({row_ID_VENDOR_HOMEPAGE});">
+        <img src="gfx/btn.del.gif" width="32" height="16" title="Löschen" alt="Löschen" border="0">
+    </a>
+</td>

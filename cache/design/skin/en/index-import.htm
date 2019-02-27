@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{strip_tags(pagetitle)} {if newstitle}- {newstitle}{endif} {site_name}</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	{metatags}
+	{content_page(header meta)}
+
+	{finalblock(head)}
+	{startblock(head)}
+		{parentblock()}
+		<!-- Header -->
+	{endblock(head)}
+	
+	{content_page(CODE FUER WEBSTATISTIK)}
+
+	{subtpl(tpl/{SYS_TPL_LANG}/header_scripts.htm,*)}
+</head>
+<body class="layout-import">
+
+
+	<div id="importEditor" class="content-{page} row design-page-with-menu">
+		<div class="importEditorMenu design-page-menu">
+			{subtpl(tpl/{SYS_TPL_LANG}/my-import-editor.menu.htm)}
+		</div>
+		<div class="importEditorContent design-page-content">
+			{content}
+		</div>
+	</div>
+
+
+	{SECTION_BODY_END}
+	{startblock(script)}
+     {parentblock()}
+     <!-- Javascript includes -->
+	{endblock(script)}
+</body>
+</html>

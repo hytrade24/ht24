@@ -1,0 +1,13 @@
+<tr class="zeile{even}">
+	<td>
+		<input type="radio" name="HDB_MERGE_MANUFACTURER_MAINENTRY" {if i==0}checked{endif} value="{ID_MAN}" required>
+		<a href="index.php?page=manufacturer_db&SELECT_MANUFACTURER[]={ID_MAN}&DO_HDB_MERGE_DELETE=DELETE" onclick="return alert('Hersteller wirklich aus dem Mergetool entfernen?');"><img src="gfx/btn.rm.gif"></a>
+	</td>
+	<td>{ID_HDB_MAN}</td>
+	<td>
+		<a href="index.php?page=manufacturer_db_edit&ID_MAN={ID_MAN}" target="_blank">{NAME}</a>
+	</td>
+	<td>
+		<div class="hdb-product-status {if CONFIRMED}status-confirmed{else}status-unconfirmed{endif}" title="{if CONFIRMED}Hersteller bestätigt{else}Hersteller unbestätigt{endif}"></div>
+	</td>
+</tr>

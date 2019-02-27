@@ -1,0 +1,20 @@
+<div class="form-group">
+    <label class="control-label design-input-label">Match eBay-Account:</label>
+    <div class="design-input-field">
+        {if EBAY_USER_UserID}
+        Logged in as <b>{EBAY_USER_UserID}</b>
+        {else}
+        <a href="{EBAY_SIGNIN_URL}" onclick="ipe.loadAjaxOptions(true);" class="btn btn-default" target="_blank">
+            Log in
+        </a>
+        {endif}
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label design-input-label">Stadard-runtime for adverts:</label>
+    <div class="design-input-field">
+        <select id="PRESET_TYPE_CONFIG_ebayRuntime_select" class="form-control" type="text" name="PRESET_TYPE_CONFIG[ebayRuntime]">
+            {runtimes}
+        </select>
+    </div>
+</div>

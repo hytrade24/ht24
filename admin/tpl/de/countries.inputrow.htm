@@ -1,0 +1,14 @@
+<form method="post" action="index.php">
+  <input type="hidden" name="dummy" value="" />
+  <input type="hidden" name="nav" value="{curnav}" />{if ID_COUNTRY}
+  <input type="hidden" name="ID_COUNTRY" value="{ID_COUNTRY}" />{endif}{order_hid}
+<tr class="zeilex">
+  <td>{if ID_COUNTRY}{ID_COUNTRY}{else}neu{endif}&nbsp;</td>
+  <td>{htm(CODE)}</td>
+  <td>{htm(V1)}</td>
+  <td><input type="text" name="V1" maxlength="100" value="{htm(V1)}" /></td>
+  <td>
+    <input class="button" type="submit" value="speichern" />{if ID_COUNTRY}
+    <button class="button" onClick="location.href='index.php?page={curpagealias}{order_ref}';">abbrechen</button>{endif}
+  </td>
+</tr></form>

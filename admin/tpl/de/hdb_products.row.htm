@@ -1,0 +1,19 @@
+<tr class="zeile{even}">
+	<td>
+		<input type="checkbox" name="SELECT_PRODUCT[]" class="productSelectCheckbox" value="{ID_HDB_PRODUCT}" {if IS_PRODUCT_SELECTED}checked{endif} >
+	</td>
+	<td>
+		<a href="index.php?page=hdb_products_edit&hdb_table={HDB_TABLE}&ID_HDB_PRODUCT={ID_HDB_PRODUCT}"><img src="gfx/btn.edit.gif"></a>
+		<a href="index.php?page=hdb_products&hdb_table={HDB_TABLE}&SELECT_PRODUCT[]={ID_HDB_PRODUCT}&DO_MASSDELETE=DELETE" onclick="return confirm('Möchten Sie das Produkt wirklich löschen? !!!! ACHTUNG !!!! Bereits eingestellte Angebote zu diesem Produkt werden gelöscht!');"><img src="gfx/btn.rm.gif"></a>
+
+	</td>
+	<td>
+		<div class="hdb-product-status {if CONFIRMED == 1}status-confirmed{endif}{if CONFIRMED == 0}status-unconfirmed{endif}{if CONFIRMED == 8}status-check{endif}" title="{if CONFIRMED}{if CONFIRMED == 8}Produkt zu prüfen{else}Produkt bestätigt{endif}{else}Produkt unbestätigt{endif}"></div>
+		<div class="hdb-product-status {if COUNT_DATA_USER}status-info{else}status-neutral{endif}"  title="{if COUNT_DATA_USER}Offene Uservorschläge{endif}"></div>
+	</td>
+	<td>{ID_HDB_PRODUCT}</td>
+	<td>{MANUFACTURER_NAME}</td>
+	<td>{PRODUKTNAME}</td>
+	<td>{PRODUCT_TYPE_DESCRIPTION}</td>
+	{TPL_DATACOL}
+</tr>

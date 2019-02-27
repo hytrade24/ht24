@@ -1,0 +1,252 @@
+<script type="text/javascript">
+    function confHersteller(nummer)
+    {
+        req = new Ajax.Request('index.php?frame=ajax&page=set_hersteller&ID_MAN='+nummer,
+            {
+                method: 'get',
+                onSuccess: function(transport)
+                {
+                    $('hersteller_'+nummer).replace(transport.responseText);
+                }
+            })
+    }
+</script>
+<style type="text/css">
+    th {
+        text-align: left;
+    }
+    #base_info h3 {
+        margin-top:0px;
+        padding:5px 0px 5px 3px;
+        border:1px #000 solid;
+        background-image:url(gfx/bg_h.gif);
+        background-repeat:repeat-y;
+        background-color:#ffffff;
+    }
+    #base_info td {
+        background-position:0px 27px;
+        background-repeat:repeat-x;
+    }
+</style>
+
+<table  cellspacing="15" id="base_info">
+    <tr>
+        <td valign="top">
+            <h3>
+                Wichtige Informationen
+            </h3>
+            {if freischalten}
+            <p>
+                <a href="index.php?page=users&STAT_=2" title="User anzeigen">
+                    <img border="0" src="gfx/users_16.gif" />
+                    {freischalten} User warten auf Freischaltung
+                </a>
+            </p>
+            {endif}
+            {if chat}
+            <p>
+                <a href="index.php?page=chat" title="Anfragen anzeigen">
+                    <img border="0" src="gfx/btn.mail.gif" />
+                    {chat} ungepr&uuml;fte Kontaktanfragen vorhanden
+                </a>
+            </p>
+            {endif}
+            {if advertisements}
+            <p>
+                <a href="index.php?page=market_advertisement_orders" title="Werbeanfragen anzeigen">
+                    <img border="0" src="gfx/stats.gif" />
+                    {advertisements} unbest&auml;tigte Werbeanfrage(n)
+                </a>
+            </p>
+            {endif}
+            {if pending_stornos}
+            <p>
+					<span class="error">
+						<img src="gfx/sale_pending.gif" width0"16" height="16" alt="warten" />
+						<a class="error" href="index.php?page=pending_stornos" title="Stornos anzeigen">
+							{pending_stornos} Verkaufs-Stornos warten auf Best&auml;tigung
+						</a>
+					</span>
+            </p>
+            {endif}
+            {if newjobs}
+            <p>
+					<span class="error">
+                     <img src="gfx/warnung.png" />
+						<a class="error" href="index.php?page=modul_news_adv_jobliste" title="jobs anzeigen">
+							{newjobs} Jobs warten auf Best&auml;tigung
+						</a>
+					</span>
+            </p>
+            {endif}
+            {if verstossliste}
+            <p>
+                <a title="Meldungen jetzt bearbeiten" href="index.php?page=ad_warnings">
+                    <img src="gfx/warnung.png" />
+                    Es liegen {verstossliste} Verstoss-Meldungen vor
+                </a>
+            </p>
+            {else}
+            <p class="error">
+                Keine Meldungen
+            </p>
+            {endif}
+        </td>
+        <td valign="top">
+            <h3>Transaktionen</h3>
+            <p>
+                <a style="cursor: pointer;" onclick="popupfkt('stats&show=transaktion_sold&w=550','600','250');" title="Statistik">
+                    <img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38" /></a> Verkaufsaktivit&auml;ten zwischen den Usern Ihres Marktplatzes
+            </p>
+            <table>
+                <tr>
+                    <th>
+                        Transaktionen (heute):
+                    </th>
+                    <td align="right">
+                        {SALES_TODAY} / {topreis(SUM_TODAY)} {CURRENCY_DEFAULT}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Transaktionen (aktueller Monat):
+                    </th>
+                    <td align="right">
+                        {SALES_MONTH} / {topreis(SUM_MONTH)} {CURRENCY_DEFAULT}
+                    </td>
+                </tr>
+            </table>
+            <p align="right"><img src="gfx/btn.rt.gif" width="11" height="7" /> <a href="index.php?page=transactions">Transaktionen anzeigen</a></p>
+        </td>
+        <td valign="top">
+            <h3>Anzeigen</h3>
+            <table>
+                <tr>
+                    <th>
+                        Aktive Anzeigen im Markt:
+                    </th>
+                    <td align="right">
+                        {C_ADS_MARKET}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Anzeigen von heute:
+                    </th>
+                    <td align="right">
+                        {C_ADS_MARKET_TODAY}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Warenwert im Markt:
+                    </th>
+                    <td align="right">
+                        {htm(WARENWERT)} {CURRENCY_DEFAULT}
+                    </td>
+                </tr>
+            </table>
+            <p align="right"><img src="gfx/btn.rt.gif" width="11" height="7" /> <a href="index.php?page=articles">Artikel anzeigen</a></p>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">
+            <h3>News</h3>
+            <iframe src="https://www.ebiz-trader.de/extnews.htm" width="100%" scrolling="auto" border="0" frameborder="0"></iframe>
+        </td>
+        <td valign="top">
+            <h3>
+                Offene Posten
+            </h3>
+            <p>
+                <a style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_offen&w=550','600','250');" title="Statistik">
+                    <img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38" /></a>  Unbezahlte Rechnungen
+            </p>
+            {if OFFEN}
+            <table>
+                <tr>
+                    <th>Summe offener Posten</th>
+                    <td align="right">
+                        <a href="index.php?page=buchhaltung&STATUS=0" title="Offene Rechnungen anzeigen">
+                            {topreis(OFFEN)} {CURRENCY_DEFAULT}
+                        </a>
+                    </td>
+
+                </tr>
+                <tr>
+                    <th>Anzahl offener Rechnungen</th>
+                    <td align="right">
+                        <a href="index.php?page=buchhaltung&STATUS=0" title="Offene Rechnungen anzeigen">
+                            {C_OFFEN}
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            {else}
+            <p class="error">
+                Keine offenen Posten
+            </p>
+            {endif}
+            <p align="right"><img src="gfx/btn.rt.gif" width="11" height="7" /> <a href="index.php?page=buchhaltung">zur Buchhaltung</a></p>
+        </td>
+        <td valign="top">
+            <h3>Umsatz des Marktplatzes</h3>
+            <p>
+                Umsatz zwischen Ihnen und den Marktplatz-Benutzern
+            </p>
+            <table>
+                <tr>
+                    <th>
+                        Heute
+                    </th>
+                    <td align="right">
+                        {topreis(UMSATZ_HEUTE)} {CURRENCY_DEFAULT}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Diesen Monat
+                    </th>
+                    <td align="right">
+                        {topreis(UMSATZ_MONTH)} {CURRENCY_DEFAULT}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Gesamt
+                    </th>
+                    <td align="right">
+                        {topreis(UMSATZ_GESAMT)} {CURRENCY_DEFAULT}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">
+            <h3>User / Neuanmeldungen</h3>
+            <p>
+                <a href="index.php?page=userstats">Anmeldungen</a> pro Monat
+            </p>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=user_anmeldungen&w=400" width="400" height="200" frameborder="0"></iframe>
+        </td>
+        <td valign="top" colspan="2">
+            <h3>
+                Rechnungsübersicht
+            </h3>
+            <p>
+                <a href="index.php?page=statistik_invoices">Übersicht</a> über die Rechnugsverteilung (offen, storno, bezahlt)
+            </p>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_overall&w=650" width="650" height="200" frameborder="0"></iframe>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="3">
+
+        </td>
+    </tr>
+</table>
+<p style="clear: both;">&nbsp;</p>
+<p>&nbsp;</p>
+{subtpl(tpl/de/js_userbox.htm,*)}

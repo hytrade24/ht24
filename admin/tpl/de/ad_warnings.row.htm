@@ -1,0 +1,46 @@
+<tr class="zeile{even}">
+	<td align="center" {if DIFF>0} title="Zwischen der letzten Aktualisierung und der Meldung liegen {DIFF} Tage"{endif}>{if DIFF > 0}<img src="gfx/warnung.png" width="20" height="20" alt="warnung" />{else}&nbsp;{endif}</td>
+	<td align="center">
+		<a onclick="return confirm('Sicher dass der verstoss entfernt werden soll?');" href="index.php?page={curpage}&kick={ID_VERSTOSS}&ID_S={ID_S}" title="Als gelöst markieren">
+			<img src="gfx/ico_stop.gif" />
+		</a>
+	</td>
+	<td>
+		{if FK_USER_OWNER!=1}
+    	<a target="userlogin" href="{uri_baseurl(login.php?user={FK_USER_OWNER}&sig={SIG_OWNER}&do=adEdit&id={FK_AD})}" title="Als dieser Benutzer einloggen">
+   			<img src="gfx/btn.put.gif" width="16" height="16" alt="einloggen" border="0" />
+    	</a>
+    	{endif}
+	</td>
+	<td title="Datum der Meldung" style="padding-right:13px;">{todate(STAMP)}</td>
+	<td class="{if DIFF>0}error{else}ok{endif}" title="Letztes Update der Anzeige">{if IS_NOT_UPDATED}{else}{todate(STAMP_AD_UPDATE)}{endif}</td>
+	<td>
+		<a href="#ad{FK_AD}" onclick="showAd({FK_AD});" title="Anzeige im neuen Fenster öffnen">
+			{if MANUFACTURER}{htm(MANUFACTURER)} {endif}{htm(PRODUKTNAME)}
+		</a>
+	</td>
+	<td>{htm(GRUND)}</td>
+	<td>
+		{if FK_USER}
+		<a href="index.php?page=user_edit&ID_USER={FK_USER}" title="User bearbeiten">{htm(MELDER)}</a>
+		{else}
+			{if EMAIL}
+				<a href="mailto:{htm(EMAIL)}">
+					{htm(NAME)} ({htm(EMAIL)})
+				</a>
+			{else}
+				---
+			{endif}
+		{endif}
+	</td>
+	<td>
+		<a href="#" onclick="jQuery('input[name=NAME_]').val('{htm(OWNER)}'); jQuery('input[name=FK_AUTOR]').val('{FK_USER_OWNER}').parents('form').submit();">
+        	<img src="gfx/putfeld_8.gif" width="8" height="8" alt="" border="0">
+        </a>
+		<a href="index.php?page=user_edit&ID_USER={FK_USER_OWNER}" title="User bearbeiten">{htm(OWNER)}</a>
+	</td>
+    <td>
+        <a class="button" href="{uri_action(marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)})}" target="_blank">
+            live</a>
+    </td>
+</tr>

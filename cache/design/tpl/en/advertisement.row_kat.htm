@@ -1,0 +1,26 @@
+{if B_VIS}
+<div>
+	{if HAS_CHILDS}
+	<a title="Show subcategories" id="btn_toggle_kat_{ID_KAT}" onclick="KatToggle({ID_KAT}, {ID_AD_USER})">
+		<img id="img_toggle_kat_{ID_KAT}" src="{uri_baseurl(/bilder/icon_plus.png)}" />
+	</a>
+	
+	<a title="Select this and all subcategories" id="btn_check_kat_{ID_KAT}" onclick="KatChangeRecursive({ID_KAT}, true);" {if CHECKED} style="display: none;" {endif}>
+		<img id="img_check_kat_{ID_KAT}" src="{uri_baseurl(/gfx/all_check.gif)}" />
+	</a>
+	<a title="Deselect this and all subcategories" id="btn_uncheck_kat_{ID_KAT}" onclick="KatChangeRecursive({ID_KAT}, false);" {if !CHECKED} style="display: none;" {endif}>
+		<img id="img_uncheck_kat_{ID_KAT}" src="{uri_baseurl(/gfx/all_uncheck.gif)}" />
+	</a>
+	{else}
+        <img id="btn_toggle_kat_{ID_KAT}" src="{uri_baseurl(/bilder/icon_empty.png)}" />
+        <img id="btn_toggle_kat_{ID_KAT}" src="{uri_baseurl(/bilder/icon_empty.png)}" width="13" />
+	{endif}	
+	
+	<label class="checkbox-inline">
+		<input type="checkbox" onchange="KatChange(this);" id="chk_kat_{ID_KAT}" name="categorys[]" value="{ID_KAT}" {if CHECKED}checked="checked" {endif}{if LU_KATART==19}disabled="diabled" {endif}/>
+		{htm(V1)}
+	</label>
+	
+	<div id="div_childs_kat_{ID_KAT}" style="padding-left: 22px; display: none;"></div>
+</div>	
+{endif}

@@ -1,0 +1,92 @@
+<h1>Rechnungsposition hinzufügen</h1>
+
+<p>Hier können Sie neue Rechnungspositionen manuell hinzufügen, die mit dem nächsten Rechnungslauf abgerechnet werden.</p>
+
+{if errors}
+<p class="error">
+  {errors}
+</p>
+{endif}
+
+<form action="index.php" method="POST">
+  <input type="hidden" name="page" value="billing_billableitem_add"/>
+  
+  <table class="liste">
+    <tr>
+      <th>
+        Benutzer
+      </th>
+      <th>
+        Leistungsdatum
+      </th>
+      <th>
+        Beschreibung
+      </th>
+      <th>
+        Menge
+      </th>
+      <th>
+        Preis (Netto)
+      </th>
+      <th>
+        Preis (Brutto)
+      </th>
+      <th>
+        MwSt.-Satz
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <input type="text" name="NAME_" value="{htm(NAME_)}" />
+        <input type="hidden" name="FK_USER" value="{FK_USER}" />
+        <a style="cursor:pointer" onclick="popupfkt('users&frompopup=1','850','500');" title="User ausw&auml;hlen">
+          <img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+        </a>
+      </td>
+      <td>
+        <input type="text" id="STAMP_CREATE" name="STAMP_CREATE" value="{todate(STAMP_CREATE)}" required />
+      </td>
+      <td>
+        <input type="text" id="DESCRIPTION" name="DESCRIPTION" value="{htm(DESCRIPTION)}" required />
+      </td>
+      <td>
+        <input type="number" id="QUANTITY" name="QUANTITY" value="{int(QUANTITY)}" min="1" required />
+      </td>
+      <td>
+        <input type="text" id="PRICE" name="PRICE" value="{PRICE}" required />
+      </td>
+      <td>
+        <input type="text" id="PRICE_BRUTTO" name="PRICE_BRUTTO" value="{PRICE_BRUTTO}" required />
+      </td>
+      <td>
+        <select name="FK_TAX" id="FK_TAX">
+          {liste_mwst}
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <th colspan="7" style="text-align: right;">
+        <button type="submit">Hinzufügen</button>
+      </th>
+    </tr>
+  </table>
+  
+</form>
+
+<script type="text/javascript">
+  jQuery(function() {
+    var jsonTax = {jsonTax};
+
+    jQuery("#STAMP_CREATE").datepicker({
+        dateFormat: 'dd.mm.yy',
+        numberOfMonths: 2,
+    });
+    priceToBruttoDyn('PRICE', 'FK_TAX', jsonTax);
+    jQuery("#PRICE").change(function() {
+      priceToBruttoDyn('PRICE', 'FK_TAX', jsonTax);
+    });
+    jQuery("#PRICE_BRUTTO").change(function() {
+      priceToNettoDyn('PRICE', 'FK_TAX', jsonTax);
+    });
+  });
+</script>

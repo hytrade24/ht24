@@ -1,0 +1,51 @@
+<script type="text/javascript">
+	jQuery(function() {
+		// Hide base mapping
+		jQuery(".design-import-preset-base-mapping").hide();
+        // Hide steps 3-5
+        ipe.addNavigationCallback(function() {
+            jQuery("#importPresetEditorNavigation ul > li:nth-child(2)").nextAll().hide();
+        });
+		
+		jQuery(".btn[data-action=ebay-extended-settings-show]").click(function(e) {
+			e.preventDefault();
+			jQuery(".design-import-preset-base-mapping").show();
+			jQuery(".btn[data-action=ebay-extended-settings-show]").hide();
+			jQuery(".btn[data-action=ebay-extended-settings-hide]").show();
+		})
+		jQuery(".btn[data-action=ebay-extended-settings-hide]").click(function(e) {
+			e.preventDefault();
+			jQuery(".design-import-preset-base-mapping").hide();
+			jQuery(".btn[data-action=ebay-extended-settings-show]").show();
+			jQuery(".btn[data-action=ebay-extended-settings-hide]").hide();
+		})
+	});
+</script>
+
+<br />
+<div class="panel panel-default">
+  <div class="panel-body">
+		<h3>eBay import</h3>
+		
+		<p>
+		You have selected the account <b>{htm(EBAY_USER_UserID)}</b> for the import. 
+			This account has <b>{AD_COUNT} active sales</b> that can be adopted in the marketplace.
+			<br />
+			Click the "Save and Close" button to save with the template.
+			<br />
+			<br />
+			<i>
+				If you are an advanced user you can view, on the button below,
+				Advanced Settings. You may, for example, change the default settings for the product to be imported.
+			</i>
+
+			<br />
+			<a class="btn btn-xs btn-default" data-action="ebay-extended-settings-show">
+				Show extended settings
+			</a>
+			<a class="btn btn-xs btn-default" data-action="ebay-extended-settings-hide" style="display: none;">
+				Hide extended settings
+			</a>
+		</p>
+  </div>
+</div>

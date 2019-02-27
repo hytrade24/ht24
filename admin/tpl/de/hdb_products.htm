@@ -1,0 +1,188 @@
+<h1>Zentrale Produktdatenbank</h1>
+<h2>Produkte ansehen</h2>
+
+{if success_mass}
+	<p class="ok">Es wurden {success_mass} Produkte erfolgreich gespeichert</p>
+{endif}
+{if success_delete}
+	<p class="ok">Es wurden {success_delete} Produkte erfolgreich gelöscht</p>
+{endif}
+{if success_merge}
+	<p class="ok">Produkte wurden erfolgreich zusammengeführt</p>
+{endif}
+
+{if HDB_MERGE_PRODUCT_SESSION_ACTIVE}
+	<div class="hdb-merge-tool">
+		<form method="post" action="index.php" onsubmit="return confirm('Möchten Sie den Merge wirklich starten und alle in der Tabelle dargestellten Produkte mit dem ausgewählten Ziel vereinigen?')">
+		  <input type="hidden" name="page" value="{curpage}" />
+			<input type="hidden" name="hdb_table" value="{HDB_TABLE}" />
+
+			<h4>Merge Tool</h4>
+			<p>
+				Sie haben das Produktdatenbank Merge Tool aktiviert. Damit können Sie doppelte Produkte zu einem zusammenfassen.
+								<ol><li>Wählen Sie aus der unten stehenden Tabelle alle Produkte aus, die zusammengefasst werden sollen und fügen Sie diese mit dem Button
+								<strong>"Markierte Produkte dem Merge Tool hinzufügen"</strong> dem Merge Tool hinzu.</li>
+								<li>Wählen Sie anschließend das Ziel-Produkt über die vorangestellte Auswhalmöglichkeit im Merge Tool</li>
+								</ol>
+			</p>
+
+			<table class="liste">
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>Status</th>
+					<th>Hersteller</th>
+					<th>Produkt</th>
+					<th>Typ</th>
+					{TH_COLS}
+				</tr>
+				{if HDB_MERGE_PRODUCT_DATA}
+					{HDB_MERGE_PRODUCT_DATA}
+				{else}
+					<tr>
+						<td colspan="4">Bitte wählen Sie ein Produkt und klicken auf "Zum Merge Tool hinzufügen"</td>
+					</tr>
+				{endif}
+			</table>
+			<br>
+			<a href="index.php?page=hdb_products&hdb_table={HDB_TABLE}&DO_CANCEL_MERGE=1" class="button">Abbrechen</a>
+			<input type="submit" name="DO_HDB_MERGE_RUN" value="Merge starten" class="button">
+
+		</form>
+	</div>
+{endif}
+
+{if HDB_TABLE}
+
+	<div style="min-width: 800px">
+		<form method="get" action="index.php">
+			<input type="hidden" name="page" value="{curpage}" />
+			<input type="hidden" name="hdb_table" value="{HDB_TABLE}" />
+
+			<table class="formTable hdb-products-search-table" style="width: 100%;" >
+				<tr>
+					<td style="width: 30%;  vertical-align: top;">
+						<table style="width: 100%">
+							<tr>
+								<th style="width: 150px;">ID:</th>
+								<td><input type="text" name="SEARCH[HDB_PRODUCT_ID]" value="{SEARCH_DATA_HDB_PRODUCT_ID}"></td>
+							</tr>
+							<tr>
+								<th>Hersteller:</th>
+								<td><input type="text" name="SEARCH[MANUFACTURER]" value="{SEARCH_DATA_MANUFACTURER}"></td>
+							</tr>
+							<tr>
+								<th>Produkt:</th>
+								<td><input type="text" name="SEARCH[PRODUKTNAME]" value="{SEARCH_DATA_PRODUKTNAME}"></td>
+							</tr>
+							{SEARCH_FIELD_LIST}
+						</table>
+					</td>
+					<td style="width: 30%; vertical-align: top;">
+						<table style="width: 100%">
+							<tr>
+								<th>Status: </th>
+								<td>
+									<select name="SEARCH[CONFIRMED]">
+										<option value="-1"  {if SEARCH_DATA_CONFIRMED == -1}selected{endif}>alle</option>
+										<option value="0" {if SEARCH_DATA_CONFIRMED == 0}selected{endif}>nur unbestätigte</option>
+										<option value="1" {if SEARCH_DATA_CONFIRMED == 1}selected{endif}>nur bestätigte</option>
+										<option value="8" {if SEARCH_DATA_CONFIRMED == 8}selected{endif}>nur zu prüfende</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>Benutzervorschläge: </th>
+								<td>
+									<select name="SEARCH[HAS_USER_DATA]">
+										<option value="-1"  {if SEARCH_DATA_HAS_USER_DATA == -1}selected{endif}>alle</option>
+										<option value="0" {if SEARCH_DATA_HAS_USER_DATA == 0}selected{endif}>ohne Uservorschlägen</option>
+										<option value="1" {if SEARCH_DATA_HAS_USER_DATA == 1}selected{endif}>mit Uservorschlägen</option>
+									</select>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td style="width: 40%; vertical-align: top;">
+						<b>Spalten:</b><br>
+						{POSSIBLE_VISIBLE_COLUMNS}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" class="footer" align="right">
+						<input style="float: right;" class="button" type="submit" value="Suchen">
+						<input name="DO_EXPORT_CSV"  class="button" type="submit" value="Suche CSV exportieren">
+						<a href="index.php?page=hdb_products&hdb_table={HDB_TABLE}" class="button">Suche Zurücksetzen</a>
+					</td>
+				</tr>
+			</table>
+
+		<br>
+
+		<a href="index.php?page=hdb_products_edit&hdb_table={HDB_TABLE}" class="button">Produkt hinzufügen</a>
+		<br>
+
+		<table class="liste" style="width: 100%" cellpadding="3">
+			<tr>
+				<th></th>
+				<th style="width: 70px;">Aktion</th>
+				<th style="width: 50px;">Status</th>
+				<th>ID</th>
+				<th>Hersteller</th>
+				<th>Produkt</th>
+				<th>Typ</th>
+				{TH_COLS}
+			</tr>
+			{if PRODUCTS}
+				{PRODUCTS}
+			{else}
+				<tr><td colspan="{calc(TH_COLNUMBER+5)}">Keine Produkte gefunden</td> </tr>
+			{endif}
+		</table>
+
+		<a href="#" onclick="jQuery('.productSelectCheckbox').attr('checked', true); return false;" class="button">alle markieren</a>
+		<a href="#" onclick="jQuery('.productSelectCheckbox').attr('checked', false); return false;" class="button">keine markieren</a>
+		<input type="submit" class="button" name="DO_MASSCONFIRM" value="Markierte freischalten">
+		<input type="submit" class="button" name="DO_MASSUNCONFIRM" value="Markierte deaktivieren">
+		<input type="submit" class="button" name="DO_MASSDELETE" onclick="return confirm('Möchten Sie die Markierten Produkte wirklich löschen ?')" value="Markierte Produkte Löschen">
+
+        <input type="submit" class="button" name="DO_MASSEXPORT" value="Markierte als CSV exportieren">
+
+			{if !HDB_MERGE_PRODUCT_SESSION_ACTIVE}
+			<br><br>
+				<p>Wenn sie mehrere identische Produkt Datensätze in der Datenbank haben, können Sie diese zusammenführen. Dabei werden zugewiesene Produkte
+			   zusammengeführt. Klicken Sie auf den unten stehenden Button "Prozess Produkte zusammenführen starten" und wählen Sie anschließend
+				doppelte Produkte aus.</p>
+				<br>
+				<a href="index.php?page=hdb_products&DO_START_MERGE=1&hdb_table={HDB_TABLE}" class="button">Prozess "Produkte zusammenführen" starten</a>
+			{else}
+			<br><br>
+				<input type="submit" class="button" name="DO_ADDMERGETOOL" value="Markierte Produkte zum Merge Tool hinzufügen">
+			{endif}
+
+		</form>
+
+		{pager}
+
+	</div>
+
+{else}
+	<p>Bitte wählen Sie den Produkttyp, den Sie ansehen möchten.</p>
+
+	<table class="liste" style="width: 300px">
+		<tr>
+			<th>ID</th>
+			<th>Produkttyp</th>
+			<th>Gesamtzahl</th>
+			<th>Anz. zu prüfen</th>
+			<th>Anz. Uservorschläge</th>
+		</tr>
+		{if liste_types}
+			{liste_types}
+		{else}
+		<tr>
+			<td colspan="2" class="zeile0">Keine Typen vorhanden</td>
+		</tr>
+		{endif}
+	</table>
+{endif}

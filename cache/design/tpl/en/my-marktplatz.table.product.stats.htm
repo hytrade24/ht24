@@ -1,0 +1,71 @@
+{if from_modal == 0}
+<div class="row" style="padding-bottom: 20px;">
+    <div class="col-md-12">
+        <div class="pull-left" style="width: 250px;">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" value="by_day" data-type="pro_tag" name="data_type" checked />
+                            Per day
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" value="by_month" data-type="pro_monat" name="data_type" />
+                            Per month
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pull-right" style="width: 400px;">
+            <div class="row">
+                <div class="col-md-3">
+                    <span>Date Range: </span>
+                </div>
+                <div class="col-md-6" style="padding-left: 0; padding-right: 0;">
+                    <div class="input-daterange input-group">
+                        <input type="text" name="date_start" class="input-sm form-control date_start date_range_start_end" value="{DATE_START}" />
+                        <span class="input-group-addon">to</span>
+                        <input type="text" name="date_end" class="input-sm form-control date_end date_range_start_end" value="{DATE_END}" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-default"
+                            onclick="get_statistics_for_product({ID_ARTIKEL},'by_day', '1', 'VIEW', '{DATE_START}', '{DATE_END}')">Go</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="graph-modal" align="center" style="margin: 40px 20px 10px 20px; position: absolute; top: 24px; left: 0; right: 0; bottom: 0;">
+    <canvas id="myChart"></canvas>
+
+    <script src="{uri_resource(lib/jquery/jquery.js)}"></script>
+    <link rel="stylesheet" href="{uri_resource(lib/jqueryui/css/theme/jqueryui.css)}">
+    <script src="{uri_resource(lib/jqueryui/js/jqueryui.min.js)}"></script>
+    <script src="{uri_baseurl(js/Chart.bundle.min.js)}"></script>
+    {subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+    <style>
+        .ui-datepicker{z-index:1151 !important;}
+    </style>
+    <script type="application/javascript">
+        {if CHART_JSON}
+        var myPieChart = new Chart("myChart",{CHART_JSON});
+        {endif}
+
+        $(document).ready(function() {
+            console.log("testing");
+            $(".date_range_start_end").datepicker({
+                'format': "dd.mm.yyyy"
+            });
+        });
+    </script>
+</div>
+{else}
+{CHART_JSON}
+{endif}

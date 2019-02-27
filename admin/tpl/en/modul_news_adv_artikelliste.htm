@@ -1,0 +1,91 @@
+{loadperm(news_all)}
+<script type="text/javascript">
+
+function katRcv(id_kat)
+{
+  document.forms[0].FK_KAT.value = id_kat;
+  document.forms[0].submit();
+}
+
+
+</script>
+
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="frame" value="content" />
+  <input type="hidden" name="npage" value="{npage}">
+  <input type="hidden" name="nav" value="{curnav}" />
+  <input type="hidden" name="do" value="setok" />
+<input type="hidden" name="FK_KAT" id="fk_kat" onChange="document.forms[0].submit()" value="{FK_KAT}" />
+
+<h1><img src="gfx/modul_news_64.gif" width="64" height="64" alt="" border="0" align="left">Artikel Übersicht </h1>
+<p>Alle Artikel im System, bitte w&auml;hlen Sie eine Kategorie.</p>
+<table class="liste" cellspacing="0" border="0">
+<tr><td colspan="10">
+
+
+<table border="0" width="100%">
+	<tr>
+		<td valign="top" width="260"><iframe id="katframe" src="index.php?frame=iframe&page=kat_select&ID_KAT={FK_KAT}&ROOT=2&npage={npage}" width="250" height="110" frameborder="0">Kategorie-Auswahl erfordert iFrames und JavaScript!</iframe></td>
+		<td valign="top">
+
+		<b>Nach Artikel suchen:</b>
+
+		<table border="0" width="100%" >
+	<tr>
+		<td>Autor&nbsp;&nbsp;&nbsp; </td>
+		<td><a href="#" onclick="popupfkt('users&frompopup=1','650','500');"><img src="gfx/users_16.gif" width="16" height="16" alt="user suchen" border="0"></a> <input type="text" name="NAME_" value="{htm(NAME_)}" /><input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" /></td>
+		<td>Titel </td>
+		<td><input type="text" name="V1_" size="30" value="{htm(V1_)}"></td>
+	</tr>
+	<tr>
+		<td>Erstellungsdatum&nbsp; </td>
+		<td>{datedrop(STAMP_,2002..0)}</td>
+		<td>ID </td>
+		<td><input type="text" name="ID_NEWS_" size="8" value="{ID_NEWS_}"></td>
+	</tr>
+	<tr>
+		<td><input type="checkbox" name="FG_" class="nob" value="1" {if FG_}checked{endif} /> Freigabe durch &nbsp;
+	</td>
+		<td valign="top">Redaktion <input type="checkbox" name="RED_" class="nob" value="1" {if RED_}checked{endif} />&nbsp;
+		Admin <input type="checkbox" name="ADM_" class="nob" value="2" {if ADM_}checked{endif}></td>
+		<td></td>
+		<td align="right" valign="middle"><input type="submit" value="suchen" name="suchen" class="button"> &nbsp;&nbsp;&nbsp;<a href="index.php?page=modul_news_adv_artikelliste"> <b>alle anzeigen</b></a> </td>
+	</tr>
+</table>
+
+
+
+
+
+		</td>
+	</tr>
+</table>
+
+
+</th>
+</tr>
+
+<tr><td colspan="11" align="left"><hr noshade>Summe : <b>{summeshow} von {summenews}</b> </td></tr>
+<tr>
+  <th>Aktionen</th>
+  <th>&nbsp;Datum&nbsp;</th>
+  <th>&nbsp;Autor&nbsp;</th>
+  <th>&nbsp;Kategorie&nbsp;</th>
+  <th>&nbsp;Titel&nbsp;</th>
+  <th>&nbsp;Sprachen&nbsp;</th>
+  <th>&nbsp;Kommentare&nbsp;</th>
+  <th>&nbsp;Letzter<br />Kommentar&nbsp;</th>
+  <th>Freigabe durch<br />Redaktion</th>
+  <th>&nbsp;Freigabe durch<br />Admin&nbsp;</th>
+  <th>&nbsp;ID&nbsp;</th>
+</tr>
+{liste}
+
+<tr>
+<td class="footer" colspan="12" align="right"><input class="button" type="submit" value="ausgew&auml;hlte freischalten" name="save" /></td>
+</tr>
+
+<tr><th colspan="11">{pager}
+</th></tr>
+</table>
+</form>

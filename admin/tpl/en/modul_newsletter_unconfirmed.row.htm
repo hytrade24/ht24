@@ -1,0 +1,6 @@
+<tr class="zeile{even}">
+  <td><input type="checkbox" name="chk[]" class="nob" value="{ID_NL_RECP}" {if B_EXPIRED}id="exp{ID_NL_RECP}" {endif}/></td>
+  <td><a href="mailto:{url(EMAIL)}?subject=Ihre%20Newsletter-Bestellung%20bei%20{url(sys(SITENAME))}">{htm(EMAIL)}</a></td>
+  <td align="center">{S_LANG}</td>
+  <td align="center"{if B_EXPIRED} class="error"{endif}>{todate(STAMP,1)}</td>
+</tr>

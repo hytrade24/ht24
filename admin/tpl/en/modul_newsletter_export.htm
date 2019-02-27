@@ -1,0 +1,17 @@
+<h1>Newsletter Empf&auml;nger exportieren</h1>
+<p>
+ Nach dem Export bekommen Sie eine CSV Datei mit allen aktiven Empf&auml;ngern als CSV Datei.</p>
+</p>
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+<table class="formTable" cellspacing="0">
+ <tr>
+  <th>Bereits erzeugter Export:</th>
+  <td>{if DATE}<a href="{uri_baseurl(/uploads/nl_ex.csv)}" target="_blank">Erzeugt am {todate(DATE,1)} Uhr</a></td>
+   {else}<span class="error">Keine Datei gefunden</span>{endif}</td>
+ </tr>
+ <tr class="footer">
+  <td colspan="2" align="right"><input type="submit" value="Neu exportieren" class="button"></td>
+ </tr>
+</table>
+</form>

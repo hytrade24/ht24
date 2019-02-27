@@ -1,0 +1,15 @@
+<h1>Kommentar Counter</h1>
+<p>Manchmal kann es vorkommen, dass die Anzahl der vermerkten Kommentare zu einem Artikel
+nicht korrekt ist. In einem solchen Fall, k&ouml;nnen Sie mit dieser Funktion die Kommentare 
+neu z&auml;hlen lassen!</p>
+
+
+{if ok}<p><span class="ok">Vorgang abgeschlossen</span></p>{else}
+<form method="post" action="index.php" target="_self">
+<input type="hidden" name="page" value="{curpage}">
+
+
+  <input type="submit" value="Vorgang starten" class="button">
+
+</form>
+{endif}

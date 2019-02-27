@@ -1,0 +1,352 @@
+{if !HIDE_SCRIPTS}
+{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+<script>
+
+curPage = {npage};
+
+function CalendarEventDelete(id) {
+	if (!confirm('Möchten Sie die Veranstaltung wirklich löschen?')) return;
+	var url = "{uri_action(my-calendar-events,1,delete,#id#)}";
+	jQuery.get(url.replace("#id#", id), function(result) {
+		jQuery("div.alert").hide();
+		if (result.success) {
+			jQuery("#delete_success").show();
+			CalendarEventSearchSubmit();
+		}
+	})
+}
+
+function CalendarEventConfirm(id, state) {
+	// if (!confirm('Möchten Sie die Veranstaltung wirklich bestätigen?')) return;
+	var url = "{uri_action(my-calendar-events,1,confirm,#id#,#state#)}";
+	jQuery.get(url.replace("#id#", id).replace("#state#", state), function(result) {
+		jQuery("div.alert").hide();
+		if (result.success) {
+			if (state > 0) {
+				jQuery("#confirm_success").show();
+			} else {
+				jQuery("#disable_success").show();
+			}
+			CalendarEventSearchSubmit();
+		}
+	})
+}
+
+function CalendarEventLoadPage(page) {
+	var form = jQuery("#calendarEventList .form-inline");
+	CalendarEventSearchSubmit(form, page);
+}
+
+function CalendarEventLoadSort(sortBy, sortDir) {
+	if (typeof sortOrder == "undefined") {
+		// Convert single parameter call (e.g.: "STAMP,DESC") into 2 parameters
+		var sortParams = sortBy.split(",");
+		if (sortParams.length != 2)
+			return false;
+		sortBy = sortParams[0];
+		sortDir = sortParams[1];
+	}
+	var form = jQuery("#calendarEventList .form-inline");
+	CalendarEventSearchSubmit(form, {int(npage)}, sortBy, sortDir);
+}
+
+function CalendarEventSearch(button, page, sortBy, sortDir) {
+	var form = jQuery(button).closest(".form-inline");
+	CalendarEventSearchSubmit(form, page, sortBy, sortDir);
+}
+
+function CalendarEventSearchSubmit(form, page, sortBy, sortDir) {
+	var view = "{VIEW}"
+	var type = "{TYPE}";
+	var searchText = "{SEARCHCALENDAREVENT}";
+	var searchStart = "{STAMP_END_GT}";
+	var searchEnd = "{STAMP_START_LT}";
+	var isConfirmed = "{IS_CONFIRMED}";
+	if (typeof sortBy == "undefined") {
+		sortBy = "{SORT_BY}";
+	}
+	if (typeof sortDir == "undefined") {
+		sortDir = "{SORT_DIR}";
+	}
+	if (typeof form == "undefined") {
+		form = jQuery("#calendarEventList");
+	}
+	if (typeof page == "undefined") {
+		page = curPage;
+	} else {
+		curPage = page;
+	}
+	if (jQuery("#CE_SORTING").length > 0) {
+		var sortSelected = jQuery("#CE_SORTING").val().split(",");
+		if (typeof sortBy == "undefined") {
+			sortBy = sortSelected[0];
+		}
+		if (typeof sortDir == "undefined") {
+			sortDir = sortSelected[1];
+		}
+	}
+	if (jQuery(form).find("select[name=TYPE]").length > 0) {
+		type = jQuery(form).find("select[name=TYPE]").val();
+	}
+	if (jQuery(form).find("input[name=SEARCHCALENDAREVENT]").length > 0) {
+		searchText = jQuery(form).find("input[name=SEARCHCALENDAREVENT]").val();
+	}
+	if (jQuery(form).find("input[name=STAMP_END_GT]").length > 0) {
+		searchStart = jQuery(form).find("input[name=STAMP_END_GT]").val();
+	}
+	if (jQuery(form).find("input[name=STAMP_START_LT]").length > 0) {
+		searchEnd = jQuery(form).find("input[name=STAMP_START_LT]").val();
+	}
+	if (jQuery(form).find("input[name=IS_CONFIRMED]").length > 0) {
+		isConfirmed = jQuery(form).find("input[name=IS_CONFIRMED]").val();
+	}
+	jQuery.post("{uri_action(my-calendar-events,1,AJAX_LIST)}", {
+		PAGE:				page,
+		SORT_BY:			sortBy,
+		SORT_DIR:			sortDir,
+		TYPE:				type,
+		TYPE_LOCKED:		(jQuery(form).find("select[name=TYPE]").is(":disabled") ? 1 : 0),
+		SEARCHCALENDAREVENT:searchText,
+		STAMP_END_GT:		searchStart,
+		STAMP_START_LT:		searchEnd,
+		IS_CONFIRMED:		isConfirmed,
+		VIEW:				view
+	}, function(result) {
+		jQuery("#calendarEventList").replaceWith(result);
+		CalendarEventInitializeList();
+		location.hash = "#anchorTopCal";
+	});
+}
+
+function CalendarEventUpdatePage() {
+	var idList = "#calendarEventList";
+	var divList = jQuery(idList);
+	if (divList.length > 0) {
+		location.hash = "";
+		divList.find('.pagination a').click(function(link) {
+			var pageNo = jQuery(this).attr('data-page');
+			CalendarEventLoadPage(pageNo);
+			return false;
+		});
+	}
+}
+
+function CalendarEventInitializeList() {
+	CalendarEventUpdatePage();
+	jQuery("#STAMP_RANGE").datepicker({
+      clearBtn: true,
+      keepEmptyValues: true,
+      format: 'dd.mm.yyyy'
+  });
+}
+
+function CalendarEventInvite(link, id_event, title, groupname) {
+    var form = jQuery("#calendarEventInviteForm");
+    form.attr("action", jQuery(link).attr("href"));
+    form.find("input[name=ID_EVENT]").val(id_event);
+    form.find("input[name=TITLE]").val(title);
+    form.find("input[name=GROUP_NAME]").val(groupname);
+    form.submit();
+}
+
+jQuery(function() {
+	CalendarEventInitializeList();
+    jQuery("[data-toggle=tooltip]").tooltip();
+});
+
+</script>
+
+<form id="calendarEventInviteForm" method="POST">
+    <input type="hidden" name="TEMPLATE" value="EVENT_INVITE" />
+    <input type="hidden" name="ID_EVENT" />             
+    <input type="hidden" name="TITLE" />
+    <input type="hidden" name="GROUP_NAME" />
+</form>
+
+<div id="anchorTopCal"></div>
+
+<div id="delete_success" class="alert alert-success" style="display: none;">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h3>Veranstaltung gelöscht</h3>
+    Die Veranstaltung wurde erfolgreich gelöscht.
+</div>
+<div id="confirm_success" class="alert alert-success" style="display: none;">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h3>Veranstaltung bestätigt</h3>
+    Die Veranstaltung wurde erfolgreich bestätigt und ist ab sofort sichtbar.
+</div>
+<div id="disable_success" class="alert alert-success" style="display: none;">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h3>Veranstaltung deaktiviert</h3>
+    Die Freigabe für die Veranstaltung wurde widerrufen.
+        Die Veranstaltung ist nun nicht mehr sichtbar.
+</div>
+{endif}
+
+<div id="calendarEventList">
+{if !HIDE_SORT}
+	<div class="breadcrumb clearfix">
+		<div class="pull-left">
+			<span class="text-muted">{ALL_CALENDAR_EVENTS} Veranstaltungen</span>
+		</div>
+		<div class="pull-right">
+			<div class="btn-group">
+				<a{if !VIEW_TYPE_LIST} href="{uri_action(my-calendar-events,{npage},,,{SORT_BY},{SORT_DIR},LIST)}"{endif} class="btn btn-default {if VIEW_TYPE_LIST}active{endif}">
+					<i class="glyphicon glyphicon-list"></i>
+				</a>
+				<a{if !VIEW_TYPE_BOX} href="{uri_action(my-calendar-events,{npage},,,{SORT_BY},{SORT_DIR},BOX)}"{endif} class="btn btn-default {if VIEW_TYPE_BOX}active{endif}">
+					<i class="glyphicon glyphicon-th"></i>
+				</a>
+			</div>
+		</div>
+        <div class="pull-right">
+            <form method="get" action="{uri_baseurl(/index.php)}" style="display:inline;">
+                <select id="CE_SORTING" onchange="CalendarEventLoadSort(this.value);" class="form-control">
+                    <option value="STAMP_START,ASC" {if SORT_BY_STAMP_START_ASC}selected="selected"{endif}>Früheste zuerst</option>
+                    <option value="STAMP_START,DESC" {if SORT_BY_STAMP_START_DESC}selected="selected"{endif}>Späteste zuerst</option>
+                    <option value="COMMENTS,DESC" {if SORT_BY_COMMENTS_DESC}selected="selected"{endif}>Meiste Kommentare zuerst</option>
+                    <option value="COMMENTS,ASC" {if SORT_BY_COMMENTS_ASC}selected="selected"{endif}>Wenigste Kommentare zuerst</option>
+                    <option value="TITLE,ASC" {if SORT_BY_TITLE_ASC}selected="selected"{endif}>Alphabetisch aufsteigend</option>
+                    <option value="TITLE,DESC" {if SORT_BY_TITLE_DESC}selected="selected"{endif}>Alphabetisch absteigend</option>
+                </select>
+            </form>
+        </div>
+	</div>
+{endif}
+
+{if VIEW_TYPE_LIST}
+	<table class="table table-bordered table-striped table-condensed userList">
+	{if !HIDE_SEARCH}
+		<tr>
+			<td rowspan="2" colspan="9" class="form-inline design-form-input-rows">
+                <form onsubmit="CalendarEventSearch(this); return false;">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <label for="TYPE">
+                                <b>Typ:</b>
+                            </label>
+                        </div>
+                        <div class="col-xs-4">
+                            <select id="TYPE" name="TYPE" class="form-control"{if TYPE_LOCKED} disabled="disabled"{endif}>
+                                <optgroup label="Alle">
+                                    <option value="ALL"{if TYPE_ALL} selected="selected"{endif}>Alle Veranstaltungen</option>
+                                    <option value="ALL_SIGNUP"{if TYPE_ALL_SIGNUP} selected="selected"{endif}>Meine Teilnahmen</option>
+                                </optgroup>
+                                <optgroup label="Firma / Anbieter">
+                                    <option value="VENDOR"{if TYPE_VENDOR} selected="selected"{endif}>Firmenveranstaltungen</option>
+                                </optgroup>
+                                <optgroup label="Gruppen">
+                                    <option value="GROUPS"{if TYPE_GROUPS} selected="selected"{endif}>Alle Gruppenveranstaltungen</option>
+                                    {options_groups}
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col-xs-2">
+                            <label for="SEARCHCALENDAREVENT">
+                                <b>Titel/Stichworte:</b>
+                            </label>
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" id="SEARCHCALENDAREVENT" name="SEARCHCALENDAREVENT" class="form-control" placeholder="Textsuche in Titel und Stichworten..." value="{htm(SEARCHCALENDAREVENT)}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <label for="STAMP_END_GT">
+                                <b>Zwischen dem</b>
+                            </label>
+                        </div>
+                        <div class="col-xs-8">
+														<div class="input-group input-daterange" id="STAMP_RANGE">
+															<input class="form-control" type="text" id="STAMP_END_GT" name="STAMP_END_GT" value="{todate(STAMP_END_GT)}" title="{htm(V1)}"
+																	placeholder="Von" />
+															<span class="input-group-addon">und dem</span>
+															<input class="form-control" type="text" id="STAMP_START_LT" name="STAMP_START_LT" value="{todate(STAMP_START_LT)}" title="{htm(V1)}"
+																	placeholder="Bis" />
+														</div>
+                        </div>
+                        <div class="col-xs-2">
+                            <button type="submit" class="btn btn-primary" onclick="CalendarEventSearch(this); return false;">Suche starten</button>
+                        </div>
+                    </div>
+                </form>
+			</td>
+		</tr>
+		<tr></tr>
+	{endif}
+		<tr>
+			<th rowspan="3">
+				Aktionen
+			</th>
+			<th rowspan="2" colspan="3">
+				Teilnehmer
+			</th>
+			<th rowspan="3">
+				Veranstaltung
+			</th>
+			{if !HIDE_AUTOR}
+			<th rowspan="3">
+				Erstellt von
+			</th>
+			{endif}
+			<th rowspan="3">
+				Datum
+			</th>
+			<th rowspan="3">
+				Ort
+			</th>
+		</tr>
+		<tr></tr>
+		<tr>
+			<th>
+				<i class="glyphicon glyphicon-plus-sign" title="Zugesagt"></i>
+			</th>
+			<th>
+				<i class="glyphicon glyphicon-question-sign" title="Ungewiss"></i>
+			</th>
+			<th>
+				<i class="glyphicon glyphicon-minus-sign" title="Abgesagt"></i>
+			</th>
+		</tr>
+
+		{if liste}
+			{liste}
+		{else}
+		<tr>
+			<td colspan="8" class="error">
+			{if TYPE_ALL_SIGNUP}
+				Sie sind derzeit bei keinen Veranstaltungen angemeldet.
+			{else}
+				Sie haben derzeit keine Veranstaltungen eingestellt.
+			{endif}
+			</td>
+		</tr>
+		{endif}
+	</table>
+
+	{if !HIDE_LEGEND}
+	<div class="design-content-box design-icon-legend">
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Bearbeiten
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a> = löschen (wenn noch nicht veröffentlicht)
+		</div>
+		<br style="clear: left;">
+		<div class="pull-left">
+			<i class="glyphicon glyphicon-globe" title="Öffentlich"></i> = Öffentlich
+		</div>
+		<div class="pull-left">
+			<i class="glyphicon glyphicon-user" title="Veranstaltung des Benutzers"></i> = : Veranstaltung des Benutzers
+		</div>
+		<div class="pull-left">
+			<i class="glyphicon glyphicon-star" title="Veranstaltung einer Gruppe"></i> = Veranstaltung der Gruppe
+		</div>
+	</div>
+	{endif}
+
+	<p>{pager}</p>
+{else}
+	{subtpl(tpl/{SYS_TPL_LANG}/calendar_events_cal.htm,FK_USER={ID_USER})}
+{endif}
+</div>

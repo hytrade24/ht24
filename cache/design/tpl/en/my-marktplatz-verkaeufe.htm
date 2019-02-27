@@ -1,0 +1,223 @@
+{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+<script>
+	function showOrderDetails(orderId) {
+		location.href = '{uri_action(sale_details_seller)}?ID_AD_ORDER='+orderId;
+	}
+
+	function showBuyerInformation(userId) {
+		ShowDialog("index.php?page=uprofil&SELLER_ID=" + userId + "&frame=ajax", "Käuferinformation");
+	}
+  
+  function searchBuyer(userName) {
+    jQuery("input[name=NAMEBUYER]").val(userName);
+    jQuery(".userSearchForm").submit();
+  }
+
+    function downloadOrder(type) {
+        jQuery("#inputExportType").val(type).closest("form").submit();
+        return false;
+    }
+
+    jQuery(function() {
+        jQuery("button[name=doExport]").tooltip();
+        // Initialize datepickers
+        var stampFrom = jQuery("#STAMP_CREATE_FROM");
+        var stampTo = jQuery("#STAMP_CREATE_TO");
+        jQuery(".userSearchForm").datepicker({
+          clearBtn: true,
+          keepEmptyValues: true,
+          format: 'dd.mm.yyyy',
+          inputs: [ stampFrom, stampTo ]
+        });
+    });
+</script>
+
+<h1>My sales</h1>
+
+<span class="lead">
+    Your sold articles
+</span>
+<p>
+    Here you see all your sold articles. Do always state your order-Nr while communicating
+        with the buyer or with the support.
+
+</p>
+
+<ul class="nav nav-tabs userTabsTable">
+	<li {if show_open}class="active"{endif}>
+		<a href="{uri_action(my-marktplatz-verkaeufe)}">Open sales</a>
+	</li>
+	<li {if show_done}class="active"{endif}>
+		<a href="{uri_action(my-marktplatz-verkaeufe,,,,show_done)}">Archived sales</a>
+	</li>
+</ul>
+
+	<form class="userSearchForm" method="get" action="{if show_done}{uri_action(my-marktplatz-verkaeufe,,,,show_done)}{else}{uri_action(my-marktplatz-verkaeufe)}{endif}">
+        <input type="hidden" id="inputExportType" name="doExport" value="" />
+		<div class="design-content-box">
+			<h4><strong>Search for sellers</strong></h4>
+
+      <div class="design-row design-row-xs-4">
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">Order-Nr.</label>
+                <input type="text" name="ID_AD_ORDER" value="{ID_AD_ORDER}" class="form-control" />
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">Buyer</label>
+                <input type="text" name="NAMEBUYER" value="{NAMEBUYER}" class="form-control" />
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">Date from</label>
+                <input type="text" class="form-control" id="STAMP_CREATE_FROM" name="STAMP_CREATE_FROM" value="{STAMP_CREATE_FROM}" placeholder="Date from" />
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">Date to</label>
+                <input type="text" class="form-control" id="STAMP_CREATE_TO" name="STAMP_CREATE_TO" value="{STAMP_CREATE_TO}" placeholder="Date until" />
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">Confirmation</label>
+                <select name="SEARCH_ORDER_CONFIRMATION_STATUS" class="form-control">
+                    <option value="-1">-- all --</option>
+                    <option value="0" {if SEARCH_ORDER_CONFIRMATION_STATUS == 0}selected="selected"{endif}>open</option>
+                    <option value="1" {if SEARCH_ORDER_CONFIRMATION_STATUS == 1}selected="selected"{endif}>confirmed</option>
+                    <option value="2" {if SEARCH_ORDER_CONFIRMATION_STATUS == 2}selected="selected"{endif}>Rejected</option>
+                </select>
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">Payment</label>
+                <select name="SEARCH_ORDER_PAYMENT_STATUS" class="form-control">
+                    <option value="-1">-- all --</option>
+                    <option value="0" {if SEARCH_ORDER_PAYMENT_STATUS == 0}selected="selected"{endif}>open</option>
+                    <option value="3" {if SEARCH_ORDER_PAYMENT_STATUS == 3}selected="selected"{endif}>pending</option>
+                    <option value="1" {if SEARCH_ORDER_PAYMENT_STATUS == 1}selected="selected"{endif}>paid</option>
+                </select>
+            </div>
+				</div>
+				<div class="design-row-item">
+            <div class="form-group">
+                <label class="control-label">Shipping status</label>
+                <select name="SEARCH_ORDER_SHIPPING_STATUS" class="form-control">
+                    <option value="-1">-- all --</option>
+                    <option value="0" {if SEARCH_ORDER_SHIPPING_STATUS == 0}selected="selected"{endif}>open</option>
+                    <option value="1" {if SEARCH_ORDER_SHIPPING_STATUS == 1}selected="selected"{endif}>in progress</option>
+                    <option value="2" {if SEARCH_ORDER_SHIPPING_STATUS == 2}selected="selected"{endif}>sent</option>
+                </select>
+            </div>
+        </div>
+        {PLUGIN_HTML}
+				<div class="design-row-item pull-right">
+            <div class="form-group design-form-group-search">
+                <div class="dropdown pull-left">
+                    <a id="buttonDownloadOrders" class="btn btn-info dropdown-toggle" data-toggle="dropdown" data-toggle="tooltip" href="#" title="Download seller (confirmed sales only!)">
+                        <i class="glyphicon glyphicon-download-alt"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-left" role="menu" aria-labelledby="buttonDownloadOrders" style="right: 0; left: auto;">
+                        <li class="dropdown-submenu">
+                            <a tabindex="-1" href="#">
+                                As XML-file
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#" onclick="return downloadOrder('xml_jtl');">
+                                        For the JTL commodities management
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"  onclick="return downloadOrder('csv');">
+                                As CSV-file
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <input type="submit" value="Search" class="btn btn-primary">
+            </div>
+        </div>
+      </div>
+			<br>
+		</div>
+	</form>
+
+{if COUNT_UNCONFIRMED_ORDERS}
+<div class="alert alert-info">
+    <p><strong>Notice:</strong></p>
+    You have {COUNT_UNCONFIRMED_ORDERS} <a href="{uri_action(my-marktplatz-verkaeufe)}?SEARCH_ORDER_CONFIRMATION_STATUS=0">unconfirmed sales</a> left.
+        Please accept or decline these.
+
+</div>
+{endif}
+
+<div class="marketplaceSellerOrder">
+
+	<table class="table table-bordered table-striped table-condensed userList">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Order-Nr.</th>
+				<th>Date</th>
+				<th>Customer</th>
+				<th>Shipping status</th>
+				<th>Payment status</th>
+				<th>Products</th>
+				<th class="text-right">Total amount</th>
+
+				{if use_prov}
+					<th class="text-right">
+						Commission
+					</th>
+				{endif}
+			</tr>
+		</thead>
+		{if orders}
+			{orders}
+		{else}
+		<tr>
+			<td colspan="8">
+				Did not found any matching sales.
+			</td>
+		</tr>
+		{endif}
+	</table>
+
+	{pager}
+
+</div>
+
+<a class="btn btn-info" href="#statistics" onclick="return statsLoadModal(this);"
+   data-stats="{uri_baseurl(index.php?frame=stats&page=ui_stats&show=bestellwert_rechnugen)}" data-title="Rechnungs-Statistik" data-height="300">
+    <i class="glyphicon glyphicon-stats"></i>
+    View Statistics
+</a>
+
+
+<h5>Help</h5>
+
+<p>
+    On this page, you have an overview with all your past purchases. Click on the
+        button <i class="glyphicon glyphicon-eye-open"></i> to get more information about a purchase, the buyer and
+        the ordered article.
+
+</p>
+<p>
+    The Status column indicates the current position of a sale in the ordering process.
+        You can mark the sales as <strong>paid / unpaid</strong> and the shipping as <strong>open / in progress / dispatched</strong>.
+        Your customer will be informed about every change.
+
+</p>
+
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-eye-open"></i></a> = show</div>
+	<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-print"></i></a> = print</div>
+</div>

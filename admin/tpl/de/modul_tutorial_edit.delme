@@ -1,0 +1,9 @@
+{if error}
+	<br />
+	<p class="error">{error}</p>
+{else}
+	{if vorschau}
+		{subtpl(tpl/de/modul_tutorial_insert_vorschau.htm,*)}
+	{endif}
+	{subtpl(tpl/de/modul_tutorial_insert_form.htm,*)}
+{endif}

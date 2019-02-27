@@ -1,0 +1,124 @@
+<script type="text/javascript">
+	function s_inv(id_i)
+	{
+		$('s_page').value = 'buchhaltung';
+		$('s_id').name = 'ID_INVOICE';
+		$('s_id').value = id_i;
+		$('s_go').submit();
+	}
+</script>
+<h1><img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />Buchhaltung f&uuml;r User '{NAME}'  / #{ID_USER}
+</h1>
+<p>
+    Alle Rechnungen im Überblick
+</p>
+<p style="clear:left;margin:0px;">&nbsp;</p>
+
+{subtpl(tpl/de/user_edit.nav.htm,*)}
+<div style="float:left;clear:left;width: 900px">
+	<table class="liste" cellspacing="0" width="100%">
+
+    {if (npage<2) && liste}<tr>
+            <td colspan="7">
+                <table width="100%">
+                    <tr>
+                        <td valign="top" width="50%">
+
+                            <p><a style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_overall&w=550&ID_USER={ID_USER}','600','250');" title="Statistik">
+                                <strong>Historie</strong></a></p>
+
+
+                            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_offen&w=300&ID_USER={ID_USER}" width="300" height="250" frameborder="0"></iframe>
+                        </td>
+                        <td valign="top" width="50%">
+
+            	<table class="formTable">
+            		<tr>
+            			<td colspan="2">
+            				<h3>Ums&auml;tze (Netto)</h3>
+            			</td>
+            		</tr>
+            		<tr>
+                    	<th>Umsatz bisher</th>
+            			<td align="right">{topreis(UMSATZ_GESAMT)} {CURRENCY_DEFAULT}</td>
+            		</tr>
+            		<tr>
+            			<th>Umsatz diesen Monat</th>
+            			<td align="right">{topreis(UMSATZ_THIS)} {CURRENCY_DEFAULT}</td>
+            		</tr>
+            		<tr>
+            			<th>Umsatz letzten Monat</th>
+            			<td align="right">{topreis(UMSATZ_LAST)} {CURRENCY_DEFAULT}</td>
+            		</tr>
+                    <tr>
+
+                    </tr>
+            	</table>
+
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+
+<tr>
+    <th colspan="7">
+        <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_overall&w=400&get_range=DAY&ID_USER={ID_USER}" width="100%" height="200" frameborder="0">
+       </iframe>
+    </th>
+</tr>
+        {endif}
+
+		<tr>
+            <th></th>
+			<th title="Rechnungsnummer">Rech.-Nr.</th>
+			<th>Rech.-Datum</th>
+			<th>Status</th>
+			<th>Rech.-Betrag</th>
+			<th>F&auml;llig bis</th>
+			<th>Zahlungseingang</th>
+		</tr>
+		{if liste}
+
+			{liste}
+		{else}
+			<tr>
+				<td colspan="7" align="center" class="error">
+					Bisher keine Rechnungen
+				</td>
+			</tr>
+		{endif}
+	</table>
+	<p>{pager}</p>
+
+	<h2>Rechnungspositionen im Rechnungslauf</h2>
+	<p><a href="index.php?page=billing_billableitem"> Zum Rechnugslauf wechseln</a></p>
+	{if liste_rechnungsposition}
+	<div>
+		<table class="liste">
+			<thead>
+			<tr>
+				<th>ID</th>
+				<th>Leistunsdatum</th>
+				<th>Beschreibung</th>
+				<th>nicht abrechnen bis</th>
+				<th>Anzahl</th>
+				<th>EP (netto)</th>
+				<th>Steuer</th>
+				<th>Gesamt (brutto)</th>
+			</tr>
+			</thead>
+			<tbody>
+			{liste_rechnungsposition}
+			</tbody>
+		</table>
+	</div>
+	{else}
+	<p>
+		Aktuell keine Positionen vorhanden
+	</p>
+	{endif}
+
+
+</div>

@@ -1,0 +1,50 @@
+<script type="text/javascript">
+	jQuery(function() {
+		// Hide base mapping
+		jQuery(".design-import-preset-base-mapping").hide();
+        // Hide steps 3-5
+        ipe.addNavigationCallback(function() {
+            jQuery("#importPresetEditorNavigation ul > li:nth-child(2)").nextAll().hide();
+        });
+		
+		jQuery(".btn[data-action=ebay-extended-settings-show]").click(function(e) {
+			e.preventDefault();
+			jQuery(".design-import-preset-base-mapping").show();
+			jQuery(".btn[data-action=ebay-extended-settings-show]").hide();
+			jQuery(".btn[data-action=ebay-extended-settings-hide]").show();
+		})
+		jQuery(".btn[data-action=ebay-extended-settings-hide]").click(function(e) {
+			e.preventDefault();
+			jQuery(".design-import-preset-base-mapping").hide();
+			jQuery(".btn[data-action=ebay-extended-settings-show]").show();
+			jQuery(".btn[data-action=ebay-extended-settings-hide]").hide();
+		})
+	});
+</script>
+
+<br />
+<div class="panel panel-default">
+  <div class="panel-body">
+		<h3>eBay Import</h3>
+		
+		<p>
+		Für den Import haben Sie den Account <b>{htm(EBAY_USER_UserID)}</b> zugeordnet. 
+			Dieser Account hat <b>{AD_COUNT} aktive Verkäufe</b> die in den Marktplatz übernommen werden können.
+			<br />
+			Klicken Sie auf den Button "Speichern und schließen" um mit die Vorlage zu speichern.
+			<br />
+			<br />
+			<i>
+				Wenn Sie ein erfahrener Benutzer sind können Sie sich über die nachfolgende Schaltfläche erweiterte
+				Einstellungen einblenden lassen. Dort können z.B. Standardeinstellungen für die zu importierten Artikel anpassen.
+			</i>
+			<br />
+			<a class="btn btn-xs btn-default" data-action="ebay-extended-settings-show">
+				Erweiterte Einstellungen anzeigen
+			</a>
+			<a class="btn btn-xs btn-default" data-action="ebay-extended-settings-hide" style="display: none;">
+				Erweiterte Einstellungen ausblenden
+			</a>
+		</p>
+  </div>
+</div>

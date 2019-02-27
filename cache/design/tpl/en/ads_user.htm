@@ -1,0 +1,11 @@
+{if liste}
+<div class="design-user-ads-list">
+    <ul class="design-row design-row-xs-2 design-row-sm-{COUNT_PER_ROW}">
+        {liste}
+    </ul>
+</div>
+{else}
+    {if HIDE_PARENT}
+    <div class="specialHideParent"></div>
+    {endif}
+{endif}

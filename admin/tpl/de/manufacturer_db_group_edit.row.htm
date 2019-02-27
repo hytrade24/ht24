@@ -1,0 +1,17 @@
+            <tr>
+              <td>
+                <input id="manufacturerCheckbox{ID_MAN}" type="checkbox" data-id="{ID_MAN}"{if selected} checked{endif} />
+              </td>
+              <td>
+                <label for="manufacturerCheckbox{ID_MAN}">
+                  {htm(NAME)}
+                </label>
+              </td>
+              <td>
+                {if URL}
+                <a href="{htm(URL)}" target="_blank">
+                  {htm(URL)}
+                </a>
+                {endif}
+              </td>
+            </tr>

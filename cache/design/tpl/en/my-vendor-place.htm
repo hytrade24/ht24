@@ -1,0 +1,42 @@
+<h1>Vendor directory</h1>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-vendor-nav.htm,*)}
+<span class="lead">
+    Enter more locations. They will displayed amoung others on google-map.
+</span>
+<table class="mytable table table-bordered table-striped table-condensed">
+	<tr>
+	    <th></th>
+	    <th>Name</th>
+	    <th>Street</th>
+	    <th>ZIP / City</th>
+	    <th>Country</th>
+	</tr>
+{if VENDOR_STRASSE}
+	<tr>
+	    <td></td>
+	    <td>{VENDOR_FIRMA}</td>
+	    <td>{VENDOR_STRASSE}</td>
+	    <td>{VENDOR_PLZ} {VENDOR_ORT}</td>
+	    <td>{VENDOR_COUNTRY}</td>
+	</tr>
+{endif}
+{if liste}
+	{liste}
+{else}
+	<tr>
+        <td colspan="5">No location available yet</td>
+    </tr>
+{endif}
+</table>
+
+<a href="{uri_action(my-vendor-place-update)}" class="btn btn-success pull-right" >
+    Add location
+</a>
+<br style="clear: both;" /><br />
+<div class="design-content-box design-icon-legend">
+	<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Edit
+	</div>
+	<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a> = Delete
+	</div>
+</div>

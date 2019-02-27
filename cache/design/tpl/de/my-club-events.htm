@@ -1,0 +1,54 @@
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+
+<script type="text/javascript">
+    jQuery(function() {
+    	function setClubFormular(d) {
+            if(d) {
+                jQuery(".visibleOnEnabledClub").show();
+            } else {
+                jQuery(".visibleOnEnabledClub").hide();
+            }
+        }
+
+        jQuery("#clubFormularDescriptionTab").tabs();
+
+        setClubFormular({if CLUB_STATUS}true{else}false{endif});
+    });
+</script>
+
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}Veranstaltungkalender</h1>
+
+{if saved}
+<div class="alert alert-success">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4>Änderungen gespeichert!</h4>
+</div>
+{endif}
+{if errors}
+<div class="alert alert-danger">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<h4>Fehler!</h4>
+	<ul>
+		{errors}
+	</ul>
+</div>
+{endif}
+
+{if CLUB_ID_CLUB}
+	{subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+
+	<p class="lead">&Uuml;berblick &uuml;ber alle Veranstaltungen der Gruppe</p>
+
+	{if CLUB_MODERATOR}
+
+		<p>
+			<a href="{uri_action(my-calendar-events-add,,group,{CLUB_ID_CLUB})}" class="btn btn-success">
+				<i class="glyphicon glyphicon-plus icon-white"></i> Neue Veranstaltung eintragen
+			</a>
+		</p>
+		{subtpl(tpl/{SYS_TPL_LANG}/my-calendar-events-list.htm,*,TYPE={GROUP_CLUB_ID_CLUB},STAMP_END_GT={STAMP_TODAY},TYPE_LOCKED=1)}
+	{else}
+		{subtpl(tpl/{SYS_TPL_LANG}/calendar_events_cal.htm,SEARCH_TYPE={GROUP_CLUB_ID_CLUB},SEARCH_STAMP_END_GT={STAMP_TODAY},SEARCH_PRIVACY=0)}
+	{endif}
+{endif}

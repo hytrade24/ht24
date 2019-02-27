@@ -1,0 +1,13 @@
+{if is_current}
+<li class="design-language active">
+    <a href="#" onclick="return false;" >
+    	<img src="{uri_baseurl(/gfx/lang.{ABBR}.gif)}" alt="aktuelle Sprache" />
+    </a>
+</li>
+{else}
+<li class="design-language">
+    <a href="{langref(ABBR)}" class="design-language">
+    	<img src="{uri_baseurl(/gfx/lang.{ABBR}.gif)}" alt="Umschalten auf andere Sprache" />
+    </a>
+</li>
+{endif}

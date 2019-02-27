@@ -1,0 +1,370 @@
+<link href="{uri_resource(lib/jqTree/jqTree.css)}" rel="stylesheet">
+<link href="{uri_resource(lib/jqTreeSelect/jqTreeSelect.css)}" rel="stylesheet">
+<script src="{uri_resource(lib/jqTree/jqTree.js)}" type="application/javascript"></script>
+<script src="{uri_resource(lib/jqTreeSelect/jqTreeSelect.js)}" type="application/javascript"></script>
+
+<link href="{uri_resource(lib/jstree/themes/default/style.css)}" rel="stylesheet">
+<script src="{uri_resource(lib/jstree/jstree.min.js)}" type="application/javascript"></script>
+
+<style type="text/css">
+    .ebay-category {
+        max-width: 180px;
+        position: relative;
+    }
+    
+    #jstree_wrapper {
+        left: 50%;
+        margin-left: -50%;
+        top: 80%;
+    }
+</style>
+
+<h3>eBay import - Postprocessing</h3>
+
+<p>
+  Please check the articles you want to import.
+</p>
+
+{PLUGIN_INFO}
+
+<div id="datatable-{hash}" class="dataTableContainer" style="width: 100%;">
+    <div class="mdl-card__menu">
+    </div>
+    <div for="datatable-{hash}-filter">
+        {filter}
+    </div>
+
+    <table id="datatable-{hash}-table" class="table table-striped table-condensed table-bordered" cellspacing="0" style="width: 100%;" data-container="#datatable-{hash}" data-ajax-url="{ajaxUrl}&ajax=dataTable"{if jsonQueryOptions} data-query-options="{htm(jsonQueryOptions)}"{endif}>
+        <thead>
+            <tr>
+                <th colspan="{calc(colCount)}" style="padding: 8px; line-height: 26px; text-align: right;">
+                    <div style="float: left;" class="form-inline">
+                        <label for="datatable-{hash}-page-item-count-top">
+                            Elemente pro Seite:
+                        </label>
+                        <select id="datatable-{hash}-page-item-count-top" class="form-control" data-action="page-item-count">
+                            <option value="10"{if limit==10} selected="selected"{endif}>10</option>
+                            <option value="20"{if limit==20} selected="selected"{endif}>20</option>
+                            <option value="50"{if limit==50} selected="selected"{endif}>50</option>
+                            <option value="100"{if limit==100} selected="selected"{endif}>100</option>
+                        </select>
+                    </div>
+
+                    <div style="float: right;">
+                                <span>
+                                    <span data-value="page-item-first">{resultFirst}</span>-<span data-value="page-item-last">{resultLast}</span>
+                                    von <span data-value="result-count">{resultCount}</span>
+                                </span>
+
+                        <button class="btn btn-default" data-action="page-first" title="First page">
+                            <i class="material-icons">&lt;&lt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-prev" title="Previous page">
+                            <i class="material-icons">&lt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-next" title="Next page">
+                            <i class="material-icons">&gt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-last" title="Last page">
+                            <i class="material-icons">&gt;&gt;</i>
+                        </button>
+                    </div>
+                    <br style="clear: both;" />
+                </th>
+            </tr>
+            <tr>
+                {if selectable}
+                <th>
+                    <input data-action="select-toggle-all" type="checkbox" />
+                </th>
+                {endif}
+                {header}
+            </tr>
+        </thead>
+        {body}
+        <thead>
+            {if selectable}
+            <tr>
+                <th colspan="{calc(colCount)}" style="border-top: 1px #9A9A9A solid; border-bottom: none;  padding: 8px; line-height: 26px;">
+                    <div style="float: left;">
+                        <span data-value="select-count">0</span>&nbsp;ausgewählt
+                    </div>
+                    <div style="float: left;">
+                        {action}
+                    </div>
+                    <div style="float: right;">
+                        <button id="datatable-{hash}-select-all" data-action="select-all" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                            Alle auswählen
+                        </button>
+                        <button id="datatable-{hash}-select-none" data-action="select-none">
+                            Alle abwählen
+                        </button>
+                    </div>
+                    <br style="clear: both;" />
+                </th>
+            </tr>
+            {endif}
+            <tr>
+                <th colspan="{calc(colCount)}" style="padding: 8px; line-height: 26px; text-align: right;">
+                    <div style="float: left;" class="form-inline">
+                        <label for="datatable-{hash}-page-item-count-bottom">
+                            Elemente pro Seite:
+                        </label>
+                        <select id="datatable-{hash}-page-item-count-bottom" class="form-control" data-action="page-item-count">
+                            <option value="10"{if limit==10} selected="selected"{endif}>10</option>
+                            <option value="20"{if limit==20} selected="selected"{endif}>20</option>
+                            <option value="50"{if limit==50} selected="selected"{endif}>50</option>
+                            <option value="100"{if limit==100} selected="selected"{endif}>100</option>
+                        </select>
+                    </div>
+
+                    <div style="float: right;">
+                        <span>
+                            <span data-value="page-item-first">{resultFirst}</span>-<span data-value="page-item-last">{resultLast}</span>
+                            von <span data-value="result-count">{resultCount}</span>
+                        </span>
+
+                        <button class="btn btn-default" data-action="page-first" title="First page">
+                            <i class="material-icons">&lt;&lt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-prev" title="Previous page">
+                            <i class="material-icons">&lt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-next" title="Next page">
+                            <i class="material-icons">&gt;</i>
+                        </button>
+                        <button class="btn btn-default" data-action="page-last" title="Last page">
+                            <i class="material-icons">&gt;&gt;</i>
+                        </button>
+                    </div>
+                    <br style="clear: both;" />
+                </th>
+            </tr>
+        </thead>
+    </table>
+    <div id="jstree_wrapper" class="popover bottom">
+        <div class="arrow"></div>
+        <h3 class="popover-title">Change category</h3>
+        <div id="jstree_ebay" class="popover-content"></div>
+    </div>
+</div>
+<div class="form-actions text-right">
+    <form id="ebayEditSubmit" method="get">
+        <input type="hidden" name="STEP" value="finish" />
+        <a href="{uri_action(my-import-process,{SOURCE_ID})}?STEP=categories" class="btn btn-default">
+            Back
+        </a>
+        <button type="button" class="btn btn-primary">Start import</button>
+    </form>
+</div>
+
+<div id="importPresetEditorModalLoading" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+    
+    var tree = null;
+   	var treeSearch = false;
+   	var openMapRowColumn = null;
+    var requestsPending = [];
+    var requestsPendingIndex = 0;
+    
+    function ebayImportEdit_WaitForRequests(callback) {
+        var timerWait = window.setInterval(function() {
+            for (var index = 0; index < requestsPendingIndex; index++) {
+                if (requestsPending[index] === true) {
+                    // Requests are still pending!
+                    return;
+                }
+            }
+            // All requests are done! Clear interval and run callback
+            window.clearInterval(timerWait);
+            callback();
+        }, 500);
+    }
+    
+    function ebayImportEdit_ArticleTitle(input) {
+        var row = jQuery(input).closest("tr");
+        var ebayId = row.attr("data-select-key");
+        var requestId = requestsPendingIndex++;
+        requestsPending[requestId] = true;
+        jQuery("#datatable-{hash}-table").dataTable("executeAction", "save-title", [ ebayId ], jQuery(input).val(), function(success) {
+            requestsPending[requestId] = false;
+        });
+    }
+    
+    function ebayImportEdit_ArticleManufacturer(input) {
+        var row = jQuery(input).closest("tr");
+        var ebayId = row.attr("data-select-key");
+        var requestId = requestsPendingIndex++;
+        requestsPending[requestId] = true;
+        jQuery("#datatable-{hash}-table").dataTable("executeAction", "save-manufacturer", [ ebayId ], jQuery(input).val(), function(success) {
+            requestsPending[requestId] = false;
+        });
+    }
+    
+    function ebayImportEdit_ArticleCategoryShow(link) {
+        var mapRowColumn =  jQuery(link).closest("tr");
+        var editContainer = jQuery(link).parent();
+        var currentMappingValue = jQuery(link).attr("data-value");
+        
+        if (mapRowColumn.is(openMapRowColumn)) {
+            // Hide category selection
+            jQuery('#jstree_wrapper').hide();
+            openMapRowColumn = null;
+        } else {
+            // Show category selection
+            openMapRowColumn = mapRowColumn;
+            jQuery('#jstree_wrapper').detach().appendTo(editContainer).show();
+            jQuery('#jstree_ebay').jstree(true).deselect_all();
+            if(currentMappingValue != '' && currentMappingValue > 0) {
+                jQuery('#jstree_ebay').jstree(true).select_node(currentMappingValue);
+            }
+            jQuery(document).scrollTop(jQuery(mapRowColumn).offset().top);
+        }
+    }
+    
+    function ebayImportEdit_ArticleCategory(row, categoryId, categoryText) {
+        var ebayId = row.attr("data-select-key");
+        var requestId = requestsPendingIndex++;
+        requestsPending[requestId] = true;
+        jQuery("#datatable-{hash}-table").dataTable("executeAction", "save-category", [ ebayId ], [ categoryId, categoryText ], function(success) {
+            requestsPending[requestId] = false;
+            ebayImportEdit_ArticleUpdateManufacturers(row, ebayId, categoryId);
+        });
+    }
+    
+    function ebayImportEdit_ArticleUpdateManufacturers(row, ebayId, categoryId) {
+        jQuery.post('{uri_baseurl(index.php?page=my-import-presets-edit&DO=LOAD_MANUFACTURERS)}&id='+ebayId+'&category='+categoryId, function(result) {
+            jQuery(row).find(".ebayImportManufacturer").replaceWith(result);
+        });
+    }
+    
+    jQuery(function() {
+        jQuery("#datatable-{hash}-table").dataTable({
+            callbackPageChange: function() {
+                jQuery('#jstree_wrapper').detach().appendTo(jQuery("#datatable-{hash}")).hide();
+            },
+            callbackLoading: function(isLoading) {
+                if (isLoading) {
+                    var modal = jQuery("#importPresetEditorModalLoading");
+                    modal.find(".modal-body").html('<div class="ajax-loader" style="text-align: center;"><img src="'+ ebiz_trader_baseurl +'gfx/ajax-loader.gif"></div>');
+                    modal.modal({ keyboard: false, show: true });
+                } else {
+                    jQuery("#importPresetEditorModalLoading").modal("hide");
+                }
+            }
+        });
+        
+        jQuery("#ebayEditSubmit button").click(function(event) {
+            event.preventDefault();
+            var formValid = true;
+            // Validate categorys
+            jQuery(".ebay-category > a").each(function() {
+                var categoryId = parseInt(jQuery(this).attr("data-value"));
+                if (categoryId > 0) {
+                    jQuery(this)
+                        .removeClass("text-error")
+                        .attr("title", "")
+                        .tooltip("hide");
+                } else {
+                    jQuery(this)
+                        .addClass("text-error")
+                        .attr("title", "Bitte wählen Sie eine Kategorie aus!");
+                    if (formValid) {
+                        // First error
+                        formValid = false;
+                        document.location.hash = "#"+jQuery(this).attr("id");
+                        jQuery(this).tooltip("show");
+                    }
+                }
+            });
+            // Validate manufacturers
+            jQuery(".ebayImportManufacturer select[required]").each(function() {
+                var manufacturerId = parseInt(jQuery(this).val());
+                if (manufacturerId > 0) {
+                    jQuery(this).closest(".form-group")
+                        .removeClass("has-error")
+                        .attr("title", "")
+                        .tooltip("hide");
+                } else {
+                    jQuery(this).closest(".form-group")
+                        .addClass("has-error")
+                        .attr("title", "Bitte wählen Sie einen Hersteller aus!");
+                    if (formValid) {
+                        // First error
+                        formValid = false;
+                        document.location.hash = "#"+jQuery(this).attr("id");
+                        jQuery(this).closest(".form-group").tooltip("show");
+                    }
+                }
+            });
+            if (formValid) {
+                ebayImportEdit_WaitForRequests(function() {
+                    jQuery("#ebayEditSubmit").submit();
+                });
+            }
+        });
+    });
+
+    jQuery(function () {
+
+        jQuery.getJSON('{uri_baseurl(index.php?page=my-import-presets-edit&DO=LOAD_CATEGORIES)}&jqTreeAction=readChilds', function (result) {
+            tree = jQuery("#jstree_ebay").on('changed.jstree', function (e, data) {
+                var i, j, r = [];
+                var node = data.node;
+                if (typeof node != 'undefined' && typeof data.event != 'undefined') {
+                    if (node.children.length == 0) {
+                        // last child
+                        if (confirm('Do you want to assign the category to ' + node.text + '?')) {
+                            var link = openMapRowColumn.find(".ebay-category > a");
+                            link.attr("data-value", node.id).html(node.text);
+                            jQuery('#jstree_wrapper').hide();
+                            jQuery(document).scrollTop(jQuery(openMapRowColumn).offset().top);
+                            ebayImportEdit_ArticleCategory(openMapRowColumn, node.id, node.text);
+                            openMapRowColumn = null;
+                        }
+                    } else {
+                        $('#jstree_ebay').jstree(true).toggle_node(node);
+                    }
+                }
+            }).jstree({
+                core: {
+                    data: result.nodes,
+                    multiple: false
+                },
+                search: {
+                    show_only_matches: true
+                },
+                plugins: ['search']
+            });
+
+            jQuery("#tree_search_input").keypress(function (e) {
+                if (e.which == 10 || e.which == 13) {
+                    e.preventDefault();
+                    jQuery('#tree_search_button').trigger('click');
+                    return false;
+                }
+            });
+
+            $('#tree_search_button').click(function (e) {
+                e.preventDefault();
+                var v = $('#tree_search_input').val();
+                if ((v.length > 3) || (v.length == 0)) {
+                    $('#jstree_ebay').jstree(true).search(v);
+                }
+                return false;
+            });
+        })
+
+    });
+</script>
+
+<script src="{uri_resource(/lib/datatable/jqDataTable.js)}"></script>

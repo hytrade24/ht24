@@ -1,0 +1,43 @@
+{if k == 1}
+ <tr>
+{endif}
+<td style="text-align:center;border:1px #CCCCCC solid; vertical-align:top">
+ <a name="user{FK_USER}"></a>
+ <table style="width: 100%;">
+  <tr>
+   <td colspan="2" align="center">
+    <a href="../{SRC}" target="_blank">
+    {if !SRC_T}keine Vorschau verf&uuml;gbar{else}<img {if SRC_T}src="../{SRC_T}" width="{WIDTH_T}" height="{HEIGHT_T}"{else}src="../shim.gif"{endif} alt="{htm(ALT)}">{endif}
+    </a>
+   </td>
+  </tr>  
+  <tr>
+   <td>Titel&nbsp;</td>
+   <td>{if ALT}{htm(ALT)}&nbsp;{endif}</td>
+  </tr>
+  <tr>
+   <td>Datum&nbsp;</td>
+   <td>{todate(DATUM)}</td>
+  </tr>
+  <tr>
+   <td>Besitzer&nbsp;</td>
+   <td><a href="#user{FK_USER}" onclick="popupfkt('user_edit&ID_USER={FK_USER}', 720, 450);" title="Zum Benutzerprofil von {htm(NAME)}">{htm(NAME)}</a></td>
+  </tr>
+  <tr>
+   <td>Galerie</td>
+   <td><a href="index.php?page=modul_galerie_details&id={FK_GALERIE}" title="Galerie {htm(GAL)}">{htm(GAL)}</a></td>
+  </tr>
+  <tr valign="baseline">
+   <td>Freigabe&nbsp;
+    <input type="checkbox" id="OK[{ID_IMG}]" name="OK[{ID_IMG}]" value="1" class="nob" {if OK}checked="checked"{endif} />
+  	<input type="hidden" name="IMG[]" value="{ID_IMG}">
+   </td>
+   <td align="right">
+    <a href="index.php?page=modul_galerie_bilder&npage={npage}&FREE={FREE}&orderby={orderby}&del={ID_IMG}" title="Dieses Bild l&ouml;schen" onClick="return confirm('Das Bild endgültig löschen?');"><img src="gfx/btn.del.gif" width="32" height="16" /></a> 
+   </td>
+  </tr>
+ </table>
+</td>
+{if k == IMG_ROW || end}
+ </tr>
+{endif}

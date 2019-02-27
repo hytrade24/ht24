@@ -1,0 +1,9 @@
+<tr{if !(i&1)} bgcolor="#FFFFFF"{endif}>
+<td valign="top" nowrap="nowrap"><a href="#" onclick="popupfkt('page_edit&ID_NAV={ID_NAV}&setroot=1','500','400');" title="Einstellungen dieser Seite &auml;ndern"><img src="gfx/settings_32.gif" width="32" height="32" alt="Einstellungen" border="0"></a>
+ <a href="index.php?page=template_edit&tpl={IDENT}&ROOT=1" title="Inhalte bearbeiten"><img src="gfx/content_32.gif" width="32" height="32" border="0"></a>
+ <a href="#" onclick="popupfkt('modul_news_adv_set&do=edit&id={ID_NAV}#nav{ID_NAV}', 350, 200)" title="Zuordnung &auml;ndern"><img src="gfx/modul_32.gif" width="32" height="32"></a></td>
+ <td align="center"><a name="nav{ID_NAV}"></a>{if KATEGORIE}<a href="index.php?page=kat_edit&ID_KAT={ID_KAT}&ROOT={KROOT}" title="Kategorie bearbeiten">{htm(KATEGORIE)}, {INT_LIMIT}</a>{else}<span class="error">keine</span>{endif}
+ </td>
+ <td>{if DARSTELLUNG}{htm(DARSTELLUNG)}{else}Standard wert{endif}</td> 
+ <td align="center"><a href="../index.php?page={htm(IDENT)}"target="_blank" title="Ansehen: Seitenname: {htm(IDENT)}, Label: {htm(V1)}, Alias: {htm(ALIAS)}, Beschreibung: {htm(V2)}"><img src="gfx/modul_reload_32.gif" alt="{htm(V1)} ({htm(IDENT)})"  /></a></td>
+</tr>

@@ -1,0 +1,28 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">Order newsletter</div>
+    <div class="panel-body">
+        Register now and do not miss an offer again
+        <br />
+        <form action="{uri_action(newsletter)}" method="post">
+            <div class="input-group">
+                <span class="input-group-addon">@</span>
+                <input class="form-control" name="EMAIL" type="email" value="{htm(EMAIL)}" placeholder="E-Mail address" required />
+            </div>
+
+            <div class="radio">
+                <label>
+                    <input name="mode" type="radio" id="optionsRadios1" value="optin" checked />
+                    Newsletter bestellen
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input name="mode" type="radio" id="optionsRadios2" value="optout" />
+                    Newsletter kündigen
+                </label>                
+            </div>
+
+            <input type="submit" value="Bestellen" class="btn btn-success" />
+        </form>
+    </div>
+</div>

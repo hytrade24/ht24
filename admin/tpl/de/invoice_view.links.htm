@@ -1,0 +1,33 @@
+
+{if INVOICE_SAVE_PDF}
+<div class="left_setting">
+    <h1>PDF-Datei erstellen</h1>
+    {if INVOICE_PDF_FILENAME}
+        <p>
+            <b>Datei:</b> {INVOICE_PDF_FILENAME}<br />
+            <b>Erstellt:</b> {todate(INVOICE_PDF_CHANGED,1)}<br />
+        </p>
+        <a class="button" href="index.php?page={curpage}&action=downloadPdf&ID_BILLING_INVOICE={INVOICE_ID}">
+            Download
+        </a>
+    {else}
+        <p class="error">
+            Die PDF-Datei dieser Rechnung wurde noch nicht erstellt.
+        </p>
+    {endif}
+        <a class="button" href="index.php?page={curpage}&action=createPdf&ID_BILLING_INVOICE={INVOICE_ID}"{if INVOICE_PDF_FILENAME}
+            onclick="confirm('Möchten Sie diese Rechnung wirklich neu erstellen? Die aktuelle Version der Rechnung geht dabei unwiderruflich verloren!');"{endif}>
+            Erstellen
+        </a>
+    </div>
+{endif}
+<div class="left_info">
+    <h1>Zeichenerkl&auml;rung</h1>
+    <table>
+        <tr>
+            <td><strong style="color: blue;">!</strong></td>
+            <td>Beinhaltet Strornoanfragen</td>
+        </tr>
+    </table>
+</div>
+

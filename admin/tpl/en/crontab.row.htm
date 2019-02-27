@@ -1,0 +1,42 @@
+<tr class="zeile{even}">
+	<td nowrap="nowrap">
+		<a href="index.php?page=crontab_edit&ID_CRONTAB={ID_CRONTAB}" titel="Cron Eintrag bearbeiten!">
+			<img src="gfx/btn.edit.gif" width="32" height="16" alt="edit">
+		</a>
+		<a href="index.php?page=crontab&del={ID_CRONTAB}" title="Diesen Eintrag l&ouml;schen" onclick="return confirm('Sind Sie sicher, dass der Eintrag gelöscht werden soll?');">
+			<img src="gfx/btn.del.gif" width="32" height="16" alt="delete">
+		</a>
+		<a href="index.php?page=crontab&donow={ID_CRONTAB}" title="Jetzt ausführen">
+			<img src="gfx/btn.put.gif" alt="NOW" />
+		</a>
+		{if FEHLER}
+		<a href="index.php?page=crontab&unlock={ID_CRONTAB}" title="Ausführung fortsetzen">
+			<img src="gfx/error_s.png" />
+		</a>
+		{endif}
+	</td>
+	<td>
+		{if EXECUTION_TIME>-1}
+			{EXECUTION_TIME} Min.
+		{else}
+			---
+		{endif}
+	</td>
+	<td>
+		<a{if FEHLER} style="color:red; font-weight: bold;"{endif} href="index.php?page=crontab_edit&ID_CRONTAB={ID_CRONTAB}" titel="Cron Eintrag bearbeiten!">
+			{htm(DSC)}
+		</a>
+	</td>
+	<td{if FEHLER} style="color:red; font-weight: bold;"{endif}>
+		{ALL_X}{EINHEIT}
+	</td>
+	<td{if FEHLER} style="color:red; font-weight: bold;"{endif}>
+		{if DATEI}{htm(DATEI)}{else}&nsbp;{endif}
+	</td>
+	<td{if FEHLER} style="color:red; font-weight: bold;"{endif}>
+		{if FIRST}{todate(FIRST,1)} Uhr{else}noch nicht ausgef&uuml;hrt{endif}
+	</td>
+	<td{if FEHLER} style="color:red; font-weight: bold;"{endif}>
+		{if LAST}{todate(LAST,1)} Uhr{else}noch nicht ausgef&uuml;hrt{endif}
+	</td>
+</tr>

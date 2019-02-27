@@ -1,0 +1,47 @@
+  <tr class="zeile{even}">
+	<td valign="top">
+	{if TYPE_COLLECTION}
+		<a href="index.php?page=packet_edit&ID_PACKET={ID_PACKET}">
+			<img src="gfx/btn.edit.gif" border="0">
+		</a>
+		<a onclick='return confirm("Das Paket \"{V1}\" wirklich löschen?");'
+			href="index.php?page=packets&id={ID_PACKET}&action=del">
+			<img src="gfx/btn.del.gif" border="0">
+		</a>
+	{else}
+		<a href="index.php?page=packet_base_add&ID_PACKET={ID_PACKET}">
+			<img src="gfx/btn.edit.gif" border="0">
+		</a>
+	{endif}
+	</td>
+	<td align="center" valign="top">
+		{if (STATUS&1)==1}
+			<span class="ok" title="Aktiv!">&radic;</span>
+		{else}
+			<span class="error" title="nein">x</span>
+		{endif}
+	</td>
+  	<td title="{htm(T1)}" valign="top">
+  	{if TYPE_COLLECTION}
+  		{htm(V1)}
+  	{else}
+  		{htm(V1)}/{htm(V2)}
+  	{endif}
+  	</td>
+	<td align="center" valign="top">
+		{if TYPE_BASE_ABO || !RECURRING_ONCE}
+			<span class="ok" title="Ja">&radic;</span>
+		{else}
+			<span class="error" title="Nein">x</span>
+		{endif}
+	</td>
+  	<td title="Im Paket enthalten" valign="top">
+  		{text(PACKETS_TEXT)}
+  	</td>
+	<td valign="top">
+		{RUNTIMES}
+	</td>
+	<td align="right">
+		<input type="text" name="F_ORDER[{ID_PACKET}]" value="{F_ORDER}">
+	</td>
+  </tr>

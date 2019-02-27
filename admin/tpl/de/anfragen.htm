@@ -1,0 +1,47 @@
+<style type="text/css">
+.STATUS_neu {
+ background-color:#FF0000;
+ color:#FFFFFF;
+ font-weight:bold;
+}
+.STATUS_KONTAKTIERT {
+ background-color:#FFCC66;
+ color:#000000;
+ font-weight:bold;
+}
+.STATUS_ANGEBOT {
+ background-color:#0033FF;
+ color:#FFFFFF;
+ font-weight:bold;
+}
+.STATUS_AUFTRAG {
+ background-color:#00CC33;
+ color:#FFFFFF;
+ font-weight:bold;
+}
+.STATUS_ERLEDIGT {
+ background-color:#CCCCCC;
+ color:#000000;
+ font-weight:bold;
+}
+</style>
+<h1>Anfragen</h1>
+<table width="100%" border="0" cellspacing="1" cellpadding="10" class="liste">
+<tr>
+  <th>Aktion</th>
+	<th>Status&nbsp;</th>  
+	<th>Name&nbsp;</th>
+	<th>Email&nbsp;</th>
+	<th>URL</th>
+	<th>Ausrichtung&nbsp;</th>	
+	<th>Paket Wunsch</th>
+	<th>Preiswunsch</th>
+	<th>Tel.&nbsp;</th>	
+	<th>Ort&nbsp;</th>
+	<th>Datum&nbsp;</th>
+</tr>
+{liste}
+<tr>
+<td colspan="6">{pager}</td></tr>
+</table>
+<p>&nbsp;</p>

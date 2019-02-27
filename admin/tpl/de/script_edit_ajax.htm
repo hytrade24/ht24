@@ -1,0 +1,89 @@
+<form method="post" action="index.php" id="scrform{ID_SCRIPT_WORK}" enctype="multipart/form-data">
+ <input type="hidden" name="page" value="script_edit_ajax" />
+ <input type="hidden" name="ID_SCRIPT_WORK" value="{ID_SCRIPT_WORK}" />
+ <input type="hidden" name="FK_KAT" value="{FK_KAT}" id="fkkat" />
+ <input type="hidden" name="what" value="script"> 
+ <input type="hidden" name="frame" value="ajax">
+{if err}
+ <h2 class="error">Fehler aufgetreten!</h2><p class="error">{err}</p>
+{endif}
+{if SAVED}
+ <h2 class="ok">Script wurde gespeichert!</h2>
+{endif}
+<input type="hidden" class="nob" name="OK[]" value="0" />
+
+
+
+<h3>Schnellansicht - <a href="index.php?page=script_edit&ID_SCRIPT_WORK={ID_SCRIPT_WORK}" title="Vollst&auml;ndig bearbeiten">[Alles ansehen und bearbeiten]</a></h3>
+<table class="formTable" cellspacing="0">
+  <tr>
+    <td><strong>Freigabe</strong></td>
+    <td>User:
+      <input type="checkbox" class="nob" name="OK[]" {if OK&1}checked {endif}value="1"  />
+Admin:
+<input type="checkbox" class="nob" name="OK[]" {if OK&2}checked {endif}value="2"  />
+ {if ONLINE == 3}<span class="ok">UPDATE / Script bereits online:</span> <a href="{uri_baseurl(/scripte/script,{ID_SCRIPT_WORK}.htm)}" target="_blank" title="Zum Script">ansehen</a>{endif}</td>
+    <td><strong>Script als bezahlt markieren</strong></td>
+    <td><input type="checkbox" value="1" name="PAID" class="nob" {if PAID} checked{endif} /></td>
+  </tr>
+  <tr>
+    <td><strong>Name des Scripts</strong></td>
+    <td>{htm(V1)}</td>
+    <td><strong>Script ist kostenpflichtig?</strong></td>
+    <td>{if kosten == 1}ja{else}nein{endif}</td>
+  </tr>
+  {if DEAD}<tr>
+    <td><strong>Hinweis</strong></td>
+	<td  class="error">Deadlink gelmeldet am {todate(DEAD)}</td>
+	<td colspan="2">&nbsp;</td>
+  </tr>{endif}
+  <tr>
+    <td><strong>Link zur Homepage</strong></td>
+    <td><a href="{LINK_DSC}" target="_blank">{htm(LINK_DSC_SHORT)} ...</a></td>
+    <td><strong>Einsteldatum</strong></td>
+    <td>{datedrop(STAMP)}</td>
+  </tr>
+  <tr>
+    <td><strong>Link zum direkten Download (optional)</strong></td>
+    <td>{if LINK_DL}<a href="{LINK_DL}" target="_blank">{LINK_DL_SHORT}</a>{else}&nbsp;{endif}</td>
+    <td><strong>Aktualisierung</strong></td>
+    <td {if NEW} class="error"{endif}>{datedrop(STAMP_UPDATE)}</td>
+  </tr>
+  
+  
+  
+  <tr>
+    <td valign="top">
+	 <p align="center">
+	  <input type="button" value="Als Script der Woche festlegen" onclick="popupfkt('settopscript&FK_SCRIPT={ID_SCRIPT_WORK}',400,400);" class="button">
+	 </p>
+	 {if topdays}
+	  Als Topscript eingetragen f&uuml;r:<br />
+	  <table>
+	   <tr>
+	    <th>Jahr</th>
+		<th>KW</th>
+		<th>Von / Bis</th>
+	   </tr>
+	   {topdays}
+	  </table>
+	 {endif}	</td>
+    <td>&nbsp;</td>
+    <td colspan="2" valign="top"><br />Zu diesem Script wurden <strong>{npic}</strong> Bilder hochgeladen.
+	 {if VKAT}<br /><span class="error">{htm(UNAME)} hat die Kategorie {htm(VKAT)} vorgeschlagen</span>{endif}
+	 <br /><a href="index.php?page=script_edit&ID_SCRIPT_WORK={ID_SCRIPT_WORK}" title="Bilder und Beschreibung bearbeiten">Script in der Vollansicht bearbeiten</a>	</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>Beschreibung (gro&szlig;) <a href="#" onclick="blender('disbig{ID_SCRIPT_WORK}'); return false;">auf/zu</a> </strong></td>
+    <td colspan="3"><div style="display: none; padding:10px; border:1px #000 dashed;" id="disbig{ID_SCRIPT_WORK}">{T1}</div></td>
+  </tr>
+  <tr class="footer">
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td align="right" valign="top"><span style="padding-top:10px;">
+      <input name="b1" type="button" value="Speichern" class="button" onclick="ajaxSubmit(document.getElementById('scrform{ID_SCRIPT_WORK}'),'index.php',0,false,'details{ID_SCRIPT_WORK}');" />
+    </span></td>
+  </tr>
+</table>
+</form> 

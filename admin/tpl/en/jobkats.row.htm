@@ -1,0 +1,9 @@
+<tr class="{if is_current}highlight{else}zeile{even}{endif}" style="height:17px">
+ <td style="height:17px;padding:0px;"><a style="cursor:pointer" onclick="popupfkt('jobkat_edit&ID_TREE_JOB={ID_TREE_JOB}',400,200);"><img src="gfx/btn.edit.gif" width="32" height="16"></a>
+ <a style="cursor:pointer" onclick="popupfkt('jobkat_del&ID_TREE_JOB={ID_TREE_JOB}',400,200);"><img src="gfx/btn.del.gif" width="32" height="16"></a>
+ <a style="cursor:pointer" onclick="popupfkt('jobkat_move&ID_TREE_JOB={ID_TREE_JOB}',500,400);"><img src="gfx/btn.move.gif" width="32" height="16"></a>
+ <a style="cursor:pointer" onclick="popupfkt('jobkat_copy&ID_TREE_JOB={ID_TREE_JOB}',400,200);">copy</a>
+ </td>
+ <td style="height:17px;padding:0px;text-align:center;"><a class="mv{if !VISIBILITY}0{endif}" href="index.php?page={curpage}&do={if VISIBILITY}hide{else}show{endif}&ID={ID_TREE_JOB}&ID_TREE_JOB={ACTIVE_NODE}" title="{if VISIBILITY}verstecken{else}Anzeigen{endif}"><img src="gfx/mv{even}.v{if VISIBILITY}1{else}0{endif}.gif"></a></td>
+ <td style="height:17px;padding:0px;">{if level == 1}<img src="gfx/path.3.png">{endif}{if endoftree}<img src="gfx/path.9.png">{else}<img src="gfx/path.11.png">{endif}<img src="gfx/path.20.png"><a href="index.php?page={curpage}&ID_TREE_JOB={ID_TREE_JOB}">&nbsp;{htm(V1)}</a>{if !is_current} ({htm(kidcount)}){endif}</td>
+</tr>

@@ -1,0 +1,37 @@
+<script language="JavaScript" type="text/javascript">
+<!--
+  function check_expired()
+  {
+    var ar = document.getElementsByName('chk[]');
+    for (var i=0; i<ar.length; i++) if (ar[i].id.match(/^exp/))
+      ar[i].checked = true;
+  }
+//-->
+</script>
+<h1>Nicht best&auml;tigte Newsletter-Anmeldungen</h1>
+<p>Hier sehen Sie alle Personen, welche sich in Ihren Newsletter- Verteiler eingetragen haben, und diese Anmeldung nicht best&auml;tigt haben. In der Regel sind dieses &quot;Spass- Anmeldungen. Sie sollten diese gelegentlich l&ouml;schen, um keinen &quot;Datenm&uuml;ll&quot; in der Datenbank zu sammeln.<br>
+(Best&auml;tigungszeitraum: {NLCONFIRMTIMEOUT})</p>
+{if liste}
+<form action="index.php" method="post" style="display:inline;">
+  <input type="hidden" name="page" value="{curpage}" />
+<table class="liste"><tr>
+  <th>Auswahl</th>
+  <th>Adresse</th>
+  <th>Sprache</th>
+  <th>Ablauf-Datum</th>
+</tr>{liste}<tr class="footer">
+  <td colspan="5">
+    Ausgew&auml;hlte Anmeldungen
+    <select name="do">
+      <option value="">-- Aktion w&auml;hlen --</option>
+      <option value="ok">best&auml;tigen</option>
+      <option value="rm">l&ouml;schen</option>
+    </select>
+    <input class="button" type="submit" value="Los" />
+    <br />
+    <button onClick="check_expired();">alle abgelaufenen markieren</button>
+    <input type="reset" class="button" value="Markierung entfernen" />
+  </td>
+</tr></table></form>{if browse}
+<table class="browse"><tr>{browse}</tr></table>{endif}{else}
+<div class="hinweis"><span class="error">Kein unbestätigten Eintr&auml;ge gefunden!</span></div>{endif}

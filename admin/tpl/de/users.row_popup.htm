@@ -1,0 +1,26 @@
+<tr{if !(i&1)} bgcolor="#FFFFFF"{endif}>
+<td>{ID_USER}</td>
+<td></td>
+<td></td>
+<td></td>
+
+  <td><a href="#" onclick="uebernehmen({ID_USER}, '{NAME}');" title="{htm(NAME)} als Autor &uuml;bernehmen!"><b>{NAME}</b></a>&nbsp;</td>
+  <td>
+    <a href="index.php?page=articles&quicksearch=1&FK_AUTOR={ID_USER}">{anzahl_ads}</a>
+</td>
+  <td>{VORNAME} {NACHNAME}&nbsp;</td>
+  <td>
+	{if OPEN && !FAELLIG}
+		{topreis(OPEN)} {CURRENCY_DEFAULT}
+	{endif}
+	{if FAELLIG}
+		<span class="error" title="&Uuml;berf&auml;llige Posten">
+			{topreis(FAELLIG)} {CURRENCY_DEFAULT}
+		</span>
+	{endif}
+</td>
+  <td>{EMAIL}</a>&nbsp;</td>
+ <td>{htm(USERGROUP)}</td>
+  <td style="text-align:center;"><a href="#" onclick="uebernehmen({ID_USER}, '{NAME}');" title="{htm(NAME)} als Autor &uuml;bernehmen!"><img src="gfx/uebernehmen.gif" width="16" height="16"  border="0"></a>&nbsp;
+  </td>
+</tr>

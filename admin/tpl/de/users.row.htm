@@ -1,0 +1,82 @@
+<tr{if !(i&1)} bgcolor="#FFFFFF"{endif}{if FAELLIG} class="faellig"{endif}>
+<td>
+	{ID_USER}
+</td>
+<td><img src="gfx/TOP_USER.{TOP_USER}.png" width="16" height="16" alt="Top User" /></td>
+<td><img src="gfx/TOP_SELLER.{TOP_SELLER}.png" width="16" height="16" alt="Top Seller" /></td>
+<td><img src="gfx/PROOFED.{PROOFED}.png" width="16" height="16" alt="gepüft" /></td>
+<td>{if ID_VENDOR}<img src="gfx/modul_profil.gif" />{endif}</td>
+<td>
+    <img src="{uri_baseurl(/gfx/lang.{ABBR}.gif)}" width="16" height="10" alt="" border="0">&nbsp;&nbsp;<b><a href="index.php?page=user_edit&ID_USER={ID_USER}">{NAME}</a></b>
+    <a title="&Ouml;ffentliches profil ansehen" href="{uri_baseurl(/marktplatz/view_user,{htm(NAME)},{ID_USER}.htm)}" target="_blank">(Profil)</a>
+    {if NOTIZEN}
+    <a onmouseover="setBlobText(this, '{js(NOTIZEN)}', true);" onmouseout="setBlobText(this, '', false);" style="cursor:pointer;">
+		<img src="{uri_baseurl(/bilder/notiz.gif)}" border="0">
+	</a>
+    {endif}
+    <br />
+    <small>
+        REG {todate(STAMP_REG)}
+        <br />
+        LA {todate(LASTACTIV)}
+    </small>
+</td>
+<td>
+    <a href="index.php?page=articles&quicksearch=1&FK_AUTOR={ID_USER}">{anzahl_ads}</a>
+</td>
+<td>
+    {VORNAME} {NACHNAME}&nbsp;
+</td>
+<td>
+	{if OPEN && !FAELLIG}
+		<a href="index.php?page=user_buchhaltung&ID_USER={ID_USER}">{topreis(OPEN)} {CURRENCY_DEFAULT}</a>
+	{endif}
+	{if FAELLIG}
+		<span class="error" title="&Uuml;berf&auml;llige Posten">
+			<a href="index.php?page=user_buchhaltung&ID_USER={ID_USER}">{topreis(FAELLIG)} {CURRENCY_DEFAULT} </a>
+		</span>
+	{endif}
+</td>
+<td>
+    <a href="mailto:{EMAIL}"><img src="gfx/mail.gif"> {EMAIL}</a>&nbsp;
+</td>
+
+<td>
+	{if STAT == 2 && FK_PACKET_RUNTIME}
+		<span style="font-size: 10px">
+            Mitgliedschaft:
+            <i>{htm(MEMBERSHIP_NAME)}</i>
+        </span>
+	{else}
+   		{htm(USERGROUP)}&nbsp;
+	{endif}
+    {if CODE}
+        <br />
+		<span class="error" style="font-size: 10px;">
+            Anmeldung unbestätigt!
+        </span>
+    {endif}
+</td>
+<td style="text-align:right;" nowrap="nowrap">
+    {if ID_USER>1}
+    	{if !STAT}
+    		<img src="gfx/locked.gif" width="16" height="16" alt="gesperrt" border="0">
+    	{endif}
+    	{if (STAT == 2) && !CODE}
+			<a href="#" onclick="unlock('{ID_USER}'); return false;">
+    			<img title="Nicht best&auml;tigt" src="gfx/not_confirmed.gif" width="16" height="16" alt="gesperrt" border="0">
+			</a>
+    	{endif}
+    	<a href="index.php?page=perm2user&ID_USER={ID_USER}">
+    		<img src="gfx/btn.lock.gif" width="16" height="16" alt="Nutzerrechte einsehen / bearbeiten" border="0" /></a><a href="index.php?page=user_edit&ID_USER={ID_USER}">
+    		<img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0" />
+    	</a>
+    	<a target="userlogin" href="{uri_baseurl(login.php?user={ID_USER}&sig={SIG})}" title="Als dieser Benutzer einloggen">
+   			<img src="gfx/btn.put.gif" width="16" height="16" alt="einloggen" border="0" />
+    	</a>
+    	<a href="index.php?page={curpagealias}&ID_USER={ID_USER}&do=rm" onClick="return confirm('Wirklich löschen?');">
+   			<img src="gfx/btn.del.gif" width="32" height="16" alt="l&ouml;schen" border="0" />
+    	</a>
+    {endif}&nbsp;
+</td>
+</tr>

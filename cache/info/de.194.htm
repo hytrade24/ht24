@@ -1,0 +1,14 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="194"{endif}>
+    <div class="alert alert-info">
+  <p class="lead">Veröffentlichen Sie Ihre Firmenevents</p>
+  <p>Ob Messetermine, Ausstellungen oder Märkte. Hier können Sie Ihren Termin publizieren</p>
+  <p>{if ID_USER}
+    <a href="{uri_action(my-events)}" class="btn btn-lg btn-red" type="button" target="_blank">Termin veröffentlilchen</a>
+  {else}
+    <a href="{uri_action(register)}" class="btn btn-lg btn-red" type="button" target="_blank">Jetzt Anmelden</a>
+  {endif}
+  </p>
+</div>
+<div class="advertisement-box">{adserver(,1783,)}</div>
+</div>

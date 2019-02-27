@@ -1,0 +1,14 @@
+<div class="design-search-row-item" style="width: {GROUP_WIDTH};">
+    <div class="design-search-group">
+        <h3 class="design-search-group-header">
+        {if GROUP_ID_FIELD_GROUP>0}
+            {htm(GROUP_V1)}
+        {else}
+            General information
+        {endif}
+        </h3>
+        <div class="design-search-group-content">
+            {fields}
+        </div>
+    </div>
+</div>

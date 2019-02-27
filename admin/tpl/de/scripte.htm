@@ -1,0 +1,139 @@
+
+<script type="text/javascript">
+ function ajaxOnOk()
+ {
+   alert('voller Erfolg');
+ }
+ 
+ onload = function()
+ {
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax{if FK_KAT}&ID_KAT={FK_KAT}{endif}',0,false,'kat_ajax');
+ };
+
+ function kat_auswahl(kat)
+ {
+   //alert(kat);
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax&ID_KAT='+kat+'&table=script',0,false,'kat_ajax');
+   if(kat)
+    document.getElementById('fkkat').value = kat;
+ } // kat_auswahl()
+ 
+ function blender(part)
+ {
+   div = document.getElementById(part);
+   neu = 'block';
+   if(div.style.display != 'none')
+     neu = 'none';
+   div.style.display = neu;
+ } //
+ 
+ function openAll()
+ {
+   for(i=0; i<ausblenden.length; i++)
+   {
+     dname = ausblenden[i];
+	 //alert(dname);
+	 div = document.getElementById(dname);
+	 div.style.display='block';
+   }
+ } // openAll
+ 
+ function showdetails(scr)
+ {
+   //alert(scr);
+   tr = document.getElementById('scr_'+scr);
+   //alert(tr.style.display);
+   tr.style.display = '';
+   ajaxSubmit(null,'index.php?frame=ajax&page=script_edit_ajax&ID_SCRIPT_WORK='+scr,0,false,'details'+scr);
+ } // showdetails()
+  
+</script>
+<h1>Scriptarchiv</h1>
+<p>Alle in Scripte aus der Datenbank. <a href="index.php?page=deadlinks" title="Zu den Deadlinks">Zu den gemeldeten Deadlinks</a></p>
+
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="{curpage}" />
+ <input type="hidden" name="FK_KAT" value="{FK_KAT}" id="fkkat" />
+ <table class="formTable">
+  <tr>
+   <td valign="top">
+ <table class="formTable" cellspacing="0">
+  <tr>
+    <th>Suche nach ID </th>
+    <td><input type="text" name="ID_SCRIPT" value="{ID_SCRIPT}" size="20" /></td>
+    <th>&nbsp;</th>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+   <th>Suche nach Name</th>
+   <td><input type="text" name="STR" value="{htm(STR)}" size="40" /></td>
+   <th>Suche nach User</th>
+   <td><input type="text" name="_NAME" value="{htm(_NAME)}" size="30" /></td>
+  </tr>
+  <tr>
+   <th>Freigabe</th>
+   <td>
+    <input type="checkbox" name="RED_" class="nob" value="1" {if RED_}checked{endif} /> User	
+    <input type="checkbox" name="ADM_" class="nob" value="2" {if ADM_}checked{endif}> Admin		
+    <input type="checkbox" name="ALL" class="nob" value="1" {if ALL}checked{endif} /> Alle anzeigen   </td>
+   <th>Kostenpflichtig</th>
+   <td><input type="radio" name="kosten" value="all" class="nob" {if kosten_all || !kosten} checked{endif} /> alle
+       <input type="radio" name="kosten" value="no" class="nob" {if kosten_no || !kosten} checked{endif} /> nur kostenlose
+       <input type="radio" name="kosten" value="yes" class="nob" {if kosten_yes || !kosten} checked{endif} /> nur kostenpflichtige   </td>
+  </tr>
+  <tr>
+   <th>Nur bezahlte Scripte anzeigen</th>
+   <td><input type="checkbox" name="PAID" value="1" class="nob" {if PAID} checked{endif} /> Ja</td>
+   <th>Deadlinks</th>
+   <td><input type="checkbox" name="DEAD" value="1" class="nob" {if DEAD} checked{endif} /></td>
+  </tr>
+  <tr>
+   <th>Sortieren nach</th>
+   <td><select name="orderby">{orders}</select></td>
+   <th>Auf-/absteigend</th>
+   <td><input type="radio" name="updown" value="ASC" class="nob" {if updown_ASC} checked{endif} /> aufsteigend
+       <input type="radio" name="updown" value="DESC" class="nob" {if updown_DESC || !updown} checked{endif} /> absteigend   </td>
+  </tr>
+ </table>
+  </td>
+  <td valign="top">
+   <div id="kat_ajax" style="width:200px; height:130px; overflow:auto;">Kategorien werden geladen ...</div>
+  </td>
+ </tr>
+ <tr class="footer">
+  <td colspan="4" align="right"><a href="index.php?page=scripte" title="Suche verwerfen">- alle anzeigen -</a>&nbsp;<input type="submit" value="Suchen" class="button" /></td>
+ </tr>
+</table>
+</form>
+<h2>Scriptliste</h2>
+{if liste}
+<!-- <form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}" />
+<input type="hidden" name="ACTION" value="UPDATE" />
+<input type="hidden" name="npage" value="{npage}" />
+<input type="hidden" name="S_ID" value="{S_ID}" />
+-->
+ <table class="liste" cellspacing="0" cellpadding0"0">
+  <tr>
+   <th style="vertical-align:bottom">Aktion</th>
+   <th style="vertical-align:bottom">User</th>   
+   <th style="vertical-align:bottom">Datum</th>
+   <th style="vertical-align:bottom">Scriptname</th>
+   <th style="vertical-align:bottom"><img src="tpl/role3.png" alt="user" title="User Freigabe" /></th>
+   <th style="vertical-align:bottom"><img src="tpl/role2.png" alt="admin" title="Admion Freigabe" /></th>   
+   <th style="vertical-align:bottom">Homepage</th>
+   <th style="vertical-align:bottom">DL</th>    
+   <th style="vertical-align:bottom">Kategorie</th>
+   <th style="vertical-align:bottom">Kommentare</th>
+   <th style="vertical-align:bottom">Letzter<br />Kommentar</th>   
+  </tr>
+  {liste}
+
+ </table>
+ {pager}
+<!-- </form> -->
+{else}
+ <p class="error">Keine Scripte gefunden</p>
+{endif}
+<p>&nbsp;</p>
+{subtpl(tpl/de/js_userbox.htm,*)}

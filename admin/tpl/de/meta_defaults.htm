@@ -1,0 +1,28 @@
+<h1>Metatag Defaults</h1>
+<p>Hier k&ouml;nnen Sie die Metatags hinterlegen, welche als Standard geladen werden, wenn eine neue Seite erstellen. </p>
+
+{if ok}
+ <h2 class="ok">Metadaten gespeichert!</h2>
+{endif}
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th>Hier bitte die Metadaten angeben</th>   
+  </tr>
+  <tr>
+   <td><textarea name="META" rows="10" cols="75">{htm(META)}</textarea>
+   
+   <p><strong>ACHTUNG</strong> : Wenn Sie das nachfolgenden Felder aktivieren, werden alle bestehenden Metatags überschrieben!!</p>
+   </td>
+  </tr>
+  <tr>
+  <td>
+  <input type="checkbox" value="1" name="navpages" /> Metatags für <strong>alle Seiten</strong> übernehmen! 
+  </td>
+  </tr>  
+  <tr class="footer">
+   <td align="right">  <input type="submit" name="senden" value="Speichern" class="button" /></td>
+  </tr>
+ </table>
+</form>

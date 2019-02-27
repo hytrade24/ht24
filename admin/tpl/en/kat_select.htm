@@ -1,0 +1,22 @@
+<script language="JavaScript" type="text/javascript">
+<!--
+  function katSend(id_kat, label)
+  {
+    //alert(id_kat+' '+label);
+	top.katRcv(id_kat, label);
+	//alert('huhu');
+  }
+//-->
+</script>
+<table width="100%" class="liste" cellpadding="0" cellspacing="0" border="0">
+<tr height="17">
+  <td>
+  <table class="pathtab" width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr height="17"{if ROOT_ID_KAT==ID_KAT} class="zeilex"{endif}>
+    <td width="19" height="17"><img src="gfx/path.{if baum}66{else}64{endif}.png" width="19" height="17" /></td>
+    <td nowrap>&nbsp;<a onClick="katSend({ROOT_ID_KAT:0},this.innerHTML);" target="_self" href="index.php?frame=iframe&page=kat_select">{ROOT_V1:Root}</td>
+  </tr>
+  </table>
+ </td>
+</tr>{baum}
+</table>

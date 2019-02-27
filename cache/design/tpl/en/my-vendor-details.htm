@@ -1,0 +1,87 @@
+<h1>Extra details</h1>
+
+{if NOTICE_SUCCESS || DO_SAVE}
+<p class="alert alert-success">
+    <strong>Form was saved..</strong>
+</p>
+{endif}
+
+{if errors}
+<div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Error!</h4>
+    <ul>
+        {errors}
+    </ul>
+</div>
+{endif}
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-vendor-nav.htm,*)}
+<form method="post" action="{uri_action(my-vendor-details,success)}" id="vendorFormular" enctype="multipart/form-data">
+    <input type="hidden" name="DO" value="SAVE" />
+
+    <div class="special-div">
+        {if vendor_details}
+            {vendor_details}
+        {else}
+            <div class="alert alert-danger">
+                No search fields have been defined yet.
+            </div>
+        {endif}
+    </div>
+
+    <input type="submit" value="Save vendor profile" class="btn btn-success pull-right visibleOnEnabledVendor" />
+</form>
+
+<script type="text/javascript">
+    function validateInputLive(input) {}
+    function validateInput(input) {}
+
+    jQuery(function() {
+        reloadVendorSearchWordList = function(el, l) {
+            jQuery.ajax({
+                url: ebiz_trader_baseurl + 'my-pages/my-vendor-searchword.htm',
+                data: { DO: 'GET', LANG: l },
+                type: 'POST',
+                success: function(result) {
+                    jQuery(el).html(result);
+                }
+            })
+        }
+
+        jQuery(".deleteVendorSearchWord").on('click', function() {
+            var word = jQuery(this).text();
+            var lang = jQuery(this).parent().parent().find("input[name=LANG]").val();
+
+            if(confirm("Do you really want to delete the keyword "+word+"?")) {
+                jQuery.ajax({
+                    url: ebiz_trader_baseurl + 'my-pages/my-vendor-searchword.htm',
+                    data: { DO: 'DELETE', SEARCHWORD: word, LANG: lang },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function(result) {
+                        reloadVendorSearchWordList('#vendorSearchList' + lang, lang);
+                    }
+                })
+            }
+
+            return false;
+        })
+
+        jQuery(".vendorSearchWordFormular").submit(function() {
+            var formular = this;
+            jQuery.ajax({
+                url: ebiz_trader_baseurl + 'my-pages/my-vendor-searchword.htm',
+                data: jQuery(this).serialize(),
+                dataType: 'json',
+                type: 'POST',
+                success: function(result) {
+                    jQuery(formular).find("input[name=SEARCHWORD]").val('');
+                    reloadVendorSearchWordList('#' + jQuery(formular).attr('id') + ' .vendorSearchList', jQuery(formular).find("input[name=LANG]").val());
+                }
+            })
+
+            return false;
+        })
+    })
+</script>

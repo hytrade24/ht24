@@ -1,0 +1,148 @@
+<script type="text/javascript">
+	function toggleKatContainer() {
+		jQuery(".ownKatTopContainer").toggle();
+		jQuery(".ownKatContainer").toggle();
+
+		return false;
+	}
+
+	$(function() {
+		$(".userContactAdd").click(function() {
+        	ShowDialog("{uri_action(my-contacts-add,{USER_ID_USER})}", "Kontakt hinzufügen", 400, 500);
+        	return false;
+        });
+    })
+</script>
+<div class="row" style="margin-bottom: 20px;">
+	
+    <div class="col-md-9 col-sm-12">
+        <div class="design-you-are-in">
+			<!--
+            <div class="pull-left general-text">
+                Sie befinden sich in:
+            </div>
+            <div class="pull-left">
+                {kat_ariadne_dynamic({VENDOR_MAIN_CATEGORY},vendor,,{VENDOR_ORT})}
+            </div>
+-->
+            <div class="clearfix"></div>
+        </div>
+
+        <h1>{VENDOR_FIRMA}</h1>
+        {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=vendor,FK={VENDOR_ID_VENDOR},TEMPLATE=small)}
+    </div>
+    <div class="col-md-3 col-sm-12" style="text-align: center; margin-bottom: 10px">
+        {if VENDOR_LOGO}<img src="{thumbnail(VENDOR_LOGO,195,300)}" />{else}<img src="{uri_resource(/images/marketplace/nopic_vendor.jpg)}" />{endif}
+    </div>
+</div>
+<div class="row vendor-tabs-row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs">
+            <li{if VENDOR_OPEN_PAGE_view_user_vendor} class="active"{endif}>
+                <a title="Adresse" href="{uri_action(view_user_vendor,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}">
+                    <i class="fas fa-map-marker"></i>
+                    <span class="name hidden-xs hidden-sm">Adresse</span>
+                </a>
+            </li>
+            <!---
+            {if VENDOR_AD_COUNT}
+            <li{if VENDOR_OPEN_PAGE_view_user} class="active"{endif}>
+                <a title="Produkte" href="{uri_action(view_user,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}">
+                    <i class="fa fa-cube"></i>
+                    <span class="name hidden-xs hidden-sm">Produkte</span>
+                    {if VENDOR_AD_COUNT}
+                        <span class="bracket">(</span>
+                        <span class="count">{VENDOR_AD_COUNT}</span>
+                        <span class="bracket">)</span>
+                    {endif}
+                </a>
+            </li>
+            {endif}
+            --->
+            {if USER_HAS_NEWS}
+            <li{if VENDOR_OPEN_PAGE_view_user_news} class="active"{endif}>
+                <a title="Blog" href="{uri_action(view_user_news,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}">
+                    <i class="fa fa-newspaper-o"></i>
+                    <span class="name hidden-xs hidden-sm">Blog</span>
+                    {if USER_HAS_NEWS}
+                        <span class="bracket">(</span>
+                        <span class="count">{USER_HAS_NEWS}</span>
+                        <span class="bracket">)</span>
+                    {endif}
+                </a>
+            </li>
+            {endif}
+            {if USER_JOBS_COUNT}
+            <li{if VENDOR_OPEN_PAGE_view_user_jobs} class="active"{endif}>
+                <a title="Jobs" href="{uri_action(view_user_jobs,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}">
+                    <i class="fa fa-hand-o-up"></i>
+                    <span class="name hidden-xs hidden-sm">Jobs</span>
+                    {if USER_JOBS_COUNT}
+                        <span class="bracket">(</span>
+                        <span class="count">{USER_JOBS_COUNT}</span>
+                        <span class="bracket">)</span>
+                    {endif}
+                </a>
+            </li>
+            {endif}
+            {if USER_EVENT_COUNT}
+            <li{if VENDOR_OPEN_PAGE_view_user_events} class="active"{endif}>
+                <a title="Veranstaltungen" href="{uri_action(view_user_events,{urllabel(VENDOR_FIRMA)},{USER_ID_USER})}">
+                    <i class="fa fa-calendar-o"></i>
+                    <span class="name hidden-xs hidden-sm">Veranstaltungen</span>
+                    {if USER_EVENT_COUNT}
+                        <span class="bracket">(</span>
+                        <span class="count">{USER_EVENT_COUNT}</span>
+                        <span class="bracket">)</span>
+                    {endif}
+                </a>
+            </li>
+            {endif}
+        </ul>
+    </div>
+</div>
+<div class="row icon-row">
+    <div class="col-md-12">
+        {if VENDOR_OPEN_PAGE_view_user}
+            <div class="icon-container pull-left">
+                <i class="fa fa-cube"></i>
+            </div>
+            <div class="pull-left desc-container">
+                <h3>Von {VENDOR_FIRMA} eingestellte Produkte & Dienstleistungen</h3>
+                <p>verfügbare Produkte</p>
+            </div>
+        {endif}
+        {if VENDOR_OPEN_PAGE_view_user_news}
+            <div class="icon-container pull-left">
+                <i class="fa fa-newspaper-o"></i>
+            </div>
+            <div class="pull-left desc-container">
+                <h3>Was gibt es neues von {VENDOR_FIRMA}</h3>
+                <p>hier erfahren sie es</p>
+            </div>
+        {endif}
+        {if VENDOR_OPEN_PAGE_view_user_jobs}
+            <div class="icon-container pull-left">
+                <i class="fa fa-hand-o-up"></i>
+            </div>
+            <div class="pull-left desc-container">
+                <h3>{VENDOR_FIRMA} Jobs</h3>
+                <p>Aktuelle Stellenangebote</p>
+            </div>
+        {endif}
+        {if VENDOR_OPEN_PAGE_view_user_events}
+            <div class="icon-container pull-left">
+                <i class="fa fa-calendar-o"></i>
+            </div>
+            <div class="pull-left desc-container">
+                <h3>Aktuelle Veranstaltungen</h3>
+                <p>Termine die nicht verpassen sollten</p>
+            </div>
+        {endif}
+    </div>
+</div>
+{if pager}
+    <div class="row pager-row">
+        <div class="col-md-12" style="padding-right: 0;">{pager}</div>
+    </div>
+{endif}

@@ -1,0 +1,58 @@
+<h1>{if !neu}Attribut-Gruppe bearbeiten{else}Attribut-Gruppe anlegen{endif}</h1>{if err}
+<div class="error">{err}</div><br />{endif}{if msg}
+<span class="error">{msg}</span><br /><br />{endif}
+{if neu || LFT>1}<table width="60%" class="liste" cellpadding="0" cellspacing="0" border="0"><tr height="17">
+  <td><strong>Aktionen</strong></td>
+  <td width="100%"><table class="pathtab" width="100%" cellpadding="0" cellspacing="0" border="0"><tr height="17">
+    <td width="19" height="17"><img src="gfx/path.66.png" width="19" height="17" /></td>
+    <td nowrap>&nbsp;<a onClick="return checkFlag()" href="index.php?page={htm(curpagealias)}">Root</label></td>
+  </tr></table></td>
+  <td nowrap><strong>zugeordnet zu</strong></td>
+</tr>{ahnen}</table><br />{endif}
+
+<form method="post" action="index.php" style="display:inline">
+  <input type="hidden" name="page" value="{htm(curpagealias)}" />
+  <input type="hidden" name="ID_ATTR_GROUP" value="{ID_ATTR_GROUP}" />
+  <input type="hidden" name="do" value="{if neu}ins{else}sv{endif}" />
+  <input type="hidden" id="tabno" name="tabno" value="" />
+<table width="100%" cellpadding="2" cellspacing="0" border="0" class="formTable">
+<tr>
+  <td><strong><label for="v1">Name</label>:</strong></td>
+  <td colspan="3"><input onChange="setFlag(true)" type="text" class="inputfull" name="V1" id="v1" maxlength="32" value="{htm(V1)}" /></td>
+</tr>{if ID_ATTR_GROUP && !neu}<tr valign="top">
+  <td><strong>Attribute:</strong></td>{if !attr}
+  <td colspan="3">Es wurden noch keine Attribute definiert.</td>{else}
+  <td colspan="3">
+    <table class="liste"><tr>
+      <th colspan="2">geerbt?</th>
+      <th>&nbsp;</th>
+      <th>*</th>
+      <th>?</th>
+      <th>Typ</th>
+      <th>Label</th>
+    </tr>{attr}</table>
+  </td>{endif}
+  <td width="100%"><div class="hinweisVar">
+    Einer Gruppe zugeordnete Attribute sind automatisch auch allen untergeordneten Gruppen zugeordnet.<br />
+    Die erste Spalte der Tabelle zeigt an, aus welcher Gruppe ein Attribut geerbt wurde.<br />
+    <br />
+    <b>*</b> als Pflichtfeld markieren<br />
+    <b>?</b> als Parameter zur Einschr&auml;nkung zulassen
+  </div></td>
+</tr>{endif}<tr>
+  <td>&nbsp;</td>
+  <td colspan="3"><input type="submit" value="{if neu}Attributgruppe erstellen{else}&Auml;nderungen speichern{endif}" class="button" /></td>
+</tr><tr class="footer">
+  <td colspan="4">&nbsp;</td>
+</tr></table></form>
+<br />
+<table class="liste" width="60%" cellpadding="0" cellspacing="0" border="0">{if !neu}<tr>
+  <td><strong>Aktionen</strong></td>
+  <td style="padding:0px"><table class="pathtab" cellpadding="0" cellspacing="0" border="0"><tr height="17" class="zeile0">{if level}
+    <td><img width="{calc(level*19)}" height="17" src="shim.gif" /></td>{endif}
+    <td><img width="19" height="17" src="gfx/path.{if kinder}11{else}9{endif}.png" /></td>
+    <td><img width="19" height="17" src="gfx/path.148.png" /></td>
+    <td nowrap>&nbsp;<a onClick="return checkFlag()" href="index.php?page={htm(curpagealias)}&ID_ATTR_GROUP={ID_ATTR_GROUP}&do=ins"><b>neue Unter-Gruppe erstellen</b></a></td>
+  </tr></table></td>
+  <td nowrap><strong>zugeordnet zu</strong></td>
+</tr>{endif}{kinder}</table></td></tr></table>

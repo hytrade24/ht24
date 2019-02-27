@@ -1,0 +1,20 @@
+{if liste_uploads}
+<ul class="nav nav-tabs">
+    <li class="active">
+        <a title="Downloads anzeigen" href="#tab_files" data-toggle="tab">Downloads anzeigen</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div id="tab_files" class="tab-pane active">
+        <table class="table table-bordered table-striped table-condensed">
+            <thead>
+            <tr>
+                <th>Dateiname</th>
+                <th>Dateityp</th>
+            </tr>
+            </thead>
+            {liste_uploads}
+        </table>
+    </div>
+</div>
+{endif}

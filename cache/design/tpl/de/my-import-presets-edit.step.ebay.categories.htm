@@ -1,0 +1,37 @@
+<h3>eBay Import - Kategorien zuordnen</h3>
+
+<p>
+  Bitte wählen Sie die Anzeigen, die Sie aus eBay übernehmen möchten.
+</p>
+
+{PLUGIN_INFO}
+
+{CATEGORY_MAPPING}
+
+<div class="form-actions text-right">
+    <form id="ebayCategoriesSubmit" method="get">
+        <input type="hidden" name="STEP" value="edit" />
+        <a href="{uri_action(my-import-process,{SOURCE_ID})}?STEP=init" class="btn btn-default">
+            Zurück
+        </a>
+        <button type="button" class="btn btn-primary">Weiter</button>
+    </form>
+</div>
+
+<script type="text/javascript">
+    
+jQuery("form .form-actions").remove();
+    
+jQuery(function() {
+    
+    jQuery("#ebayCategoriesSubmit button").click(function(event) {
+        event.preventDefault();
+        var form = jQuery("#importPresetEditorCategoryMappingForm");
+        jQuery.post( form.attr("action"), form.serialize(), function(result) {
+            jQuery("#ebayCategoriesSubmit").submit();
+        });
+    })
+    
+});
+    
+</script>

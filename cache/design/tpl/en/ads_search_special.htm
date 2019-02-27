@@ -1,0 +1,110 @@
+<div class="container-for-click-menu-item">
+    <div class="design-search-market design-search-{STYLE} design-subtpl">
+        <div class="loading" style="display: none;">Loading&#8230;</div>
+        <form class="design-search-market-form" id="adsSearch_{HASH}" method="post" action="{uri_action(presearch_ajax)}">
+            {if SEARCH_TYPE==1}
+            <input type="hidden" name="SEARCH_TYPE" value="1" />
+            {endif}
+            <input type="hidden" name="FK_KAT" value="{ID_KAT}" />
+            <input type="hidden" name="LATITUDE" value="{LATITUDE}" />
+            <input type="hidden" name="LONGITUDE" value="{LONGITUDE}" />
+            <input type="hidden" name="SEARCHURL" value="" />
+            {SEARCH_HIDDEN}
+
+            <div class="design-search-content">
+                {SEARCH_PREPEND}
+                {rows}
+                {SEARCH_APPEND}
+            </div>
+            <div class="design-search-footer">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <a class="btn btn-success btn-red btn-treffer-anzeigen disabled"
+                           href="#SearchFirst">
+                            Show hits ({ALL_ADS})
+                        </a>
+
+                        <a href="{uri_action({curpage},{ID_KAT})}"
+                           class="btn btn-default"
+                           style="margin-top: 15px;">show all</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        ^SUBTPL_ADMIN°
+    </div>
+</div>
+
+{startblock(script)}
+{parentblock()}
+{if tpl_limit_local(jsAutoCollapse)}
+<script type="text/javascript" src="{uri_resource(js/jqAutoCollapse.js)}"></script>
+{endif}
+{if tpl_limit_local(jsTwitterTypeahead)}
+<script type="text/javascript" src="{uri_resource(lib/twitter/typeahead.bundle.js)}"></script>
+{endif}
+<script type="text/javascript">
+
+    jQuery(function() {
+        jQuery("#adsSearch_{HASH}").ebizSearch();
+
+        var complete_form_elements = jQuery("#adsSearch_{HASH}");
+        var all_groups = complete_form_elements.find(".design-search-group-content");
+        jQuery.each(all_groups,function(index,obj) {
+            var obj_element = jQuery( obj ).prev();
+            obj_element.on("click",function() {
+                var element = jQuery(this).next();
+                var is_element_visible = element.is(":visible");
+
+                if ( is_element_visible ) {
+                    element.hide("slow");
+                    var icon = obj_element.find(".fa");
+                    icon.removeClass("fa-angle-down");
+                    icon.addClass("fa-angle-right");
+                }
+                else {
+                    element.show("slow");
+                    var icon = obj_element.find(".fa");
+                    icon.removeClass("fa-angle-right");
+                    icon.addClass("fa-angle-down");
+                }
+            });
+        });
+    });
+
+    function callback_func_for_presearch( response ) {
+
+        var container_click_menu_item = jQuery(".container-for-click-menu-item");
+        var btn_treffer_anzeigen = container_click_menu_item.find(".btn-treffer-anzeigen");
+
+        var element = jQuery(".design-page-content");
+        element.empty();
+        element.append( response.LIST );
+
+        if ( typeof response.COUNT ) {
+            btn_treffer_anzeigen.find(".count").html( "(" + response.COUNT + ")" );
+            btn_treffer_anzeigen.attr("href",response.SEARCHURL);
+        }
+    }
+
+</script>
+{SEARCH_SCRIPT}
+{endblock(script)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

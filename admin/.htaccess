@@ -1,0 +1,9 @@
+ErrorDocument 404 /404.php
+
+RewriteEngine off
+
+AddType "application/json;charset=UTF-8" .jsongz
+AddEncoding gzip .jsongz
+
+
+AddOutputFilterByType DEFLATE text/html text/xml text/css text/javascript application/json text/plain

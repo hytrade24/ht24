@@ -1,0 +1,21 @@
+
+					<tr class="zeile{even}">
+						<td>
+							{htm(V1)}
+						</td>
+						<td>
+							<input{if COUNT!=-1} class="enabled"{endif} id="edit{ID_USERGROUP}" name="PRICE[{ID_USERGROUP}]" onchange="priceToBrutto('edit{ID_USERGROUP}', {TAX_PERCENT});" value="{topreis(PRICE)}"{if PRICE==-1} disabled="disabled"{endif} style="width:100px;" />
+						</td>
+						<td>
+							<input{if COUNT!=-1} class="enabled"{endif} id="edit{ID_USERGROUP}_BRUTTO" name="PRICE_BRUTTO[{ID_USERGROUP}]" onchange="priceToNetto('edit{ID_USERGROUP}', {TAX_PERCENT});"{if PRICE==-1} disabled="disabled"{endif} style="width:100px;" />
+							<script type="text/javascript">
+								priceToBrutto('edit{ID_USERGROUP}', {TAX_PERCENT});
+							</script>
+						</td>
+						<td>
+							<label>
+								<input type="checkbox" id="disable{ID_USERGROUP}" name="PRICE[{ID_USERGROUP}]" onclick="UpdateDisabled({ID_USERGROUP});" value="-1"{if PRICE==-1} checked="checked"{endif} />
+								Deaktiviert
+							</label>
+						</td>
+					</tr>

@@ -1,0 +1,106 @@
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery("#kform").submit(function() {
+            var data = jQuery("#kform").serialize();
+            jQuery.ajax({
+                url: jQuery("#kform").attr('action'),
+                type: 'POST',
+                data: data,
+                success: function(result) {
+                    $('#modalDialogContent').html(result);
+                }
+            });
+
+            return false;
+        });
+
+    });
+
+</script>
+
+<form action="{uri_baseurl(/index.php)}" method="post" id="kform" class="form-horizontal design-request-contact">
+	<input type="hidden" name="page" value="ad_request_kontakt" />
+	<input type="hidden" name="frame" value="ajax" />
+	<input type="hidden" name="ID_AD_REQUEST" value="{ID_AD_REQUEST}" />
+	<input type="hidden" name="ID_KAT" value="{FK_KAT}" />
+	<input type="hidden" name="FK_USER" value="{FK_USER}" />
+
+    {if SENDED}
+        <div class="alert alert-success">
+            <p>
+                Ihre Nachricht wurde erfolgreich zugestellt!
+            </p>
+            <p>
+                <a href="#" class="btn btn-default" onclick="HideDialog(); return false;">
+                    Fenster schließen
+                </a>
+            </p>
+        </div>
+    {else}
+        <p class="lead">
+            Stellen Sie eine Frage zu &quot;{htm(PRODUKTNAME)}&quot;
+        </p>
+        {if err}
+            <div class="alert alert-danger">
+                <h2>
+                    Fehler aufgetreten!
+                </h2>
+                <p>
+                    {err}
+                </p>
+            </div>
+        {endif}
+        {if !ID_USER}
+            <p>
+                Sie sind nicht als Benutzer angemeldet. Bitte geben Sie Ihren Namen und Ihre Emailadresse an!
+            </p>
+
+            <div class="form-group">
+                <label class="control-label design-input-label">Ihr Name:</label>
+
+                <div class="design-input-field">
+                    <input class="form-control" type="text" name="SENDER" value="{htm(SENDER)}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label design-input-label">Ihre E-Mail Adresse:</label>
+
+                <div class="design-input-field">
+                    <input class="form-control" type="text" name="SENDER_MAIL" value="{htm(SENDER_MAIL)}"/>
+                </div>
+            </div>
+            {endif}
+
+            <div class="form-group">
+                <label class="control-label design-input-label">Betreff:</label>
+
+                <div class="design-input-field">
+                    <input class="form-control" type="text" name="SUBJECT" value="{htm(SUBJECT)}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label design-input-label">Ihre Nachricht:</label>
+
+                <div class="design-input-field">
+                    <textarea class="form-control" id="BODY" name="BODY" rows="10"></textarea>
+                </div>
+            </div>
+
+
+            {if !ID_USER}
+
+            <div class="form-group">
+                <div class="design-input-notice">
+                    <p><strong>Bitte beantworten Sie die Sicherheitsfrage:</strong></p>
+                    <label class="control-label">{question()}:</label>
+                    <input class="form-control" type="text" name="ANSWER"/>
+                </div>
+            </div>
+            {endif}
+
+            <p class="text-right">
+                <input type="submit" class="btn btn-default" value="Nachicht abschicken!">
+            </p>
+	    {endif}
+</form>

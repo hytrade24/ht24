@@ -1,0 +1,89 @@
+<script type="text/javascript">
+function thumb()
+{
+  dis = true;
+  //alert(document.forms[0].T_QUADRAT_T[0].checked);
+  if(document.forms[0].T_QUADRAT[0].checked == false)
+     dis = false;
+  document.forms[0].LU_RGBFARBE.disabled = dis; 
+}
+function chkThumb()
+{
+  val = 'none';
+  if(document.forms[0].B_THUMB.checked == true)
+    val = 'block';
+	//alert(val);
+  document.getElementById('thumbTable').style.display = val;
+}
+</script>
+<h1>{if ID_BILDFORMAT}Bildformat bearbeiten{else}
+Neues Format anlegen{endif}</h1>
+<p>
+Sie sollten Ihrem Format einen sinnvollen und eindeutigen Namen geben. Nur so k&ouml;nnen Sie sicherstellen, dass jeder Mitarbeiter versteht, welches Format er wann verwenden muss. Sie sollten immer ein Vorschaubild erstellen, um in der Bilddatenbank nicht den &Uuml;berblick zu verlieren. </p>
+{if err}
+<div class="hinweis"><span class="error">{err}</span></div>
+{endif}
+
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="bildformat_edit">
+<input type="hidden" name="ID_BILDFORMAT" value="{ID_BILDFORMAT}">
+<table>
+ <tr>
+  <td>
+<table class="formTable" cellspacing="0" width="100%">
+ <tr>
+  <td><strong>Name / Beschreibung</strong></td>
+  <td><input type="text" name="LABEL" value="{htm(LABEL)}" size="45"></td>
+ </tr>
+ <tr>
+  <td valign="top"><strong>Max. Breite</strong></td>
+  <td><input type="text" name="MAX_B" value="{htm(MAX_B)}" size="20"> Pixel
+  <br /><span class="notizSmall">Freilassen, um Originalgr&ouml;&szlig;e beizubehalten</span>
+  </td>
+ </tr>
+ <tr>
+  <td><strong>Max. H&ouml;he</strong></td>
+  <td><input type="text" name="MAX_H" value="{htm(MAX_H)}" size="20"> Pixel <br />
+  <span class="notizSmall">Freilassen um Originalgr&ouml;&szlig;e beizubehalten</span></td>
+ </tr>
+ <tr>
+  <td><strong>Vorschaubild erzeugen?</strong></td>
+  <td><input onclick="chkThumb()" type="checkbox" name="B_THUMB" value="1" class="nob" {if B_THUMB}checked="checked"{endif} /></td>
+ </tr>
+ <tr>
+</table>
+<div id="thumbTable" style="display:vlock">
+<table class="formTable" cellspacing="0" width="100%">
+  <td><strong>Max. Breite Vorschaubild</strong></td>
+  <td><input type="text" name="MAX_TB" value="{htm(MAX_TB)}" size="20"> Pixel</td>
+ </tr>
+ <tr>
+  <td><strong>Max. H&ouml;he Vorschaubild</strong></td>
+  <td><input type="text" name="MAX_TH" value="{htm(MAX_TH)}" size="20"> Pixel</td>
+ </tr>
+ <tr>
+  <td><strong>Auf Quadratform bringen?</strong></td>
+  <td><input onclick="thumb()" type="radio" name="T_QUADRAT" class="nob" value="0" {if T_QUADRAT_0}checked="checked"{endif} /> Nein
+  <input onclick="thumb()" type="radio" name="T_QUADRAT" class="nob" value="1" {if T_QUADRAT_1}checked="checked"{endif} /> Nur Vorschaubild
+  <input onclick="thumb()" type="radio" name="T_QUADRAT" class="nob" value="2" {if T_QUADRAT_2}checked="checked"{endif} /> Beide
+  </td>
+ </tr>
+ <tr>
+  <td><strong>Hintergrundfarbe</strong></td>
+  <td>{lookup(RGBFARBE)}</td>
+ </tr>
+</table>
+</div>
+<table class="formTable" cellspacing="0" width="100%"> 
+ <tr class="footer">
+  <td colspan="2" align="right"><input type="submit" value="Speichern" class="button"></td>
+ </tr>
+</table>
+  </td>
+ </tr>
+</table>
+</form>
+<script type="text/javascript">
+thumb();
+chkThumb();
+</script>

@@ -1,0 +1,34 @@
+<h1>{if ID_MAILVORLAGE_NOTIFICATION_GROUP}Benachrichtigungsgruppe {DESCRIPTION} bearbeiten{else}Neue Benachrichtigungsgruppe anlegen{endif}</h1>
+
+{if err}
+<div class="hinweis">
+	<span class="error">{err}</span>
+<div>
+{endif}
+{if ok}
+	<div class="hinweis"><span class="ok">Benachrichtigungsgruppe erfolgreich gespeichert</span></div>
+{endif}
+
+<form method="post" action="index.php">
+	<input type="hidden" name="page" value="{curpage}">
+	<input type="hidden" name="ID_MAILVORLAGE_NOTIFICATION_GROUP" value="{ID_MAILVORLAGE_NOTIFICATION_GROUP}">
+
+	<table class="formTable" cellspacing="0">
+		<tr>
+			<th><strong>Bezeichnung</strong>&nbsp;</th>
+			<td><input type="text" name="DESCRIPTION" value="{htm(DESCRIPTION)}"></td>
+		</tr>
+		<tr>
+			<th><strong>CC Empfänger (einer pro Zeile)</strong></th>
+			<td><textarea name="CC" rows="5">{htm(CC)}</textarea></td>
+		</tr>
+		<tr>
+			<th><strong>BCC Empfänger (einer pro Zeile)</strong></th>
+			<td><textarea name="BCC" rows="5">{htm(BCC)}</textarea></td>
+		</tr>
+
+		<tr class="footer">
+			<td colspan="2" align="right"><input type="submit" value="Speichern" class="button"></td>
+		</tr>
+	</table>
+</form>

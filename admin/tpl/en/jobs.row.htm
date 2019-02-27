@@ -1,0 +1,20 @@
+<tr class="zeile{even}">
+ <td><a onclick="showdetails({ID_JOB});" style="cursor:pointer;" title="Job bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16" alt="edit" /><img src="gfx/kommentare_open.gif"></a>
+  <a href="index.php?page=jobs&npage={npage}&ID_S={ID_S}&del={ID_JOB}" titel="Job löschen" onclick="return confirm('Wirklich löschen?');"><img src="gfx/btn.del.gif" width="32" height="16" alt="del" /></a>
+ </td>
+ <td align="center">{if ACTIVE}<span class="ok">&radic;</span>{else}<span class="error">x</span>{endif}</td>
+ <td align="center" class="ok">{if OK&1}&radic;{endif}&nbsp;</td>
+ <td align="center" class="ok">{if OK&2}&radic;{endif}&nbsp;</td>
+ <td><a href="index.php?page=job_edit_full&ID_JOB={ID_JOB}" title="Job bearbeiten">{htm(JOBTITLE)}</a></td>
+ <td><a id="b{NUMMER}" href="index.php?page=user_edit&ID_USER={FK_USER}" title="User bearbeiten"  name="{UNAME}">{htm(UNAME)}</a><div id="pb{NUMMER}" class="preview">Bitte warten ...</div></td>
+ <td>{todate(STAMP)}</td>
+ <td>{todate(STAMP_END)}</td>
+ <td align="right">{if N_BEWERBUNG}<a onclick="showBewerbung({ID_JOB});" style="cursor:pointer;" title="Bewertungen anzeigen">{N_BEWERBUNG} <img src="gfx/kommentare_open.gif"></a>{else}&nbsp;{endif}</td>
+ <td align="right">{topreis(HIGH)}.-</td>
+ <td align="right">{topreis(LOW)}.-</td> 
+ <td>{if WINNER}<a style="cursor:pointer;" onclick="popupfkt('user_edit&ID_USER={FK_USER2}',700,500);" title="Gewinner anzeigen">{htm(WINNER)}</a>{else}&nbsp;{endif}</td>
+ <td align="right">{if ENDPREIS}{topreis(ENDPREIS)}.-{else}&nbsp;{endif}</td>
+</tr>
+<tr id="scr_{ID_JOB}" class="zeile{even}" style="display:none;">
+ <td colspan="13"><div id="details{ID_JOB}"><h3>Bitte warten ...</h3></div></td>
+</tr>

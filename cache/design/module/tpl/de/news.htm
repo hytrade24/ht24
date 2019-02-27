@@ -1,0 +1,151 @@
+{startblock(script)}
+    {parentblock()}
+	<script type="text/javascript" src="{uri_resource(/lib/swiper/idangerous.swiper.min.js)}"></script>
+	<script type="application/javascript" src="{uri_resource(/lib/jqLoadImages/jqLoadImages.js)}"></script>
+	<script type="text/javascript" src="{uri_resource(/js/swiper-gallery.js)}"></script>
+	<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/swiper/idangerous.swiper.css)}" />
+	<script type="text/javascript">
+	
+	function neuerKommentar(button) {
+		mydiv = document.getElementById('new_comment');
+		if (mydiv.style.display != 'none') {
+			button.style.display = ""; 
+			neu = 'none';  
+		} else {
+			button.style.display = "none";
+			neu = 'block';
+		}
+		mydiv.style.display = neu;
+	} // neuer Kommentar
+		
+	</script>
+{endblock(script)}
+
+{if artikel_show}
+	{if V1}
+	<div class="design-news-article">
+		<div class="text-box design-location">
+			{kat_ariadne_dynamic({ID_KAT},news,{V1})}
+		</div>
+
+		<h1>{htm(V1)}</h1>
+		<p class="text-muted">
+			{todate(STAMP)} - <a href="{uri_action(view_user_vendor,{AUTORUNAME},{FK_AUTOR})}">{htm(AUTORUNAME)}</a>
+		</p>
+
+
+		<span class="lead">{V2}</span>
+		{T1}
+	</div>
+
+		{if comments_enabled}
+		<div class="generic-box-margin-bottom">
+			{subtpl(tpl/{SYS_TPL_LANG}/comment_standard_view.htm,ID_USER,TABLE=news,FK={ID_NEWS},LABEL={V1})}
+		</div>
+		{endif}
+		{if verwandt || LINKS}
+			<div class="row">
+				{if verwandt}
+				<div class="col-xs-12 {if LINKS}col-md-6{else}col-md-12{endif}">
+					<div class="panel panel-primary">
+						<div class="panel-heading">Verwandte Beiträge</div>
+
+						<div class="panel-body">
+							<ul class="list-unstyled">{verwandt}</ul>
+						</div>
+					</div>
+				</div>
+				{endif}
+				{if LINKS}
+				<div class="col-xs-12 {if LINKS}col-md-6{else}col-md-12{endif}">
+					<div class="panel panel-primary">
+						<div class="panel-heading">Links zum Artikel</div>
+
+						<div class="panel-body">
+							<ul class="list-unstyled">{LINKS}</ul>
+						</div>
+					</div>
+				</div>
+				{endif}
+			</div>
+		{endif}
+
+		{if liste}
+			<div class="tabbable">
+				<ul class="nav nav-tabs">
+					<li class="active"><a>Weitere Beiträge</a></li>
+				</ul>
+			</div>
+			<div class="design-row design-row-xs-1 design-row-sm-2">
+				{liste}
+			</div>
+
+			{pager}
+		{endif}
+	{else}
+		<h1>News</h1>
+		<p>Zurzeit befinden sich in dieser Kategorie keine News</p>
+	{endif}
+{else}
+	<h1>{if MODULNAVNAME}{MODULNAVNAME}{else}Aktuelles{if KATNAME} - {KATNAME}{endif}{endif}</h1>
+	<p class="lead">
+        Lesen Sie alle Neuigkeiten rund um die Branche und unseren Marktplatz
+    </p>
+
+<div class="row">
+    <div class="col-xs-12 col-md-8">
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=1,COUNT_PER_ROW=1,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES=0,TEMPLATE=row_big,CACHE_LIFETIME=102)}
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <h3>Mehr ...</h3>
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=6,COUNT_PER_ROW=1,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES=0,TEMPLATE=row_list,CACHE_LIFETIME=102)}
+    </div>
+</div>
+
+	<div class="text-box design-location">
+		<div class="design-ariande design-ariande-news">
+			<div class="row">
+				<div class="col-xs-8">
+					{kat_ariadne_dynamic({ID_KAT},news)}
+				</div>
+				<div class="col-xs-4 text-right text-muted">
+					{all} News
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="design-row design-row-xs-1 design-row-sm-2">
+		{liste}
+	</div>
+	{pager}
+{endif}
+{startblock(script)}
+{parentblock()}
+<script type="application/ld+json">
+		{kat_ariadne_dynamic_json_ld({ID_KAT},news,{V1})}
+</script>
+{if artikel_show}
+<script type="application/ld+json">
+		{
+			"@context": 		"http://schema.org",
+			"@type":			"NewsArticle",
+			"mainEntityOfPage": {
+				"@type":		"WebPage",
+				"@id":			"{siteurl}{REQUEST_URI}"
+			},
+			"headline": 		"{V1}",
+			"datePublished": 	"{STAMP}",
+			"dateModified":		"{STAMP}",
+			"author":			{
+				"@type":			"Person",
+				"name":				"{htm(AUTORUNAME)}"
+			},
+			"publisher":		{organization_data_json_ld()},
+			{if IMG}
+			"image":			{image_data_json_ld({IMG},1)}
+			{endif}
+		}
+</script>
+{endif}
+{endblock(script)}

@@ -1,0 +1,24 @@
+{if HAS_CHILDS}
+    <p>
+        Es sind Unterkategorien vorhanden! Was soll mit diesen geschehen?
+    </p>
+    <label>
+        <input type="radio" name="LEAVE_CHILDS"{if ARTICLES>0} onchange="DeleteElementUpdateWarning(this);"{endif} value="0" checked="checked" />
+        Unterkategorien ebenfalls löschen
+    </label>
+    <br />
+    <label>
+        <input type="radio" id="DEL_ELEMENT_LEAVE_CHILDS"{if ARTICLES>0} onchange="DeleteElementUpdateWarning(this);"{endif} name="LEAVE_CHILDS" value="1" />
+        Unterkategorien in übergeordnete Kategorie verschieben
+    </label>
+    <br />
+{endif}
+    <p id="DEL_ELEMENT_ARTICLE_WARNING" style="color: #800000;{if ARTICLES==0} display: none;{endif}">
+        <strong>Achtung!</strong> In dieser Kategorie sind noch <strong>{ARTICLES} Anzeigen</strong> vorhanden!
+        Möchten Sie die Kategorie <strong>{htm(CAT_V1)}</strong> inklusive aller Unterkategorien und Anzeigen wirklich löschen?
+    </p>
+    <p id="DEL_ELEMENT_ARTICLE_QUESTION"{if ARTICLES>0} style="display: none;"{endif}>
+        Möchten Sie diese Kategorie <strong>{htm(CAT_V1)}</strong> wirklich endgültig löschen?
+    </p>
+    <button onclick="moveTreeElements.onElementDelete({ID_CAT}, jQuery('#DEL_ELEMENT_LEAVE_CHILDS').prop('checked')); modalWindowLarge.close({ id: 'deleteElement' });">Löschen</button>
+    <button onclick="modalWindowLarge.close({ id: 'deleteElement' });">Abbrechen</button>

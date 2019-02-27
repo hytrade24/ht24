@@ -1,0 +1,54 @@
+<style type="text/css">
+    .unapproved { background: #e9b4b4 !important; }
+</style>
+
+{if err}
+<div class="hinweis">
+    <span class="error">{err}</span>
+</div>{endif}
+
+<h1><img src="gfx/rechte_64.gif" width="64" height="64" alt="" border="0" align="left" hspace="5" vspace="5"> Marktplatz Anbieter</h1>
+<p>Hier finden Sie eine Liste aller auf dem Marktplatz vorhandenen Clubs und können diese verwalten.</p>
+<p>Unter "<a href="index.php?page=options&selectplugin=MARKTPLATZ">Einstellungen</a>" können Sie verschiedenste Einstellungen vornehmen.</p>
+
+<form method="post">
+<table border="0" cellspacing="0" cellpadding="4" class="liste">
+    <tr>
+        <th colspan="6">
+            <label>
+                Nr.:
+                <input type="text" name="ID_VENDOR" value="{ID_VENDOR}" />
+            </label>
+            <label>
+                User:
+                <a href="#" onclick="popupfkt('users&frompopup=1','650','500');">
+                    <img src="gfx/users_16.gif" width="16" height="16" alt="user suchen" border="0" />
+                </a>
+                <input type="text" name="NAME_" value="{htm(NAME_)}" />
+            </label>
+            <label>
+                Inhalt:
+                <input type="text" name="TEXT" value="{htm(TEXT)}" />
+            </label>
+            <input type="submit" name="SEARCH" value="Suchen" />
+        </th>
+    </tr>
+    <tr>
+        <th>aktiv? / Aktionen</th>
+        <th>Nr.</th>
+        <th>Letztes Update</th>
+        <th>User</th>
+        <th>Firmenname</th>
+        <th>Ort</th>
+    </tr>
+    {liste}
+    <tr>
+        <td colspan="5">
+            {pager}
+        </td>
+    </tr>
+</table>
+</form>
+<p>
+    Anzahl der Anbieter : <b>{all}</b>
+</p>

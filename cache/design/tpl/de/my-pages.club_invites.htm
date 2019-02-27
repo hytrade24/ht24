@@ -1,0 +1,12 @@
+<tr>
+	<td title="Aktionen">
+		<a href="{uri_action(my-club,{FK_CLUB},accept)}" class="btn btn-sm btn-success">Akzeptieren</a>
+		<a href="{uri_action(my-club,{FK_CLUB},decline)}" class="btn btn-sm btn-danger">Ablehnen</a>
+	</td>
+	<td title="Club-Name">
+		{htm(CLUB_NAME)}
+	</td>
+	<td title="Datum der Einladung">
+		{todate(STAMP)}
+	</td>
+</tr>

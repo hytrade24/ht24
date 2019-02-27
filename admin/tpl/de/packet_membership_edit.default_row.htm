@@ -1,0 +1,11 @@
+<li>
+    {htm(V1)}{if B_ABO},
+        Laufzeit:
+        {RUNTIME}
+        {if CYCLE_DAY}Tag(e){endif}
+        {if CYCLE_WEEK}Woche(n){endif}
+        {if CYCLE_MONTH}Monat(e){endif}
+        {if CYCLE_QUARTER}Quartal(e){endif}
+        {if CYCLE_YEAR}Jahr(e){endif}
+    {endif}
+</li>

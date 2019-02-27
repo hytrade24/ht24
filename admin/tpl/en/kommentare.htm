@@ -1,0 +1,65 @@
+<h1>Kommentare administrieren</h1>
+
+<form action="index.php" method="post">
+  <input type="hidden" name="frame" value="content" />
+  <input type="hidden" name="npage" value="{npage}">
+  <input type="hidden" name="nav" value="{curnav}" />
+<table class="formTable" cellspacing="0">
+ <tr>
+  <th>Zeige Kommentare zu</th>
+  <td>
+   <select name="KOMM">
+    <option value="news" {if KOMM_news} selected{endif}>News</option>
+	<option value="tutorial" {if KOMM_tutorial} selected{endif}>Tutorials</option>
+	<option value="script" {if KOMM_script} selected{endif}>Scripte</option>
+	<option value="handbuch" {if KOMM_handbuch} selected{endif}>Handbuch</option>
+   </select>  </td>
+  <th>Sortiere nach</th>
+  <td><select name="ORDERBY">
+        <option value="NAME" {if ORDERBY_NAME} selected{endif}>User</option>
+		<option value="STAMP" {if ORDERBY_STAMP} selected{endif}>Datum</option>
+		<option value="ARTIKEL" {if ORDERBY_ARTIKEL} selected{endif}>Artikel</option>
+  	  </select></td>
+  <th>Reihenfolge</th>
+  <td><input type="radio" name="updown" value="ASC" class="nob" {if updown_ASC} checked{endif} /> aufsteigend<br />
+   <input type="radio" name="updown" value="DESC" class="nob" {if updown_DESC} checked{endif} /> absteigend
+  </td>
+ </tr>
+ <tr> 
+  <th>Suche nach User</th>
+  <td nowrap="nowrap"><a href="#" onclick="popupfkt('users&frompopup=1','650','500');"><img src="gfx/users_16.gif" width="16" height="16" alt="user suchen" border="0"></a> <input type="text" name="NAME_" value="{htm(NAME_)}" /><input type="hidden" name="FK_AUTOR" value="{FK_AUTOR}" /></td>
+  <th>Suchbegriff</th>
+  <td><input type="text" name="SEARCH" value="{htm(SEARCH)}" size="30" /></td>
+  <th>Suche nach ID (Artikel)</th>
+  <td><input type="text" name="FK" value="{htm(FK)}" size="20" /></td>
+ </tr>
+ <tr class="footer">
+  <td colspan="6" align="right"><input type="submit" value="Suchen" class="button" /></td>
+ </tr>
+</table>
+</form>
+
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Kommentar (gek&uuml;rzt)</th>
+  <th width="100">Datum</th>
+  <th width="75">Autor</th>
+  <th>Artikel</th>
+ </tr>
+ {if liste}
+  {liste}
+ {else}
+  <tr>
+   <td colspan="4" align="center" class="error">keine Kommentare gefunden</td>
+  </tr>
+ {endif}
+ {if pager}
+ <tr>
+   <td colspan="4">{pager}</td>
+ </tr>
+ {endif}
+</table>
+<br />
+<br />
+
+{subtpl(tpl/de/js_userbox.htm,*)}

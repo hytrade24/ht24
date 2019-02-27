@@ -1,0 +1,1 @@
+Dear Ladies and Gentlemen,<br /><br />A lead was recommended to you by {{ user.getDisplayName() }}.<br />{% if comments %} Personal message:<br />{{ comments|nl2br }} {% endif %}<br /><br />{% include "Hydromot::snippets/lead_info" %}

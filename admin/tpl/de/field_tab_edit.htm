@@ -1,0 +1,64 @@
+<div id="FTAB">
+	{if ID_FIELD_TAB}
+		<h1>Eingabe-Schritt {htm(V1)} bearbeiten</h1>
+	{else}
+		<h1>Neuen Eingabe-Schritt anlegen</h1>
+	{endif}
+	{if err}
+		<h2 class="error">Fehler aufgetreten!</h2>
+		<p class="error">
+			{err}
+		</p>
+	{endif}
+	{if ok}
+		<h2 class="ok">Gespeichert!</h2>
+	{endif}
+	<p>
+		Bitte beachten Sie dass der Name des Schritts auf der Webseite dargestellt wird!
+	</p>
+	<form method="post" action="index.php" id="ftab">
+		<input type="hidden" name="FK_TABLE_DEF" value="{ID_TABLE_DEF}" />
+		<input type="hidden" name="ID_FIELD_TAB" value="{ID_FIELD_TAB}" />
+		<input type="hidden" name="frame" value="ajax" />
+		<input type="hidden" name="page" value="{curpage}" />
+		<table class="formTable" cellspacing="0" cellpadding="0" width="100%">
+			<tr>
+				<th>
+					Name des Schritts
+				</th>
+				<td>
+					<input type="text" name="V1" value="{htm(V1)}" size="35" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					Kurzbeschreibung (optional)
+				</th>
+				<td>
+					<input type="text" name="V2" value="{htm(V2)}" size="35" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					Sortierreihenfolge (1 .. 10)
+				</th>
+				<td>
+					<input type="text" name="F_ORDER" value="{htm(F_ORDER)}" size="35" />
+				</td>
+			</tr>
+			{if ID_FIELD_TAB}
+				<tr>
+					<th style="vertical-align:top;">Gruppen-Auswahl:</th>
+					<td>
+						{g_list}
+					</td>
+				</tr>
+			{endif}
+			<tr class="footer">
+				<td colspan="2" align="right">
+					<input type="button" value="Speichern" class="button" onclick="save_tab();" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>

@@ -1,0 +1,157 @@
+<tr class="zeile{even}">
+	<td>
+     <input type="checkbox" class="checkboxArticleSelected" name="selected[]" value="{ID_ARTIKEL}" onchange="updateSelectedArticles(this);"{if IS_SELECTED} checked="checked"{endif} />
+  </td>
+	<td colspan="5" class="design-ad-list-user-actions design-action-buttons">
+		<div class="btn-group">
+			<a class="btn btn-default" href="{uri_action(my-marktplatz-neu,{ID_ARTIKEL})}">
+				<i class="glyphicon glyphicon-edit"></i>
+			</a>
+			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li>
+					<a title="Diese Anzeige ver&auml;ndern" href="{uri_action(my-marktplatz-neu,{ID_ARTIKEL})}">
+						<i class="glyphicon glyphicon-edit"></i>
+						Anzeige bearbeiten
+					</a>
+				</li>
+				{if CONFIRMED==1}
+				<li>
+					<a title="Diese Anzeige deaktivieren" onclick="return confirm('Anzeige wirklich deaktivieren?');" href="{uri_action(my-marktplatz,deactivate,{ID_ARTIKEL},{FK_KAT})}">
+						<i class="glyphicon glyphicon-pause"></i>
+						Anzeige deaktivieren
+					</a>
+				</li>
+				{endif}
+				<li>
+					<a title="Diese Anzeige verwenden, um ein neues (oder Kopie) Produkt einzustellen" href="{uri_action(my-marktplatz-disabled,recreate,{ID_ARTIKEL},{FK_KAT})}">
+						<i class="glyphicon glyphicon-share"></i>
+						Anzeige als Vorlage verwenden
+					</a>
+				</li>
+				{if CONFIRMED && TIMELEFT<8}
+				<li>
+					<a title="Anzeigenlaufzeit verl&auml;ngern" onclick="ExtendAd({ID_ARTIKEL},{FK_KAT});">
+						<i class="glyphicon glyphicon-time"></i>
+						Anzeige verlängern
+					</a>
+				</li>
+				{endif}
+				<li class="divider"></li>
+				{if AVAILABILITY}
+				<li>
+					<a title="Zum Verfügbarkeits-Kalender" href="{uri_action(my-marktplatz-neu,{ID_ARTIKEL})}#calendar">
+							<i class="glyphicon glyphicon-calendar"></i>
+							Verfügbarkeits-Kalender öffnen
+					</a>
+				</li>
+				{endif}
+				<li>
+					<a title="QR-Code zum Artikel" data-id="{ID_ARTIKEL}"
+						 onclick="marketShowQrCode(this);" href="#qrcode-{ID_ARTIKEL}">
+							<i class="glyphicon glyphicon-qrcode"></i>
+							QR-Code anzeigen
+					</a>
+				</li>
+			</ul>
+		</div>
+		<a title="Topanzeige schalten Ja/nein" style="cursor:pointer;" href="#top_ad_{ID_ARTIKEL}" onclick="TopAd({ID_ARTIKEL}); return false;" id="top_ad_{ID_ARTIKEL}" class="btn btn-default{if B_TOP==15} disabled{endif}">
+			<i class="glyphicon glyphicon-star{if B_TOP==0}-empty{endif}"></i>
+		</a>
+		{if ALLOW_COMMENTS_AD}
+		<div class="btn-group" id="comment_ad_{ID_ARTIKEL}">
+			<a class="btn {if ALLOW_COMMENTS}btn-info{else}btn-default{endif}" onclick="AdToggleComments({ID_ARTIKEL}); return false;" href="#" title="Kommentare aktivieren/deaktivieren">
+				<i class="glyphicon glyphicon-comment{if ALLOW_COMMENTS} design-icon-ad-comments-allowed{endif}"></i>
+				{if COMMENTS>0}{COMMENTS}{endif}
+			</a>
+			<button class="btn {if ALLOW_COMMENTS}btn-info{else}btn-default{endif} dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li class="activeOnDisabledComments"{if ALLOW_COMMENTS} style="display: none;"{endif}>
+					<a href="#" onclick="AdToggleComments({ID_ARTIKEL}); return false;">
+						<i class="glyphicon glyphicon-ok"></i> Kommentare aktivieren
+					</a>
+				</li>
+				<li class="activeOnEnabledComments"{if !ALLOW_COMMENTS} style="display: none;"{endif}>
+					<a href="#" onclick="AdToggleComments({ID_ARTIKEL}); return false;">
+						<i class="glyphicon glyphicon-remove"></i> Kommentare deaktivieren
+					</a>
+				</li>
+				<li>
+					<a href="{uri_action(my-marktplatz-comments,{ID_ARTIKEL})}">
+						<i class="glyphicon glyphicon-th-list"></i> <strong>{int(COMMENTS)} Kommentare</strong> anzeigen
+					</a>
+				</li>
+			</ul>
+		</div>
+		{endif}
+		<a class="btn btn-default" title="Anzeige löschen" href="{uri_action(my-marktplatz,deleteSingle,{ID_ARTIKEL},,{NPAGE})}" onclick="return confirm('Achtung! Soll diese Anzeige wirklich unwiderruflich gelöscht werden?');">
+			<i class="glyphicon glyphicon-remove"></i>
+		</a>
+		<a class="btn btn-default" onclick="get_statistics_for_product({ID_ARTIKEL},'by_day', '0', 'VIEW', '2017-05-26', '{DATE_END}')" href="javascript:;" title="Statistiken">
+			<i class="glyphicon glyphicon-stats"></i>
+		</a>
+		{if (VERKAUFSOPTIONEN==5)}
+		<br />
+		<a style="cursor: pointer;" onclick="ToggleBids({ID_ARTIKEL});" class="btn btn-default">
+			<i class="glyphicon glyphicon-eye-open"></i>
+			{BID_COUNT} Angebot(e)
+		</a>
+		{endif}
+  </td>
+	<td align="right" class="design-ad-list-user-id">
+		{ID_AD_MASTER}
+		{if NOTIZ}
+			<a id="NOTIZ_{ID_AD_MASTER}" class="js-popover" data-title="persönliche Notiz" data-content="{htm(NOTIZ)}" data-trigger="hover">
+				<img src="{uri_baseurl(/bilder/notiz.gif)}" />
+			</a>
+		{endif}
+	</td>
+	<td class="userAdImage design-ad-list-user-image">
+		<a href="{uri_action(marktplatz_anzeige,{ID_ARTIKEL},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+			{if IMPORT_IMAGES}{thumbnail_article_loader(#row-img-{ID_ARTIKEL},{ID_ARTIKEL},80,80,crop)}{endif}
+			<img src="{if !SRC_FULL}{uri_baseurl(/gfx/nopic.jpg)}{else}{thumbnail_article({ID_ARTIKEL},{SRC_FULL},80,80,crop)}{endif}" id="row-img-{ID_ARTIKEL}" data-watchlist="true" />
+		</a>
+	</td>
+	<td class="design-ad-list-user-name">
+		<a href="{uri_action(marktplatz_anzeige,{ID_ARTIKEL},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+			{htm(PRODUKTNAME)}
+		</a>
+		<br>
+		<span class="muted">Kategorie: <a href="{uri_action(my-marktplatz)}?FK_KAT={FK_KAT}" class="muted">{KAT}</a></span>
+		<br>
+		<div class="design-ad-stats-viewed" title="Anzeige {AD_CLICKS}x angesehen">
+			<i class="glyphicon glyphicon-eye-open"></i> {int(AD_CLICKS)} x angesehen
+		</div>
+		<div class="design-ad-stats-memorized" title="Anzeige {AD_REMINDER_COUNT}x gemerkt">
+			<i class="glyphicon glyphicon-star"></i> {int(AD_REMINDER_COUNT)} x gemerkt
+		</div>
+  </td>
+	<td>
+    {if CONFIRMED==1}
+			{if TIMELEFT<8}<strong style="color: #ff0000;">{TIMELEFT} Tag(e)</strong>
+		{else}
+			{TIMELEFT} Tage
+		{endif}
+	{else}
+		{if CONFIRMED==2}
+			<span class="text-error">Abgelehnt</span>
+			{if DECLINE_REASON}
+			<a href="#" data-toggle="tooltip" data-placement="left" data-html="true" title="" data-original-title="Ihre Anzeige wurde aus folgendem Grund abgelehnt:<br />{text(DECLINE_REASON)}">
+				<i class="glyphicon glyphicon-question-sign"></i>
+			</a>
+			{endif}
+		{else}
+			<b>Warte auf Freigabe durch einen Administrator</b>
+		{endif}
+	{endif}
+	</td>
+</tr>
+{if VERKAUFSOPTIONEN==5}
+<tr id="bids_{ID_AD_MASTER}" class="zeile{even} nohover" style="display: none;">
+	<td colspan="11" style="padding: 4px 4px 4px 32px;"></td>
+</tr>
+{endif}

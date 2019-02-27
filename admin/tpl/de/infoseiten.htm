@@ -1,0 +1,55 @@
+<h1>Infobereiche  f&uuml;r Ihr Portal</h1>
+<p>Infoseiten k&ouml;nen bei den Seiteneigenschaften angegeben werden.<br />
+Sie sind dienen dazu HTML Inhalte an jeder beliebigen Stelle zu verwenden.</p>
+<p><b>Achtung - das löschen von Infobereichen kann zu Fehler führen!!</b></p>
+
+{if SHOWTYPE}
+<h2>Hinweis</h2>
+<p>Diese Infobereiche können Sie in den <a href="index.php?page=m_kats">Kategorie-Einstellungen</a> auswählen. Eine Infobereich sollte immer nur einmal zugeordnet werden. Eine Ausnahme stellen Infobereiche ohne Plugins da. Z.B Textseiten oder Bildslider.</p>
+{endif}
+
+<div {if SHOWTYPE} class="reiterPassiv" {else} class="reiterAktiv" {endif}>
+		<a href="index.php?page=infoseiten&SHOWTYPE=0" title="Allgemeine">Allgemeine-Inforbereiche</a>
+	</div>
+<div {if SHOWTYPE} class="reiterAktiv" {else} class="reiterPassiv" {endif}>
+		<a href="index.php?page=infoseiten&SHOWTYPE=1" title="Kategorie">Kategorie-Inforbereiche</a>
+</div>
+    
+{if seiten}
+<table class="liste" cellspacing="0">
+    <tr>
+        <td colspan="5" align="right">
+
+
+            <form method="get" accept-charset="utf-8" action="index.php">
+                <input type="hidden" name="page" value="infoseiten">
+                <input type="hidden" name="SHOWTYPE" value="{SHOWTYPE}">
+
+
+
+                Typ: {lookup(INFO_BEREICHE,,,id="INFO_BEREICHE",,- Alle anzeigen -)}
+                <input type="submit" value="anzeigen" class="button">
+            </form>
+
+
+
+        </td>
+    </tr>
+ <tr>
+  <th>Aktionen</th>
+  <th>Art</th>
+  <th>Verwendet</th>
+  <th>Name</th>
+  {if !SHOWTYPE}<th>Template Code</th>{endif}
+  <th>Sprache</th>
+ </tr>
+{seiten}
+</table>
+<small>Klicken Sie auf <strong>Art</strong> (HTML oder TXT) um den Typ zu ändern</small>
+{else}
+<br />
+<div class="hinweis"><span class="error">Sie haben noch keine Infoseiten angelegt
+ <a href="index.php?page=infoseiten_edit">Neu anlegen</a></span></div>
+{endif}
+
+<p>&nbsp;</p>

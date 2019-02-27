@@ -1,0 +1,6 @@
+<li class="level{DEPTH} design-user-shop-kat{if CUR_KAT == ID_KAT} active{endif}" >
+    <a href="{uri_action(view_user,{htm(NAME)},{FK_USER},{ID_KAT},{urllabel(V1)})}" title="{htm(V2)}">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        {V1} {if ADS>0}({ADS}){endif}
+    </a>
+  </li>

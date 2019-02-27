@@ -1,0 +1,7 @@
+<tr class="zeile{even}">
+	<td>{todate(STAMP_ACTIVATE,1)}</td>
+	<td>{if STAMP_USAGE}{todate(STAMP_USAGE,1)}{else}---{endif}</td>
+	<td><a href="index.php?page=user_edit&ID_USER={FK_USER}">{USER_NAME} ({FK_USER})</a></td>
+	<td>{htm(COUPON_CODE)}</td>
+	<td>{if USAGE_STATE == 1}<em>eingegeben</em>{endif}{if USAGE_STATE == 2}<span class="ok">eingelöst</span>{endif}</td>
+</tr>

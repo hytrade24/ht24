@@ -1,0 +1,41 @@
+<h1>Interne Suchmaschine<br>
+Badwords / ausschießen von Suchwörter</h1><p>Die hier angegebenen Wörter werde bei der Suche <b>nicht</b> berücksichtigt</p>
+<table border="0">
+	<tr>
+		<td valign="top"><h2>Vorhandene Wörter <br>
+Summe:{all}</h2></td>
+<td>&nbsp;&nbsp;&nbsp;</td>
+		<td valign="top"><h2>Neue Wörter eintragen</h2></td>
+	</tr>
+	
+
+	<tr>
+		<td valign="top">
+		
+		
+		<p>Diese Wörter werden bereits ausgeschlossen</p>
+<table class="liste">
+<tr><td colspan="2">{pager}</td></tr>
+	<tr>
+		<th>&nbsp;</th>
+		<th>Wort</th>
+	</tr>
+{liste}
+<tr><td colspan="2">{pager}</td></tr>
+</table>
+
+
+</td><td>&nbsp;&nbsp;&nbsp;</td>
+		<td valign="top">
+		<p>geben Sie hier die neuen Badwords ein</p>
+		<form method="POST" action="index.php">
+<input type="hidden" name="page" value="searching_badword">
+<input type="hidden" name="do" value="add_badword">
+	<p><textarea rows="10" name="words" cols="18"></textarea>&nbsp;&nbsp;<input type="submit" value="eintragen" name="B1"></p>
+</form>
+		<p>Bitte nur 1 Wort pro Zeile!</p>
+		
+		
+		</td>
+	</tr>
+</table>

@@ -1,0 +1,62 @@
+<script type="text/javascript">
+	
+</script>
+
+<form action="{uri_baseurl(index.php)}?page=my-import-presets-edit&DO=SAVE_DATA" method="POST" class="form form-horizontal" id="importPresetEditorBasemappingForm" enctype="multipart/form-data"{if !BASEMAPPING_SPECIAL} onsubmit="return confirm('Bitte beachten Sie, dass nicht oder falsch zugewiesene Felder später zu fehlerhaften Imports führen können.')"{endif}>
+
+	{if FLASHMESSAGES}
+	<div class="alert alert-danger">{FLASHMESSAGES}</div>
+	{endif}
+	
+	{if BASEMAPPING_SPECIAL}{BASEMAPPING_SPECIAL}{endif}
+
+	<div class="design-import-preset-base-mapping">
+		<p>
+				In this step, you make an association between the product properties that you have configured on
+				one side in your source system and those of the marketplace. <br>
+				In the table below are shown in the left side all the basic fields of the marketplace
+				such as category, product name, etc. Now assign these fields either with information
+				from your source file (field mapping) or deposit fixed standard values.
+			</p>
+
+	
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>
+						Field / Article-description of the marketplace
+					</th>
+					<th>
+						Your assignment from the source file
+					</th>
+				</tr>
+			</thead>
+			{if TABLE_FIELDS}
+				{TABLE_FIELDS}
+			{else}
+				<tr>
+					<td colspan="2">
+						ERROR: No article-description was found. Please contact the page administrator
+					</td>
+				</tr>
+			{endif}
+		</table>
+	</div>
+	
+	{if TABLE_FIELDS}
+	<div class="form-actions text-right">
+		{if STEP_MAX>2}
+			<input type="submit" class="btn btn-primary" value="Weiter" data-action="loading-modal">
+			{if ID_IMPORT_PRESET}
+				<button class="btn btn-default" onclick="ipe.saveFormAndClose(); ">
+					Save and close
+				</button>
+			{endif}
+		{else}
+			<button class="btn btn-default" onclick="ipe.saveFormAndClose(); ">
+				Save and close
+			</button>
+		{endif}
+	</div>
+	{endif}
+</form>

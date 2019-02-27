@@ -1,0 +1,2 @@
+<p>Sehr geehrte Damen und Herren,</p>
+<p>{% if lead %} Sie haben eine neue Nachricht auf Hytrade24 bez&uuml;glich des Leads "{{ lead.title }}" mit dem Betreff "{{ chat.subject }}" erhalten. <br /><br /> <a href="{{ route('user_hydromot_leads_chat', { id: lead.id, chatId: chat.id }) }}"> Klicken Sie hier um die Nachricht zu lesen. </a> {% else %} Sie haben eine neue Nachricht auf Hytrade24 mit dem Betreff "{{ chat.subject }}" erhalten. <br /><br /> <a href="{{ route('user_index') }}"> Klicken Sie hier um die Nachricht zu lesen. </a> {% endif %}</p>

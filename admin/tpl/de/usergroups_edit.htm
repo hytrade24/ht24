@@ -1,0 +1,504 @@
+<script src="{uri_baseurl(/js/jquery.js)}" type="text/javascript"></script>
+<script src="{uri_baseurl(/js/jquery-ui.js)}" type="text/javascript"></script>
+<link rel="stylesheet" href="{uri_baseurl(/skin/jquery/jquery.css)}" />
+<script type="text/javascript">
+	jQuery.noConflict();
+
+	function add() {
+		jQuery('#add').dialog({
+			modal: true, 
+			width: 450,
+			height: 400,
+			title: 'Eintrag hinzufügen',
+			buttons: {
+				'Abbrechen': function() {
+					jQuery(this).dialog('destroy');
+				},
+				'Speichern': function() {
+					jQuery('#formular').submit();
+				}
+			}
+		});
+	}
+	
+	function delentry(id) {
+		jQuery('#ask').dialog({
+			title: 'Sind Sie sicher?',
+			modal: true,
+			buttons: {
+				'Abbrechen': function() {
+					jQuery(this).dialog('destroy');
+				},
+				'OK': function() {
+					window.location.href='index.php?page={curpage}&id={ID_USERGROUP}&del='+id;
+				}
+			}
+		});
+	}
+
+    function UpdateSelectedMembership(input) {
+        var option = jQuery(input).find("option:selected");
+        var paid = 0;
+        if (option.length > 0) {
+            paid = parseInt(option.attr("data-paid"));
+        }
+        var warning = jQuery(input).parent().find(".warningPaid");
+        if (paid == 1) {
+            warning.show();
+        } else {
+            warning.hide();
+        }
+    }
+
+	jQuery(function() {
+		jQuery('.jqButton').button();
+		{if err}
+			add();
+		{endif}
+		priceToBrutto('PROV_MAX', {TAX_PERCENT});
+        UpdateSelectedMembership(jQuery("input[name=FK_PACKET_RUNTIME_DEFAULT]"));
+	});
+</script>
+
+{if ok}
+	<div class="hinweis">
+		<span class="ok">Benutzergruppe erfolgreich angelegt/aktuallisiert</span>
+	</div>
+{endif}
+{if errors}
+	<div class="hinweis">
+		<p class="error">
+			{errors}
+		</p>
+	</div>
+{endif}
+{if editing}
+<h1>Benutzergruppe bearbeiten</h1>
+        <p>Hier können Sie das Verhalten der Benutzergruppen einstellen.</p>
+<div id="add" style="display:none;">
+	<form id="formular" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="ID_USERGROUP" value="{ID_USERGROUP}" />
+		
+		<h2>Neuer Eintrag</h2>
+		{if err}
+			<p class="error">Fehler aufgetreten! Provisionssatz oder Betrag sind bereits angelegt!</p>
+		{endif}	
+		<p>
+			Sie k&ouml;nnen beliebig viele Provisionss&auml;tze anlegen und diese staffeln. 
+			z.B. legen Sie einen Provisionssatz an 
+		</p>
+		<p>
+			<strong>&quot;Bis 20 {CURRENCY_DEFAULT} &gt; 3%&quot;.</strong>
+		</p>
+		<p>
+			Dann einen weiteren mit:
+		</p>
+		<p>
+			<strong>&quot;Bis 50 {CURRENCY_DEFAULT} &gt; 4%&quot;</strong> usw.
+		</p>
+		<table class="liste" cellspacing="0">
+			<tr>
+				<th>Provisionssatz</th>
+				<td>
+					<input type="number" name="PSATZ" min="0" max="100" step="0,01" value="{htm(PSATZ)}"> %
+				</td>
+			</tr>
+			<tr>
+				<th>
+					Soll berechnet werden ab einem Verkaufspreis von
+				</th>
+				<td>
+					<input type="text" name="PRICE" value="{htm(PRICE)}" size="15" /> {CURRENCY_DEFAULT}
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+{else}
+<h1>Neue Benutzergruppe hinzufügen</h1>
+{endif}
+
+<style type="text/css">
+    th {
+        text-align: left;
+        border: 0px #9A9A9A solid;
+
+    }
+    #base_info td {
+
+        border: 0px #9A9A9A solid;
+    }
+    #base_info th {
+        border: 0px #9A9A9A solid;
+    }
+    #base_info .liste td
+    {
+        background-position:0px 27px;
+        background-repeat:repeat-x;
+        border: 0px #9A9A9A solid;
+    }
+
+    #base_info table.liste {
+        border-spacing: 0;
+    }
+</style>
+<form method="post" enctype="multipart/form-data">
+<table cellspacing="0" class="liste" id="base_info">
+	<tr>
+		<th>Name der Gruppe:</th>
+		<td>
+			<input size="50"  name="V1" value="{htm(V1)}"/>
+		</td>
+	</tr>
+    <tr class="zeile0">
+		<th>
+			Öffentlich verfügbar:<br />
+			<span style="font-size: 10px; font-weight: normal;">
+				Legt fest ob diese Benutzergruppe im Martplatz sichtbar/verfügbar ist.<br>
+				Ist dieser Haken nicht gesetzt taucht diese Benutzergruppe z.B. nich in der Registrierung auf.
+			</span>
+		</th>
+		<td>
+            <label>
+                <input type="radio" id="IS_AVAILABLE_NO" name="IS_AVAILABLE" value="0" {if IS_AVAILABLE==0}checked="checked" {endif}/>
+                Ist nicht öffentlich verfügbar.
+            </label>
+            <br />
+            <label>
+                <input type="radio" id="IS_AVAILABLE_YES" name="IS_AVAILABLE" value="1" {if IS_AVAILABLE==1}checked="checked" {endif}/>
+                Ist öffentlich verfügbar.
+            </label>
+            <br />
+            <label>
+                <input type="radio" id="IS_AVAILABLE_MEMBER" name="IS_AVAILABLE" value="2" {if IS_AVAILABLE==2}checked="checked" {endif}/>
+                Ist nur für Mitglieder verfügbar.
+            </label>
+		</td>
+	</tr>
+    <tr class="zeile0">
+        <th>Startseite für die Benutzergruppe festlegen<br>
+        			<span style="font-size: 10px; font-weight: normal;">
+				Hier können Sie eine individuelle Startseite (Benutzer-Backoffice) definineren.
+                        {if FK_INFOSEITE}<a href="#nav569" class="button" onclick="popupfkt('infoseiten_edit&ID_INFOSEITE={FK_INFOSEITE}',1000,800);" title="LINKS - Startseite bearbeiten">bearbeiten</a>{endif}
+
+			</span>
+        </th>
+        <td>{select(infoseite,,,USETYPE='STD',,,Kein Infobereich)}</td>
+    </tr>
+    <tr class="zeile1">
+        <th>
+            Standard-Benutzergruppe:<br />
+			<span style="font-size: 10px; font-weight: normal;">
+				Wenn dieser Haken gesetzt werden neue Benutzer nach der Registrierung automatisch<br />
+				dieser Benutzergruppe zugewiesen.
+			</span>
+        </th>
+        <td>
+            <input type="checkbox" id="IS_DEFAULT" name="IS_DEFAULT" value="1" {if IS_DEFAULT}onchange="return false;" checked="checked" {endif}/>
+            <label for="IS_DEFAULT">Ist die Standard-Benutzergruppe.</label>
+        </td>
+    </tr>
+    <tr class="zeile0">
+        <th>
+            Standard-Mitgliedschaft:<br />
+			<span style="font-size: 10px; font-weight: normal;">
+				Mitgliedern dieser Benutzergruppe wird bei der Kündigung automatisch<br />
+				diese Mitgliedschaft zugewiesen. <a class="button" href="index.php?page=packet_membership" target="_blank">Mitgliedschaft</a>
+			</span>
+        </th>
+        <td>
+            <select name="FK_PACKET_RUNTIME_DEFAULT" onchange="UpdateSelectedMembership(this);">
+                <!--<optgroup label="Keine Mitgliedschaft">-->
+                    <option value="">Keine neue Mitgliedschaft zuweisen</option>
+                <!--</optgroup>-->
+                {list_memberships}
+            </select>
+            <div class="warningPaid error" style="display: none;">
+                <strong>Achtung!</strong> Standard-Mitgliedschaften sollten grundsätzlich kostenlos sein,
+                da diese ohne zutun des Benutzers gebucht werden!
+            </div>
+        </td>
+    </tr>
+    <tr class="zeile1">
+		<th>Grafik
+         <br />
+        <span style="font-size: 10px; font-weight: normal;">
+        Diese Grafik können Sie in der Anmeldung verwenden.<br /> Im Standard wird diese Grafik nicht verwendet.
+        </span>
+        </th>
+		<td>
+			{if editing}
+				<img src="{uri_baseurl(/cache/usergroups/{ID_USERGROUP}.png)}">
+			{else}
+				<img src="{uri_baseurl(/cache/usergroups/nopic.jpg)}">
+			{endif}
+			<br />
+			<input size="40" id="UPLOAD_IMAGE" name="UPLOAD_IMAGE" type="file">
+		</td>
+	</tr>
+    <tr class="zeile0">
+		<th>Privat/Gewerblich: <br />
+        <span style="font-size: 10px; font-weight: normal;">
+        Dieses Einstellung hat Auswirkung auf den Registriervorgang. <br />
+        Gewerbeliche müssen explizit Ihre gewerbesmäßige Tätigkeit bestätigen 
+        </span>
+        </th>
+		<td>
+			<label>
+				<input type="radio" name="PRIVATE" value="0" {if !PRIVATE}checked="checked" {endif}/>
+				Beides erlaubt
+			</label>
+			<br />
+			<label>
+				<input type="radio" name="PRIVATE" value="1" {if PRIVATE==1}checked="checked" {endif}/>
+				Nur Privat
+			</label>
+			<br />
+			<label>
+				<input type="radio" name="PRIVATE" value="2" {if PRIVATE==2}checked="checked" {endif}/>
+				Nur Gewerblich
+			</label>
+		</td>
+	</tr>
+    <tr class="zeile1">
+        <th>Anzeige einstellen:<br />
+        	<span style="font-size: 10px; font-weight: normal;">
+				Hier können Sie festlegen, welche Optionen dieser Benutzergruppe beim Einstellen von Anzeigen<br />
+                zur Verfügung stehen und welche Einstellung (falls deaktiviert) Standardmäßig verwendet werden soll.
+			</span> <br>
+            <a class="button" href="index.php?page=taxes" target="_blank">Mehrwertsteuer</a>
+        </th>
+        <td>
+            <br />
+            <label>
+                <b>Mehrwertsteuer-Einstellungen:</b><br />
+                <input type="checkbox" name="OPTIONS[AD_CREATE][MWST]" value="1" {if OPTIONS_AD_CREATE_MWST}checked="checked" {endif}/>
+                MwSt.-Einstellungen anzeigen
+            </label>
+            <br />
+            <br />
+            <label>
+                <b>Standard Mehrwertsteuer-Einstellung:</b><br />
+                <select name="OPTIONS[AD_CREATE][MWST_DEFAULT]">
+                    <option value="1"{if !OPTIONS_AD_CREATE_MWST_DEFAULT || OPTIONS_AD_CREATE_MWST_DEFAULT_1} selected="selected"{endif}>Preis enthält Mehrwertsteuer</option>
+                    <option value="2"{if OPTIONS_AD_CREATE_MWST_DEFAULT_2} selected="selected"{endif}>Privatverkauf</option>
+                    <option value="0"{if OPTIONS_AD_CREATE_MWST_DEFAULT_0} selected="selected"{endif}>Differenzbesteuerung nach §25a UstG</option>
+                </select>
+            </label>
+            <br />
+            <br />
+            <label>
+                <b>Pseudopreis-/Rabatt-Einstellungen:</b><br />
+                <input type="checkbox" name="OPTIONS[AD_CREATE][PSEUDOPREIS]" value="1" {if OPTIONS_AD_CREATE_PSEUDOPREIS}checked="checked" {endif}/>
+                Pseudopreis-/Rabatt-Einstellungen anzeigen
+            </label>
+            <br />
+        </td>
+    </tr>
+    <tr class="zeile0">
+        <th>B2B Gruppe:<br />
+        			<span style="font-size: 10px; font-weight: normal;">
+				Ist diese Eigenschaft aktiviert, so kann diese Benutzergruppe B2B Aktikel einstellen und sehen!<br />
+                Ist dieses Eigenschaft nicht aktiv, so kann die Benuzuergruppe nur öffentliche Artikel sehen
+			</span>
+        </th>
+        <td>
+            <label>
+                <input type="checkbox" name="BF_CONSTRAINTS[]" value="1" {if (BF_CONSTRAINTS&1)==1}checked="checked" {endif}/>
+                B2B
+            </label>
+        </td>
+    </tr>
+    <tr class="zeile1">
+		<th>Kurzbeschreibung:<br />
+        			<span style="font-size: 10px; font-weight: normal;">
+				Nur intern
+			</span></th>
+		<td>
+			<input name="V2" size="50" value="{htm(V2)}"/>
+		</td>
+	</tr>
+    <tr class="zeile0">
+		<th>Beschreibung:<br />
+        			<span style="font-size: 10px; font-weight: normal;">
+				Diese Beschreibung ist öffentlich sichtbar!
+			</span>
+        
+        </th>
+		<td>
+			<textarea rows="7" cols="50" name="T1">{htm(T1)}</textarea>
+		</td>
+	</tr>
+    <tr class="zeile1">
+		<th>
+			Manuelle Freischaltung:<br />
+			<span style="font-size: 10px; font-weight: normal;">
+				Wenn dieser Haken gesetzt ist m&uuml;ssen Benutzer dieser Gruppe<br /> 
+				nach der Registrierung vom Administrator freigeschaltet werden.
+			</span>
+		</th>
+		<td>
+			<input type="checkbox" id="UNLOCK_MANUAL" name="UNLOCK_MANUAL" value="1" {if UNLOCK_MANUAL}checked="checked"{endif} />
+			<label for="UNLOCK_MANUAL">Benutzer dieser Gruppe manuell freischalten.</label>
+		</td>
+	</tr>
+    <tr class="zeile0">
+		<th>
+			Prepaid:<br />
+			<span style="font-size: 10px; font-weight: normal;">
+				Extras und Anzeige-Packete/-Abos werden erst nach Zahlungseingang freigeschaltet.<br />
+				Andernfalls wird am Ende des Monats eine Rechnung generiert.
+			</span>
+		</th>
+		<td>
+			<input type="checkbox" id="PREPAID" name="PREPAID" value="1" {if PREPAID}checked="checked"{endif} />
+			<label for="PREPAID">Entgeldiche Features erst nach Zahlungseingang.</label>
+		</td>
+	</tr>
+	{if editing}
+    <tr class="zeile1">
+		<th>
+			Provisionseinstellungen:
+
+            <p>
+                {if !use_prov}
+                Provisionen sind derzeit <strong style="color: red">deaktiviert.</strong> <br>Um die Provisionsberechnung zu aktivieren,
+                klicken Sie bitte
+                <a href="index.php?page=market_settings" class="button"><b>hier</b></a>.
+                {else}
+                Die Provisionsabrechnung ist <strong style="color: red">aktiv.</strong> <br />Um sie zu deaktiveiren, klicken Sie bitte
+                <a class="button" href="index.php?page=market_settings"><b>hier</b></a>.
+                {endif}
+            </p>
+
+		</th>
+		<td>
+			{if OK}
+				<h2 class="ok">
+					Neuer Eintrag erfolgreich gespeichert!
+				</h2>
+			{endif}
+
+			<p>
+				<input onclick="add();" class="jqButton" type="button" value="+ Eintrag hinzufügen" />
+			</p>
+			
+			<table class="liste" cellspacing="0">
+				<tr>
+					<th>&nbsp;</th>
+					<th>
+						Provisionssatz			
+					</th>
+					<th>
+						Ab Verkaufspreis
+					</th>
+				</tr>
+				{if provs}
+					{provs}
+				{else}
+					<tr>
+						<td align="center" colspan="3" class="error">Keine Provisionss&auml;tze gespeichert!</td>
+					</tr>
+				{endif}
+			</table>
+			<div id="ask" style="display:none;">
+				<h2>Eintrag l&ouml;schen</h2>
+				<p>
+					Soll der Eintrag entfernt werden?
+				</p>
+			</div>
+		</td>
+	</tr>
+    <tr class="zeile0">
+		<th>
+			Provision sofort abrechnen:<br />
+			<span style="font-size: 10px; font-weight: normal;">
+				Anfallende Provisionen sofort in Rechnung stellen.
+				Anderenfalls werden diese gesammelt über den Rechnungslauf gestellt.
+			</span>
+		</th>
+		<td>
+			<label>
+				<input type="checkbox" id="PROV_PREPAID" name="PROV_PREPAID" value="1" {if PROV_PREPAID}checked="checked"{endif} />
+				Anfallende Provisionen sofort in Rechnung stellen
+			</label>
+		</td>
+	</tr>
+    <tr class="zeile1">
+		<th>
+			Provisions-Deckel (Netto):<br />
+			<span style="font-size: 10px; font-weight: normal;">
+				Maxiale Provision in {CURRENCY_DEFAULT}.
+				<strong>Preise sind Netto.</strong>
+			</span>
+		</th>
+		<td>
+			<input class="input-xlarge" id="PROV_MAX" name="PROV_MAX" onchange="priceToBrutto('PROV_MAX', {TAX_PERCENT});" value="{topreis(PROV_MAX,4)}"/>
+		</td>
+	</tr>
+    <tr class="zeile0">
+        <th>
+            Provisions-Deckel (Brutto):<br />
+			<span style="font-size: 10px; font-weight: normal;">
+				Maxiale Provision in {CURRENCY_DEFAULT}.
+				<strong>Preise sind Brutto.</strong>
+			</span>
+        </th>
+        <td>
+            <input class="input-xlarge" id="PROV_MAX_BRUTTO" name="PROV_MAX_BRUTTO" onchange="priceToNetto('PROV_MAX', {TAX_PERCENT});" />
+        </td>
+    </tr>
+    <tr class="zeile1">
+        <th>
+            Vertriebs-Provisions (Prozent):<br />
+			<span style="font-size: 10px; font-weight: normal;">
+				Provision in Prozent die für geworbene Neukunden ausgezahlt wird.<br />
+				<strong>(Bezieht sich auf den generierten Netto-Umsatz der geworbenen Benutzer)</strong>
+			</span>
+        </th>
+        <td>
+            <input type="number" step="0.1" max="100" class="input-xlarge" id="SALES_PROV" name="SALES_PROV" value="{SALES_PROV}"/>
+        </td>
+    </tr>
+    <tr class="zeile0">
+        <th>
+            Preisdarstellung:
+        </th>
+        <td>
+            <label>
+                <input type="radio" name="PRICE_NETTO" value="0"{if PRICE_NETTO==0} checked="checked"{endif} />
+                Brutto-Preise anzeigen
+            </label>
+            <br />
+            <label>
+                <input type="radio" name="PRICE_NETTO" value="1"{if PRICE_NETTO==1} checked="checked"{endif} />
+                Netto-Preise anzeigen
+            </label>
+        </td>
+    </tr>
+    <tr class="zeile1">
+		<th>
+			Rollenzuordnung:<br />
+			<span style="font-size: 10px; font-weight: normal;">
+				Nach der Registrierung wird dem Benutzer die ausgewählten Rollen zugewiesen<br />
+                Durch das Rollensystem bestimmen Sie den Zugriff auf bestimmte Seiten Ihres Marktplatzes.<br />
+                Sie können hier weitere <a class="button" href="index.php?page=role_edit" target="_blank">Rollen anlegen.</a>
+			</span>
+		</th>
+		<td>
+			{ROLES}
+		</td>
+	</tr>
+	{endif}
+	<tr class="footer">
+		<th colspan="2" style="text-align: right;">
+			{if editing}
+				<input type="hidden" name="ID_USERGROUP" value="{ID_USERGROUP}" />
+				<input type="submit" value="Änderung speichern" />
+			{else}
+				<input type="submit" value="Gruppe hinzufügen" />
+			{endif}
+		</th>
+	</tr>
+</table>
+</form>

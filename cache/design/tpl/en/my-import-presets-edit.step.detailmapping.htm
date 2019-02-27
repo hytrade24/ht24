@@ -1,0 +1,44 @@
+<script>
+
+</script>
+
+
+<form action="{uri_baseurl(index.php)}?page=my-import-presets-edit&DO=SAVE_DATA" method="POST" class="form form-horizontal" id="importPresetEditorDetailmappingForm" enctype="multipart/form-data" onsubmit="return confirm('Please remember, that errors may occur on imports because of non or wrong assigned fields.')">
+
+	{if FLASHMESSAGES}
+	<div class="alert alert-danger">{FLASHMESSAGES}</div>
+	{endif}
+	
+	{if DETAILMAPPING_SPECIAL}{DETAILMAPPING_SPECIAL}{endif}
+	
+	<div class="design-import-preset-detail-mapping">
+		<div >
+			<p>
+				<strong>Help:</strong>
+				On the step "Field assignment" you indicate more article-description to your source code.
+				The following fields are category-dependent article-descriptions with their assigned categories.
+				<br />
+				The individual article-descriptions will be grouped after their basic index. You can view the individual article indexes, if you
+				click the basic index in their blue highlighted boxes.
+
+			</p>
+		</div>
+	
+		{if TABLE_DEF_CONTENT}
+			<div class="accordion detailMappingTab" id="detailMappingContainer">
+				{TABLE_DEF_CONTENT}
+			</div>
+		{else}
+			<div class="alert alert-info">
+			There are no article properties on the marketplace. You can skip this step because of that
+			</div>
+		{endif}
+	</div>
+		
+	<div class="form-actions text-right">
+		<button type="submit" class="btn btn-primary">Next</button>
+		{if ID_IMPORT_PRESET}
+			<button class="btn btn-default" onclick="ipe.saveFormAndClose(); ">Save and close</button>
+		{endif}
+	</div>
+</form>

@@ -1,0 +1,8 @@
+<tr{if selectKey} data-select-key="{htm(selectKey)}"{endif}{if selectKeyJson} data-select-keys="{htm(selectKeyJson)}"{endif}>
+    {if selectable}
+    <td>
+        <input type="checkbox" />
+    </td>
+    {endif}
+    {cols}
+</tr>

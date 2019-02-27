@@ -1,0 +1,102 @@
+<label class="align-center" style="padding:0">
+    {if !BILLING_PRICE}
+        Kostenlos
+    {else}
+        {if CYCLE_ONCE}
+            Einmalig
+        {else}
+            {RUNTIME_NUM}
+
+            {if CYCLE_DAY}
+                {if RUNTIME_NUM==1}
+                    Tag
+                {else}
+                    Tage
+                {endif}
+            {endif}
+            {if CYCLE_WEEK}
+                {if RUNTIME_NUM==1}
+                    Woche
+                {else}
+                    Wochen
+                {endif}
+            {endif}
+            {if CYCLE_MONTH}
+                {if RUNTIME_NUM==1}
+                    Monat
+                {else}
+                    Monate
+                {endif}
+            {endif}
+            {if CYCLE_QUARTER}
+                {if RUNTIME_NUM==1}
+                    Quartal
+                {else}
+                    Quartale
+                {endif}
+            {endif}
+            {if CYCLE_YEAR}
+                {if RUNTIME_NUM==1}
+                    Jahr
+                {else}
+                    Jahre
+                {endif}
+            {endif}
+            Laufzeit
+        {endif}
+        <br>
+        <span id="packet-price-{ID_PACKET_RUNTIME}">
+        {if PRICE_NETTO}
+            {topreis_ex(BILLING_PRICE)}
+        {else}
+            {topreis_ex(BILLING_PRICE_BRUTTO)}
+        {endif}
+        </span>
+        {CURRENCY_DEFAULT}
+        {if !CYCLE_ONCE}
+            /
+            {if BILLING_FACTOR > 1}
+                {BILLING_FACTOR}
+            {endif}
+            {if CYCLE_DAY}
+                {if BILLING_FACTOR==1}
+                    Tag
+                {else}
+                    Tage
+                {endif}
+            {endif}
+            {if CYCLE_WEEK}
+                {if BILLING_FACTOR==1}
+                    Woche
+                {else}
+                    Wochen
+                {endif}
+            {endif}
+            {if CYCLE_MONTH}
+                {if BILLING_FACTOR==1}
+                    Monat
+                {else}
+                    Monate
+                {endif}
+            {endif}
+            {if CYCLE_QUARTER}
+                {if BILLING_FACTOR==1}
+                    Quartal
+                {else}
+                    Quartale
+                {endif}
+            {endif}
+            {if CYCLE_YEAR}
+                {if BILLING_FACTOR==1}
+                    Jahr
+                {else}
+                    Jahre
+                {endif}
+            {endif}
+        {endif}
+        {if PRICE_NETTO}
+            zzgl. {TAX_PERCENT}% MwSt
+        {endif}
+    {endif}
+</label>
+<br>

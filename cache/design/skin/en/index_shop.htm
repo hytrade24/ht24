@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{strip_tags(pagetitle)} {if newstitle}- {newstitle}{endif} {site_name}</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+	{subtpl(tpl/{SYS_TPL_LANG}/header_scripts.htm,*)}
+
+	<base target="_parent" />
+</head>
+<body>
+	{content}
+	<iframe id="ajaxframe" src="about:blank" width="0" height="0"></iframe>
+	{startblock(script)}
+     {parentblock()}
+     <!-- Javascript includes -->
+	{endblock(script)}
+</body>
+</html>

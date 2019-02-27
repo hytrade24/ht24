@@ -1,0 +1,17 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="219"{endif}>
+    <div class="row">
+    <div class="col-xs-12 col-md-4">
+        <h3 class="user-heading">Presented</h3>
+       {subtpl(tpl/{SYS_TPL_LANG}/slider_ads_top.htm,ID_KAT={ID_KAT},MAX_PER_PAGE=1,MAX_PAGES=3,INTERVAL=5000,HIDE_INDICATOR=1)}
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <h3 class="user-heading">Forum Topics</h3>
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_group_list.htm,ID_KAT={ID_KAT},ID_CLUB={ID_CLUB},COUNT=1,COUNT_PER_ROW=1,CACHE_LIFETIME=102)}
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <h3 class="user-heading">Different</h3>
+        {subtpl(tpl/{SYS_TPL_LANG}/recent_news_list.htm,ID_KAT={ID_KAT},COUNT=1,COUNT_PER_ROW=1,SHOW_PREVIEW_IMAGE=1,SHOW_TYPES,TEMPLATE=row,CACHE_LIFETIME=102)}
+    </div>
+</div>
+</div>

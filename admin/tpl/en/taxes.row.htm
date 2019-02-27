@@ -1,0 +1,13 @@
+<tr class="zeile{even}">
+	<td>
+		<a href="index.php?page=taxes&del={ID_TAX}" title="Eintrag löschen" onclick="return confirm('Sind Sie sicher, dass der eintrag gelöscht werden soll?');">
+			<img src="gfx/btn.del.gif" width="32" height="16" alt=delete" />
+		</a>
+	</td>
+	<td>
+		<input name="TAX_VALUE[{ID_TAX}]" type="text" value="{htm(TAX_VALUE)}" size="10" title="Mehrwertsteuersatz" />
+	</td>
+	<td>
+		<input name="TXT[{ID_TAX}]" type="text" value="{htm(TXT)}" size="35" title="Beschreibung" />
+	</td>
+</tr>

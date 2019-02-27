@@ -1,0 +1,142 @@
+<script src="{uri_baseurl(/sys/ajax/JsHttpRequest.js)}"></script>
+<script src="{uri_baseurl(/sys/ajax/kernel.js)}"></script>
+<script type="text/javascript">
+ function ajaxOnOk()
+ {
+   alert('voller Erfolg');
+ }
+ 
+ onload = function()
+ {
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax&table=tutorial{if FK_KAT}&ID_KAT={FK_KAT}{endif}',0,false,'kat_ajax');
+ };
+
+ function kat_auswahl(kat)
+ {
+   ajaxSubmit('test','index.php?frame=ajax&page=katselectajax&ID_KAT='+kat+'&table=tutorial',0,false,'kat_ajax');
+   if(kat)
+    document.getElementById('fkkat').value = kat;
+ } // kat_auswahl()
+ 
+ function blender(part)
+ {
+   div = document.getElementById(part);
+   neu = 'block';
+   if(div.style.display != 'none')
+     neu = 'none';
+   div.style.display = neu;
+ } //
+ 
+ function openAll()
+ {
+   for(i=0; i<ausblenden.length; i++)
+   {
+     dname = ausblenden[i];
+	 //alert(dname);
+	 div = document.getElementById(dname);
+	 div.style.display='block';
+   }
+ } // openAll
+  
+</script>
+{if preview}
+<h1>Vorschau des Tutorials</h1>
+{preview}
+{endif}
+<h1>Tutorial bearbeiten</h1>
+<form name="ARTIKEL" method="post" action="index.php">
+  <input type="hidden" name="page" value="{curpage}" />
+  <input type="hidden" name="ID_TUTORIAL" value="{ID_TUTORIAL}">
+  <input type="hidden" name="FK_KAT" id="fk_kat" value="{FK_KAT}" />
+  {if err}
+  <h2 class="error">Fehler aufgetreten!</h2>
+  <p class="error">{err}</p>
+  {endif}
+  {if SAVED == 1}
+  <h2 class="ok">Änderungen erfolgreich gespeichert!</h2>
+  {endif}
+  <table>
+   <tr>
+    <td valign="top">
+  <table cellspacing="0" class="formTable">
+    <tr>
+      <th>Online Version </th>
+      <td>
+	   {if ONLINE == 3}<strong><a href="{uri_baseurl(/tutorials/tutorial,{ID_TUTORIAL},{urllabel(titel)}.htm)}" title="auf php-resource ansehen" target="_blank">Ansehen</a></strong>{else}<span class="error">nicht online!</span>{endif}
+	  </td>
+      <th rowspan="5" valign="top"><strong>Kategorie</strong>
+	  <div id="kat_ajax" style="width:320px; height:140px; overflow:auto;">Bitte warten - die Kategorien werden geladen ...</div></th>
+    </tr>
+    <tr>
+      <th>User</th>
+      <td><a style="cursor:pointer;" onclick="popupfkt('user_edit&ID_USER={FK_USER}',700,500);" title="Zum Profil von {htm(UNAME)}">{htm(UNAME)}</a></td>
+    </tr>
+    <tr>
+      <th>Freigabe</th>
+      <td><input type="checkbox" class="nob" name="OK[]" {if OK&1}checked {endif}value="1"  /> User 
+   <input type="checkbox" class="nob" name="OK[]" {if OK&2}checked {endif}value="2" /> Admin  
+    {if ONLINE == 3}<br /><input type="checkbox" name="KICK" value="1" class="nob" /> Online Version deaktivieren{endif}
+   </td>
+    </tr>
+    <tr>
+      <th>Datum</th>
+	  <td nowrap>{datedrop(idate)}</td>
+    </tr>
+    <tr>
+      <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+      <th colspan="2">Titel</th>
+      <td><input type="text" name="titel" value="{htm(titel)}" size="45" /></td>
+    </tr>
+    <tr>
+      <th colspan="3">Beschreibung</th>
+    </tr>
+    <tr>
+      <td colspan="3"><textarea name="discription" rows="4" cols="70">{htm(discription)}</textarea></td>
+    </tr>
+	{if BILDER}
+    <tr>
+      <td colspan="3">	   
+	   <h3>Bilder zu diesem Tutorial</h3>
+	   <ul style="margin:0px;padding:0px;list-style-type:none;">
+	    {BILDER}
+	   </ul>
+	  </td>
+    </tr>
+	{endif}
+    <tr>
+      <td colspan="3"><textarea name="tutorial" cols="70" rows="20">{htm(tutorial)}</textarea>      </td>
+    </tr>
+    <tr class="footer">
+      <td colspan="3" align="right"><input class="button" type="submit" value="Vorschau" name="vorschau">
+        <input  type="submit" class="button" value="Speichern" name="save"></td>
+    </tr>
+  </table>
+    </td>
+	<td valign="top">
+	 <table class="formTable" cellspacing="0">
+	  <tr>
+	   <th>Klicks bisher</th>
+	   <td>{KLICKS}</td>
+	  </tr>
+	  <tr>
+	   <th>Eingestellt am</th>
+	   <td>{todate(idate)}</td>
+	  </tr>
+	  <tr>
+	   <th>Aktualisiert am</th>
+	   <td>{todate(STAMP_UPDATE)}</td>
+	  </tr>	  
+	 </table>
+	 <br />
+	 <table class="liste" cellspacing="0">
+	  <tr>
+	   <th>Weitere Tutorials von {htm(UNAME)}</th>
+	  </tr>
+	  {weitere}
+	 </table>
+	</td>
+   </tr>
+  </table>
+</form>

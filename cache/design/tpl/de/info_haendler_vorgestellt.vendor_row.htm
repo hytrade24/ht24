@@ -1,0 +1,16 @@
+<div class="design-row-item">
+{if DISPLAY_ADS>0}
+	<div class="row">
+		<div class="col-sm-3">
+			{subtpl(tpl/{SYS_TPL_LANG}/info_haendler_vorgestellt.vendor_box.htm,*)}
+		</div>
+		<div class="col-sm-9">
+			<div data-hide-when-empty="true">
+				{subtpl(tpl/{SYS_TPL_LANG}/ads_user.htm,ID_USER={VENDOR_USER_ID},COUNT={DISPLAY_ADS},COUNT_PER_ROW={DISPLAY_ADS},HIDE_PARENT=1)}
+			</div>
+		</div>
+	</div>
+{else}
+	{subtpl(tpl/{SYS_TPL_LANG}/info_haendler_vorgestellt.vendor_box.htm,*)}
+{endif}
+</div>

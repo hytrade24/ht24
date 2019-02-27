@@ -1,0 +1,12 @@
+<div class="product-image">
+  <input type="hidden" name="IMPORT_IMAGES[]" value="{htm(URL)}" />
+  <img src="{thumbnail({URL},80,80,crop)}" />
+  <br />
+  <a href="#default" onclick="jQuery(this).closest('.product-image-list').prepend( jQuery(this).closest('.product-image').detach() );">
+    Als Standardbild
+  </a>
+  <br />
+  <a href="#delete" onclick="if (confirm('Produktbild wirklich löschen?')) jQuery(this).closest('.product-image').remove();">
+    Löschen
+  </a>
+</div>

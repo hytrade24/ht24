@@ -1,0 +1,27 @@
+<td class="align-center{if COUPON_MEMBERSHIP} coupon-membership{endif}" style="width: {calc(100/NUMBER_OF_COLS)}%">
+    {if TYP_N == 0}<h5>{V1}</h5>{endif}
+    {if TYP_N == 1}<p class="text-muted">{V1}</p>{endif}
+    {if TYP_N == 2}
+        {if V1 == -1}
+            <i class="glyphicon glyphicon-ok-sign" onmouseover="setBlobText(this, 'In der Mitgliedschaft sind {PACKET_NAME} als Flatrate enthalten', true, 'Flatrate');" onmouseout="setBlobText(this, '', false);"></i>
+        {else}
+            {if V1 == 0}
+            {else}
+                {V1}
+            {endif}
+        {endif}
+        {if !IS_FREE && ABO_PACKET}
+            <span class="text-muted">(im Abo*)</span>
+        {endif}
+    {endif}
+    {if TYP_N == 3}
+        {V1}
+    {endif}
+    {if TYP_N == 4}
+        <input type="hidden" name="FK_USERGROUP_{ID_PACKET}" id="FK_USERGROUP_{ID_PACKET}"  value="{ID_USERGROUP}">
+        <a href="#" onclick="registerSelectPacket({ID_PACKET}, this, {PRIVATE}); return false;" class="btn btn-success registerMembershipButton disabled" id="registerMembershipButton-{ID_PACKET}">Paket auswählen</a>
+    {endif}
+    {if TYP_N > 4}
+        {V1}
+    {endif}
+</td>

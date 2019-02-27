@@ -1,0 +1,40 @@
+<div class="design-sale-list design-subtpl">
+  <script type="text/javascript">
+    
+    function showOrderDetails(orderId) {
+      location.href = '{uri_action(sale_details_seller)}?ID_AD_ORDER='+orderId;
+    }
+    
+  </script>
+  <table class="table table-bordered table-striped table-condensed userList">
+    <thead>
+      <tr>
+        <th>Order-Nr.</th>
+        <th>Date</th>
+        <th>Customer</th>
+        <th>Shipping status</th>
+        <th>Payment status</th>
+        <th>Products</th>
+        <th class="text-right">Total amount</th>
+    
+        {if use_prov}
+        <th class="text-right">
+          Commission
+        </th>
+        {endif}
+      </tr>
+    </thead>
+    <tbody>
+      {if orders}
+        {orders}
+      {else}
+      <tr>
+        <td colspan="8">
+          Did not found any matching sales.
+        </td>
+      </tr>
+      {endif}
+    </tbody>
+  </table>
+  ^SUBTPL_ADMIN°
+</div>

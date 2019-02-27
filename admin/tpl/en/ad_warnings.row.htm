@@ -1,0 +1,27 @@
+<tr class="zeile{even}">
+	<td align="center" {if DIFF>0} title="Zwischen der letzten Aktualisierung und der Meldung liegen {DIFF} Tage"{endif}>{if DIFF > 0}<img src="gfx/warnung.png" width="20" height="20" alt="warnung" />{else}&nbsp;{endif}</td>
+	<td align="center">
+		<a onclick="return confirm('Sicher dass der verstoss entfernt werden soll?');" href="index.php?page={curpage}&kick={ID_VERSTOSS}&ID_S={ID_S}" title="Als gelöst markieren">
+			<img src="gfx/isok.png" width="20" height="20" />
+		</a>
+	</td>
+	<td>
+		<a href="index.php?page=articles_edit&show_kat=0&ID_KAT={FK_KAT}&edit={FK_AD}" title="bearbeiten">
+			<img src="gfx/btn.edit.gif" width="32" height="16" alt="edit" />
+		</a>
+	</td>
+	<td title="Datum der Meldung" style="padding-right:13px;">{todate(STAMP)}</td>
+	<td class="{if DIFF>0}error{else}ok{endif}" title="Letztes Update der Anzeige">{if IS_NOT_UPDATED}{else}{todate(STAMP_AD_UPDATE)}{endif}</td>
+	<td>
+		<a href="{uri_baseurl(/marktplatz_anzeige,{FK_AD}.htm)}" title="Anzeige im neuen Fenster öffnen" target="_böank">
+			{htm(PRODUKTNAME)}
+		</a>
+	</td>
+	<td>{htm(GRUND)}</td>
+	<td>
+		<a href="index.php?page=user_edit&ID_USER={FK_USER}" title="User bearbeiten">{htm(MELDER)}</a>
+	</td>
+	<td>
+		<a href="index.php?page=user_edit&ID_USER={FK_USER_OWNER}" title="User bearbeiten">{htm(OWNER)}</a>
+	</td>
+</tr>

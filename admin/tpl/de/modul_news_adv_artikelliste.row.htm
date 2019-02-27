@@ -1,0 +1,34 @@
+<tr{if !(i&1)} bgcolor="#ffffff"{endif}>
+  <td><a name="A{ID_NEWS}"></a>
+    <a href="index.php?page=modul_news_adv_edit&ID_NEWS={ID_NEWS}&npage={npage}"><img src="gfx/btn.edit.gif" width="32" height="16" alt="bearbeiten" border="0" /></a>
+
+    <a id="coinback_{ID_NEWS}" href="index.php?page={curpage}&DELME=DEL&ID_NEWS={ID_NEWS}&npage={npage}" onclick="if({NOU} > 0 && confirm('Es haben bereits {NOU} Benutzer diesen Artikel gekauft!\nKlicken Sie auf OK, um den Benutzern ihre Coins zurück zu erstatten oder klicken Sie auf Abbrechen, um den Benutzern die Coins nicht gutzuschreiben.')) {document.getElementById('coinback_{ID_NEWS}').href += '&coinback=1'; if(!confirm('ACHTUNG\nDas Löschen kann nicht rückgängig gemacht werden!')){return false}}  else{ if(!confirm('ACHTUNG\nDas Löschen kann nicht rückgängig gemacht werden!')){return false}}"><img src="gfx/btn.del.gif" width="32" height="16" alt="l&ouml;schen" border="0" /></a>
+      <a target="userlogin" title="Als dieser Benutzer einloggen und bearbeiten dieser artikel"
+         href="{uri_baseurl(login.php?user={FK_AUTOR}&sig={SIG_OWNER}&do=artikelEdit&id_news={ID_NEWS})}">
+          <img src="gfx/btn.put.gif" />
+      </a>
+  </td>
+  <td align="center">{todate(STAMP)}</td>
+  <td>{if AUTOR}<a href="#" onclick="document.forms[0].NAME_.value = '{AUTOR}';"><img src="gfx/putfeld_8.gif" width="8" height="8" alt="" border="0">&nbsp;{AUTOR}&nbsp;</a>{endif}</td>
+  <td><a href="index.php?page=modul_news_adv_artikelliste&FK_KAT={FK_KAT}">{htm(V1KAT)}</a></td>
+  <td><a href="index.php?page=modul_news_adv_edit&ID_NEWS={ID_NEWS}&npage={npage}">&nbsp;{htm(V1)}</a></td>
+  <td>&nbsp;{langs}&nbsp;</td>
+  <td align="center">
+  	{if kommentare}
+  		<a href="#A{ID_NEWS}" onclick="popupfkt('comments&TABLE=news&FK={ID_NEWS}', 760, 450);" title="Kommentare anzeigen">{kommentare}</a>
+  	{endif}
+  </td>
+  <td>{if LAST_COMMENT}{todate(LAST_COMMENT)}{else}&nbsp;{endif}</td>
+  <td align="center"><input type="hidden" class="nob" name="Okall[]"  value="{ID_NEWS}" /><input type="checkbox" class="nob" name="OK1[]" {if OK1}checked  {endif}value="{ID_NEWS}" /></td>
+  <td align="center"><input type="checkbox" class="nob" name="OK2[]" {if OK2}checked {endif}value="{ID_NEWS}" {if !perm_news_all_E} disabled{endif} /></td>
+  <td style="text-align:right;">{ID_NEWS}&nbsp;</td>
+<td>
+    <a style="cursor: pointer;" onclick="popupfkt('stats&show=blog_views&w=550&ID_NEWS={ID_NEWS}','600','350');" title="Statistik">
+    <img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38" align="left"></a>
+</td>
+<td>
+    <a class="button" href="{uri_action(news,{ID_NEWS},{urllabel(V1)})}" target="_blank">
+        live</a>
+
+</td>
+</tr>

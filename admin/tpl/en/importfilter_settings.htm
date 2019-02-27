@@ -1,0 +1,168 @@
+
+<h1>
+	Einstellungen zu &quot;{htm(V1)}&quot;
+</h1>
+<p>
+	<span class="error">ACHTUNG!</span> <strong>
+		Wenn Sie eine neue CSV Datei als Muster hochladen, wird der Filter auf inaktiv gesetzte,
+		und alle Einstellungen werden unwiderruflich gel&ouml;scht!
+	</strong>
+</p>
+
+{if SAVE}
+	<h2 class="ok">Einstellungen gespeichert!</h2>
+{endif}
+
+<form method="post" enctype="multipart/form-data" action="index.php">
+	<input type="hidden" name="ID_IMPORT_FILTER" value="{ID_IMPORT_FILTER}" />
+	<input type="hidden" name="page" value="{curpage}" />
+	<div class="reiterPassiv">
+		<a href="index.php?page=importfilter_edit&ID_IMPORT_FILTER={ID_IMPORT_FILTER}">Basisdaten bearbeiten</a>
+	</div>
+	<div class="reiterAktiv">
+		<a href="index.php?page=importfilter_settings&ID_IMPORT_FILTER={ID_IMPORT_FILTER}">
+			Einstellungen bearbeiten
+		</a>
+	</div>
+	<table class="formTable" cellspacing="0">
+		<tr>
+			<th>Neue Beispiel-CSV Datei hochladen</th>
+			<td><input type="file" name="DATEI" /></td>
+			<td>
+				<input class="button" onclick="return confirm('Sicher dass alle bestehenden Einstellungen verworfen werden sollen?');" type="submit" value="Hochladen" />
+			</td>
+		</tr>
+	</table>
+<p>&nbsp;</p>
+{if liste}
+	<h2>
+		Einstellungen f&uuml;r Importfilter vornehmen
+	</h2>
+	<p>
+		Sie können diese Einstellungen jederzeit wieder &auml;ndern!
+	</p>
+	<script src="{uri_baseurl(/js/jquery.js)}" type="text/javascript"></script>
+	<script src="{uri_baseurl(/js/jquery-ui.js)}" type="text/javascript"></script>
+	<link rel="stylesheet" href="{uri_baseurl(/skin/jquery/jquery.css)}" />
+	{if unsaved}
+		<h2 class="error">ACHTUNG :: Einstellungen noch nicht gespeichert!</h2>
+	{endif}
+	
+	<table class="liste" cellspacing="0">
+		<tr>
+			<th>Spaltenname (CSV)</th>
+			<th>Beispieldaten</th>
+			<th style="padding-left:20px;">zugeordnetes Feld (Datenbank)</th>
+			<th style="padding-left:20px;">
+				Verarbeitungsfunktion
+			</th>
+		</tr>
+		{liste}
+		<tr class="footer">
+			<td colspan="4" align="right">
+				<input type="submit" value="Speichern" class="button" />
+			</td>
+		</tr>
+	</table>
+	<p>&nbsp;</p>
+{else}
+	<h3 class="error">Noch keine Einstellungen hinterlegt!</h3>
+{endif}
+</form>
+{if liste}
+	<div style="display:none;" id="FELDER">
+		<p id="cur_selected"></p>
+		<table style="margin-top:20px;">
+			<tr>
+				<td><b>Folgende Felder sind verfügbar</b></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			{liste_felder}
+			<tr>
+				<td id="feld-1">
+					<a onclick="zuordnen(-1);" title="Dieses Feld zuordnen">Bild Import</a>
+				</td>
+			</tr>
+		</table>			
+	</div>
+	<div id="msg_data"></div>
+{endif}
+<script type="text/javascript">
+	var cur_csvfeld = 0;
+	var feld2feld = {
+		{liste_feld2feld}
+	};
+	
+	var ar_selected = new Array({ar_selected});
+	
+	function change_field(number) {
+		cur_csvfeld = number;
+		$('#tr_'+number+' td').css('background-color','#ffffcc');
+		var zugeordnet = '';
+		if(feld2feld[number].sql) {
+			zugeordnet = '<br />Derzeit zugeordnet: <b>'+feld2feld[number].sqlname+'</b> <a onclick="kick();" style="color:red;">x</a>';
+		}
+		$('#FELDER p').html('CSV Feld: <b>'+feld2feld[number].name+'</b>'+zugeordnet);
+		$('#FELDER').dialog({
+			title: 'Verfügbare Datenbank-Felder',
+			height: 300,
+			close: function() {
+				$('#tr_'+number+' td').css('background-color','#eee');
+			},
+			modal: true
+		});
+	}	
+	
+	function zuordnen(id_field) {
+		var txt = $('#feld'+id_field+' a').html();
+		var ask = confirm('Soll das Feld '+txt+' zugeordnet werden?');
+		if(ask) {
+			if(feld2feld[cur_csvfeld].sql) {
+				var txt_old = $('#feld'+feld2feld[cur_csvfeld].sql+' span').html();
+				$('#feld'+feld2feld[cur_csvfeld].sql).html('<a onclick="zuordnen('+feld2feld[cur_csvfeld].sql+');">'+txt_old+'</a>');				
+			}
+			$('#hidden_'+cur_csvfeld).val(id_field);
+			$('#td_'+cur_csvfeld+' a').html('<img src="gfx/btn.edit.gif" /> '+txt);
+			$('#feld'+id_field).html('<span style="color:#ccc;">'+txt+'</span>');
+			feld2feld[cur_csvfeld].sql = id_field;
+			feld2feld[cur_csvfeld].sqlname = txt;
+			$('#FELDER p').html('CSV Feld: <b>'+feld2feld[cur_csvfeld].name+'</b><br />Derzeit zugeordnet: <b>'+feld2feld[cur_csvfeld].sqlname+'</b> <a onclick="kick();" style="color:red;">x</a>');
+		}
+	}
+	
+	function kick() {
+		var ask = confirm('Soll die Zuordnung wirklich gelöscht werden?');
+		if(ask) {
+			$('#hidden_'+cur_csvfeld).val('');
+			var sql = feld2feld[cur_csvfeld].sql;
+			var txt_old = $('#feld'+feld2feld[cur_csvfeld].sql+' span').html();
+			$('#FELDER p').html('CSV Feld: <b>'+feld2feld[cur_csvfeld].name+'</b>');
+			$('#feld'+feld2feld[cur_csvfeld].sql).html('<a onclick="zuordnen('+feld2feld[cur_csvfeld].sql+');">'+txt_old+'</a>');
+			$('#td_'+cur_csvfeld+' a').html('<img src="gfx/btn.edit.gif" /> <em style="color:#ccc;">nicht verwendet</em>');
+		}
+	}
+	
+	function exData(number, txt) {
+		//$('#daten_{NO}').html('was soll denn das?');
+		$('#tr_'+number+' td').css('background-color','#ffffcc');
+		$('#msg_data').dialog('destroy');
+		$('#msg_data').html($('#daten_'+number).html()).dialog({
+			title: 'Beispiel Daten für '+txt,
+			height:350,
+			width:400,
+			modal: true,
+			close: function() {
+				$('#tr_'+number+' td').css('background-color','#eee');
+			}
+		});
+	}
+
+	if(ar_selected.length > 1) {
+		for(i=0; i<ar_selected.length; i++) {
+			txt = $('#feld'+ar_selected[i]+' a').html();
+			$('#feld'+ar_selected[i]).html('<span style="color:#ccc;">'+txt+'</span>');
+		}
+	}
+</script>

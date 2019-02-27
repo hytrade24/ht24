@@ -1,0 +1,634 @@
+{startblock(script)}
+    {parentblock()}
+    <script type="text/javascript">
+        function showAgb(idAd) {
+            ShowContentDialog(jQuery("#Agb-"+idAd).html(), "AGB und Widerrufsbelehrung");
+        }
+    </script>
+{endblock(script)}
+{if not_found}
+    <div class="alert alert-danger">
+        <h2>
+			Anzeige wurde nicht gefunden!
+        </h2>
+        <p>
+			Möglicherweise ist die gewünschte Anzeige nicht mehr aktuell.
+        </p>
+    </div>
+{else}
+	{if error_noaddress}
+        <div class="alert alert-danger">
+			<h2>Hinweis</h2>
+			<p>
+				Bitte ergänzen Sie folgende Angaben in ihrem <a href="{uri_action(my-profil)}">Profil</a> bevor Sie etwas kaufen:
+				<br />
+				<ul>
+					{if error_addr_first}<li>Vorname</li>{endif}
+					{if error_addr_last}<li>Nachname</li>{endif}
+					{if error_addr_street}<li>Straße</li>{endif}
+					{if error_addr_zip}<li>PLZ</li>{endif}
+					{if error_addr_city}<li>Ort</li>{endif}
+				</ul>
+			</p>
+        </div>
+	{else}
+		<a name="ad_top"></a>
+		
+        <h1>
+            {if is_request}
+			        Artikel anbieten              
+            {else}
+			        Preis aushandeln
+            {endif}
+            <p class="text-lead">
+                {htm(PRODUKTNAME)}{if VARIANT} ({htm(VARIANT)}){endif}
+            </p>
+        </h1>
+
+        {if !is_request && ID_USER!=vk_user}
+        <div class="design-content-box" style="padding-bottom: 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <h3>Ihre Rechnungsadresse</h3>
+
+                    {subtpl(tpl/{SYS_TPL_LANG}/user_invoice.htm,*)}
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <h3>Ihre Versandadresse</h3>
+
+                    {subtpl(tpl/{SYS_TPL_LANG}/user_versand.htm,*)}
+                </div>
+            </div>
+        </div>
+        {endif}
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="design-content-box design-user-trade">
+                    {if !_STATUS || MENGE < 1}
+                        <h2 >
+                            Dieser Artikel ist leider nicht mehr verfügbar!
+                        </h2>
+                        <p>
+                            Der Artikel wurde deaktiviert oder bereits an einen anderen Benutzer verkauft.
+                        </p>
+                    {else}
+                        {if err_agb}
+                            <p class="alert alert-danger">
+                                Es ist ein Fehler aufgetreten!<br />
+                                Bitte akzeptieren Sie die AGB!
+                            </p>
+                        {endif}
+                        {if err_bid}
+                            <p class="alert alert-danger">
+                                Ihr Preisvorschlag ist zu gering!
+                            </p>
+                        {endif}
+                        {if err_bid_amount}
+                            <p class="alert alert-danger">
+                                Die gewünschte Menge ist leider nicht verfügbar.
+                            </p>
+                        {endif}
+                        {if err_bid_moq}
+                            <p class="alert alert-danger">
+                                Sie müssen mindestens {MOQ} Stück bestellen.
+                            </p>
+                        {endif}
+                        {if err_payment_adapter}
+                            <p class="alert alert-danger">
+                                Die ausgewählte Zahlungsweise ist für diesen Artikel nicht verfügbar.
+                            </p>
+                        {endif}
+                        {if err_bid_count}
+                            <p class="alert alert-danger">
+                                Sie haben bereits zu oft auf diesen Artikel geboten.
+                            </p>
+                        {endif}
+                        {if err_bid_count_changed}
+                            <p class="alert alert-danger">
+                                Bitte ziehen Sie ihr aktuelles Gebot zurück bevor Sie auf eine andere Menge bieten.
+                            </p>
+                        {endif}
+
+                        {if !my}
+                            <p>
+                                <strong>Derzeitiger Artikelpreis: {topreis_ex(product_price)} {CURRENCY_DEFAULT}</strong>
+                            </p>
+                        {endif}
+                        {if canceled}
+                            <p class="alert alert-info">Die Preisverhandlung wurde abgebrochen!</p>
+                        {endif}
+
+                        {if liste_handeln}
+                            {if my}
+                                <h3>Preisvorschläge</h3>
+                                <table class="table table-condensed table-striped">
+                                    {liste_handeln}
+                                </table>
+                            {else}
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Datum</th>
+                                            <th>Partner</th>
+                                            <th>Menge</th>
+                                            <th>Betrag/Stück</th>
+                                            <th>Aktion</th>
+                                        </tr>
+                                    </thead>
+                                    {liste_handeln}
+                                </table>
+                                {if trade_negotiation>0}
+                                <a class="btn btn-danger" href="{uri_action(marktplatz_handeln,{ID_AD_MASTER},{ID_AD_VARIANT},c,{trade_negotiation})}"
+                                   onclick="return confirm('Achtung! Möchten Sie diese Preisverhandlung wirklich abbrechen?');">
+                                    Preisverhandlung abbrechen!
+                                </a>
+                                {endif}
+                                 <a class="btn btn-default" href="{uri_action(my-marktplatz-handeln)}">
+                                    zur Übersicht!
+                                </a>
+
+                            {endif}
+                        {else}
+                            <button onclick="window.history.back();" class="btn btn-default">zurück</button>
+                        {endif}
+                        {if !my}
+                        <form method="post" action="{uri_baseurl(/index.php)}" class="form-horizontal">
+                            <input type="hidden" name="page" value="{curpage}" />
+                            <input type="hidden" name="ID_AD" value="{ID_AD_MASTER}" />
+                            <input type="hidden" name="ID_AD_VARIANT" value="{ID_AD_VARIANT}" />
+                          
+
+                            {if is_request}
+                            <h3>
+                                Artikel aus dem Bestand anbieten
+                            </h3>
+                            <table id="OFFER_ARTICLE_TABLE" class="table table-bordered table-condensed">
+                              <thead>
+                                <tr>
+                                  <th colspan="5">
+                                    <div class="input-group" style="width: 100%;">
+                                      <input class="form-control" type="text" id="OFFER_ARTICLE" name="OFFER_ARTICLE" value="{htm(OFFER_ARTICLE)}" 
+                                             placeholder="Artikel suchen..." />
+                                      <span class="input-group-btn">
+                                        <button class="btn btn-default" id="OFFER_ARTICLE_REFRESH">
+                                          <i class="glyphicon glyphicon-refresh"></i>
+                                        </button>
+                                      </span>
+                                    </div>
+                                  </th>
+                                </tr>
+                                <tr>
+                                  <th></th>
+                                  <th colspan="2">
+                                    Produktname
+                                  </th>
+                                  <th>
+                                    Menge
+                                  </th>
+                                  <th>
+                                    VK-Preis
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              
+                              </tbody>
+                              <thead>
+                                <tr class="pager-container">
+                                    <td colspan="5">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                  <td colspan="5">
+                                    <strong>
+                                      Ist der Artikel noch nicht in ihrem Angebot?
+                                    </strong>
+                                    <a class="btn btn-info" href="{uri_action(my-marktplatz-neu)}" target="_blank">
+                                      Jetzt einen neuen Artikel einstellen
+                                    </a>
+                                  </td>
+                                </tr>
+                              </thead>
+                            </table>
+                            {else}
+                            <h3>
+                                Neuen Preisvorschlag abgeben
+                            </h3>
+                            {endif}
+
+                            <div class="form-group">
+                                <label class="control-label design-input-label">Menge:</label>
+                                <div class="design-input-field">
+                                    {if trade_amount>0}
+                                        <div class="form-control-static">
+                                            {trade_amount}
+                                        </div>
+                                        <input type="hidden" name="BID_AMOUNT" value="{trade_amount}" />
+                                    {else}
+                                        <input type="text" name="BID_AMOUNT" value="{if BID_AMOUNT>0}{BID_AMOUNT}{else}{MOQ}{endif}" class="form-control" />
+                                    {endif}
+                                    <span class="help-inline">
+                                        Stück
+                                    {if MOQ > 1}
+                                        <br />
+                                        <span class="text-muted">(Mindestens {MOQ})</span>
+                                    {endif}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label design-input-label">Preisvorschlag (Stückpreis):</label>
+                                <div class="design-input-field">
+                                    <input type="text" name="BID_NEW" value="{BID_NEW}" class="form-control" />
+                                    <span class="help-inline">
+                                        {CURRENCY_DEFAULT} / Stück
+                                        <span class="muted">{if product_mwst}inkl. MwSt.{else}exkl. MwSt.{endif}</span><br />
+                                    </span>
+                                </div>
+                            </div>
+
+                            {if PAYMENT_ADAPTER}
+                            <div class="form-group">
+                                <label class="control-label design-input-label"><strong>Zahlungsweise:</strong></label>
+                                <div class="design-input-field">
+                                    <select name="payment_adapter" class="form-control" {if userPaymentAdapter_ReadOnly}disabled="disabled"{endif}>
+                                        {PAYMENT_ADAPTER}
+                                    </select>
+                                    {if userPaymentAdapter_ReadOnly}
+                                        <input type="hidden" name="payment_adapter" value="{userPaymentAdapter_Value}" class="form-control">
+                                    {endif}
+                                </div>
+                            </div>
+                            {endif}
+
+                            <div class="form-group">
+                                <label class="control-label design-input-label"><strong>Anmerkungen:</strong></label>
+                                <div class="design-input-field">
+                                    <textarea name="REMARKS" class="form-control" rows="4"></textarea>
+                                </div>
+                            </div>
+
+                            <p>
+                                <strong>
+                                    Ihr Preisvorschlag ist verbindlich und für
+                                        <br />max. {trade_max_hours}
+                                        Stunden gültig!<br />
+                                        Erklärt sich der Verkäufer einverstanden, kommt sofort
+                                        ein rechtsverbindlicher Kauf zu Stande!
+                                </strong>
+                            </p>
+                            <p class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="AGB" name="AGB" value="1" class="nob" />
+                                    Ich habe die <a href="#" onclick="showAgb({ID_AD}); return false;">AGB und die Widerrufsbelehrung</a> gelesen und verstanden!
+                                </label>
+                            </p>
+                            <p >
+                                <input class="btn btn-primary" type="submit" value="Verbindlichen Vorschlag abgeben" />
+                            </p>
+
+                            <div id="Agb-{ID_AD}" class="hidden">
+                                <span class="lead">
+                                    Rechtlich Verantwortlicher für dieses Angebot
+                                </span>
+                                <p>
+                                    {htm(ANBIETER_FIRMA)}<br />
+                                    {htm(ANBIETER_NAME)}<br />
+                                    {htm(ANBIETER_STRASSE)}<br />
+                                    {htm(ANBIETER_PLZ)}, {htm(ANBIETER_ORT)}<br />
+                                    <br />
+                                    {htm(ANBIETER_COUNTRY)}
+                                </p>
+                                {if ANBIETER_UMSTG}
+                                    <p>
+                                        Umsatzsteuer ID: {htm(ANBIETER_UMSTG)}
+                                    </p>
+                                {endif}
+
+                                {if AGB}
+                                <span class="lead">
+                                    AGB des Anbieters
+                                </span>
+                                <p>
+                                <div style="overflow: auto;max-height:180px;">
+                                    {text(AGB)}
+                                </div>
+                                </p>
+                                {endif}
+
+                                {if WIDERRUF}
+                                <span class="lead">
+                                    Widerrufsbelehrung
+                                </span>
+                                <p>
+                                <div style="overflow: auto;max-height:180px;">
+                                    {text(WIDERRUF)}
+                                </div>
+                                </p>
+                                {endif}
+                            </div>
+                        </form>
+                        {endif}
+                    {endif}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+
+                <div class="text-box design-location">
+                    <div class="design-ariande design-ariande-marketplace">
+                        {kat_ariadne_dynamic({FK_KAT},marketplace,{if product_manufacturer}{product_manufacturer} {endif}{product_articlename})}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-4 col-md-3">
+                        <div class="design-ad-image">
+                            <a href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" target="_blank" title="{htm(PRODUKTNAME)} ansehen">
+                                <img class="img-responsive" src="{if !IMG_DEFAULT_SRC}{uri_resource(/images/marketplace/nopic.jpg)}{else}{thumbnail_article({ID_AD_MASTER},{IMG_DEFAULT_SRC},165,150,crop)}{endif}" id="row-img-{ID_AD_MASTER}" data-watchlist="true" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xs-8 col-md-6">
+                        <div class="design-ad-name">
+                            <a href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" target="_blank" title="{htm(PRODUKTNAME)} ansehen">
+                                {htm(PRODUKTNAME)}
+                            </a>
+                        </div>
+                                    
+                        <div class="design-ad-description">
+                            {market_article_description({ID_AD_MASTER})}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8">
+                        <table class="adTable">
+                            <tr>
+                                <td style="min-width: 146px;">
+                                    <strong>Anzeigennummer:</strong>
+                                </td>
+                                <td>
+                                    {ID_AD}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Preis:</strong>
+                                </td>
+                                <td>
+                                    <span style="font-size: 19px;">{topreis_ex(product_price)} {CURRENCY_DEFAULT}</span>
+                                    <br />
+                                    <span class="muted">{if product_mwst}inkl. MwSt.{else}exkl. MwSt.{endif}</span><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Menge:</strong>
+                                </td>
+                                <td>
+                                    {product_amount} verfügbar
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Versandkosten:</strong>
+                                </td>
+                                <td>
+                                    {if VERSANDOPTIONEN==3}
+                                        <span class="muted">Versandkosten: {market_article_shipping(ID_AD,VERSANDKOSTEN)}</span>
+                                   {else}
+                                        {if VERSANDOPTIONEN==0}<span class="text-success">Versandkostenfrei</span>{endif}
+                                        {if VERSANDOPTIONEN==1}<span class="text-error">Nur Selbstabholung</span>{endif}
+                                        {if VERSANDOPTIONEN==2}<span class="text-error">Auf Anfrage</span>{endif}
+                                   {endif}
+                                   {if VERSANDKOSTEN_INFO}
+                                        <span class="muted">Versandkostenhinweis: {htm(VERSANDKOSTEN_INFO)}</span>
+                                   {endif}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top">
+                                    <strong>Verkäufer:</strong>
+                                </td>
+                                <td>
+                                    <a href="{uri_action(view_user,{urllabel(vk_username)},{vk_user})}">
+                                        {htm(vk_username)}
+                                    </a>
+                                    {if SCHNITT}
+                                        <img src="{uri_baseurl(/gfx/stars_{SCHNITT}.png)}" title="Durchschnittliche Bewertung">
+                                    {else}
+                                        (noch keine Bewertungen)
+                                    {endif}
+                                    <br />
+                                    angemeldet seit {STAMP_REG} als {htm(UGROUP)}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <h4>
+                            Artikelstandort
+                        </h4>
+                        <table>
+                            <tr>
+                                <td>
+                                    <strong>Land:</strong>
+                                </td>
+                                <td>
+                                    {htm(product_country)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>PLZ:</strong>
+                                </td>
+                                <td>
+                                    {product_zip}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Ort:</strong>
+                                </td>
+                                <td>
+                                    {htm(product_city)}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    {if REQUEST_ARTICLE}
+                    <div class="col-xs-12">
+                      <h3>Angebot auf Gesuch</h3>
+                  
+                      {REQUEST_ARTICLE}
+                    </div>
+                    {endif}
+                </div>
+
+                {if is_request && liste_offers}
+                <div>
+                    <h3>Ihre abgegebenen Angebote für dieses Gesuch</h3>
+                    {liste_offers}
+                </div>
+                {endif}
+                
+            </div>
+        </div>
+	{endif}
+  {if is_request}
+    <link rel="stylesheet" href="{uri_resource(/lib/EasyAutocomplete-1.3.5/easy-autocomplete.min.css)}"> 
+    <link rel="stylesheet" href="{uri_resource(/lib/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css)}"> 
+    <script type="text/javascript" src="{uri_resource(/lib/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js)}"></script>
+    <script type="text/javascript">
+    jQuery(function() {
+      
+      var articleSearch = false;
+      var articleSearchLive = false;
+      var articleSearchTimer = null;
+      var articleSearchQuery = null;
+      var articleSearchList = {};
+      var articleSearchUpdate = function() {
+        if ((articleSearchLive === false) || (articleSearch != articleSearchLive)) {
+          if (articleSearchTimer !== null) {
+            window.clearTimeout(articleSearchTimer);
+            articleSearchTimer = null;
+          }
+          articleSearchTimer = window.setTimeout(function() {
+            articleSearchAjax();
+          }, 400);
+        }
+      };
+      var articleSearchAjax = function(npage) {
+        if(npage == "undefined") {
+            npage = 1;
+        }
+        var parameters = {
+          page: "marktplatz_anbieten",
+          npage: npage,
+          ajax: "autocompleteArticle",
+          dataType: "json",
+          ID_AD_MASTER: {int(ID_AD_MASTER)},
+          EXCLUDE_ADS: {JSON_EXCLUDE_ADS}
+        };
+        if (articleSearch !== false) {
+          parameters.phrase = articleSearch;
+        }
+        if (articleSearchQuery !== null) {
+          articleSearchQuery.abort();
+          articleSearchQuery = null;
+        }
+        articleSearchQuery = jQuery.post("{uri_baseurl(/index.php)}", parameters, function(result) {
+          var articleActive = jQuery("input[name=OFFER_ARTICLE_ID]:checked").val();
+          articleSearchLive = articleSearch;
+          articleSearchQuery = null;
+          articleSearchList = {};
+          var articleList = "";
+          jQuery(result.list).each(function() {
+            articleSearchList[this.ID_AD_MASTER] = this;
+            articleList += this.TPL_ROW+"\n";
+          });
+          jQuery("#OFFER_ARTICLE_TABLE tbody").html(articleList);
+          if(result.pager != "") {
+              jQuery("tr.pager-container td").html(result.pager).show();
+              jQuery("tr.pager-container td a[data-page]").on("click", function(event) {
+                  event.preventDefault();
+                  articleSearchAjax(jQuery(this).data("page"));
+              });
+          } else {
+              jQuery("tr.pager-container td").hide();
+          }
+          if (articleActive > 0) {
+            jQuery("input[name=OFFER_ARTICLE_ID]").filter("[value="+articleActive+"]").prop("checked", true);
+          }
+          jQuery("#OFFER_ARTICLE_TABLE tbody").find("input[name=OFFER_ARTICLE_ID]").on("change", function() {
+            var articleSelectedId = jQuery(this).val();
+            var articleSelected = articleSearchList[articleSelectedId];
+            jQuery("input[name=BID_AMOUNT]").val(articleSelected.MENGE < {int(BID_AMOUNT)} ? articleSelected.MENGE : {int(BID_AMOUNT)});
+            jQuery("input[name=BID_NEW]").val(articleSelected.PREIS);
+            //debugger;
+          });
+        });
+      };
+      
+      jQuery("#OFFER_ARTICLE").on("keyup", function(event) {
+        articleSearch = jQuery(this).val();
+        articleSearchUpdate();
+      });
+      jQuery("#OFFER_ARTICLE").on("change", function(event) {
+        articleSearch = jQuery(this).val();
+        articleSearchUpdate();
+      });
+      jQuery("#OFFER_ARTICLE_REFRESH").on("click", function(event) {
+        event.preventDefault();
+        articleSearchAjax();
+      });
+      // Initial update
+      articleSearchAjax();
+      
+      /*
+      var offerFallbackInfo = jQuery("#OFFER_ARTICLE_INFO").html();
+      
+      jQuery("#OFFER_ARTICLE").on("change", function(event) {
+        jQuery("#OFFER_ARTICLE_ID").val("");
+        jQuery("input[name=BID_AMOUNT]").val("");
+        jQuery("input[name=BID_NEW]").val("");
+        jQuery("#OFFER_ARTICLE_INFO").html(offerFallbackInfo).addClass("alert-warning").removeClass("alert-info");
+      });
+      jQuery("#OFFER_ARTICLE").on("focus", function(event) {
+        if (jQuery("#OFFER_ARTICLE").val() == "") {
+          var e = $.Event('keyup');
+          e.keyCode = 8;
+          jQuery(this).trigger(e);  
+        }
+      }).easyAutocomplete({
+    
+        url: function (phrase) {
+          return "{uri_baseurl(/index.php)}";
+        },
+        getValue: function (element) {
+          return element.PRODUKTNAME;
+        },
+        template: {
+          type: "iconLeft",
+          fields: {
+            iconSrc: "IMG_DEFAULT_SRC"
+          }
+        },
+        adjustWidth: false,
+        ajaxSettings: {
+          dataType: "json",
+          method: "POST",
+          data: {
+            page: "marktplatz_anbieten",
+            ajax: "autocompleteArticle",
+            dataType: "json",
+            ID_AD_MASTER: {ID_AD_MASTER}
+          }
+        },
+        preparePostData: function (data) {
+          data.phrase = $("#OFFER_ARTICLE").val();
+          return data;
+        },
+        requestDelay: 400,
+        list: {
+          hideOnEmptyPhrase: false,
+          onChooseEvent: function() {
+            var selection = jQuery("#OFFER_ARTICLE").getSelectedItemData();
+            if (typeof selection == "object") {
+              jQuery("#OFFER_ARTICLE_ID").val(selection.ID_AD_MASTER);
+              jQuery("input[name=BID_AMOUNT]").val(selection.MENGE < {int(BID_AMOUNT)} ? selection.MENGE : {int(BID_AMOUNT)});
+              jQuery("input[name=BID_NEW]").val(selection.PREIS);
+              jQuery("#OFFER_ARTICLE_INFO").html(selection.TPL_SELECTED).addClass("alert-info").removeClass("alert-warning");
+            }
+          }
+        }
+      });
+    */
+    });
+    </script>
+  {endif}
+{endif}

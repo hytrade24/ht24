@@ -1,0 +1,56 @@
+<script type="application/javascript">
+
+function URLShowAll(link) {
+    var tableCell = jQuery(link).closest("td");
+    var idNav = jQuery(link).attr("data-id");
+    jQuery.get("index.php?page=nav_url&do=GetAllUrls&id="+idNav, function(result) {
+        tableCell.html(result);
+    });
+}
+
+</script>
+
+<h1>URLs bearbeiten</h1>
+
+<p>
+    Hier haben Sie die Möglichkeit die URLs des ebiz-traders abzuändern. In der nachfolgenden Tabelle erhalten Sie einer
+    Liste aller vorhanden Seiten inklusive der ggf. bereits definierten URLs. Ist die unter "URLs" aufgeführte URL Grau,
+    <br>
+    dann ist dies eine Standard-URL des ebiz-trader. <a class="button" href="http://www.ebiz-trader.de/marktplatz-faq/?action=search&search={curpagealias}" target="_blank">Tutorial</a>
+</p>
+
+
+{if Done}
+<p class="ok">
+    {if DoneSortSave}Sortierung erfolgreich gespeichert!{endif}
+    {if DoneSortRepair}Sortierung erfolgreich repariert!{endif}
+</p>
+{endif}
+
+<form method="post">
+    <table class="liste" cellspacing="0">
+        <tr>
+            <th>Aktion</th>
+            <th>Ident</th>
+            <th>Name</th>
+            <th>URLs</th>
+            <th>Priorität</th>
+        </tr>
+        {liste}
+        <tr class="footer">
+            <td colspan="5" align="right">
+                <button name="do" value="SortSave">Sortierung speichern</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<form method="post">
+    <h3>Sortierung reparieren</h3>
+
+    <p>
+        Mit dieser funktion haben Sie die Möglichkeit die Priorität der Seiten automatisch neu generieren zu lassen.
+        Die aktuelle Reihenfolge wird dabei nicht verändert.
+    </p>
+    <button name="do" value="SortRepair">Sortierung automatisch generieren</button>
+</form>

@@ -1,0 +1,20 @@
+<h1>Kategoriebaum reparieren</h1>
+<p>Sollte der Kategoriebaum "zerschossen" sein, so können Sie hier den Kategoriebaum reparieren</p>
+{if ok}
+	<h2>Reparatur abgeschlossen.</h2>
+{else}
+<form method="post">
+	<p>Vor der Neusortierung wird ein Backup der Kategorien erstellt.
+	   In manchen Serverkonfigurationen kann das Erstellen des Backups zu einem Verbindungsabbruch führen.
+	   Aktivieren Sie in diesem Fall das unten stehende Häkchen und erstellen vorher manuell eine Sicherung.
+	</p>
+	<label><input type="checkbox" value="1" name="skipBackup"> <strong>Kein Backup</strong> vor der Neusortierung erstellen</label>
+	<br>
+	<h2>Reparieren ohne neuer Sortierung</h2>
+	<input type="submit" name="go" value="Reparatur starten!" />
+
+	<h2>Reparieren mit neuer alphabetischen Sortierung</h2>
+	<input type="submit" name="gosort" value="Reparatur starten und alphabetisch sortieren!" />
+
+</form>
+{endif}

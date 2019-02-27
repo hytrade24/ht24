@@ -1,0 +1,76 @@
+{if err}
+<div class="alert alert-danger">
+    <h2>Error occurred</h2>
+    <p>
+        {err}
+    </p>
+</div>
+{endif}
+{if OK}
+    <p class="alert alert-success">
+        Your recommendation was sent!
+    </p>
+{else}
+<form action="{uri_baseurl(/index.php)}" method="post" enctype="multipart/form-data" id="sEmp" class="form-horizontal design-event-recommend">
+    <input type="hidden" name="frame" value="ajax"><input type="hidden" name="page" value="calendar_events_empfehlen">
+    <input type="hidden" name="id" value="{id}" />
+    <input type="hidden" name="_URL" value="{_URL}" />
+
+
+    <div class="form-group">
+        <label class="control-label design-input-label">Your E-Mail adresse:</label>
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="absender" value="{htm(EMAIL)}" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label design-input-label">Your name:</label>
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="NAME" value="{htm(NAME)}" />
+        </div>
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <label class="control-label design-input-label">Receiver name:</label>
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="empfeangername" value="{htm(empfeangername)}"  />
+        </div>
+    </div>
+
+    <div class="form-group">
+       <label class="control-label design-input-label">Receiver E-Mail:</label>
+       <div class="design-input-field">
+           <input class="form-control" type="text" name="empfeanger" value="{htm(empfeanger)}" />
+       </div>
+    </div>
+
+    <div class="form-group">
+       <label class="control-label design-input-label">Comment:</label>
+       <div class="design-input-field">
+           <textarea class="form-control" name="kommentar" rows="5">{htm(kommentar)}</textarea>
+       </div>
+    </div>
+
+    <p><strong>Please answer the security question:</strong></p>
+
+    <div class="form-group">
+        <label class="control-label design-input-label">{question()}:</label>
+
+        <div class="design-input-field">
+            <input class="form-control" type="text" name="ANSWER"/>
+        </div>
+    </div>
+</form>
+{endif}
+
+<div class="hide" id="modalFooterContainer">
+    <div class="modal-footer">
+        <a href="#" onclick="HideDialog(); return false;" class="btn btn-default">Close window</a>
+        {if !OK}
+        <input type="button" value="Recommend" class="btn btn-primary" onclick="empfehlen_submit()"/>
+        {endif}
+    </div>
+</div>

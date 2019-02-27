@@ -1,0 +1,69 @@
+<h1>Leads</h1>
+
+{if done}
+<p class="ok">
+  <strong>
+  {if done_confirm}Lead wurde erfolgreich freigegeben.{endif}
+  {if done_unconfirm}Freigabe des Leads wurde entzogen.{endif}    
+  </strong>
+</p>
+{endif}
+
+<form action="index.php">
+  <input type="hidden" name="page" value="{curpage}" />
+  
+  <table class="formTable" cellspacing="0">
+    <tr>
+      <th colspan="6" style="border-bottom:1px #000099 solid;">
+        Nach Leads suchen
+      </th>
+    </tr>
+    <tr>
+      <th>Ref-Id</th>
+      <td>
+        <input type="text" name="id" value="{htm(search_id)}" />
+      </td>
+      <th>Freigabe</th>
+      <td>
+        <select name="moderated">
+          <option value="">- Alle anzeigen -</option>
+          <option value="0"{if search_moderated_0} selected{endif}>Prüfung ausstehend</option>
+          <option value="1"{if search_moderated_1} selected{endif}>Freigegeben</option>
+          <option value="2"{if search_moderated_2} selected{endif}>Abgelehnt</option>
+        </select>
+      </td>
+      <th>User</th>
+      <td>
+        <input type="text" name="user" value="{htm(search_user)}" placeholder="Benutzername oder User-Id" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="6" class="footer" align="right">
+        <a href="index.php?page=leads">Alle anzeigen</a>
+        <button type="submit" class="button">Suchen</button>
+      </td>
+    </tr>
+  </table>
+</form>
+<br />
+
+<table class="liste" cellspacing="0" cellpadding="0">
+  <thead>
+    <tr>
+      <th>Aktionen</th>
+      <th>Status</th>
+      <th>Ref-Id</th>
+      <th>Name</th>
+      <!--<th>Projekt</th>-->
+      <th>User</th>
+      <th>Fällig am</th>
+    </tr>
+  </thead>
+  <tbody>
+    {liste}
+  </tbody>
+</table>
+
+<div>
+  {pager}
+</div>

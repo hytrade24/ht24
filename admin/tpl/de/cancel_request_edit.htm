@@ -1,0 +1,172 @@
+<style type="text/css">
+    .highlight {
+        background-color: #FFFBCC !important;
+    }
+</style>
+
+<h1>Alle Stornoanfragen für Kunde "{NAME}"</h1>
+
+<table cellspacing="0" style="margin-bottom: 25px;">
+    <tbody>
+    <tr>
+        <td style="vertical-align: top; width: 120px;"><strong>Kunden Info :</strong></td>
+        <td style="width: 250px; vertical-align: top;" colspan="2">
+            {VORNAME} {NACHNAME}
+            <br />
+            {STRASSE}
+            <br />
+            {PLZ} {ORT}
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top; width: 120px;">
+            <strong>Kunden Nr :</strong>
+        </td>
+        <td style="vertical-align: top;" colspan="2">
+            <a class="button" target="_blank" href="index.php?page=user_edit&ID_USER={FK_USER}">
+                {FK_USER}
+            </a> /
+            <a href="index.php?page=buchhaltung&FK_USER={FK_USER}&NAME_={NAME}"
+               class="button">
+                zur Übersicht
+            </a> /
+            <a class="button" style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_offen&w=550&ID_USER={FK_USER}','600','250');"
+               title="Statistik">
+                <b>Umsatz</b>
+                <img src="gfx/stats-s.png" alt="Übersicht" style="height: 11px;" />
+            </a> /
+            <a class="button" style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_overall&w=550&ID_USER={FK_USER}','600','250');" title="Statistik">
+                <b>Historie</b>
+                <img src="gfx/stats-s.png" alt="Übersicht" style="height: 11px;" />
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top; width: 120px;">
+            <strong>Email : </strong>
+        </td>
+        <td style="vertical-align: top;" colspan="2">
+            {EMAIL}
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+{if success}
+<div style="padding: 5px; width: 1270px; margin-top: 20px; margin-bottom: 20px; font-weight: bold; color: green; border: solid 1px green;">
+    <div style="float: left;">
+        <img style="" src="gfx/btn.important2.png" />
+    </div>
+    <div style="float: left; padding-left: 5px; padding-top: 3px;">
+        Note: {success}
+    </div>
+    <div style="clear: both;"></div>
+</div>
+{endif}
+
+<form method="get" action="index.php" id="cancel_request_edit_form">
+    <input type="hidden" name="page" value="cancel_request_edit" />
+    <input type="hidden" name="FK_USER" value="{FK_USER}" />
+    <input type="hidden" name="STATUS" value="{STATUS}" />
+    <table class="liste" cellspacing="0" style="width: 1280px;">
+        <thead>
+        <col>
+        <colgroup span="5"></colgroup>
+        <tr>
+            <th>ID</th>
+            <th>Grund</th>
+            <th>Kundenanmerkung</th>
+            <th>Status</th>
+            <th>Beschreibung</th>
+            <th>Preis</th>
+            <th colspan="5">
+                <center>Aktion</center>
+            </th>
+            <th>Adminanmerkung</th>
+        </tr>
+        <tr>
+            <th colspan="6"></th>
+            <th scope="col" style="color: red;">
+                Stornieren<br />
+                Leistung<br />entziehen</th>
+            <th scope="col">
+                Stornieren<br />
+                Leistung<br />beibelhalten
+            </th>
+            <th scope="col">
+                Abgelehnt
+            </th>
+            <th scope="col">
+                Zurückgestellt
+            </th>
+            <th scope="col">
+                None
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {if HAVE_BILLABLE_ITEMS}
+        <tr>
+            <td colspan="8">
+                <h3>Rechnungpositionen</h3>
+            </td>
+        </tr>
+        {endif}
+        {if HAVE_BILLABLE_ITEMS || liste}
+        {liste}
+        <tr class="footer">
+            <td colspan="12">
+                <button style="float: right;" type="button" class="button" onclick="confirm_and_save()">Speichern</button>
+            </td>
+        </tr>
+        {else}
+        <tr>
+            <td colspan="12">
+                <p>Es gibt momentan keine Einträge.</p>
+            </td>
+        </tr>
+        {endif}
+        </tbody>
+    </table>
+</form>
+
+<div style="font-weight: bold; margin-top: 20px; padding: 5px; border: solid 1px #000; background-color: #EEE; width: 1270px;">
+    <div style="float: left;">
+        <img style="width: 20px;" src="gfx/stop-no-access.jpg" />
+    </div>
+    <div style="float: left; margin-left: 15px; margin-top: 5px;">
+        <span>Wenn Sie die <span style="color: red;">Stornieren Leistungen entziehen</span>, werden ggf. alle Anzeigen und Informationen die diesem Paket zugeordnet wurden gelöscht!</span>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+<script type="application/javascript">
+
+    function confirm_and_save() {
+        var a = confirm("Wenn Sie die Leistungen entziehen, werden ggf. alle Anzeigen und Informationen die diesem Paket zugeordnet wurden gelöscht!!");
+
+        if ( a ) {
+            jQuery("#cancel_request_edit_form").submit();
+        }
+    }
+
+    var get_vars = [];
+
+    document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+        function decode(s) {
+            return decodeURIComponent(s.split("+").join(" "));
+        }
+
+        get_vars[decode(arguments[1])] = decode(arguments[2]);
+    });
+
+    if ( get_vars["highlight"] != undefined ) {
+        var id = get_vars["highlight"];
+
+        var a = jQuery("table.liste tr[data-invoice-id='"+id+"']");
+        console.log( a );
+        a.addClass('highlight');
+    }
+
+</script>

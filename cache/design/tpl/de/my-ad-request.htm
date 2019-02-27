@@ -1,0 +1,71 @@
+<h1>Meine Gesuche</h1>
+<span class="lead">Im Marktplatz eingestellte Gesuche</span>
+
+{if deleted}
+<div class="alert alert-success">
+	<h2>
+		Eine Anzeige wurde gelöscht!
+	</h2>
+</div>
+{endif}
+
+
+<p class="clearfix">
+	Hier finden Sie alle von Ihnen eingestellte Gesuche auf dem Marktplatz.
+        Um ein neues Gesuch zu schalten
+	<a href="{uri_action(my-ad-request-neu)}" title="jetzt Gesuch einstellen">
+		klicken Sie bitte hier
+	</a>.<br/>
+    <br/>
+    <a href="{uri_action(my-ad-request-neu)}" class="btn btn-success pull-right" title="jetzt Gesuch einstellen">
+        <i class="glyphicon glyphicon-plus"></i>
+        Neues Gesuch hinzufügen
+    </a>
+</p>
+
+
+<ul class="nav nav-tabs userAdsTabs">
+	<li class="active">
+		<a href="{uri_action(my-gesuche)}" title="Meine Gesuche">Meine Gesuche</a>
+	</li>
+</ul>
+<table class="table table-bordered table-striped table-condensed userList">
+    <tr>
+        <th colspan="2">
+            Aktionen
+        </th>
+		<th title="Gesuch Numer">
+			Gesuch-Nr.
+		</th>
+          <th>
+              Datum
+          </th>
+          <th>
+              Kategorie
+          </th>
+        <th width="300px">
+            Produktname
+        </th>
+    </tr>
+
+    {if liste}
+    	{liste}
+    {else}
+    <tr>
+        <td colspan="8" class="error">
+            Sie haben derzeit keine Gesuche eingestellt.
+        </td>
+    </tr>
+    {endif}
+</table>
+
+<p>{pager}</p>
+
+<div class="design-content-box design-icon-legend">
+    <div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-edit"></i></a> = Bearbeiten
+    </div>
+    <div class="pull-left">
+        <a class="btn btn-default"><i class="glyphicon glyphicon-remove"></i></a> = Löschen
+    </div>
+</div>

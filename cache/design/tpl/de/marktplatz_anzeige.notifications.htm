@@ -1,0 +1,98 @@
+{if info_declined}
+<div class="alert alert-info">
+    <h2>Freigabe der Anzeige abgelehnt</h2>
+        <p>
+            Sie haben die Freigabe der Anzeige abgelehnt. Der Benutzer wird per E-Mail darüber benachrichtigt.
+            <br />
+            Sobald der Benutzer die Anzeige bearbeitet hat erhalten Sie diese erneut zur Prüfung.
+        </p>
+</div>
+{endif}
+{if info_unlocked}
+<div class="alert alert-success">
+    <h2>Anzeige freigegeben</h2>
+        <p>
+            Sie haben die Anzeige freigegeben. Die Anzeige ist nun öffentlich zugänglich.
+        </p>
+</div>
+{endif}
+{if (ID_USER==AD_FK_USER && neu)}
+    <div class="alert {if AD_CONFIRMED==1}alert-success{else}alert-info{endif}">
+    {if AD_CONFIRMED==2}
+        <h2>Anzeige wurde abgewiesen!</h2>
+            <p>
+                Die Freigabe ihrer Anzeige wurde von einem Administrator abgewiesen!
+                Sie haben dazu eine E-Mail mit der Begründung erhalten. Bitte bearbeiten Sie die Anzeige
+                und korrigieren Sie die bemängelten Punkte. Anschließend wird ein Administrator die Anzeige erneut prüfen.
+            </p>
+        <strong>Weitere Aktionen:</strong><br />
+        <ul>
+            <li>
+                <a href="{uri_action(my-marktplatz-neu,{ID_AD})}">Anzeige bearbeiten</a>
+            </li>
+            <li>
+                <a href="{uri_action(my-marktplatz-neu)}">Weitere Anzeige schalten</a>
+            </li>
+            <li>
+                <a href="{uri_action(my-pages)}">Zu meinem Account</a>
+            </li>
+            <li>
+                <a href="{uri_action(my-marktplatz)}">Zu meinen Anzeigen</a>
+            </li>
+            <li>
+                <a href="{uri_action(marktplatz)}">Zum Marktplatz</a>
+            </li>
+        </ul>
+    {else}
+        {if AD_CONFIRMED==1}
+        <h2>Anzeige wurde erfolgreich gespeichert</h2>
+            <p>
+                Ihre Anzeige wurde erfolgreich gespeichert und ist im Laufe der n&auml;chsten
+                Minute &ouml;ffentlich zug&auml;nglich.
+            </p>
+        {else}
+        <h2>Anzeige wird in Kürze geprüft!</h2>
+            <p>
+                Ihre Anzeige wurde gespeichert und wird in Kürze von einem Administrator überprüft.
+                Bis zur Überprüfung der Anzeige ist diese nicht öffentlich sichtbar!
+            </p>
+        {endif}
+
+        <h2>Weitere Aktionen:</h2>
+        <div class="row">
+            <div class="col-md-3 text-center"><a href="#premium" onclick="TopAd({ID_AD});"><span class="glyphicon glyphicon-eye-open btn btn-default btn-lg"></span><br/>Jetzt Premium-Features buchen!</a></div>
+            <div class="col-md-3 text-center"><a href="{uri_action(my-marktplatz-neu)}"><span class="glyphicon glyphicon-plus-sign btn-lg"></span><br/>Weitere Anzeige schalten</a></div>
+            <div class="col-md-3 text-center"><a href="{uri_action(my-pages)}"><span class="glyphicon glyphicon-home btn-lg"></span><br/>Zu meinem Account</a></div>
+            <div class="col-md-3 text-center"><a href="{uri_action(my-marktplatz)}"><span class="glyphicon glyphicon-th-list btn-lg"></span><br/>Zu meinen Anzeigen</a></div>
+
+        </div>
+    {endif}
+    </div>
+{endif}
+
+{if !AD_ACTIVE && ID_USER==AD_FK_USER && !neu}
+    <div class="alert alert-info">
+    {if AD_CONFIRMED==1}
+        <h2>Anzeige ist derzeit deaktiviert!</h2>
+            <p>
+                Diese Anzeige ist derzeit nicht öffentlich erreichbar.
+                Klicken Sie auf "aktivieren" um die Anzeige wieder zugänglich zu machen.
+            </p>
+    {else}
+        {if AD_CONFIRMED==0}
+        <h2>Anzeige wird in Kürze geprüft!</h2>
+            <p>
+                Ihre Anzeige wurde gespeichert und wird in Kürze von einem Administrator überprüft.
+                Bis zur Überprüfung der Anzeige ist diese nicht öffentlich sichtbar!
+            </p>
+        {else}
+        <h2>Anzeige wurde abgewiesen!</h2>
+            <p>
+                Die Freigabe ihrer Anzeige wurde von einem Administrator abgewiesen!
+                Sie haben dazu eine E-Mail mit der Begründung erhalten. Bitte bearbeiten Sie die Anzeige
+                und korrigieren Sie die bemängelten Punkte. Anschließend wird ein Administrator die Anzeige erneut prüfen.
+            </p>
+        {endif}
+    {endif}
+    </div>
+{endif}

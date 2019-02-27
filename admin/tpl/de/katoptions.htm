@@ -1,0 +1,22 @@
+<h1>Kategorie Optionen</h1>
+{if err || msg}
+<div class="hinweis">
+ {if err}<span class="error">{err}</span>
+ {else}<span class="ok">Option wurde gel&ouml;scht!</span>{endif}
+</div>
+{endif}
+<p>Sie k&ouml;nnen diese Optionen einer oder mehereren Kategorien zuordnen. Sie haben sodann die M&ouml;glichkeit &uuml;ber die Templates der Kategorien selbst, oder aber Ihrer Inhalte auf die Optionen zu reagieren. </p>
+<p>Optionen welche bereits durch das System erstellt wurden, und bei der Auslieferung schon integriert waren, k&ouml;nnen nicht gel&ouml;scht werden, da sie fest im System inegriert sind. </p>
+<p>Bitte beachten Sie, dass es zu erheblichen Problemen f&uuml;hren kann, wenn Sie optionen l&ouml;schen, welche einer kategorie zugeordnet sind!</p>
+<table class="liste">
+  <tr>
+    <th>Aktionen</th>
+	<th>Sys.</th>
+	<th>Optionsname</th>
+	<th>Ident</Th>
+	<th>Zuordnung</th>
+	<th>Beschreibung</th>
+  </tr>
+{liste}
+</table>
+<p>&nbsp;</p>

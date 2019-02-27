@@ -1,0 +1,627 @@
+<script type="text/javascript">
+    
+    function addInvoiceTransaction() {
+        jQuery("#dialog").dialog("close");
+        jQuery("#dialog").html(jQuery("#dialogAddTransactionContainer"));
+        jQuery("#dialog").dialog({ title: "Zahlungseingang hinzufügen", width: 700, height: 180, modal: true });
+        return false;
+    }
+
+    function applyCreditnote() {
+        jQuery("#dialog").dialog("close");
+        jQuery("#dialog").html(jQuery("#dialogApplyCreditnoteContainer"));
+        jQuery("#dialog").dialog({ title: "Gutschrift einlösen", width: 420, height: 150, modal: true });
+        return false;
+    }
+
+    function editInvoiceAddress() {
+        jQuery("#dialog").dialog("close");
+        jQuery("#dialog").html(jQuery("#dialogEditInvoiceAddressContainer"));
+        jQuery("#dialog").dialog({ title: "Rechnungsempfänger bearbeiten", width: 370, height: 200, modal: true });
+        return false;
+    }
+    
+    function cancelInvoice() {
+        jQuery("#dialog").dialog("close");
+        jQuery("#dialog").html(jQuery("#dialogCancelInvoiceContainer"));
+        jQuery("#dialog").dialog({ title: "Rechnung stornieren", width: 370, height: 200, modal: true });
+        return false;
+    }
+    
+    function unpayInvoice() {
+        jQuery("#dialog").dialog("close");
+        jQuery("#dialog").html(jQuery("#dialogUnpayInvoiceContainer"));
+        jQuery("#dialog").dialog({ title: "Rechnung als unbezahlt markieren", width: 370, height: 240, modal: true });
+        return false;
+    }
+    
+    jQuery(function() {
+        jQuery("#dialog").dialog({}).dialog("close");
+
+        var get_vars = [];
+
+        document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+            function decode(s) {
+                return decodeURIComponent(s.split("+").join(" "));
+            }
+
+            get_vars[decode(arguments[1])] = decode(arguments[2]);
+        });
+
+        if ( get_vars["highlight"] != undefined ) {
+            var ids = get_vars["highlight"].split("-");
+
+            jQuery.each( ids, function(index, value) {
+                var row =jQuery("#formInvoiceEdit table tr[data-invoice-billing-item='"+value+"']");
+                row.css("background-color","#ffff99");
+            });
+        }
+    });
+    
+{if MODE_EDIT}
+    jQuery(function() {
+        editBindInputs(jQuery("#formInvoiceEdit"));
+        editAddItem();
+    });
+    
+    function editAddItem() {
+        var htmlNew = jQuery("#editNewItemRow").html();
+        jQuery("#formInvoiceEdit .liste .item-row").removeClass("last").last().after(htmlNew);
+        editBindInputs( jQuery("#formInvoiceEdit .liste .item-row").last().addClass("last"), true );
+    }
+    
+    function editDelItem(link) {
+        jQuery(link).closest(".item-row-new").remove();
+        editUpdateItemNew();
+        editUpdatePrice();
+    }
+    
+    function editCheckItemNew(rowElement) {
+        var itemName = jQuery(rowElement).find(".item-name").val();
+        var itemQuantity = jQuery(rowElement).find(".item-quantity").val();
+        var itemPrice = jQuery(rowElement).find(".item-price").val();
+        if ((itemName != "") && (itemQuantity != "") && (itemPrice != "")) {
+            jQuery(rowElement).addClass("complete").addClass("zeilex_green");
+        } else {
+            jQuery(rowElement).removeClass("complete").removeClass("zeilex_green");
+        }
+        editUpdateItemNew();
+    }
+    
+    function editUpdateItemNew() {
+        jQuery("#formInvoiceEdit .liste .item-row").removeClass("last").last().addClass("last");
+        // Add new item?
+        var rowsNew = jQuery(".item-row-new").not(".complete");
+        if (rowsNew.length == 0) {
+            editAddItem();
+        }
+    }
+    
+    function editBindInputs(container, isNew) {
+        if (isNew) {
+            jQuery(container).find(".item-name").change(function() {
+                editCheckItemNew( jQuery(this).closest(".item-row") );
+                editUpdatePrice();
+            });
+        }
+        jQuery(container).find(".item-quantity").change(function() {
+            if (isNew) {
+                editCheckItemNew( jQuery(this).closest(".item-row") );
+            }
+            editUpdatePrice();
+        });
+        jQuery(container).find(".item-price").change(function() {
+            if (isNew) {
+                editCheckItemNew( jQuery(this).closest(".item-row") );
+            }
+            editUpdatePrice();
+        });
+        jQuery(container).find(".item-storno").change(function() {
+            if (jQuery(this).prop("checked")) {
+                if (jQuery(this).is(".item-storno-full")) {
+                    jQuery(this).closest(".item-row").find(".item-storno-keep").prop("checked", false);
+                }
+                if (jQuery(this).is(".item-storno-keep")) {
+                    jQuery(this).closest(".item-row").find(".item-storno-full").prop("checked", false);
+                }
+            }
+            editUpdatePrice();
+        });
+    }
+    
+    function editUpdatePrice() {
+        var overallPriceNetto = 0;
+        var overallPriceBrutto = 0;
+        var overallTax = {};
+        jQuery(".item-row").each(function() {
+            if (jQuery(this).is(".item-row-new") && !jQuery(this).is(".complete")) {
+                return;
+            }
+            var itemStornoFull = jQuery(this).find(".item-storno-full");
+            var itemStornoKeep = jQuery(this).find(".item-storno-keep");
+            if (itemStornoFull.prop("checked") || itemStornoKeep.prop("checked")) {
+                return;
+            }
+            var itemQuantity = jQuery(this).find(".item-quantity").val();
+            var itemPrice = jQuery(this).find(".item-price").val().replace(",", ".");
+            var itemTaxPercent = parseInt(jQuery(this).find(".item-price").attr("data-tax"));
+            var itemPriceTax = Math.round(itemPrice * itemTaxPercent) / 100;
+            var itemPriceOverallNetto = itemPrice * itemQuantity;
+            var itemPriceOverallTax = itemPriceTax * itemQuantity;
+            var itemPriceOverallBrutto = itemPriceOverallNetto + itemPriceOverallTax;
+            // Update item price
+            jQuery(this).find(".item-price-total").html( itemPriceOverallBrutto.toFixed(2) );
+            // Add item price to overall
+            overallPriceNetto += itemPriceOverallNetto;
+            overallPriceBrutto += itemPriceOverallBrutto;
+            if (typeof overallTax[itemTaxPercent] == "undefined") {
+                overallTax[itemTaxPercent] = itemPriceOverallTax;
+            } else {
+                overallTax[itemTaxPercent] += itemPriceOverallTax;
+            }
+        });
+        // Update totals
+        var taxRowTemplate = jQuery("#editNewTaxRow").html();
+        jQuery(".sum-netto").html( overallPriceNetto.toFixed(2) );
+        jQuery(".sum-tax").html("0.00");
+        for (var taxPercent in overallTax) {
+            if (jQuery(".sum-tax[data-tax="+taxPercent+"]").length == 0) {
+                jQuery("#formInvoiceEdit").find(".row-total-brutto").before( taxRowTemplate.split("#TAX_VALUE#").join(taxPercent) );
+            }
+            jQuery(".sum-tax[data-tax="+taxPercent+"]").html( overallTax[taxPercent].toFixed(2) );
+        }
+        jQuery(".sum-brutto").html( overallPriceBrutto.toFixed(2) );
+    }
+{endif}
+    
+</script>
+{if MODE_EDIT}
+<style type="text/css">
+    .item-row-new.last .item-delete {
+        display: none;
+    }
+    .highlight {
+        background-color: #FFFBCC !important;
+    }
+</style>
+{endif}
+
+<h1>Rechnung</h1>
+
+{if INVOICE_ID_BILLING_INVOICE}
+    <table cellspacing="0">
+        <tr>
+            <td style="width: 250px; vertical-align: top;" rowspan="6">
+                <strong>Rechnungsempfänger</strong> <a href="#" onclick="editInvoiceAddress(); return false;"><img src="./gfx/btn.edit.gif" /></a><br />
+                {nl2br(INVOICE_ADDRESS)}
+            </td>
+            <td style="vertical-align: top; width: 150px;">
+                <strong>Rechnungs-Nr.:</strong>
+            </td>
+            <td style="vertical-align: top;">
+                {INVOICE_ID_BILLING_INVOICE}
+                {if INVOICE_STAMP_CORRECTION}
+                    <i class="error">Korrektur</i>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <strong>Rechnungsdatum:</strong>
+            </td>
+            <td style="vertical-align: top;">
+                {if INVOICE_STAMP_CORRECTION}
+                    {todate(INVOICE_STAMP_CORRECTION)}
+                    <span class="muted" style="text-decoration: line-through;">{todate(INVOICE_STAMP_CREATE)}</span>
+                {else}
+                    {todate(INVOICE_STAMP_CREATE)}
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <strong>Kunden Nr.:</strong>
+            </td>
+            <td style="vertical-align: top;">
+                <a class="button" target="_blank" href="index.php?page=user_edit&ID_USER={INVOICE_FK_USER}">{INVOICE_FK_USER}</a> /
+                <a href="index.php?page=buchhaltung&FK_USER={INVOICE_FK_USER}&NAME_" class="button">zur Übersicht</a> /
+                <a class="button" style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_offen&w=550&ID_USER={INVOICE_FK_USER}','600','250');" title="Statistik">
+                    <b>Umsatz</b><img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38">  </a> /
+                <a class="button" style="cursor: pointer;" onclick="popupfkt('stats&show=buchhaltungumsatz_overall&w=550&ID_USER={INVOICE_FK_USER}','600','250');" title="Statistik">
+
+                <b>Historie</b>  <img src="gfx/stats-s.png" alt="Übersicht" height="21" width="38"> </a>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <strong>Status:</strong>
+            </td>
+            <td style="vertical-align: top;">
+                {if INVOICE_STATUS == 0}
+                    <span class="error">unbezahlt</span>
+                {endif}
+
+                {if INVOICE_STATUS == 1}
+                    <span class="ok">bezahlt</span>
+                {endif}
+
+                {if INVOICE_STATUS == 2}
+                    <strong>storniert</strong>
+                {endif}
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <strong>Zahlungsziel:</strong>
+            </td>
+            <td>
+                {todate(INVOICE_STAMP_DUE)}
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <strong>Zahlungsart:</strong>
+            </td>
+            <td>
+                {INVOICE_PAYMENT_ADAPTER_NAME}
+            </td>
+        </tr>
+    </table><br />
+    <div>
+        <a class="button" href="index.php?page={curpage}&action=downloadPdf&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}">
+            Rechnung Drucken
+        </a>
+
+    {if INVOICE_STATUS == 2}
+        <a href="#" class="button disabled">Als unbezahlt markieren</a>
+        <a href="#" class="button disabled">Stornieren</a>
+        <a href="#" class="button disabled">Rechnung bearbeiten</a>
+        <a href="#" class="button red disabled">Als bezahlt markieren</a>
+    {else}
+        {if MODE_EDIT}
+            <a href="index.php?page=invoice_view&lang={lang}&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}" class="button">Bearbeitung abbrechen</a>
+        {else}
+            <a href="#unpay"{if INVOICE_STATUS != 0} onclick="unpayInvoice(); return false;"{endif} {if INVOICE_STATUS != 0}onclick="return confirm('Soll die Rechnung wirklich als unbezahlt markiert werden?')"{endif} class="button {if INVOICE_STATUS == 0}disabled{endif}">Als unbezahlt markieren</a>
+            <a href="#cancel"{if INVOICE_STATUS != 2} onclick="cancelInvoice(); return false;"{endif} class="button {if INVOICE_STATUS == 2}disabled{endif}">Stornieren</a>
+            <a href="{if INVOICE_STATUS == 1}#{else}index.php?page=invoice_view&lang={lang}&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}&mode=edit{endif}" class="button{if INVOICE_STATUS == 1} disabled{endif}">Rechnung bearbeiten</a>
+        <a href="{if INVOICE_STATUS == 1}#{else}index.php?page=invoice_view&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}&action=setstatus&status=1{endif}" {if INVOICE_STATUS != 1}onclick="return confirm('Soll die Rechnung wirklich als bezahlt markiert werden?')"{endif} class="button red {if INVOICE_STATUS == 1}disabled{endif}">Als bezahlt markieren</a>
+        {endif}
+    {endif}
+    </div>
+    <div style="clear: both"></div>
+    <br /><br />
+    
+    {if ERROR}
+    <div class="error">
+        <h3>Fehler beim korrigieren der Rechnung</h3>
+        
+        {if ERROR_NO_ITEMS}
+        <p>
+            Für eine Rechnungskorrektur ist mindestens eine Rechnungsposition erforderlich.<br />
+            Wenn Sie alle Positionen entfernen möchten stornieren Sie die Rechnung vollständig!
+        </p>
+        {endif}
+    </div>
+    {endif}
+
+    <form id="formInvoiceEdit" method="post" action="index.php?page={curpage}&action=edit&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}">
+        <input type="hidden" name="page" value="{curpage}" />
+        <input type="hidden" name="action" value="edit" />
+        <input type="hidden" name="ID_BILLING_INVOICE" value="{INVOICE_ID_BILLING_INVOICE}" />
+        
+        <table cellspacing="0"  class="liste">
+            <tr>
+                <th>Pos.</th>
+                <th>Posten</th>
+                <th style="text-align:right">Menge</th>
+                <th style="text-align:right">
+                    Einzelpreis<br/>
+                    (netto)
+                </th>
+                <th style="text-align:right">MwSt.</th>
+                <th style="text-align:right">
+                    Gesamtpreis<br/>
+                    (brutto)
+                </th>
+                {if MODE_EDIT}
+                <th>
+                    Stornieren<br />
+                    Leistung entziehen
+                </th>
+                <th>
+                    Stornieren<br />
+                    Leistung beibehalten
+                </th>
+                {endif}
+            </tr>
+            {if INVOICE_ITEMS}
+            {INVOICE_ITEMS}
+            <tr>
+                <th colspan="5" style="text-align:right">Gesamt Netto:</th>
+                <th style="text-align:right;">
+                    <span class="sum-netto">{topreis(INVOICE_TOTAL_PRICE)}</span> {CURRENCY_DEFAULT}
+                </th>
+                {if MODE_EDIT}
+                <th colspan="2"></th>
+                {endif}
+            </tr>
+            {INVOICE_TAXES}
+            <tr class="row-total-brutto">
+                <th colspan="5" style="text-align:right">Gesamt Brutto:</th>
+                <th style="text-align:right;">
+                    <span class="sum-brutto">{topreis(INVOICE_TOTAL_PRICE)}</span> {CURRENCY_DEFAULT}
+                </th>
+                {if MODE_EDIT}
+                <th colspan="2"></th>
+                {endif}
+            </tr>
+            {else}
+            <tr>
+                <td colspan="{if MODE_EDIT}8{else}6{endif}" align="center">
+                    <span class="error">Fehler! Keine Rechnungsposten gefunden</span>
+                </td>
+            </tr>
+            {endif}
+            {if MODE_EDIT}
+            <tr>
+                <td colspan="8" align="right">
+                    <button type="submit">Korrektur erstellen</button>
+                </td>
+            </tr>
+            {endif}
+        </table>
+        
+    </form>
+    <br />
+
+  {if MODE_EDIT}
+    <script id="editNewItemRow" type="text/html">
+        <tr class="zeile{even} highlight item-row item-row-new">
+          <td valign="middle">
+            NEU
+          </td>
+          <td valign="middle">
+            <input type="text" class="item-name" name="NEW[NAME][]" />
+          </td>
+          <td align="right" valign="middle">
+            <input type="number" class="item-quantity" name="NEW[QUANTITY][]" value="1" />
+          </td>
+          <td align="right" valign="middle">
+            <input type="text" class="item-price" name="NEW[PRICE][]" data-tax="{TAX_DEFAULT}" />
+          </td>
+          <td align="right" valign="middle">
+            {TAX_DEFAULT} %
+          </td>
+          <td align="right" valign="middle">
+            <span class="item-price-total">{topreis(TOTAL_PRICE)}</span> {CURRENCY_DEFAULT}
+          </td>
+          <td align="center" valign="middle" colspan="2">
+            <a class="button item-delete" href="#delete" onclick="editDelItem(this);">
+              Position entfernen
+            </a>
+          </td>
+        </tr>
+    </script>
+    <script id="editNewTaxRow" type="text/html">
+        <tr class="row-tax">
+          <th colspan="5" style="text-align:right">MwSt. #TAX_VALUE#%:</th>
+          <th style="text-align:right;">
+            <span class="sum-tax" data-tax="#TAX_VALUE#">{topreis(TAX_AMOUNT)}</span> {CURRENCY_DEFAULT}
+          </th>
+          <th colspan="2"></th>
+        </tr>
+    </script>
+  {endif}
+
+	{if INVOICE_TAX_EXEMPT}
+		<p>
+			Es handelt sich hierbei um eine steuerfreie innergemeinschaftliche Lieferung.
+			{if INVOICE_TAX_EXEMPT_USTID}<br>Die USt.-Id des Leistungsempfängers: {INVOICE_TAX_EXEMPT_USTID} {if INVOICE_TAX_EXEMPT_USTID_CHECKDATE}(geprüft am {todate(INVOICE_TAX_EXEMPT_USTID_CHECKDATE)}){endif}{endif}
+		</p>
+	{endif}
+
+    <p>{if INVOICE_STATUS == 1}<span class="ok">Die Rechnung ist vollständig bezahlt</span>{else}<span class="error">Es sind noch {topreis(INVOICE_REMAINING_PRICE)} {CURRENCY_DEFAULT} offen</span>{endif}</p>
+
+    <h2>Zahlungseingänge</h2>
+    {if TRANSACTIONS}
+        <table cellspacing="0" class="liste">
+            <tr>
+                <th></th>
+                <th>Nr.</th>
+                <th>Datum</th>
+                <th>Notiz</th>
+                <th>Transaktionsreferenz</th>
+                <th style="text-align:right">Betrag</th>
+            </tr>
+            {TRANSACTIONS}
+        </table>
+        <br>
+    {else}
+        <p>Noch keine Zahlungseingänge vermerkt</p>
+    {endif}
+    {if INVOICE_STATUS !== 1}
+    <a href="#" onclick="addInvoiceTransaction(); return false;" class="button">Zahlungseingang hinzufügen</a>
+    {if creditnotes}<a href="#" onclick="applyCreditnote(); return false;" class="button">Gutschrift anwenden</a>{endif}
+    <br>
+    {endif}
+
+    <h2>Gutschrift erstellen</h2>
+    <p>
+        <a class="button" href="index.php?page=user_billing_creditnote&ID_USER={INVOICE_FK_USER}">Gutschrift für diesen Benutzer erstellen</a>
+    </p>
+<br>
+<br>
+
+    <div>
+        <a class="button" href="index.php?page={curpage}&action=downloadPdf&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}">
+            Rechnung Drucken
+        </a>
+        {if INVOICE_STATUS == 2}
+            <a href="#" class="button disabled">Als unbezahlt markieren</a>
+            <a href="#" class="button disabled">Als bezahlt markieren</a>
+            <a href="#" class="button disabled">Stornieren</a>
+            <a href="#" class="button disabled">Rechnung bearbeiten</a>
+        {else}
+            {if MODE_EDIT}
+                <a href="index.php?page=invoice_view&lang={lang}&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}" class="button">Bearbeitung abbrechen</a>
+            {else}
+                <a href="#unpay"{if INVOICE_STATUS != 0} onclick="unpayInvoice(); return false;"{endif} {if INVOICE_STATUS != 0}onclick="return confirm('Soll die Rechnung wirklich als unbezahlt markiert werden?')"{endif} class="button {if INVOICE_STATUS == 0}disabled{endif}">Als unbezahlt markieren</a>
+                <a href="{if INVOICE_STATUS == 1}#{else}index.php?page=invoice_view&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}&action=setstatus&status=1{endif}" {if INVOICE_STATUS != 1}onclick="return confirm('Soll die Rechnung wirklich als bezahlt markiert werden?')"{endif} class="button {if INVOICE_STATUS == 1}disabled{endif}">Als bezahlt markieren</a>
+                <a href="#cancel"{if INVOICE_STATUS != 2} onclick="cancelInvoice(); return false;"{endif} class="button {if INVOICE_STATUS == 2}disabled{endif}">Stornieren</a>
+                <a href="{if INVOICE_STATUS == 1}#{else}index.php?page=invoice_view&lang={lang}&ID_BILLING_INVOICE={INVOICE_ID_BILLING_INVOICE}&mode=edit{endif}" class="button{if INVOICE_STATUS == 1} disabled{endif}">Rechnung bearbeiten</a>
+            {endif}
+        {endif}
+    </div>
+    <div class="clear"></div>
+
+
+    <div style="display: none;">
+        <div id="dialogAddTransactionContainer">
+            <form action="index.php" method="post">
+                <input type="hidden" name="page" value="{curpage}">
+                <input type="hidden" name="ID_BILLING_INVOICE" value="{INVOICE_ID_BILLING_INVOICE}">
+                <input type="hidden" name="action" value="addpayment">
+
+                <table class="formTable">
+                    <tr>
+                        <th>Datum:</th>
+                        <td>{datedrop(STAMP_CREATE)}</td>
+                        <th>Betrag (noch offen {topreis(INVOICE_REMAINING_PRICE)} {CURRENCY_DEFAULT}):</th>
+                        <td><input type="text" name="PRICE" value="{topreis(INVOICE_REMAINING_PRICE)}"> {CURRENCY_DEFAULT}</td>
+                    </tr>
+                    <tr>
+                        <th>Notiz:</th>
+                        <td><input type="text" name="DESCRIPTION"></td>
+                        <th>Transaktions-Referenz / Belegnr.:</th>
+                         <td><input type="text" name="TRANSACTION_ID"></td>
+                    </tr>
+                    <tr>
+                        <td class="footer" style="text-align: right;" colspan="4">
+                            <input type="submit" value="Speichern">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div id="dialogApplyCreditnoteContainer">
+            <form action="index.php" method="post">
+                <input type="hidden" name="page" value="{curpage}">
+                <input type="hidden" name="ID_BILLING_INVOICE" value="{INVOICE_ID_BILLING_INVOICE}">
+                <input type="hidden" name="action" value="applycreditnote">
+
+                <table class="formTable">
+                    <tr>
+                        <th>Gutschrift auswählen:</th>
+                        <td>
+                            {if creditnotes}
+                            <select name="FK_BILLING_CREDITNOTE">
+                                {creditnotes}
+                            </select>
+                            {endif}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="footer" style="text-align: right;" colspan="2">
+                            <input type="submit" value="Anwenden">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div id="dialogEditInvoiceAddressContainer">
+          <form action="index.php" method="post">
+            <input type="hidden" name="page" value="{curpage}">
+            <input type="hidden" name="ID_BILLING_INVOICE" value="{INVOICE_ID_BILLING_INVOICE}">
+            <input type="hidden" name="action" value="editinvoiceaddress">
+    
+            <table class="formTable">
+              <tr>
+                <th style="vertical-align: top">Rechnungsempfänger:</th>
+                <td>
+                  <textarea rows="5" cols="30" name="ADDRESS">{htm(INVOICE_ADDRESS)}</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td class="footer" style="text-align: right;" colspan="2">
+                  <input type="submit" value="Speichern">
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+        <div id="dialogCancelInvoiceContainer">
+          <form action="index.php" method="post">
+              <input type="hidden" name="page" value="{curpage}">
+              <input type="hidden" name="ID_BILLING_INVOICE" value="{INVOICE_ID_BILLING_INVOICE}">
+              <input type="hidden" name="action" value="setstatus">
+              <input type="hidden" name="status" value="2">
+
+              <p>
+                  Was soll mit den zugehörigen Leistungen geschehen?
+              </p>
+
+              <label>
+                  <input type="radio" name="performances" value="0" checked/>
+                  Leistungen entziehen <br>(Achtung kann zum Daten werden ggf. gelöscht! (<a href="https://www.ebiz-trader.de/marktplatz-faq/?action=search&search=invoice_view" target="_blank">Info</a>))
+              </label>
+              <br/>
+              <label>
+                  <input type="radio" name="performances" value="1"/>
+                  Leistungen beibehalten
+              </label>
+              
+              <br />
+              
+              <div style="text-align: right;">
+                  <button onclick="jQuery('#dialog').dialog('close'); return false;" name="cancel" value="1">Abbrechen</button>
+                  <button type="submit" name="confirm" value="1">Rechnung stornieren</button>
+              </div>
+          </form>
+        </div>
+        <div id="dialogUnpayInvoiceContainer">
+          <form action="index.php" method="post">
+              <input type="hidden" name="page" value="{curpage}">
+              <input type="hidden" name="ID_BILLING_INVOICE" value="{INVOICE_ID_BILLING_INVOICE}">
+              <input type="hidden" name="action" value="setstatus">
+              <input type="hidden" name="status" value="0">
+
+              <p>
+                  Was soll mit den zugehörigen Leistungen geschehen?
+              </p>
+
+              <label>
+                  <input type="radio" name="performances" value="0" checked/>
+                  Leistungen entziehen
+              </label>
+              <br/>
+              <label>
+                  <input type="radio" name="performances" value="1"/>
+                  Leistungen beibehalten
+              </label>
+              
+              <br />
+
+              <p>
+                  Soll eine Gutschrift erstellt werden?
+              </p>
+
+              <label>
+                  <input type="checkbox" name="creditnote" value="1"/>
+                  Gutschrift über <span class="sum-brutto">{topreis(INVOICE_TOTAL_PRICE)}</span> {CURRENCY_DEFAULT} erstellen
+              </label>
+              
+              <br />
+              
+              <div style="text-align: right;">
+                  <button onclick="jQuery('#dialog').dialog('close'); return false;" name="cancel" value="1">Abbrechen</button>
+                  <button type="submit" name="confirm" value="1">Als unbezahlt markieren</button>
+              </div>
+          </form>
+        </div>
+    </div>
+    <div id="dialog" style="display: none;"></div>
+
+
+{endif}

@@ -1,0 +1,38 @@
+<h1>Pakete verwalten</h1>
+{if error_in_use}
+	<div class="error">
+		Das gew&auml;hlte Anzeigenpaket ist gerade in Verwendung und kann daher nicht gel&ouml;scht werden!
+	</div>
+	<br />
+{endif}
+	
+	<table class="liste" cellpadding="0" cellspacing="0">
+	  <tr>
+	  	<th class="first">
+	  		Aktion
+	  	</th>
+		<th>
+			Aktiv?
+		</th>
+		<th>
+			Paketname
+		</th>
+		<th>
+			Abo?
+		</th>
+		<th>
+			Enth&auml;lt
+		</th>
+		<th class="last">
+			Preis(e)
+		</th>
+	  </tr>
+	  {liste}
+	  {if pager}
+	  <tr>
+	  	<th colspan="7" class="footer">
+	  		{pager}
+	  	</th>
+	  </tr>
+	  {endif}
+	</table>

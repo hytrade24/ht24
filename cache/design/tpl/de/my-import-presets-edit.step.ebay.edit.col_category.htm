@@ -1,0 +1,11 @@
+<td class="ebay-category">
+    {if valueId}
+    <a id="itemCategory{ITEM_ID}" href="#edit-category" data-value="{htm(valueId)}" onclick="ebayImportEdit_ArticleCategoryShow(this); return false;" data-placement="bottom">
+        {htm(valueLabel)}
+    </a>
+    {else}
+    <a id="itemCategory{ITEM_ID}" href="#edit-category" onclick="ebayImportEdit_ArticleCategoryShow(this); return false;" data-placement="bottom">
+        {htm(value)}
+    </a>
+    {endif}
+</td>

@@ -1,0 +1,12 @@
+<tr class="">
+	<td>
+		{subtpl(tpl/{SYS_TPL_LANG}/my-import-presets-edit.fieldmappingrenderer.partial.buttons.htm,*)}
+	</td>
+	<td><b>Function</b></td>
+	<td>
+		<select class="form-control" name="MAPPING[{TABLE_DEF}][{FIELD_NAME}][{POS}][FUNCTION]" onchange="ipe.saveMappingFieldValue('{FIELD_NAME}', '{TABLE_DEF}', {POS}); return false;">
+			<option value="">Please choose function</option>
+			{SELECT_FUNCTION}
+		</select>
+	</td>
+</tr>

@@ -1,0 +1,14 @@
+<h1>Anzeigen freischalten</h1>
+{if liste}
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktion</th>
+  <th>Datum</th>
+  <th>Anzeigentitel</th>
+  <th>Benutzer</th>
+ </tr>
+{liste}
+</table>
+{else}
+<div class="hinweis"><span class="error">keine Anzeigen zum Freischalten gefunden</span></div>
+{endif}

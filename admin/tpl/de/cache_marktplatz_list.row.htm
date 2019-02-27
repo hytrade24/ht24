@@ -1,0 +1,20 @@
+
+<li name="child{PARENT}" id="row{ID_KAT}"{if (level>0) && (HIDDEN)} style="display: none"{endif}>
+  {if kidcount > 0}
+    <a class="level{level} parent" style="cursor: pointer;{if ACTIVE} font-weight: bold; color: red;{endif}" href="javascript:UpdateKatSelector({ID_KAT}, '{htm(V1)}', {KAT_ROOT});">
+      <span style="color: black; font-family: fixedsys;">+</span>
+      {htm(V1)}{if ARTICLE_COUNT > 0}&nbsp;({ARTICLE_COUNT}){endif}
+  </a>
+  {else}
+    <a class="level{level}"{if ACTIVE} style="font-weight: bold; color: red;"{endif} href="javascript:UpdateKatSelector({ID_KAT}, '{htm(V1)}', {KAT_ROOT}, true);" title="Ausw&auml;hlen">
+      <span style="font-family: fixedsys;">&nbsp;</span>
+      {htm(V1)}{if ARTICLE_COUNT > 0}&nbsp;({ARTICLE_COUNT}){endif}
+  </a>
+  {endif}
+</li>
+<!--<li>
+      <a href="index.php?page={curpage}&ID_KAT={ID_KAT}" title="{htm(V2)}">
+        <strong>{htm(V1)}</strong>{if COUNT_CHILDS>0} ({COUNT} / {COUNT_CHILDS}){endif}
+      </a>
+    </li>
+-->

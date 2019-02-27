@@ -1,0 +1,132 @@
+<h1><img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />Abzeigenkontingent des User '{NAME}'  / #{ID_USER}
+</h1>
+<p>
+    Alle Anzeigenpakete
+</p>
+<p style="clear:left;margin:0px;">&nbsp;</p>
+<h3>Bisherige Pakete</h3>
+<p>
+	Freie Anzeigen: <b>{free_ads}</b><br />
+	Freie Bilder: <b>{free_img}</b>
+</p>
+{if err}
+	<h1 class="error">
+		Nicht erfolgreich!
+	</h1>
+	<p class="error">
+		{err}
+	</p>
+{endif}
+{if inserted}
+	<h2 class="ok">
+		Buchung erfolgreich!
+	</h2>
+{endif}
+<div class="reiterPassiv">
+    <a href="index.php?page=user_edit&ID_USER={ID_USER}">Stammdaten</a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=perm2user&ID_USER={ID_USER}">Rechte</a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=user_buchhaltung&ID_USER={ID_USER}" title="Buchhalterische Dtaen einsehen"> Rechnungen </a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=user_billing_creditnote&ID_USER={ID_USER}" title="Buchhalterische Dtaen einsehen"> Gutschriften </a>
+</div>
+<div class="reiterPassiv">
+    <a href="index.php?page=user_ads&ID_USER={ID_USER}">Anzeigen</a>
+</div>
+<div class="reiterPassiv">
+	<a href="index.php?page=user_transaktion&ID_USER={ID_USER}" title="K&auml;ufe und Verk&auml;ufe anzeigen">
+		Ein- und Verk&auml;ufe
+	</a>
+</div>
+<div class="reiterAktiv">
+	<a href="index.php?page=user_kontingent&ID_USER={ID_USER}" title="Anzeigenkontingent anzeigen">
+		Kontingent
+	</a>
+</div>
+		<div class="reiterPassiv">
+			<a href="index.php?page=user_vendor&ID_USER={ID_USER}" title="Standorte und Anbieterdaten ändern">
+				Anbieter
+			</a>
+		</div>
+<div class="reiterPassiv">
+    <a title="&Ouml;ffentliches Profil ansehen" href="{uri_baseurl(/marktplatz/view_user,{urllabel(NAME)},{ID_USER}.htm)}" target="_blank">Profil</a>
+</div>
+<div style="clear:left;float:left;">
+	<table class="liste">
+		<tr>
+			<th>
+				&nbsp;
+			</th>
+			<th>
+				Paketname
+			</th>
+			<th>
+				Status
+			</th>
+			<th>
+				Inhalt
+			</th>
+			<th>
+				Freigeschaltet am
+			</th>
+			<th>
+				Kündigungsfrist
+			</th>
+		</tr>
+		{if liste}
+			{liste}
+		{else}
+			<tr>
+				<td colspan="4" align="center" class="error">
+					Der User hat keine Anzeigenpakete
+				</td>
+			</tr>
+		{endif}
+	</table>
+</div>
+<div style="float:left; padding-left:10px;">
+	<form method="post" action="index.php" id="book">
+		<input type="hidden" name="page" value="{curpage}" />
+		<input type="hidden" name="ID_USER" value="{ID_USER}" />
+		<input type="hidden" name="FK_USER" value="{ID_USER}" />
+		<table class="formTable" cellspacing="0">
+			<tr>
+				<th colspan="2"><h3>Paket hinzubuchen</h3></th>
+			</tr>
+			<tr>
+				<th>
+					Paketvorauswahl
+				</th>
+				<td>
+					<select name="FK_PACKET" onchange="jQuery('#book').submit();">
+						<option>---</option>
+						{liste_pakete}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th title="Anzahl der enthaltenen Bilder oder Anzeigen">Einheiten</th>
+				<td>
+					<input type="number" min="1" name="EINHEIT" value="{htm(EINHEIT)}" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					Netto Preis
+				</th>
+				<td>
+					<input type="text" name="PRICE" value="{topreis(PRICE)}" />
+				</td>
+			</tr>
+			<tr class="footer">
+				<td colspan="2" align="right">
+					<input type="submit" name="SUB" value="BUCHEN" class="button" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>

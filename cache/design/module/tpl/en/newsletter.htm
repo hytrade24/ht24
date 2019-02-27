@@ -1,0 +1,39 @@
+{if err}
+    <div class="alert alert-danger">
+        <h3>An error as occurred</h3>
+        {err}
+    </div>
+    {subtpl(module/tpl/de/newsletter_form.htm,*)}
+{endif}
+{if mode_order && !err}
+    <div class="alert alert-info">
+        <h3>
+            We received your order to our newsletter under the E-Mail address '{EMAIL}'.
+        </h3>
+        
+        Soon you will receive an E-Mail with a link,
+            where you can confirm your order.<br>
+            If you are going to change your mind, refrain the confirmation;
+            Your order will be deleted after an amount of time.
+
+    </div>
+{endif}
+{if mode_confirm && !err}
+    <div class="alert alert-success">
+        <h3>
+            Thank you for confirming your newsletter order.
+        </h3>
+        
+        You can unsubscribe from our mailing list via our portal at anytime.
+        <br>
+    </div>
+{endif}
+{if mode_remove && !err}
+    <div class="alert alert-success">
+        <h3>
+            Your address was deleted from our mailing list..
+        </h3>
+        
+        You can subscribe to our newsletter anytime again.
+    </div>
+{endif}

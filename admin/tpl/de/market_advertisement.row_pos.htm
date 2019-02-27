@@ -1,0 +1,13 @@
+{if ENABLED}
+<div>
+	<input id="ad{ID_ADVERTISEMENT}" name="FK_ADVERTISEMENT[{ID_ADVERTISEMENT_USER}]" onclick="GotoCategory();"
+		type="radio" value="{ID_ADVERTISEMENT}" style="float: left;" {if ID_ADVERTISEMENT==FK_ADVERTISEMENT} checked="checked"{endif}/>
+	<label for="ad{ID_ADVERTISEMENT}" style="float: left;">
+		<span style="font-size: 14px; font-weight: bold; padding-top: 4px;">{htm(V1)}</span>
+		<br />
+		{text(T1)}
+	</label>
+	<br style="clear: left;" />
+	<br />
+</div>	
+{endif}

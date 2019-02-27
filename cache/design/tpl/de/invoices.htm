@@ -1,0 +1,311 @@
+<style type="text/css">
+	.highlight {
+		background-color: #FFFBCC !important;
+	}
+</style>
+
+<h1>Rechnungsübersicht</h1>
+<p>Ihre Rechnungen in der Übersicht</p>
+
+{if OPEN}
+	<p>
+		Sie müssen noch <strong>{topreis_ex(OPEN)}</strong> {CURRENCY_DEFAULT} offene Rechnungen begleichen.
+	</p>
+{endif}
+
+
+<ul class="nav nav-tabs userTabsTable">
+	<li{if show_open} class="active"{endif}>
+		<a href="{uri_action(invoices)}">Offene Rechnungen</a>
+	</li>
+	<li{if show_paid} class="active"{endif}>
+		<a href="{uri_action(invoices,1,paid)}">Bezahlte Rechnungen</a>
+	</li>
+	<li{if show_storno} class="active"{endif}>
+		<a href="{uri_action(invoices,1,storno)}">Stornierte Rechnungen</a>
+	</li>
+	<li{if show_credit} class="active"{endif}>
+		<a href="{uri_action(invoices,1,credit)}">Gutschriften und Abrechnung</a>
+	</li>
+
+	{if OPTION_COUPON_ENABLED}
+	<li{if show_coupon} class="active"{endif}>
+		<a href="{uri_action(invoices,1,coupon)}">Gutscheine</a>
+	</li>
+	{endif}
+	<li{if show_cancel_requests} class="active"{endif}>
+		<a href="{uri_action(invoices,1,cancel_requests)}">Eingereichte Stornoanfragen</a>
+	</li>
+</ul>
+{if show_open || show_paid || show_storno}
+	<form action="{uri_action(invoice_print)}" method="post">
+	<input type="hidden" id="input_do" name="do" value="selected" />
+
+	{if !liste}
+	<div class="alert alert-info">
+		Keine Rechnungen gefunden
+	</div>
+	{else}
+		<table class="mytable table table-bordered table-striped table-condensed">
+			<tr>
+				<th>
+				</th>
+				<th>
+					Rechnungs-Nr.
+				</th>
+				<th style="padding-right:55px;">
+					Rechnungsdatum
+				</th>
+				<th>
+					Fällig bis
+				</th>
+				<th>
+					Rechnungsstatus
+				</th>
+
+				<th style="text-align:right;">
+					Betrag
+				</th>
+				<th>
+					Aktion
+				</th>
+			</tr>
+			{liste}
+		</table>
+
+		{pager}
+		<p>
+			<button type="button" name="do" class="btn btn-default" onclick="$('#input_do').val('print').parent('form').submit();">
+				<i class="glyphicon glyphicon-print"></i>
+				Ausgewählte Rechnungen ausdrucken
+			</button>
+			<button type="button" name="do" class="btn btn-default" onclick="$('#input_do').val('download').parent('form').submit();">
+				<i class="glyphicon glyphicon-download"></i>
+				Ausgewählte Rechnungen herunterladen
+			</button>
+		</p>
+	{endif}
+	</form>
+
+	<div class="design-content-box design-icon-legend">
+		<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-eye-open"></i></a> = Ansehen
+		</div>
+		<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-print"></i></a> = Drucken
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default">
+				<i class="fa fa-eraser"></i>
+			</a> = Anfrage für Rechnung stornieren
+		</div>
+		<div class="pull-left">
+			<span class="btn btn-default" style="color: blue;">
+				<strong>!</strong>
+			</span> = Beinhaltet Strornoanfragen
+		</div>
+	</div>
+{endif}
+{if show_credit}
+
+
+	<h4>Meine Gutschriften</h4>
+
+	{if TOTAL_CREDITNOTE_SUM}
+		<p>Sie haben aktuell ein Guthaben durch Gutschriften
+		in Höhe von {topreis_ex(TOTAL_CREDITNOTE_SUM)} {CURRENCY_DEFAULT}.<br> Dieses wird mit Ihrer nächsten Rechnung automatisch ausgeglichen.</p>
+	{endif}
+
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+				<th>Datum</th>
+				<th>Beschreibung</th>
+				<th>Gesamtsumme</th>
+				<th>verbleibende Restsumme</th>
+			</tr>
+		</thead>
+		{if liste_creditnotes}
+			{liste_creditnotes}
+		{else}
+			<tr><td colspan="4">Sie haben zur Zeit keine Gutschriften</td></tr>
+		{endif}
+	</table>
+
+	{if liste_billableitems}
+		<hr>
+
+		<h4>Noch nicht abgerechnete Positionen</h4>
+
+		<p>Die folgenden Positionen werden im nächsten Buchungslauf in Rechnung gestellt.</p>
+
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+				<th>Datum</th>
+				<th>Beschreibung</th>
+				<th>Summe</th>
+			</tr>
+		</thead>
+		{if liste_billableitems}
+			{liste_billableitems}
+		{else}
+			<tr><td colspan="3">Sie haben zur Zeit keine noch nicht abgerechneten Positionen</td></tr>
+		{endif}
+	</table>
+
+	{endif}
+{endif}
+{if show_coupon && OPTION_COUPON_ENABLED}
+	<h4>Meine Gutscheine</h4>
+
+
+	<p>Wenn Sie von uns Gutscheincodes erhalten haben, können Sie diese mit dem unten stehenden Formular einlösen. Gutscheine
+		können Preis-Reduzierungen von bestimmten Leistungsangeboten oder aber auch Gutschriften in einer bestimmten Höhe enthalten.
+		</p>
+		<p>Sofern Sie Gutscheincodes bereits eingegeben, die dazugehörige Leistung aber noch nicht eingelöst haben werden Ihnen die Gutscheine unten
+			aufgeführt.</p>
+
+	{if SUCCESS_COUPON}
+		<div class="alert alert-success">Der Gutschein {htm(COUPON_CODE)} wurde erfolgreich eingelöst.<br>{SUCCESS_COUPON_MSG}</div>
+	{endif}
+	{if ERR_COUPON}
+		<div class="alert alert-danger">{htm(ERR_COUPON)}</div>
+	{endif}
+
+	<form class="form form-horizontal design-content-box" action="{uri_action(invoices,1,coupon)}" method="post">
+		<div class="control-group">
+			<label class="control-label"><strong>Gutscheincode eingeben:</strong></label>
+			<div class="controls">
+				<input type="text" name="COUPON_CODE" value="{htm(COUPON_CODE)}" placeholder="Gutscheincode">
+				<input type="submit" class="btn" value="Gutschein einlösen">
+			</div>
+		</div>
+	</form>
+
+
+	{if liste_coupons}
+
+	<h5>Noch nicht eingelöste Gutscheine</h5>
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+				<th>Gutschein</th>
+				<th>eingegeben am</th>
+				<th>Gutschein-Code</th>
+			</tr>
+		</thead>
+		{if liste_coupons}
+			{liste_coupons}
+		{endif}
+	</table>
+	{endif}
+
+{endif}
+
+{if show_cancel_requests}
+<div class="row">
+	<div class="col-md-12">
+		<table class="list-cancel-requests table table-bordered table-striped table-condensed">
+			<thead>
+			<tr>
+				<th>Stornoanfrage ID</th>
+				<th>Beschribung</th>
+				<th>Status</th>
+				<th>Kundenanmerkung</th>
+				<th>Adminanmerkung</th>
+				<th>Zuletzt bearbeitet</th>
+				<th>Stempel erstellen</th>
+				<th>Aktion</th>
+			</tr>
+			</thead>
+			<tbody>
+			{liste_cancel_requests}
+			</tbody>
+		</table>
+	</div>
+</div>
+{endif}
+
+{if show_open}
+	<h1>Rechnungspositionen</h1>
+	{if liste_rechnungslauf}
+	<table class="table table-bordered table-striped table-condensed">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>Leistungsdatum</th>
+			<th>Beschribung</th>
+			<th>Menge</th>
+			<th>Preis (netto)</th>
+			<th>MwSt.</th>
+			<th>Gesamt (brutto)</th>
+			<th>Aktion</th>
+		</tr>
+		</thead>
+		<tbody>
+		{liste_rechnungslauf}
+		</tbody>
+	</table>
+	<p>
+		<span>Note :</span>
+		<span>Der Rechnungslauf startet zu folgenden Tagen im Monat <b>{INVOICE_DAYS_AUTOMATIC_BILLING}</b> automatsich!</span>
+	</p>
+
+	<h4>Ihre ausgewählte Zahlungsweise</h4>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-3">
+					<strong>Methode</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_NAME}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<strong>IBAN</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_IBAN}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<strong>BIC</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_BIC}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<strong>Bank</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_BANK}</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 15px;">
+		<div class="col-md-12">
+			<a href="{uri_action(my-payment-adapter)}" class="btn btn-success">
+				Zahlungsweisen
+			</a>
+		</div>
+	</div>
+	{else}
+	* Aktuell keine Positionen vorhanden
+	{endif}
+{endif}
+
+<script type="application/javascript">
+
+	$(document).ready(function() {
+        {if newly_added}
+			var newly_added = "{newly_added}";
+        	console.log( newly_added );
+			newly_added = newly_added.split("-");
+			console.log( newly_added );
+			var list_cancel_requests = $(".list-cancel-requests");
+			$.each(newly_added,function(index, value) {
+				var temp = list_cancel_requests.find('tr[data-row-cancel-requests="'+value+'"]');
+				temp.addClass("highlight");
+				console.log( temp );
+			});
+        {endif}
+	});
+
+</script>

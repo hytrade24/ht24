@@ -1,0 +1,15 @@
+<b><tr{if even} bgcolor="#ffffff"{endif}>
+  <td>{typ}&nbsp;</td>
+  <td><input type="text" readonly name="set[{plugin}][{typ}]"  id="opt{i}"
+    value="{value}" title="{htm(plugin)}/{htm(typ)}" />&nbsp;
+    <a href="javascript:setdate('opt{i}');" title="Datum w&auml;hlen"><img border="1" width="16" height="16"
+      src="gfx/btn.date.gif" /></a>
+  </td>
+  <td>
+    <a href="index.php?page={curpagealias}&set[{plugin}][{typ}]={htm(default_value)}"
+      title="Defaultwert eintragen"
+      onClick="this.href='javascript:;';document.getElementById('opt{i}').value='{default_value}';"
+      >{default_value}</a>
+  &nbsp;</td>
+  <td>{nl2br(beschreibung)}</td>
+</tr></b>

@@ -1,0 +1,53 @@
+<h3>Upload files</h3>
+{if ERR_UP}
+	<h3 class="text-error">
+        Not successful!
+	</h3>
+	<ul>
+		{if NOT_ALLOWED}
+			<li class="text-error">
+                Forbidden file format!
+			</li>
+		{endif}
+	</ul>
+{endif}
+{if UPS_LEFT}
+	<p>
+		{if UPS_FREE}
+            The first <strong>{UPS_FREE} uploads</strong> are free, every other
+                upload will be subtracted from your uploadpackage.
+
+		{endif}
+        <br />
+
+        {if UPS_LEFT == 1}
+            <strong>{UPS_LEFT} file-upload</strong> left.
+        {else}
+            <strong>{UPS_LEFT} file-uploads</strong> left.
+        {endif}
+        <br />
+	</p>
+	<form target="if_upload2" method="post" id="DATA_UP" action="{uri_baseurl(/index.php)}" enctype="multipart/form-data">
+		<input type="hidden" name="page" value="ad_uploads" />
+		<input type="hidden" name="frame" value="ajax" />
+		<input type="hidden" name="FK_AD" value="{FK_AD}" />
+		<input onchange="if (confirm('Do you want to upload the selected file?')) { data_upload_start(); } else { this.value = null; }" type="file" name="DATA" id="DATA_FIELD" />
+        Allowed file formats: {htm(FORMATS_ALLOWED)}
+	</form>
+{else}
+	<p class="text-error">
+        No more files possible.
+	</p>
+{endif}
+{if liste}
+	<br />
+	<fieldset style="clear:both; width:98%;">
+		<legend>
+            Already uploaded files
+        </legend>
+		<br />
+		<table class="liste" cellspacing="0" width="100%" style="border:none;">
+			{liste}
+		</table>
+	</fieldset>
+{endif}

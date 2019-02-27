@@ -1,0 +1,106 @@
+{if info_declined}
+<div class="alert alert-info">
+    <h2>Releasing the advertisement was declined</h2>
+        <p>
+            You declined the release of the advertisement. The user will be notified via an E-Mail.
+            <br />
+            Once the user edited the advertisement, you will receive it for another examination.
+        </p>
+
+</div>
+{endif}
+{if info_unlocked}
+<div class="alert alert-success">
+    <h2>Advertisement released</h2>
+        <p>
+            You have released the advertisement. The advertisement is now accessable for public.
+        </p>
+
+</div>
+{endif}
+{if (ID_USER==AD_FK_USER && neu)}
+    <div class="alert {if AD_CONFIRMED==1}alert-success{else}alert-info{endif}">
+    {if AD_CONFIRMED==2}
+        <h2>The Advertisement has been declined!</h2>
+            <p>
+                The release of your advertisement was declined by an administrator!
+                You received an E-Mail with an assessment. Please edit the advertisement
+                and correct the criticising details. An administrator will check the advertisement afterwards.
+            </p>
+
+        <strong>More actions:</strong><br />
+        <ul>
+            <li>
+                <a href="{uri_action(my-marktplatz-neu,{ID_AD})}">Edit advertisement</a>
+            </li>
+            <li>
+                <a href="{uri_action(my-marktplatz-neu)}">Place more advertisements</a>
+            </li>
+            <li>
+                <a href="{uri_action(my-pages)}">Go to my account</a>
+            </li>
+            <li>
+                <a href="{uri_action(my-marktplatz)}">Go to my advertisements</a>
+            </li>
+            <li>
+                <a href="{uri_action(marktplatz)}">Go to marketplace</a>
+            </li>
+        </ul>
+    {else}
+        {if AD_CONFIRMED==1}
+        <h2>Advertisement was saved succesfully</h2>
+            <p>
+                Your advertisement was saved succesfully and is accessable in
+                about a Minute.
+            </p>
+
+        {else}
+        <h2>Advertisement will be checked soon!</h2>
+            <p>
+                Your advertisement has been saved and will be checked by an administrator shortly.
+                The advertisement is not visible for public until it was checked!
+            </p>
+
+        {endif}
+
+        <h2>More actions:</h2>
+        <div class="row">
+            <div class="col-md-3 text-center"><a href="#premium" onclick="TopAd({ID_AD});"><span class="glyphicon glyphicon-eye-open btn btn-default btn-lg"></span><br/>Book Premium-Features now!</a></div>
+            <div class="col-md-3 text-center"><a href="{uri_action(my-marktplatz-neu)}"><span class="glyphicon glyphicon-plus-sign btn-lg"></span><br/>Place more advertisements</a></div>
+            <div class="col-md-3 text-center"><a href="{uri_action(my-pages)}"><span class="glyphicon glyphicon-home btn-lg"></span><br/>Go to my account</a></div>
+            <div class="col-md-3 text-center"><a href="{uri_action(my-marktplatz)}"><span class="glyphicon glyphicon-th-list btn-lg"></span><br/>Go to my advertisements</a></div>
+
+        </div>
+    {endif}
+    </div>
+{endif}
+
+{if !AD_ACTIVE && ID_USER==AD_FK_USER && !neu}
+    <div class="alert alert-info">
+    {if AD_CONFIRMED==1}
+        <h2>Advertisement is currently deactivated!</h2>
+            <p>
+                This advertisement is in public currently inaccessible.
+                Click on "activate" to make the advertisement open for public again.
+            </p>
+
+    {else}
+        {if AD_CONFIRMED==0}
+        <h2>Advertisement will be checked soon!</h2>
+            <p>
+                Your advertisement has been saved and will be checked by an administrator shortly.
+                The advertisement is not visible for public until it was checked!
+            </p>
+
+        {else}
+        <h2>The Advertisement has been declined!</h2>
+            <p>
+                The release of your advertisement was declined by an administrator!
+                You received an E-Mail with an assessment. Please edit the advertisement
+                and correct the criticising details. An administrator will check the advertisement afterwards.
+            </p>
+
+        {endif}
+    {endif}
+    </div>
+{endif}

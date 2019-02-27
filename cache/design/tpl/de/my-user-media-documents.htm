@@ -1,0 +1,15 @@
+<p id="uploadDocumentNoneYet" class="text-error"{if liste} style="display: none"{endif}>
+    Sie haben noch keine Dokumente hochgeladen.
+</p>
+<table id="uploadDocumentTable" class="table table-condensed table-bordered table-striped"{if !liste} style="display: none"{endif}>
+<thead>
+	<tr>
+		<th>Dateiname</th>
+        <th>Aktionen</th>
+		<th>Dateityp</th>
+	</tr>
+</thead>
+<tbody>
+	{liste}
+</tbody>
+</table>

@@ -1,0 +1,9 @@
+<div class="design-row-item">
+    <div class="design-user-contact-box">
+        <div class="userImage design-user-contact-box-img">
+            <img src="{thumbnail(/cache/users/{USER_CACHE}/{USER_ID}/{USER_ID}.jpg,100,100)}" alt="" border="0" >
+        </div>
+        <p><a href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID})}" {if UEBER}onmouseover="setBlobText(this, '{htm(UEBER)}', true);" onmouseout="setBlobText(this, '', false);" style="cursor:pointer;" data-original-title="Beschreibung"{endif}><strong>{USER_NAME}</strong></p></a>
+        {if USER_RATING}<img src="{uri_baseurl(/gfx/stars_{USER_RATING}.png)}" title="Durchschnittliche Bewertung" />{endif}
+    </div>
+</div>

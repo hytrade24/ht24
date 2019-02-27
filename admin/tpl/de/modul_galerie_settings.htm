@@ -1,0 +1,42 @@
+<h1>Galerie-Modul - Einstellungen</h1>
+{if written}<p class="ok">Ihre Einstellungen wurden gespeichert!</p>{endif}
+<p>Mit den hier vorgenommenen Einstellungen passen Sie das globale Verhalten Ihrer Galerien an.</p>
+<br />
+<h2>Einstellungen</h2>
+
+<p><b>Moderation</b><br />
+Aktivieren Sie die Box, um eingestellte Bilder sofort sichtbar zu machen, ohne dass Sie jedes Bild einzeln freigeben müssen.
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+<input type="hidden" name="FK_BILDFORMAT_PROFIL" value="{FK_BILDFORMAT_PROFIL}">
+<table class="liste" cellspacing="0">
+<tr><th>Beschreibung</th><th>Einstellung</th></tr>
+ <tr class="zeile1"> 
+  <td><label for="MODERATION">Bilder sofort freigeben</label></td>
+  <td><input type="checkbox" {if MOD}checked="checked"{endif} name="MOD" value="1" class="nob" /></td>  
+ </tr>
+ <tr class="zeile0"> 
+  <td>Speicherordner f&uuml;r &ouml;ffentlich hochgeladene Bilder.<br />
+    Innerhalb dieses Ordners werden die Unterordner f&uuml;r die einzelnen Benutzer angelegt!</td>
+	  <td>{UPLOADPATH}/ <input type="text" value="{htm(DIR)}" name="DIR" onclick="alert('Bitte Server durchsuchen');return false;" readonly /> <a href="#" onclick="popupfkt('folder_browser&frompopup=1','450','450');"><img src="gfx/ordner_16.gif" width="16" height="16" title="Durchsuchen" alt="Durchsuchen" align="top"></a></td>
+ </tr>
+ <tr class="zeile1"> 
+  <td>Standard Bildformat f&uuml;r &ouml;ffentlich hochgeladene Bilder</td>
+    <td>{select(bildformat)}</td>
+ </tr>
+ <tr class="zeile0"> 
+   <td>Standard Bildformat f&uuml;r hochgeladene Profilbilder</td>
+      <td>{select(bildformat,FK_BILDFORMAT_PROFIL)}</td>
+ </tr>
+ <tr class="zeile1"> 
+  <td>Infoseite in Modul- &Uuml;bersicht anzeigen</td>
+    <td><input type="checkbox" name="B_VIS" value="1" class="nob"{if B_VIS} checked="checked"{endif} /></td>
+ </tr> 
+ <tr class="zeile0"> 
+  <td colspan="2" class="footer" align="right"><input type="submit" value="Speichern" class="button" /></td>
+ </tr>
+</table>
+
+
+
+</form>

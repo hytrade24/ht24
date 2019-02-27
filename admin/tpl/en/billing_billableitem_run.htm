@@ -1,0 +1,18 @@
+<h1>Rechnungslauf</h1>
+
+<p>Der Rechnungslauf wird in regelmäßigen Abständen automatisch ausgeführt.
+    Diese Zeitpunkte können Sie in den <a href="index.php?page=market_settings">Einstellungen</a> festlegen. </p>
+<p>
+    An dieser Stelle können Sie den Rechnungslauf manuell ausführen. Dabei werden alle abrechnungsfähigen Posten in Rechnungen
+    gewandelt und den jeweiligen Empfängern zugestellt.
+</p>
+
+
+<a href="index.php?page=billing_billableitem_run&lang={s_lang}&action=run" class="button">Rechnungslauf manuell ausführen</a>
+
+
+{if RESULT}
+    <h2>Rechnungslauf wurde ausgeführt..</h2>
+
+    <textarea rows="20" cols="100">{RESULT}</textarea>
+{endif}

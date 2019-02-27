@@ -1,0 +1,74 @@
+<!<!doctype html>
+<html lang="de-DE">
+<head>
+  <meta charset="UTF-8">
+  <title>Cache aktualisieren</title>
+  
+  <link rel="stylesheet" type="text/css" href="{uri_resource(/lib/bootstrap3/css/bootstrap.min.css)}" />
+  
+  <script src="{uri_resource(/lib/jquery/jquery.js)}"></script>
+  <script src="{uri_resource(/lib/bootstrap3/js/bootstrap.min.js)}"></script>
+  
+  <script src="{uri_resource(/js/design.js)}" type="text/javascript"></script>
+  <script src="{uri_resource(/js/less.js)}" type="text/javascript"></script>
+  <script src="{uri_resource(/js/less-source-map-0.1.31.js)}" type="text/javascript"></script>
+  
+  <script type="text/javascript">
+    
+    function updateNextLanguage(langList, langIndex) {
+      if (langIndex >= langList.length) {
+        jQuery(".progress-bar").css("width", "100%");
+        jQuery(".process-text").text("Caching design done!");
+        if (typeof window.frameElement.callbackDone == "function") {
+          window.frameElement.callbackDone();
+        }
+        return false;
+      }
+      var langAbbr = langList[langIndex];
+      jQuery(".progress-bar").css("width", 10 + (langIndex * 90 / langList.length)+"%");
+      jQuery(".process-text").text("Caching design for language: '"+langAbbr+"'");
+      designGenerateCss("{uri_baseurl(/cache/design/resources/"+langAbbr+"/{cssDirectory}/)}", function (output) {
+        var lessVariables = {};
+        for (var varName in output.root._variables) {
+          var varCurrent = output.root._variables[varName];
+          if (varCurrent.variable) {
+            lessVariables[varName] = varCurrent.value.toCSS();
+            if ((varCurrent.value.value instanceof Array) && varCurrent.value.value.length == 1 && varCurrent.value.value[0].value.length == 1) {
+              if (varCurrent.value.value[0].value[0].type == "Variable") {
+                lessVariables[varName] = varCurrent.value.value[0].value[0].name;
+              }
+            }
+          }
+        }
+        jQuery.post("{uri_action(system-admin,design,writeCss)}?access={accessToken}", {
+          content: output.css,
+          directory: "{cssDirectory}",
+          lang: langAbbr,
+          variables: lessVariables
+        }, function (result) {
+          jQuery(".process-text").text("Caching design for language '"+langAbbr+"' is done.");
+          updateNextLanguage(langList, langIndex + 1);
+        });
+      }, function (error) {
+        if (typeof window.frameElement.callbackError == "function") {
+          window.frameElement.callbackError(error);
+        }
+      });
+      return true;
+    }
+        
+    jQuery(function() {
+      updateNextLanguage({languages}, 0);
+    });
+    
+  </script>
+</head>
+<body style="overflow: hidden;">
+  <div class="process-text">Updating design</div>
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 10%">
+      <span class="sr-only process-text">Updating design</span>
+    </div>
+  </div>
+</body>
+</html>

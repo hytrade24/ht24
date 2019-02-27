@@ -1,0 +1,74 @@
+<tr>
+    <td>
+        {ID_AD_MASTER}
+        <input type="hidden" name="selected[]" value="{ID_AD_MASTER}" />
+    </td>
+    {if ERROR_VIN}
+    <td style="min-width: 240px;">
+        <a class="pull-left padding-small" href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+        {if SRC_THUMB}
+        	<img src="{thumbnail({uri_baseurl({SRC_THUMB})},80,80)}">
+        {else}
+            <img src="{thumbnail({uri_baseurl(/gfx/nopic.jpg)},80,80)}">
+        {endif}
+        </a>
+        <p>
+            <b>{PRODUKTNAME}</b>
+            <br />
+            <span class="muted">
+            {shorten({BESCHREIBUNG},160,1)}
+            </span>
+        </p>
+    </td>
+    <td colspan="2">
+        <div class="text-error">
+            <strong>Verlängern nicht möglich!</strong>
+            <br />
+            Es ist aktuell bereits ein Inserat mit der selben Fahrzeug-Identifizierungsnummer online!
+                Bitte deaktivieren Sie das andere Inserat um dieses verlängern zu können.
+        </div>
+    </td>
+    {else}
+    <td>
+        <a class="pull-left padding-small" href="{uri_action(marktplatz_anzeige,{ID_AD_MASTER},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}">
+        {if SRC_THUMB}
+        	<img src="{thumbnail({uri_baseurl({SRC_THUMB})},80,80)}">
+        {else}
+            <img src="{thumbnail({uri_baseurl(/gfx/nopic.jpg)},80,80)}">
+        {endif}
+        </a>
+        <p>
+            <b>{PRODUKTNAME}</b>
+            <br />
+            <span class="muted">
+            {shorten({BESCHREIBUNG},160,1)}
+            </span>
+        </p>
+    </td>
+    <td>
+    {if RUNTIME_DAYS>0}
+        {RUNTIME_DAYS}
+        {if RUNTIME_DAYS==1}
+            Tag
+        {else}
+            Tage
+        {endif}
+        <br />
+        <span class="muted">bis&nbsp;{todate(STAMP_END)}</span>
+    {else}
+        <b>Ausgelaufen</b><br />
+        <br />
+    {endif}
+    
+    </td>
+    <td data-date-end="{STAMP_END_TIME}">
+        {RUNTIME_DAYS_NEW}
+        {if RUNTIME_DAYS_NEW==1}
+            Tag
+        {else}
+            Tage
+        {endif}
+        <span class="muted">bis&nbsp;{todate(STAMP_END_NEW)}</span>
+    </td>
+    {endif}
+</tr>

@@ -1,0 +1,42 @@
+<h1>Statistiken zur Buchhaltung</h1>
+<p>Die Zahlen berücksichtigen immer einen bestimmten Zeitraum!!</p>
+
+<table  cellspacing="10">
+    <tr>
+        <td valign="top"><p><b>Übersicht Rechnungs-Status</b><br />
+        Zeigt die Anzahl der unterschiedlichen Rechnungenstati an
+        </p>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltung&w=300" width="600" height="350" frameborder="0"></iframe>
+        </td>
+        <td valign="top">
+    <p><b>Beträge nach Rechnungs-Status</b><br />
+    Zeigt die Beträge der unterschiedlichen Rechnungenstati an
+    </p>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_offen&w=300" width="300" height="300" frameborder="0"></iframe>
+        </td>
+    </tr>
+</table>
+<h1>Umsatzentwicklung (12 Monate)</b><br />pro Monat</h1>
+<table  cellspacing="10">
+    <tr>
+
+        <td><h2>Umsatzzahlen pro Monat (Absolutbeträge)</h2>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_overall&w=660" width="600" height="300" frameborder="0"></iframe></td>
+        <td><a class="button" href="index.php?page=buchhaltung">Details anzeigen</a></td>
+    </tr>    
+    <tr>
+        <td><h2>Bezahlte Rechnungen pro Monat (Absolutbeträge)</h2>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_status&w=660&STATUS=1" width="600" height="300" frameborder="0"></iframe></td>
+        <td><a class="button" href="index.php?lang=de&page=buchhaltung&STATUS=1">Details anzeigen</a></td>
+    </tr>
+    <tr>
+        <td><h2>Unbezahlte Rechnungen pro Monat (Absolutbeträge)</h2>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_status&w=660&STATUS=0" width="600" height="300"frameborder="0"></iframe></td>
+        <td><a class="button" href="index.php?lang=de&page=buchhaltung&STATUS=0">Details anzeigen</a></td>
+    </tr>
+    <tr>
+        <td><h2>Stonierte Rechnugen pro Monat (Absolutbeträge)</h2>
+            <iframe id="katframe" src="index.php?frame=iframe&page=stats&show=buchhaltungumsatz_status&w=660&STATUS=2" width="600" height="300" frameborder="0"></iframe></td>
+        <td><a class="button" href="index.php?lang=de&page=buchhaltung&STATUS=2">Details anzeigen</a></td>
+    </tr>        
+</table>

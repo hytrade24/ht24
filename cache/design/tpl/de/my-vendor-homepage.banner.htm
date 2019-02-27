@@ -1,0 +1,37 @@
+<tr id="articleImage{i}">
+    <td>
+        <div class="thumbnail">
+            <a{if SRC} target="_blank" href="{uri_baseurl({SRC})}"{endif} class="galleryImagePreview">
+                {if BASE64}
+                <img src="data:{TYPE};base64,{BASE64}" style="height: 80px;" />
+                {else}
+                <img src="{uri_baseurl({SRC_THUMB})}">
+                {endif}
+            </a>
+        </div>
+    </td>
+    <td>
+        {if IS_DEFAULT==0}
+        <a href="#" onclick="ImageSetDefault({i}); return false;">Standard-Bild</a><br />
+        {else}
+        <strong>Standard-Bild</strong><br />
+        {endif}
+        <a href="#"  onclick="ImageDelete({i}); return false;">Löschen</a>
+    </td>
+    <td class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputImageMetaTitle{i}">Titel</label>
+            <div class="design-input-field">
+                <input class="form-control" type="text" id="inputImageMetaTitle{i}" name="META[IMAGES][{i}][TITLE]" value="{htm(META_TITLE)}" placeholder="Bildtitel" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label design-input-label" for="inputImageMetaSource{i}">Position</label>
+            <div class="design-input-field">
+                <select class="form-control" type="text" id="inputImageMetaSource{i}" name="META[IMAGES][{i}][POSITION]">
+                    <option value="1"{if META_POSITION==1} selected{endif}>Header / Kopfzeile (1140 x 240)</option>
+                </select>
+            </div>
+        </div>
+    </td>
+</tr>

@@ -1,0 +1,63 @@
+{if NEW}
+    {if FK_BILLING_INVOICE}
+        <tr data-invoice-id="{FK_BILLING_INVOICE}">
+            <td colspan="12">
+                <a href="index.php?page=invoice_view&ID_BILLING_INVOICE={FK_BILLING_INVOICE}">
+                    <h3>Rechnung # {FK_BILLING_INVOICE}</h3>
+                </a>
+            </td>
+        </tr>
+    {endif}
+{endif}
+<tr data-invoice-id="{FK_BILLING_INVOICE}" class="zeile{even}" {if ACTION_accept_and_revoke}style="background-color: #ffbfbf !important;"{endif}>
+    <td>
+        {if !ACTION_accept_and_revoke}
+            <input type="hidden" name="FK_BILLING_CANCEL[]" value="{ID_BILLING_CANCEL}" />
+        {endif}
+        {ID_BILLING_CANCEL}
+    </td>
+    <td>{V1}</td>
+    <td>{CUSTOMER_REMARKS}</td>
+    <td>
+        {if STATUS_pending}
+            Offen
+        {endif}
+        {if STATUS_rejected}
+            Abgelehnt
+        {endif}
+        {if STATUS_shelve}
+            Zurückgestellt
+        {endif}
+        {if STATUS_done}
+            Akzeptiert
+        {endif}
+    </td>
+    <td>
+        {if ACTION_accept_and_revoke}
+            {DESCRIPTION}
+        {else}
+            <a href="{DESCRIPTION_LINK}">
+                {DESCRIPTION}
+            </a>
+        {endif}
+    </td>
+    <td>{topreis(PRICE)} {CURRENCY_DEFAULT}</td>
+    <td>
+        <input {if ACTION_accept_and_revoke}disabled checked{else}name="ACTION_TYPE_{ID_BILLING_CANCEL}"{endif} type="radio" value="accept_and_cancel" />
+    </td>
+    <td>
+        <input {if ACTION_accept_and_revoke}disabled{endif} {if ACTION_accept_and_keep}checked{endif} type="radio" {if !ACTION_accept_and_revoke}name="ACTION_TYPE_{ID_BILLING_CANCEL}"{endif} value="accept_and_keep" />
+    </td>
+    <td>
+        <input {if ACTION_accept_and_revoke}disabled{endif} {if ACTION_rejected}checked{endif} type="radio" {if !ACTION_accept_and_revoke}name="ACTION_TYPE_{ID_BILLING_CANCEL}"{endif} value="deny" />
+    </td>
+    <td>
+        <input {if ACTION_accept_and_revoke}disabled{endif} {if ACTION_shelve}checked{endif} type="radio" {if !ACTION_accept_and_revoke}name="ACTION_TYPE_{ID_BILLING_CANCEL}"{endif} value="shelve" />
+    </td>
+    <td>
+        <input {if ACTION_accept_and_revoke}disabled{endif} {if ACTION_none}checked{endif} type="radio" {if !ACTION_accept_and_revoke}name="ACTION_TYPE_{ID_BILLING_CANCEL}"{endif} value="none" />
+    </td>
+    <td>
+        <input {if ACTION_accept_and_revoke}disabled{endif} type="text" {if !ACTION_accept_and_revoke}name="ADMIN_REMARKS[]"{endif} value="{ADMIN_REMARKS}" />
+    </td>
+</tr>

@@ -1,0 +1,32 @@
+{if delok}
+ <h2 class="ok">L&ouml;schvorgang war erfolgreich!</h2>
+{endif}
+{if editok}
+ <h2 class="ok">Kommentar wurde erfolgreich bearbeitet!</h2>
+{endif}
+{if delfail}
+ <h2 class="error">{delfail}</h2>
+{endif}
+<form action="index.php" method="post">
+<input type="hidden" name="fk" value="{fk}" />
+<input type="hidden" name="table" value="{table}" />
+<input type="hidden" name="id_comment" value="{id_comment}" />
+<input type="hidden" name="nav" value="{curnav}" />
+<input type="hidden" name="frame" value="popup" />
+<input type="hidden" name="npage" value="{npage}" />
+<table cellpadding="0" cellspacing="0" border="0" class="liste" width="100%">
+ <tr>
+  <th class="zeile0">Artikel: {if V1}{V1}{else}<span class="error">Kein Artikel</span>{endif}</th>
+ </tr>
+ <tr>
+  <td class="zeile1">{if KOMMENTAR}<textarea rows="14" cols="81" name="comment">{KOMMENTAR}</textarea>{else}<span class="error">Kommentar konnte nicht gefunden werden</span>{endif}</td>
+ </tr>
+ <tr>
+  <td align="right">{if KOMMENTAR}<input type="submit" class="button" name="save" value="Speichern" onclick="if(!confirm('Wollen Sie wirklich den Kommentar speichern?')){return false}" />
+  					<input type="submit" class="button" name="del1" value="L&ouml;schen" onclick="if(!confirm('ACHTUNG\nDas Löschen kann nicht rückgängig gemacht werden!')){return false}" />
+ 					<input type="submit" class="button" name="delall" value="Alle L&ouml;schen" onclick="if(!confirm('ACHTUNG\nDas Löschen kann nicht rückgängig gemacht werden!')){return false}" />{endif}
+					<input type="button" class="button" value="Schließen" name="close" onClick="javascript:window.close();" /></td>
+ </tr>
+</table>
+</form>
+{pager}

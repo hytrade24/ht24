@@ -1,0 +1,196 @@
+<script type="text/javascript">
+	
+function ShowDetails{ID_AD_SOLD}() {
+	jQuery('#details_trans_{ID_AD_SOLD}').show();
+	jQuery('#mails_trans_{ID_AD_SOLD}').hide();
+	jQuery('#details_btn_{ID_AD_SOLD}').addClass("reiterPassiv");
+	jQuery('#details_btn_{ID_AD_SOLD}').removeClass("reiterAktiv");
+	jQuery('#mails_btn_{ID_AD_SOLD}').addClass("reiterAktiv");
+	jQuery('#mails_btn_{ID_AD_SOLD}').removeClass("reiterPassiv");
+}
+
+function ShowMails{ID_AD_SOLD}() {
+	jQuery('#details_trans_{ID_AD_SOLD}').hide();
+	jQuery('#mails_trans_{ID_AD_SOLD}').show();
+	jQuery('#mails_btn_{ID_AD_SOLD}').addClass("reiterAktiv");
+	jQuery('#mails_btn_{ID_AD_SOLD}').removeClass("reiterPassiv");
+	jQuery('#details_btn_{ID_AD_SOLD}').addClass("reiterPassiv");
+	jQuery('#details_btn_{ID_AD_SOLD}').removeClass("reiterAktiv");
+}
+
+</script>
+{if !dialog}
+<div style="float:right;">
+	<a class="close" onclick="show_details({ID_AD_SOLD});" title="Details ausblenden"><strong>X</strong></a>
+</div>
+{endif}
+<div class="reiter">
+    <div id="details_btn_{ID_AD_SOLD}" class="reiterAktiv">
+        <a onclick="ShowDetails{ID_AD_SOLD}();">
+			Details zu Transaktion {ID_AD_SOLD}
+		</a>
+    </div>
+    <div id="mails_btn_{ID_AD_SOLD}" class="reiterPassiv">
+        <a onclick="ShowMails{ID_AD_SOLD}();">
+			E-Mails zur Transaktion {ID_AD_SOLD}
+		</a>
+    </div>
+</div>
+
+<table id="mails_trans_{ID_AD_SOLD}" class="liste" cellpadding="0" cellspacing="0" border="0"
+		style="width: 100%; max-height: 300px; overflow: auto; display: none; border: none; background-color: #fff;">
+	{liste_mails}
+</table>
+<table id="details_trans_{ID_AD_SOLD}" style="width: 100%; height: 300px;" border="0">
+	<tr class="nohover">
+		<td valign="top" width="33%">
+		 
+				<h3>
+					Verkaufter Artikel
+				</h3>
+				<table cellspacing="0" style="margin-top:0px;">
+					<tr class="nohover">
+						<td>Artikelnummer:</td>
+						<td>
+							<a target="_blank" title="Anzeige in einem neuen Fenster &ouml;ffnen" href="{uri_baseurl(/marktplatz/marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}.htm)}">
+								{FK_AD}
+							</a>
+						</td>
+					</tr>
+					<tr class="nohover">
+						<td>
+							Artikel:
+						</td>
+						<td>
+							<a target="_blank" title="Anzeige in einem neuen Fenster &ouml;ffnen" href="{uri_baseurl(/marktplatz/marktplatz_anzeige,{FK_AD},{urllabel(PRODUKTNAME)}.htm)}">
+								{htm(PRODUKTNAME)}
+							</a>
+						</td>
+					</tr>
+					
+                    <tr class="nohover">
+						<td>
+							Versandkosten:
+						</td>
+						<td>
+							{topreis(VERSANDKOSTEN)} {CURRENCY_DEFAULT}
+						</td>
+					</tr>
+                    <tr class="nohover">
+	                    <td>Preis:</td>
+	                    <td>{topreis(PREIS-VERSANDKOSTEN)} {CURRENCY_DEFAULT}</td>
+                    </tr>
+                    
+                    <tr class="nohover">
+	                    <td>Gesamtpreis:</td>
+	                    <td>{topreis(PREIS)} {CURRENCY_DEFAULT}</td>
+                    </tr>
+                    
+                    <tr class="nohover">
+						<td>
+							Ihre Notiz <br />zum Produkt:
+						</td>
+						<td>
+							{htm(NOTIZ)}
+						</td>
+					</tr>
+                    <tr class="nohover">
+						<td>
+							Einstelldatum
+						</td>
+						<td>
+						{if STAMP_START}
+							{todate(STAMP_START)}
+						{else}
+							<span class="error">Anzeige gelöscht</span>
+						{endif}
+						</td>
+					</tr>       
+					<tr class="nohover">
+						<td>Nachrichten:</td>
+						<td>
+
+								<a onclick="ShowMails{ID_AD_SOLD}();">
+									{SENDED} vom Verk&auml;ufer
+								</a><br />
+								<a onclick="ShowMails{ID_AD_SOLD}();">
+									{RECIEVED} vom K&auml;ufer
+								</a><br />
+
+						</td>
+					</tr>
+					<tr class="nohover">
+						<td>
+							Erhaltene Bewertung:
+						</td>
+						<td>
+							{if RATING_OWN}
+								<img src="{uri_baseurl(/gfx/stars_{RATING_OWN}.png)}" /><br />
+								{htm(COMMENT_OWN)}
+							{endif}
+								
+						</td>
+					</tr>
+					<tr class="nohover">
+                        
+						<td colspan="2">&nbsp<br />
+							<a href="/index.php?frame=print&page=sale_details_seller&FK_SOLD={ID_AD_SOLD}" target="_blank"><img src="{uri_baseurl(/bilder/print.png)}" /></a> <strong>DRUCKEN</strong>
+						</td>
+					</tr>
+				</table>
+		 	
+		</td>
+		<td valign="top" style="padding-left:30px;" width="33%">
+			<h3><img src="{uri_baseurl(/cache/users/{VK_CACHE}/{VK_ID_USER}/{VK_ID_USER}_s.jpg)}" alt="" border="0" hspace="5" align="left" />
+				Kontaktdaten des Verk&auml;ufers : 
+				<a target="_blank" href="{uri_baseurl(/view_user,{urllabel(VK_NAME)},{VK_ID_USER}.htm)}" title="Profil in einem neuen Fenster &ouml;ffnen">
+					{htm(VK_NAME)}
+				</a>
+			</h3>
+			<p>
+				{if VK_FIRMA}{htm(VK_FIRMA)}<br />{endif}
+				{htm(VK_VORNAME)} {htm(VK_NACHNAME)}<br />
+				{htm(VK_STRASSE)}
+			</p>
+			<p>
+				{htm(VK_PLZ)}, {htm(VK_ORT)}<br />
+				{htm(VK_LAND)}
+			</p>
+			<p>
+				{if VK_TEL}Telefon: {htm(VK_TEL)}{endif}
+				{if VK_FAX}<br />Fax: {htm(VK_FAX)}{endif}
+				{if VK_MOBIL}<br />Mobil: {htm(VK_MOBIL)}{endif}
+			</p>
+			<p>
+				Email: 
+				<a href="mailto:{htm(VK_EMAIL)}">{htm(VK_EMAIL)}</a>
+			</p>
+		</td>
+        <td valign="top" width="33%" style="padding-left:30px;">
+			<h3><img src="{uri_baseurl(/cache/users/{EK_CACHE}/{EK_ID_USER}/{EK_ID_USER}_s.jpg)}" alt="" border="0" hspace="5" align="left" />
+				Kontaktdaten des K&auml;ufers : 
+				<a target="_blank" href="{uri_baseurl(/view_user,{urllabel(EK_NAME)},{EK_ID_USER}.htm)}" title="Profil in einem neuen Fenster &ouml;ffnen">
+					{htm(EK_NAME)}
+				</a>
+			</h3>
+			<p>
+				{if EK_FIRMA}{htm(EK_FIRMA)}<br />{endif}
+				{htm(EK_VORNAME)} {htm(EK_NACHNAME)}<br />
+				{htm(EK_STRASSE)}
+			</p>
+			<p>
+				{htm(EK_PLZ)}, {htm(EK_ORT)}<br />
+				{htm(EK_LAND)}
+			</p>
+			<p>
+				{if EK_TEL}Telefon: {htm(EK_TEL)}{endif}
+				{if EK_FAX}<br />Fax: {htm(EK_FAX)}{endif}
+				{if EK_MOBIL}<br />Mobil: {htm(EK_MOBIL)}{endif}
+			</p>
+			<p>
+				Email: 
+				<a href="mailto:{htm(EK_EMAIL)}">{htm(EK_EMAIL)}</a>
+			</p>
+        </td>
+	</tr>
+</table>

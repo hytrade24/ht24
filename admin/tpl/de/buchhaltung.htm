@@ -1,0 +1,119 @@
+<h1>Buchhaltung</h1>
+
+<form id="invoices" method="get" action="index.php" />
+<input type="hidden" name="page" value="buchhaltung" />
+<input type="hidden" name="lang" value="{lang}"  />
+	<table cellspacing="0" class="formTable">
+		<tr>
+			<th>Rech.-Nr.</th>
+			<td>
+				<input type="text" value="{htm(ID_BILLING_INVOICE)}" name="ID_BILLING_INVOICE" size="35" />
+			</td>
+
+			<th>User</th>
+			<td>
+                <input type="text" name="NAME_" value="{htm(NAME_)}" readonly="readonly" />
+                <input type="hidden" name="FK_USER" value="{FK_USER}" />
+                <a style="cursor:pointer" onclick="popupfkt('users&frompopup=1','850','500');" title="User ausw&auml;hlen">
+                  <img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+                </a>
+			</td>
+		</tr>
+		<tr>
+			<th>Datum von (TT.MM.JJJJ)</th>
+			<td>
+				<input type="text" value="{htm(STAMP_CREATE_FROM)}" name="STAMP_CREATE_FROM" size="35" />
+			</td>
+			<th>Datum bis (TT.MM.JJJJ)</th>
+			<td>
+				<input type="text" value="{htm(STAMP_CREATE_TO)}" name="STAMP_CREATE_TO" size="35" />
+			</td>
+		</tr>
+		<tr>
+			<th>Zahlungsart</th>
+			<td>
+				<select name="FK_PAYMENT_ADAPTER">
+					<option value="">alle anzeigen</option>
+					{PAYMENT_ADAPTER}
+				</select>
+			</td>
+      
+			<th>Lastschrift-Export ID</th>
+			<td >
+        <input type="text" name="FK_BILLING_INVOICE_EXPORT" value="{FK_BILLING_INVOICE_EXPORT}" />
+			</td>
+		</tr>
+		<tr>
+            <th>Status</th>
+            <td>
+                <select name="STATUS">
+                    <option value="">alle anzeigen</option>
+                    <option value="0" {if STATUS_OPEN}selected="selected"{endif}>unbezahlt</option>
+                    <option value="1" {if STATUS_PAID}selected="selected"{endif}>bezahlt</option>
+                    <option value="2" {if STATUS_CANCELED}selected="selected"{endif}>storniert</option>
+                </select>
+            </td>
+			<th>Sortieren nach</th>
+			<td >
+				<select name="SORT">
+                    <option value="SORT_STAMP_CREATE_DESC" {if SORT_STAMP_CREATE_DESC}selected="selected"{endif}>Neuste Rechnungen zuerst</option>
+                    <option value="SORT_STAMP_CREATE_ASC" {if SORT_STAMP_CREATE_ASC}selected="selected"{endif}>Älteste Rechnungen zuerst</option>
+                    <option value="SORT_ID_BILLING_INVOICE_DESC" {if SORT_ID_BILLING_INVOICE_DESC}selected="selected"{endif}>Rechnungsnummer absteigend</option>
+                    <option value="SORT_ID_BILLING_INVOICE_ASC" {if SORT_ID_BILLING_INVOICE_ASC}selected="selected"{endif}>Rechnungsnummer aufsteigend</option>
+				</select>
+			</td>
+		</tr>
+		<tr class="footer">
+			<td colspan="4" align="right">
+				<input type="submit" value="Suchen" class="button" style="float: right;" />
+                <input type="submit" name="print" value="Drucken" title="Suchergebnis drucken" class="button"  style="float: right;" />
+                <input type="submit" name="download" value="Download" title="Suchergebnis herunterladen" class="button"  style="float: right;" />
+                <input type="submit" name="csv" value="CSV" title="CSV" class="button" style="float: right;" />
+                <p style="float: right;">
+                    <a href="index.php?page=buchhaltung">Alle anzeigen</a>
+                </p>
+			</td>
+		</tr>
+	</table>
+</form>
+<br />
+<p>klicken Sie auf einen Usernamen um nur Rechnungen des betreffenden Users anzuzeigen</p>
+<table class="liste" cellspacing="0" id="invoice_list">
+    {if !SEARCH_RESULT && (npage<2)}
+<tr>
+    <td colspan="15"><iframe id="katframe" src="index.php?lang=de&frame=iframe&page=stats&show=buchhaltungumsatz_overall&w=400" width="100%" height="200" frameborder="0"></iframe></td>
+</tr>
+    {endif}
+    <tr>
+        <th></th>
+        <th colspan="3">Rechung</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th colspan="4">Kundeinformationen</th>
+        <th></th>
+        <th colspan="2">Rechungenbeträge</th>
+    </tr>
+    <tr>
+        <th>Aktion</th>
+        <th>Nr.</th>
+        <th>Datum</th>
+		<th>Zahlungsziel</th>
+		<th>Fällig in Tagen</th>
+        <th>Status</th>
+        <th>Eingang</th>
+        <th>Datum Storno</th>
+        <th>Kunde</th>
+        <th>Nr.</th>
+		<th>Mahnstufe</th>
+		<th>Zahlungsweise</th>
+        <th style="text-align: right">Netto</th>
+        <th style="text-align: right">Brutto</th>
+        <th style="text-align: right">Offen</th>
+    </tr>
+    {liste}
+    <tr>
+        <td colspan="15">{pager}</td>
+    </tr>
+</table>

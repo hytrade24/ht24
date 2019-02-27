@@ -1,0 +1,186 @@
+<link rel="stylesheet" media="screen" type="text/css" href="{uri_baseurl(/js/colorpicker/css/colorpicker.css)}" />
+<script type="text/javascript" src="{uri_baseurl(/js/colorpicker/js/colorpicker.js)}"></script>
+
+<script type="text/javascript">
+	function showprev() {
+		var width = (parseInt($('#frame_w').val())+40);
+		var height = (parseInt($('#frame_h').val())+110);
+		
+		
+		ShowContentDialog('<iframe style="width:{FRAME_W}px; height:{FRAME_H}px;border:0px;" frameborder="0" src="{uri_baseurl(/index.php?page=user_shop&frame=shop&id={HASH})}"></iframe>', 
+						"Preview", width, height);
+		/*
+		jQuery('#prev').dialog({
+			'modal': true,
+			'width': width,
+			'height': height,
+			'title': 'Preview',
+			'buttons': {
+				'Schließen': function() {
+					jQuery(this).dialog('destroy');
+				},
+				'Speichern': function() {
+					jQuery('#setts').submit();
+				}
+			}
+		}).html('<iframe style="width:{FRAME_W}px; height:{FRAME_H}px;border:0px;" frameborder="0" src="{uri_baseurl(/index.php?page=user_shop&frame=shop&id={HASH})}"></iframe>');
+		var dialog = jQuery('#prev').parent(); 
+		dialog.find('button').attr("class", "btn");
+		dialog.find('button:last').attr("class", "btn btn-success");
+		*/
+	};
+</script>
+<div id="prev" style="display:none;">
+	
+</div>
+<div>
+	<h1>My articles on my homepage</h1>
+	<p>
+	    Use the configurator, to display your articles easily on your homepage.
+		    You do not need any programming skills!
+
+	</p>
+	<h3>Step 1 of 2</h3>
+	<p>
+		Set here how the article should be displayed.
+	</p>
+	<form method="post" id="setts">
+		<input type="hidden" name="ID_USER_SHOP" value="{ID_USER_SHOP}" />
+		<input type="hidden" name="page" value="{curpage}" />
+		<table class="table table-bordered table-condensed design-user-shop-settings">
+        	<tr>
+				<th colspan="2">
+					<h4>Article</h4>
+				</th>
+			</tr>
+			<tr>
+				<th>Amount of articles in the article-list</th>
+				<td>
+                    <div class="input-group">
+                        <select class="form-control" name="PERPAGE">
+                            {perpage}
+                        </select>
+                        <div class="input-group-addon">Amount</div>
+                    </div>
+				</td>
+			</tr>
+        	<tr>
+				<th colspan="2">
+					<h4>Size</h4>
+				</th>
+			</tr>
+			<tr>
+				<th>Width of the article-list</th>
+				<td>
+                    <div class="input-group">
+					<input class="form-control" type="text" id="frame_w" name="FRAME_W" value="{htm(FRAME_W)}" size="10" />
+                        <div class="input-group-addon">Pixel</div>
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th>Height of the article-list</th>
+				<td>
+                    <div class="input-group">
+					    <input class="form-control" type="text" id="frame_h" name="FRAME_H" value="{htm(FRAME_H)}" size="10" />
+                        <div class="input-group-addon">Pixel</div>
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">
+					<h4>Colors</h4>
+				</th>
+			</tr>
+			<tr>
+				<th>Background color</th>
+				<td>
+                    <div class="input-group">
+                        <div class="input-group-addon">#</div>
+					    <input class="form-control color" type="text" id="bgcolor" name="BGCOLOR" value="{htm(BGCOLOR)}" size="10" />
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th>Text color</th>
+				<td>
+                    <div class="input-group">
+                        <div class="input-group-addon">#</div>
+                        <input class="form-control color" type="text" id="color" name="COLOR" value="{htm(COLOR)}" size="10" />
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th>Link color</th>
+				<td>
+                    <div class="input-group">
+                        <div class="input-group-addon">#</div>
+                        <input class="form-control color" type="text" id="linkcolor" name="LINKCOLOR" value="{htm(LINKCOLOR)}" size="10" />
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">
+					<h4>Font</h4>
+				</th>
+			</tr>
+			<tr>
+				<th>Font size</th>
+				<td>
+                    <div class="input-group">
+                        <select class="form-control" name="FONTSIZE">
+                            {sizes}
+                        </select>
+                        <div class="input-group-addon">Pixel</div>
+                    </div>
+				</td>
+			</tr>
+			<tr>
+				<th>Font type</th>
+				<td>
+					<select class="form-control" name="FONTFAMILY">
+						{family}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2" style="text-align: right;">
+					{if ID_USER_SHOP}
+						<input type="button" class="btn btn-default" value="Preview" onclick="showprev();" />
+					{endif}
+					<input type="submit" class="btn btn-success" value="Save & preview" />
+				</th>
+			</tr>
+		</table>
+	</form>
+<div class="design-content-box">
+	<h3>Step 2 of 2</h3>
+	<p>
+        Insert the following Javascript-code on your homepage. Your article will be displayed exactly on
+		    the area, where you inserted the code!
+
+	</p>
+	<p>
+		<textarea onfocus="this.select();" rows="5" class="form-control">{htm(CODE)}</textarea>
+	</p>
+    </div>
+</div>
+{if prev}
+	<script type="text/javascript">
+		showprev();
+	</script>
+{endif}
+<script type="text/javascript">
+	$('.footertab td input').button();
+	$.each($('.color'), function(key, val) {
+		$(val).ColorPicker({
+			color: $(val).val(),
+			onChange: function(hsb, hex, rgb) {
+				$(val).val(hex);
+			}
+		}).bind('keyup', function(){
+				$(this).ColorPickerSetColor(this.value);
+				
+			});
+	});
+</script>

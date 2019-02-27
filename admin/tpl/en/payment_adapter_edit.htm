@@ -1,0 +1,36 @@
+<h1>Zahlungsart {NAME}</h1>
+
+{if ok}<h2 class="ok">Zahlungsart wurde gespeichert</h2>{endif}
+{if err}<h2 class="error">Es ist ein Fehler aufgetreten</h2>{endif}
+
+<form action="index.php" method="post">
+    <input type="hidden" name="ID_PAYMENT_ADAPTER" value="{ID_PAYMENT_ADAPTER}" />
+    <input type="hidden" name="page" value="{curpage}" />
+    <input type="hidden" name="action" value="save" />
+
+    <table class="formTable">
+        <tr>
+            <th>ID</th>
+            <td>{ID_PAYMENT_ADAPTER}</td>
+        </tr>
+        <tr>
+            <th>Typ</th>
+            <td>{ADAPTER_NAME}</td>
+        </tr>
+        <tr>
+            <th>Bezeichnung</th>
+            <td><input type="text" value="{NAME}" name="NAME" /></td>
+        </tr>
+        <tr>
+            <th style="vertical-align: top">Konfiguration (INI Format)</th>
+            <td>
+                <textarea rows="12" cols="50" name="CONFIG">{CONFIG}</textarea>
+            </td>
+        </tr>
+        <tr>
+            <th class="footer" colspan="2">
+                <input type="submit" value="Speichern" />
+            </th>
+        </tr>
+    </table>
+</form>

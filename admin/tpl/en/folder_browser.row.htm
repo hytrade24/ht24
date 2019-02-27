@@ -1,0 +1,21 @@
+<tr{if selectable || folder} style="cursor:hand;{if is_current}background-color:lightyellow;{endif}" onMouseOver="this.style.backgroundColor='white';" onMouseOut="this.style.backgroundColor='{if is_current}lightyellow{endif}';"
+  onClick="{if selectable}bildfn('{dir}','/{NAME}');{else}location.href='index.php?page={curpage}&frame={curframe}&dir={dir}/{NAME}';{endif}"{endif}>
+  <td nowrap>
+    {if selectable}
+    <a href="javascript:bildfn('{dir}','/{NAME}');" title="Vorschau">
+	  <img src="gfx/edit1.gif" width="16" height="16" />
+	  {if thumb}<img src="{dir}/thumb_{NAME}" />{endif}
+	</a>
+	{endif}{if folder}
+	<img src="gfx/path.{if is_last}9{else}11{endif}.png" />
+	<a href="index.php?page={curpage}&frame={curframe}&dir={dir}/{NAME}" title="Ordner wechseln">
+	  <img src="gfx/path.20.png" />
+	</a>{endif}
+  </td>
+  <td nowrap>
+    {if selectable}
+    <a href="javascript:bildfn('{dir}','/{NAME}');" title="Vorschau">{NAME}</a>{else}{if folder}
+    <a href="index.php?page={curpage}&frame={curframe}&dir={dir}/{NAME}" title="Ordner wechseln">{NAME}</a>
+	{else}{NAME}{endif}{endif}
+  </td>
+</tr>

@@ -1,0 +1,67 @@
+{if ID_PERM}
+
+<h1>Recht bearbeiten</h1>
+<p>Hier können Sie Rechte bearbeiten. Änderungen werde sofort übernommen.</p>
+
+{else}
+
+<h1>Neues Recht definieren</h1>
+<p>Hier können Sie neue Rechte definieren. Rechte können zusätzlich zu den Rollen definiert werden.</p>
+
+
+<h2>Folgende Rechte wurde bereits angelegt</h2>
+<table class="liste" cellspacing="0"><tr>
+  <th>Aktion</th>
+  <th>Recht</th>
+  <th>Beschreibung</th>
+</tr>
+<tr>{roles}</tr>
+</table>
+<h2>Neues Recht anlegen</h2>
+<p>Sinnvolle Namen erleichter das handling der Software. <br>
+Rechte nur dann definieren wenn es unbedingt nötig ist!</p>
+{endif}
+
+{if err}<div class="hinweis"><span class="error">{err}</span></div>{endif}
+
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="nav" value="{curnav}" />
+  <input type="hidden" name="ID_PERM" value="{ID_PERM}" />
+  <input type="hidden" name="do" value="sv" />
+
+<table class="formTable" cellspacing="0"><tr>
+  <th>ID</th>
+  <td>{if ID_PERM}{ID_PERM}{else}neu{endif}</td>
+</tr><tr>
+  <th>Bezeichner</th>
+  <td><input type="text" name="IDENT" value="{htm(IDENT)}" maxlength="32" /></td>
+</tr><tr>
+  <th>Beschreibung</th>
+  <td><input type="text" name="DESCR" value="{htm(DESCR)}" maxlength="150"  size="50"/></td>
+</tr><tr>
+  <th>Kategorie</th>
+  <td>{lookup(PERM,LU_TYP)}</td>
+</tr><tr class="footer">
+  <td>&nbsp;</td>
+  <td><input type="submit" class="button" value="speichern" /></td>
+</tr></table>
+</form>
+{if ID_PERM && roles}
+<br />
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="nav" value="{curnav}" />
+  <input type="hidden" name="ID_PERM" value="{ID_PERM}" />
+  <input type="hidden" name="do" value="rt" />
+<table class="liste" cellspacing="0"><tr>
+  <th>Rolle</th>{if 0}
+  <th>SHOW</th>{endif}
+  <th>DEL</th>
+  <th>EDIT</th>
+  <th>CREATE</th>
+  <th>READ</th>
+</tr>{roles}<tr class="footer">
+  <td colspan="5"><input type="submit" class="button" value="Rechte zuweisen" /></td>
+</tr></table></form>{endif}
+
+<h2>Hinweis</h2>
+<p>Über die Funktion <b><a href="https://www.ebiz-trader.de/marktplatz-faq/?action=search&search=perm_edit" target="_blank">tpl_has_permission(RECHT,R)</a></b> können die Rechte im Template abgefragt werden</p>

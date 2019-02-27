@@ -1,0 +1,82 @@
+<script type="application/javascript">
+    
+function emptyCache(ident, description) {
+    if (!confirm("Cache für '"+description+"' wirklich löschen/erneuern?")) {
+        return;
+    }
+    jQuery.post("index.php?page={curpage}", "doAjax=emptyCache&target="+encodeURIComponent(ident), function(result) {
+        if (result.success) {
+            document.location.reload();
+        }
+    });
+}
+    
+function saveCacheInterval(ident, title, button) {
+    var intervalContainer = jQuery(button).parent();
+    var intervalInput = intervalContainer.find("input[name=CACHE_INTERVAL\\["+ident+"\\]]");
+    var intervalValue = intervalInput.val();
+    intervalContainer.addClass("saveable");
+    var cacheIntervalInputs = jQuery("input[name=CACHE_INTERVAL\\["+ident+"\\]]");
+    cacheIntervalInputs.prop("disabled", true);
+    jQuery.post("index.php?page={curpage}", "doAjax=setInterval&target="+encodeURIComponent(ident)+"&interval="+intervalValue, function(result) {
+        if (result.success) {
+            cacheIntervalInputs.val(intervalValue);
+            intervalContainer.addClass("saved");
+            window.setTimeout(function() {
+                intervalContainer.removeClass("saved");
+            }, 10000);
+        }
+        cacheIntervalInputs.prop("disabled", false);
+    });
+}
+    
+</script>
+<style>
+    table.liste {
+        width: 900px;
+    }
+    
+    .btn-save img {
+        margin: 0px 0px -4px;
+    }
+
+    .saveable {
+        padding-right: 56px !important;
+    }
+    
+    .saveable.saved {
+        position: relative;
+    }
+    
+    .saveable:after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 20px;
+        height: 20px;
+        opacity: 0;
+    }
+
+    .saveable.saved:after {
+        content: "Gespeichert!";
+        background: url(gfx/btn.important2.png);
+        background-repeat: no-repeat;
+        transition: opacity 1s ease-in-out;
+        opacity: 1;
+        padding-left: 20px;
+        width: 72px;
+        line-height: 26px;
+        background-position-y: 3px;
+    }
+</style>
+
+<h1>Cache</h1>
+<h2>Informationen und Einstellungen zum Cache</h2>
+        
+<p>
+    Hier haben Sie die Möglichkeit Informationen und Einstellungen zum Cache des ebiz-traders einzusehen/anzupassen. 
+</p>
+        
+{liste}

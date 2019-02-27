@@ -1,0 +1,99 @@
+<script type="text/javascript">
+
+    function forum_order(input) {
+        var url = jQuery(input).val();
+        document.location.href = url;
+    }
+
+</script>
+<div class="row design-group-forum">
+    <div class="col-xs-12 col-md-9 col-md-push-3">
+        <h1>{htm(CLUB_NAME)} - Forum</h1>
+
+        <p class="lead">Überblick über alle Forum-Threads zur Gruppe</p>
+
+        <div class="advertisement-box">{adserver(,1780,)}</div>
+
+        <div class="text-box design-location">
+            
+           <!-- Ariadne/Location and sorting/view -->            
+           <div class="row">
+               <div class="col-md-6 col-lg-7 clearfix">
+       
+                   <div class="pull-right">
+                       <span class="text-muted">{ALL_THREADS} Themen</span>
+                   </div>
+               </div>
+               <div class="col-md-6 col-lg-5">
+                   <form method="get" action="{uri_baseurl(/index.php)}">
+                       <select name="ordering" onchange="forum_order(this);" class="form-control">
+                           <option value="{uri_action(group-forum,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},{URI_SEARCHHASH},{URI_CURPAGE},STAMP_UPDATE,DESC)}" {if CUR_SORT_STAMP_UPDATE_DESC}selected="selected"{endif}>Neueste zuerst</option>
+                           <option value="{uri_action(group-forum,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},{URI_SEARCHHASH},{URI_CURPAGE},STAMP_UPDATE,ASC)}" {if CUR_SORT_STAMP_UPDATE_ASC}selected="selected"{endif}>Älteste zuerst</option>
+                           <option value="{uri_action(group-forum,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},{URI_SEARCHHASH},{URI_CURPAGE},NAME,ASC)}" {if CUR_SORT_NAME_ASC}selected="selected"{endif}>Alphabet aufsteigend</option>
+                           <option value="{uri_action(group-forum,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},{URI_SEARCHHASH},{URI_CURPAGE},NAME,DESC)}" {if CUR_SORT_NAME_DESC}selected="selected"{endif}>Alphabet absteigend</option>
+                           <option value="{uri_action(group-forum,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB},{URI_SEARCHHASH},{URI_CURPAGE},COMMENTS,DESC)}" {if CUR_SORT_COMMENTS_DESC}selected="selected"{endif}>Meiste Kommentare zuerst</option>
+                       </select>
+                   </form>  
+               </div>
+           </div>
+           
+        </div>
+        
+        {if NOTICE_DELETED}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Thema gelöscht</strong>
+            Das Thema und alle Antworten wurden erfolgreich gelöscht.
+        </div>
+        {endif}
+        
+        <div class="text-right design-group-forum-btn design-group-forum-btn-new">
+            <form method="post" class="form-inline">
+                <input class="form-control" id="forumSearchText" name="SEARCH" type="text" placeholder="Forum durchsuchen" value="{htm(SEARCH_FULLTEXT)}">
+                <button class="btn btn-default" type="submit">Suchen</button>
+            {if ID_USER && USER_IS_CLUB_MEMBER}
+                <a href="{uri_action(group-forum-new,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}" class="btn btn-success">Neues Thema</a>
+            {endif}
+            </form>
+        </div>
+        {if SEARCH_FULLTEXT}
+        <div class="alert alert-info">
+            <strong>Suchergebnis für '{htm(SEARCH_FULLTEXT)}'</strong>
+            <br />
+            <a href="{uri_action(group-forum,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}">
+                Alle Themen anzeigen
+            </a>
+        </div>
+        {endif}
+
+        <div>
+        {if liste}
+            {liste}
+        {else}
+            <div class="col-xs-12">
+                <strong>
+                    Keine Themen gefunden!
+                </strong>
+                <p>
+                    {if ID_USER && USER_IS_CLUB_MEMBER}
+                        In diesem Forum sind derzeit keine Themen vorhanden. Klicken Sie auf "Neues Thema" um eines zu erstellen.
+                    {endif}
+                </p>
+            </div>
+        {endif}
+        </div>
+
+        {if ID_USER && USER_IS_CLUB_MEMBER}
+        <br />
+        <div class="text-right design-group-forum-btn design-group-forum-btn-new">
+            <a href="{uri_action(group-forum-new,{urllabel(CLUB_NAME)},{CLUB_ID_CLUB})}" class="btn btn-success">Neues Thema</a>
+        </div>
+        {endif}
+
+        {pager}
+    </div>
+    <div class="col-xs-12 col-md-3 col-md-pull-9">
+        {subtpl(tpl/{SYS_TPL_LANG}/club.info.htm,*)}
+        {content_page()}
+    </div>
+</div>

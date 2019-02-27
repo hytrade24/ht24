@@ -1,0 +1,98 @@
+<script language="JavaScript" type="text/javascript">
+<!--{js_fields}
+  var current_div = 'zero';
+
+  function do_select(el)
+  {
+    var s = el.options[el.selectedIndex].value, p = s.lastIndexOf('\.'),
+      ar, i, k, chkel, s2;
+    if ('0'==s)
+      ar = allfields;
+    else
+    {
+      if (p>=0) s = s.substr(p+1, 255);
+      eval ('ar = fields_'+s+';');
+    }
+    for(i=0; i<allfields.length; i++)
+    {
+      chkel = document.getElementById('chk_'+ allfields[i]);
+      for(k=ar.length-1; k>=0; k--)
+        if (ar[k]==allfields[i])
+        {
+          chkel.disabled = false;
+          break;
+        }
+      if (k<0)
+      {
+        chkel.disabled = true;
+        chkel.checked = false;
+      }
+      document.getElementById('td_'+allfields[i]).className = (chkel.disabled ? 'disabled' : '');
+    }
+    if (s != current_div)
+    {
+      if ('0'==current_div)
+        for(i=0; i<alltables.length; i++)
+        {
+          document.getElementById('lbldiv_'+alltables[i]).style.display = 'none';
+          document.getElementById('tbldiv_'+alltables[i]).style.display =
+            (alltables[i] == s ? 'inline' : 'none');
+        }
+      else if ('0'==s)
+        for(i=0; i<alltables.length; i++)
+          document.getElementById('lbldiv_'+alltables[i]).style.display =
+          document.getElementById('tbldiv_'+alltables[i]).style.display = 'inline';
+      else
+      {
+        if ('zero'!=current_div)
+          document.getElementById('tbldiv_'+current_div).style.display = 'none';
+        document.getElementById('tbldiv_'+s).style.display = 'inline';
+      }
+      current_div = s;
+    }
+  }
+//-->
+</script>
+<div class="hinweisVar"><span class="error">ACHTUNG<br />
+<br />
+Je mehr Tabellen und Felder Sie gleichzeitig durchsuchen lassen, um so st&auml;rker wird der Server belastet.<br />
+Schicken Sie auf keinen Fall das Formular erneut ab, falls Ihnen die Suche zu lange dauert!
+</span></div>
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="page" value="{curpage}" />
+  <input type="hidden" name="do" value="qry" />
+  <input type="hidden" name="tab" value="2" />
+<table class="formTable"><tr>
+  <th align="left">Suchtext:&nbsp;</th>
+  <td><input type="text" name="qry" value="{htm(qry)}" class="inputhalf" /></td>
+  <th colspan="4">Tabellenfelder:&nbsp;</th>
+</tr><tr>
+  <th align="left">Tabelle:&nbsp;</th>
+  <td>{select_table}</td>
+  <td rowspan="3" valign="top">{tablefielddivs1}</td>
+  <td rowspan="3" valign="top">{tablefielddivs2}</td>
+  <td rowspan="3" valign="top">{tablefielddivs3}</td>
+  <td rowspan="3" valign="top">{tablefielddivs4}</td>
+</tr><tr>
+  <th align="left">String-Felder:&nbsp;</th>
+  <td>
+    <span id="td_v1" class=""><input type="checkbox" class="nob" name="str_fields[]" id="chk_v1" {if chk_v1}checked {endif}value="V1" /> <label for="chk_v1">V1</label></span>
+    <span id="td_v2" class=""><input type="checkbox" class="nob" name="str_fields[]" id="chk_v2" {if chk_v2}checked {endif}value="V2" /> <label for="chk_v2">V2</label></span>
+    <span id="td_t1" class=""><input type="checkbox" class="nob" name="str_fields[]" id="chk_t1" {if chk_t1}checked {endif}value="T1" /> <label for="chk_t1">T1</label></span>
+  </td>
+</tr><tr>
+  <th>Sprache:&nbsp;</th>
+  <td>{select_lang}</td>
+</tr><tr class="footer">
+  <th colspan="6"><input type="submit" value="Texte suchen" /></td>
+</tr></table>
+</form>
+{if matches}<br />
+<b>Ergebnis-&Uuml;bersicht:</b><table class="liste"><tr>
+  <th>Aktionen</th>
+  <th colspan="2" align="left">Tabelle</th>
+  <th>Treffer</th>
+</tr>{matches}</table><br />{endif}{if nomatch}
+<div class="hinweis" style="width:360px;">kein Treffer</div>
+{endif}{if err_search}
+<div class="error">{err_search}</div>{endif}

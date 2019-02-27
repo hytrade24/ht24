@@ -1,0 +1,252 @@
+<link href="{uri_baseurl(/js/tree/skin/ui.dynatree.css)}" rel="stylesheet" type="text/css">
+<script src="{uri_baseurl(/js/tree/jquery.dynatree.min.js)}" type="text/javascript"></script>
+
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+<script type="text/javascript">
+    jQuery(function() {
+
+        setVendorFormular = function(d) {
+            if(d) {
+                jQuery(".visibleOnEnabledVendor").show();
+            } else {
+                jQuery(".visibleOnEnabledVendor").hide();
+            }
+        }
+
+        jQuery("#vendorFormularDescriptionTab").tabs();
+
+        setVendorFormular({if VENDOR_STATUS}true{else}false{endif});
+    });
+
+
+</script>
+
+<h1>Vendor directory</h1>
+
+{if NOTICE_SUCCESS || DO_SAVE}
+<p class="alert alert-success">
+    <strong>Form was saved..</strong>
+</p>
+{endif}
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-vendor-nav.htm,*)}
+<span class="lead">
+    Promote your company and your offers on your own homepage.
+</span>
+<form method="post" action="{uri_baseurl(/index.php)}" id="vendorFormular" class="form-horizontal" enctype="multipart/form-data">
+    <input type="hidden" name="page" value="{curpage}"/>
+    <input type="hidden" name="DO" value="SAVE" />
+    
+    {if ERROR}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        
+        <p>
+            <strong>An error has occurred!</strong>
+            Please check the following details:
+        </p>
+        <ul>
+        {if ERROR_DECLINED}
+            <li>
+                Your request was declined because of:<br /> 
+                    {htm(HOMEPAGE_DETAILS_DECLINE_REASON)}
+
+            </li>
+        {endif}
+        {if ERROR_INVALID_DUPLICATE}
+            <li>
+                General error: 
+                    You already have a sub-domain!
+
+            </li>
+        {endif}
+        {if ERROR_INVALID_SUBDOMAIN}
+            <li>
+                Name of the sub-domain: 
+                    Has to be at least 2 characters long and can contain characters, numbers and dashes only.
+                    There must not be a dash on the beginning or at the end of name!
+
+            </li>
+        {endif}
+        {if INVALID_DATABASE_ERROR}
+            <li>
+                Database-error: 
+                    Please try again later or contact the support.
+
+            </li>
+        {endif}
+        </ul>
+    </div>
+    {endif}
+    
+    {if HOMEPAGE_CONFIGURED}
+    <input type="hidden" name="ID_VENDOR_HOMEPAGE" value="{int(HOMEPAGE_ID_VENDOR_HOMEPAGE)}" />
+    <table class="mytable table table-bordered table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>(Sub-)Domain</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td  nowrap="nowrap">
+                {if !HOMEPAGE_ACTIVE}
+                    <b>Checking...</b>
+                {else}
+                    {if HOMEPAGE_ACTIVE==1}
+                        Active
+                    {endif}
+                    {if HOMEPAGE_ACTIVE==2}
+                        <b class="text-danger">Declined</b>
+                    {endif}
+                    {if HOMEPAGE_ACTIVE==3}
+                        <b class="text-danger">Unavailable</b>
+                    {endif}
+                {endif}
+                </td>
+                <td>
+                {if HOMEPAGE_DOMAIN_SUB}
+                    <input type="hidden" name="DOMAIN_TYPE" value="SUBDOMAIN" />
+                    <div class="input-group">
+                        <span class="input-group-addon">http://</span>
+                        <input type="text" name="DOMAIN_SUB" class="form-control" placeholder="ihr-name" value="{htm(HOMEPAGE_DOMAIN_SUB)}" aria-describedby="vendor-homepage-domain-sub" />
+                        <span class="input-group-addon" id="vendor-homepage-domain-sub">{MARKETPLACE_HOST}</span>
+                    </div>
+                {else}
+                    <input type="hidden" name="DOMAIN_TYPE" value="DOMAIN_EXISTING" />
+                    <div class="input-group">
+                        <span class="input-group-addon">http://</span>
+                        <input type="text" name="DOMAIN_FULL" class="form-control" placeholder="ihr-name" value="{htm(HOMEPAGE_DOMAIN_FULL)}" />
+                    </div>
+                {endif}
+                </td>
+                <td nowrap="nowrap">
+                {if HOMEPAGE_ACTIVE==2}
+                    <input type="submit" value="Make a new request" class="btn btn-success visibleOnEnabledVendor"/>
+                {else}
+                    {if HOMEPAGE_DOMAIN_SUB}
+                        <a href="http://{HOMEPAGE_DOMAIN_SUB}.{MARKETPLACE_HOST}" target="_blank" class="btn btn-default">Open link</a>
+                    {else}
+                        <a href="http://{HOMEPAGE_DOMAIN_FULL}"  target="_blank"  class="btn btn-default">Open link</a>
+                    {endif}
+                    <input type="submit" value="Save changes" class="btn btn-success visibleOnEnabledVendor"/>
+                {endif}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    {if HOMEPAGE_ACTIVE==1}
+    <h3>Upload banner</h3>
+    
+    {subtpl(tpl/{SYS_TPL_LANG}/my-user-media.htm,TABLE=vendor_homepage,ID={HOMEPAGE_ID_VENDOR_HOMEPAGE},freeImages=5,allowUploads=0,allowVideos=0,hideHeading=1,hideTabs=1,hidePacketText=1,tplImagesRow=my-vendor-homepage.banner.htm)}
+
+    <script src="{uri_resource(/lib/codemirror/lib/codemirror.js)}"></script>
+    <link rel="stylesheet" href="{uri_resource(/lib/codemirror/lib/codemirror.css)}">
+    <script src="{uri_resource(/lib/codemirror/mode/javascript/javascript.js)}"></script>
+    <script src="{uri_resource(/lib/codemirror/mode/css/css.js)}"></script>
+
+    <h3>user.css bearbeiten</h3>
+    <p>
+        <strong>Please check every change for accuracy!</strong>
+    </p>
+
+    <div class="codeMirrorEditor panel panel-primary">
+        <textarea id="USER_CSS" name="USER_CSS">{htm(USER_CSS)}</textarea>
+
+        <script type="text/javascript">
+        jQuery(function() {
+
+            var codeMirror = CodeMirror.fromTextArea(document.getElementById("USER_CSS"), {
+                mode: "text/css",
+                lineNumbers: true,
+                fixedGutter: true
+            });
+        });
+        </script>
+    </div>
+
+
+    <h3>Edit Footer HTML</h3>
+    <p>
+        <strong>Please check every change for accuracy!</strong>
+    </p>
+
+    {editor(USER_FOOTER,100%,300,,advanced)}
+
+    <br>
+
+    <div class="text-right">
+        <input type="submit" value="Save changes" class="btn btn-success pull-right visibleOnEnabledVendor"/>
+    </div>
+    {endif}
+    
+    {else}
+    <input type="hidden" name="DOMAIN_TYPE" value="SUBDOMAIN" />
+    <!--
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Type of domain</label>
+
+        <div class="col-sm-9">
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="vendor-homepage-domain-type-sub" name="DOMAIN_TYPE" value="SUBDOMAIN" checked>
+                    Install homepage on sub-domain (e.g. www.your-name.{MARKETPLACE_HOST})
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="vendor-homepage-domain-type-full-new" name="DOMAIN_TYPE" value="DOMAIN_NEW" checked>
+                    Install homepage on a new domain (e.g. www.your-name.com)<br />
+                    <span class="text-muted">
+                        Choose this option if you want to register a new domain for your homepage.
+                    </span>
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="vendor-homepage-domain-type-full-existing" name="DOMAIN_TYPE" value="DOMAIN_EXISTING" checked>
+                    Install homepage on existing domain (e.g. www.your-name.com)<br />
+                    <span class="text-muted">
+                        Choose this option if you have already a domain.
+                    </span>
+                    
+                </label>
+            </div>
+        </div>
+    </div>
+    -->
+    <div class="form-group" data-type="SUBDOMAIN">
+        <label for="vendor-homepage-domain-sub" class="col-sm-3 control-label">Name of the sub-domain</label>
+
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-addon">http://</span>
+                <input id="vendor-homepage-domain-sub" type="text" name="DOMAIN_SUB" class="form-control" placeholder="ihr-name" value="{htm(HOMEPAGE_DOMAIN_SUB)}" />
+                <span class="input-group-addon">{MARKETPLACE_HOST}</span>
+            </div>
+        </div>
+    </div>
+    <!--
+    <div class="form-group" data-type="DOMAIN">
+        <label for="vendor-homepage-domain-full" class="col-sm-3 control-label">Name of the domain</label>
+
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-addon">http://</span>
+                <input id="vendor-homepage-domain-full" type="text" name="DOMAIN_FULL" class="form-control" placeholder="ihr-name" value="{htm(HOMEPAGE_DOMAIN_SUB)}" />
+            </div>
+        </div>
+    </div>
+    -->
+    <div class="form-group" data-type="DOMAIN">
+        <div class="col-sm-9 col-sm-offset-3">
+            <input type="submit" value="Request installation" class="btn btn-success pull-right visibleOnEnabledVendor"/>
+        </div>
+    </div>
+    {endif}
+
+</form>

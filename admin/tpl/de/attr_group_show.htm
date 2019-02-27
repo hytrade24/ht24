@@ -1,0 +1,8 @@
+{if ID_ATTR_GROUP}{if liste}<table class="liste"><tr>
+  <th>aus Gruppe</th>
+  <th>Typ</th>
+  <th>Label</th>
+</tr>{liste}</table>
+{else}Dieser Gruppe sind keine Attribute zugeordnet.<br />
+{endif}<a href="index.php?page=attr_group_edit&ID_ATTR_GROUP={ID_ATTR_GROUP}" target="_parent" onClick="return checkFlag(parent);">Gruppe bearbeiten</a>
+{else}keine Attributgruppe gew&auml;hlt{endif}

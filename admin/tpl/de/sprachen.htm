@@ -1,0 +1,76 @@
+<h1>Sprachen für Ihre Webseite</h1>
+<p>Diese Sprachen kann der User auf der Webseite auswählen</p>
+{if err}<div class="hinweis"><span class="error">{err}</span></div>{endif}
+
+<table class="liste" cellspacing="0"><tr>
+  <th>Aktionen</th>
+  <th>Abk&uuml;rzung</th>
+  <th>Sprache</th>
+  <th>Bitwert</th>
+    <tH>&ouml;ffentlich?</th>
+    <tH>Domain</th>
+    <tH>Base Url</th>
+ </tr>{sprachen}
+ <tr class="footer">
+ <td colspan="7">&nbsp;</td>
+ </tr>
+ </table>
+
+<h1>Beispiele für die Konfiguration</h1>
+Aktuelle Hauptdomain: <a class="button" href="http://{aktdomain}" target="_blank">{aktdomain}</a>
+
+<h2>Unterverzeichnis Z.B {aktdomain}<span style="color: red">/en/</span></h2>
+
+<table class="liste" cellspacing="0"><tr>
+    <th>Abk&uuml;rzung</th>
+    <th>Sprache</th>
+    <tH>Domain</th>
+    <tH>Base Url</th>
+</tr>
+    <tr>
+        <td>EN</td>
+        <td>Englisch</td>
+        <td>/en/</td>
+        <td>{aktdomain}</td>
+    </tr>
+    <tr class="footer">
+        <td colspan="7">&nbsp;</td>
+    </tr>
+</table>
+<h2>Subdomain Z.B  http://<span style="color: red">en.</span>{aktdomain}</h2>
+
+<table class="liste" cellspacing="0"><tr>
+    <th>Abk&uuml;rzung</th>
+    <th>Sprache</th>
+    <tH>Domain</th>
+    <tH>Base Url</th>
+</tr>
+    <tr>
+        <td>EN</td>
+        <td>Englisch</td>
+        <td>en.{aktdomain}</td>
+        <td></td>
+    </tr>
+    <tr class="footer">
+        <td colspan="7">&nbsp;</td>
+    </tr>
+</table>
+
+<h2>Domain Z.B  http://<span style="color: red">www.my-marketplace.com</span></h2>
+<p>Hier können Sie jede beliebige Domain verwenden Z.b. DE-Version = auto.de  EN-Version = car.com</p>
+<table class="liste" cellspacing="0"><tr>
+    <th>Abk&uuml;rzung</th>
+    <th>Sprache</th>
+    <tH>Domain</th>
+    <tH>Base Url</th>
+</tr>
+    <tr>
+        <td>EN</td>
+        <td>Englisch</td>
+        <td>www.my-marketplace.com</td>
+        <td></td>
+    </tr>
+    <tr class="footer">
+        <td colspan="7">&nbsp;</td>
+    </tr>
+</table>

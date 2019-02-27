@@ -1,0 +1,35 @@
+<tr class="zeile{even}">
+	<td nowrap="nowrap">{todate(STAMP)}</td>
+	<td>
+		{if RATING}
+		<div style="float: right;">
+			<img src="{uri_baseurl(/gfx/stars_{RATING}.png)}"/>
+		</div>
+		{endif}
+		<a href="#A{ID_COMMENT}" title="Kommentar ansehen" onclick="popupfkt('comment_edit&frompopup=1&ID_COMMENT={ID_COMMENT}','650','650');">
+			{COMMENT_SHORT}
+		</a>
+	</td>
+	<td>
+		{if FK_USER > 0}
+		<a href="index.php?page=user_edit&ID_USER={FK_USER}" name="{USER_NAME}">{USER_NAME}</a>
+		{else}
+		<strong>{USER_NAME}</strong>
+		<a href="mailto:{USER_MAIL}" name="{USER_NAME}">
+			<img src="gfx/mail.gif" /></a>
+		</a>
+		{endif}
+	</td>
+	<td>
+	{if FK>0}
+		{htm(TABLE_DESC)}
+	{else}
+		{htm(TABLE_DESC_STR)}
+	{endif}
+	</td>
+	<td>
+		<a href="{TARGET_LINK}" target="_blank">
+			{htm(TITLE)}
+		</a>
+	</td>
+</tr>

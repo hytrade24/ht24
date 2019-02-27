@@ -1,0 +1,13 @@
+<tr>
+{if is_inpath}
+ <td class="navleftinpath{if is_current} current{endif}"></td>
+ <td class="navLevel4inpath{if is_current} current{endif}">
+  <img src="skin/e-navi-blau-aktiv.gif" width="11" height="7" /><a href="index.php?{PAGE}" onClick="return checkFlag()">{htm(LABEL)}</a>
+ </td>
+{else}
+ <td class="navleft{if is_current} current{endif}"></td>
+ <td class="navLevel4{if is_current} current{endif}">
+  <img src="skin/e-navi-blau.gif" width="11" height="7" /><a href="index.php?{PAGE}" onClick="return checkFlag()">{htm(LABEL)}</a>
+ </td>
+{endif}
+</tr>

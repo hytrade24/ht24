@@ -1,0 +1,12 @@
+<li>
+	<a onclick="SetPacket({ID_PACKET_ORDER}, jQuery(this).text());" style="cursor:pointer;" title="{htm(V2)}">
+		<strong>
+			{htm(V1)} vom {todate(STAMP_START)}
+		</strong>
+		{if (MAX0==-1)}
+		(Flatrate)
+		{else}
+		({calc(FREE0)} / {MAX0} Anzeigen frei)
+		{endif}
+	</a>
+</li>

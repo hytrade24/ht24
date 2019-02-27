@@ -1,0 +1,19 @@
+<h1><img src="gfx/icon_fehlt_64.gif" width="64" height="64" alt="" border="0" align="left"> Coinpakete &Uuml;bersicht</h1>
+<p>Hier erhalten Sie eine &Uuml;bersicht aller Coinpakete.<br>
+Der Benutzer Ihrer Webseite kann eines oder mehrere Coinpakete kaufen, um damit seine Coins bei Ihnen aufzustocken und um sie gegen Artikel einzul&ouml;sen.</p>
+{if list}
+<table class="liste" cellspacing="0">
+	<tr>
+		<th>Aktion</th>
+		<th>Paketbezeichnung</th>
+		<th>Anzahl Coins</th>
+		<th>Preis Netto</th>
+		<th>Preis Brutto</th>
+	</tr>
+{list}
+</table>
+
+{else}
+<div class="hinweis"><span class="error">Sie haben noch kein Coinpaket hinzugef&uuml;gt
+ <a href="index.php?page=coinpackage_edit">Hinzuf&uuml;gen</a></span></div>
+{endif}

@@ -1,0 +1,146 @@
+<div class="radio{if COUPON_RUNTIME} coupon-runtime{endif}">
+    <label class="align-center">
+        <input type="radio" id="FK_RUNTIME_{FK_PACKET}" class="registerRuntimeRadio" rel="{FK_PACKET}" name="FK_RUNTIME" value="{ID_PACKET_RUNTIME}" {if FK_PACKET_RUNTIME == ID_PACKET_RUNTIME}checked="checked"{endif} />
+        {if !BILLING_PRICE}
+            {if IS_TRIAL}
+                Kostenloser Testzeitraum
+                <br />
+                {RUNTIME_NUM}
+                {if CYCLE_DAY}
+                    {if RUNTIME_NUM==1}
+                        Tag
+                    {else}
+                        Tage
+                    {endif}
+                {endif}
+                {if CYCLE_WEEK}
+                    {if RUNTIME_NUM==1}
+                        Woche
+                    {else}
+                        Wochen
+                    {endif}
+                {endif}
+                {if CYCLE_MONTH}
+                    {if RUNTIME_NUM==1}
+                        Monat
+                    {else}
+                        Monate
+                    {endif}
+                {endif}
+                {if CYCLE_QUARTER}
+                    {if RUNTIME_NUM==1}
+                        Quartal
+                    {else}
+                        Quartale
+                    {endif}
+                {endif}
+                {if CYCLE_YEAR}
+                    {if RUNTIME_NUM==1}
+                        Jahr
+                    {else}
+                        Jahre
+                    {endif}
+                {endif}
+                Laufzeit
+            {else}
+                Kostenlos
+            {endif}
+        {else}
+            <span id="packet-price-{ID_PACKET_RUNTIME}">
+            {if PRICE_NETTO}
+                {topreis(BILLING_PRICE)}
+            {else}
+                {topreis(BILLING_PRICE_BRUTTO)}
+            {endif}
+            </span>
+            {CURRENCY_DEFAULT}
+            {if !CYCLE_ONCE}
+                /
+                {if BILLING_FACTOR > 1}
+                    {BILLING_FACTOR}
+                {endif}
+                {if CYCLE_DAY}
+                    {if BILLING_FACTOR==1}
+                        Tag
+                    {else}
+                        Tage
+                    {endif}
+                {endif}
+                {if CYCLE_WEEK}
+                    {if BILLING_FACTOR==1}
+                        Woche
+                    {else}
+                        Wochen
+                    {endif}
+                {endif}
+                {if CYCLE_MONTH}
+                    {if BILLING_FACTOR==1}
+                        Monat
+                    {else}
+                        Monate
+                    {endif}
+                {endif}
+                {if CYCLE_QUARTER}
+                    {if BILLING_FACTOR==1}
+                        Quartal
+                    {else}
+                        Quartale
+                    {endif}
+                {endif}
+                {if CYCLE_YEAR}
+                    {if BILLING_FACTOR==1}
+                        Jahr
+                    {else}
+                        Jahre
+                    {endif}
+                {endif}
+            {endif}
+            {if PRICE_NETTO}
+                zzgl. {TAX_PERCENT}% MwSt
+            {endif}
+            <br />
+            {if CYCLE_ONCE}
+                Einmalig
+            {else}
+                {RUNTIME_NUM}
+                {if CYCLE_DAY}
+                    {if RUNTIME_NUM==1}
+                        Tag
+                    {else}
+                        Tage
+                    {endif}
+                {endif}
+                {if CYCLE_WEEK}
+                    {if RUNTIME_NUM==1}
+                        Woche
+                    {else}
+                        Wochen
+                    {endif}
+                {endif}
+                {if CYCLE_MONTH}
+                    {if RUNTIME_NUM==1}
+                        Monat
+                    {else}
+                        Monate
+                    {endif}
+                {endif}
+                {if CYCLE_QUARTER}
+                    {if RUNTIME_NUM==1}
+                        Quartal
+                    {else}
+                        Quartale
+                    {endif}
+                {endif}
+                {if CYCLE_YEAR}
+                    {if RUNTIME_NUM==1}
+                        Jahr
+                    {else}
+                        Jahre
+                    {endif}
+                {endif}
+                Laufzeit
+            {endif}
+            <br />
+        {endif}
+    </label>
+</div>

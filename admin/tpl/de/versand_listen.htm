@@ -1,0 +1,21 @@
+<h1>Newsletter Versandlisten</h1>
+<p>W&auml;hlen Sie eine Versandliste, um einen neuen Newsletter zu verfassen, oder aber die Versandlliste zu berabeiten oder zu l&ouml;schen. </p>
+
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktionen</th>
+  <th>Versandliste</th>
+  <th>System</th>
+ </tr>
+ {if liste}
+ {liste}
+ {else}
+ <tr>
+  <td align="center" colspan="3" class="error">Keine Versandlisten angelegt</td>
+ </tr>
+ {endif}
+ <tr>
+  <td colspan="3" style="padding:5px; border:1px #666666 dashed;font-size:10px;color:#333333"><span class="ok">&radic;</span> Wurde vom System angelegt, und kann daher nicht gel&ouml;scht werden!<br />
+    <span class="error">x</span> Wurde von Ihnen anglegt, und kann wieder entfernt werden!</td>
+ </tr>
+</table>

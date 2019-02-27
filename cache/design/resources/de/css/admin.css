@@ -1,0 +1,191 @@
+.design-subtpl {
+    position: relative;
+}
+
+.admin-subtpl-config {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 1000;
+}
+
+.admin-subtpl-config ul.admin-subtpl-config-menu {
+    background: #FFFFFF;
+    border: 1px solid black;
+    border-radius: 3px;
+    display: none;
+    list-style-type: none;
+    min-width: 400px;
+    padding: 6px;
+    position: absolute;
+    z-index: 1001;
+}
+
+.admin-subtpl-config ul.admin-subtpl-config-menu > li {
+    padding: 0px;
+    margin: 0px;
+}
+
+.admin-subtpl-config ul.admin-subtpl-config-menu > li.admin-subtpl-config-name {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.ebizEditTools {
+    position: fixed;
+    bottom: 4px;
+    right: 60px;
+    z-index: 220000;
+}
+
+.ebizEditTools .dropdown-menu {
+    top: inherit;
+    bottom: 110%;
+    left: inherit;
+    right: 0;
+}
+
+.ebizAdminTools {
+    position: fixed;
+    bottom: 4px;
+    right: 4px;
+    z-index: 220000;
+}
+
+.ebizAdminTools .dropdown-menu {
+    top: inherit;
+    bottom: 110%;
+    left: inherit;
+    right: 0;
+}
+
+.ebizAdminLoadtimeAnalyser {
+    background: #FFFFFF;
+    border-top: 2px solid black;
+    padding: 4px 48px 4px 4px;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    overflow: visible;
+    z-index: 220000;
+    max-height: 50%;
+}
+
+.ebizAdminLoadtimeAnalyser .timelineWrapper {
+    margin-top: 4px;
+    max-height: 50%;
+    overflow-x: scroll;
+    overflow-y: auto;
+}
+.ebizAdminLoadtimeAnalyser .eventTimelineZoomIn { position: absolute; right: 4px; top: 4px; }
+.ebizAdminLoadtimeAnalyser .eventTimelineZoomOut { position: absolute; right: 4px; top: 38px; }
+
+.ebizAdminLoadtimeAnalyser .eventTimeline { position: relative; width: 100%; }
+.ebizAdminLoadtimeAnalyser .eventTimelineZoom { position: absolute; left: 8px; bottom: 8px; padding: 8px; background: #FFFFFF; border: 1px solid black; }
+.ebizAdminLoadtimeAnalyser .eventRow { position: relative; height: 16px; }
+.ebizAdminLoadtimeAnalyser .eventEntry {
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 4px;
+    color: #000000;
+    cursor: pointer;
+    cursor: -webkit-zoom-in;
+    font-size: 10px;
+    height: 15px;
+    line-height: 13px;
+    overflow: hidden;
+    position: absolute;
+}
+
+.ebizAdminLoadtimeAnalyser .requestSwitcher #requestCurrentName {
+    width: 600px;
+}
+
+.ebizAdminLoadtimeAnalyser .eventEntry.Request { background: #aa88ff }
+.ebizAdminLoadtimeAnalyser .eventEntry.Template { background: #aaccff }
+.ebizAdminLoadtimeAnalyser .eventEntry.Template-List { background: #aaffff }
+.ebizAdminLoadtimeAnalyser .eventEntry.Template-Nav { background: #aaffff }
+.ebizAdminLoadtimeAnalyser .eventEntry.Template-Parse { background: #AAFFC8 }
+.ebizAdminLoadtimeAnalyser .eventEntry.DB { background: #88aa88 }
+.ebizAdminLoadtimeAnalyser .eventEntry.PHP { background: #cc7777 }
+.ebizAdminLoadtimeAnalyser .eventEntry.System { background: #dddd55 }
+
+.ebizAdminLoadtimeAnalyser .tooltip .tooltip-inner {
+    max-width: 500px;
+}
+
+.ebizAdminLoadtimeAnalyser .tooltip dl:after {
+    content: '';
+    clear: left;
+    display: block;
+}
+
+.ebizAdminLoadtimeAnalyser .tooltip dl dt {
+    clear: left;
+}
+
+.ebizAdminLoadtimeAnalyser .tooltip dl dt,
+.ebizAdminLoadtimeAnalyser .tooltip dl dd {
+    float: left;
+    min-width: 160px;
+    text-align: left;
+}
+
+.ebizAdminLoadtimeAnalyserDetails {
+    background: #FFFFFF;
+    border-left: 2px solid black;
+    padding-left: 16px;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    z-index: 220000;
+    overflow-y: auto;
+    max-width: 50%;
+}
+
+/* Translation tool */
+.translation-tool {
+    z-index: 220000;
+    position: fixed;
+    height: 250px;
+    bottom: 0;
+    width: 100%;
+    background: #333;
+    color: #fff;
+    padding: 20px 0 20px 0;
+}
+.translation-tool-container { padding: 0 48px 0 18px; height: 100%; }
+.translation-tool-dummy { height: 290px; }
+.translation-tool-content {
+    overflow: scroll;
+    height: 230px;
+}
+
+.translation-tool  .data-translation-fallback {
+    max-width: 200px;
+}
+
+.translation-tool .buttons a { margin: 0 10px 0 10px; color: #FFFFFF; }
+
+.translation-tool-content input { margin: 0; }
+
+.translation-tool.windowhide { height: 30px; padding: 10px 0 10px 0; }
+.translation-tool.windowhide .translation-tool-content { display: none; }
+
+.translation-tool.windowsmall { height: 250px; padding: 20px 0 20px 0; }
+.translation-tool.windowsmall .translation-tool-content { display: block; height: 230px; }
+
+.translation-tool.windowfull { height: 95%; padding: 2.5% 0 2.5% 0; }
+.translation-tool.windowfull .translation-tool-content { display: block; height: 100%; }
+
+.translation-tool.windowhide .hide-on-close { display: none; }
+.translation-tool .translation-tool-changed { background: yellow; }
+.highlight { background: yellow; }
+
+.translation-tool .highlight { color: #000; }
+
+.infobereiche-edit-enable {
+    border: solid 1px red;
+}

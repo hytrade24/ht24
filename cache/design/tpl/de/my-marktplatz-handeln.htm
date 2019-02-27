@@ -1,0 +1,94 @@
+<script type="text/javascript">
+
+function ToggleBids(id_ad, id_ad_variant, id_ad_request) {
+	var tr_bid = $("#bids_"+id_ad+"_"+id_ad_variant);
+	var td_bid = $("#bids_"+id_ad+"_"+id_ad_variant+" > td");
+	if (td_bid.html() == "") {
+		// Laden und anzeigen
+		$.get(ebiz_trader_baseurl + "index.php?page=my-marktplatz-handeln-gebote&id_ad="+id_ad+"&id_ad_variant="+id_ad_variant+"&request="+id_ad_request+"&frame=ajax", function(result) {
+			td_bid.html(result);
+			tr_bid.show();
+		});
+	} else {
+		// Ein- oder ausblenden
+		tr_bid.toggle();
+	}
+}
+
+</script>
+
+<h1>
+	Preisverhandlungen<br />
+	<span class="lead">
+		Behalten Sie den Überblick über ihre Preisverhandlungen!
+	</span>
+</h1>
+<p>
+    {if mode_verkauf}
+    Akzeptierte Preise werden automatisch zu Ihren verkauften Artikeln hinzugefügt.
+    {else}
+    Akzeptierte Preise werden automatisch zu Ihren gekauften Artikeln hinzugefügt.
+    {endif}
+</p>
+
+<ul class="nav nav-tabs userAdsTabs">
+	{if mode_received}
+	<li class="active">
+		<a href="{uri_action(my-marktplatz-handeln,received)}" title="Erhaltene Angebote/Preisanfragen">
+			Erhaltene Angebote/Preisanfragen ({countReceived})
+		</a>
+	</li>
+	<li>
+		<a href="{uri_action(my-marktplatz-handeln,sent)}" title="Abgegebene Angebote/Preisanfragen">
+			Abgegebene Angebote/Preisanfragen ({countSent})
+		</a>
+	</li>
+	{endif}	
+	{if mode_sent}
+	<li>
+		<a href="{uri_action(my-marktplatz-handeln,received)}" title="Erhaltene Angebote/Preisanfragen">
+			Erhaltene Angebote/Preisanfragen ({countReceived})
+		</a>
+	</li>
+	<li class="active">
+		<a href="{uri_action(my-marktplatz-handeln,sent)}" title="Abgegebene Angebote/Preisanfragen">
+			Abgegebene Angebote/Preisanfragen ({countSent})
+		</a>
+	</li>
+	{endif}
+</ul>
+{if liste_handeln}
+	<table class="table table-bordered table-striped table-condensed">
+		{if mode_received}
+		<tr>
+			<th>Aktionen</th>
+			<th>Letzte<br />Aktion</th>
+			<th>Artikel / Gesuch</th>
+			<th>höchster<br />Betrag</th>
+			<th>höchster<br />Bieter</th>
+			<th>Anzahl <br />der Bieter</th>
+			<th>höchstes<br />eigenes Angebot</th>
+		</tr>
+		{else}
+		<tr>
+			<th>Aktionen</th>
+			<th>Letzte<br />Aktion</th>
+			<th>Artikel / Gesuch</th>
+			<th>Verkäufer</th>
+			<th>Eigenes Angebot</th>
+			<th>Gegenangebot</th>
+			<th>Status</th>
+		</tr>
+		{endif}
+		{liste_handeln}
+	</table>
+	<p>
+		{pager}
+	</p>
+{else}
+	<p class="text-error">Sie verhandeln derzeit keine Preise.</p>
+{endif}
+<div class="design-content-box design-icon-legend">
+    <div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-eye-open"></i></a> = ansehen / details
+	</div>
+</div>

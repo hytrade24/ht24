@@ -1,0 +1,327 @@
+{SCRIPTS}
+<div class="adCreate row design-ad-create-form">
+    <div class="design-ad-create-form-steps">
+        <div id="StepList" class="design-content-box">
+            {STEPS_LIST}
+        </div>
+    </div>
+    <div class="design-ad-create-form-content">
+        <div id="StepContent" data-step="{STEP_ACTIVE}">
+            {STEPS_CUR}
+        </div>
+    </div>
+</div>
+<div id="modal_step_dirty" class="modal fade" style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 align="center">
+                    Nicht gespeicherte Änderungen vorhanden!
+                </h3>
+            </div>
+            <div class="modal-body">
+                <p align="center">
+                    Sie haben noch nicht gespeicherte Änderungen auf der aktuellen Seite. 
+                            Sollen diese gespeichert werden, bevor Sie den Schritt wechseln?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-action="cancel" data-dismiss="modal" title="Abbrechen und aktuellen Schritt weiter bearbeiten">
+                    Abbrechen
+                </button>
+                <button type="button" class="btn btn-danger" data-action="discard" title="Änderungen verwerfen und zum gewählten Schritt wechseln">
+                    Änderungen verwerfen
+                </button>
+                <button type="button" class="btn btn-success" data-action="save" title="Änderungen speichern und zum gewählten Schritt wechseln">
+                    Änderungen speichern
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  
+var stepUrl = "{uri_action({URL_IDENT})}";
+var stepCurrent = "{STEP_ACTIVE_IDENT}";
+var stepInitialContent = null;
+var stepCallbackSubmit = [];
+var stepCallbackUpdate = [];
+
+// Set to false to disable scrolling
+var errorScrollOffset = -20 - jQuery("#headerMenline").height();
+
+function RenderJavascriptTemplate(sourceCode, variables) {
+    for (var variableName in variables) {
+        sourceCode = sourceCode.replace( new RegExp('##'+variableName+'##', 'g'), variables[variableName] );
+    }
+    return sourceCode;
+}
+
+function ShowStep(stepIdent, additionalParams, force) {
+    if (typeof additionalParams == "undefined") {
+        additionalParams = "";
+    }
+    var stepCurrentContent = jQuery("#StepContent form").serialize();
+    if ((stepCurrentContent != stepInitialContent) && !force) {
+        // Unsaved changes!
+        ModalDirtyStep(stepIdent, additionalParams);
+    } else {
+        // Changes saved or discard confirmed. Change step.
+        var params = "ajax=1&action=show&step="+encodeURIComponent(stepIdent)+(additionalParams == "" ? "" : "&"+additionalParams);
+        jQuery.post(stepUrl, params, function(result) {
+            // Clear callbacks
+            stepCallbackSubmit = [];
+            stepCallbackUpdate = [];
+            // Update step content
+            stepCurrent = stepIdent;
+            jQuery("#StepList").html( result.list );
+            jQuery("#StepContent").attr("data-step-ident", stepIdent);
+            jQuery("#StepContent").html( result.content );
+            BindStepContent();
+        });        
+    }
+}
+
+function BindStepContent() {
+    var form = jQuery("#StepContent form");
+    // Bind finish button if available
+    form.find("[data-action=finish]").on("click", function(event) {
+        event.preventDefault();
+        SubmitStep(form, "stepFinish=1");
+    });
+    // Set initial form state
+    window.setTimeout(function() {
+        RemoveDirtyStep();
+    });
+}
+
+function RemoveDirtyStep() {
+    stepInitialContent = jQuery("#StepContent form").serialize();
+}
+
+function ModalDirtyStep(stepIdent, additionalParams) {
+    var form = jQuery("#StepContent form");
+    jQuery("#modal_step_dirty").modal("show");
+    jQuery("#modal_step_dirty [data-action=discard]").off("click").on("click", function(event) {
+        event.preventDefault();
+        // Discard changes and change step
+        ShowStep(stepIdent, additionalParams, true);
+        // Hide modal
+        jQuery("#modal_step_dirty").modal("hide");
+    });
+    jQuery("#modal_step_dirty [data-action=save]").off("click").on("click", function(event) {
+        event.preventDefault();
+        // Save changes and change step
+        SubmitStep(form, "stepNext="+encodeURIComponent(stepIdent));
+        // Hide modal
+        jQuery("#modal_step_dirty").modal("hide");
+    });
+}
+
+function SubmitStep(form, additionalParams, callbackResult) {
+    if (typeof additionalParams == "undefined") {
+        additionalParams = "";
+    }
+    for (var cbIndex = 0; cbIndex < stepCallbackSubmit.length; cbIndex++) {
+        if (stepCallbackSubmit[cbIndex](form, additionalParams) === false) {
+            return false;
+        }
+    }
+    var params = "ajax=1&action=submit&"+jQuery(form).serialize()+(additionalParams == "" ? "" : "&"+additionalParams);
+    jQuery.post(jQuery(form).attr("action"), params, function(result) {
+        // Clear dirty flag
+        RemoveDirtyStep();
+        // Call result callback/function
+        if (typeof callbackResult == "undefined") {
+            // Default behaviour
+            if ((result.STEP_NEXT !== null) && (result.STEP_NEXT != stepCurrent)) {
+                ShowStep(result.STEP_NEXT);
+            } else if (result.REDIRECT_URL !== null) {
+                document.location.href = result.REDIRECT_URL; 
+            } else {
+                UpdateStep(result);
+            }
+        } else {
+            // Custom result handling
+            callbackResult(result);
+        }
+    });
+}
+
+function UpdateStep(result) {
+    for (var cbIndex = 0; cbIndex < stepCallbackUpdate.length; cbIndex++) {
+        if (stepCallbackUpdate[cbIndex](result) === false) {
+            return false;
+        }
+    }
+    // Remove existing error flags
+    jQuery("#StepContent .form-group.has-error").removeClass("has-error");
+    jQuery("#StepContent .form-group.has-feedback").removeClass("glyphicon-remove").addClass("glyphicon-ok");
+    // Check for errors
+    if (result.ERRORS.length != 0) {
+        var stepForm = jQuery("#StepContent form");
+        var scrollTarget = null;
+        var errorMessages = result.ERRORS;
+        if (typeof result.ERRORS.length == "undefined") {
+            // Field => Error mapping
+            errorMessages = [];
+            for (var errorField in result.ERRORS) {
+                var errorMessage = result.ERRORS[errorField];
+                var fieldInput = jQuery("#" + errorField);
+                var fieldGroup = fieldInput.closest(".form-group");
+                if (fieldGroup.length > 0) {
+                    fieldGroup.addClass("has-error");
+                    if (fieldGroup.is(".has-feedback")) {
+                        fieldGroup.find(".form-control-feedback .glyphicon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
+                    }
+                    var fieldHelp = fieldGroup.find(".help-block");
+                    if (fieldHelp.length > 0) {
+                        fieldHelp.text(errorMessage);
+                    }
+                    if (scrollTarget === null) {
+                        scrollTarget = fieldGroup;
+                    }
+                } else {
+                    // Fallback
+                    errorMessages.push(errorMessage);
+                    scrollTarget = stepForm;
+                }
+            }
+        }
+        var errorAlert = stepForm.find(".alert.alert-steps-form");
+        if (errorMessages.length > 0) {
+            if (errorAlert.length == 0) {
+                jQuery("#StepContent form").prepend('<p class="alert alert-danger alert-steps-form" />');
+                errorAlert = jQuery("#StepContent form .alert.alert-steps-form");
+            }
+            var errorList = errorAlert.find("ul");
+            if (errorList.length == 0) {
+                errorAlert.append("<ul />")
+                errorList = errorAlert.find("ul");
+            }
+            errorList.html("");
+            errorAlert.show();
+            for (var errorIndex in errorMessages) {
+                var errorMessage = errorMessages[errorIndex];
+                errorList.append( jQuery("<li />").text(errorMessage) );
+            }
+        } else {
+            errorAlert.hide();
+        }
+        if ((errorScrollOffset !== false) && (scrollTarget !== null)) {
+            var scrollTargetOffset = scrollTarget.offset();
+            jQuery(window).scrollTop(scrollTargetOffset.top + errorScrollOffset);
+        }
+    } else if ((result.STEP_NEXT !== null) && (result.EXTRAS.length == 0)) {
+        ShowStep(result.STEP_NEXT);
+    }
+}
+
+function CallbackSubmitStepAdd(callback) {
+    if (typeof callback == "function") {
+        stepCallbackSubmit.push(callback);
+    }
+}
+
+function CallbackUpdateStepAdd(callback) {
+    if (typeof callback == "function") {
+        stepCallbackUpdate.push(callback);
+    }
+}
+
+function InitializeEditor(allow_html, element, callback) {
+    if(typeof element ==  "undefined") { 
+        element = "BESCHREIBUNG";
+    }
+    // Initialize editor
+    if (typeof tinyMCE.editors[element] != "undefined") {
+        tinyMCE.editors[element].setContent(jQuery("#"+element).text(), { format: 'raw' });
+    }
+    if (allow_html) {
+        tinyMCE.init({
+        	// General options
+        	theme : "advanced",
+        	mode : "none",
+            plugins : "paste",
+
+        	elements : element,
+        	theme : "advanced",
+        	width: "99%",
+        	height: "280px",
+        	language: "de",
+        	object_resizing : false,
+        	convert_fonts_to_spans : true,
+        	convert_urls : false,
+        	document_base_url : "/",
+        	relative_urls : false,
+        	remove_script_host : true,
+        	entity_encoding : "raw",
+        	add_unload_trigger : false,
+        	remove_linebreaks : false,
+        	inline_styles : false,
+
+        	theme_advanced_buttons1 : "formatselect,|,bold,italic,underline,|,pastetext,pasteword,|,undo,redo,|,link,unlink,forecolor,removeformat,cleanup",
+        	theme_advanced_buttons2 : "",
+        	theme_advanced_buttons3 : "",
+        	theme_advanced_toolbar_location : "top",
+        	theme_advanced_toolbar_align : "center",
+        	theme_advanced_statusbar_location : "bottom",
+        	theme_advanced_styles : "",
+            // Example content CSS (should be your site CSS)
+        	content_css : "/style/de/style-new.css?" + new Date().getTime()
+        });
+    } else {
+        tinyMCE.init({
+        	// General options
+        	theme : "advanced",
+        	mode : "none",
+        	plugins : "bbcode",
+
+        	elements : element,
+        	theme : "advanced",
+        	width: "99%",
+        	height: "280px",
+        	language: "de",
+        	object_resizing : false,
+        	convert_fonts_to_spans : true,
+        	convert_urls : false,
+        	document_base_url : "/",
+        	relative_urls : false,
+        	remove_script_host : true,
+        	entity_encoding : "raw",
+        	add_unload_trigger : false,
+        	remove_linebreaks : false,
+        	inline_styles : false,
+
+        	/*theme_advanced_buttons1 : "bold,italic,underline,undo,redo,link,unlink,forecolor,removeformat,cleanup",
+        	theme_advanced_buttons2 : "",
+        	theme_advanced_buttons3 : "",*/
+        	theme_advanced_toolbar_location : "top",
+        	theme_advanced_toolbar_align : "center",
+        	theme_advanced_statusbar_location : "bottom",
+        	theme_advanced_styles : "",
+            // Example content CSS (should be your site CSS)
+        	content_css : ebiz_trader_baseurl+"style/de/style-new.css?" + new Date().getTime()
+        });
+    }
+    // Remove editor if already converted
+    tinyMCE.execCommand("mceRemoveControl", false, element);
+    // Convert to tinyMCE editor
+    tinyMCE.execCommand("mceAddControl", true, element);
+    // Run callback after editor is initialized
+    if (typeof callback !== "undefined") {
+        var callbackTimer = window.setInterval(function () {
+            if (typeof tinyMCE.editors[element] != "undefined") {
+                window.clearInterval(callbackTimer);
+                callback(tinyMCE.editors[element]);
+            }
+        }, 1000);
+    }
+}
+
+jQuery(function() {
+    BindStepContent();
+});
+  
+</script>

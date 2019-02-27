@@ -1,0 +1,104 @@
+<table class="table table-bordered table-striped table-condensed userList userAdList">
+    <tr>
+           <th>
+               <input type="checkbox" onchange="updateSelectedArticles(this, jQuery(this).prop('checked'));" title="Select/deselect all" />
+  	        </th>
+           <th colspan="5">
+  	            Actions
+  	        </th>
+		<th title="Artikel Numer">
+			Art.-<br />Nr.
+		</th>
+        <th width="48">
+            Image
+        </th>
+        <th>
+            Product name
+        </th>
+        <th>
+           {if !FILTER_STATUS_DISABLED}
+            Remaining time
+           {else}
+               Expired since
+           {endif}
+        </th>
+    </tr>
+
+    {if liste}
+    	{liste}
+    {else}
+    <tr>
+	      <td colspan="11" class="text-error">
+            You have not put any adverts in yet.
+        </td>
+    </tr>
+    {endif}
+</table><!--id for modal is id:large-modal-for-admin-->
+{startblock(script)}
+    {parentblock()}
+    
+    <div id="graph-modal-for-ad" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Product Statistics</h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript">
+        var graph_modal_for_ad = $("#graph-modal-for-ad");
+        function get_statistics_for_product( id_artikel, data_type, open_modal, view_type, date_start, date_end ) {
+            if ( open_modal == "1" ) {
+
+                date_start = $(".date_start").val();
+                date_end = $(".date_end").val();
+
+                date_start = date_start.split('.');
+                date_start = date_start[2] + "-" + date_start[1] + "-" + date_start[0];
+
+                date_end = date_end.split('.');
+                date_end = date_end[2] + "-" + date_end[1] + "-" + date_end[0];
+
+                data_type = $("input[name='data_type']:checked").val();
+
+            }
+            $.ajax({
+                type: "GET",
+                dataType: "HTML",
+                url: "{uri_action(my-pages/my-marktplatz.htm)}",
+                data: {
+                    type: 'get_statistics_for_products',
+                    id_artikel: id_artikel,
+                    data_type: data_type,
+                    open_modal: open_modal,
+                    view_type: view_type,
+                    date_start: date_start,
+                    date_end: date_end
+                },
+                success: function ( resp ) {
+                    if ( open_modal == '0' ) {
+                        graph_modal_for_ad.modal("show");
+                        var title = graph_modal_for_ad.find('.modal-title');
+                        var element = graph_modal_for_ad.find('.modal-body');
+                        element.css('height','400px');
+                        element.html( resp );
+                    }
+                    else if ( open_modal == '1') {
+                        var json = JSON.parse( resp );
+
+                        myPieChart.destroy();
+                        myPieChart = new Chart("myChart", json );
+                    }
+                },
+                error: function ( resp ) {}
+            });
+        }
+    </script>
+{endblock(script)}

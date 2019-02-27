@@ -1,0 +1,69 @@
+<tr class="zeile{even}" id="r_{ID_BILLING_INVOICE}">
+	<td nowrap="nowrap">		
+		<a href="index.php?page=invoice_view&ID_BILLING_INVOICE={ID_BILLING_INVOICE}" title="Rechnung ansehen">
+			<img src="{uri_baseurl(/gfx/btn.detail.gif)}" alt="view" />
+		</a>
+        {if ID_BILLING_CANCEL}
+        <a href="index.php?page=cancel_request_edit&FK_USER={FK_USER}&STATUS=alle&highlight={ID_BILLING_INVOICE}" title="Stornoanfragen für rechnung">
+            <img src="{uri_baseurl(/gfx/achtung.gif)}" />
+        </a>
+        {endif}
+	</td>
+    <td>
+        <a href="index.php?page=invoice_view&ID_BILLING_INVOICE={ID_BILLING_INVOICE}" title="Rechnung ansehen">{ID_BILLING_INVOICE}</a>
+    </td>
+    <td>
+        {todate(STAMP_CREATE)}
+    </td>
+        <td>&nbsp;&nbsp;
+        {if IS_OVERDUE}
+            <span class="error">{todate(STAMP_DUE)}</span>
+        {else}
+            {todate(STAMP_DUE)}
+        {endif}
+    </td>
+	<td>
+		{if STATUS == 0}
+			{if IS_OVERDUE}
+				<span class="error">{DUE_DAYS}</span>
+			{else}
+				{DUE_DAYS}
+			{endif}
+		{endif}
+	</td>
+    <td>
+        {if STATUS == 0}<span class="error">unbezahlt</span>{endif}
+        {if STATUS == 1}<span class="ok">bezahlt</span>{endif}
+        {if STATUS == 2}<span>storniert</span> {endif}
+    </td>
+    <td>
+        {todate(STAMP_PAY)}
+    </td>
+    <td>
+        {todate(STAMP_CANCEL)}
+    </td>
+	<td>
+        <a href="#" onclick="jQuery('input[name=NAME_]').val('{USER_NAME}'); jQuery('input[name=FK_USER]').val('{FK_USER}').parents('form').submit();">
+            <img src="gfx/putfeld_8.gif" width="8" height="8" alt="" border="0">
+            {if USER_NAME}{USER_NAME}{else}<span class="error">Benutzer gelöscht</span>{endif}
+        </a>
+	</td>
+    <td>
+        &nbsp;&nbsp;<a href="index.php?page=user_edit&ID_USER={FK_USER}" title="User ansehen/bearbeiten">{FK_USER}</a>
+    </td>
+    <td align="center">
+        {if DUNNING_LEVEL}{DUNNING_LEVEL}{endif}
+    </td>
+	<td>
+		{PAYMENT_ADAPTER_NAME}
+	</td>
+	<td style="text-align: right">
+        {topreis(TOTAL_PRICE_NET)} {CURRENCY_DEFAULT}&nbsp;&nbsp;
+	</td>
+    <td style="text-align: right">
+        {topreis(TOTAL_PRICE)} {CURRENCY_DEFAULT}&nbsp;&nbsp;
+    </td>
+    <td style="text-align: right">
+        {if STATUS == 0}{topreis(REMAINING_PRICE)} {CURRENCY_DEFAULT}{else}{endif}
+    </td>
+</tr>

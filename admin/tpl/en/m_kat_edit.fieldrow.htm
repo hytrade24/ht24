@@ -1,0 +1,22 @@
+<tr id="field_row_{ID_FIELD_DEF}" class="zeile{even}" style="color: {if B_USED}black{else}grey{endif};">
+  <td>
+    <input type="hidden" value="0" name="fields[{ID_FIELD_DEF}]">
+    <input onchange="field_change({ID_FIELD_DEF},this);" type="checkbox" value="1" id="field_{ID_FIELD_DEF}" name="fields[{ID_FIELD_DEF}]" {if B_USED} checked{endif}>
+  </td>
+  <td width="60">
+    <label class="notizSmall" for="field_{ID_FIELD_DEF}">[{F_TYP}]</label>
+  </td>
+  <td width="160">
+    <label for="field_{ID_FIELD_DEF}">&nbsp;{htm(V1)}{if F_DEC_INTERN}<br /><span class="notizSmall">{htm(F_DEC_INTERN)}</span>{endif}</label>
+  </td>
+  <td nowrap="nowrap">
+    {if B_SEARCHABLE}
+    <input type="checkbox" value="1" id="field_search_{ID_FIELD_DEF}" name="searchfields[{ID_FIELD_DEF}]"{if B_SEARCHFIELD} checked{endif}{if !B_USED} disabled{endif}>
+      <!--<label for="field_search_{ID_FIELD_DEF}">Suchfeld</label>-->
+    {endif}
+  </td>
+  <td nowrap="nowrap">
+    <input type="checkbox" value="1" id="field_needed_{ID_FIELD_DEF}" name="neededfields[{ID_FIELD_DEF}]"{if B_NEEDED} checked{endif}{if !B_USED} disabled{endif}>
+      <!--<label for="field_needed_{ID_FIELD_DEF}">Pflichtfeld</label>-->
+  </td>
+</tr>

@@ -1,0 +1,8 @@
+<a class="galleryImagePreview" onclick="YoutubePlayVideo('https://www.youtube.com/embed/{id}', {width}, {height});">
+	<div class="thumbnail thumbnail-video">
+		<img style="{if preview_width} width:{preview_width}px;{endif}{if preview_height} height:{preview_height}px;{endif}" src="https://i{youtube_server}.ytimg.com/vi/{id}/default.jpg" />
+		<div class="video_play">
+			<img src="{uri_baseurl(/bilder/play.png)}" />
+		</div>
+	</div>
+</a>

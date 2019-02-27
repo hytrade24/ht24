@@ -1,0 +1,18 @@
+<h1>Font-Index erstellen</h1>
+<p>Wie mit dem Bilder-Index, verhält es sich hier mit dem Font-Index. Damit immer eine aktuelle Auswahl der Schriftarten vorliegt,
+müssen Sie diese Seite immer aufrufen, nachdem Sie Schriftarten (.ttf) aus dem Ordner fonts/ gelöscht, oder hinzugefügt haben.
+Wenn Sie unten das Wort "done" und außer den Statusmeldungen keine Fehlernachrichten erscheinen, ist die Schriftauswahl aktualisiert.</p>
+
+
+{if !arfonts}
+
+{anfang}
+{dirname}
+<strong>read directories</strong> ...<br>
+{error}
+<h1>done</h1>
+
+
+{else}
+{arfonts}
+{endif}

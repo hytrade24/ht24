@@ -1,0 +1,51 @@
+<tr>
+	<td>{ID_AD_ORDER}</td>
+	<td>{todate(STAMP_CREATE,1)}</td>
+	<td><a href="#" onclick="showBuyerInformation('{FK_USER_VK}'); return false;">{htm(USER_VK_NAME)}</a></td>
+    {if ORDER_CONFIRMATION_PARTIAL_OPEN || ORDER_DECLINED}
+        {if ORDER_CONFIRMATION_PARTIAL_OPEN}
+        <td colspan="2">
+            <span class="label label-warning">Unconfirmed</span>
+        </td>
+        {endif}
+        {if ORDER_DECLINED}
+        <td colspan="2">
+            <span class="label label-danger">Rejected</span>
+        </td>
+        {endif}
+	{else}
+	<td>
+		{if STATUS_SHIPPING == 0}<span class="label label-default">Shipping open</span>{endif}
+		{if STATUS_SHIPPING == 1}<span class="label label-info">in progress</span>{endif}
+		{if STATUS_SHIPPING == 2}<span class="label label-success">sent</span>{endif}
+	</td>
+	<td>
+		{if STATUS_PAYMENT == 0}<span class="label label-default">Payment open</span>{endif}
+		{if STATUS_PAYMENT == 1}<span class="label label-success">paid</span>{endif}
+		{if STATUS_PAYMENT == 3}<span class="label label-success">Payment pending</span><br>{endif}
+	</td>
+	{endif}
+	<td class="align-right">
+		<span class="marketplaceBuyerOrderPrice" id="marketplaceBuyerOrderArticlePopUpTrigger-{ID_AD_ORDER}" data-order="{ID_AD_ORDER}">{topreis_ex(TOTAL_PRICE)} {CURRENCY_DEFAULT}</span>
+
+		<div class="display-none">
+			<div id="marketplaceBuyerOrderArticlePopUpContent-{ID_AD_ORDER}">
+				{if tplItems}
+					{tplItems}
+				{endif}
+			</div>
+		</div>
+
+		<script>
+			jQuery("#marketplaceBuyerOrderArticlePopUpTrigger-{ID_AD_ORDER}").popover({
+				'title': 'Artikelübersicht',
+				'trigger': 'hover',
+				'placement': 'left',
+				'html': true,
+				'container': '.marketplaceBuyerOrder',
+				'content': jQuery("#marketplaceBuyerOrderArticlePopUpContent-{ID_AD_ORDER}").html()
+			});
+		</script>
+
+	</td>
+</tr>

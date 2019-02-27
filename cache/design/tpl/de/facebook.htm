@@ -1,0 +1,68 @@
+{if IS_CONFIGURED}
+<div class="traderFacebookSearch clearfix">
+    <form action="{uri_action(facebook)}" method="post" class="clearfix">
+        <input type="hidden" name="FACEBOOK_PAGE_ID" value="{FACEBOOK_PAGE_ID}" />
+        <div class="pull-left">
+            <a target="facebookTarget" href="{uri_baseurl(/)}">
+                <img src="{uri_resource(/images/logo.png)}" alt="{site_name}" />
+            </a>
+        </div>
+        <div class="pull-right traderFacebookSearchButton">
+            <button name="search" value="1" class="btn btn-primary">Suchen</button>
+        </div>
+        <div class="pull-right traderFacebookSearchInput">
+            <label>
+                Kategorie<br />
+                <select name="FK_KAT">
+                    <option value="">alle Kategorien</option>
+                    {liste_categories}
+                </select>
+            </label>
+        </div>
+        <div class="pull-right traderFacebookSearchInput">
+            <label>
+                Suche nach Artikeln<br />
+                <input type="text" name="TEXT" value="{htm(SEARCH_TEXT)}" />
+            </label>
+        </div>
+        <br style="clear: right;" />
+        <div class="pull-right">
+            <a href="{uri_action(facebook)}?FACEBOOK_PAGE_ID={FACEBOOK_PAGE_ID}">Alle anzeigen</a>
+        </div>
+    </form>
+</div>
+<div class="tradeFacebookList">
+{if liste_ads}
+    <p>
+        {pager}
+    </p>
+
+    {liste_ads}
+
+    <p>
+        {pager}
+    </p>
+
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/de_DE/all.js#xfbml=1&appId=288038461354377";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+{else}
+    Es wurden leider keine Anzeigen gefunden!
+{endif}
+</div>
+{else}
+    {if IS_PAGE_ADMIN}
+    <div class="alert alert-info alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>App nicht konfiguriert!</h4>
+        Sie haben die App noch nicht konfiguriert, klicken Sie auf den folgenden Button um die Konfiguration
+            jetzt vorzunehmen.
+            <a href="{uri_action(my-facebook-app)}" target="_top" class="btn btn-primary">Facebook-App Konfigurieren</a>
+    </div>
+    {endif}
+{endif}

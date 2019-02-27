@@ -1,0 +1,192 @@
+<tr>
+	<td nowrap="nowrap" class="design-action-buttons">
+	{if TYPE_ALL_SIGNUP}
+		<div class="btn-group">
+			<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+
+				{if SIGNUP_STATUS==0}
+				<strong class="text-error">
+					<i class="glyphicon glyphicon-minus-sign"></i>
+					Abgemeldet
+				</strong>
+				{endif}
+				{if SIGNUP_STATUS==1}
+				<strong class="text-success">
+					<i class="glyphicon glyphicon-plus-sign"></i>
+					Angemeldet
+				</strong>
+				{endif}
+				{if SIGNUP_STATUS==2}
+				<strong class="text-warning">
+					<i class="glyphicon glyphicon-question-sign"></i>
+					Ungewiss
+				</strong>
+				{endif}
+
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li>
+					<a href="#event_confirm" data-url="{uri_action(calendar_events_view,{urllabel(TITLE)},{ID_CALENDAR_EVENT})}" onclick="requestCalendarEventSignup(this, 1, CalendarEventSearchSubmit); return false;">
+						<i class="glyphicon glyphicon-plus-sign"></i>
+						Teilnahme bestätigen
+					</a>
+				</li>
+				<li>
+					<a href="#event_confirm" data-url="{uri_action(calendar_events_view,{urllabel(TITLE)},{ID_CALENDAR_EVENT})}" onclick="requestCalendarEventSignup(this, 2, CalendarEventSearchSubmit); return false;">
+						<i class="glyphicon glyphicon-question-sign"></i>
+						Teilnahme ungewiss
+					</a>
+				</li>
+				<li>
+					<a href="#event_confirm" data-url="{uri_action(calendar_events_view,{urllabel(TITLE)},{ID_CALENDAR_EVENT})}" onclick="requestCalendarEventSignup(this, 0, CalendarEventSearchSubmit); return false;">
+						<i class="glyphicon glyphicon-minus-sign"></i>
+						Teilnahme absagen
+					</a>
+				</li>
+			</ul>
+		</div>
+	{else}
+		<a title="Veranstaltung bearbeiten" href="{uri_action(my-calendar-events-add,{ID_CALENDAR_EVENT})}" class="btn btn-default">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+        {if IS_CONFIRMED}
+        <div class="btn-group" href="#event-{ID_CALENDAR_EVENT}">
+            <a id="event_calendar_event_{ID_CALENDAR_EVENT}" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="glyphicon glyphicon-ban-circle"></i>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a title="Veranstaltung sperren (freigabe zurücknehmen)" onclick="CalendarEventConfirm({ID_CALENDAR_EVENT},0); return false;">
+                        <i class="glyphicon glyphicon-ban-circle"></i>
+                        Veranstaltung deaktivieren
+                    </a>
+                </li>
+                <li>
+                    <a title="Veranstaltung löschen" onclick="CalendarEventDelete({ID_CALENDAR_EVENT}); return false;">
+                        <i class="glyphicon glyphicon-remove"></i>
+                        Veranstaltung löschen
+                    </a>
+                </li>
+            </ul>
+        </div>
+		{else}
+        <a title="Veranstaltung löschen" onclick="CalendarEventDelete({ID_CALENDAR_EVENT}); return false;" class="btn btn-mini btn-danger">
+            <i class="glyphicon glyphicon-remove"></i>
+        </a>
+        <a title="Veranstaltung freigeben" onclick="CalendarEventConfirm({ID_CALENDAR_EVENT},1); return false;" class="btn btn-mini btn-success">
+            <i class="glyphicon glyphicon-ok"></i>
+        </a>
+		{endif}
+		{if ALLOW_COMMENTS_EVENT}
+		<div class="btn-group" href="#comment-{ID_CALENDAR_EVENT}">
+			<a id="comment_calendar_event_{ID_CALENDAR_EVENT}" class="btn {if ALLOW_COMMENTS}btn-info{else}btn-default{endif} dropdown-toggle" data-toggle="dropdown" href="#">
+				<i class="glyphicon glyphicon-comment"></i>
+				{if COMMENTS>0}{COMMENTS}{endif}
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li class="activeOnDisabledComments"{if ALLOW_COMMENTS} style="display: none;"{endif}>
+					<a href="#" onclick="CalendarEventToggleComments({ID_CALENDAR_EVENT}); return false;">
+						<i class="glyphicon glyphicon-ok"></i> Kommentare aktivieren
+					</a>
+				</li>
+				<li class="activeOnEnabledComments"{if !ALLOW_COMMENTS} style="display: none;"{endif}>
+					<a href="#" onclick="CalendarEventToggleComments({ID_CALENDAR_EVENT}); return false;">
+						<i class="glyphicon glyphicon-remove"></i> Kommentare deaktivieren
+					</a>
+				</li>
+				<li>
+					<a href="{uri_action(my-comments)}?TYPE=EVENTS_VENDOR">
+						<i class="glyphicon glyphicon-th-list"></i> <strong>{int(COMMENTS)} Kommentare</strong> anzeigen
+					</a>
+				</li>
+			</ul>
+		</div>
+		{endif}
+        {if IS_CONFIRMED && FK_REF_TYPE_CLUB}
+        <a title="Gruppenmitglieder einladen" href="{uri_action(my-group-rundmail,{FK_REF})}" onclick="CalendarEventInvite(this, {ID_CALENDAR_EVENT}, '{htm(TITLE)}', '{htm(CLUBNAME)}'); return false;" class="btn btn-default">
+            <i class="glyphicon glyphicon-share"></i>
+        </a>
+        {endif}
+	{endif}
+	</td>
+
+	<td align="left">
+		{if SIGNUPS_CONFIRMED>0}{SIGNUPS_CONFIRMED}{endif}
+	</td>
+	<td align="left">
+		{if SIGNUPS_UNSURE>0}{SIGNUPS_UNSURE}{endif}
+	</td>
+	<td align="left">
+		{if SIGNUPS_DECLINED>0}{SIGNUPS_DECLINED}{endif}
+	</td>
+    <td>
+    	<a href="{uri_action(calendar_events_view,{urllabel(TITLE)},{ID_CALENDAR_EVENT})}" target="_blank">
+        	{htm(TITLE)}
+			{if PRIVACY}
+				<i class="glyphicon glyphicon-globe" title="Öffentlich"></i>
+			{endif}
+    	</a>
+        {if MODERATED!=1}
+            <br />
+            {if MODERATED==0}
+            <span class="label label-warning">Wird geprüft</span>
+            {endif}
+            {if MODERATED==2}
+            <span class="label label-important">
+                Abgelehnt
+                {if DECLINE_REASON}
+                <a href="#" data-toggle="tooltip" data-placement="left" data-html="true" data-container="body" title="" data-original-title="Ihre Anzeige wurde aus folgendem Grund abgelehnt:<br />{text(DECLINE_REASON)}">
+                    <i class="glyphicon glyphicon-question-sign icon-white"></i>
+                </a>
+                {endif}
+            </span>
+            {endif}
+        {endif}
+    </td>
+	{if !HIDE_AUTOR}
+	<td nowrap="nowrap">
+		<a title="Nachricht schreiben" href="#" onclick="SendMail({FK_USER}, '', 0, 0, 0); return false;">
+			<i class="glyphicon glyphicon-envelope"></i>
+		</a>
+		<a href="{uri_action(view_user,{urllabel(USERNAME)},{FK_USER})}" target="_blank" title="Profil von {htm(USERNAME)} ansehen">
+			{htm(USERNAME)}
+		</a>
+		{if FK_REF_TYPE_CLUB}
+		<br />
+		<a href="{uri_action(my-club-events,{FK_REF})}" target="_blank" title="Veranstaltungen von {htm(CLUBNAME)} ansehen">
+			<i class="glyphicon glyphicon-star"></i>
+			{htm(CLUBNAME)}
+		</a>
+		{endif}
+		{if FK_REF_TYPE_USER}
+		<br />
+		<a href="{uri_action(my-vendor-events)}" target="_blank" title="Veranstaltungen von {htm(VENDORNAME)} ansehen">
+			<i class="glyphicon glyphicon-user"></i>
+			{htm(VENDORNAME)}
+		</a>
+		{endif}
+	</td>
+	{endif}
+    <td>
+		{todate(STAMP_START)} - {todate(STAMP_END)}
+    </td>
+    <td>
+       	{if LOCATION || STREET || ZIP || CITY || COUNTRY}
+       		{if LOCATION}
+       			{htm(LOCATION)}<br />
+       		{endif}
+       		{if STREET}
+				{htm(STREET)}<br />
+			{endif}
+			{if ZIP || CITY}
+				{ZIP} {htm(CITY)}<br />
+			{endif}
+			{htm(COUNTRY)}
+       	{else}
+       		<span class="text-muted">Nicht angegeben</span>
+       	{endif}
+    </td>
+</tr>

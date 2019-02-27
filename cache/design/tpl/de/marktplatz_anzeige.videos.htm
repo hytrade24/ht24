@@ -1,0 +1,28 @@
+{if product_videos}
+<div id="marktplatzVideos{ID_AD}" class="design-marktplatz-videos">
+  <div class="design-marktplatz-videos-preview">
+    <iframe width="444" height="333" src="https://www.youtube.com/embed/{htm(FIRST_CODE)}" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="design-marktplatz-videos-list">
+    {product_videos}
+  </div>
+</div>
+<script type="text/javascript">
+  function YoutubePlayVideo(videoUrl, width, height) {
+    jQuery("#marktplatzVideos{ID_AD} iframe").attr("src", videoUrl);
+  }
+  
+  jQuery(function() {
+    var videoFrame = jQuery("#marktplatzVideos{ID_AD} iframe");
+    var videoResize = function() {
+      var embedWidth = videoFrame.parent().width();
+      var embedHeight = embedWidth * 3 / 4;
+      jQuery("#marktplatzVideos{ID_AD} iframe").attr({
+        'width': embedWidth+"px", 'height': embedHeight+"px"
+      });
+    };
+    videoResize();
+    jQuery(window).on("resize", videoResize);
+  });
+</script>
+{endif}

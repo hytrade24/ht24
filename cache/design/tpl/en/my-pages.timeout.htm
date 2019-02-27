@@ -1,0 +1,36 @@
+<tr>
+    <td class="design-action-buttons">
+        <a title="Edit this advert" href="{uri_action(my-marktplatz-neu,{ID_ARTIKEL})}" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+		</a>
+        <a title="Deactivate this advert" onclick="return confirm('really deactivate advert?');" href="{uri_action(my-marktplatz,deactivate,{ID_ARTIKEL},{FK_KAT})}" class="btn btn-default">
+            <i class="glyphicon glyphicon-pause"></i>
+		</a>
+        {if TIMELEFT<8}
+        <a onclick="ExtendAd({ID_ARTIKEL},{FK_KAT});" title="Extend advertisement runtime" class="btn btn-default">
+            <i class="glyphicon glyphicon-time"></i>
+        </a>
+        {endif}
+    </td>
+	<td>
+		{ID_AD_MASTER}
+	</td>
+    <td>
+        <a href="{uri_action(marktplatz_anzeige,{ID_ARTIKEL},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" target="_blank">
+        	{htm(PRODUKTNAME)}
+        </a>
+    </td>
+    <td class="align-right">
+        {if VERKAUFSOPTIONEN!=3}
+            {topreis_ex(PREIS)} {CURRENCY_DEFAULT}
+        {else}
+            From {topreis(PREIS)} {CURRENCY_DEFAULT} / day
+        {endif}
+    </td>
+    <td>
+        {if TIMELEFT<8}<strong style="color: #ff0000;">{TIMELEFT} Day(s)</strong>
+        {else}
+        {TIMELEFT} Days
+        {endif}
+    </td>
+</tr>

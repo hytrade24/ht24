@@ -1,0 +1,19 @@
+<table class="mytable table table-bordered table-striped table-condensed">
+	<tr>
+		<th title="Transactions-Id">Trans.-<br />Id</th>
+		<th title="Article-number">Art.-<br />Nr.</th>
+		<th class="first">User</th>
+		<th>Date</th>
+		<th>Article</th>
+		<th>Rating</th>
+		<th class="last">Comment</th>
+	</tr>
+	{if liste}
+		{liste}
+	{else}
+		<td colspan="8"><div class="alert alert-info">No ratings found.</div></td>
+	{endif}
+	<tr>
+		<td colspan="8" align="text-center">{pager}</td>
+	</tr>
+</table>

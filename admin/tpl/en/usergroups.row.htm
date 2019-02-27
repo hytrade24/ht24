@@ -1,0 +1,32 @@
+	<tr class="zeile{even}">
+		<td>
+			<a onclick="confirm('Die gewählte Benutzergruppe wirklich löschen?')" href="index.php?page=usergroups&delete={ID_USERGROUP}">
+				<img border="0" src="gfx/btn.del.gif">
+			</a>
+			<a href="index.php?page=usergroups_edit&id={ID_USERGROUP}">
+				<img border="0" src="gfx/btn.edit.gif">
+			</a>
+		</td>
+		<td>
+			<img src="{uri_baseurl(/cache/usergroups/{ID_USERGROUP}.png)}">
+		</td>
+		<td>
+			<a href="index.php?page=usergroups_edit&id={ID_USERGROUP}" title="{htm(V2)}"{if IS_DEFAULT} style="font-weight: bold;"{endif}>
+				{htm(V1)} {if IS_DEFAULT}(Standard){endif}
+			</a>
+		</td>
+		<td>
+			{if UNLOCK_MANUAL}
+				<span style="font-weight: bold; color: green;">Ja</span>
+			{else}
+				<span style="font-weight: bold; color: red;">Nein</span>
+			{endif}
+		</td>
+		<td>
+			{if PREPAID}
+				<span style="font-weight: bold; color: green;">Ja</span>
+			{else}
+				<span style="font-weight: bold; color: red;">Nein</span>
+			{endif}
+		</td>
+	</tr>

@@ -1,0 +1,356 @@
+{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-neu.step.header_article.htm,*)}
+
+<p class="lead">
+    Hier können Sie Ihre Bilder, Videos und Anhänge eintragen
+</p>
+
+
+    <form id="adCreateMediaForm" class="form-horizontal" onsubmit="SubmitStep(this); return false;">
+        <input type="hidden" name="step" value="{STEP_IDENT}" />
+<div class="design-content-box">
+        <div style="border: none; padding-bottom: 0px; width: 95%;">
+            <fieldset style="width: 100%;">
+                <legend>
+                    Bilder
+                </legend>
+                <p id="uploadImageNoneYet" class="text-error"{if images} style="display: none"{endif}>
+                    Keine Bilder vorhanden.
+                </p>
+                <table id="list_images" class="table table-bordered table-striped table-condensed"{if !images} style="display: none"{endif}>
+                    <thead>
+                        <tr>
+                            <th>Vorschau</th>
+                            <th>Aktionen</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {images}
+                    </tbody>
+                </table>
+    
+                <div id="upload_avaible_image">
+                    <p>
+                        <span id="images_free">
+                        Die ersten <strong><span id="images_free_count">{images_free}</span> Bilder</strong>
+                            sind kostenlos, f&uuml;r jedes weitere wird Ihnen ein Bild von Ihrem Bilderpaket abgezogen.
+                        </span><br />
+                        Sie k&ouml;nnen insgesamt bis zu <strong><span id="images_max">{images_limit}</span> Bilder</strong> hochladen.
+                        <br />
+                        Noch <strong><span id="images_left">{images_available}</span> Bild-Upload(s)</strong> möglich.
+                    </p>
+
+                    <strong>Bild hochladen:</strong>
+                    <input id="uploadImages" type="file" name="image" multiple="">
+                    Akzeptierte Bildformate: jpg/jpeg, png und gif<br />
+                    Maximale Dateigröße: {filesize({UPLOAD_MAX_FILESIZE})}
+                </div>
+                <div id="error_image" class="alert alert-danger hide">
+                    Sie haben die Maximale Anzahl von Bilder erreicht!<br>
+                        Um andere Bilder hochzuladen, müssen Sie mindestens ein Bild löschen
+                </div>
+            </fieldset>
+        </div>
+</div>
+<div class="design-content-box">
+        <div style="border: none; padding-bottom: 0px; width: 95%;">
+            <fieldset style="width: 100%;">
+                <legend>
+                    Dokumente
+                </legend>
+                <div id="list_documents">
+                    {downloads}
+                </div>
+                <div id="uploadDocumentErrors">
+    
+                </div>
+    
+                <div id="upload_avaible_document">
+
+                    <p>
+                        <span id="documents_free">
+                        Die ersten <strong><span id="documents_free_count">{downloads_free}</span> Uploads</strong> sind kostenlos,
+                            für jeden weiteren wird ihnen ein Upload von ihrem Uploadpaket abgezogen.
+                        </span><br />
+                        Sie k&ouml;nnen insgesamt bis zu <strong><span id="documents_max">{downloads_limit}</span> Dokumente</strong> hochladen.
+                        <br />
+                        Noch <strong><span id="documents_left">{downloads_available}</span> Datei-Upload(s)</strong> m&ouml;glich.
+                        <br />
+                    </p>
+                    <strong>Datei hochladen:</strong>
+                    <input id="uploadDocuments" type="file" name="document" multiple="">
+                    Akzeptierte Dateiformate: <span id="documents_format">{htm(downloads_formats)}</span><br />
+                    Maximale Dateigröße: {filesize({UPLOAD_MAX_FILESIZE})}
+                </div>
+                <div id="error_document" class="alert alert-danger hide">
+                    Sie haben die Maximale Anzahl von Dokumenten erreicht!<br>
+                        Um andere Dokumente hochzuladen, müssen Sie mindestens ein Dokument löschen
+                </div>
+            </fieldset>
+        </div>
+</div>
+<div class="design-content-box">
+        <div style="border: none; padding-bottom: 0px; width: 95%;">
+            <fieldset style="width: 100%;">
+                <legend>
+                    Videos
+                </legend>
+                
+                {videos}
+                
+                <div id="upload_avaible_video">
+
+
+                    <p>
+                        <span id="videos_free">
+                        Die ersten <strong><span id="videos_free_count">{videos_free}</span> Videos</strong> sind kostenlos,
+                            für jedes weitere wird ihnen ein Video von ihrem Anzeigenpaket abgezogen.
+                        </span><br />
+                        Sie k&ouml;nnen insgesamt bis zu <strong><span id="videos_max">{videos_limit}</span> Videos</strong> eintragen.
+                        <br />
+                        Noch <strong><span id="videos_left">{videos_available}</span> Video(s)</strong> m&ouml;glich.
+                        <br />
+                    </p>
+                    <strong>Video eintragen:</strong>
+                    {youtube_input(youtube_url,40,youtube,1)}
+                </div>
+                <div id="error_video" class="alert alert-danger hide">
+                    Sie haben die Maximale Anzahl von Videos erreicht!<br>
+                        Um andere Videos hinzuzufügen, müssen Sie mindestens ein Video löschen
+                </div>
+            </fieldset>
+        </div>
+</div>
+    </form>
+
+
+<div class="design-content-box">
+    <div class="control-group submit-step">
+        <div class="controls">
+        {if STEP_INDEX>0}
+            <input type="button" onclick="ShowStep({calc(STEP_INDEX-1)}); return false;" class="btn" value="Zurück" />
+        {endif}
+            <button type="submit" onclick="jQuery('#adCreateMediaForm').submit(); return false;" class="btn btn-primary">
+                Weiter
+            </button>
+        </div>
+    </div>
+</div>
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-neu-images.variants.htm,*)}
+
+<script id="templateImageUpload" type="text/html">
+    <tr>
+        <td>
+            <strong>Bitte warten...</strong>
+        </td>
+        <td>
+            Wird hochgeladen...
+        </td>
+        <td>
+            <div class="progress progress-success">
+                <div class="progress-bar bar"></div>
+            </div>
+        </td>
+    </tr>
+</script>
+<script id="templateImageDownload" type="text/html" data-test="{HAS_VARIANTS}">
+    {subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-neu-images.row.htm,ID_AD=#ID_AD#,i=#IMAGE_INDEX#,TYPE=#IMAGE_TYPE#,BASE64=#IMAGE_DATA#,HAS_VARIANTS,variantsJson=#VARIANTS#)}
+</script>
+<script id="templateDocumentUpload" type="text/html">
+    <tr>
+        <td>
+            <div class="progress progress-success">
+                <div class="progress-bar bar"></div>
+            </div>
+        </td>
+        {if SHOW_PAID_DOCUMENT_DOWNLOAD_OPTION}
+        <td>
+        </td>
+        {endif}
+        <td>
+            <a href="{uri_baseurl(/index.php)}?page=ad_showup&INDEX=#UPLOAD_INDEX#" target="_blank" title="Datei #UPLOAD_FILE# anzeigen">
+                #UPLOAD_FILE#
+            </a>
+        </td>
+        <td>
+            #UPLOAD_TYPE#
+        </td>
+    </tr>
+</script>
+<script id="templateDocumentDownload" type="text/html">
+    {subtpl(tpl/{SYS_TPL_LANG}/my-marktplatz-neu-documents.row.htm,ID_AD=#ID_AD#,i=#UPLOAD_INDEX#,EXT=#UPLOAD_TYPE#,FILENAME=#UPLOAD_FILE#,FILENAME_SHORT=#UPLOAD_FILE#,SHOW_PAID_DOCUMENT_DOWNLOAD_OPTION)}
+</script>
+<script id="templateError" type="text/html">
+    <div class="align-center alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Fehler!</strong>
+        #ERRORS#
+    </div>
+</script>
+<script type="text/javascript">
+    // Update media usage
+    UploadRefresh();
+
+    // Target url for uploads
+    var url = '{uri_baseurl(/index.php)}?page={curpage}&mode=ajax&do=upload';
+    // Images
+    jQuery('#uploadImages').fileupload({
+        url: url,
+        autoUpload: true,
+        dataType: 'json',
+        disableImageResize: true,
+        maxFileSize: {UPLOAD_MAX_FILESIZE},
+        acceptFileTypes: /Android(?!.*Chrome)|Opera/
+                .test(window.navigator.userAgent),
+        filesContainer: jQuery('#list_images > tbody'),
+        uploadTemplate: function (o) {
+            jQuery("#uploadImageNoneYet").hide();
+            var imageIndex = jQuery("#list_images > div").length;
+            var rows = jQuery();
+            jQuery.each(o.files, function (index, file) {
+                var image = { IMAGE_INDEX: imageIndex, IMAGE_TYPE: file.type, IMAGE_DATA: '', IMAGE_DEFAULT: false };
+                var templateSource = jQuery("#templateImageUpload").html();
+                // Replace variables
+                jQuery.each(image, function (name, value) {
+                    templateSource = templateSource.replace(eval('/#'+name+'#/g'), value);
+                });
+                var row = jQuery(templateSource);
+                rows = rows.add(row);
+            });
+            return rows;
+        },
+        downloadTemplate: function (o) {
+            var rows = jQuery();
+            jQuery.each(o.files, function (index, image) {
+                if (typeof image.ERRORS == "undefined") {
+                    var templateSource = jQuery("#templateImageDownload").html();
+                    // Replace variables
+                    jQuery.each(image, function (name, value) {
+                        templateSource = templateSource.replace(eval('/#'+name+'#/g'), value);
+                    });
+                    // Add preview
+                    var row = jQuery(templateSource);
+                    row.find(".galleryImagePreview").append( jQuery(image.preview).addClass('thumbnail') );
+                    // Set default state
+                    if (image.IMAGE_DEFAULT) {
+                        row.find("a.default").addClass("active");
+                    } else {
+                        row.find("a.default").removeClass("active");
+                    }
+                    rows = rows.add(row);
+                } else {
+                    var templateSource = jQuery("#templateError").html();
+                    // Replace variables
+                    templateSource = templateSource.replace(eval('/#ERRORS#/g'), image.ERRORS.join("<br>\n"));
+                    var row = jQuery(templateSource);
+                    rows = rows.add(row);
+                }
+                // Update media usage
+                UploadRefresh();
+            });
+            return rows;
+        }
+    }).prop('disabled', !jQuery.support.fileInput).parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
+    // Check max upload size
+    jQuery('#uploadImages').bind('fileuploadadd', function(e, data) {
+        if (e.isDefaultPrevented()) {
+            return false;
+        }
+        var uploadErrors = [];
+        for (var file in data.originalFiles) {
+            if (data.originalFiles[0]['size'] > {UPLOAD_MAX_FILESIZE}) {
+                uploadErrors.push('Die Datei "'+data.originalFiles[0]['name']+'" überschreitet die maximal erlaubte Größe.');
+            }
+        }
+        if(uploadErrors.length > 0) {
+            alert(uploadErrors.join("\n"));
+            e.preventDefault();
+        } else {
+            return true;
+        }
+    });
+    
+    // Documents
+    jQuery('#uploadDocuments').fileupload({
+        url: url,
+        autoUpload: true,
+        dataType: 'json',
+        disableImageResize: true,
+        maxFileSize: {UPLOAD_MAX_FILESIZE},
+        acceptFileTypes: /Android(?!.*Chrome)|Opera/
+                .test(window.navigator.userAgent),
+        filesContainer: jQuery('#uploadDocumentTable tbody'),
+        uploadTemplate: function (o) {
+            jQuery("#uploadDocumentNoneYet").hide();
+            jQuery("#uploadDocumentTable").show();
+            var uploadIndex = jQuery("#uploadDocumentTable > tbody > tr").length;
+            var rows = jQuery();
+            jQuery.each(o.files, function (index, file) {
+                var image = { UPLOAD_INDEX: uploadIndex, UPLOAD_FILE: file.name, UPLOAD_TYPE: file.type };
+                var templateSource = jQuery("#templateDocumentUpload").html();
+                // Replace variables
+                jQuery.each(image, function (name, value) {
+                    templateSource = templateSource.replace(eval('/#'+name+'#/g'), value);
+                });
+                var row = jQuery(templateSource);
+                rows = rows.add(row);
+            });
+            return rows;
+        },
+        downloadTemplate: function (o) {
+            var rows = jQuery();
+            jQuery.each(o.files, function (index, image) {
+                if (typeof image.ERRORS == "undefined") {
+                    var templateSource = jQuery("#templateDocumentDownload").html();
+                    // Replace variables
+                    jQuery.each(image, function (name, value) {
+                        templateSource = templateSource.replace(eval('/#'+name+'#/g'), value);
+                    });
+                    var row = jQuery(templateSource);
+                    rows = rows.add(row);
+                } else {
+                    var templateSource = jQuery("#templateError").html();
+                    // Replace variables
+                    templateSource = templateSource.replace(eval('/#ERRORS#/g'), image.ERRORS.join("<br>\n"));
+                    jQuery("#uploadDocumentErrors").append(templateSource);
+                }
+                // Update media usage
+                UploadRefresh();
+            });
+            return rows;
+        }
+    }).prop('disabled', !jQuery.support.fileInput).parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
+    // Check max upload size
+    jQuery('#uploadDocuments').bind('fileuploadadd', function(e, data) {
+        if (e.isDefaultPrevented()) {
+            return false;
+        }
+        var uploadErrors = [];
+        for (var file in data.originalFiles) {
+            if (data.originalFiles[0]['size'] > {UPLOAD_MAX_FILESIZE}) {
+                uploadErrors.push('Die Datei "'+data.originalFiles[0]['name']+'" überschreitet die maximal erlaubte Größe.');
+            }
+        }
+        if(uploadErrors.length > 0) {
+            alert(uploadErrors.join("\n"));
+            e.preventDefault();
+        } else {
+            return true;
+        }
+    });
+
+    // Videos
+    jQuery("input[name=youtube_url]").each(function() {
+        jQuery(this).keypress(function(event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+            }
+        });
+        jQuery(this).closest(".input-group.youtube").find(".btn").click(function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            UploadVideo();
+        });
+    });
+</script>

@@ -1,0 +1,84 @@
+<script src="{uri_baseurl(/js/jquery.js)}" type="text/javascript"></script>
+<script type="text/javascript">
+	jQuery.noConflict();
+	
+	var intervalStatus = null; 
+	function UpdateStatus() {
+		jQuery.get("index.php?frame=ajax&page={curpage}&do=status", function(result) {
+			if (result != "") {
+				jQuery("#status").css("font-weight", "bold");
+				jQuery("#status").html(result);
+				window.setTimeout("UpdateStatus();", 1000);
+			} else {
+				jQuery("#status").css("font-weight", "normal");
+				jQuery("#status").html("Import der Datenbank erfolgreich.");
+				window.setTimeout("UpdateStatus();", 20000);
+			}
+		});
+	}
+
+	jQuery(function() {
+		window.setTimeout("UpdateStatus();", 1000);
+	});
+</script>
+
+<h1>GeoIP Datenbank</h1>
+
+<p>
+	Hier k&ouml;nnen Sie die IP-Datenbank importieren und/oder aktuallisieren.
+	Bitte kopieren Sie dazu die CSV-Dateien "GeoLiteCity-Blocks.csv" und "GeoLiteCity-Location.csv"
+	in das Verzeichnis "geoip" des ebiz-trader und starten Sie anschlie&szlig;end den Import durch einen
+	Klick auf den entsprechenden Link. Diesen finden Sie unter der Spalte "Import starten" in der nachfolgenden
+	Tabelle.
+</p>
+
+<table class="liste" cellpadding="0" cellspacing="0" style="width: 600px;">
+	<thead>
+		<tr>
+			<th>
+				Import starten
+			</th>
+			<th>
+				Aktueller Status
+			</th>
+			<th>
+				Letztes Update
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="zeile1">
+			<td>
+				<a onclick="return confirm('Der Import der GeoIP Datenbank nimmt laengere Zeit in Anspruch, wirklich starten?');" href="index.php?page={curpage}&do=update">
+					Import jetzt starten!
+				</a>
+			</td>
+			<td id="status">{htm(status)}</td>
+			<td>{htm(last_update)}</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>IP-Adresse aufl&ouml;sen (Testabfrage)</h2>
+
+<p>
+	&Uuml;ber das folgende Eingabefeld k&ouml;nnen Sie eine IP-Adresse aus der Datenbank aufl&ouml;sen lassen.
+	Standardm&auml;&szlig;ig ist zum schnellen Testen die eigene IP eingetragen. 
+</p>
+
+<form action="index.php" method="post">
+	<input type="hidden" name="page" value="{curpage}" />
+	<input type="hidden" name="do" value="resolve" />
+	
+	<strong>Ziel-Adresse:</strong>
+	<input name="ip" value="{htm(ip)}" />
+	<input type="submit" value="IP aufl&ouml;sen" />
+</form>
+
+{if resolve_response}
+<div>
+	<h2 style="color: green;">Abfrage f&uuml;r {htm(ip)} erfolgreich:</h2>
+	
+	<pre>{htm(resolve_response)}</pre>
+</div>
+{endif}

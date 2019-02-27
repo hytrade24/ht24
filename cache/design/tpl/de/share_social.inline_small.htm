@@ -1,0 +1,28 @@
+<div class="design-social-share display-inline-block design-subtpl text-{ALIGN_INLINE}">
+  {if (SOCIAL_SITES&1)}
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u={URL_ENCODED}" data-rel="popup">
+      <img src="{uri_resource(/images/social-share/fb.png)}" width="19" height="18">
+    </a>
+  {endif}
+  {if (SOCIAL_SITES&2)}
+    <!-- Twitter -->
+    <a href="https://twitter.com/intent/tweet?text={TEXT_ENCODED}%20{URL_ENCODED}" data-rel="popup">
+      <img src="{uri_resource(/images/social-share/tw.png)}" width="19" height="18">
+    </a>
+  {endif}
+  {if (SOCIAL_SITES&4)}
+    <!-- Google+ -->
+    <a href="https://plus.google.com/share?url={URL_ENCODED}" data-rel="popup">
+      <img src="{uri_resource(/images/social-share/gp.png)}" width="19" height="18">
+    </a>
+  {endif}
+  {if (SOCIAL_SITES&8)}
+    <!-- Whatsapp -->
+    <a href="whatsapp://send?text={TEXT_ENCODED}%20{URL_ENCODED}" class="visible-xs-inline-block visible-sm-inline-block" data-rel="popup">
+      <img src="{uri_resource(/images/social-share/wa.png)}" width="19" height="18">
+    </a>
+  {endif}
+  
+  ^SUBTPL_ADMIN°
+</div>

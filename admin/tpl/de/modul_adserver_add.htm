@@ -1,0 +1,150 @@
+<script type="text/javascript">
+<!--
+function katReset()
+{//
+  katRcv({if FK_KAT}{FK_KAT}{else}0{endif},'{print_fk(kat)}');
+  document.getElementById('katframe').src='index.php?frame=iframe&page=kat_select&ID_KAT={FK_KAT}';
+}
+function katRcv(id_kat, label)
+{
+  //alert(id_kat+' '+label);
+  document.getElementById('fk_kat').value = id_kat;
+  document.getElementById('kat').innerHTML = label;
+}
+
+
+
+//-->
+</script><h1>AD-Server<br>
+Werbemittel {if ID_ADS}bearbeiten{else}einf&uuml;gen{endif}</h1>
+<p>F&uuml;gen Sie hier Ihren Bannercode ein.</p>
+{if err}<div class="error">{err}</div>{endif}
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="dummy" value="dummy" />
+  <input type="hidden" name="frame" value="content" />
+  <input type="hidden" name="page" value="{curpagealias}" />
+  {if ID_ADS}
+    <input type="hidden" name="ID_ADS" value="{ID_ADS}" />
+  {endif}
+  <input type="hidden" name="FK_KAT" id="fk_kat" value="{FK_KAT}" />
+  <input type="hidden" name="npage" value="{npage}">
+
+<table border="0" cellpadding="0" cellspacing="0" style="border:1px #9A9A9A solid">
+	<tr>
+		<td valign="top">
+
+
+
+<table border="0" class="formTable" width="100%" cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="top">
+
+		
+		
+		
+		
+<table border="0" cellspacing="0" class="formTable" width="100%">
+<tr>
+  <th>Banner-ID</th>
+  <td>{if ID_ADS}{ID_ADS}{else}<i>neu</i>{endif}</td>
+</tr>
+<tr>
+ <th>Banner in der <br>
+ Rotation anzeigen?</th>
+ <td><input type="hidden" class="nob" name="aktiv" value="0" /><input type="checkbox" class="nob" name="aktiv" {if aktiv}checked="checked" {endif}value="1" onChange="setFlag(1);" /></td>
+</tr>
+<tr>
+ <th>TOP-Banner</th>
+ <td><input type="checkbox" class="nob" name="top" {if top}checked="checked" {endif}value="1" onChange="setFlag(1);" /></td>
+</tr>
+<tr>
+ <th>Bannerformat</th>
+ <td>{lookup(BANNER,,,id="LU_BANNER")}<br>
+<a href="index.php?page=cms_lookup&order=ID_LOOKUP&dir=asc&selectart=BANNER">erweitern</a>
+ </td>
+</tr>
+    <tr>
+        <th valign="top">Start</th>
+        <th valign="top">{datedrop(DATE_START)}</iframe>
+        </th>
+    </tr>
+    <tr>
+        <th valign="top">Ende</th>
+        <th valign="top">{datedrop(DATE_END)}</iframe>
+        </th>
+    </tr>
+    <tr>
+        <th valign="top">Laufzeit</th>
+        <th valign="top">{ADRUNTIME} Tage</iframe>
+        </th>
+    </tr>
+
+</table>
+
+
+
+
+
+</td>
+<td valign="top">
+		
+		
+<table>
+<tr>
+  <th valign="top">Kategorie</th>
+  <th valign="top"><iframe id="katframe" src="index.php?frame=iframe&page=kat_select&ID_KAT={FK_KAT}&ROOT=3" width="320" height="150" frameborder="0">Kategorie-Auswahl erfordert iFrames und JavaScript!</iframe>
+  </th>
+</tr>
+
+    {if ID_ADS}
+    <tr>
+        <th>Statistik</th>
+        <td><a href="#" onclick="popupfkt('modul_adserver_stat&FK_ADS={ID_ADS}&frompopup=1','500','300');"><img src="gfx/stats_16.gif" width="27" height="21" alt="" border="0"></a></td>
+    </tr>
+    {endif}
+
+</table>
+
+
+
+		
+		</td>
+	</tr>
+	
+	<tr>
+  <td colspan="2"><hr size="1" noshade></td>
+</tr>
+
+</table>
+
+<table border="0" cellspacing="0" class="formTable" width="100%">
+<tr>
+  <th><label for="v1">Bannername</label></th>
+  <td><input type="text" name="adname" id="v1" size="60" class="inputfull" value="{htm(adname)}" onChange="setFlag(1);" /></td>
+</tr>
+<tr>
+  <th><label for="v2">Bannercode</label></th>
+  <td><textarea name="banner" id="banner" rows="5" cols="55" onChange="setFlag(1);" onKeyDown="showlen(this, 'v2len', 4000);" onChange="setFlag(1);">{htm(banner)}</textarea>
+    <br /><span id="v2len"> Zeichen</span></td>
+</tr>
+	<tr>
+  <td colspan="2" class="footer" align="right"><input class="button" type="submit" value="speichern"></td>
+</tr>
+</table>
+
+{if ID_ADS}
+<table border="0" cellspacing="0" class="formTable" width="100%">
+	<tr>
+  <td colspan="2"><hr size="1" noshade></td>
+</tr>
+<tr>
+  <th valign="top">Vorschau</th>
+  <td align="center" width="100%"  valign="top">{banner}</td>
+</tr>
+</table>
+{endif}
+
+</td>
+</tr>
+</table>
+</form><br><br>

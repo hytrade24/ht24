@@ -1,0 +1,87 @@
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+<h1>{if CLUB_NAME}{htm(CLUB_NAME)} - {endif}Rundmail</h1>
+
+<p>Verschicken Sie eine Rundmail an alle ausgew&auml;hlten Gruppenmitgliedern.</p>
+{if success}
+<div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Rundmail wurde verschickt!</h4>
+</div>
+{endif}
+{if errors}
+<div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Fehler!</h4>
+    <ul>
+        {errors}
+    </ul>
+</div>
+{endif}
+	{subtpl(tpl/{SYS_TPL_LANG}/my-club-nav.htm,*)}
+
+    <form method="post" id="clubFormular" action="{uri_action(my-club-rundmail,{CLUB_ID_CLUB})}">
+        <input type="hidden" name="do" value="send">
+        <input type="hidden" name="ID_CLUB" value="{CLUB_ID_CLUB}">
+        <div class="row design-club-rundmail">
+            <div class="col-xs-8">
+                <p>
+                    <strong>Nachricht</strong><br>
+                    <small>Hinweis: Ihre Nachricht erhält zusätzlich noch eine Kopf- & Fußzeile, in der darauf hingewiesen wird,
+                    dass Sie die Email über unsere Plattform verschickt haben.</small>
+                </p>
+                <input type="text" placeholder="Betreff" name="SUBJECT" class="form-control" value="{htm(CLUB_SUBJECT)}">
+
+                <textarea class="form-control" placeholder="Ihre Nachricht" rows="12" name="MESSAGE" id="message">{htm(CLUB_MESSAGE)}</textarea>
+                <br>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="1" name="ACCEPT_CONDITION">Ich bin damit einverstanden, dass mein Nutzername und meine Gruppe in der Email zu sehen sein werden.
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-success pull-right">Senden</button>
+            </div>
+            <div class="col-xs-4">
+                <p>
+                    <strong>Empfänger</strong><br><br><br>
+                </p>
+                <div name="MEMBERS[]" id="members" class="selection">
+                    {liste}
+                </div>
+
+                <button class="btn btn-info pull-right" id="selectAll">Alle ausw&auml;hlen</button>
+                <button class="btn btn-danger pull-left" id="deselectAll">Alle abw&auml;hlen</button>
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        jQuery('#selectAll').click(function(event) {
+            event.preventDefault();
+
+            selectAll(jQuery('.selection'));
+        });
+
+        jQuery('#deselectAll').click(function(event) {
+            event.preventDefault();
+
+            deselectAll(jQuery('.selection'));
+        });
+
+        function selectAll(selectField)
+        {
+            selectField.find('input[type="checkbox"]:not(:checked)').each(function(index) {
+                jQuery(this).prop('checked', true);
+            });
+        }
+
+        function deselectAll(selectField)
+        {
+            selectField.find('input[type="checkbox"]:checked').each(function(index) {
+                jQuery(this).prop('checked', false);
+                jQuery(this).attr('checked', false);
+            });
+        }
+
+
+    </script>

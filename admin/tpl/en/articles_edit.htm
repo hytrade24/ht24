@@ -1,0 +1,776 @@
+
+  <!-- Tooltip -->
+  <div style="position: absolute; display: none; width: 300px;" id="blob">
+    <img style="position: absolute; left: 0px; top: 0px;" src="{uri_baseurl(/gfx/blob_top_left.png)}">
+    <img style="position: absolute; right: 0px; top: 0px;" src="{uri_baseurl(/gfx/blob_top_right.png)}">
+    <img style="position: absolute; left: 0px; bottom: 0px;" src="{uri_baseurl(/gfx/blob_bottom_left.png)}">
+    <img style="position: absolute; right: 0px; bottom: 0px;" src="{uri_baseurl(/gfx/blob_bottom_right.png)}">
+    <table style="width: 300px;" cellpadding="0" cellspacing="0" class="blob" id="blobtable">
+      <tr>
+        <td></td>
+        <td class="top"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="left"></td>
+        <td class="fill" id="blobtext"></td>
+        <td class="right"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="bottom"></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+  <!-- / Tooltip -->
+
+<style type="text/css">
+
+/* Blase oben */
+
+.blob .top {
+  height: 11px;
+  background-image: url(/gfx/blob_top_middle.png);
+  background-repeat:repeat-x;
+}
+/* Blase mitte */
+.blob .left {
+  width: 13px;
+  background-image: url(/gfx/blob_left.png);
+  background-repeat:repeat-y;
+}
+.blob .fill {
+  background-image: none;
+  background-color: #ffffc8;
+}
+.blob .right {
+  width: 13px;
+  background-image: url(/gfx/blob_right.png);
+  background-repeat:repeat-y;
+}
+/* Blase unten */
+.blob .bottom {
+  height: 36px;
+  background-image: url(/gfx/blob_bottom_middle.png);
+  background-repeat:repeat-x;
+}
+
+</style>
+
+<h1>Anzeige bearbeiten</h1>
+
+{if (COUNT_IMAGES>0) || (COUNT_FILES>0)}
+<div class="katbox">
+	<p style="font-weight: bold;">
+		Zu dieser Anzeige sind {COUNT_IMAGES} Bilder und {COUNT_FILES} Dateien verf&uuml;gbar.
+	</p>
+	<p>
+		- <a href="index.php?page=articles_files&ID_AD={ID_ANZEIGE}">Bilder und Dateien dieser Anzeige bearbeiten</a>
+	</p>
+</div>
+{endif}
+ 
+ 
+
+<script type="text/javascript" src="{uri_resource(/js/ad.js)}"></script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+
+  <script type="text/javascript">
+    var timer_qs;
+    var row_selection = -1;
+    var row_count = 0;
+    var row_list;
+    
+    function presearch_quick(text_element, e, do_search) {
+      var key = (e ? (e.which ? e.which : e.keyCode) : 0);
+      var text = text_element.value;
+      
+      // Key controls     
+      if ((key == 13) || (key == 27) || (key == 38) || (key == 40)) {
+        if (key == 13) {
+          // Return
+          if (row_selection >= 0) {
+            text_element.value = row_list[row_selection];
+          }
+          $('SEARCH').value = text_element.value;
+          $('SEARCH_FORM').submit();
+          return;
+        }
+        if (key == 27) {
+          // Escape
+          window.setTimeout(function() { 
+            $('list_offers').style.display = "none";
+          }, 300);
+          return;
+        }
+        if (key == 38) row_selection = row_selection - 1;                       // Up
+        if (key == 40) row_selection = row_selection + 1;                       // Down
+        
+        if (row_selection >= row_count) row_selection = row_count - 1;
+        if (row_selection < 0) row_selection = -1;
+        
+        // Update selection
+        var rows = $('list_offers').getElementsByTagName("tr");
+        for (var row in rows) {
+          if (row == row_selection) 
+            rows[row].className = "selected";
+          else
+            rows[row].className = "";
+        }
+        return;
+      }
+      
+      $('SEARCH').value = text;
+      
+      // Hack for reducing request count
+      if (!do_search && (text.length >= 3)) {
+        window.clearTimeout(timer_qs);
+        timer_qs = window.setTimeout(function() { 
+            presearch_quick(text_element, false, true);
+          }, 500);
+        return;
+      }
+    
+      if (text.length >= 2) {
+        new Ajax.Request("/index.php?page=artikel-suche&frame=ajax&SEARCH_AJAX=" + encodeURI(text), {
+          method: 'get',
+          onSuccess: function(transport){
+            if (transport.responseJSON.fail) {
+              $('list_offers').style.display = "none";
+            } else {
+              var table = document.createElement("table");
+              table.id = "list_offers";
+              table.className = "list_offers";
+              table.cellPadding = 0;
+              table.cellSpacing = 0;
+              table.style.position = "absolute";
+              $('div_offers').innerHTML = "";
+              $('div_offers').appendChild(table);
+              
+              row_count = 0;
+              row_list = new Array();
+              
+              for (var offer in transport.responseJSON.offers) {
+                var text = transport.responseJSON.offers[offer];
+                var row = document.createElement("tr");
+                var col = document.createElement("td");
+                var link = document.createElement("a");
+                // Click event
+                link.href = "javascript: $('SEARCH').value = \""+text.replace('"','\"')+"\"; $('SEARCH_FORM').submit();";
+                link.innerHTML = text;
+                // Add to table
+                col.appendChild(link);
+                row.appendChild(col);
+                if (row_count == row_selection) row.className = "selected";
+                table.appendChild(row);
+                // Update "cache"
+                row_count = row_count + 1;
+                row_list.push(text);
+              }
+              Element.clonePosition($('list_offers'), text_element, { offsetTop: 20 });
+              $('list_offers').style.display = "";
+            }
+          }
+        });
+      } else {
+        $('list_offers').style.display = "none";
+      }
+      
+      return;
+    }
+    
+    function setBlobText(button, text, visible) {
+      var div_blob = $('blob');
+      var tbl_blob = $('blobtable');
+      var txt_blob = $('blobtext');
+      
+      if ((visible == true) && (text.length > 0)) {
+        div_blob.show();
+        div_blob.observe("click", function() {
+          // initially hide all containers for tab content
+          setBlobText(button, "", false);
+        });
+      } else {
+        div_blob.hide();
+      }
+      
+      txt_blob.update(text.replace("||", "<br />"));
+      
+      var height = txt_blob.getHeight() + 47;
+      var width = 300;
+      
+      div_blob.clonePosition(button, { setWidth: false, setHeight: false, offsetLeft: 8, offsetTop: -height });
+      tbl_blob.clonePosition(div_blob);
+      
+      tbl_blob.style.height = div_blob.style.height = height+"px";
+      tbl_blob.style.width = div_blob.style.width = width+"px";
+    }
+  </script>  
+<script type="text/javascript">
+  function checkFieldValue(self, needed) {
+    if (self.id == "_T") {
+      // Pfusch
+      self = self.getElementsByTagName('input')[0];      
+    }
+    if (self.id == "BESCHREIBUNG") {
+      // TinyMCE
+      if (tinyMCE.activeEditor) tinyMCE.activeEditor.save();     
+    }
+    if (validateFieldValue(self.className, self.value, needed)) {
+      self.style.border = "1px solid black";
+      return true;
+    } else {
+      self.style.border = "1px solid red";
+      return false;
+    }
+  }
+  
+  function checkNeededFields() {
+    var valid = true;
+    var tmp_needed = document.getElementById('tmp_needed');
+    var tmp_optional = document.getElementById('tmp_optional');
+    if (!tmp_needed || !tmp_optional) return;
+    var fields = tmp_needed.value.split(',');
+    var fields_opt = tmp_optional.value.split(',');
+    fields.push("lu_laufzeit");
+    for (var field in fields) {
+      var input_field = $(fields[field]);
+      if (input_field && (typeof input_field == "object"))
+        if (!checkFieldValue(input_field, true)) {
+          valid = false;
+          validateInput(input_field);     
+        }
+    }
+    for (var field in fields_opt) {
+      var input_field = $(fields_opt[field]);
+      if (input_field && (typeof input_field == "object"))
+        if (!checkFieldValue(input_field, false)) {
+          valid = false;     
+        }
+    }
+    var submit_button = document.getElementById("submit_button");
+    var error_missing = document.getElementById("error_missing");
+    submit_button.disabled = (valid ? false : true);
+    error_missing.style.display = (valid ? 'none' : 'inline');
+  }
+  
+  function validateFieldValue(type, value, needed) {
+    if ((value.length > 0) || needed) {
+      if (type == "field_float") {
+        if ((needed || (value != "")) && isNaN(value.replace(/,/, '.'))) 
+          return false;
+      }
+      if (type == "field_int") {
+        if ((needed || (value != "")) && isNaN(value)) 
+          return false;
+      }
+      if (type == "field_list") {
+        if ((needed || (value != "")) && (value == 0)) 
+          return false;
+      }
+    }
+    if (needed && !value) {
+      return false;
+    }
+    return true;
+  }
+	
+  function validateInput(input) {      
+	var name = input.name;
+	var value = input.value;
+	var needed = 0; 
+  
+    if (!name) return;
+		
+    var tmp_needed = document.getElementById('tmp_needed');
+    var fields = tmp_needed.value.split(',');
+    fields.push("LU_LAUFZEIT");
+    for (var field in fields) {
+			if (fields[field] == name) {
+				needed = 1;
+			}
+    }
+		
+    new Ajax.Request("/index.php?page=marktplatz_neu_desc_ajax&frame=ajax&type=validate&needed="+needed+"&name="+encodeURIComponent(name)+"&value="+encodeURIComponent(value), {
+      method : 'get',
+      onSuccess : function(transport)
+      {
+        var obj = transport.responseJSON;
+				if (!obj.valid) {
+					$(name+'_ERROR').title = obj.error_msg;
+					$(name+'_ERROR_IMG').src = "/bilder/stop_check.png";
+					
+			    $("submit_button").disabled = true;
+				} else {
+					$(name+'_ERROR').title = "Eingabe korrekt oder optional.";
+					$(name+'_ERROR_IMG').src = "/bilder/ok.png";
+				}
+      }
+    });
+  }
+
+  function showMap(self, container) {
+      if (container.css("display") == 'none') {
+          jQuery(self).html('Karte ausblenden');
+          container.show();
+
+          container.css("width", "97%");
+          container.css("height", "400px");
+
+
+          var latlng = new google.maps.LatLng(jQuery("#LATITUDE").val(), jQuery("#LONGITUDE").val());
+
+          var myOptions = {
+              zoom:13,
+              zoomMax:15,
+              center:latlng,
+              mapTypeId:google.maps.MapTypeId.ROADMAP
+          };
+          map = new google.maps.Map(document.getElementById(container.attr("id")), myOptions);
+
+
+          marker = new google.maps.Marker({
+              position:latlng,
+              map:map
+          });
+
+          google.maps.event.addListener(map, 'click', function(event) {
+              latlng = event.latLng;
+
+              if (latlng != null) {
+                  address = latlng;
+                  geocoder.geocode( { 'latLng': latlng }, showPosition);
+              }
+          });
+
+          geocoder = new google.maps.Geocoder();
+
+
+
+
+      } else {
+          	jQuery(self).html('Karte anzeigen');
+              container.hide();
+          }
+  }
+
+
+  function getPosition(overlay, latlng) {
+
+      if (latlng != null) {
+          address = latlng;
+          geocoder.geocode({ 'latLng':latlng }, showPosition);
+      }
+  }
+
+  function showPosition(response, lat, lon) {
+      marker.setMap(null);
+
+      if (response) {
+
+          place = response[0];
+
+          point = new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng());
+
+          marker = new google.maps.Marker({
+              position:point,
+              map:map
+          });
+          setPosition(place);
+      }
+  }
+
+  function showPositionMarker(lat, lon) {
+      if (typeof map == "undefined") return;
+
+      marker.setMap(null);
+
+      point = new google.maps.LatLng(lat, lon);
+
+      marker = new google.maps.Marker({
+          position:point,
+          map:map
+      });
+  }
+
+  function setPosition(place) {
+      //var country = place.AddressDetails.Country.CountryName;
+      var country = "";
+      var city = "";
+      var zip = "";
+
+      jQuery.each(place.address_components, function (key, value) {
+          if (value.types['0'] == 'locality') {
+              city = value.long_name;
+          }
+          if (value.types['0'] == 'postal_code') {
+              zip = value.long_name;
+          }
+          if (value.types['0'] == 'country') {
+              country = value.long_name;
+          }
+      });
+
+
+
+      var country_dropdown = jQuery('#fk_country');
+      var country_options = country_dropdown[0].getElementsByTagName("option");
+
+      country_dropdown.find("option").each(function (key, value) {
+          if (jQuery(value).text() == country) {
+              jQuery(value).attr("selected", "selected");
+          } else {
+              jQuery(value).attr("selected", false);
+          }
+      })
+
+
+      jQuery('#LONGI').html(place.geometry.location.lng());
+      jQuery('#LATI').html(place.geometry.location.lat());
+
+      jQuery('#LONGITUDE').val(place.geometry.location.lng());
+      jQuery('#LATITUDE').val(place.geometry.location.lat());
+      jQuery('#ZIP').val(zip);
+      jQuery('#CITY').val(city);
+
+      checkNeededFields();
+      validateInput(jQuery('#ZIP'));
+      validateInput(jQuery('#CITY'));
+  }
+  
+  $(function() {
+	  checkNeededFields();
+  });
+</script>
+
+{if errors}<div class="error">{errors}</div><br />{endif}
+
+<form method="post" action="index.php">
+
+{if ID_VERSTOSS}
+	<div style="border:3px #990000 dashed;padding:10px;margin-bottom:10px; width:450px;background:#eee;">	
+		<table>
+			<tr>
+				<td><img  src="gfx/warnung_32.png" width="32" height="32" alt="warning_32_32" /> </td>
+				<td><h2 class="error">Verstoss gemeldet!</h2></td>
+			</tr>
+		</table>
+		<p>
+			<a href="index.php?page=user_edit&ID_USER=FK_MELDER" title="Bearbeiten">{htm(MELDER)}</a> hat am 
+			{todate(STAMP_MELDUNG)} fogende Begründung des Verstosses angegeben: 
+			<br />
+			<em style="font-weight:bold;">{htm(GRUND)}</em>
+		</p>
+		<table>
+			<tr>
+				<td><input type="checkbox" value="1" name="KICKVERSTOSS" class="nob" /></td>
+				<td>
+					<strong>Verstoss als erledigt markieren</strong>
+				</td>
+				<td><input type="submit" value="Speichern" /></td>
+			</tr>
+		</table>
+	</div>
+{endif}
+	
+  <input type="hidden" name="edit" value="{ID_ANZEIGE}" />
+  <input type="hidden" name="ID_KAT" value="{ID_KAT}" />
+  <input type="hidden" name="page" value="{curpage}" />
+  <input type="hidden" id="LATITUDE" name="LATITUDE" value="{LATITUDE}" />
+  <input type="hidden" id="LONGITUDE" name="LONGITUDE" value="{LONGITUDE}" />
+  <table class="adTable" cellspacing="0" width="100%">
+    <tr>
+      <th colspan="4" class="topic">Artikeldaten</th>
+    </tr>
+    <tr>
+      <td width="320">
+        <strong>Hersteller <span style="color: red;">*</span></strong>
+        <a onmouseover="setBlobText(this, 'Bitte w&auml;hlen Sie hier den Hersteller des zu verkaufenden Artikels aus.', true);"
+					onmouseout="setBlobText(this, '', false);"
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+        <br />Hersteller des Artikels
+      </td>
+      <td width="28" valign="middle">
+      	<a id="MANUFACTURER_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+      		<img height="20" id="MANUFACTURER_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+      	</a>
+      </td>
+      <td>
+        <select name="FK_MAN">
+        	<option value="0">---</option>
+        	{liste_man}
+        </select>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Artikelbezeichnung <span style="color: red;">*</span></strong>
+        <a onmouseover="setBlobText(this, 'Geben Sie hier den vollst&auml;ndigen Namen des Artikels ein.', true);"
+					onmouseout="setBlobText(this, '', false);" style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+        <br />Name / Bezeichnung des Artikels
+      </td>
+      <td valign="middle">
+      	<a id="PRODUKTNAME_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+      		<img height="20" id="PRODUKTNAME_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+      	</a>
+      </td>
+      <td>
+        <input onchange="checkNeededFields(); validateInput(this);" style="width:99%;" id="PRODUKTNAME" name="PRODUKTNAME" value="{PRODUKTNAME}">
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Pers&ouml;nliche Notiz <span style="color: red;">*</span></strong>
+        <a onmouseover="setBlobText(this, 'Dieses Feld bietet die Möglichkeit eine Notiz für Sie zu schreiben. Diese Notiz ist nur für Sie als Verkäufer sichtbar und dient z.B. zur Unterscheidung von zwei idientischen Produkten.', true);"
+          onmouseout="setBlobText(this, '', false);" style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+        <br />z.B. ihre Inventarnummer
+      </td>
+      <td valign="middle">
+        <a id="NOTIZ_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+          <img height="20" id="NOTIZ_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+        </a>
+      </td>
+      <td>
+        <input id="NOTIZ" name="NOTIZ" value="{NOTIZ}" style="width: 99%;" onchange="checkNeededFields(); validateInput(this);" />
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Artikellaufzeit <span style="color: red;">*</span></strong>
+        <a onmouseover="setBlobText(this, 'Bitte w&auml;hlen Sie hier die Laufzeit der Anzeige.', true);"
+          onmouseout="setBlobText(this, '', false);" style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+        <br />Laufzeit der Anzeige
+      </td>
+      <td valign="middle">
+        <a id="LU_LAUFZEIT_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+          <img height="20" id="LU_LAUFZEIT_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+        </a>
+      </td>
+      <td>
+        <input type="hidden" name="tmp_type[LU_LAUFZEIT]" value="liste">
+        {if STATUS==0}
+          {lookup(LAUFZEIT,,, onchange="checkNeededFields(); validateInput(this);" class="field_list",F_ORDER ASC,Bitte Artikellaufzeit auswählen)}
+        {else}
+          {lookup(LAUFZEIT,,, class="field_list" disabled="disabled")}
+        {endif}
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Beschreibung <span style="color: red;">*</span></strong>
+        <a onmouseover="setBlobText(this, 'Bitte beschreiben Sie den Artikel hier möglichst ausführlich.', true);"
+					onmouseout="setBlobText(this, '', false);" 
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+        <br />Vollst&auml;ndige Beschreibung des Artikels
+      </td>
+      <td>
+      	{if BESCHREIBUNG}
+      	<a id="BESCHREIBUNG_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+      		<img height="20" id="BESCHREIBUNG_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+      	</a>
+      	{else}
+      	<a title="Bitte geben Sie eine Beschreibung ein." id="BESCHREIBUNG_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+      		<img height="20" id="BESCHREIBUNG_ERROR_IMG" src="{uri_baseurl(/bilder/stop_check.png)}">
+      	</a>
+      	{endif}
+      </td>
+      <td colspan="2">&nbsp;</td>
+    </tr>
+	<tr>
+      <td colspan="4" style="padding-bottom:5px;">
+      	<!--<textarea id="BESCHREIBUNG" name="BESCHREIBUNG">{htm(BESCHREIBUNG)}</textarea>-->
+          	{editor_bb(BESCHREIBUNG,99%,280px,/style/de/style-new.css,onchange="checkNeededFields();validateInput(this);")}      
+      </td>
+	</tr>
+  </table><br />
+  <table class="adTable" cellspacing="0" width="100%">
+	<tr>
+      <th colspan="4" class="topic">Preis &amp; Versandkosten</th>
+    </tr>
+  	<tr>
+      <td width="320">
+        <strong>Verkaufspreis <span style="color: red;">*</span></strong>
+        <a onmouseover="setBlobText(this, 'Bitte geben Sie hier den Verkaufspreis in {CURRENCY_DEFAULT} ein.', true);"
+					onmouseout="setBlobText(this, '', false);" 
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+        <br />Verkaufspreis in {CURRENCY_DEFAULT} &nbsp;
+      </td>
+			<td width="28" valign="middle">
+				<a id="PREIS_ERROR" onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+					<img height="20" id="PREIS_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+				</a>
+			</td>
+      <td colspan="2">
+        <input type="hidden" name="tmp_type[PREIS]" value="float">
+        <input class="field_float" style="width: 200px;" onchange="checkNeededFields(); validateInput(this);" id="PREIS" name="PREIS" value="{PREIS}">
+        <strong>{CURRENCY_DEFAULT}</strong>
+      </td>
+    </tr>
+	<tr>
+      <td><strong>MwSt. ausweisbar</strong></td>
+      <td valign="middle">
+      	<a id="MWST_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+      		<img height="20" id="MWST_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+      	</a>
+      </td>
+      <td colspan="2">
+        <input type="hidden" name="tmp_type[MWST]" value="checkbox">
+      	<input type="hidden" name="MWST" value="0" />
+      	<input class="field_checkbox" onchange="checkNeededFields(); validateInput(this);" type="checkbox" id="MWST" name="MWST" value="1" class="nob"{if MWST} checked="checked"{endif} />
+      	<label for="MWST">Der Preis enth&auml;lt Mehrwertsteuer</label>
+      </td>
+	</tr>
+	<tr>
+		<td>
+          <strong>Versandkosten</strong>
+          <br />Versankosten in {CURRENCY_DEFAULT}
+		</td>
+		<td valign="middle">
+			<a id="VERSANDKOSTEN_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+				<img height="20" id="VERSANDKOSTEN_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+			</a>
+		</td>
+		<td colspan="2">
+          <input type="hidden" name="tmp_type[VERSANDKOSTEN]" value="float">
+          <input class="field_float" style="width: 200px;" onchange="checkNeededFields(); validateInput(this);" type="text" name="VERSANDKOSTEN" value="{htm(VERSANDKOSTEN)}" />
+          <strong>{CURRENCY_DEFAULT}</strong>
+		</td>
+	</tr>
+  </table><br />
+  <table class="adTable" cellspacing="0" width="100%">
+    <tr>
+      <th colspan="4" class="topic">Artikelstandort</th>
+    </tr>
+    <tr>
+      <td width="320">
+        <strong>Land</strong>
+        <a onmouseover="setBlobText(this, 'Wählen Sie hier das Land in dem sich der Artikel befindet.', true);"
+					onmouseout="setBlobText(this, '', false);" 
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+      </td>
+      <td width="28">
+      	<a id="COUNTRY_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+      		<img height="20" id="COUNTRY_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+      	</a>
+      </td>
+      <td>{select(country,,,,, onchange="getLatiLongi();checkNeededFields();validateInput(this);" id="fk_country")}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <strong>PLZ &amp; Ort</strong>
+        <a onmouseover="setBlobText(this, 'Geben Sie hier den Ort ein an dem sich der Artikel befindet. ', true);"
+					onmouseout="setBlobText(this, '', false);" 
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+      </td>
+      <td valign="middle">
+      	<a id="ZIP_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+      		<img height="20" id="ZIP_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+      	</a>
+      </td>
+      <td>
+        <input type="text" name="ZIP" id="ZIP" value="{htm(ZIP)}" style="width:30%;" onchange="getLatiLongi();checkNeededFields();validateInput(this);" />
+		<a id="CITY_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+			<img height="20" id="CITY_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+		</a>
+        <input type="text" name="CITY" id="CITY" value="{htm(CITY)}" style="width:45%;" onchange="getLatiLongi();checkNeededFields();validateInput(this);" />
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="vertical-align:top">
+        <strong>Auf Karte wählen</strong>
+        <a onmouseover="setBlobText(this, 'Hier k&ouml;nnen Sie den Artikelstandort auf einer Karte wählen. Klicken Sie einfach auf die Stelle der Karte an der sich der Artikel befindet um den Standort festzulegen.', true);"
+					onmouseout="setBlobText(this, '', false);" 
+					style="cursor: pointer;"><img src="{uri_baseurl(/gfx/ed_help.gif)}" border="0"></a>
+      </td>
+      <td></td>
+      <td>
+        <a onclick="showMap(this, jQuery('#googleMap'));" style="cursor: pointer;">Karte anzeigen</a>
+        <div id="googleMap" class="stdBox" style="display: none;"></div>
+      </td>
+      <td></td>
+    </tr>
+    <tr style="display:none">
+      <td>DEBUG Lati.</td>
+      <td></td>
+      <td colspan="2" id="LATI">&nbsp;</td>
+	</tr>
+	<tr style="display:none">
+      <td>DEBUG Longi.</td>
+      <td></td>
+      <td colspan="2" id="LONGI">&nbsp;</td>
+	</tr>
+  </table><br />
+  {if liste_fields}  
+  <table class="adTable" cellspacing="0" width="100%">
+    <tr>
+      <th colspan="4" class="topic">Detailangaben</th>
+    </tr>
+    {liste_fields}
+  </table><br />
+  {endif} 
+  <table class="adTable" cellspacing="0" width="100%">
+	<tr>
+      <th colspan="4" class="topic">
+      	Rechtliches
+      </th>
+	</tr>
+	<tr>
+      <td width="320" style="vertical-align:top;">
+      	<strong>AGB</strong><br />
+      	Geben Sie Ihre AGB an
+      </td>
+      <td width="28" valign="middle">
+        <a id="AD_AGB_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+          <img height="20" id="AD_AGB_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+        </a>
+      </td>
+      <td colspan="2">
+      	<textarea id="AD_AGB" name="AD_AGB" onchange="checkNeededFields(); validateInput(this);" rows="5" style="width:99%;">{htm(AD_AGB)}</textarea>
+      </td>
+	</tr>
+	<tr>
+      <td style="vertical-align:top;">
+      	<strong>Widerrufs- oder R&uuml;ckgabebelehrung </strong><br />
+      </td>
+      <td valign="middle">
+        <a id="AD_WIDERRUF_ERROR" title="Eingabe korrekt oder optional." onmouseover="setBlobText(this, this.title, true);" onmouseout="setBlobText(this, '', false);">
+          <img height="20" id="AD_WIDERRUF_ERROR_IMG" src="{uri_baseurl(/bilder/ok.png)}">
+        </a>
+      </td>
+      <td colspan="2">
+      	<textarea id="AD_WIDERRUF" name="AD_WIDERRUF" onchange="checkNeededFields(); validateInput(this);" rows="5" style="width:99%;">{htm(AD_WIDERRUF)}</textarea>
+      </td>
+	</tr>	
+  </table><br />
+  <div class="adBoxFulltext" style="background-color: #F1F1F1;">
+    <input class="fat_button" style="float: left;" id="submit_button" type="submit" value="Speichern" />
+    <div id="error_missing" style="font-weight: bold; float: left; display: none; margin: 6px;">Bitte füllen Sie alle Rot markierten Felder aus!</div>
+    <div style="clear: left;"></div>
+  </div><br />
+</form>
+<script type="text/javascript">
+document.observe("dom:loaded", function() {
+    if ((!$("LATI").value) || (!$("LONGI").value)) {
+      getLatiLongi(); 
+    }
+    //getProductsByManufacturer($('FK_MAN').value, 1);
+    //google.load("maps", "2");
+    window.waitMCE = window.setInterval(function() {
+      if (tinyMCE.activeEditor != null) {
+    		checkNeededFields();
+        window.clearInterval(window.waitMCE);
+        tinyMCE.activeEditor.onChange.add(function(ed) {
+           checkNeededFields();
+						 validateInput($('BESCHREIBUNG'));
+        }); 
+      }
+    }, 1000)
+  });
+</script>

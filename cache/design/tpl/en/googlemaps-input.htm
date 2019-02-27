@@ -1,0 +1,76 @@
+<div id="googleMapsAutocomplete_{HASH}" class="design-google-maps-autocomplete">
+    <input class="form-control" type="text" name="GOOGLE_MAPS_PLACE" value="{htm(GOOGLE_MAPS_PLACE)}" />
+</div>
+<script type="text/javascript">
+
+ebizGoogleMapCallback(function() {
+    var doSubmit = false;
+    var inputJQ = jQuery("#googleMapsAutocomplete_{HASH} input");
+    var inputJS = inputJQ[0];
+    var form = inputJQ.closest("form");
+    var searchbox = new google.maps.places.SearchBox(inputJS);
+    var searchboxActive = "";
+    if (navigator.geolocation) {
+        // Standort des Benutzers beachten
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var geolocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            var circle = new google.maps.Circle({
+                center: geolocation,
+                radius: position.coords.accuracy
+            });
+            searchbox.setBounds(circle.getBounds());
+        });
+    }
+    searchbox.addListener('places_changed', function() {
+        if (form.length > 0) {
+            var places = searchbox.getPlaces();
+            if (places.length > 0) {
+                var place = searchbox.getPlaces()[0];
+                if (typeof place == "object") {
+                    if (typeof place.geometry != "undefined") {
+                        form.find("input[name=LATITUDE]").val( place.geometry.location.lat() );
+                        form.find("input[name=LONGITUDE]").val( place.geometry.location.lng() );
+                    } else {
+                        form.find("input[name=LATITUDE]").val("");
+                        form.find("input[name=LONGITUDE]").val("");
+                    }
+                    searchboxActive = inputJQ.val();
+                    if (doSubmit) {
+                        doSubmit = false;
+                        if (typeof form[0].ebizSearch != "undefined") {
+                            form.ebizSearch("changed", inputJQ, true);
+                        }
+                        form.submit();
+                    } else {
+                        if (typeof form[0].ebizSearch != "undefined") {
+                            form.ebizSearch("changed", inputJQ, true);
+                        }
+                    }
+                }
+            }
+        }
+    });
+    // Reset geo location after change until autocomplete result arrives
+    inputJQ.on("change", function(event) {
+        if (searchboxActive != inputJQ.val()) {
+            form.find("input[name=LATITUDE]").val("");
+            form.find("input[name=LONGITUDE]").val("");
+            if (typeof form[0].ebizSearch != "undefined") {
+                form.ebizSearch("changed", inputJQ, true);
+            }
+        }
+    });
+    // Prevent submitting before updating place
+    inputJQ.on("keydown", function(event) {
+        if ((event.originalEvent.keyCode == 13) && (searchboxActive != inputJQ.val())) {
+            event.preventDefault();
+            doSubmit = true;
+        }
+    });
+});
+
+</script>
+{javascript_google_maps(places)}

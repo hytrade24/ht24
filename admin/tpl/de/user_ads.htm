@@ -1,0 +1,158 @@
+<h1><img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />Anzeigen des User '{NAME}'  / #{ID_USER}
+</h1>
+<p>
+    Alle Anzeigen des Users im Überblick
+</p>
+<p style="clear:left;margin:0px;">&nbsp;</p>
+{subtpl(tpl/de/user_edit.nav.htm,*)}
+<script type="text/javascript" src="{uri_baseurl(/lib/fkt.prototype.js)}"></script>
+<script type="text/javascript">
+  function getElementByNameIE(name_tag, name_element) {
+    if (navigator.appName == "Microsoft Internet Explorer") {
+      // IE hack
+      var elements = document.getElementsByTagName(name_tag);
+      var results = new Array();
+      for (var i = 0; i < elements.length; i++) {
+        if (elements[i].name == name_element) {
+          results[results.length] = elements[i];
+        }
+      }
+      return results;
+    }
+    // Default
+    return document.getElementsByName(name_element);
+  }
+
+  function UpdateKatSelector(id_kat, name_current, root_kat, b_done, b_collapsing) {
+    // collapse root other entries before
+    var roots = getElementByNameIE("tr", "child1");
+    for (var i = 0; i < roots.length; i++) {
+      var id_kat_root = roots[i].id.replace("row", "");
+      if (id_kat_root != root_kat) {
+        UpdateKatSelector_SetVisibility(id_kat_root, "none");
+      }
+    }
+
+    if (!b_done) {
+      var childs = getElementByNameIE("tr", "child"+id_kat);
+      if (childs.length > 0) {
+        var target_state = (childs[0].style.display == "none" ? "" : "none");
+        UpdateKatSelector_SetVisibility(id_kat, target_state);
+      }
+    }
+    var id_current = document.getElementById("form_FK_KAT");
+    var selection = document.getElementById("row"+id_kat);
+    var submit_button = document.getElementById("form_SUBMIT");
+    if (id_kat > 0) {
+      if ((id_current.value > 0) && (id_kat > 0)) {
+          var kat_link = $('row'+id_current.value).getElementsByTagName('a')[0];
+          kat_link.style.fontWeight = 'normal';
+          kat_link.style.color = 'black';
+      }
+      if (id_kat > 0) {
+          var kat_link = $('row'+id_kat).getElementsByTagName('a')[0];
+          kat_link.style.fontWeight = 'bold';
+          kat_link.style.color = 'red';
+          id_current.value = id_kat;
+      }
+    } else {
+      if (id_kat == -1) {
+          if (id_current.value > 0) {
+              var kat_link = $('row'+id_current.value).getElementsByTagName('a')[0];
+              kat_link.style.fontWeight = 'normal';
+              kat_link.style.color = 'black';
+          }
+          // Auswahl aufheben
+          id_current.value = 0;
+      }
+    }
+  }
+
+  function UpdateKatSelector_SetVisibility(id_kat, target_state) {
+    var id_current = document.getElementById("form_FK_KAT");
+    var childs = getElementByNameIE("tr", "child"+id_kat);
+    for (var i = 0; i < childs.length; i++) {
+      var id_child = childs[i].id.substr(3);
+      childs[i].style.display = target_state;
+      if ((childs[i].id == "row"+parseInt(id_current.value)) && (target_state = "none")) {
+        if (id_current.value > 0) {
+            var kat_link = $('row'+id_current.value).getElementsByTagName('a')[0];
+            kat_link.style.fontWeight = 'normal';
+            kat_link.style.color = 'black';
+        }
+        id_current.value = 0;
+      }
+      if (target_state == "none") {
+        UpdateKatSelector_SetVisibility(id_child, target_state);
+      }
+    }
+  }
+</script>
+<script type="text/javascript">
+  function PreviewImages(id, elem) {
+    var image_preview = $('image_preview'+id);
+    if (image_preview.innerHTML == '') {
+    	image_preview.innerHTML = '<div style="color: red; font-weight: bold; padding: 4px;">Bilder werden geladen...</div>';
+      new Ajax.Request("index.php?page=articles_images&frame=ajax&ID_AD=" + id, {
+        method: 'get',
+        onSuccess: function(transport){
+          image_preview.innerHTML = transport.responseText;
+          // image_preview.style.display = '';
+          var height = Element.getHeight(image_preview);
+          Element.clonePosition(image_preview, elem, { setWidth: false, setHeight: false, offsetLeft: -192, offsetTop: 0-height });
+        }
+      });
+    } else {
+      // image_preview.style.display = '';
+      var height = Element.getHeight(image_preview);
+      Element.clonePosition(image_preview, elem, { setWidth: false, setHeight: false, offsetLeft: -192, offsetTop: 0-height });
+    }
+  }
+  function HideImages(id) {
+    // $('image_preview'+id).style.display = 'none';
+  }
+</script>
+
+<style type="text/css">
+  a:hover + div.preview {
+    display: block;
+  }
+  a + div.preview {
+    display: none;
+  }
+</style>
+
+<table cellspacing="0" class="liste" width="750">
+  <tr>
+    <th>Aktionen</th>
+    <th>
+        Art.-<br />Nr.
+    </th>
+    <th>Eingetragen seit</th>
+    <th>Artikelbezeichnung</th>
+    <th>Kategorie</th>
+    <th>Angeboten von</th>
+    <th>Preis</th>
+    <th>Bilder</th>
+  </tr>
+{liste}
+</table>
+
+{if pager}
+  <br />{pager}<br /><br />
+{endif}
+
+<script type="text/javascript">
+  document.observe("dom:loaded", function() {
+	    if($('form_FK_KAT')) {
+	        var id_kat = $('form_FK_KAT').value;
+	        if (id_kat > 0) {
+	            if (root_kat > 0) {
+	              UpdateKatSelector(id_kat, "", root_kat, false);
+	            } else {
+	              UpdateKatSelector(id_kat, "", id_kat, true);
+	            }
+	        }
+  		}
+      });
+</script>

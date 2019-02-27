@@ -1,0 +1,7 @@
+<td data-useredit="{DATA_USER_KEY}">
+	{if SELECTED_VALUE}
+		<a href="{thumbnail({FILE_URL},800,600)}" target="_blank"><img src="{thumbnail({FILE_URL},100,100,crop)}"></a>
+
+		<label><input type="checkbox" name="OVERRIDE_FIELD[{COL_NAME}]" value="{SELECTED_VALUE}"> User Bild verwenden?</label>
+	{endif}
+</td>

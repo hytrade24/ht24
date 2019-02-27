@@ -1,0 +1,15 @@
+
+<div{if USER_IS_ADMIN} class="infobereiche-edit" data-content-page="179"{endif}>
+    <div class="alert alert-info">
+	<img src="{uri_resource(/images/icons/info.png)}" width="67" height="65" align="right" hspace="5" alt="Anmelden" />
+	<p class="lead">Anmelden</p>
+	<p>Für jeden Kunden das richtige Paket!</p>
+	<p>
+	{if ID_USER}
+		<a href="{uri_action(my-marktplatz-neu)}" target="_blank">JETZT neu einstellen</a>
+	{else}
+    	<a href="{uri_action(register)}" target="_blank">Melden Sie sich jetzt an und steigern Sie Ihren Umsatz</a>
+	{endif}
+	</p>  
+</div>
+</div>

@@ -1,0 +1,90 @@
+<script type="text/javascript" src="{uri_resource(/js/marktplatz-ad-create.js)}"></script>
+{javascript_require_base(/tinymce/jscripts/tiny_mce/tiny_mce.js,tinyMCE)}
+<script type="text/javascript">
+    jQuery(function() {
+        jQuery("#STREET, #CITY, #ZIP, #fk_country").change(function() {
+            if(jQuery("#STREET").val() != "" && jQuery("#ZIP").val() != "" && jQuery("#CITY").val() != "") {
+                getLatiLongi();
+            }
+        });
+
+        jQuery("#vendorPlaceAddFormular").submit(function() {
+            jQuery(".geoResult").html('');
+            
+            if(jQuery("#LATITUDE").val() == 0 || jQuery("#LONGITUDE").val() == 0) {
+                jQuery(".geoResult").html('Eingaben nicht vollständig');
+
+                return false;
+            } else {
+
+            }
+
+        });
+
+        jQuery("#vendorPlaceAddFormularDescriptionTab").tabs();
+
+    })
+</script>
+<h1>Anbieter Standort hinzufügen</h1>
+{subtpl(tpl/{SYS_TPL_LANG}/my-vendor-nav.htm,*)}
+
+
+<form method="post" action="{uri_baseurl(/index.php)}" id="vendorPlaceAddFormular" class="design-content-box">
+	<input type="hidden" name="page" value="{curpage}" />
+    <input type="hidden" name="DO" value="SAVE" />
+    <input type="hidden" id="LATITUDE" name="LATITUDE" value="{VENDOR_PLACE_LATITUDE}" />
+    <input type="hidden" id="LONGITUDE" name="LONGITUDE" value="{VENDOR_PLACE_LONGITUDE}" />
+    <input type="hidden" name="ID_VENDOR_PLACE" value="{ID_VENDOR_PLACE}" />
+    <input type="hidden" name="tmp_needed" id="tmp_needed" value="" />
+
+	<table class="mytable" width="100%">
+		<tr>
+			<td>Bezeichnung:</td>
+			<td>
+				<input class="form-control" type="text" name="NAME" value="{VENDOR_PLACE_NAME}" />
+			</td>
+		</tr>
+		<tr>
+			<td>Straße:</td>
+			<td>
+				<input class="form-control" type="text" name="STRASSE" id="STREET" value="{VENDOR_PLACE_STRASSE}" />
+			</td>
+		</tr>
+        <tr>
+			<td>PLZ:</td>
+			<td>
+				<input class="form-control" type="text" name="PLZ" id="ZIP" value="{VENDOR_PLACE_PLZ}" />
+			</td>
+		</tr>
+        <tr>
+			<td>Ort:</td>
+			<td>
+				<input class="form-control" type="text" name="ORT" id="CITY" value="{VENDOR_PLACE_ORT}" />
+			</td>
+		</tr>
+        <tr>
+			<td>Land:</td>
+			<td>
+				{select_country(,,,, class="form-control" onchange="" id="COUNTRY",----)}
+			</td>
+		</tr>
+        <tr>
+            <td colspan="2">Standort Beschreibung</td>            
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div id="vendorPlaceAddFormularDescriptionTab">
+                    <ul>
+                        {languageHeader}
+                    </ul>
+                    {languageBody}
+
+                </div>
+            </td>
+        </tr>
+	</table>
+	<br />
+	<input type="submit" value="Standort speichern" class="btn" />
+
+    <p class="geoResult"></p>
+</form>

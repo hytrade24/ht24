@@ -1,0 +1,13 @@
+{if module}</table>
+<br />
+<table border="0" cellspacing="1" cellpadding="4" class="liste"><tr>
+  <th colspan="3">{module}</th>
+</tr><tr>
+  <th>Einstellung&nbsp;</th>
+  <th>Wert&nbsp;</th>
+  <th>Zugriffsrechte&nbsp;</th>
+</tr>{endif}<tr class="zeile{even}">
+  <td>{setting}&nbsp;</td>
+  <td>{htm(local_value)}{if !equal} (global: {htm(global_value)}){endif}</td>
+  <td>{perms}&nbsp;</td>
+</tr>

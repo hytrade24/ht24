@@ -1,0 +1,393 @@
+{if B_SALES && !PRICE_DISABLED}
+<h3>
+    Set a new price
+</h3>
+<div class="design-content-box">
+    <div id="VERKAUFSOPTIONEN_INPUT" class="form-group">
+        <label class="control-label design-input-label">
+            <strong>Sales-option</strong>
+			<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Please select the desired sales option"></i>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[VERKAUFSOPTIONEN]" value="int">
+            {if OPTIONS_SALES_0}
+            <div class="radio">
+                <label>
+                    <input type="radio" id="VERKAUFSOPTIONEN0" name="VERKAUFSOPTIONEN" onchange="updateVerkauf();" value="0" class="nob"{if VERKAUFSOPTIONEN==0} checked="checked"{endif} />
+                    Regular sale
+                </label>
+            </div>
+            {endif}
+            {if OPTIONS_SALES_1}
+            <div class="radio">
+                <label>
+                    <input type="radio" id="VERKAUFSOPTIONEN1" name="VERKAUFSOPTIONEN" onchange="updateVerkauf();" value="1" class="nob"{if VERKAUFSOPTIONEN==1} checked="checked"{endif} />
+                    Display price without sellingfunction
+                </label>
+            </div>
+            {endif}
+            {if OPTIONS_SALES_2}
+            <div class="radio">
+                <label>
+                    <input type="radio" id="VERKAUFSOPTIONEN2" name="VERKAUFSOPTIONEN" onchange="updateVerkauf();" value="2" class="nob"{if VERKAUFSOPTIONEN==2} checked="checked"{endif} />
+                    Price on request
+                </label>
+            </div>
+            {endif}
+            {if OPTIONS_SALES_3 && ENABLE_RENT}
+            <div class="radio">
+                <label>
+                    <input type="radio" id="VERKAUFSOPTIONEN3" name="VERKAUFSOPTIONEN" onchange="updateVerkauf();" value="3" class="nob"{if VERKAUFSOPTIONEN==3} checked="checked"{endif} />
+                    Rent out
+                </label>
+            </div>
+            {endif}
+            {if OPTIONS_SALES_4}
+            <div class="radio">
+                <label>
+                    <input type="radio" id="VERKAUFSOPTIONEN4" name="VERKAUFSOPTIONEN" onchange="updateVerkauf();" value="4" class="nob"{if VERKAUFSOPTIONEN==4} checked="checked"{endif} />
+                    Insertion
+                </label>
+            </div>
+            {endif}
+            {if OPTIONS_SALES_5}
+            <div class="radio">
+                <label>
+                    <input type="radio" id="VERKAUFSOPTIONEN5" name="VERKAUFSOPTIONEN" onchange="updateVerkauf();" value="5" class="nob"{if VERKAUFSOPTIONEN==5} checked="checked"{endif} />
+                    Request
+                </label>
+            </div>
+            {endif}
+        </div>
+        <div class="design-input-help">
+            <span class="help-inline"></span>
+        </div>
+    </div>
+
+    {if !HIDE_QUANTITY}
+    <div id="MENGE_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="MENGE">
+            <strong>Amount <span class="text-error">*</span></strong>
+			<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Hint the on-hand amount."></i>
+        </label>
+        <div class="design-input-field">
+            <!-- Int -->
+            <input type="hidden" name="tmp_type[MENGE]" value="int" />
+            <div class="input-group">
+                <span class="input-group-addon">Pieces</span>
+                <input type="number"  min="0" required="required" onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="MENGE" name="MENGE" placeholder="" title="" value="{MENGE}" />
+            </div>
+        </div>
+        <div class="design-input-help">
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    <div id="MOQ_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="MOQ">
+            <strong>
+                Minimum order quantity
+            </strong>
+			<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Minimum quantity of articles for a sell."></i>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[MOQ]" value="int">
+
+            <div class="input-group">
+                <span class="input-group-addon">Pieces</span>
+                <input type="number"  min="0"  onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="MOQ" name="MOQ" placeholder="Minimum order quantity" title="Minimum order quantity" value="{MOQ}" />
+            </div>
+        </div>
+        <div class="design-input-help">
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    {else}
+    <input type="hidden" name="MENGE" value="1" />
+    {endif}
+
+    <div id="MIETPREISE_INPUT" class="form-group"{if VERKAUFSOPTIONEN!=3} style="display: none;"{endif}>
+        <label class="control-label design-input-label" for="PREIS">
+            <strong>
+                Rental prices <span class="text-error">*</span>
+            </strong>
+            <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title=" {if B_SALES}Please enter the selling price in {CURRENCY_DEFAULT}.{else}Optional{endif}"></i>
+        </label>
+        {liste_mietpreise}
+    </div>
+
+    <div id="PREIS_INPUT" class="form-group"{if VERKAUFSOPTIONEN==3} style="display: none;"{endif}>
+        <label data-label="offer" class="control-label design-input-label" for="PREIS">
+            <strong>
+                Price retail <span class="text-error">*</span>
+            </strong>
+			      <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title=" {if B_SALES}Please enter the selling price in {CURRENCY_DEFAULT}.{else}Optional{endif}"></i>
+        </label>
+        <label data-label="request" class="control-label design-input-label" for="PREIS">
+            <strong>
+                Preisvorstellung <span class="text-error">*</span>
+            </strong>
+			      <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title=" {if B_SALES}Please enter the selling price in {CURRENCY_DEFAULT}.{else}Optional{endif}"></i>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[PREIS]" value="float">
+            <div class="input-group">
+                <span class="input-group-addon">{CURRENCY_DEFAULT}</span>
+                <input type="number" {if B_SALES} required="required"{endif}  min="0" step="any" onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="PREIS" name="PREIS" placeholder="Price retail" title="Price retail" value="{if PREIS}{topreis(PREIS)}{endif}" />
+            </div>
+        </div>
+        <div class="design-input-help">
+			<span class="help-inline"></span>
+        </div>
+    </div>
+	{if OPTIONS_USE_ARTICLE_BASEPRICE}
+	<div id="BASISPREIS_PREIS_INPUT" class="form-group">
+		<label class="control-label design-input-label" for="BASISPREIS_PREIS">
+			<strong>
+				Baseprice
+			</strong>
+		</label>
+		<div class="design-input-field">
+			<input type="hidden" name="tmp_type[BASISPREIS_PREIS]" value="float">
+			<input type="hidden" name="tmp_type[BASISPREIS_MENGE]" value="int">
+			<input type="hidden" name="tmp_type[BASISPREIS_EINHEIT]" value="list">
+
+            <div class="design-input-split">
+                <div class="input-group design-input-basispreis-preis">
+                    <span class="input-group-addon">{CURRENCY_DEFAULT}</span>
+                    <input class="form-control" type="number"  min="0" step="any" id="BASISPREIS_PREIS" name="BASISPREIS_PREIS" placeholder="Baseprice" value="{if BASISPREIS_PREIS}{topreis(BASISPREIS_PREIS)}{endif}" />
+                </div>
+                <div class="input-group design-input-basispreis-menge">
+                    <span class="input-group-addon">pro</span>
+                    <input class="form-control" type="number" min="0" step="1"  id="BASISPREIS_MENGE" name="BASISPREIS_MENGE" value="{if BASISPREIS_MENGE}{BASISPREIS_MENGE}{else}1{endif}" />
+                </div>
+                <div class="input-group design-input-basispreis-einheit">
+                    {select(liste_values,BASISPREIS_EINHEIT,,{OPTIONS_USE_ARTICLE_BASEPRICE_WHERECLAUSE},,class="form-control")}
+                </div>
+            </div>            
+
+
+		</div>
+	</div>
+
+	{endif}
+
+    {if !HIDE_PSEUDO_PRICE && USERGROUP_OPTIONS_AD_CREATE_PSEUDOPREIS}
+    <div id="PSEUDOPREIS_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="PSEUDOPREIS">
+            <strong>
+                Pseudoprice / SRP
+            </strong>
+			<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Enter the SRP or a pseudoprice in here. The price will be crossed our in the article-description."></i>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[PSEUDOPREIS]" value="float">
+            <div class="input-group">
+                <span class="input-group-addon">{CURRENCY_DEFAULT}</span>
+                <input type="number" min="0" step="any"  onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="PSEUDOPREIS" name="PSEUDOPREIS" placeholder="Pseudopreis / UVP" title="Pseudopreis / UVP" value="{if PSEUDOPREIS}{topreis(PSEUDOPREIS)}{endif}" />
+            </div>
+        </div>
+        <div class="design-input-help">
+			<span class="help-inline"></span>
+        </div>
+    </div>
+
+    <div id="B_PSEUDOPREIS_DISCOUNT_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="B_PSEUDOPREIS_DISCOUNT">
+            <strong>
+                Show discount in %?
+            </strong>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[B_PSEUDOPREIS_DISCOUNT]" value="checkbox">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="B_PSEUDOPREIS_DISCOUNT" value="1" {if B_PSEUDOPREIS_DISCOUNT}checked="checked"{endif}>
+                    Show pseudoprice and sale price instead of discount in %
+                </label>
+            </div>
+        </div>
+        <div class="design-input-help">
+			<span class="help-inline"></span>
+        </div>
+    </div>
+    {endif}
+
+    {if USERGROUP_OPTIONS_AD_CREATE_MWST}
+    <div id="MWST_INPUT" class="form-group">
+        <label class="control-label design-input-label">
+            <strong>VAT. stated</strong>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[MWST]" value="check">
+            <div class="radio">
+                <label>
+                    <input class="field_radio" onchange="validateInput(this);" type="radio" id="MWST" name="MWST" value="1" class="nob"{if MWST==1} checked="checked"{endif} />
+                    Price includes VAT
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input class="field_radio" onchange="validateInput(this);" type="radio" id="NO_MWST" name="MWST" value="0" class="nob"{if !MWST} checked="checked"{endif} />
+                    Gap-taxation in §25a of the Value Added Tax Act
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input class="field_radio" onchange="validateInput(this);" type="radio" id="PRIVATE_MWST" name="MWST" value="2" class="nob"{if MWST==2} checked="checked"{endif} />
+                    Private sale
+                </label>
+            </div>
+        </div>
+    </div>
+    {else}
+        <input type="hidden" name="MWST" value="{MWST}" />
+    {endif}
+
+    {if AD_CONSTRAINTS}
+    {if USER_CONSTRAINTS_ALLOWED_B2B}
+    <div id="BF_CONSTRAINTS_B2B_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="BF_CONSTRAINTS_B2B">
+            <strong>B2B-article</strong>
+			<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Make this article accessable for traders only"></i>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[BF_CONSTRAINTS]" value="int">
+            <input type="hidden" name="BF_CONSTRAINTS[]" value="0">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="BF_CONSTRAINTS_B2B" name="BF_CONSTRAINTS[]" onchange="updateCollect();" value="1" class="nob"{if BF_CONSTRAINTS_B2B} checked="checked"{endif} />
+                    This is a B2B-offer.
+                </label>
+            </div>
+        </div>
+    </div>
+    {endif}
+    {endif}
+
+    <div id="TRADE_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="TRADE">
+            <strong>Allow bargaining?</strong>
+			<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="With this option you allow price proposals from different users."></i>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[TRADE]" value="check">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="TRADE" name="TRADE" onchange="updateTrade();" value="1" class="nob"{if TRADE} checked="checked"{endif} />
+                    Yes, allow price proposals from buyers
+                </label>
+            </div>
+        </div>
+        <div class="design-input-help">
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    <div id="AUTOBUY_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="AUTOBUY">
+            <strong>Automatic extra charge</strong>
+			<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="If an offer equals or is higher than the price, the article will be automatically sold!"></i>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[AUTOBUY]" value="float">
+            <div class="input-group">
+                <span class="input-group-addon">{CURRENCY_DEFAULT}</span>
+                <input type="number" min="0" step="any"  onchange="validateInput(this);" onkeyup="validateInputLive(this);"{if !TRADE} disabled="disabled"{endif} class="form-control" id="AUTOBUY" name="AUTOBUY" placeholder="Automatischer Zuschlag" title="Automatischer Zuschlag" value="{if AUTOBUY}{topreis(AUTOBUY)}{endif}" />
+            </div>
+        </div>
+        <div class="design-input-help">
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    <div id="AUTOCONFIRM_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="AUTOCONFIRM">
+            <strong class="text-danger">Automatic confirmation from sales?</strong>
+			<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Once the user purchases the article, the sale will be accepted automatically. ATTENTION! Activate this option if you can guarantee to have the articles on stock."></i>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[AUTOCONFIRM]" value="check">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="AUTOCONFIRM" name="AUTOCONFIRM" value="1" class="nob"{if AUTOCONFIRM} checked="checked"{endif} />
+                    Yes, accept sales automatically
+                </label>
+            </div>
+        </div>
+        <div class="design-input-help">
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    {if tpl_has_permission(article_affiliate,C)}
+    <div id="AFFILIATE_LINK_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="AFFILIATE_LINK">
+            <strong>Shop-/Affiliate-URL</strong>
+            <i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Wenn angegeben wird der Verkauf nicht über den Marktplatz abgewickelt. Statt dessen wechselt der Interessent dafür auf die angegebene URL."></i>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[AFFILIATE_LINK]" value="text">
+            <input type="text" class="form-control" id="AFFILIATE_LINK" name="AFFILIATE_LINK" value="{htm(AFFILIATE_LINK)}" />
+        </div>
+        <div class="design-input-help">
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    {endif}
+</div>
+<div class="well">
+    <div id="PAYMENT_ADAPTER_INPUT" class="form-group">
+        <label class="control-label design-input-label">
+
+            <strong>Payment method</strong>
+
+        </label>
+        <div class="design-input-field">
+        {if AD_PAYMENT_ADAPTER}
+            {AD_PAYMENT_ADAPTER}
+        {else}
+            You have no own <a href="{uri_action(my-payment-adapter)}">payment methods</a>
+            configured.
+
+        {endif}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label design-input-label">
+        </label>
+        <div class="design-input-field">
+            Sie können ihre Zahlungsweisen unter "Mein Account > Meine Einstellungen" über den Reiter "Zahlungsweisen" konfigurieren.
+                <a target="_blank" href="{uri_action(my-payment-adapter)}">Klicken Sie hier</a> um diese Konfiguration jetzt zu öffnen.
+        </div>
+    </div>
+</div>
+{else}
+<h3>
+    Anfrage-Optionen
+</h3>
+<div class="design-content-box">
+    <div id="MOQ_INPUT" class="form-group">
+        <label class="control-label design-input-label" for="MOQ">
+            <strong>
+                Minimum order quantity
+            </strong>
+			<i class="glyphicon glyphicon-question-sign js-tooltip" data-toggle="tooltip" title="Minimum quantity of articles for a sell."></i>
+        </label>
+        <div class="design-input-field">
+            <input type="hidden" name="tmp_type[MOQ]" value="int">
+
+            <div class="input-group">
+                <span class="input-group-addon">Pieces</span>
+                <input type="number"  min="0"  onchange="validateInput(this);" onkeyup="validateInputLive(this);" class="form-control" id="MOQ" name="MOQ" placeholder="Minimum order quantity" title="Minimum order quantity" value="{MOQ}" />
+            </div>
+        </div>
+        <div class="design-input-help">
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    <input type="hidden" name="VERKAUFSOPTIONEN" value="4" />
+</div>
+{endif}
+<script type="text/javascript">
+
+updateVerkauf();
+
+
+</script>

@@ -1,0 +1,104 @@
+{loadperm(admin_perm)}<h1><img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />Rechte f&uuml;r User '{NAME}'  / #{ID_USER}
+</h1>
+<p>
+    Hier können Sie den Benutzer bestimmten Rollen zuweisen.
+</p>
+<p style="clear:left;margin:0px;">&nbsp;</p>
+{if err}
+<div class="hinweis">
+    <span class="error">{err}</span>
+</div>{endif}
+<table>
+    <tr>
+        <td>
+            <form method="post" action="index.php" style="display:inline;">
+                <input type="hidden" name="nav" value="{curnav}" /><input type="hidden" name="ID_USER" value="{ID_USER}" />
+                <div>
+                    <div class="reiterPassiv">
+				        <a href="index.php?page=user_edit&ID_USER={ID_USER}">Stammdaten</a>
+				    </div>
+				    <div class="reiterAktiv">
+				        <a href="index.php?page=perm2user&ID_USER={ID_USER}">Rechte</a>
+				    </div>
+                    <div class="reiterPassiv">
+                        <a href="index.php?page=user_buchhaltung&ID_USER={ID_USER}" title="Buchhalterische Dtaen einsehen"> Rechnungen </a>
+                    </div>
+                    <div class="reiterPassiv">
+                        <a href="index.php?page=user_billing_creditnote&ID_USER={ID_USER}" title="Buchhalterische Dtaen einsehen"> Gutschriften </a>
+                    </div>
+				    <div class="reiterPassiv">
+				        <a href="index.php?page=user_ads&ID_USER={ID_USER}">Anzeigen</a>
+				    </div>
+					<div class="reiterPassiv">
+						<a href="index.php?page=user_transaktion&ID_USER={ID_USER}" title="K&auml;ufe und Verk&auml;ufe anzeigen">
+							Ein- und Verk&auml;ufe
+						</a>
+					</div>
+					<div class="reiterPassiv">
+						<a href="index.php?page=user_kontingent&ID_USER={ID_USER}" title="Anzeigenkontingent anzeigen">
+							Kontingent
+						</a>
+					</div>
+                    		<div class="reiterPassiv">
+			<a href="index.php?page=user_vendor&ID_USER={ID_USER}" title="Standorte und Anbieterdaten ändern">
+				Anbieter
+			</a>
+		</div>
+				    <div class="reiterPassiv">
+				        <a title="&Ouml;ffentliches Profil ansehen" href="{uri_baseurl(/marktplatz/view_user,{urllabel(NAME)},{ID_USER}.htm)}" target="_blank">Profil</a>
+				    </div>
+                    <table class="formTable" width="100%">
+                        <tr>
+                            <th>
+                                Rollen dem dem User zugeordnet sind
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                {roles}
+                            </td>
+                        </tr>
+                        <tr class="footer">
+                            <td align="right">
+                                <input type="submit" class="button" value="&Auml;ndern">
+                            </td>
+                        </tr>
+                    </table> {if speziall}<h1>Spezielle Seitenrechte für : {NAME}</h1>
+                    <table class="formTable" cellspacing="0" width="100%">
+                        <tr>
+                            <th align="center">
+                            </th>
+                            <th align="center">
+                            </th>
+                            <th>
+                                Sollte ein User besondere Reche erhalten, ist das hier sichtbar.
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                IDENT
+                            </th>
+                            <th align="center">
+                                geerbtes
+                                <br>
+                                Recht
+                            </th>
+                            <th align="center">
+                                aktuelles
+                                <br>
+                                Recht
+                            </th>
+                        </tr>
+                        {speziall}
+                        <tr>
+                            <th colspan="3" align="right" class="footer">
+                                &nbsp;
+                            </th>
+                        </tr>
+                    </table>
+                    {endif}
+                </div>
+            </form>
+        </td>
+    </tr>
+</table>{endif}

@@ -1,0 +1,5 @@
+            <th{if sortTarget} data-sort-name="{htm(sortTarget)}"{endif}{if sortDir} data-sort-dir="{htm(sortDir)}"{endif} class="{if sortable} sortable{endif}{if numeric} is-numeric{endif}">
+                {if sortDir_ASC}<span class="sort-dir">&uarr;</span>{endif}
+                {if sortDir_DESC}<span class="sort-dir">&darr;</span>{endif}
+                {label}
+            </th>

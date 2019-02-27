@@ -1,0 +1,17 @@
+<p id="uploadDocumentNoneYet" class="text-error"{if liste} style="display: none"{endif}>
+    You have not uploaded any documents.
+</p>
+
+<table id="uploadDocumentTable" class="table table-bordered table-striped table-condensed"{if !liste} style="display: none"{endif}>
+<thead>
+	<tr>
+		<th>Actions</th>
+		{if SHOW_PAID_DOCUMENT_DOWNLOAD_OPTION}<th>is paid</th>{endif}
+		<th>Filename</th>
+		<th>Filetype</th>
+	</tr>
+</thead>
+<tbody>
+	{liste}
+</tbody>
+</table>

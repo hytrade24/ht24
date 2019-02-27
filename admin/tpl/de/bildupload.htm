@@ -1,0 +1,14 @@
+<h1>Mediendatenbank - Bilder bearbeiten</h1>
+{if err}
+<div class="hinweis"><span class="error">{err}</span></div>
+{endif}
+{if hinweis}
+<div class="hinweis"><span class="ok">{hinweis}</span></div>
+{endif}
+
+<p>
+{if !ID_IMG}
+{subtpl(tpl/de/_bildhochladen.htm,*)}
+{else}
+{subtpl(tpl/de/_bildbearbeiten.htm,*)}
+{endif}

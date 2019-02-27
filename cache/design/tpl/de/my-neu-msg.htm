@@ -1,0 +1,161 @@
+{if AJAX}
+	<script type="text/javascript">
+		jQuery(function() {
+			jQuery("#myNeuMsgFormular").submit(function() {
+
+				var data = jQuery("#myNeuMsgFormular").serialize();
+				jQuery.ajax({
+					url: jQuery("#myNeuMsgFormular").attr('action'),
+					type: 'POST',
+					data: data,
+					success: function(result) {
+						$('#modalDialog').modal("hide").html(result).modal('show');
+					}
+				});
+
+
+				return false;
+			});
+		})
+	</script>
+
+
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<form action="{uri_action(my-neu-msg)}?frame=ajax" method="post" id="myNeuMsgFormular" class="form-horizontal modal-form">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="modalDialogTitle">Nachricht schreiben</h3>
+			</div>
+	
+			<div class="modal-body" id="modalDialogContent">
+	
+				{if sent}
+					<script>
+						jQuery("#modalDialog .modal-footer [type=submit]").detach();
+					</script>
+					<p>
+						Ihre Nachricht wurde erfolgreich verschickt
+					</p>
+				{else}
+	
+					<input type="hidden" name="FK_AD" size="20" value="{FK_AD}" />
+					<input type="hidden" name="FK_TRANS_ID" size="20" value="{FK_TRANS_ID}" />
+					<input type="hidden" name="FK_AD_ORDER" size="20" value="{FK_AD_ORDER}" />
+					<input type="hidden" name="FK_USERID_TO" size="20" value="{FK_USERID_TO}" />
+					<input type="hidden" name="do"  value="1" />
+	
+					{if err}
+						<div class="alert alert-danger">
+							<p><strong>Es ist ein Fehler aufgetreten!</strong></p>
+	
+								{err}
+	
+						</div>
+					{endif}
+	
+					<div class="control-group">
+						<label class="control-label">Empfänger:</label>
+	
+						<div class="controls">
+							<input class="form-control" type="text" name="NAMETO" size="20" value="{NAMETO}" />
+						</div>
+					</div>
+	
+					<div class="control-group">
+						<label class="control-label">Betreff:</label>
+	
+						<div class="controls">
+							{if read} {htm(SUBJECT)}{else}<input class="form-control" type="text" name="SUBJECT" size="70" value="{htm(SUBJECT)}"> {endif}
+						</div>
+					</div>
+	
+					<div class="control-group">
+						<label class="control-label">Ihre Nachricht:</label>
+	
+						<div class="controls">
+							<textarea id="BODY" name="BODY" rows="10" class="form-control">{htm(BODY)}</textarea>
+						</div>
+					</div>
+	
+				{endif}
+			</div>
+			<div class="modal-footer">
+				<a href="#" onclick="HideDialog(); return false;" class="btn btn-default">Fenster schließen</a>
+				<input type="submit" class="btn btn-primary" value="Nachricht senden">
+			</div>
+		</form>
+	  </div>
+	</div>
+{else}
+
+	<h1>Nachricht schreiben</h1>	
+<p>
+Hier können Sie an andere Benutzer des Portals Nachrichten versenden.</p>
+
+<ul class="nav nav-tabs userTabs">
+	<li class="">
+		<a href="{uri_action(my-msg,1)}" title="Zum Posteingang">Posteingang</a>
+	</li>
+	<li class="">
+		<a href="{uri_action(my-msg,2)}" title="Zum Posteingang">Postausgang</a>
+	</li>
+    <li class="{uri_is_active(my-neu-msg,active,)}">
+        <a href="{uri_action(my-neu-msg)}" title="Zum Posteingang">Nachricht schreiben</a>
+    </li>
+</ul>
+	{if sent}
+	<div class="alert alert-success">
+		Ihre Nachricht wurde erfolgreich verschickt
+	</div>
+	{else}
+	{if err}
+	<p class="alert alert-block alert-danger">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		{err}
+	</p>
+	{endif}
+
+	<form method="post" action="{uri_action(my-neu-msg)}" class="form form-horizontal">
+
+		<input type="hidden" name="FK_AD" size="20" value="{FK_AD}" />
+		<input type="hidden" name="FK_TRANS_ID" size="20" value="{FK_TRANS_ID}" />
+		<input type="hidden" name="FK_AD_ORDER" size="20" value="{FK_AD_ORDER}" />
+		<input type="hidden" name="FK_USERID_TO" size="20" value="{FK_USERID_TO}" />
+
+
+		<div class="control-group">
+			<label class="control-label">
+                Empfänger:<br />
+                <small>Benutzername</small>
+            </label>
+
+			<div class="controls">
+				<input type="text" class="form-control" name="NAMETO" size="20" value="{NAMETO}" />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Betreff:</label>
+
+			<div class="controls">
+				{if read} {htm(SUBJECT)}{else}<input type="text" class="form-control" name="SUBJECT" size="70" value="{htm(SUBJECT)}"> {endif}
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Ihre Nachricht:</label>
+
+			<div class="controls">
+				<textarea id="BODY" name="BODY" rows="10" class="form-control">{htm(BODY)}</textarea>
+			</div>
+		</div>
+
+		<div class="text-right">
+			<input type="hidden" name="do" value="send" />
+
+			<input class="btn btn-success" value="Nachricht senden" name="do" type="submit" >
+		</div>
+	</form>
+	{endif}
+{endif}

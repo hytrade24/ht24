@@ -1,0 +1,8 @@
+{if SELECTED_VALUE}
+	<a href="{thumbnail({FILE_URL},800,600)}" target="_blank"><img src="{thumbnail({FILE_URL},100,100,crop)}"></a>
+	<br>
+	<input type="checkbox" name="DELETE_FILE[{COL_NAME}]" value="{SELECTED_VALUE}"> Bild löschen?
+{else}
+	<input type="file" name="{COL_NAME}">
+{endif}
+

@@ -1,0 +1,584 @@
+<script type="text/javascript">
+
+    function unlock(userid, email) {
+        var confirmMessage = 'Möchten Sie den User wirklich bestätigen?';
+        if (email) {
+            confirmMessage = 'Achtung! Der Benutzer hat seine E-Mail Adresse noch nicht bestätigt!'+
+                ' Möchten Sie diesen Benutzer dennoch freischalten?';
+        }
+        if(confirm(confirmMessage)) {
+            jQuery.post('index.php?page=user_edit', { 'ID_USER': userid, 'STAT': 1, 'CODE': null, 'ignoreErrors': 1 }, function() {
+                location.reload();
+            });
+        }
+    }
+    function confirmTaxExemptChange(el) {
+        if(!jQuery(el).is(':checked') || confirm('Achtung: Mit Aktivieren dieser Option wird die Prüfung der USt. ID / Land / etc. ignoriert und dem Kunden niemals USt. in Rechnung gestellt. Dies kann steuerrechtliche Konsequenzen haben. Möchten Sie die Option dennoch setzen ?')) {
+            return true
+        } else {
+            jQuery(el).attr('checked', false);
+        }
+    }
+
+</script>
+<h1>
+	{if ID_USER}<img src="{uri_baseurl(/cache/users/{CACHE}/{ID_USER}/{ID_USER}.jpg)}" alt="" border="0" align="left" hspace="5" />{endif}
+	User {if ID_USER}'{NAME}' / #{ID_USER} bearbeiten{else}erstellen{endif}
+</h1>
+
+{if IS_VIRTUAL}
+<span style="background: red; color: #FFF; font-size: 14px;">ACHTUG! Dies ist ein virtueller User, der nur zum anonymen Einkauf verwendet wird!</span>
+{endif}
+
+<p>Bitte geben Sie hier die Benutzerdaten ein.</p>
+{if err || msg}
+<div class="hinweis">
+	<span class="error">{err}</span>
+	<span class="ok">{msg}</span>
+</div>
+{endif}
+<br style="clear: left;" />
+<div style="float: left;">
+	<form method="post" action="index.php" style="display: inline;">
+		<input type="hidden" name="dummy" value="" />
+		<input type="hidden" name="nav" value="{curnav}" />
+		<input type="hidden" name="ID_USER" value="{ID_USER}" />
+		<input type="hidden" name="frame" value="{curframe}" />
+		{if ID_USER}
+		{subtpl(tpl/de/user_edit.nav.htm,*)}
+		{endif}
+		<table>
+			<tr><td>
+				<table border="0" cellspacing="1" cellpadding="4" class="formTable" width="765"  style="border: 1px #9A9A9A solid">
+					<!-- edit-Formular -->
+					{if STAT==2}
+					{if CODE}
+					<tr>
+						<td class="error">Achtung! Dieser Benutzer hat seine E-Mail Adresse noch nicht bestätigt!</td>
+					</tr>
+					{else}
+					<tr>
+						<td class="error">Achtung! Dieser Benutzer ist noch nicht freigeschaltet!</td>
+					</tr>
+					{endif}
+					{endif}
+					<tr>
+						<th style="background-color: #CBCFD3;"><b>Userdaten</b></th>
+					</tr>
+					<tr>
+						<td>
+							<!-- U S E R D A T E N -->
+							<table width="100%" cellspacing="0" cellpadding="0">
+								<tr>
+									<td valign="top">
+										<label for="uname">
+											<strong>Username<span style="color: #FF0000">*</span></strong>
+										</label>
+										<br />
+										<input type="text" id="uname" name="NAME" maxlength="20" tabindex="1" onchange="setFlag(1);" value="{htm(NAME)}" />
+										<br />
+										<br />
+
+										<label for="fk_lang">
+											<strong>Sprache</strong>
+										</label>
+										<br />
+										{select(lang,FK_LANG,,,,,)}
+									</td>
+									<td valign="top">
+										<label for="email">
+											<strong>E-Mail<span style="color: #FF0000">*</span></strong>
+										</label>
+										<br />
+										<input type="text" name="EMAIL" id="email" maxlength="255" onchange="setFlag(1);" tabindex="2" value="{htm(EMAIL)}" />
+										<br />
+										<br />
+
+										{if 1==ID_USER}
+										<label for="stat">
+											<strong><font color="#FF0000">User kann sich <br> anmelden? </font> </strong>
+										</label>
+										&radic;
+										{else}
+										{if STAT==2}
+										<input type="hidden" name="STAT" value="2" />
+										<strong><font color="#FF0000">Benutzer nicht freigeschaltet!</font></strong>
+										<br />
+										<a href="#" onclick="unlock('{ID_USER}', {if CODE}1{else}0{endif}); return false;">
+											Jetzt freischalten
+										</a>
+										{else}
+										<input type="hidden" name="STAT" value="0" />
+										<label for="stat">
+											<strong><font color="#FF0000">User kann sich <br> anmelden? </font> </strong>
+										</label>
+										<input type="checkbox" name="STAT" id="stat" tabindex="3" {checked(STAT,1)}value="1" onchange="setFlag(1);" class="nob" />
+										{endif}
+										{endif}
+										{if DONE_RESENDMAIL}
+											<br />
+											<br />
+											<span class="ok">
+												Bestätigungs E-Mail wurde erfolgreich verschickt!
+											</span>
+										{else}
+											{if CODE}
+											<br />
+											<br />
+											<a href="index.php?page=user_edit&ID_USER={ID_USER}&do=resendMail">
+												<b>Bestätigungs E-Mail erneut schicken</b>
+											</a>
+											{endif}
+										{endif}
+									</td>
+									<td valign="top">
+										<label for="pass1">
+											<b>Passwort{if !ID_USER}<span style="color: #FF0000">*</span>{else}*{endif}</b>
+										</label>
+										<br />
+										<input type="password" name="pass1" id="pass1" onchange="setFlag(1);" maxlength="64" tabindex="4" />
+										<br />
+										<br />
+
+										<label for="pass2">
+											<b>Passwort Wiederholung{if !ID_USER}<span style="color: #FF0000">*</span>{else}*{endif}</b>
+										</label>
+										<br />
+										<input type="password" onchange="setFlag(1);" name="pass2" id="pass2" maxlength="64" tabindex="5" />
+										<br />
+										<br />
+
+										<span class="NotizSmall">
+									* Passwort nur angeben, <br />
+									wenn &Auml;nderung gew&uuml;nscht
+								</span>
+									</td>
+									<td valign="top">
+										<b>Geboren</b>
+										<br />
+										{datedrop(GEBDAT,1920..-10)}
+										<br />
+										<br />
+
+										{if ID_USER}
+										<label for="">
+											<b>Anmeldung</b>
+										</label>
+										<br />
+										{todate(STAMP_REG)}
+										<br />
+										<br />
+
+										<b>letzte Aktivit&auml;t</b>
+										<br />
+										{todate(LASTACTIV,1)}
+										{endif}
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th style="background-color: #CBCFD3;"><b>Einstellungen</b></th>
+					</tr>
+					<tr>
+						<td>
+							<!-- E I N S T E L L U N G E N -->
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td valign="top">
+										<label for="fk_usergroup">
+											<strong>Benutzergruppe:</strong>
+										</label>
+										<br />
+										{if STAT == 2 && FK_PACKET_RUNTIME}
+										<span style="font-size: 10px">Mitgliedschaft:</span> <i>{htm(MEMBERSHIP_NAME)}</i><br><br>
+										{endif}
+
+										{select(usergroup,FK_USERGROUP,,,t.F_ORDER ASC,,)}
+										<br />
+										<br />
+									</td>
+									<td valign="top">
+										<label>
+											<strong>Benutzervorsellung:</strong>
+											<br />
+
+											<input type="checkbox" id="TOP_USER" name="TOP_USER" value="1" {if TOP_USER}checked="checked" {endif} />
+											<img src="gfx/TOP_USER.1.png" width="16" height="16" alt="Top User" /> Auf Startseite vorstellen
+											<br />
+											<input type="checkbox" id="PROOFED" name="PROOFED" value="1" {if PROOFED}checked="checked" {endif} />
+											<img src="gfx/PROOFED.1.png" width="16" height="16" alt="Top User" /> geprüft
+											<br />
+											<input type="checkbox" id="TOP_SELLER" name="TOP_SELLER" value="1" {if TOP_SELLER}checked="checked" {endif} />
+											<img src="gfx/TOP_SELLER.1.png" width="16" height="16" alt="Top User" /> Top Seller
+										</label>
+									</td>
+									<td valign="top">
+											<strong>Rechnungen:</strong>
+											<br />
+										
+										<label>
+											<input type="hidden" name="CHARGE_AT_ONCE" value="0" />
+											<input type="checkbox" id="CHARGE_AT_ONCE" name="CHARGE_AT_ONCE" value="1" {if CHARGE_AT_ONCE}  checked="checked" {endif} />
+											Rechnungen sofort stellen
+										</label>
+										<br />
+		
+										<label>
+											<input type="hidden" name="PROV_PREPAID" value="0" />
+											<input type="checkbox" id="PROV_PREPAID" name="PROV_PREPAID" value="1" {if PROV_PREPAID}  checked="checked" {endif} />
+											Provisionen sofort abrechnen
+										</label>
+										{if MODERATE_ADS || MODERATE_EVENTS || MODERATE_VENDORS}
+										<br />
+										<br />
+										<div>
+											<strong>Bestätigung von Inhalten:</strong>
+
+											{if MODERATE_ADS}
+											<br />
+											<input type="hidden" name="AUTOCONFIRM_ADS" value="0" />
+											<label>
+												<input type="checkbox" name="AUTOCONFIRM_ADS" value="1"{if AUTOCONFIRM_ADS} checked="checked"{endif} />
+												Anzeigen automatisch bestätigen
+											</label>
+											{else}
+											<input type="hidden" name="AUTOCONFIRM_ADS" value="{AUTOCONFIRM_ADS}" />
+											{endif}
+											{if MODERATE_EVENTS}
+											<br />
+											<input type="hidden" name="AUTOCONFIRM_EVENTS" value="0" />
+											<label>
+												<input type="checkbox" name="AUTOCONFIRM_EVENTS" value="1"{if AUTOCONFIRM_EVENTS} checked="checked"{endif} />
+												Veranstaltungen automatisch bestätigen
+											</label>
+											{else}
+											<input type="hidden" name="AUTOCONFIRM_EVENTS" value="{AUTOCONFIRM_EVENTS}" />
+											{endif}
+											{if MODERATE_VENDORS}
+											<br />
+											<input type="hidden" name="AUTOCONFIRM_VENDORS" value="0" />
+											<label>
+												<input type="checkbox" name="AUTOCONFIRM_VENDORS" value="1"{if AUTOCONFIRM_VENDORS} checked="checked"{endif} />
+												Anbieterprofil automatisch bestätigen
+											</label>
+											{else}
+											<input type="hidden" name="AUTOCONFIRM_VENDORS" value="{AUTOCONFIRM_VENDORS}" />
+											{endif}
+										</div>
+										{else}
+										<input type="hidden" name="AUTOCONFIRM_ADS" value="{AUTOCONFIRM_ADS}" />
+										<input type="hidden" name="AUTOCONFIRM_EVENTS" value="{AUTOCONFIRM_EVENTS}" />
+										<input type="hidden" name="AUTOCONFIRM_VENDORS" value="{AUTOCONFIRM_VENDORS}" />
+										{endif}
+									</td>
+									<td valign="top">
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th style="background-color: #CBCFD3;"><b>Vertrieb</b></th>
+					</tr>
+					<tr>
+						<td>
+							<!-- V E R T R I E B -->
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td>
+										<label>
+											<strong>Vertriebs-Provision:</strong>
+											<br />
+
+											<input type="number" step="0.1" max="100" name="PROVISION_SALES" value="{PROVISION_SALES}" /> %
+											<br />
+											(leer lassen für die in der Benutzer-<br />
+											gruppe definierte Provision)
+										</label>
+									</td>
+									<td>
+										<label>
+											<strong>Vertriebler:</strong>
+											<br />
+
+											<a href="#" onclick="popupfkt('users&frompopup=1','850','500');">
+												<img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+											</a>
+											<input type="text" name="NAME_" value="{htm(NAME_USER_SALES)}" readonly="readonly" />
+											<input type="hidden" name="FK_AUTOR" value="{FK_USER_SALES}" />
+											<br />
+											<button onclick="jQuery(this).parent('label').find('input[name=FK_AUTOR]').val('').parent('label').find('input[name=NAME_]').val(''); return false;">Zuordnung löschen</button>
+										</label>
+									</td>
+									<td>
+
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th style="background-color: #CBCFD3;">
+							<b>Notizen / Tags</b> - <span style="color: red;">Nur für Administratoren sichtbar!</span>
+						</th>
+					</tr>
+					<tr>
+						<td align="center">
+							<!-- E I N S T E L L U N G E N -->
+							<textarea rows="5" name="NOTIZEN_ADMIN" cols="60">{htm(NOTIZEN_ADMIN)}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<th style="background-color: #CBCFD3;">
+							<b>Personendaten</b>
+						</th>
+					</tr>
+					<tr>
+						<td>
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td valign="top">
+										<label for="anrede">
+											<strong>Anrede</strong>
+										</label>
+										<br />
+										{lookup(ANREDE,,,id="anrede" tabindex="6")}
+										<br />
+										<br />
+
+										<label for="strasse">
+											<strong>Stra&szlig;e</strong>
+										</label>
+										<br />
+										<input type="text" name="STRASSE" id="strasse" onchange="setFlag(1);" maxlength="60" tabindex="9" value="{htm(STRASSE)}" />
+										<br />
+										<br />
+
+										<label for="FIRMA">
+											<strong>Firma</strong>
+										</label>
+										<br />
+										<input type="text" onchange="setFlag(1);" name="FIRMA" id="FIRMA" maxlength="60" tabindex="13" value="{htm(FIRMA)}" />
+									</td>
+									<td valign="top">
+										<label for="vorname">
+											<strong>Vorname</strong>
+										</label>
+										<br />
+										<input type="text" name="VORNAME" id="vorname" maxlength="60" onchange="setFlag(1);" tabindex="7" value="{htm(VORNAME)}" />
+										<br />
+										<br />
+
+										<label for="plz">
+											<strong>PLZ</strong>
+										</label>
+										<br />
+										<input type="text" name="PLZ" id="plz" onchange="setFlag(1);" maxlength="15" tabindex="10" value="{htm(PLZ)}" />
+										<br />
+										<br />
+
+										<label for="UST_ID">
+											<strong>USt.-ID</strong>
+										</label>
+										<br />
+										<input type="text" onchange="setFlag(1);" name="UST_ID" id="UST_ID" maxlength="60" tabindex="14" value="{htm(UST_ID)}" />
+										{if TAX_EXEMPT_ENABLE}
+										<a style="cursor:pointer" onclick="popupfkt('ust_id_check&ID_USER={ID_USER}','400','250'); return false;" class="buttont" title="USt.ID überprüfen">
+											Prüfen
+										</a>
+										{endif}
+
+										{if UST_ID_VALID == 1}<br><strong class="ok">gültig (geprüft am {todate(UST_ID_CHECKDATE)})</strong>{endif}
+										{if UST_ID_VALID == 2}<br><strong class="error">ungültig (geprüft am {todate(UST_ID_CHECKDATE)})</strong>{endif}
+
+										<br />
+										<br />
+
+										{if TAX_EXEMPT_ENABLE}
+										<label for="TAX_EXEMPT">
+											<strong>Niemals USt. ausweisen</strong>
+										</label>
+										<br />
+										<label>
+											<input type="checkbox" id="TAX_EXEMPT" name="TAX_EXEMPT" onchange="confirmTaxExemptChange(this);" value="1" {if TAX_EXEMPT}checked="checked" {endif} />
+											niemals USt. auf Rechnungen ausweisen
+										</label>
+										{endif}
+
+									</td>
+									<td valign="top">
+										<label for="nachname">
+											<strong>Nachname</strong>
+										</label>
+										<br />
+										<input type="text" onchange="setFlag(1);" name="NACHNAME" id="nachname" maxlength="60" tabindex="8" value="{htm(NACHNAME)}" />
+										<br />
+										<br />
+
+										<label for="ort">
+											<strong>Ort</strong>
+										</label>
+										<br />
+										<input type="text" onchange="setFlag(1);" name="ORT" id="ort" maxlength="63" tabindex="11" value="{htm(ORT)}" />
+										<br />
+										<br />
+
+										<label for="land">
+											<strong>Land</strong>
+										</label>
+										<br />
+										{select(country,,,,,id="land" tabindex="12")}
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th style="background-color: #CBCFD3;">
+							<b>Kontaktdaten</b>
+						</th>
+					</tr>
+					<tr>
+						<td>
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td valign="top">
+										<label for="TEL">
+											<strong>Telefon</strong>
+										</label>
+										<br />
+										<input type="text" name="TEL" id="TEL" maxlength="60" onchange="setFlag(1);" tabindex="15" value="{htm(TEL)}" />
+										<br />
+										<br />
+
+										<label for="URL">
+											<strong>URL</strong>
+										</label>
+										<br />
+										<input type="text" name="URL" id="URL" maxlength="60" onchange="setFlag(1);" tabindex="18" value="{htm(URL)}" />
+										<br />
+										<br />
+									</td>
+									<td valign="top">
+										<label for="FAX">
+											<strong>Fax</strong>
+										</label>
+										<br />
+										<input type="text" name="FAX" id="FAX" maxlength="60" onchange="setFlag(1);" tabindex="16" value="{htm(FAX)}" />
+										<br />
+										<br />
+									</td>
+									<td valign="top">
+										<label for="MOBIL">
+											<strong>Mobil</strong>
+										</label>
+										<br />
+										<input type="text" name="MOBIL" id="MOBIL" maxlength="60" onchange="setFlag(1);" tabindex="17" value="{htm(MOBIL)}" />
+										<br /><br />
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th style="background-color: #CBCFD3;">
+							<b>Zahlungsweise</b>
+						</th>
+					</tr>
+					<tr>
+						<td>
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td>
+										Standard Zahlungsweise
+									</td>
+									<td>
+										<select name="PAYMENT_ADAPTER" id="invoicePaymentAdapterSelector">
+											<option value="">---</option>
+											{PAYMENT_ADAPTER}
+										</select>
+									</td>
+								</tr>
+								{if PAYMENT_ADAPTER_ADMIN_CONFIG}
+								{PAYMENT_ADAPTER_ADMIN_CONFIG}
+								{endif}
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th style="background-color: #CBCFD3;">
+							<b>Info</b>
+						</th>
+					</tr>
+					<tr>
+						<td align="center">
+							<textarea rows="5" name="UEBER" cols="60">{htm(UEBER)}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<th style="background-color: #CBCFD3;">
+							<b>Impressum</b>
+						</th>
+					</tr>
+					<tr>
+						<td align="center">
+							<textarea rows="5" name="IMPRESSUM" cols="60">{htm(IMPRESSUM)}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<th style="background-color: #CBCFD3;">
+							<b>AGB</b>
+						</th>
+					</tr>
+					<tr>
+						<td align="center">
+							<textarea rows="5" name="AGB" cols="60">{htm(AGB)}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<th style="background-color: #CBCFD3;"><b>Wiederuf</b></th>
+					</tr>
+					<tr>
+						<td align="center">
+							<textarea rows="5" name="WIDERRUF" cols="60">{htm(WIDERRUF)}</textarea>
+						</td>
+					</tr>
+
+					<!-- Ende edit-Formular -->
+					<tr class="footer">
+						<td align="right">
+					<span class="footer">
+						<input name="button" type="submit" class="button" tabindex="116" value="Speichern" />
+						<input name="reset" type="reset" class="button" tabindex="117" value="Reset" />
+					{if ID_USER}
+						<input name="button" type="button" class="button" tabindex="118" onClick="location.href='{pageref(users)}';" value="Abbruch" />
+					{endif}
+					</span>
+						</td>
+					</tr>
+				</table>
+			</td>
+				<td valign="top">
+					{if dont_show_graph_and_map !=1}
+					<iframe src="index.php?frame=iframe&page=googlemap&ID_USER={ID_USER}" width="400" height="300" frameborder="0"></iframe>
+
+					<p></p>
+					<b>Anzahl der Transaktionen (Verkäufe) </b>
+					<br>
+					<iframe id="katframe" src="index.php?frame=iframe&page=stats&show=transaktion_sold&get_range=MONTHE&ID_USER={ID_USER}" width="100%" height="300" frameborder="0">
+					</iframe>
+
+					<p></p>
+					<b>Anzahl der Transaktionen (Verkäufe) </b>
+					<br>
+					<iframe id="katframe" src="index.php?frame=iframe&page=stats&show=neue_artikel&FK_AD={ID_USER}" width="100%" height="200" frameborder="0"></iframe>
+
+					{endif}
+				</td></tr>
+		</table>
+		<!-- Ende Maske -->
+	</form>
+	<!-- Ende Tabelle um Maske -->
+</div>

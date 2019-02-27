@@ -1,0 +1,11 @@
+
+				<strong>Product:</strong><br />
+				{if FK_MAN>0}
+				<select class="form-control" name="FK_PRODUCT" onchange="presearch();">
+					<option value="">---</option>
+				{liste_product}
+				</select>
+				{else}
+				Please select a manufacturer first.
+				{endif}
+				

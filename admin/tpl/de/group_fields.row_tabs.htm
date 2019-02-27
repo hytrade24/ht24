@@ -1,0 +1,30 @@
+<tr class="zeile{even}">
+	<td>
+		<a id="NEW_TAB_{ID_FIELD_TAB}" style="cursor:pointer;">
+			<img src="gfx/btn.edit.gif" width="32" height="16" alt0"edit" />
+		</a>
+		<a title="Gruppe löschen" onclick="return confirm('Diesen Schritt löschen?');" href="index.php?table={FK_TABLE_DEF}&page=group_fields&delTab={ID_FIELD_TAB}">
+			<img src="gfx/btn.del.gif" width="32" height="16" alt0"edit" />
+		</a>
+		<script type="text/javascript">
+		      myPopup.add(
+		      {
+		          url: "index.php?page=field_tab_edit&frame=ajax&ID_FIELD_TAB={ID_FIELD_TAB}&table={ID_TABLE_DEF}",
+		          title: "Eingabe-Schritt bearbeiten", //optional
+		          target: "NEW_TAB_{ID_FIELD_TAB}", //pflicht
+              id: "NF",
+					onClose: function()
+					{
+						window.location.reload();
+					}
+		        });
+		</script>
+	</td>
+	<td valign="top">
+		{htm(V1)}
+	</td>
+	<td valign="top">
+        {GROUP_LIST}
+	</td>
+	<td>{F_ORDER}</td>
+</tr>

@@ -1,0 +1,72 @@
+<h1>Stornoanfragen</h1>
+<p>Folgende Rechungen bzw. Rechnungspositionen wurden von Ihren Kunden storniert</p>
+<form id="cancel_requests" method="get" action="index.php?page=cancel_requests">
+
+    <input type="hidden" name="page" value="cancel_requests" />
+    <table class="formTable" cellspacing="0">
+        <tbody>
+        <tr>
+            <th>Status</th>
+            <td>
+                <select name="STATUS">
+                    <option {if STATUS_alle}selected{endif} value="alle">Alle anzeigen</option>
+                    <option {if STATUS_pending}selected{endif} value="pending">Offen</option>
+                    <option {if STATUS_rejected}selected{endif} value="rejected">Abgelehnt</option>
+                    <option {if STATUS_shelve}selected{endif} value="shelve">Zurückgestellt</option>
+                    <option {if STATUS_done}selected{endif} value="done">Akzeptiert</option>
+                </select>
+            </td>
+            <th>User</th>
+            <td>
+                <input type="text" name="NAME_" value="{htm(NAME_)}" readonly="readonly" />
+                <input type="hidden" name="FK_USER" value="{FK_USER}" />
+                <a style="cursor:pointer" onclick="popupfkt('users&frompopup=1','850','500');" title="User ausw&auml;hlen">
+                    <img src="gfx/users_16.gif" width="16" height="16" alt="" border="0">
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <th>Datum von (TT.MM.JJJJ)</th>
+            <td>
+                <input type="text" value="{STAMP_CREATE_FROM}" name="STAMP_CREATE_FROM" size="35" />
+            </td>
+            <th>Datum bis (TT.MM.JJJJ)</th>
+            <td>
+                <input type="text" value="{STAMP_CREATE_TO}" name="STAMP_CREATE_TO" size="35" />
+            </td>
+        </tr>
+        <tr class="footer">
+            <td colspan="4" align="right">
+
+                <p style="float: left;"><a href="index.php?page=cancel_requests&STATUS=alle"> Alle anzeigen</a>
+                </p>
+                <input type="submit" value="Suchen" class="button" style="float: right;" />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</form>
+<br />
+
+<table id="" class="liste" cellspacing="0">
+    <thead>
+    <tr>
+        <th>Aktion</th>
+        <th>User</th>
+        <th>Anzahl Positionen</th>
+        <th>Gesamtpreis</th>
+        <th>Datum von</th>
+        <th>Datum bis</th>
+    </tr>
+    </thead>
+    <tbody>
+    {if liste}
+        {liste}
+    {else}
+    <tr>
+        <td colspan="6">Keine Elemente gefunden</td>
+    </tr>
+    {endif}
+    </tbody>
+</table>

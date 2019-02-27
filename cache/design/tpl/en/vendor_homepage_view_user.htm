@@ -1,0 +1,18 @@
+{if USER_ID_USER}
+    <div class="row design-page-with-menu">
+        <div class="design-page-content">
+        {if USER_ADS}
+				{USER_ADS}
+				<p>
+					{pager}
+				</p>
+            {else}
+                <p>No adverts currently activated!</p>
+            {endif}
+        </div>
+        <div class="design-page-menu">
+            {subtpl(tpl/{SYS_TPL_LANG}/vendor_homepage_view_user.info.htm,*)}
+            {content_page(LINKS - Anbieter-Homepage)}
+        </div>
+    </div>
+{endif}

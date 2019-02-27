@@ -1,0 +1,9 @@
+<p>
+	<label class="align-right marketplaceArticleCart{htm(F_NAME)}Label">
+		<strong>{htm(V1)}:</strong>
+	</label>
+	<br />
+	<select required="required" class="form-control"{if preview} disabled{else} onchange="updateVariants();"{endif} name="{htm(F_NAME)}" id="{htm(F_NAME)}">
+		{liste}
+	</select>
+</p>

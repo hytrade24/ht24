@@ -1,0 +1,21 @@
+{if !senden}
+<h2 style="text-align:center">Newsletter Versand</h2>
+<div style="text-align:center"><strong>Um den Vorgang zu starten, drücken Sie bitte auf den Button</strong>
+<br /><br />
+<input type="button" onClick="window.location.href='index.php?page=modul_newsletter_sendnow&frame=iframe&ID_NL={ID_NL}&do=send'" value="Vorgang starten" class="button">
+</div>
+{else}
+<h1>Sendevorgang l&auml;uft</h1>
+<script type="text/javascript">
+ function weiter()
+ {
+  window.location.href='index.php?frame=iframe&page=modul_newsletter_sendnow&ID_NL={ID_NL}&do=send';
+ }
+ window.setTimeout("weiter()",5000);
+</script>
+Der Vorgang wird in 5 Sekunden fortgesetzt ...<br />
+Es wurden bereits {DONE} von {TODO} Emails versendet.
+{endif}
+{if err}
+<div class="hinweis"><span class="error">{err}</span></div>
+{endif}

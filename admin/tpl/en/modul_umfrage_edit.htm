@@ -1,0 +1,53 @@
+<h1>Bearbeiten der Umfrage:<br />
+{QUESTION}</h1>
+{if delete}
+<p class="oK">Antwort wurde erfolgreich gelöscht.</p>
+{endif}
+{if err}<br />
+<span class="error">{err}</span>
+{endif}
+{if Korrektur}
+<p class="ok">Ihre Umfrage wurde erfolgreich berichtigt und gespeichert.</p>
+{endif}
+<p>&nbsp;</p>
+<form id="modul_umfrage_edit" name="modul_umfrage_edit" method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+<input type="hidden" name="anz_answers" value="{anz_answers}" id="anz_answers">
+<input type="hidden" name="save" value="1">
+<input type="hidden" name="ID_POLL_QUESTIONS" value="{ID_POLL_QUESTIONS}">
+<input type="hidden" name="answer_ids" value="{answer_ids}">
+<table class="liste" style="width:620;">
+	<tr class="0">
+		<td><strong>Umfrage: </strong></td>
+		<td><input type="text" name="QUESTION" id="QUESTION" size="75" value="{QUESTION}"/></td>
+	</tr>
+  <tr class="zeile1">
+	  <td><strong>Teilnehmer: </strong></td>
+		<td>{Teilnehmer}</td>
+	</tr>
+	<tr class="zeile0">
+		<td><strong>Status:</strong></td>
+		<td><input type="Radio" name="AKTIV" value="1" {if AKTIV}checked{endif}>Aktiv&nbsp;&nbsp;
+			<input type="Radio" name="AKTIV" value="0" {if !AKTIV}checked{endif}>Inaktiv 
+		</td>
+  </tr>
+</table>
+<br />
+<table class="liste" id="answerTable">
+<tr>
+  <th align="left">Antwort Nr.</th>
+	<th align="left">Antwort</th>
+	<th align="left">Stimmen</th>
+	<th align="left">Aktionen</th>
+</tr>
+{answers}
+
+	<tr>
+		<td>&nbsp;</td>
+		<td><a href="javascript:addRow()">Antworten hinzufügen</a></td>
+		<td colspan="2">
+	</tr>
+</table>
+<br>
+<input type="submit" name="submit" value="speichern">
+</form>

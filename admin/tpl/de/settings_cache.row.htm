@@ -1,0 +1,30 @@
+    <tr class="zeile{even}">
+        <td>
+            <a href="#empty:{ident}" onclick="emptyCache('{ident}');" title="Cache leeren/erneuern">
+                <img src="gfx/btn.cache.gif" />
+            </a>
+        </td>
+        <td>
+            {name}
+        </td>
+        <td>
+            {fileCount} Datei{if fileCount!=1}en{endif} ({filesize({fileSize})})
+        </td>
+        <td>
+        {if option}
+            <input type="text" size="6" name="CACHE_INTERVAL[{ident}]" value="{int(settingInterval)}" /> Minuten
+            <a href="#setInterval:{ident}" onclick="saveCacheInterval('{ident}', '{htm(name)}', this)" title="Speichern" class="btn-save">
+                <img src="gfx/btn.save.gif" />
+            </a>
+        {else}
+            <i>Nicht konfigurierbar</i>
+        {endif}
+        </td>
+        <td>
+        {if fileCount>0}
+            {todate(fileUpdateMaxStamp,1)}
+        {else}
+            <i>Cache leer</i>
+        {endif}
+        </td>
+    </tr>

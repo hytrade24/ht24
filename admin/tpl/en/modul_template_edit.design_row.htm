@@ -1,0 +1,19 @@
+<tr class="zeile{even}">
+    <td style="vertical-align: top;">
+        {if IS_DEFAULT}
+            <a href="index.php?page={curpage}&tpl={tpl}&design={ident}" onclick="return confirm('Achtung! Templates im Standarddesign sollten nicht bearbeitet werden. Möchten Sie dennoch fortfahren?');"><img src="gfx/btn.detail.gif"></a>
+        {else}
+            <a href="index.php?page={curpage}&tpl={tpl}&design={ident}"><img src="gfx/btn.detail.gif"></a>
+            {if IS_NEW}
+                <a href="index.php?page={curpage}&tpl={tpl}&design={ident}"><img src="gfx/ed_copy.gif" title="Standarddesign als Vorlage verwenden"></a>
+            {endif}
+        {endif}
+    </td>
+    <td style="vertical-align: top;">
+        {if IS_ACTIVE}<span class="text-error">aktives Layout</span>{endif}
+    </td>
+    <td style="vertical-align: top;">
+        <strong>{name}</strong><br>
+        {description}
+    </td>
+</tr>

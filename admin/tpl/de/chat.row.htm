@@ -1,0 +1,47 @@
+<tr class="zeile{even} {if !IS_APPROVED}unapproved{endif}">
+    <td>
+        <a onclick="return confirm('Konversation wirklich endgültig löschen?')" href="index.php?page={curpage}&DO=delete&ID_CHAT={ID_CHAT}&npage={npage}">
+            <img border="0" src="gfx/btn.del.gif">
+        </a>
+        <a href="index.php?page=chat_messages&ID_CHAT={ID_CHAT}" title="Schnellansicht">
+            <img border="0" src="gfx/btn.detail.gif" alt="Ansehen">
+        </a>
+        {if AUTO_APPROVE}
+        <a onclick="return confirm('Soll diese Konversation nicht mehr automatisch bestätigt werden?')" href="index.php?page={curpage}&DO=unsetautoapprove&ID_CHAT={ID_CHAT}&npage={npage}">
+            <img border="0" src="gfx/ad_unlocked.png" alt="automatisch bestätigt">
+        </a>
+        {else}
+        <a onclick="return confirm('Soll diese Konversation automatisch bestätigt werden?')" href="index.php?page={curpage}&DO=autoapprove&ID_CHAT={ID_CHAT}&npage={npage}">
+            <img border="0" src="gfx/ad_locked.png" alt="nicht automatisch bestätigt">
+        </a>
+        {endif}
+    </td>
+    <td>{ID_CHAT}</td>
+    <td>{todate(STAMP_CHANGED)}</td>
+    <td>{todate(STAMP_MIN)}</td>
+    <td nowrap="nowrap">
+        {if !USER_1_TYPE}
+        <a href="mailto:{USER_1_EMAIL}?subject={url(SUBJECT)}"><img src="gfx/mail.gif" /></a>
+        <a href="index.php?page=user_edit&ID_USER={USER_1_ID}">{htm(USER_1_NAME)}</a>
+
+        {else}
+        <a href="mailto:{USER_1_EMAIL}?subject={url(SUBJECT)}"><img src="gfx/mail.gif" /></a> {USER_1_EMAIL}
+        {endif}
+    </td>
+    <td nowrap="nowrap">
+        {if !USER_0_TYPE}
+            <a href="mailto:{USER_0_EMAIL}?subject={url(SUBJECT)}"><img src="gfx/mail.gif" /></a>
+            <a href="index.php?page=user_edit&ID_USER={USER_0_ID}">{htm(USER_0_NAME)}</a>
+           
+        {else}
+            <a href="mailto:{USER_0_EMAIL}?subject={url(SUBJECT)}"><img src="gfx/mail.gif" /></a> {USER_0_EMAIL}
+        {endif}
+    </td>
+    <td>{SUBJECT}</td>
+
+    <td>{if FK_AD}<a href="#" onclick="showAd({FK_AD});">{FK_AD_NAME}</a>{endif}</td>
+    <td>{FK_TRANS}</td>
+    <td>{if FK_AD_REQUEST}<a href="index.php?page=ad_request&ID_AD_REQUEST={FK_AD_REQUEST}">{FK_AD_REQUEST_NAME}</a>{endif}</td>
+    <td>{ANZ_NACHRICHTEN}</td>
+    <td></td>
+</tr>

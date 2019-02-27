@@ -1,0 +1,118 @@
+<script type="application/javascript">
+
+function validateCodeInput(input) {
+    var code = jQuery(input).val();
+    var error = jQuery(input).attr("data-content");
+    var errorPrev = error;
+    if (code == "") {
+        error = "You have to enter a code.";
+    } else if (!code.match(/^[a-z0-9-_]+$/i)) {
+        error = "The entered code contains invalid characters!<br />Allowed are characters, numbers and dashes.";
+    } else {
+        error = "";
+    }
+    if (error == "") {
+        jQuery(input).removeClass("error");
+    } else {
+        jQuery(input).addClass("error");
+    }
+    if (errorPrev != error) {
+        jQuery(input).attr("data-content", error).removeClass("error-visible");
+    }
+    showErrorMessage(input);
+}
+
+function showErrorMessage(input) {
+    if (jQuery(input).is('[data-content][data-content!=""]:focus')) {
+        if (!jQuery(input).is(".error-visible")) {
+            jQuery(input).addClass("error-visible").popover("show");
+        }
+    } else {
+        jQuery(input).removeClass("error-visible").popover("hide");
+    }
+}
+    
+function showSalesQrCode(codeId) {
+    jQuery.post("{uri_action(my-sales-codes,qrcode,"+codeId+")}", function(result) {
+        jQuery("#modalSalesQrCode").html(result).modal("show");
+    });
+}
+
+</script>
+
+<h1>Distribution- registration-codes</h1>
+
+<p>
+    Here you are able to generate new registration-codes to advertise for new customers.
+</p>
+
+{if ADDED || DELETED}
+<div class="alert alert-success">
+    {if ADDED}<strong>Registration-code successfully added</strong>{endif}
+    {if DELETED}<strong>Registration-code successfully deleted</strong>{endif}
+</div>
+{endif}
+
+<table class="table table-bordered table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>Action</th>
+            <th>Code</th>
+            <th>Link</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+    {if liste}
+        {liste}
+    {else}
+        <tr>
+            <td colspan="4">
+                <i>You have not yet created any registration codes</i>
+            </td>
+        </tr>
+    {endif}
+    </tbody>
+</table>
+
+<h3>Add a new code</h3>
+
+<p>
+    To add a new registration code, enter the code and optionally a description and click on "Add code". <br /> <b>The code</b> is freely selectable and can consist of your company name, for example. The link you can use to refer customers will contain this code. <br /> <b>The description</b> is optional and is not displayed publicly. This serves only as an overview, so that you can make notes for yourself in which way or on which occasion the corresponding registration code is distributed. (e.g. "Messe Hamburg 2016" or "E-Mail Newsletter 05/2016")    
+</p>
+
+{if ERROR}
+<div class="alert alert-danger">
+    <strong>Error!</strong>
+    <br />
+    {if ERROR_CODE_EMPTY}You have to enter a code!{endif}
+    {if ERROR_CODE_DUPLICATE}The code you just put in has already been taken!{endif}
+    {if ERROR_CODE_INVALID}The entered code contains invalid characters!<br />Allowed are characters, numbers and dashes.{endif}
+</div>
+{endif}
+
+<div class="design-content-box">
+    <form method="post">
+        <div class="row">
+            <div class="col-xs-4">Code</div>
+            <div class="col-xs-4">Description</div>
+            <div class="col-xs-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <input type="text" name="CODE" value="{htm(CODE)}" required="required"
+                       data-placement="bottom" data-title="Error" data-html="true" data-trigger="manual"
+                       onfocus="showErrorMessage(this);" onblur="showErrorMessage(this);"
+                       onchange="validateCodeInput(this);" onkeyup="validateCodeInput(this);" />
+            </div>
+            <div class="col-xs-4">
+                <input type="text" name="DESCRIPTION" value="{htm(DESCRIPTION)}" />
+            </div>
+            <div class="col-xs-4">
+                <button class="btn">Add a new code</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal" id="modalSalesQrCode"></div>

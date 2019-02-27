@@ -1,0 +1,13 @@
+<h1>Anzeigenarten</h1>
+{if err}
+<div class="hinweis"><span class="error">{err}</span></div>
+{endif}
+{if liste}
+<table class="liste">
+ <tr>
+  <th>Aktionen</th>
+  <th>Anzeigenart</th>
+ </tr>
+ {liste}
+</table>
+{endif}

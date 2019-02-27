@@ -1,0 +1,103 @@
+<tr class="design-action-buttons">
+    <td>
+        {if IS_MODERATOR || IS_ADMIN}
+            <div class="btn-group">
+                <a href="{uri_action(my-club,{ID_CLUB},view)}" class="btn btn-default">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="{uri_action(my-group-description,{ID_CLUB},view)}">Description</a></li>
+                    <li><a href="{uri_action(my-group-searchword,{ID_CLUB})}">Searchwords</a></li>
+                    <li><a href="{uri_action(my-group-gallery,{ID_CLUB},view)}">Images and videos</a></li>
+
+                    <li class="divider"></li>
+                    <li><a href="{uri_action(my-group-members,{ID_CLUB},view)}">Members</a></li>
+                    {if IS_MODERATOR || IS_ADMIN}
+                        {if MEMBER_REQUEST > 0}
+                            <li><a href="{uri_action(my-group-members,{ID_CLUB},request_view)}">Joining requests: {int(MEMBER_REQUEST)}</a></li>
+                        {endif}
+                    {endif}
+
+                    <li class="divider"></li>
+
+                    <li><a href="{uri_action(my-group-forum,{ID_CLUB})}">Forum</a></li>
+                    <li><a href="{uri_action(my-group-comments,{ID_CLUB},view)}">Comments</a></li>
+
+                    <li class="divider"></li>
+
+                    <li><a href="{uri_action(my-group-events,{ID_CLUB},view)}">Calendar</a></li>
+                    <li><a href="{uri_action(my-calendar-events-add,,group,{ID_CLUB},view)}">Create calendar entry</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{uri_action(my-group-rundmail,{ID_CLUB},view)}">Broadcast</a></li>
+                </ul>
+            </div>
+        {endif}
+
+        {if ALLOW_COMMENTS_AD}
+            <div class="btn-group" href="#comment-{ID_CLUB}">
+                <a id="comment_club_{ID_CLUB}" class="btn {if ALLOW_COMMENTS}btn-info{else}btn-default{endif} dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="glyphicon glyphicon-comment"></i>
+                    {if COMMENTS}
+                        {int(COMMENTS)}
+                    {endif}
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    {if IS_MODERATOR || IS_ADMIN}
+                        <li class="activeOnDisabledComments" {if ALLOW_COMMENTS} style="display: none;" {endif}>
+                            <a href="#" onclick="ClubToggleComments({ID_CLUB}); return false;">
+                                <i class="glyphicon glyphicon-ok"></i> Enable comments
+                            </a>
+                        </li>
+                        <li class="activeOnEnabledComments" {if !ALLOW_COMMENTS} style="display: none;" {endif}>
+                            <a href="#" onclick="ClubToggleComments({ID_CLUB}); return false;">
+                                <i class="glyphicon glyphicon-remove"></i> Deaktivate comments
+                            </a>
+                        </li>
+                    {endif}
+                    <li>
+                        <a href="{uri_action(my-group-comments,{ID_CLUB})}">
+                            <i class="glyphicon glyphicon-th-list"></i>
+                            <strong>Show {int(COMMENTS)} comments</strong>
+                            <br>
+                            <span class="text-muted">
+                                Last comment on {if COMMENT_STAMP}{todate(COMMENT_STAMP,1)}{else}---{endif}
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        {endif}
+    </td>
+    <td>
+        {if IS_MODERATOR}
+            <i class="glyphicon glyphicon-bullhorn"></i>
+        {endif}
+        {if IS_ADMIN}
+            <i class="glyphicon glyphicon-star"></i>
+        {endif}
+        <a href="{uri_action(group,{urllabel(NAME)},{ID_CLUB})}" target="_blank">
+            {htm(NAME)}
+        </a>
+
+    </td>
+    <td>
+        <a title="Write message" href="/my-pages/my-neu-msg,{FK_USER}.htm" class="btn btn-default">
+            <i class="glyphicon glyphicon-envelope"></i>
+        </a>
+        <a href="{uri_action(view_user,{urllabel(OWNER_NAME)},{FK_USER})}">
+            {htm(OWNER_NAME)}
+        </a>
+    </td>
+    <td>{MEMBERS}
+        {if IS_MODERATOR || IS_ADMIN}
+            {if MEMBER_REQUEST > 0}
+                <a href="{uri_action(my-group-members,{ID_CLUB})}"><span class="label label-warning pull-right">{int(MEMBER_REQUEST)}</span></a>
+            {endif}
+        {endif}
+    </td>
+    <td>{if STAMP_JOIN}{todate(STAMP_JOIN)}{else}---{endif}</td>
+</tr>

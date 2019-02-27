@@ -1,0 +1,29 @@
+<ul class="nav nav-tabs userTabs">
+	<li class="{if FILTER_STATUS_ACTIVE}active{endif}">
+		<a href="{uri_action(my-marktplatz,active)}" title="My adverts">
+            My adverts ({COUNT_ACTIVE})
+        </a>
+	</li>
+	<li class="{if FILTER_STATUS_TIMEOUT}active{endif}">
+		<a href="{uri_action(my-marktplatz,timeout)}" title="Advertisements, which will end soon">
+            Soon ending ({COUNT_TIMEOUT_SOON})
+        </a>
+	</li>
+  {if SETTINGS_MODERATE_ADS}
+    <li class="{if FILTER_STATUS_DECLINED}active{endif}">
+        <a href="{uri_action(my-marktplatz,declined)}" title="Checking">
+            Declined ({COUNT_DECLINED})
+        </a>
+    </li>
+  {endif}
+    <li class="{if FILTER_STATUS_DISABLED}active{endif}">
+        <a href="{uri_action(my-marktplatz,disabled)}" title="Expired adverts">
+            Expired / Deaktivated ({COUNT_DISABLED})
+        </a>
+    </li>
+	<li class="{uri_is_active(my-marktplatz-comments,active,)}">
+		<a href="{uri_action(my-marktplatz-comments)}" title="Comments to your adverts">
+            Comments ({COUNT_COMMENTS})
+        </a>
+	</li>
+</ul>

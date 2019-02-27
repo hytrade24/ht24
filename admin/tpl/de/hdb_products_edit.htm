@@ -1,0 +1,254 @@
+<style type="text/css">
+  .product-image-list:after {
+      content: '';
+      clear: left;
+      display: table;
+  }
+  .product-image {
+      float: left;
+      text-align: center;
+      margin-right: 10px;
+  }
+  .product-image:first-child a[href="#default"] {
+      font-weight: bold;
+  }
+</style>
+<script>
+	function useUserData(userDataId) {
+		jQuery(":input[name^='DATA_USER["+userDataId+"]']").each(function(key, value) {
+			var colname = jQuery(value).attr('data-colname');
+			var userValue = jQuery(value).val();
+			if ( userValue != "" && userValue != 0 ) {
+                var jqInput = jQuery("#productForm").find("[name='"+colname+"']");
+                var is_array = false;
+                if ( jqInput.length == 0 ) {
+                    jqInput = jQuery("#productForm").find("[name='"+colname+"[]']");
+                    if ( jqInput.length != 0 ) {
+                        is_array = true;
+                    }
+                }
+                if (jqInput.is("[data-tinymce]")) {
+                    tinymce.get(colname).setContent(userValue);
+                }
+                else {
+                    if ( is_array ) {
+                        jQuery.each(userValue.split("x"),function(index,item) {
+                            if ( item != "" ) {
+                                jQuery("#productForm").find("[name='"+colname+"[]'] option[value='"+item+"']").prop("selected",true);
+                            }
+                        });
+                    }
+                    else {
+                        jQuery("#productForm").find("[name='"+colname+"']").val(userValue);
+                    }
+                }
+			}
+		});
+	}
+</script>
+
+{if !ID_PRODUCT}
+<h1>Produkt hinzuf&uuml;gen</h1>
+{else}
+<h1>Produkt bearbeiten</h1>
+{endif}
+<p>Hier können Sie einen neue Produkte zur Datenbank hinzufügen oder bestehende bearbeiten.</p>
+<p><a href="index.php?page=hdb_products&hdb_table={HDB_TABLE}">Zurück zur Produktübersicht</a></p>
+
+
+{if errors}
+<div class="hinweis">
+    <h3 class="error">Ein Fehler ist aufgetreten!</h3>
+</div>
+{endif}
+{if success}
+<div class="hinweis">
+    <h3 class="success">Das Produkt wurde erfolgreich gespeichert</h3>
+</div>
+{endif}
+<form method="post" id="productForm" enctype="multipart/form-data">
+	<input type="hidden" name="hdb_table" value="{HDB_TABLE}">
+
+    <table style="min-width: 100%;" cellspacing="0" cellpadding="10" border="1" class="liste hdb-product-edit-table">
+
+        <tr>
+            <td><strong>Produkt-Typ</strong></td>
+            <td class="hdb-product-edit-inputcol">
+                {PRODUCT_TYPE_DESCRIPTION}
+            </td>
+			{if COUNT_DATA_USER}
+				<td colspan="{COUNT_DATA_USER}">
+					<strong>Benutzervorschläge</strong>
+				</td>
+			{endif}
+        </tr>
+        <tr>
+            <td><strong>Hersteller</strong></td>
+            <td class="hdb-product-edit-inputcol">
+                <select style="width:99%;" name="FK_MAN">
+                  <option value="">---</option>
+                  {liste_manufacturers}
+                </select>
+            </td>
+			{if COUNT_DATA_USER}
+				<td colspan="{COUNT_DATA_USER}">
+				</td>
+			{endif}
+        </tr>
+        
+        
+        <tr>
+            <td><strong>Kategorie</strong></td>
+            <td class="hdb-product-edit-inputcol">
+                <link href="{uri_resource(lib/jqTree/jqTree.css)}" rel="stylesheet">
+                <link href="{uri_resource(lib/jqTreeSelect/jqTreeSelect.css)}" rel="stylesheet">
+                <style type="text/css">
+                    .categoryDropdown,
+                    .categoryDropdown input,
+                    .categoryDropdown .jqTreeSelect .jqTree {
+                        min-width: 500px;
+                    }
+                    .jqTreeSelect .jqTreeSelectDropdown:before {
+                        margin-top: -2px;
+                    }
+                </style>
+                <script src="{uri_resource(lib/jqTree/jqTree.js)}" type="application/javascript"></script>
+                <script src="{uri_resource(lib/jqTreeSelect/jqTreeSelect.js)}" type="application/javascript"></script>
+                
+                <script>
+                  jQuery(function() {
+                    jQuery("#FK_KAT").jqTreeSelect({
+                      ajaxUrl: 'index.php?page=hdb_products_edit&ajax=LOAD_CATEGORIES'
+                    });
+                  });
+                </script>
+                
+                
+                <div class="categoryDropdown" id="FK_KAT" data-name="FK_KAT" data-defaultvalue="{htm(FK_KAT)}"></div>
+                
+            </td>
+			{if COUNT_DATA_USER}
+				<td colspan="{COUNT_DATA_USER}">
+				</td>
+			{endif}
+        </tr>
+        
+        
+		<tr>
+			<td width="200"><strong>Produktname</strong></td>
+			<td class="hdb-product-edit-inputcol">
+				<input style="width:99%;" name="PRODUKTNAME" value="{htm(PRODUKTNAME)}">
+			</td>
+			{if COUNT_DATA_USER}
+				<td colspan="{COUNT_DATA_USER}">
+
+				</td>
+			{endif}
+		</tr>
+        {liste_columns}
+
+		{if DATA_USER}
+        <tr>
+            <td style="vertical-align: top;"><strong>Vorschlag</strong></td>
+			<td class="hdb-product-edit-inputcol">
+                {if COUNT_USER_DATA>0}
+                Die Vorgeschlagenen Eigenschaften stammen von Kunden. Bitte verifizieren Sie die Daten und übernehmen Sie diese.
+                <br />
+                {endif}
+                <label class="error">
+                    <input type="checkbox" name="USER_CLEAR" value="1" />
+                    alle User-Vorschläge löschen
+                </label>
+            </td>
+
+			{if COUNT_DATA_USER}
+				{col_data_user_accept}
+			{endif}
+        </tr>
+        {endif}
+        <tr>
+            <td width="200"><strong>Bestätigt</strong></td>
+            <td class="hdb-product-edit-inputcol">
+                <label>
+                    <input type="radio" name="CONFIRMED" value="0"{if !CONFIRMED} checked="checked"{endif} />
+                    Artikel nicht bestätigt
+                </label><br>
+				<label>
+					<input type="radio" name="CONFIRMED" value="1"{if CONFIRMED == 1} checked="checked"{endif} />
+					Artikel freischalten
+				</label><br>
+				<label>
+					<input type="radio" name="CONFIRMED" value="8"{if CONFIRMED == 8} checked="checked"{endif} />
+					In Prüfung
+				</label>
+                <br />
+                <br />
+            </td>
+			{if COUNT_DATA_USER}
+				<td colspan="{COUNT_DATA_USER}">
+
+				</td>
+			{endif}
+
+        </tr>
+        
+        
+        <tr>
+            <td width="200"><strong>Artikelbilder</strong></td>
+            <td class="hdb-product-edit-inputcol">
+                <div class="product-image-list">
+                    {images}                    
+                </div>
+                {if CONFIRMED == 8}
+                <div id="product-image-keep-notice" class="error" style="display: none;">
+                  <div>
+                    Zu diesem Artikel sind Benutzerbilder hinterlegt. Was soll mit diesen geschehen?
+                  </div>
+                  <label>
+                    <input name="IMPORT_IMAGES_KEEP" type="radio" value="0" />
+                    Hinterlegte Bilder verwerfen
+                  </label>
+                  <br />
+                  <label>
+                    <input name="IMPORT_IMAGES_KEEP" type="radio" value="1" checked />
+                    Hinterlegte Bilder beibehalten
+                  </label>
+                </div>
+                <script type="text/javascript">
+                  jQuery(function() {
+                      jQuery("input[name=CONFIRMED]").click(function() {
+                          var inputValue = jQuery(this).val();
+                          if (inputValue == 1) {
+                              jQuery("#product-image-keep-notice").show();
+                          } else {
+                              jQuery("#product-image-keep-notice").hide();
+                          }
+                      });
+                  });
+                </script>
+                {endif}
+                <h4>Neue Bilder hochladen:</h4>
+                <input type="file" name="IMPORT_IMAGES[]" multiple />
+            </td>
+			  {if COUNT_DATA_USER}
+            <td colspan="{COUNT_DATA_USER}">
+            </td>
+        {endif}
+        </tr>
+
+
+        <tr>
+            <th colspan="{calc(COUNT_DATA_USER+3)}" style="text-align:right">
+                {if !ID_HDB_PRODUCT}
+                <input type="submit" value="Produkt hinzuf&uuml;gen">
+                {else}
+                <input type="hidden" name="ID_HDB_PRODUCT" value="{ID_HDB_PRODUCT}">
+                <input type="submit" value="&Auml;nderung speichern">
+                {endif}
+            </th>
+        </tr>
+        <tr>
+            <td colspan="{calc(COUNT_DATA_USER+3)}" class="footer">&nbsp;</td>
+        </tr>
+    </table>
+</form>

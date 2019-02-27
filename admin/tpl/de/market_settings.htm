@@ -1,0 +1,1312 @@
+<h1>ebiz-trader - Einstellungen</h1>
+<p>
+    Die wichtigsten Einstellungen f&uuml;r den betrieb des Marktplatzes. Um die erweiterten 
+	Systemeinstellungen zu bearbeiten, klicken Sie bitte 
+	<a href="index.php?page=options" title="Systemeinstellungen">hier</a>.
+</p>
+{if ok}
+<h2 class="ok">
+    Änderung gespeichert!
+</h2>
+{endif}
+<form action="index.php" method="post" id="form1">
+    <input type="hidden" name="page" value="market_settings" />
+
+    <div class="reiterAktiv">
+        <a title="Marktplatz Einstellungen">Marktplatz Einstellungen</a>
+    </div>
+    <div class="reiterPassiv">
+        <a href="index.php?page=options" title="Erweiterte Einstellungen">Erweiterte Systemeinstellungen</a>
+    </div>
+    <div class="reiterPassiv">
+        <a href="index.php?page=plugins" title="Plugin-Einstellungen">Plugin-Einstellungen</a>
+    </div>
+    <br style="clear: both;"/>
+    
+    <table cellspacing="0" border="0">
+        <tr>
+            <td class="footer"><p>&nbsp;</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:10px;">
+                <h2>Einstellungen f&uuml;r den Marktplatz</h2>
+				<p>
+					Die folgenden Einstellungen sind f&uuml;r den Betrieb der Marktplatz Software ausgesprochen wichtig.<br />
+					Achten Sie unbedingt auf die korrekte Schreibweise! <br />
+					Fehlerhafte Einstellungen k&ouml;nnen dazu f&uuml;hren, dass der Betrieb des Marktplatzes stark eingeschr&auml;nkt wird.
+				</p>
+                <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+                        <th>
+                            Beschreibung
+                        </th>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Seitenname
+                        </td>
+                        <td>
+                            <input gtbfieldid="13" name="set[SITE][SITENAME]" id="opt7" value="{SITE_SITENAME}" title="SITE/SITENAME" type="text" />&nbsp;
+                        </td>
+                        <td>
+                            Beschreibender Name Ihrer Webseite. z.B. <i><strong>&quot;Mein neuer und genialer Anzeigenmarkt&quot;</strong></i><br />Dieser Name wird als sichtbarer Titel auf allen Seite verwendet
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            URL zu der Webseite
+                        </td>
+                        <td>
+                            <input gtbfieldid="14" name="set[SITE][SITEURL]" id="opt8" value="{SITE_SITEURL}" title="SITE/SITEURL" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Adresse der Webseite inkl. dem Protokioll. z.B. <strong><b>&quot;http://www.example.com&quot;</b></strong>
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Base Url (Unterverzeichnis)
+                        </td>
+                        <td>
+                            <input gtbfieldid="14" name="set[SITE][BASE_URL]" id="opt8" value="{SITE_BASE_URL}" title="SITE/BASE_URL" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Wird die Seite in einem Unterverzeichnis betrieben, geben Sie dieses hier an z.B. <strong><b>&quot;/marktplatz/&quot;</b></strong>
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Absender Email
+                        </td>
+                        <td>
+                            <input gtbfieldid="26" name="set[SUPPORT][SP_EMAIL]" id="opt0" value="{SUPPORT_SP_EMAIL}" title="SUPPORT/SP_EMAIL" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Diese Emailadresse wird verwendet um mit den Kunden in Kontakt zu treten. z.B. <em><b>&quot;nobody@example.com&quot;</b></em>
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Standard-W&auml;hrung
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][CURRENCY]" id="opt7" value="{MARKTPLATZ_CURRENCY}" title="MARKTPLATZ/CURRENCY" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Global im Marktplatz verwendete W&auml;hrung
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Eingeschränkt sichtbare Anzeigen
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][AD_CONSTRAINTS]" value="0" type="hidden">
+                            <input type="checkbox" name="set[MARKTPLATZ][AD_CONSTRAINTS]" id="opt72" title="MARKTPLATZ/AD_CONSTRAINTS" value="1"{if MARKTPLATZ_AD_CONSTRAINTS} checked="checked"{endif}>&nbsp;
+                        </td>
+                        <td>
+                            Eingeschränkt sichtbare Anzeigen aktivieren/deaktivieren (z.B. B2B)
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Miet-Anzeigen
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][ENABLE_RENT]" value="0" type="hidden">
+                            <input type="checkbox" name="set[MARKTPLATZ][ENABLE_RENT]" id="opt76" title="MARKTPLATZ/AD_CONSTRAINTS" value="1"{if MARKTPLATZ_ENABLE_RENT} checked="checked"{endif}>&nbsp;
+                        </td>
+                        <td>
+                            Das Anbieten vermietbarer Anzeigen aktivieren/deaktivieren
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Anzeigen manuell freischalten
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][MODERATE_ADS]" value="0" type="hidden">
+                            <input type="checkbox" name="set[MARKTPLATZ][MODERATE_ADS]" id="opt73" title="MARKTPLATZ/MODERATE_ADS" value="1"{if MARKTPLATZ_MODERATE_ADS} checked="checked"{endif}>&nbsp;
+                        </td>
+                        <td>
+                            Ein Administrator muss Anzeigen freigeben bevor diese öffentlich sichtbar werden.
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Veranstaltungen manuell freischalten
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][MODERATE_EVENTS]" value="0" type="hidden">
+                            <input type="checkbox" name="set[MARKTPLATZ][MODERATE_EVENTS]" id="opt74" title="MARKTPLATZ/MODERATE_EVENTS" value="1"{if MARKTPLATZ_MODERATE_EVENTS} checked="checked"{endif}>&nbsp;
+                        </td>
+                        <td>
+                            Ein Administrator muss Veranstaltungen freigeben bevor diese öffentlich sichtbar werden.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Anbieter manuell freischalten
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][MODERATE_VENDORS]" value="0" type="hidden">
+                            <input type="checkbox" name="set[MARKTPLATZ][MODERATE_VENDORS]" id="opt75" title="MARKTPLATZ/MODERATE_VENDORS" value="1"{if MARKTPLATZ_MODERATE_VENDORS} checked="checked"{endif}>&nbsp;
+                        </td>
+                        <td>
+                            Ein Administrator muss Anbieter freigeben bevor diese öffentlich sichtbar werden.
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Kontaktdaten des Absenders anzeigen
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][CHAT_SHOW_CONTACT]" value="0" type="hidden">
+                            <input type="checkbox" name="set[MARKTPLATZ][CHAT_SHOW_CONTACT]" id="opt90" title="MARKTPLATZ/CHAT_SHOW_CONTACT" value="1"{if MARKTPLATZ_CHAT_SHOW_CONTACT} checked="checked"{endif}>&nbsp;
+                        </td>
+                        <td>
+                            Bei Nachrichten und Anfragen über den Marktplatz werden die Kontaktdaten des Absenders dargestellt.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Kontaktdaten bei unbestätigten Verkäufen ausblenden
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][HIDE_CONTACT_INFO]" value="0" type="hidden">
+                            <input type="checkbox" name="set[MARKTPLATZ][HIDE_CONTACT_INFO]" id="opt91" title="MARKTPLATZ/HIDE_CONTACT_INFO" value="1"{if MARKTPLATZ_HIDE_CONTACT_INFO} checked="checked"{endif}>&nbsp;
+                        </td>
+                        <td>
+                            Bei Verkäufen werden die Kontaktdaten der Käufers/Verkäufers ausgeblendet, solange der Verkauf nicht bestätigt wurde.
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:10px;">
+                <h2>Social-Media/Kontakt</h2>
+                <p>
+                  Bitte tragen Sie anbei ihre Social-Media und Kontaktinformationen ein.
+                </p>
+                <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+                        <th>
+                            Beschreibung
+                        </th>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Facebook
+                        </td>
+                        <td>
+                            <input gtbfieldid="13" name="set[SITE][CONTACT_FACEBOOK]" id="opt_s1" value="{SITE_CONTACT_FACEBOOK}" title="SITE/CONTACT_FACEBOOK" type="text" />&nbsp;
+                        </td>
+                        <td>
+                            URL ihrer Facebook-Seite z.B. https://www.facebook.com/example
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Google+
+                        </td>
+                        <td>
+                            <input gtbfieldid="13" name="set[SITE][CONTACT_GOOGLE]" id="opt_s2" value="{SITE_CONTACT_GOOGLE}" title="SITE/CONTACT_GOOGLE" type="text" />&nbsp;
+                        </td>
+                        <td>
+                            URL ihrer Google+ Seite z.B. https://www.facebook.com/ebizconsult
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Twitter
+                        </td>
+                        <td>
+                            <input gtbfieldid="13" name="set[SITE][CONTACT_TWITTER]" id="opt_s3" value="{SITE_CONTACT_TWITTER}" title="SITE/CONTACT_TWITTER" type="text" />&nbsp;
+                        </td>
+                        <td>
+                            URL ihrer Twitter-Seite z.B. https://www.facebook.com/ebizconsult
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Youtube
+                        </td>
+                        <td>
+                            <input gtbfieldid="13" name="set[SITE][CONTACT_YOUTUBE]" id="opt_s4" value="{SITE_CONTACT_YOUTUBE}" title="SITE/CONTACT_YOUTUBE" type="text" />&nbsp;
+                        </td>
+                        <td>
+                            URL ihres Youtube-Kanals z.B. https://www.youtube.com/user/example
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Telefonnummer
+                        </td>
+                        <td>
+                            <input gtbfieldid="14" name="set[SITE][CONTACT_PHONE]" id="opt_s5" value="{SITE_CONTACT_PHONE}" title="SITE/CONTACT_PHONE" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Ihre Telefonnummer für Kunden
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+</th>
+        </tr>
+        <tr>
+            <td style="padding:10px">
+            	<h2>Allgemeine Darstellung</h2><p>
+					Mit den folgenden Einstellungen ver&auml;ndern Sie das Verhalten der Marktplatz Software<br />
+					ma&szlig;geblich. Sie k&ouml;nnen jede Einstellung jederzeit gefahrlos umstellen. Es wird <br />
+					Ihnen jedoch dringend empfohlen nach jeder &Auml;nderung das Verhalten des Marktes zu<br />
+					pr&uuml;fen!
+				</p>
+                <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+                        <th>
+                            Beschreibung
+                        </th>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Erweitertes HTML erlauben
+                        </td>
+                        <input name="set[MARKTPLATZ][ALLOW_HTML]" value="0" type="hidden">
+                        <td>
+                            <input name="set[MARKTPLATZ][ALLOW_HTML]" style="border: medium none;" id="opt0" {if MARKTPLATZ_ALLOW_HTML}checked="checked"{endif} value="1" title="MARKTPLATZ/ALLOW_HTML" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            HTML-Design z.B. beim Import aus ebay erlauben?
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Artikelkauf
+                        </td>
+                        <input name="set[MARKTPLATZ][BUYING_ENABLED]" value="0" type="hidden">
+                        <td>
+                            <input name="set[MARKTPLATZ][BUYING_ENABLED]" style="border: medium none;" id="opt1" {if MARKTPLATZ_BUYING_ENABLED}checked="checked"{endif} value="1" title="MARKTPLATZ/BUYING_ENABLED" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Aktiviert oder Deaktiviert die Möglichkeit Artikel zu kaufen/verkaufen
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Kostenloses einstellen
+                        </td>
+                        <input name="set[MARKTPLATZ][FREE_ADS]" value="0" type="hidden">
+                        <td>
+                            <input name="set[MARKTPLATZ][FREE_ADS]" style="border: medium none;" id="opt2" value="1" {if MARKTPLATZ_FREE_ADS}checked{endif} title="MARKTPLATZ/FREE_ADS" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Aktiviert oder Deaktiviert das kostenlose einstellen von Anzeigen.
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Herstellerdatenbank aktivieren
+                        </td>
+                        <input name="set[MARKTPLATZ][USE_PRODUCT_DB]" value="0" type="hidden">
+                        <td>
+                            <input name="set[MARKTPLATZ][USE_PRODUCT_DB]" style="border: medium none;" id="opt3" value="1" title="MARKTPLATZ/USE_PRODUCT_DB" type="checkbox" {if MARKTPLATZ_USE_PRODUCT_DB}checked{endif}>&nbsp;
+                        </td>
+                        <td>
+                            Hersteller- und Produktdatenbank beim Einstellen von neuen Anzeigen aktivieren.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            EAN Nummernsuche aktivieren
+                        </td>
+                        <input name="set[MARKTPLATZ][USE_ARTICLE_EAN]" value="0" type="hidden">
+                        <td>
+                            <input name="set[MARKTPLATZ][USE_ARTICLE_EAN]" style="border: medium none;" id="opt3b" value="1" title="MARKTPLATZ/USE_ARTICLE_EAN" type="checkbox" {if MARKTPLATZ_USE_ARTICLE_EAN}checked{endif}>&nbsp;
+                        </td>
+                        <td>
+                            Eingabefeld für EAN-Nummer innerhalb der Suchmaske anzeigen
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Kostenlose Bilder 
+                        </td>
+                        <td>
+                            <input gtbfieldid="27" name="set[MARKTPLATZ][FREE_IMAGES]" value="{MARKTPLATZ_FREE_IMAGES}" id="opt5"  title="MARKTPLATZ/FREE_IMAGES" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Legt die Anzahl der kostenlosen Bilder für eine Anzeige fest.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Kostenlose Uploads
+                        </td>
+                        <td>
+                            <input gtbfieldid="28" name="set[MARKTPLATZ][FREE_UPLOADS]" id="opt6" value="{MARKTPLATZ_FREE_UPLOADS}" title="MARKTPLATZ/FREE_UPLOADS" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Verwendbare Uploads in einer Anzeige
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Kostenlose Videos
+                        </td>
+                        <td>
+                            <input gtbfieldid="28" name="set[MARKTPLATZ][FREE_VIDEOS]" id="opt6_2" value="{MARKTPLATZ_FREE_VIDEOS}" title="MARKTPLATZ/FREE_VIDEOS" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Verwendbare Videos in einer Anzeige
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Erlaubte Dateitypen
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][UPLOAD_TYPES]" id="opt7" value="{MARKTPLATZ_UPLOAD_TYPES}" title="MARKTPLATZ/UPLOAD_TYPES" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Erlaubte File Typen (Kommagetrennt)
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Neue Anzeigen
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][DAYS_ADS_NEW]" id="opt7" value="{MARKTPLATZ_DAYS_ADS_NEW}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Dauer in Tagen die ein Artikel als "Neu" angezeigt wird.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Neue Anzeigen auf der Startseite
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][INDEX_NEWADS]" id="opt7" value="{MARKTPLATZ_INDEX_NEWADS}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Anzahl der neuen Anzeigen auf der Startseite
+                        </td>
+                    </tr>
+					<tr class="zeile1">
+                        <td>
+                            Neue TOP Anzeigen auf der Startseite
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][INDEX_TOPADS]" id="opt7" value="{MARKTPLATZ_INDEX_TOPADS}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Anzahl der neuen Topanzeigen auf der Startseite
+                        </td>
+                    </tr>
+					<tr class="zeile0">
+                        <td>
+                            Erweiterete TOP Anzeigen
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][EXTENDED_TOP_ADS]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][EXTENDED_TOP_ADS]" value="1" title="MARKTPLATZ/EXTENDED_TOP_ADS" type="checkbox" {if MARKTPLATZ_EXTENDED_TOP_ADS}checked{endif}>&nbsp;
+                        </td>
+                        <td>
+                            Erweiterte Einstellungen bei Top-Anzeigen aktivieren.
+                        </td>
+                    </tr>
+                    
+					<tr class="zeile1">
+                        <td>
+                            Cross selling Produkte
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][INDEX_CROSSSEL]" id="opt7" value="{MARKTPLATZ_INDEX_CROSSSEL}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Anzahl der cross selling produkte unterhalb eines Artikels
+                        </td>
+                    </tr>
+                                        
+					<tr class="zeile0">
+                        <td>
+                            Neue User auf der Startseite
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][INDEX_NEW_USERS]" id="opt77" value="{MARKTPLATZ_INDEX_NEW_USERS}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Anzahl der neuen Benutzer (Willkommen) auf der Startseite
+                        </td>
+                    </tr>
+					<tr class="zeile1">
+                        <td>
+                            Anzahl der Listeneinträge im Shopverzeichnis
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][INDEX_SHOPVIEWS]" id="opt77" value="{MARKTPLATZ_INDEX_SHOPVIEWS}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Anzahl der Einträge im Shopverzeichnis
+                        </td>
+                    </tr>                    
+					<tr class="zeile0">
+						<td>
+							Anonymer Artikelkauf
+						</td>
+						<input name="set[MARKTPLATZ][BUYING_UNREGISTERED]" value="0" type="hidden">
+						<td>
+							<input name="set[MARKTPLATZ][BUYING_UNREGISTERED]" style="border: medium none;" id="opt1" {if MARKTPLATZ_BUYING_UNREGISTERED}checked="checked"{endif} value="1" title="MARKTPLATZ/BUYING_UNREGISTERED" type="checkbox">&nbsp;
+						</td>
+						<td>
+							Erlaubt es nicht registrierten Besuchern Artikel auf dem Marktplatz zu kaufen
+						</td>
+					</tr>
+                    <tr class="zeile1">
+                        <td>
+                            Umrechnung in andere Währung anzeigen
+                        </td>
+                        <input name="set[MARKTPLATZ][CURRENCY_CONVERSION]" value="0" type="hidden">
+                        <td>
+                            <input name="set[MARKTPLATZ][CURRENCY_CONVERSION]" style="border: medium none;" {if MARKTPLATZ_CURRENCY_CONVERSION}checked="checked"{endif} value="1" title="MARKTPLATZ/CURRENCY_CONVERSION" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Stellt unter dem Artikelpreis die Umwandlung des Preis in andere Währungen dar.
+                        </td>
+                    </tr>
+                </table>
+                
+                            	
+					<h2>Handeln </h2><p> hier können Sie die Handelsfunktionen einstellen
+				</p>
+                <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+        <th>
+            Beschreibung
+        </th>
+    </tr>               
+    <tr class="zeile0">
+        <td>
+        	Anz. Gegenvorschlägen beim Handeln
+        </td>
+        <td>
+            <input gtbfieldid="29" name="set[MARKTPLATZ][TRADE_BID_COUNT]" id="opt77" value="{MARKTPLATZ_TRADE_BID_COUNT}" title="" type="text">&nbsp;
+        </td>
+        <td>
+       		Maximale Anzahl an Gegengeboten für einen Handelsvorgang
+        </td>                        
+    </tr>
+    <tr class="zeile1">
+        <td>
+        	Anz. Preisvorschläge beim Handeln
+        </td>
+        <td>
+            <input gtbfieldid="29" name="set[MARKTPLATZ][TRADE_BID_USER_COUNT]" id="opt77" value="{MARKTPLATZ_TRADE_BID_USER_COUNT}" title="" type="text">&nbsp;
+        </td>
+        <td>
+            Maximale Anzahl an eigenen Preisvorschlägen für einen Handelsvorgang.
+        </td>
+    </tr>
+    <tr class="zeile0">
+        <td>
+        	Gültigkeitsdauer von Preisvorschlägen
+        </td>
+        <td>
+            <input gtbfieldid="29" name="set[MARKTPLATZ][TRADE_MAX_HOURS]" id="opt77" value="{MARKTPLATZ_TRADE_MAX_HOURS}" title="" type="text">&nbsp;
+        </td>
+        <td>
+            Gibt an wie viele Stunden Angebote zu Artikeln/Gesuchen gültig sind.
+        </td>
+    </tr>
+    
+     <tr class="zeile1">
+        <td>
+            Usernachrichten
+        </td>
+        <input name="set[MARKTPLATZ][CHAT_AUTO_APPROVE]" value="0" type="hidden">
+        <td>
+            <input name="set[MARKTPLATZ][CHAT_AUTO_APPROVE]" style="border: medium none;" id="opt434" {if MARKTPLATZ_CHAT_AUTO_APPROVE}checked="checked"{endif} value="1" title="MARKTPLATZ/CHAT_AUTO_APPROVE" type="checkbox">&nbsp;
+        </td>
+        <td>
+            Automatische Bestätigung von Nachrichten die zwischen Käufer und Anbeiter.
+        </td>
+    </tr>
+                    
+    
+</table>
+
+                         	
+					<h2>Buchhaltung </h2><p>Einstellungen zur Buchhaltung
+				</p>
+                
+                                               <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+        <th>
+            Beschreibung
+        </th>
+    </tr>
+                        <tr class="zeile0">
+                        <td>
+                        	Tage bis Zahlungsziel
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][INVOICE_DAYS_REMIND]" id="opt772" value="{MARKTPLATZ_INVOICE_DAYS_REMIND}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Zahlungsziel x Tage nach Rechnungsstellung.
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Tage bis zur ersten Mahnung
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][INVOICE_DAYS_DUNNING_LEVEL_1]" id="opt771" value="{MARKTPLATZ_INVOICE_DAYS_DUNNING_LEVEL_1}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Tage nach Fälligkeit, an dem die erste Mahnung versendet wird.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Tage bis zur zweiten Mahnung
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][INVOICE_DAYS_DUNNING_LEVEL_2]" id="opt771" value="{MARKTPLATZ_INVOICE_DAYS_DUNNING_LEVEL_2}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Tage nach Fälligkeit, an dem die zweite Mahnung versendet wird.
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Tage bis zur dritten Mahnung
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][INVOICE_DAYS_DUNNING_LEVEL_3]" id="opt771" value="{MARKTPLATZ_INVOICE_DAYS_DUNNING_LEVEL_3}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Tage nach Fälligkeit, an dem die dritte Mahnung versendet wird.
+                        </td>
+                    </tr>
+                    
+                     <tr class="zeile0">
+                        <td>
+                            Rechnungslauf
+                        </td>
+                        <td>
+                        	<input name="set[MARKTPLATZ][INVOICE_DAYS_AUTOMATIC_BILLING]" type="text" id="opt13" value="{MARKTPLATZ_INVOICE_DAYS_AUTOMATIC_BILLING}" title="MARKTPLATZ/INVOICE_DAYS_AUTOMATIC_BILLING">
+                        </td>
+                        <td>
+                            Tage im Monat an denen der automatische Rechnungslauf ausgeführt werden soll
+                        </td>
+                    </tr>
+
+                   <tr class="zeile1">
+                       <td>
+                           Verkaufsprovision
+                       </td>
+                       <input name="set[MARKTPLATZ][USE_PROV]" value="0" type="hidden">
+                       <td>
+                           <input name="set[MARKTPLATZ][USE_PROV]" style="border: medium none;" id="opt435" {if MARKTPLATZ_USE_PROV}checked="checked"{endif} value="1" title="MARKTPLATZ/USE_PROV" type="checkbox">&nbsp;
+                       </td>
+                       <td>
+                           Berechnung von Verkaufsprovision aktivieren.
+                       </td>
+                   </tr>
+
+                   <tr class="zeile0">
+                       <td>
+                           Rechnungen als PDF per E-Mail verschicken
+                       </td>
+                       <input name="set[MARKTPLATZ][INVOICE_MAIL_PDF]" value="0" type="hidden">
+                       <td>
+                           <input name="set[MARKTPLATZ][INVOICE_MAIL_PDF]" style="border: medium none;" id="opt436" {if MARKTPLATZ_INVOICE_MAIL_PDF}checked="checked"{endif} value="1" title="MARKTPLATZ/INVOICE_MAIL_PDF" type="checkbox">&nbsp;
+                       </td>
+                       <td>
+                           Erhält ein Benutzer eine neue Rechnung wird diese automatisch an die Benachrichtigungs-Email angehängt.
+                       </td>
+                   </tr>
+
+                   <tr class="zeile1">
+                       <td>
+                           Rechnungen als PDF abspeichern
+                       </td>
+                       <input name="set[MARKTPLATZ][INVOICE_SAVE_PDF]" value="0" type="hidden">
+                       <td>
+                           <input name="set[MARKTPLATZ][INVOICE_SAVE_PDF]" style="border: medium none;" id="opt437" {if MARKTPLATZ_INVOICE_SAVE_PDF}checked="checked"{endif} value="1" title="MARKTPLATZ/INVOICE_SAVE_PDF" type="checkbox">&nbsp;
+                       </td>
+                       <td>
+                           Neue Rechnungen werden automatisch als PDF-Datei gespeichert.
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           Lastschrift Verifizierung
+                       </td>
+                       <input name="set[MARKTPLATZ][LASTSCHRIFT_VERIFICATION]" value="0"
+                              type="hidden" />
+                       <td>
+                           <input name="set[MARKTPLATZ][LASTSCHRIFT_VERIFICATION]" style="border: medium none;" id="opt438"
+                                  {if MARKTPLATZ_LASTSCHRIFT_VERIFICATION} checked {endif} value="1"
+                                  title="MARKTPLATZ/LASTSCHRIFT_VERIFICATION" type="checkbox">&nbsp;
+                       </td>
+                       <td>
+                           Gültigkeit von Konten überprüfen, bevor diese für die Zahlung per Lastschrift zugelassen werden
+                       </td>
+                   </tr>
+    </table>
+    
+    	
+					<h2>Gesuche </h2><p> Einstellungen zu den <a href="index.php?page=ad_request">Gesuchen</a>
+				</p>
+                
+                                               <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+        <th>
+            Beschreibung
+        </th>
+    </tr>
+    
+     <tr class="zeile0">
+                        <td>
+                        	Anzeigendauer
+                        </td>
+                        <td>
+                            <input gtbfieldid="29" name="set[MARKTPLATZ][REQUEST_RUNTIME_DAYS]" id="opt771" value="{MARKTPLATZ_REQUEST_RUNTIME_DAYS}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Dauer in Tagen, die ein Gesuch aktiv ist.
+                        </td>
+                    </tr>
+                    
+      <tr class="zeile1">
+                        <td>
+                            Aktivierung
+                        </td>
+                        <input name="set[MARKTPLATZ][REQUEST_AUTO_APPROVE]" value="0" type="hidden">
+                        <td>
+                            <input name="set[MARKTPLATZ][REQUEST_AUTO_APPROVE]" style="border: medium none;" id="opt4" {if MARKTPLATZ_REQUEST_AUTO_APPROVE}checked="checked"{endif} value="1" title="MARKTPLATZ/REQUEST_AUTO_APPROVE" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Sollen Gesuche automatisch aktiviert werden. 
+                        </td>
+                    </tr>
+                    
+    
+    </table>
+    
+    
+    <h2>Jobs </h2><p> Einstellungen zu den <a href="index.php?page=page=modul_news_adv_jobliste">Jobs</a>
+				</p>
+                
+                                               <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+        <th>
+            Beschreibung
+        </th>
+    </tr>
+         <tr class="zeile0">
+                        <td>
+                        	Anzeigendauer
+                        </td>
+                        <td>
+                            <input name="set[jobs][runtime]"  value="{jobs_runtime}" title="" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Dauer in Tagen, die ein Stellenangebot aktiv ist.
+                        </td>
+                    </tr>
+         <tr class="zeile1">
+                        <td>
+                        	Sind Stellenangebot kostenlos
+                        </td>
+                        <td><input name="set[MARKTPLATZ][FREE_JOBS]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][FREE_JOBS]" style="border: medium none;" {if MARKTPLATZ_FREE_JOBS} checked="checked" {endif} value="1" title="MARKTPLATZ/MARKTPLATZ_FREE_JOBS" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Aktiviert oder Deaktiviert das kostenlose einstellen von Anzeigen.
+                        </td>
+                    </tr>                    
+    </table>
+    
+    
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:10px;">
+                <h2>Einstellungen f&uuml;r die Kommentare</h2>
+                <p>
+                    Einstellungen zu den <a href="index.php?page=page=comments">Kommentaren</a>
+                </p>
+                <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+                        <th>
+                            Beschreibung
+                        </th>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Bewertungen erlauben
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][ALLOW_COMMENTS_RATED]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][ALLOW_COMMENTS_RATED]" {if MARKTPLATZ_ALLOW_COMMENTS_RATED} checked="checked" {endif} value="1" title="MARKTPLATZ/ALLOW_COMMENTS_RATED" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Erlaubt es Benutzern mit ihrem Kommentar gleichzeitig eine Bewertung abzugeben.
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Bewertungen in allen Bereichen
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][GLOBAL_RATINGS]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][GLOBAL_RATINGS]" {if MARKTPLATZ_GLOBAL_RATINGS} checked="checked" {endif} value="1" title="MARKTPLATZ/GLOBAL_RATINGS" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Wenn diese Option aktiv ist können für alle Bereiche, in denen Kommentare möglich sind,
+                            Bewertungen abgegeben werden. Ist diese Option deaktiviert ist es nur im Marktplatz-Bereich
+                            möglich Bewertungen abzugeben.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Bewertung durch Gäste
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][ANONYMOUS_RATINGS]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][ANONYMOUS_RATINGS]" {if MARKTPLATZ_ANONYMOUS_RATINGS} checked="checked" {endif} value="1" title="MARKTPLATZ/ANONYMOUS_RATINGS" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Nicht registrierte Benutzer dürfen bei ihren Kommentaren eine Bewertung abgeben
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Kommentare müssen bestätigt werden
+                        </td>
+                        <td>
+                            <input name="set[SITE][COMMENT_CONFIRM]" value="0" type="hidden">
+                            <input name="set[SITE][COMMENT_CONFIRM]" {if SITE_COMMENT_CONFIRM} checked="checked" {endif} value="1" title="SITE/COMMENT_CONFIRM" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Wenn diese Option aktiv ist müssen Benutzer erhaltene Kommentare bestätigen bevor diese Sichtbar werden.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Bei Anzeigen erlauben
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][ALLOW_COMMENTS_AD]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][ALLOW_COMMENTS_AD]" {if MARKTPLATZ_ALLOW_COMMENTS_AD} checked="checked" {endif} value="1" title="MARKTPLATZ/ALLOW_COMMENTS_AD" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Kommentare zu Anzeigen erlauben
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Bei Gruppen erlauben
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][ALLOW_COMMENTS_CLUB]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][ALLOW_COMMENTS_CLUB]" {if MARKTPLATZ_ALLOW_COMMENTS_CLUB} checked="checked" {endif} value="1" title="MARKTPLATZ/ALLOW_COMMENTS_CLUB" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Kommentare zu Gruppen erlauben
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Bei Anbieter erlauben
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][ALLOW_COMMENTS_VENDOR]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][ALLOW_COMMENTS_VENDOR]" {if MARKTPLATZ_ALLOW_COMMENTS_VENDOR} checked="checked" {endif} value="1" title="MARKTPLATZ/ALLOW_COMMENTS_VENDOR" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Kommentare zu Anbietern erlauben
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Bei Veranstaltungen erlauben
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][ALLOW_COMMENTS_EVENT]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][ALLOW_COMMENTS_EVENT]" {if MARKTPLATZ_ALLOW_COMMENTS_EVENT} checked="checked" {endif} value="1" title="MARKTPLATZ/ALLOW_COMMENTS_EVENT" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Kommentare zu Veranstaltungen erlauben
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:10px;">
+                <h2><img src="gfx/pin.png" title="google"> Einstellungen f&uuml;r die Google Map</h2>
+                <p>Hier können Sie einstellen, ob die Google Map bei den Listenansichten von <br>Anzeigen/Anbieter/Veranstaltungen angezeigt werden sollen.</p>
+                <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+                        <th>
+                            Beschreibung
+                        </th>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Google Maps API-Key (Server-Schlüssel)
+                        </td>
+                        <td>
+                            <input name="set[SYS][MAP_API]" value="{SYS_MAP_API}" />
+                        </td>
+                        <td>
+                            Ein Google API-Key für diesen Marktplatz. Gehen Sie auf
+                            <a href="https://console.developers.google.com/apis/credentials">
+                                https://console.developers.google.com/apis/credentials
+                            </a>
+                            und erstellen Sie einen API-Schlüssel ("Server-Schlüssel").
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Google Maps API-Key (Javascript-Schlüssel)
+                        </td>
+                        <td>
+                            <input name="set[SYS][MAP_API_JS]" value="{SYS_MAP_API_JS}" />
+                        </td>
+                        <td>
+                            Ein Google API-Key für diesen Marktplatz. Gehen Sie auf
+                            <a href="https://console.developers.google.com/apis/credentials">
+                                https://console.developers.google.com/apis/credentials
+                            </a>
+                            und erstellen Sie einen API-Schlüssel ("Javascript-Schlüssel").
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Google Map aktivieren
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][SHOW_MAP_ALL]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][SHOW_MAP_ALL]" {if MARKTPLATZ_SHOW_MAP_ALL} checked="checked" {endif} value="1" title="MARKTPLATZ/SHOW_MAP_ALL" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Wenn diese Option aktiv ist, dann wird die Google Map angezeigt. Wird diese Option nicht aktiviert, dann werden alle Einstellungen zu der Google Map ignoriert.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Bei Anbieter aktivieren
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][SHOW_MAP_VENDOR]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][SHOW_MAP_VENDOR]" {if MARKTPLATZ_SHOW_MAP_VENDOR} checked="checked" {endif} value="1" title="MARKTPLATZ/SHOW_MAP_VENDOR" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Map bei den Anbietern darstellen. Die Map wird bei der Listendarstellung und der Umkreissuche angezeigt.
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Nur bei der Suche anzeigen
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][SHOW_MAP_SEARCH_VENDOR]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][SHOW_MAP_SEARCH_VENDOR]" {if MARKTPLATZ_SHOW_MAP_SEARCH_VENDOR} checked="checked" {endif} value="1" title="MARKTPLATZ/SHOW_MAP_SEARCH_VENDOR" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Wenn diese Option aktiviert wird, dann wird die Google Map nur in der Suche angezeigt. Wenn Sie wollen, dass die Map bei der Suche und bei der Listendarstellung angezeigt werden soll, dann deaktivieren Sie diese Option.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Bei Veranstaltungen aktivieren
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][SHOW_MAP_EVENT]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][SHOW_MAP_EVENT]" {if MARKTPLATZ_SHOW_MAP_EVENT} checked="checked" {endif} value="1" title="MARKTPLATZ/SHOW_MAP_EVENT" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Map bei den Veranstaltungen darstellen. Die Map wird bei der Listendarstellung und der Umkreissuche angezeigt.
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Nur bei der Suche anzeigen
+                        </td>
+                        <td>
+                            <input name="set[MARKTPLATZ][SHOW_MAP_SEARCH_EVENT]" value="0" type="hidden">
+                            <input name="set[MARKTPLATZ][SHOW_MAP_SEARCH_EVENT]" {if MARKTPLATZ_SHOW_MAP_SEARCH_EVENT} checked="checked" {endif} value="1" title="MARKTPLATZ/SHOW_MAP_SEARCH_EVENT" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Wenn diese Option aktiviert wird, dann wird die Google Map nur in der Suche angezeigt. Wenn Sie wollen, dass die Map bei der Suche und bei der Listendarstellung angezeigt werden soll, dann deaktivieren Sie diese Option.
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Maximale Zoom-Stufe für die Kartendarstellung
+                        </td>
+                        <td>
+                            <input name="set[SYS][MAP_ZOOM_MAX]" value="{SYS_MAP_ZOOM_MAX}" />
+                        </td>
+                        <td>
+                            Die Maximale Zoom-Stufe für die Kartendarstellung. Je größer der Wert, desto näher ist die Karte herangezoomt. (1-20)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+		<tr>
+			<td style="padding:10px;">
+				<h2>Social Media Login</h2>
+				<table class="liste" cellspacing="0" width="100%">
+					<tr>
+						<th width="250">
+							Einstellung
+						</th>
+						<th width="150">
+							Wert
+						</th>
+						<th>
+							Beschreibung
+						</th>
+					</tr>
+					<tr class="zeile1">
+						<td>
+							Social Media Login aktivieren
+						</td>
+						<td>
+							<input name="set[SITE][SOCIALMEDIA_LOGIN]" value="0" type="hidden">
+							<input name="set[SITE][SOCIALMEDIA_LOGIN]" {if SITE_SOCIALMEDIA_LOGIN} checked="checked" {endif} value="1" title="SITE/SOCIALMEDIA_LOGIN" type="checkbox">&nbsp;
+						</td>
+						<td>
+							Möchten Sie den Social Media Login auf dem Marktplatz aktivieren
+						</td>
+					</tr>
+					<tr class="zeile0">
+						<td>
+							Konfiguration
+						</td>
+						<td colspan="2">
+							<p>Hier können Sie die Social Media Anbieter konfigurieren, die Sie zum Login anbieten möchten. </p>
+							<p><b>Es kann notwendig sein, dass Sie die Login Images unter /sys/hybridauth/images/ ablegen. Achtung</b></p>
+							<p>
+								<a href="{uri_baseurl(/sys/hybridauth/install.php)}" target="_blank">Social Media Login Einstellungen</a>
+							</p>
+						</td>
+					</tr>
+				</table>
+
+
+			</td>
+		</tr>
+        <tr>
+            <td style="padding:10px;">
+                <h2><img src="gfx/ebay.png" title="google"> Einstellungen zum ebay-Import</h2>
+                <p>
+                    Eine Anleitung für das Einrichten des eBay-Imports finden Sie
+                    <a style="font-weight: bold;" href="http://wiki.ebiz-trader.de/wiki/Import#Einrichten_von_eBay-Accounts_als_Quelle">in diesem Wiki-Artikel</a>.
+                </p>
+                <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+                        <th>
+                            Beschreibung
+                        </th>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            DEVID
+                        </td>
+                        <td>
+                            <input gtbfieldid="52" name="set[SYS][EBAY_DEV_ID]" id="SYS_EBAY_DEV_ID" value="{SYS_EBAY_DEV_ID}" title="NETWORKS/EBAY_DEV_ID" type="text">&nbsp;
+                        </td>
+                        <td>
+                            DEVID ihres eBay Application Key-Sets
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            AppID
+                        </td>
+                        <td>
+                            <input gtbfieldid="52" name="set[SYS][EBAY_APP_ID]" id="SYS_EBAY_APP_ID" value="{SYS_EBAY_APP_ID}" title="NETWORKS/EBAY_APP_ID" type="text">&nbsp;
+                        </td>
+                        <td>
+                            AppID ihres eBay Application Key-Sets
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            CertID
+                        </td>
+                        <td>
+                            <input gtbfieldid="52" name="set[SYS][EBAY_CERT_ID]" id="SYS_EBAY_CERT_ID" value="{SYS_EBAY_CERT_ID}" title="NETWORKS/EBAY_CERT_ID" type="text">&nbsp;
+                        </td>
+                        <td>
+                            CertID ihres eBay Application Key-Sets
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            RuName
+                        </td>
+                        <td>
+                            <input gtbfieldid="52" name="set[SYS][EBAY_RU_NAME]" id="SYS_EBAY_RU_NAME" value="{SYS_EBAY_RU_NAME}" title="NETWORKS/EBAY_RU_NAME" type="text">&nbsp;
+                        </td>
+                        <td>
+                            RuName ihrer eBay Application
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Sandbox-Modus
+                        </td>
+                        <td>
+                            <input name="set[SYS][EBAY_SANDBOX]" value="0" type="hidden">
+                            <input name="set[SYS][EBAY_SANDBOX]" {if SYS_EBAY_SANDBOX} checked="checked" {endif} value="1" title="SYS/EBAY_SANDBOX" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Aktiviert den Sandbox-Modus des eBay-Imports
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:10px;">
+                <h2><img src="gfx/facebook.png" alt="besuchen Sie uns auf Facebook" width="30" height="30"> Einstellungen zur Facebook-App</h2>
+                <p>
+                    Eine Anleitung für das einrichten einer Facebook-App finden Sie
+                    <a style="font-weight: bold;" href="http://www.ebiz-trader.de/faq/facebook_app.htm">in dem Tutorial</a> auf ebiz-trader.de.
+                </p>
+                <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+                        <th>
+                            Beschreibung
+                        </th>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Anwendungsnummer
+                        </td>
+                        <td>
+                            <input gtbfieldid="52" name="set[NETWORKS][FACEBOOK_APP_ID]" id="NETWORKS_FACEBOOK_APP_ID" value="{NETWORKS_FACEBOOK_APP_ID}" title="NETWORKS/FACEBOOK_APP_ID" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Anwendungsnummer ihrer Facebook-App
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Anwendungs-Geheimcode
+                        </td>
+                        <td>
+                            <input gtbfieldid="52" name="set[NETWORKS][FACEBOOK_APP_SECRET]" id="NETWORKS_FACEBOOK_APP_SECRET" value="{NETWORKS_FACEBOOK_APP_SECRET}" title="NETWORKS/FACEBOOK_APP_SECRET" type="text">
+                        </td>
+                        <td>
+                            Anwendungs-Geheimcode ihrer Facebook-App
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:10px;">
+                <h2>
+                    <img src="gfx/tw_small.png" title="Twitter" />
+                    Einstellungen f&uuml;r Twitter
+                </h2>
+            	<p>
+					Die folgenden Einstellungen beziehen sich auf die Dienstleister <br />
+					<a href="http://www.twitter.com" target="_blank">Twitter</a> und <br />
+					<a href="http://bit.ly" target="_blank">Bit.ly</a>. Um diese Dienste<br />
+					nutzen zu k&ouml;nnen, m&uuml;ssen Sie sich dort registrieren.<br />
+				</p>
+                               <table class="liste" cellspacing="0" width="100%">
+                    <tr>
+                        <th width="250">
+                            Einstellung
+                        </th>
+                        <th width="150">
+                            Wert
+                        </th>
+                        <th>
+                            Beschreibung
+                        </th>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Twitter aktivieren
+                        </td>
+                        <input name="set[NETWORKS][TWITTER_AKTIV]" value="0" type="hidden">
+                        <td>
+                            <input name="set[NETWORKS][TWITTER_AKTIV]" style="border: medium none;" id="opt1" {if NETWORKS_TWITTER_AKTIV}checked="checked"{endif} value="1" title="NETWORKS/TWITTER_AKTIV" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            Neue Anzeigen bei Twitter posten aktivieren
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Twitter Consumer Key
+                        </td>
+                        <td>
+                            <input gtbfieldid="52" name="set[NETWORKS][TWITTER_CONSUMER_KEY]" id="opt2" value="{NETWORKS_TWITTER_CONSUMER_KEY}" title="NETWORKS/TWITTER_CONSUMER_KEY" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Twitter Mitgliedsschlüssel
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Twitter comsumer secret
+                        </td>
+                        <td>
+                            <input gtbfieldid="53" name="set[NETWORKS][TWITTER_CONSUMER_SECRET]" id="opt3" value="{NETWORKS_TWITTER_CONSUMER_SECRET}" title="NETWORKS/TWITTER_CONSUMER_SECRET" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Secret zum Twitter Schlüssel
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Twitter User Token
+                        </td>
+                        <td>
+                            <input gtbfieldid="54" name="set[NETWORKS][TWITTER_USER_TOKEN]" id="opt4" value="{NETWORKS_TWITTER_USER_TOKEN}" title="NETWORKS/TWITTER_USER_TOKEN" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Twitter Token
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Twitter User Secret
+                        </td>
+                        <td>
+                            <input gtbfieldid="55" name="set[NETWORKS][TWITTER_USER_SECRET]" id="opt5" value="{NETWORKS_TWITTER_USER_SECRET}" title="NETWORKS/TWITTER_USER_SECRET" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Twitter User Secret
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Bit.ly aktivieren
+                        </td>
+                        <input name="set[NETWORKS][TWITTER_USE_BITLY]" value="0" type="hidden">
+                        <td>
+                            <input name="set[NETWORKS][TWITTER_USE_BITLY]" style="border: medium none;" id="opt6" {if NETWORKS_TWITTER_USE_BITLY}checked="checked"{endif} value="1" title="NETWORKS/TWITTER_USE_BITLY" type="checkbox">&nbsp;
+                        </td>
+                        <td>
+                            <a href="http://bit.ly" target="_blank">Bit.ly</a> Service nutzen
+                        </td>
+                    </tr>
+                    <tr class="zeile1">
+                        <td>
+                            Bit.ly Login
+                        </td>
+                        <td>
+                            <input gtbfieldid="56" name="set[NETWORKS][TWITTER_BITLY_LOGIN]" id="opt7" value="{NETWORKS_TWITTER_BITLY_LOGIN}" title="NETWORKS/TWITTER_BITLY_LOGIN" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Bit.ly Login
+                        </td>
+                    </tr>
+                    <tr class="zeile0">
+                        <td>
+                            Bit.ly Secret
+                        </td>
+                        <td>
+                            <input gtbfieldid="57" name="set[NETWORKS][TWITTER_BITLY_SECRET]" id="opt8" value="{NETWORKS_TWITTER_BITLY_SECRET}" title="NETWORKS/TWITTER_BITLY_SECRET" type="text">&nbsp;
+                        </td>
+                        <td>
+                            Bit.ly Secret
+                        </td>
+                    </tr>
+                    <tr class="footer">
+                    </tr>
+                </table>
+            </td>
+        </tr>
+		<tr class="footer">
+			<td align="right">
+				<input type="submit" value="Speichern" class="button" />
+			</td>
+		</tr>
+    </table>
+</form>

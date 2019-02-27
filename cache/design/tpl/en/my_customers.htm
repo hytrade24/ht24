@@ -1,0 +1,105 @@
+{subtpl(tpl/{SYS_TPL_LANG}/lib-bootstrap-datepicker.htm)}
+<script type="application/javascript">
+
+    function showBuyerInformation(userId) {
+        ShowDialog("index.php?page=uprofil&SELLER_ID=" + userId + "&frame=ajax", "Käuferinformation");
+    }
+
+    function searchBuyer( userName ) {
+
+        var location = window.location;
+        var url = location.protocol + "//" + location.host + "/" + location.pathname.split("/")[1] + "my-pages/my-marktplatz-verkaeufe.htm";
+        url += "?doExport=&ID_AD_ORDER=&NAMEBUYER="+userName+"&STAMP_CREATE_FROM=&STAMP_CREATE_TO=&SEARCH_ORDER_CONFIRMATION_STATUS=-1&SEARCH_ORDER_PAYMENT_STATUS=-1&SEARCH_ORDER_SHIPPING_STATUS=-1&SHIPPING_PROVIDER=";
+
+        window.location = url;
+    }
+
+    jQuery(document).ready(function() {
+        // Initialize datepickers
+        var stampFrom = jQuery("#STAMP_CREATE_FROM");
+        var stampTo = jQuery("#STAMP_CREATE_TO");
+        jQuery(".userSearchForm").datepicker({
+          clearBtn: true,
+          keepEmptyValues: true,
+          format: 'dd.mm.yyyy',
+          inputs: [ stampFrom, stampTo ]
+        });
+    });
+
+</script>
+
+<h1>My customers</h1>
+
+<form class="userSearchForm" method="get" action="{uri_action(my_customers)}">
+    <div class="design-content-box">
+        <h4><strong>Search customers</strong></h4>
+
+        <div class="design-row design-row-xs-4">
+            <div class="design-row-item">
+                <div class="form-group">
+                    <label class="control-label">Date from</label>
+                    <input type="text" value="{if STAMP_CREATE_FROM}{STAMP_CREATE_FROM}{endif}" placeholder="Date from"
+                           class="form-control" id="STAMP_CREATE_FROM" name="STAMP_CREATE_FROM" />
+                </div>
+            </div>
+            <div class="design-row-item">
+                <div class="form-group">
+                    <label class="control-label">Date to</label>
+                    <input type="text" value="{if STAMP_CREATE_TO}{STAMP_CREATE_TO}{endif}" placeholder="Date until"
+                           class="form-control" id="STAMP_CREATE_TO" name="STAMP_CREATE_TO" />
+                </div>
+            </div>
+            <div class="design-row-item">
+                <div class="form-group">
+                    <label for="TOTAL_PAYMENT" class="control-label">Payment greater than</label>
+                    <input type="text" value="{if TOTAL_PAYMENT}{TOTAL_PAYMENT}{endif}" placeholder="50" class="form-control" id="TOTAL_PAYMENT" name="TOTAL_PAYMENT" />
+                </div>
+            </div>
+            <div class="design-row-item">
+                <div class="form-group">
+                    <label for="SEARCH_ORDER_SHIPPING_STATUS" class="control-label">Shipping status</label>
+                    <select name="SEARCH_ORDER_SHIPPING_STATUS" id="SEARCH_ORDER_SHIPPING_STATUS" class="form-control">
+                        <option value="-1">-- all --</option>
+                        <option value="0" {if SEARCH_ORDER_SHIPPING_STATUS == 0}selected="selected"{endif}>open</option>
+                        <option value="1" {if SEARCH_ORDER_SHIPPING_STATUS == 1}selected="selected"{endif}>in progress</option>
+                        <option value="2" {if SEARCH_ORDER_SHIPPING_STATUS == 2}selected="selected"{endif}>sent</option>
+                    </select>
+                </div>
+            </div>
+            <div class="design-row-item pull-right">
+                <div class="form-group design-form-group-search">
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<div class="marketplaceVendorCustomers">
+    <table class="table table-bordered table-stripped table-condensed userList">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Customer</th>
+            <th>Address</th>
+            <th>Total amount</th>
+            <th>Prov.</th>
+            <th>Total Orders</th>
+            <th>Last Order</th>
+        </tr>
+        </thead>
+        <tbody>
+        {if vendor_customers}
+            {vendor_customers}
+        {endif}
+        </tbody>
+    </table>
+
+    <a class="btn btn-info" href="#statistics" onclick="return statsLoadModal(this);"
+       data-stats="{uri_baseurl(index.php?frame=stats&page=ui_stats&show=bestellwert_rechnugen)}" data-title="Rechnungs-Statistik" data-height="300">
+        <i class="glyphicon glyphicon-stats"></i>
+        Show all customer statistics
+    </a>
+
+</div>

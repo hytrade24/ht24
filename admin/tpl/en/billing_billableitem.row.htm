@@ -1,0 +1,35 @@
+<tr class="zeile{even}" id="r_{ID_BILLING_BILLABLEITEM}">
+	<td nowrap="nowrap">
+
+	</td>
+    <td>
+        {ID_BILLING_BILLABLEITEM}
+    </td>
+    <td>
+        {todate(STAMP_CREATE)}
+    </td>
+    <td>
+        {htm(DESCRIPTION)}
+    </td>
+    <td>
+        {todate(STAMP_DONT_BILL_UNTIL)}
+    </td>
+    <td>
+        <a href="index.php?page=user_edit&ID_USER={FK_USER}" title="User ansehen/bearbeiten">{FK_USER}</a>
+    </td>
+	<td>
+        <a href="index.php?page=user_edit&ID_USER={FK_USER}" title="User ansehen/bearbeiten">{USER_NAME}</a>
+	</td>
+    <td style="text-align: right">
+        {QUANTITY}
+    </td>
+	<td style="text-align: right">
+        {topreis(PRICE)} {CURRENCY_DEFAULT}
+	</td>
+    <td style="text-align: right">
+        {TAX_VALUE} %
+    </td>
+    <td style="text-align: right">
+        {topreis(TOTAL_PRICE)} {CURRENCY_DEFAULT}
+    </td>
+</tr>

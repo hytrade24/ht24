@@ -1,0 +1,209 @@
+<script type="text/javascript" src="{uri_baseurl(/js/jquery.js)}"></script>
+<script type="text/javascript" src="{uri_baseurl(/lib/prototype.js)}"></script>
+<script type="text/javascript" src="sys/popup/popup.js"></script>
+<link rel="stylesheet" href="sys/popup/popup.css" />
+
+<script type="text/javascript">
+	function vonbis(c_val)
+	{
+		var todo = false;
+		switch(c_val)
+		{
+			case 'INT': 
+			case 'FLOAT':
+			case 'DATE':
+				todo = true;
+				break;
+		}
+		if(todo == true)
+		{
+			$('xSearch').style.display = 'inline';
+			if(c_val == 'DATE')
+			{
+				$('s_date').style.display = 'none';
+			}
+		}
+		else {
+			if($('xSeachLock').checked == true)
+			{
+				$('xSearchDef').checked = true;
+			}
+			$('xSearch').style.display = 'none';
+			$('s_date').style.display = 'inline';
+		}
+	}
+	
+	function contentUpdate(ajax_url, chElement, meth)
+	{
+		if(!meth)
+		  meth = 'get';
+	  
+		req = new Ajax.Request(ajax_url, 
+		  {
+			  method: meth,
+				onCreate: function()
+				{					
+					//$(chElement).update('<p style="font-weight:bold;">Bitte warten ...</p>');
+				}, // create()
+				onSuccess: function(transport)
+				{
+					var write_in = $(chElement);
+					write_in.update(transport.responseText);
+				} // success
+		  } // ajax obj.
+		); // new Ajax
+	} // contentUpdate()
+
+	var myPopup = new JSpopup({ width: 720, height: 500});
+	var table = '{table}';
+	var id_table = {ID_TABLE_DEF};
+	var id_field = false;
+	
+	function newField()
+	{
+		
+	}
+	
+  function chListType(type)
+  {
+    if(type == 'NEW')
+    {
+      $("TEXTAREA_OPTIONS").disabled = false;
+      $("TEXTAREA_OPTIONS").style.backgroundColor = "#ffffff";
+      $("TEXTAREA_OPTIONS").style.border = "1px #000000 solid";
+      $("H3_OPTIONS").style.color = "#000";
+    }
+    else
+    {
+      $("TEXTAREA_OPTIONS").disabled = true;
+      $("TEXTAREA_OPTIONS").style.backgroundColor = "#ddd";
+      $("TEXTAREA_OPTIONS").style.border = "1px #ccc solid";
+      $("H3_OPTIONS").style.color = "#ccc";
+    }
+  }
+  
+	function chFieldType(type, fk)
+  	{
+  		if(type == 'LIST')
+		  {
+			  $('LISTEN').show();
+			  contentUpdate('index.php?page=field_edit_list&frame=ajax&FK='+fk+'&ID_FIELD_DEF='+id_field, 'LISTEN', 'get');
+		  }
+		  else
+		  {
+			  $('LISTEN').hide();	
+		  }
+		
+  	}
+	
+	function saveField()
+	{		
+		$('MSG').update('<strong>BITTE WARTEN ...</strong>');
+		$('S_EDIT').disabled = true;
+		$('F_EDIT').request({
+			method: 'post',
+			onSuccess: function(transport) 
+			{
+				if (transport.responseText != 'OK') 
+				{
+					$('MSG').update('<p class="error">'+transport.responseText+'</p>');
+					$('S_EDIT').disabled = false;
+				}
+				else
+				{
+					alert("Feld wurde aktualisiert. Die Seite muss neu geladen werden!")
+					document.location.href='index.php?page=table_edit&table={ID_TABLE_DEF}';
+				}
+		  	}
+		});
+	}
+
+    jQuery(function() {
+        jQuery(".DELETE_FIELD").click(function() {
+
+            var answer = prompt("Möchten Sie das Feld wirklich löschen ? Mögliche Inhalte gehen unwiderruflich verloren. Zum Bestätigen bitte \"Ja, ich will\" eingeben.");
+
+            if(answer == "Ja, ich will") {
+                jQuery.ajax({
+                    url: jQuery(this).attr("href"),
+                    type: 'POST',
+                    success: function(result) {
+                        location.reload();
+                    }
+                })
+            } else {
+                alert("Eingabe fehlerhaft");
+            }
+
+            return false;
+        })
+    })
+	
+</script>
+<h1>Artikel Tabelle {htm(T_NAME)} ver&auml;ndern</h1>
+<p>
+	Hier k&ouml;nnen Sie eine bestehende Artikeltabelle nach Ihren Anspr&uuml;chen ver&auml;ndern. Bitte beachten Sie folgende Hinweise.	
+</p>
+{if IS_MASTER}
+	<h2 class="error">Achtung Master Tabelle!</h2>
+	<p class="error">Sie bearbeiten die Master Tabelle. Jede &Auml;nderung wird f&uuml;r alle Artikeltabellen durchgef&uuml;hrt
+	und kann nicht r&uuml;ckg&auml;ngig gemacht werden!</p>
+{endif}
+<ul>
+	<li>Der Feldtyp kann nur ge&auml;ndert werden, wenn noch keine Daten in dem Feld sind!</li>
+	<li>Neue Felder werden als &quot;nicht sichtbar&quot; eingef&uuml;gt!</li>
+	<li>Masterfelder k&ouml;nnen nicht ver&auml;ndert oder gel&ouml;scht werden!</li>
+</ul>
+<form method="post" action="index.php">
+	<input type="hidden" name="page" value="{curpage}" />
+	<input type="hidden" name="table" value="{ID_TABLE_DEF}" />
+	<h2>Felder bearbeiten</h2>
+	<p>Hier k&ouml;nnen Sie Felder ver&auml;ndert oder l&ouml;schen</p>
+	<p>
+		<input id="NF" type="button" value="Neues Feld hinzuf&uuml;gen" class="button" />
+    <script type="text/javascript">
+      myPopup.add(
+      {
+          url: "index.php?page=field_edit&frame=ajax&table="+table, 
+          title: "Neues Tabellenfeld hinzuf&uuml;gen",
+          target: "NF",
+          id: "NF",
+		  onLoad: function()
+		  	{
+				vonbis($('ftypen').value);
+			}
+        });
+    </script>
+	</p>
+	<div class="reiterAktiv">
+		<a href="index.php?page=table_edit&table={ID_TABLE_DEF}" title="Felder bearbeiten">Felder bearbeiten</a>
+	</div>
+	<div class="reiterPassiv">
+		<a href="index.php?page=group_fields&table={ID_TABLE_DEF}" title="Felder gruppieren">Felder gruppieren</a>
+	</div>
+	<table class="liste" cellspacing="0">
+		<tr>
+			<th>Aktion</th>
+			<th>Feld <br />verwenden?</th>
+			<th>Name <br />des Felds</th>
+			<th>Feldtyp</th>
+			<th>Gruppe</th>
+			<th>DB-Name</th>
+            	<th>Beschreibung</th>
+			<th>Sortierung</th>
+			<th>per Eingabe</th>
+		</tr>
+		{fields}
+		<tr>
+			<td colspan="9" align="right" style="border-top:1px #000099 solid">
+				<input type="submit" value="Änderung übernehmen" class="button" />
+			</td>
+		</tr>
+	</table>
+</form>
+<h2>Sortierung durcheinander?</h2>
+<p>
+	<strong>Hier k&ouml;nnen Sie die Sortierung der Felder reparieren lassen.</strong>
+	<br /><br />
+	<input onclick="window.location.href='index.php?page={curpage}&table={ID_TABLE_DEF}&repair=1';" type="button" value="Sortierung reparieren" class="button" />
+<p>&nbsp;</p>

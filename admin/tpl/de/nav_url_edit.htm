@@ -1,0 +1,154 @@
+<style type="text/css">
+
+input[type=text] {
+    width: 256px;
+}
+
+input[readonly],
+textarea[readonly] {
+    background: #D0D0D0;
+}
+
+</style>
+<script type="application/javascript">
+
+function UpdateManual(link) {
+    var row = jQuery(link).closest("tr");
+    if (jQuery(link).prop("checked")) {
+        row.find("input[data-type=URL_REGEXP]").prop("readonly", false);
+        row.find("textarea[data-type=URL_MAPPING]").prop("readonly", false);
+    } else {
+        row.find("input[data-type=URL_REGEXP]").prop("readonly", true);
+        row.find("textarea[data-type=URL_MAPPING]").prop("readonly", true);
+    }
+}
+
+</script>
+
+<h1>URLs bearbeiten: {IDENT} / {htm(V1)}</h1>
+
+<p>Hier haben Sie die Möglichkeit für diese Seite alternative URLs zu definieren.</p>
+
+{if Done}
+<p class="ok">
+    {if DoneSave}Änderungen erfolgreich gespeichert!{endif}
+    {if DoneDelete}URL erfolgreich gelöscht!{endif}
+</p>
+{endif}
+
+{if !EXTENDED}
+<a class="button" href="index.php?page=nav_url_edit&id={ID_NAV}&extended=1">Erweiterter Modus</a>
+{else}
+<a class="button" href="index.php?page=nav_url_edit&id={ID_NAV}">Einfacher Modus</a>
+{endif}
+
+<form method="post">
+    <input type="hidden" name="id" value="{ID_NAV}" />
+    <input type="hidden" name="extended" value="{EXTENDED}" />
+
+    <table class="liste" cellspacing="0">
+        <tr>
+            <th>Aktion</th>
+            <th>URL</th>
+            {if EXTENDED}
+            <th>Manuell</th>
+            <th>RegExp</th>
+            <th>Parameter</th>
+            {endif}
+            <th>Priorität</th>
+        </tr>
+
+        <tr class="zeile1">
+            <td>
+            </td>
+            <td>
+                <input type="text" name="NEW[URL_PATTERN]" placeholder="Neue URL hinzufügen" value="{htm(NEW_URL_PATTERN)}" />
+            </td>
+            {if EXTENDED}
+            <td>
+                <label>
+                    <input type="checkbox" onchange="UpdateManual(this);" name="NEW[URL_MANUAL]" value="{htm(NEW_URL_PATTERN)}" />
+                    Manuell
+                </label>
+            </td>
+            <td>
+                <input type="text" name="NEW[URL_REGEXP]" value="{htm(NEW_URL_REGEXP)}" data-type="URL_REGEXP" readonly />
+            </td>
+            <td>
+                <textarea name="NEW[URL_MAPPING]" data-type="URL_MAPPING" readonly>{htm(NEW_URL_MAPPING)}</textarea>
+            </td>
+            {endif}
+            <td>
+                <input type="number" style="width: 64px" name="NEW[PRIORITY]" value="{htm(NEW_PRIORITY)}" />
+            </td>
+        </tr>
+
+        {liste}
+
+        <tr class="footer">
+            <td colspan="{if EXTENDED}6{else}3{endif}" align="right">
+                <button>Speichern</button>
+            </td>
+        </tr>
+    </table>
+
+</form>
+
+<h2>Hilfe</h2>
+<p>
+    <strong>
+        WICHTIG! Wenn Sie noch nicht wissen wie das ändern von URLs funktioniert,
+        sollten Sie umbedingt zuvor <a href="javascript:popupfkt('hilfenavi&IDENT=nav_url&frame=popup','900','550')">das Tutorial in der Hilfe lesen</a>.
+    </strong>
+</p>
+<p>
+    <strong>URL definieren:</strong>
+    <br />
+    Geben Sie die URL mit führendem Schrägstrich und ohne Domainnamen an. Die hinterlegten URLs werden nur dann verwendet,
+    wenn die Anzahl der vorhandenen Parameter genau übereinstimmt. Anbei einige Beispiele für verschiedene Seiten:
+    <br />
+<ul>
+    <li><b>/Startseite.htm</b> Einfache URL ohne Parameter.</li>
+    <li><b>/Marktplatz/&#123;2&#125;-&#123;#1&#125;/</b> Marktplatz-URL mit zwei Parametern.</li>
+    <li><b>/branchenbuch/&#123;1&#125;-&#123;#2&#125;/</b> Eintrag im Anbieter-Verzeichnis.</li>
+</ul>
+</p>
+<p>
+    <strong>Parameter definieren:</strong>
+    <br />
+    Sie können Parameter in der URL definieren indem Sie die Nummer des Parameters in geschweiften Klammern einfügen.
+    (z.B. &#123;1&#125; für den ersten Parameter)
+    <br />
+    Weiterhin können Sie mithilfe eines Prefix festlegen welchen Typ ein Parameter hat. Anbei einige Beispiele der bestehenden Möglichkeiten:
+<ul>
+    <li><b>&#123;#1&#125;</b> Erster parameter der Seite; ausschließlich Zahlen möglich; optional</li>
+    <li><b>&#123;$3&#125;</b> Dritter parameter der Seite; Keine Schrägstriche erlaubt möglich; optional</li>
+    <li><b>&#123;!#2&#125;</b> Zweiter parameter der Seite; ausschließlich Zahlen möglich; Parameter darf nicht leer sein!</li>
+    <li><b>&#123;4&#125;</b> Vierter der Seite; beliebiger Inhalt möglich; optional</li>
+</ul>
+
+Bei der URL <b>/marktplatz/marktplatz,40689,Immobilien.htm</b> z.B. wäre "40689" der erste und "Immobilien" der zweite Parameter.
+</p>
+
+{if EXTENDED}
+<h3>Erweiterter Modus</h3>
+
+<p>
+    Im erweiterten Modus haben Sie die Möglichkeit den regulären Ausdruck zur Erkennung der URL
+    sowie die Zuordnung der Parameter manuell zuzuordnen.
+    Standardmäßig werden diese Einstellungen anhand der eingegebenen URL automatisch erzeugt.
+    <br />
+    <strong>Parameter-Zuordnung:</strong>
+    Unter der Spalte "Paramter" können Sie die Parameter festlegen, die für diese URL verwendet werden sollen.
+    Dabei können Sie z.B. mit <b>$1</b> die erste Gruppe des regulären Ausdrucks zuordnen.
+    Alternativ ist es auch möglich einen festen Wert zu hinterlegen.
+    <br />
+    Geben Sie pro Zeile jeweils eine Zuordnung ein. Diese setzt sich wie in den folgenden Beispielen zusammen:
+<ul>
+    <li><b>1=$2</b> Dem erste Parameter der Seite wird der Inhalt der zweiten Gruppe im regulären Ausdruck zugeordnet</li>
+    <li><b>2=Beispiel</b> Dem zweiten Parameter der Seite wird der Wert "Beispiel"</li>
+    <li><b>3=$1</b> Dem dritten Parameter der Seite wird der Inhalt der ersten Gruppe im regulären Ausdruck zugeordnet</li>
+    <li><b>4=42</b> Dem vierten Parameter der Seite wird der Wert "42"</li>
+</ul>
+</p>
+{endif}

@@ -1,0 +1,22 @@
+<tr class="zeile{even}">
+    <td>{USER_ID_USER}</td>
+    <td>
+        <strong><a href="index.php?page=user_edit&ID_USER={USER_ID_USER}">{USER_NAME}</a></strong>
+        <a title="&Ouml;ffentliches profil ansehen" href="{uri_action(view_user,{urllabel(USER_NAME)},{USER_ID_USER})}" target="_blank">(Profil)</a>
+        <br />
+        <small>
+            REG {todate(USER_STAMP_REG)}
+            <br />
+            LA {todate(USER_LASTACTIV)}
+        </small>
+    </td>
+    <td>{USER_VORNAME} {USER_NACHNAME}</td>
+    <td>{USER_EMAIL}</td>
+    <td>{todate(STAMP_CREATE)}</td>
+    <td>{OLD_MEMBERSHIP_V1}</td>
+    <td><strong>{NEW_MEMBERSHIP_V1}</strong></td>
+    <td>
+        <a href="index.php?page={curpage}&ID_PACKET_MEMBERSHIP_UPGRADE={ID_PACKET_MEMBERSHIP_UPGRADE}&action=approve&page={page}" onclick="return confirm('Möchten Sie das Upgrade wirklich bestätigen?');"><img src="./gfx/isok.png" alt="Bestätigen"></a>
+        <a href="index.php?page={curpage}&ID_PACKET_MEMBERSHIP_UPGRADE={ID_PACKET_MEMBERSHIP_UPGRADE}&action=decline&page={page}" onclick="return confirm('Möchten Sie das Upgrade wirklich ablehnen?');"><img src="./gfx/btn.cancel.gif" alt="Bestätigen"></a>
+    </td>
+</tr>

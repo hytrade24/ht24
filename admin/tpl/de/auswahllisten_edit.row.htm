@@ -1,0 +1,61 @@
+
+{if EDIT==ID_LISTE_VALUES}
+<tr class="zeile{even}">
+  <td>
+    <a title="Abbrechen" style="cursor:pointer;"><img src="gfx/btn.abort.gif" width="32" height="16" alt="abort" id="A_{ID_LISTE_VALUES}" /></a>
+    <a title="Speichern" style="cursor:pointer;" onclick="saveNow('myFormEdit','myFormEdit2'); return false;"><img src="gfx/btn.save.gif" width="16" height="16" alt="save" id="S_{ID_LISTE_VALUES}" /></a>
+    <script type="text/javascript">
+          myPopup.add(
+          {
+              url: "index.php?page=auswahllisten_edit&ID_LISTE={ID_LISTE}&frame=ajax", 
+              title: "Auswahlliste bearbeiten", //optional
+              target: "A_{ID_LISTE_VALUES}",
+              id: "edit_{ID_LISTE}",
+              width: 480,
+              height: 400
+            });
+
+        </script>
+     
+  </td>
+  <td>
+    <form id="myFormEdit" action="#" onsubmit="saveNow('myFormEdit'); return false;">
+      <input type="hidden" name="save_options" value="1" />
+      <input type="hidden" name="FK_LISTE" value="{ID_LISTE}" />
+      <input type="hidden" name="ID_LISTE_VALUES" value="{ID_LISTE_VALUES}" />
+      <input type="text" value="{htm(V1)}" name="V1" style="width: 300px;" />
+    </form>
+  </td>
+  <td>
+    <form  id="myFormEdit2" action="#">
+      <input type="number" value="{ORDER}" name="ORDER" />
+    </form>
+  </td>
+   </tr>
+{else}
+<tr class="zeile{even}">
+  <td>
+    
+    <a title="Bearbeiten" style="cursor:pointer;">
+    	<img src="gfx/btn.edit.gif" width="32" height="16" alt="edit" id="E_{ID_LISTE_VALUES}" />
+    </a>
+    <a title="Loeschen" onclick="deleteNow({ID_LISTE_VALUES});" style="cursor:pointer;">
+    	<img src="gfx/btn.del.gif" width="32" height="16" alt="edit" id="E_{ID_LISTE_VALUES}" />
+    </a>
+    <script type="text/javascript">
+          myPopup.add(
+          {
+              url: "index.php?page=auswahllisten_edit&ID_LISTE={ID_LISTE}&frame=ajax&edit={ID_LISTE_VALUES}", 
+              title: "Auswahlliste bearbeiten", //optional
+              target: "E_{ID_LISTE_VALUES}",
+              id: "edit_{ID_LISTE}",
+              width: 480,
+              height: 400
+            });
+        </script>
+     
+  </td>
+  <td>{htm(V1)}</td>
+  <td>{ORDER}</td>
+</tr>
+{endif}

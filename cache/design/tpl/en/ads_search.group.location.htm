@@ -1,0 +1,40 @@
+<div class="design-search-row-item" style="width: {GROUP_WIDTH};">
+    <div class="design-search-group">
+        <h3 class="design-search-group-header{if ROW_COUNT_GROUPS < 2} clearfix cursor-pointer{endif}">
+            <div{if ROW_COUNT_GROUPS < 2} class="pull-left"{endif}>
+                <span>Search within</span>
+            </div>
+            {if ROW_COUNT_GROUPS < 2}
+                <div class="pull-right">
+                    <i class="fa fa-angle-right"></i>
+                </div>
+            {endif}
+        </h3>
+        <div class="design-search-group-content"{if ROW_COUNT_GROUPS < 2} style="display: none;"{endif}>
+            <div class="form-group">
+                <label for="lu_umkreis">
+                    Within:
+                </label>
+                ^lookup(UMKREIS,,, class="form-control",F_ORDER ASC,---)°
+            </div>
+            <div class="form-group">
+                <label for="adSearchFormLocationZip">
+                    ZIP:
+                </label>
+                <input id="adSearchFormLocationZip" type="text" class="form-control" name="ZIP" value="^htm(ZIP)°" />
+            </div>
+            <div class="form-group">
+                <label for="adSearchFormLocationCity">
+                    City:
+                </label>
+                <input id="adSearchFormLocationCity" type="text" class="form-control" name="CITY" value="^htm(CITY)°" />
+            </div>
+            <div class="form-group">
+                <label for="fk_country">
+                    Country:
+                </label>
+                ^select_country(FK_COUNTRY,,,, class="form-control",----)°
+            </div>
+        </div>
+    </div>
+</div>

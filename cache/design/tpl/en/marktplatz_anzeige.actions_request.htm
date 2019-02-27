@@ -1,0 +1,234 @@
+<link rel="stylesheet" href="{uri_resource(/lib/EasyAutocomplete-1.3.5/easy-autocomplete.min.css)}"> 
+<link rel="stylesheet" href="{uri_resource(/lib/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css)}"> 
+<script type="text/javascript" src="{uri_resource(/lib/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js)}"></script>
+
+<div class="design-content-box design-ad-details-info">
+    <div class="design-ad-status">
+    {if (AD_B_TOP&4)==4}
+        <div class="design-ad-status-top">
+            Top advertisement
+        </div>
+    {endif}
+    {if AD_PSEUDOPREIS && AD_B_PSEUDOPREIS_DISCOUNT && (AD_PSEUDOPREIS > AD_PREIS)}
+        <div class="design-ad-status-sale">
+            Sale
+        </div>
+    {endif}
+    {if AD_RUNTIME_DAYS_GONE<DAYS_ADS_NEW}
+        <div class="design-ad-status-new">
+            New
+        </div>
+    {endif}
+    <div class="design-ad-status-request">
+        Gesuch
+    </div>
+    ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0)°
+        {if AD_TRADE}
+        <div class="design-ad-status-trade"
+             data-toggle="tooltip" data-placement="right" title="The articleprice is negotiable">
+            NG
+        </div>
+        {endif}
+    ^else°
+    ^endif°
+    {if AD_BF_CONSTRAINTS_B2B}
+        <div class="design-ad-status-b2b"
+             data-toggle="tooltip" data-placement="right" title="This offer is directed to tradepersons only">
+            B2B
+        </div>
+    {endif}
+    </div>
+    <div class="design-ad-stats">
+        <div class="design-ad-stats-viewed" title="View at advert {adClicks}x">
+            <i class="glyphicon glyphicon-eye-open"></i> {adClicks} x viewed
+        </div>
+        <div class="design-ad-stats-memorized" title="Advert {adReminderCount}x memorized">
+            <i class="glyphicon glyphicon-star"></i> {adReminderCount} x memorized
+        </div>
+    </div>
+    ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0)°
+    <div class="design-ad-stats-more">
+        {if AD_PSEUDOPREIS && AD_B_PSEUDOPREIS_DISCOUNT && (AD_PSEUDOPREIS > AD_PREIS)}
+        <div class="design-ad-price-discount">
+            -{pseudopreis_discount({AD_PREIS}, {AD_PSEUDOPREIS})}% SALE
+        </div>
+        {endif}
+        {if AD_EAN && COUNT_ARTICLES_WITH_EAN}
+            <p>
+                <a href="{uri_action(artikel-suche)}?SEARCH_PROXY=1&EAN={AD_EAN}" class="js-tooltip" data-toogle="tooltip" title="{COUNT_ARTICLES_WITH_EAN} product(s) with the same EAN number on different vendors found">
+                    Show product from different vendors
+                </a>
+            </p>
+        {endif}
+    </div>
+    ^endif°
+</div>
+^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(AD_BF_CONSTRAINTS_B2B)} == 0)°
+<div class="design-content-box">
+    <div class="design-ad-details-actions">
+    {if !AD_SOLD}
+        <form id="form_buy" class="form-inline" onsubmit="addArticleToCartWrapper(this); return false;">
+        <input type="hidden" name="ID_AD_VARIANT" id="CART_VARIANT" value="{FK_AD_VARIANT}" />
+    {endif}
+    {if SETTINGS_MARKTPLATZ_BUYING_ENABLED}
+        <div class="heading">
+            Details zum Gesuch
+        </div>
+        <div class="design-ad-details-price">
+            {if !AD_SOLD}
+                {VARIANTS}
+            {endif}
+                <div class="marketplaceArticlePrice">
+                    <span class="marketplaceArticlePriceLabel">
+                        Preisvorstellung
+                    </span>
+                                       
+                   <span id="marketplaceArticlePriceValue">
+                       {topreis_ex(AD_PREIS)} {CURRENCY_DEFAULT}
+                   </span>
+                </div>
+                {if SETTINGS_MARKTPLATZ_CURRENCY_CONVERSION}
+                    {subtpl(tpl/{SYS_TPL_LANG}/currency_conversion.htm,PRICE={AD_PREIS})}
+                {endif}
+                <br />
+                <p>
+                    <span id="marketplaceArticleQuanitityValue">{htm(AD_MENGE)}</span> gesucht.
+                </p>
+        </div>
+        <div class="design-ad-details-buy">
+        {if ID_USER!=OVERRIDE_USER_ID}
+            <div class="marketplaceArticleVisibleWhenNotAvailable" style="display: none;">
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>Not available!</strong>
+                    The desired article is not available.
+                </div>
+            </div>
+            <div class="marketplaceArticleVisibleWhenAvailable">
+            {if !AD_AFFILIATE && (AD_ACTIVE || PREVIEW || USER_IS_ADMIN)}
+                {if !PREVIEW && USER_IS_ADMIN}
+                    {if AD_CONFIRMED!=1}
+                       <p>
+                           <strong>Moderate advertisement:</strong>
+                           <br />
+                           <a class="btn btn-success" onclick="UnlockAd();">
+                               Release advertisement
+                           </a>
+                           <a class="btn btn-danger{if CONFIRMED==2} disabled{endif}"{if AD_CONFIRMED!=2} onclick="UnlockDecline({ID_AD}, '{if AD_MANUFACTURER}{htm(AD_MANUFACTURER)} {endif}{htm(AD_TITLE)}');"{endif}>
+                               Decline
+                           </a>
+                       </p>
+                    {endif}
+                    {if AD_CONFIRMED==2}
+                       <div class="alert alert-danger">
+                           <strong>Release declined</strong>
+                           <p>
+                               You have declined the release of this advertisement.{if AD_DECLINE_REASON} Reason:<br />{text(AD_DECLINE_REASON)}{endif}
+                           </p>
+                       </div>
+                    {endif}
+                {endif}
+                {if (!AD_MOQ || AD_MOQ <= AD_MENGE) && (AD_CONFIRMED==1 || PREVIEW)}
+                    <a title="Write a message" class="btn btn-success" href="{uri_action(marktplatz_handeln,{ID_AD})}">
+                        Angebot senden
+                    </a>
+                    <div class="design-row design-row-xs-2 text-left">
+                        {if ID_USER}
+                        <div class="design-row-item">
+                            <a href="#" onclick="AdReminderToggle('{ID_AD}', 'adReminderLabel-{ID_AD}', 'Product already bookmarked', 'Bookmark product', '{text(AD_TITLE)}', 'marktplatz_anzeige,{ID_AD},{urllabel(AD_TITLE)}'); return false;" >
+                                <i class="glyphicon glyphicon-bookmark"></i>
+                                <span id="adReminderLabel-{ID_AD}">Bookmark product</span>
+                            </a>
+                        </div>
+                        {endif}
+                        {if ID_USER}
+                        <div class="design-row-item">
+                            <a class="adLikeButton" href="#">
+                                <i class="glyphicon glyphicon-thumbs-up"></i>
+                                <span>...</span>
+                            </a>
+                        </div>
+                        {endif}
+                        <div class="design-row-item">
+                            <a title="Share advert" href="#" onclick="empfehlen(); return false;">
+                                <i class="glyphicon glyphicon-share-alt"></i>
+                                Share advert
+                            </a>
+                        </div>
+                        <div class="design-row-item">
+                            <a title="Report violation" href="#" onclick="open_verstoss({ID_AD}); return false;">
+                                <i class="glyphicon glyphicon-bell"></i>
+                                Report violation
+                            </a>
+                        </div>
+                        <div class="design-row-item">
+                            <a id="marketplaceArticlePrint" href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(AD_TITLE)},print|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="Print advert">
+                                <i class="glyphicon glyphicon-print"></i>
+                                Print advert
+                            </a>
+                        </div>
+                    </div>
+                {else}
+                    {if AD_CONFIRMED==1}
+                        <p>The desired article is not available yet</p>
+                    {endif}
+                {endif}
+            {endif}
+            </div>
+        {endif}
+        </div>
+        {if ID_USER==OVERRIDE_USER_ID}
+        <div class="design-ad-details-actions-own">
+            <p>
+            {if AD_MENGE > 0}
+                    <a class="btn btn-default" title="Edit / modify advertisement" href="{uri_action(my-marktplatz-neu,{ID_AD})}">
+                        Edit
+                    </a>
+                {if AD_ACTIVE}
+                    <a class="btn btn-danger" title="Deactivate advertisement#" onclick="return confirm('Disable advert?');" href="{uri_action(my-marktplatz,deactivate,{ID_AD},{ID_KAT})}">
+                        Disable
+                    </a>
+                {else}
+                    {if AD_CONFIRMED}
+                    <a class="btn btn-success" title="Activate advertisement" onclick="return confirm('Enable advert again?');" href="{uri_action(my-marktplatz-disabled,activate,{ID_AD},{ID_KAT})}">
+                        Enable
+                    </a>
+                    {else}
+                    <a class="btn btn-success disabled" title="Is checking" onclick="return confirm('Enable advert again?');">
+                        <i class="icon-lock icon-white"></i>
+                        Is checking
+                    </a>
+                    {endif}
+                {endif}
+            {else}
+                <div class="btn-multiline">
+                    <a title="Diese Anzeige verwenden, um ein neues (oder Kopie) Produkt einzustellen" class="btn" href="{uri_action(my-marktplatz-disabled,recreate,{ID_AD},{ID_KAT})}">
+                        Use as model
+                    </a>
+                    <a title="Anzeige wiedereinstellen" onclick="ExtendAd({ID_AD},{ID_KAT});" class="btn btn-success">
+                        Relist
+                    </a>
+                </div>
+            {endif}
+            </p>
+        </div>
+        {endif}
+    {endif}
+    {if !AD_SOLD}
+        </form>
+    {endif}
+    </div>
+</div>
+
+<div class="design-content-box">
+    <div class="design-ad-details-vendor">
+        <div class="heading">
+            Details zur Suchenden
+        </div>
+        <div>
+            {subtpl(tpl/{SYS_TPL_LANG}/marktplatz_anzeige.vendor.htm,*)}
+        </div>
+    </div>
+</div>
+^endif°
+        

@@ -1,0 +1,40 @@
+<h1>Verkäufe / Käufe</h1>
+
+{if ok_delete}
+<div class="ok">
+	Kauf bzw. Verkauf erfolgreich aus dem System gelöscht.
+</div><br />
+{endif}
+
+<div class="reiter{if show_open}Aktiv{else}Passiv{endif}">
+  <a href="index.php?page={curpage}&show=show_open">Offene Verk&auml;ufe</a>
+</div>
+<div class="reiter{if show_done}Aktiv{else}Passiv{endif}">
+  <a href="index.php?page={curpage}&show=show_done">Abgeschlossene Verk&auml;ufe</a>
+</div>
+<div class="reiterPassiv">
+  <a href="index.php?page=pending_stornos">Abgebrochene Verk&auml;ufe (Wartend)</a>
+</div>
+<div class="reiterPassiv">
+  <a href="index.php?page=sale_stornos">Endg&uuml;ltig abgebrochene Verk&auml;ufe</a>
+</div>
+<table width="80%" cellpadding="0" cellspacing="0" class="liste">
+	<tr>
+		<th class="first">Aktion</th>
+        <th title="WTransaktions Id">Trans.-ID</th>
+		<th>Art.-Nr</th>
+        <th>Artikel</th>
+		<th>Datum</th>
+		<th>Menge</th>
+		<th>Preis/St&uuml;ck</th>
+		<th>Gesamtpreis</th>
+		<th title="berechnete Provision">Prov.</th>
+		<th>Verkäufer</th>
+		<th>Käufer</th>
+		<th class="last">Status</th>
+	</tr>
+	{liste}
+</table>
+
+<div>{pager}</div>
+<br />

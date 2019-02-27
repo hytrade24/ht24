@@ -1,0 +1,49 @@
+<script language="JavaScript" type="text/javascript">
+<!--
+  var mark_id='', mark_class='';
+  var last_do='', last_tbl;
+  function listresults(trid, s_do, s_tbl)
+  {
+    var el = document.getElementById(trid);
+    document.getElementById('ireceive').innerHTML = '<div class="hinweis">Lade Daten ...</div>';
+    if (mark_id != trid)
+    {
+      if (mark_id)
+        document.getElementById(mark_id).className = mark_class;
+      mark_class = el.className;
+      last_do = s_do;
+      last_tbl = s_tbl;
+      el.className = 'zeilex';
+    }
+    document.getElementById('iload').src =
+      'index.php?frame=ihidden&page=trans_list&do='+ s_do+ '&tbl='+ s_tbl;
+    if (!mark_id)
+      document.getElementById('R3').style.visibility='visible';
+    mark_id = el.id;
+    reiterwechsel(3);
+  }
+  function listreload()
+  {
+    document.getElementById('ireceive').innerHTML = '<div class="hinweis">Lade Daten ...</div>';
+    iload.location.reload();
+  }
+//-->
+</script><h1>Texte &uuml;bersetzen</h1>
+{if err}<div class="error">{err}</div><br />{endif}
+<table border="0" cellspacing="0" cellpadding="4" class="reiter"><tr>
+  <th id="R1" class="reiterPassiv"><a href="javascript:reiterwechsel(1);">&Uuml;bersicht</a>&nbsp;</th>
+  <th id="R2" class="reiterPassiv"><a href="javascript:reiterwechsel(2);">Texte suchen</a>&nbsp;</th>
+  <th id="R3" class="reiterPassiv" style="visibility:hidden;"><a href="javascript:reiterwechsel(3);">Ergebnisse</a>&nbsp;</th>
+</tr></table>
+<div id="reiter1" style="display:none;"><table class="liste">{stat_head}{stat_list}</table><br /></div>
+<div id="reiter2" style="display:none;" class="formTable">{subtpl(tpl/de/trans_index.search.htm,*)}</div>
+<div id="reiter3" style="display:none;" class="formTable">
+  <div id="ireceive">Lade Daten ...</div>
+<iframe id="iload" name="iload" src="about:blank" style="display:none"></iframe></div>
+
+<script type="text/javascript">
+<!--
+  reiterwechsel({gotab:1});
+  do_select(document.getElementById('select_table'));
+//-->
+</script><br />

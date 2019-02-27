@@ -1,0 +1,22 @@
+<h1><img src="gfx/modul_64_painter.gif" width="64" height="64" alt="" border="0" align="left">Fertige Bilder bearbeiten</h1>
+<p>Wenn Sie einzelne Bilder bereits bearbeitet und gespeichert haben, finden Sie diese hier und k&ouml;nnen sie nachtr&auml;glich
+nochmals bearbeiten, oder sie als Ausgangspunkt f&uuml;r neue Bilder verwenden.</p>
+{if deleted}
+<div class="ok">{deleted}</div>
+{endif}
+{if db_images}
+	<h2>Fertige Bilder</h2>
+	<p>W&auml;hlen Sie jetzt ein Bild aus, welches Sie bearbeiten wollen.</p>
+<table class="liste">
+<tr>
+<td>
+	  <table cellspacing="0" cellpadding="4" width="100%">
+	  <tr><th>Bild</th><th>Name</th><th>Aktion</th></tr>
+	    {db_images}
+	  </table>
+</td>	
+</tr>		
+</table>
+{else}
+<div class="hinweis">Noch keine gespeicherten Bilder vorhanden!</div>
+{endif}

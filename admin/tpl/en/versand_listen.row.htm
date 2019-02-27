@@ -1,0 +1,7 @@
+<tr class="zeile{even}">
+ <td><a href="index.php?page=versandliste_edit&ID_NL_GROUP={ID_NL_GROUP}" title="{htm(LABEL)} bearbeiten"><img src="gfx/btn.edit.gif" width="32" height="16"></a><a href="index.php?page=newsletter_edit&FK_NL_GROUP={ID_NL_GROUP}" title="Newsletter erstellen"><img src="gfx/btn.mail.gif" width="13" height="11"></a>
+ {if !B_SYS}<a href="index.php?page=versand_listen&do=rm&id={ID_NL_GROUP}" title="{htm(LABEL)} l&ouml;schen" onClick="return confirm('{LABEL} endgültig löschen?')"><img src="gfx/btn.del.gif" width="32" height="16"></a>{endif}
+ </td>
+ <td>{htm(LABEL)}</td>
+ <td align="center">{if B_SYS}<span class="ok">&radic;{else}<span class="error">x{endif}</span></td>
+</tr>

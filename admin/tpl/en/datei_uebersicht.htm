@@ -1,0 +1,40 @@
+<h1>Downloads in der &Uuml;bersicht</h1>
+<p>Ihre Downloads inb einer kompletten &Uuml;bersicht. </p>
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="datei_uebersicht">
+<table class="formTable" cellpadding="0">
+ <tr>
+  <th>Sortieren nach</th>
+  <td><input type="radio" name="orderby" class="nob" value="DATUM"{if orderby_DATUM} checked{endif} /> Datum
+  <input type="radio" name="orderby" class="nob" value="DSC"{if orderby_DSC} checked{endif} /> Beschreibung
+  <input type="radio" name="orderby" class="nob" value="EXT"{if orderby_EXT} checked{endif} /> Typ
+  </td>
+ </tr>
+ <tr>
+  <th>Reihenfolge</th>
+  <td><input type="radio" name="updown" class="nob" value="DESC"{if updown_DESC} checked{endif} /> absteigend
+   <input type="radio" name="updown" class="nob" value="ASC"{if updown_ASC} checked{endif} /> aufsteigend
+   </td>
+ </tr>
+ <tr class="footer">
+  <td colspan="2" align="right"><input type="submit" value="Sortieren" class="button" /></td>
+ </tr>
+</table>
+</form>
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktion</th>
+  <th>Beschreibung</th>
+  <th>Datum</th>
+  <th>Typ</th>
+  <th>Download</th>
+ </tr>
+ {if liste}
+ {liste}
+ {else}
+ <tr>
+  <td colspan="4"><p class="error" align="center">Keine Downloads vorhanden</p></td>
+ </tr>
+ {endif}
+</table>
+{pager}

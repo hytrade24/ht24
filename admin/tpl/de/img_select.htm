@@ -1,0 +1,22 @@
+{if liste}<script language="JavaScript" type="text/javascript">
+<!--
+function UploadImages(idimg) {
+  var newWindow3;
+  var props = 'scrollBars=yes,resizable=no,toolbar=no,menubar=no,location=no,directories=no,width=480,height=320,top=180,left=200,dependent:yes';
+  newWindow3 = window.open('../{pageref(img_edit)}&frame=popup&ID_IMG='+idimg+'&{sess}', 'Upload_Images_to_server', props);
+}
+
+function SelectImage(path,alttext,w,h)
+{
+  var frm = top.document.forms[0];
+  frm.elements['ImgUrl'].value=
+  top.document.PREVIEWPIC.src='../'+path;
+  frm.elements['htest'].value=w;
+  frm.elements['btest'].value=h;
+  if (alttext)
+    top.document.getElementsByName('txtAltText')[0].value=alttext;
+  return false;
+}
+//-->
+</script>
+<table border="0" class="smallFont" width="100%">{liste}</table>{else}kein Bild zur Auswahl{endif}

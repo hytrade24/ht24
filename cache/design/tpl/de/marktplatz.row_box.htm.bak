@@ -1,0 +1,92 @@
+<div class="design-row-item">
+    <div class="design-ad-box{if (B_TOP&4)==4} top{endif}">
+        <div class="design-ad-status">
+        {if (B_TOP&4)==4}
+            <div class="design-ad-status-top">
+                Top
+            </div>
+        {endif}
+        {if PSEUDOPREIS && B_PSEUDOPREIS_DISCOUNT && (PSEUDOPREIS > PREIS)}
+            <div class="design-ad-status-sale">
+                Angebot
+            </div>
+        {endif}
+        {if RUNTIME_DAYS_GONE<DAYS_ADS_NEW}
+            <div class="design-ad-status-new">
+                Neu
+            </div>
+        {endif}
+        {if VERKAUFSOPTIONEN==5}
+            <div class="design-ad-status-request">
+                Gesuch
+            </div>
+        {endif}
+        ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(BF_CONSTRAINTS_B2B)} == 0)°
+            {if TRADE}
+            <div class="design-ad-status-trade"
+                 data-toggle="tooltip" data-placement="right" title="Der Artikelpreis ist verhandelbar">
+                VB
+            </div>
+            {endif}
+        ^else°
+        ^endif°
+        {if BF_CONSTRAINTS_B2B}
+            <div class="design-ad-status-b2b"
+                 data-toggle="tooltip" data-placement="right" title="Dieses Angebot richtet sich ausschließlich an Gewerbetreibende">
+                B2B
+            </div>
+        {endif}
+        </div>
+        <div class="design-ad-image">
+            <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+                {if IMPORT_IMAGES}{thumbnail_article_loader(#row-img-{ID_AD},{ID_AD},230,170,crop)}{endif}
+                <img src="{if !IMG_DEFAULT_SRC}{uri_resource(/images/marketplace/nopic.jpg)}{else}{thumbnail_article({ID_AD},{IMG_DEFAULT_SRC},230,170,crop)}{endif}" id="row-img-{ID_AD}" data-watchlist="true" />
+            </a>
+        {if SHOW_RATING}
+            <div class="design-ad-ratings">
+            {if EAN}
+                {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=ad_master,FK_STR={EAN},TEMPLATE=small,HIDE_ADMIN_CONFIG=1)}
+            {else}
+                {subtpl(tpl/{SYS_TPL_LANG}/comment_ratings.htm,TABLE=ad_master,FK={ID_AD},TEMPLATE=small,HIDE_ADMIN_CONFIG=1)}
+            {endif}
+            </div>
+        {endif}
+        </div>
+        <div class="design-ad-name">
+            <a href="{uri_action(marktplatz_anzeige,{ID_AD},{urllabel(PRODUKTNAME)}|KAT_PATH={market_kat_path_url({FK_KAT})})}" title="{htm(PRODUKTNAME)} ansehen">
+                {htm(PRODUKTNAME)}
+            </a>
+        </div>
+        
+        ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(BF_CONSTRAINTS_B2B)} == 0)°
+        {if PSEUDOPREIS && B_PSEUDOPREIS_DISCOUNT && (PSEUDOPREIS > PREIS)}
+        <div class="design-ad-price-discount">
+            -{pseudopreis_discount({PREIS}, {PSEUDOPREIS})}%
+        </div>
+        {endif}
+        ^endif°
+        
+        <div class="design-ad-price">
+        {if VERKAUFSOPTIONEN!=4 && !HIDE_PRICE}
+        ^if CURUSER_USER_CONSTRAINTS_ALLOWED_B2B || ({int(BF_CONSTRAINTS_B2B)} == 0)°
+            <div class="design-ad-price-new">
+            {if VERKAUFSOPTIONEN!=2}
+                {if VERKAUFSOPTIONEN!=3}
+                    {topreis_ex(PREIS)} {CURRENCY_DEFAULT}
+                {else}
+                    ab {topreis_ex(PREIS)} {CURRENCY_DEFAULT} / Tag
+                {endif}
+            {else}
+                Preis auf Anfrage
+            {endif}
+            </div>
+            {if PSEUDOPREIS && B_PSEUDOPREIS_DISCOUNT && (PSEUDOPREIS > PREIS)}
+            <div class="design-ad-price-old">
+                {topreis_ex(PSEUDOPREIS)} {CURRENCY_DEFAULT}
+            </div>
+            {endif}
+        ^endif°
+        {endif}
+        </div>
+    </div>
+</div>

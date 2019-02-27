@@ -1,0 +1,18 @@
+<table class="formTable">
+	<tr>
+	 <td colspan="2">
+	  <script type="text/javascript" src="sys/tooltip.js"></script>
+	  <script type="text/javascript">
+       function ch_event(what)
+	   {
+	     ajaxSubmit('','index.php?frame=ajax&page=eventlog_ajax&SHOW='+what,1,false,'event_ajax');
+	   }
+	   ajaxSubmit('','index.php?frame=ajax&page=eventlog_ajax',1,false,'event_ajax');		 
+	  </script>
+	  <div id="event_ajax">
+        Bitte warten ...
+      </div>
+	  <p align="right"><a href="index.php?page=eventlogs" title="Zur Gesamt&uuml;bersicht!">alle anzeigen</a></p>	 
+	 </td>
+	</tr>
+</table>

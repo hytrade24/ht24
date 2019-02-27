@@ -1,0 +1,413 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>ADMIN {curpage}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="no-cache">
+        <meta http-equiv="Expires" content="-1" />
+        <meta http-equiv="Cache-Control" content="no-cache">
+        
+		<!-- 
+        <link rel="stylesheet" type="text/css" href="{uri_resource(/lib/bootstrap/css/bootstrap.css)}" />
+		 -->
+		<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/jqueryui/css/theme/jqueryui.css)}" />
+
+        <link rel="stylesheet" type="text/css" href="skin/ebiz.css" />
+        <link rel="stylesheet" type="text/css" href="skin/ebiz_nav.css" />
+        
+        <script type="text/javascript" src="sys/showModalDialog.js"></script>
+        <script type="text/javascript" src="sys/misc.js"></script>
+        <script type="text/javascript" src="sys/marktplatz.js"></script>
+        <script type="text/javascript" src="sys/ajax/kernel.js"></script>
+        <script type="text/javascript" src="sys/ajax/JsHttpRequest.js"></script>
+        <script type="text/javascript" src="{uri_baseurl(/lib/prototype.js)}"></script>
+        
+		<script src="{uri_resource(/lib/jquery/jquery.js)}"></script>
+		<script src="{uri_resource(/lib/jqueryui/js/jqueryui.min.js)}"></script>
+		<!-- 
+		<script src="{uri_resource(/lib/bootstrap/js/bootstrap.min.js)}"></script>
+		 -->
+
+        <script language="JavaScript" type="text/javascript">
+            // Bugfix for prototype / JSON.stringify problem
+            delete Array.prototype.toJSON;
+
+            jQuery.noConflict();
+						// jQuery / jQueryUI backwards compatibility
+						if (typeof jQuery.browser == "undefined") {
+							jQuery.browser = {
+								msie: false,
+								safari: false
+							};
+						}
+            <!--
+
+			var ebiz_trader_baseurl = '{uri_baseurl(/)}';
+			var ebiz_trader_admin_baseurl = '{uri_baseurl(/admin/)}';
+
+
+            function checkPFlag(){
+                return true;
+            }
+            
+			function schnellsuche() 
+			{
+				var cur_style = $('schnellsuche').style.display;
+				var new_style = 'block';
+				if(cur_style == 'block')
+				{
+					new_style = 'none';
+				}		
+				$('schnellsuche').style.display = new_style;		
+			}
+			
+            //-->
+			function schnellsuchen(feld)
+			{
+				var page = false;
+                $('s_go').method = "post";
+				if(feld == 'ART_ID')
+				{
+					page = 'articles';
+				}
+				if(feld == 'ID_BILLING_INVOICE')
+				{
+					page = 'buchhaltung';
+                    $('s_go').method = "get";
+				}
+				if(feld == 'USER')
+				{
+					page = 'users';
+				}
+				if(feld == 'ID_AD_ORDER')
+				{
+					page = 'transactions';
+				}
+				if(page)
+				{
+					$('s_page').value = page;
+					$('s_id').name = feld;
+					$('s_id').value = $(feld).value;
+					$('s_go').submit();
+				}
+			}
+
+            function flushCache(type) {
+                if(confirm("Möchten Sie wirklich den Cache erneuern?")) {
+					jQuery("#loading").show();
+					setFlushCacheStepName(0, 0,"Cache wird aktualisiert...");
+                    flushCacheStep(type, 0);
+                }
+            }
+
+			function flushCacheStep(type, step) {
+				if(typeof step == "undefined") {
+					step = 0;
+				}
+
+				jQuery.ajax({
+					url: 'index.php?page=cache_rewrite&type=step_'+type+'&step='+step,
+					type: 'POST',
+					dataType: 'json',
+					success: function(response) {
+
+						if(response.success) {
+							if ((typeof response.data.currentStep == "undefined") || (response.data.currentStep.iframe == null)) {
+								if ((typeof response.data.nextStep != "undefined") && (response.data.nextStep)) {
+									setFlushCacheStepName(response.data.nextStep.step, response.data.countSteps, response.data.nextStep.name);
+									flushCacheStep(type, response.data.nextStep.step);
+								} else {
+									jQuery("#loading").hide();
+									//alert("Cache aktualisiert");
+								}
+							} else {
+								jQuery("#loading_name").html(response.data.currentStep.name+'<br />'+
+									'<iframe frameborder="0" style="height: 48px;" src="'+response.data.currentStep.iframe+'"></iframe>');
+								var iframeWindow = jQuery("#loading_name iframe")[0];
+								iframeWindow.callbackDone = function() {
+									if(response.data.nextStep) {
+										setFlushCacheStepName(response.data.nextStep.step, response.data.countSteps, response.data.nextStep.name);
+										flushCacheStep(type, response.data.nextStep.step);
+									} else {
+										jQuery("#loading").hide();
+										//alert("Cache aktualisiert");
+									}
+								};
+								iframeWindow.callbackError = function(error) {
+									jQuery("#loading").hide();
+									alert ("Fehler beim erzeugen des Designs!\n" + error.message + 
+										"\n(in "+error.filename+" Zeile "+error.line+")");
+								};
+							}
+						} else {
+							jQuery("#loading").hide();
+                            if(typeof response.error != "undefined") {
+                                alert("Es ist ein Fehler aufgetreten:\n" + response.error);
+                            } else {
+                                alert("Es ist ein Fehler aufgetreten:\n" + response);
+                            }
+						}
+					},
+					error: function(request) {
+						jQuery("#loading").hide();
+						alert("Es ist ein Fehler aufgetreten:\n" + request.responseText);
+					}
+
+				})
+			}
+
+			function setFlushCacheStepName(step, maxSteps, name) {
+				if(maxSteps != 0) {
+					jQuery("#loading_name").html("Schritt " + (step + 1) + " von " + maxSteps + " : " + name);
+				} else {
+					jQuery("#loading_name").html(name);
+				}
+			}
+
+        </script>
+    </head>
+    <body onLoad="setFlag({if savefail}true{else}false{endif})">
+		<!-- Tooltip -->
+	    {content_page(hilfe blase)}
+	    <!-- / Tooltip -->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #efefef;">
+            <tr>
+                <td colspan="2" align="left">
+                    <a href="https://www.ebiz-trader.de" target="_blank" title="zu ebiz-trader.de">
+                    	<img src="gfx/ebiz-trader.png"  alt="Zur Webseite wechseln" border="0" width="227" height="54">
+					</a>
+                </td>
+            </tr>
+        </table>
+
+        {if ID_USER}
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-top: 1px #fff solid;">
+            <tr>
+                <td class="userInfo" style="width:220px;">
+                    {if VORNAME||NACHNAME}{htm(VORNAME)} {htm(NACHNAME)} ({htm(NAME)}){else}{htm(NAME)}{endif}
+                </td>
+                <td class="userInfo" style="width:180px;">
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <td>
+                                <a class="fast_img" onclick="schnellsuche();" title="Schnellsuche &ouml;ffnen und schlie&szlig;en">
+                                    &nbsp;
+                                </a>
+                            </td>
+                            <td>
+                                <a onclick="schnellsuche();" title="Schnellsuche &ouml;ffnen und schlie&szlig;en">
+                                    SCHNELLSUCHE
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="schnellsuche" style="display:none;">
+                        <h3>Schnellsuche nach Anzeigen, Rechnungen, Benutzern oder Transaktionen</h3>
+                        <table>
+                            <tr>
+                                <th>
+                                    Artikelnummer
+                                </th>
+                                <td>
+                                    <input type="text" id="ART_ID" size="35" title="Geben Sie die Anzeigen/Artikelnummer an" />
+                                </td>
+                                <td>
+                                    <a onclick="schnellsuchen('ART_ID');" title="Suchen">
+                                        <img src="./gfx/schnell.png" />
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Rechnungsnummer
+                                </th>
+                                <td>
+                                    <input type="text" id="ID_BILLING_INVOICE" size="35" title="Geben Sie die Rechnungsnumer an" />
+                                </td>
+                                <td>
+                                    <a onclick="schnellsuchen('ID_BILLING_INVOICE');" title="Suchen">
+                                        <img src="./gfx/schnell.png" />
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Benutzer/Kunde
+                                </th>
+                                <td>
+                                    <input type="text" id="USER" size="35" title="Geben Sie Benutzernamen, Email oder Kundennummer an" />
+                                </td>
+                                <td>
+                                    <a onclick="schnellsuchen('USER');" title="Suchen">
+                                        <img src="./gfx/schnell.png" />
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Bestell-Nr.
+                                </th>
+                                <td>
+                                    <input type="text" id="ID_AD_ORDER" size="35" title="Geben Sie eine Transaktionsnummer an" />
+                                </td>
+                                <td>
+                                    <a onclick="schnellsuchen('ID_AD_ORDER');" title="Suchen">
+                                        <img src="./gfx/schnell.png" />
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <td align="left" class="userInfo">
+                    <select name="FLUSH_CACHE">
+                        <option value="all">Gesamten Cache</option>
+                        <option value="template">Template Cache</option>
+                        <option value="less">Less/CSS Cache</option>
+                        <option value="content">Inhalt Cache</option>
+                        <option value="statistik">Statistik Cache</option>
+                    </select>
+                    <a href="#" onclick="flushCache(jQuery('[name=FLUSH_CACHE]').val()); return false;" title="Cache löschen"><img src="./gfx/btn.cache.png" /></a> &nbsp;&nbsp;&nbsp;
+                    <a onclick="popupfkt('settings_cache',1000,600);"><img src="./gfx/btn.cache_popup.png" /></a>&nbsp;&nbsp;
+                    <a href="index.php?page={DEFAULTPAGE}" onclick="return checkFlag()"><img src="gfx/menu_gofav.png"  alt="Gehe zu : {DEFAULTPAGE}" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="https://www.ebiz-trader.de/marktplatz-faq/?action=search&search={curpagealias}" target="_blank"><img src="gfx/menu_hilfe.png"  alt="Hilfe" border="0"></a>
+                    <a href="{uri_baseurl(/index.php)}" title="Zur Webseite" target="_blank"><img src="gfx/menu_gostart.png"  alt="" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="#" title="per&ouml;nliche Startseite definieren" onclick="popupfkt('setdefaultpage&cure={curpage}&ID_USER={ID_USER}','300','300');"><img src="gfx/menu_addfav.png" alt="" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="logout.php" onclick="return checkFlag()"><img src="gfx/menu_logout.png" alt="vom System abmelden" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+
+            </tr>
+        </table>
+        {endif}
+        {if ID_USER}
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-top: 1px #fff solid;background-color: #eaeaea;">
+            <tr>
+                <td valign="bottom">
+
+                    <ul id="nav">
+                        {navemb(0,3,1,emb)}
+                        <li><a>HIS</a>
+                            <ul class="nav1">
+                            {historie}
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    {if languages}
+                    <table border="0" cellspacing="1" cellpadding="0"">
+                        <tr>
+                            {if ID_USER}{languages}{endif}
+                        </tr>
+                    </table>
+                    {endif}
+                </td>
+
+            </tr>
+        </table>
+        {endif}
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-bottom: 1px #fff solid;">
+            <tr>
+                <td class="navLevel2">
+                    <img src="shim.gif" width="42" height="2" />
+                </td>
+                <td width="100%" class="navLevel2">
+                    {nav(1,1,2)}
+                </td>
+            </tr>
+        </table>
+
+        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <tr>
+                {if !suppress_left && (nav_links || content_links)}
+                <td valign="top" width="{if size_left}{size_left}{else}250{endif}" style="background-color:#aaaeb1;">
+                    {if nav_links}
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        {nav(2,3,0)}
+                    </table>
+                    {endif}
+                    {if content_links}
+                    <div class="kontrast">
+                        {content_links}
+                    </div>
+                    {endif}
+                </td>
+                {endif}
+                <td valign="top" class="content" >
+                    <div id="debug" style="display:none;">
+                    </div>
+                    {content}
+                    <br style="clear:both;" />
+                    <p>&nbsp;</p>
+                </td>
+
+                {if !suppress_right && content_rechts}
+                <td valign="top" class="contentAussen">
+                    <div class="kontrast">
+                        {content_rechts}
+                    </div>
+                </td>
+                {endif}
+
+            </tr>
+        </table>
+        <table width="100%" cellspacing="0"  cellpadding="0" cellspacing="0" class="new_footer">
+
+            <tr>
+                <td width="300">
+                    <b>Besuchen Sie uns... :</b><br>
+                    <a href="http://www.ebiz-consult.de/" target="_blank">ebiz-consult.de</a>   <a href="http://www.ebiz-webhosting.de/" target="_blank">ebiz-webhosting.de</a>   <a href="http://www.php-resource.de/" target="_blank">php-resource.de</a>
+
+                </td>
+                <td align="right">
+                    <table width="100%">
+                        <tr>
+                            <td align="center">
+                                <a style="text-decoration:none;" rel="nofollow" href="https://www.youtube.com/user/ebizconsult" target="_blank"><img style="border: 0;" src="gfx/youtube.png" alt=""></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a rel="nofollow" href="http://www.facebook.com/ebizconsult" target="_blank"><img src="gfx/facebook.png" alt="besuchen Sie uns auf Facebook" width="30" height="30"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a style="text-decoration:none;" rel="nofollow" href="https://plus.google.com/116121863112545414498?prsrc=3" target="_blank"><img style="border: 0; width: 32px; height: 32px;" src="https://ssl.gstatic.com/images/icons/gplus-32.png" alt=""></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td align="right" style="padding-right:15px;" td width="300"
+                    &copy; 2003 - 2016
+                    <br>
+                    <a href="http://www.ebiz-consult.de/"><b>ebiz-consult GmbH & Co. KG</b></a>
+                    <br>
+                    All rights reserved.
+                </td>
+            </tr>
+        </table>
+        <div id="WAIT" style="display:none;">
+            Bitte warten ...
+        </div>
+        <!-- Schnellsuche -->
+		<form action="index.php">
+			<!-- -->
+		</form>
+		<form method="post" action="index.php" id="s_go">
+			<input type="hidden" value="1" name="SCHNELLSUCHE" />
+			<input type="hidden" id="s_page" name="page" value="">
+			<input type="hidden" id="s_id" name="" id="schnell_id" value="" />
+		</form>
+		<form action="index.php">
+			<!-- -->
+		</form>
+		<div id="loading" style="display: none; position: fixed; left: 0px; right: 0px; top: 0px; bottom: 0px;">
+		    <div style="opacity: 0.4; background-color: white; position: fixed; left: 0px; right: 0px; top: 0px; bottom: 0px;">
+		    </div>
+		    <table height="100%" width="100%">
+		        <td style="text-align: center; vertical-align: middle;">
+					<div style="display: inline-block; padding: 20px; background: #FFF; border: 1px #555 solid; width: 300px; ">
+		            <img style="position: relative; z-index: 99;" src="{uri_baseurl(/gfx/ajax-loader.gif)}">
+					<br>
+					<div id="loading_name" style="font-weight: bold;"></div>
+					</div>
+		        </td>
+		    </table>
+		</div>
+    </body>
+</html>

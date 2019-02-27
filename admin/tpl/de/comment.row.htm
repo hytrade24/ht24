@@ -1,0 +1,6 @@
+<tr class="zeile{if is_current}x{else}{even}{endif}" height="17">
+  <td><table cellpadding="0" cellspacing="0" border="0" class="pathtab"><tr height="17">{path}
+    <td><a href="index.php?page=comment&fk={FK}&action=read&idc={ID_COMMENT}&table={s_table}">{htm(SUBJECT)}</a></td></tr></table></td>
+  <td>{print_fk(user,,NAME)}</td>
+  <td>{todate(STAMP,1)}</td>
+</tr>

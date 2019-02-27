@@ -1,0 +1,8 @@
+{if SELECTED_VALUE}
+	<a href="/{FILE_URL}" target="_blank">Datei herunterladen</a>
+	<br>
+	<input type="checkbox" name="DELETE_FILE[{COL_NAME}]" value="{SELECTED_VALUE}"> PDF löschen?
+{else}
+	<input type="file" name="{COL_NAME}">
+{endif}
+

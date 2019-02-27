@@ -1,0 +1,97 @@
+<script language="JavaScript" type="text/javascript">
+<!--
+  function showAG(el)
+  {
+    var fk = el.options[el.selectedIndex].value;{if ag_inherit_fk}
+    if (!fk) fk = {ag_inherit_fk};{endif}
+    document.getElementById('ag_details').src='index.php?frame=iframe&page=attr_group_show&id='+fk;
+  }
+  //............
+function field_change(id, checkbox) {
+    if (checkbox.checked) {
+        $("field_row_"+id).style.color = "black";
+        if ($("field_search_"+id)) $("field_search_"+id).disabled = false;
+        if ($("field_needed_"+id)) $("field_needed_"+id).disabled = false;
+    } else {
+        $("field_row_"+id).style.color = "grey";
+        if ($("field_search_"+id)) $("field_search_"+id).disabled = true;
+        if ($("field_needed_"+id)) $("field_needed_"+id).disabled = true;
+    }
+}
+//-->
+</script>
+
+<h2>{if neu}neue Unterkategorie zu{else}Einstellungen f&uuml;r{endif} &quot;{htm(V1)}&quot;</h2>
+<table cellpadding="2" cellspacing="0" border="0" class="formTable">
+    <tr>
+        <td>
+            <strong><label for="v1">Name&nbsp;</label>: </strong>
+        </td>
+        <td>
+            <input onChange="setFlag(true)" type="text" class="inputfull" name="V1" id="v1" maxlength="255" value="{htm(V1)}" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong><label for="v1">Kurzbeschreibung&nbsp;</label>: </strong>
+        </td>
+        <td>
+            <input type="text" class="inputfull" name="V2" id="v2" value="{htm(V2)}" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong><label for="v1">Meta-Tags&nbsp;</label>: </strong>
+        </td>
+        <td>
+            <textarea class="inputfull" name="T1" id="t1" value="{htm(T1)}">{htm(T1)}</textarea>
+        </td>
+    </tr>
+{if ROOT == 2}
+<tr>
+ <td><strong>Vorschaubild</strong></td>
+ <td><input type="file" name="PREV"></td>
+</tr>
+{if IMG}
+<tr>
+ <td colspan="">
+  <img src="{IMG}" width="{IMG_W}" height="{IMG_H}" alt="{IMG}">
+ </td>
+</tr>
+{endif}
+{endif}
+
+{if ROOT == 4}
+    <tr>
+        <td><strong>Feldauswahl</strong></td>
+        <td>
+            <table cellspacing="1" width="100%" class="liste">
+                <tr>
+                    <th>Verwenden</th>
+                    <th width="60" colspan="2">Feld-Typ</th>
+                    <th width="160">Name</th>
+                    <th width="60">Suchfeld</th>
+                    <th width="60">Pflichtfeld</th>
+                    <th width="0"></th>
+                </tr>
+            </table>
+            <div style="max-height: 500px; overflow: auto;">
+                <table cellspacing="0" width="100%" class="liste" id="felderListe">
+                    {liste_felder}
+                </table>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Für Unterkategorien übernehmen?</strong></td>
+        <td>
+            <label class="error">
+                <input type="checkbox" name="RECURSIVE" value="1" class="nob" {if RECURSIVE} checked{endif} />
+                Ja, alle unter "Inhalt der Kategorie / Feldauswahl" vorgenommenen Einstellungen auf die Unterkategorien übertragen
+            </label>
+        </td>
+    </tr>
+{endif}
+
+</table>
+

@@ -1,0 +1,65 @@
+// Header style
+@design-header-logo-height: 40px;
+@design-header-logo-align: left;
+@design-header-logo-valign: middle;
+
+// Create article settings
+@design-ad-create-multi-checkbox-height: 160px;
+@design-ad-create-multi-checkbox-width: 140px;
+
+// Article search box
+@design-ad-search-multi-checkbox-shorten: true;
+
+// == Article box view
+// Number of rows used to display article titles 
+@design-ad-box-name-lines:  2;
+@design-ad-row-name-lines:  2;
+
+// Advertisements
+@design-advertisement-label: 'ANZEIGE';
+
+// Category hover-menu
+@design-category-hover-icon-position-horizontal: right;   // left or right
+@design-category-hover-icon-size-horizontal: 550px;
+@design-category-hover-icon-spacing-horizontal: 200px;       
+@design-category-hover-icon-offset-horizontal: -50px;
+@design-category-hover-icon-position-vertical: bottom;    // top or bottom
+@design-category-hover-icon-size-vertical: 350px;
+@design-category-hover-icon-spacing-vertical: 100px;    
+@design-category-hover-icon-offset-vertical: 0px;
+
+// Cookie usage notice
+@design-cookie-warning-lines-xs: 4;
+@design-cookie-warning-lines-sm: 2;
+@design-cookie-warning-lines-md: 2;
+@design-cookie-warning-lines-lg: 2;
+@design-cookie-warning-height-xs: @design-cookie-warning-lines-xs * @line-height-computed;
+@design-cookie-warning-height-sm: @design-cookie-warning-lines-sm * @line-height-computed;
+@design-cookie-warning-height-md: @design-cookie-warning-lines-md * @line-height-computed;
+@design-cookie-warning-height-lg: @design-cookie-warning-lines-lg * @line-height-computed;
+
+// Vendor boxes (small)
+@design-vendor-box-name-lines: 2;
+@design-vendor-box-image-height: 220px;
+@design-vendor-box-computed-image-height: @design-vendor-box-image-height + (@thumbnail-padding * 2) + 2px;       // Image height + padding + border
+@design-vendor-box-computed-name-height: @line-height-computed * @design-vendor-box-name-lines + 1px;             // Text height * lines + border-top
+@design-vendor-box-computed-buttons-height: @line-height-computed + (@padding-small-vertical * 2) + 1px;          // Text height + padding + border-top
+@design-vendor-box-computed-overall-height: @design-vendor-box-computed-image-height + @design-vendor-box-computed-name-height + @design-vendor-box-computed-buttons-height;
+@design-vendor-box-computed-spacing-vertical: @line-height-computed;
+// Vendor boxes (big)
+@design-vendor-box-top-name-lines: 2;
+@design-vendor-box-top-categories-lines: 1;
+@design-vendor-box-top-description-lines: 4;
+@design-vendor-box-top-computed-height: floor(@design-vendor-box-computed-overall-height * 2 + @design-vendor-box-computed-spacing-vertical);
+@design-vendor-box-top-computed-height-inner: @design-vendor-box-top-computed-height - (@padding-base-vertical * 2);
+@design-vendor-box-top-computed-buttons-height: @line-height-computed + (@padding-base-vertical * 2) + 2px;
+@design-vendor-box-top-computed-details-height: @design-vendor-box-top-computed-height-inner - @design-vendor-box-top-computed-buttons-height;
+
+// Search form
+@design-search-form-max-fields-height: 231px;
+
+// == Text box element
+// Height of the text box
+@design-text-box-height:    34px;
+// Padding equal to breadcrumbs
+@design-text-box-padding:   @breadcrumb-padding-vertical @breadcrumb-padding-horizontal;

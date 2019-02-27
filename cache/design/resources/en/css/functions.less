@@ -1,0 +1,98 @@
+.fa-icon-before(@fa-icon-var) {
+  .fa-icon();
+  &:before {
+    content: @fa-icon-var;
+  }
+}
+.fa-icon-after(@fa-icon-var) {
+  .fa-icon();
+  &:after {
+    content: @fa-icon-var;
+  }
+}
+
+.text-height (@font-size, @line-height, @line-count) {
+  height: @font-size * @line-height * @line-count;
+}
+
+.text-height (@font-size, @line-height, @line-count) when (ispixel(@line-height)) {
+  height: @line-height * @line-count;
+}
+
+// Shorten text if longer then container
+.text-ellipsis (@font-size, @line-height, @line-count) {
+  .text-height(@font-size, @line-height, @line-count);
+  // Generic css
+  box-sizing: border-box;
+  display: block;
+  font-size: @font-size;
+  line-height: @line-height;
+  margin: 0 auto;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  // Opera
+  -o-text-overflow: ellipsis;
+  // Webkit css
+  display: -webkit-box;
+  -webkit-line-clamp: @line-count;
+  -webkit-box-orient: vertical;
+}
+
+// Dynamic clear before a new row
+.dynamic-column-special-clear (@nth-interval, @nth-offset, @clear-direction) {
+  // Reset for proper responsive layout
+  &:nth-child(1n) { clear: none; }
+  // Add clear style
+  &:nth-child(@{nth-interval}n + @{nth-offset}) { clear: @clear-direction; }
+}
+// Add margin-top for 2nd row and following
+.dynamic-column-special-margin (@nth-interval, @nth-offset, @margin-height) {
+  // Reset for proper responsive layout
+  &:nth-child(1n) { margin-top: 0; }
+  // Add margin
+  &:nth-child(@{nth-interval}n + @{nth-offset}) { margin-top: @margin-height; }
+}
+
+// Generate grids for a range of item counts
+.dynamic-column-widths (@class-row, @class-item, @minCount, @maxCount) {
+  .dynamic-column-widths-loop(@class-row, @class-item, @minCount, @maxCount, 0)
+}
+.dynamic-column-widths (@class-row, @class-item, @minCount, @maxCount, @widthPixels) {
+  .dynamic-column-widths-loop(@class-row, @class-item, @minCount, @maxCount, @widthPixels)
+}
+// Generate grid cols for a specific number of items
+.dynamic-column-widths-loop (@class-row, @class-item, @minCount, @index, @widthPixels) when (@index >= @minCount) {
+  // Item style
+  &.@{class-row}@{index} {
+    & > .@{class-item} {
+      .make-dynamic-column-widths(@index);
+    }
+  }
+  // Item style (fixed width instead of percent)
+  &.@{class-row}@{index}.design-width-absolute {
+    & > .@{class-item} {
+      .make-dynamic-column-widths-absolute(@index, @widthPixels);
+    }
+  }
+  // Loop until minimum reached
+  .dynamic-column-widths-loop(@class-row, @class-item, @minCount, (@index - 1), @widthPixels);
+}
+
+.make-dynamic-column-widths (@index) {
+  float: left;
+  // Inner gutter via padding
+  padding-left:  (@grid-gutter-width / 2);
+  padding-right: (@grid-gutter-width / 2);
+  // Calculate width
+  width: percentage(1 / @index);
+  // Clear after row
+  .dynamic-column-special-clear(@index, 1, left);
+  // Margin before next row
+  .dynamic-column-special-margin(1, @index + 1, @line-height-computed);
+}
+
+.make-dynamic-column-widths-absolute (@index, @widthPixels) when (@widthPixels >= 0) {
+  // Calculate width
+  width: round(@widthPixels / @index);
+}

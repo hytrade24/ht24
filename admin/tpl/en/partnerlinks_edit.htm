@@ -1,0 +1,49 @@
+<h1>Partnerlink {if ID_PARTNERLINKS}&auml;ndern{else}hinzuf&uuml;gen{endif}</h1>
+<p>Bitte geben Sie alle Informationen an.</p>
+
+{if err}
+<h2 class="error">Fehler aufgetreten</h2>
+<p class="error">{err}</p>
+{endif}
+
+{if ok}
+<h2 class="ok">Speichervorgang erfolgreich!</h2>
+{endif}
+
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+<input type="hidden" name="ID_PARTNERLINKS" value="{ID_PARTNERLINKS}">
+<input type="hidden" name="RAWLINK" value="0">
+<input type="hidden" name="VISIBLE" value="0">
+<input type="hidden" name="TOPLINK" value="0">
+<input type="hidden" name="PAID" value="0">
+<table class="formTable">
+	<tr>
+		<th>Titel</th>
+		<td><input type="text" name="LINKTITEL" size="50" value="{htm(LINKTITEL)}"></td>
+		<th>Sichtbar</th>
+		<td><input type="checkbox" name="VISIBLE" value="1" {if VISIBLE}checked{endif}> Der Link wird angezeigt</td>
+	</tr>
+	<tr>
+		<th>Link inkl HTTP://</th>
+		<td><input type="text" name="LINK" size="50" value="{htm(LINK)}"></td>
+		<th>Toplink</th>
+		<td><input type="checkbox" name="TOPLINK" value="1" {if TOPLINK}checked{endif}> Fett dargestellt</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<th>Rawlink</th>
+		<td><input type="checkbox" name="RAWLINK" value="1" {if RAWLINK}checked{endif}> Der Link wird ohne Z&auml;hler ausgegeben</td>
+	</tr>
+	<tr>
+		<th valign="top">bezahlter</th>
+		<td colspan="3"><input type="checkbox" name="PAID" value="1" {if PAID}checked{endif}> bis {datedrop(PAIDTIL)} <br>
+		Der Link wird gezeigt wenn "bezahlt" und Zeit nicht verstrichen ist gesondert!<br>
+		ACHTUNG auch wenn oben "sichtbar" steht!!</td>
+	</tr>	
+	  <tr class="footer">
+   <td align="right" colspan="4"><input type="submit" class="button" value="Speichern"></td>
+  </tr>
+</table>
+</form>

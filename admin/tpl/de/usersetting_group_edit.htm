@@ -1,0 +1,43 @@
+{if ID_SETTING_GROUP}
+ <h1>Einstellungsgruppe &quot;{htm(V1)}&quot; bearbeiten</h1>
+{else}
+ <h1>Neue Einstellungsgruppe anlegen</h1>
+{endif}
+
+<p>Hier können Sie Einstellungsgruppen anlegen oder bearbeiten. Nur der Name der Gruppe <b>muss</b> ausgefüllt werden.</p>
+
+{if err}
+ <p class="error">{err}</p>
+{endif}
+
+{if ok}
+ <h2 class="ok">Speichervorgang erfolgreich!</h2>
+{endif}
+
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="{curpage}">
+ <input type="hidden" name="ID_SETTING_GROUP" value="{ID_SETTING_GROUP}">
+ <table class="formTable" cellspacing="0" width="600">
+  <tr>
+   <th nowrap>&Ouml;ffentlich sichtbar?</th>
+   <td width="100%"><input type="checkbox" name="B_VIS" value="1" class="nob" {if B_VIS} checked{endif} /></td>
+  </tr>
+  <tr>
+   <th>Name der Gruppe</th>
+   <td><input type="text"  name="V1" value="{htm(V1)}" size="45"></td>
+  </tr>
+  <tr>
+   <th>Kurzbeschreibung (255 Zeichen)</th>
+   <td><input type="text" name="V2" value="{htm(V2)}" size="45" /></td>
+  </tr>
+  <tr>
+   <th colspan0"2">Beschreibungstext</th>
+  </tr>
+  <tr>
+   <td colspan="2">{editor(T1,600,400)}</td>
+  </tr>
+  <tr class="footer">
+   <td colspan="2" align="right"><input type="submit" value="Speichern" class="button"></td>
+  </tr>
+ </table> 
+</form>

@@ -1,0 +1,166 @@
+{if new}
+<thead>
+    <tr>
+            <th>Date</th>
+            <th>Trade partner</th>
+            <th>Quantity</th>
+            <th>
+                Amount/piece
+            </th>
+            <th>Action</th>
+        </tr>
+</thead>
+{endif}
+<tr class="{if !BID_STATUS_ACTIVE}text-error{endif}">
+	<td>
+		{todate(STAMP_BID,1)}
+	</td>
+	<td>
+		<a href="{uri_action(view_user,{urllabel(NAME)},{FK_USER_FROM})}" title="Show profile">
+			{htm(NAME)}
+		</a>
+	</td>
+	<td class="align-right">
+		{AMOUNT}
+	</td>
+	<td class="align-right">
+		{topreis_ex(BID)} {CURRENCY_DEFAULT}
+		<a style="cursor: help;" onmouseout="setBlobText(this, '', false);" 
+			onmouseover="setBlobText(this, 'Totalamount: {topreis(BID_FULL)} {CURRENCY_DEFAULT}', true);">
+			<img border="0" src="{uri_baseurl(/gfx/ico.i.gif)}">
+		</a>
+	</td>
+	<td>
+		{if BID_STATUS_ACTIVE}
+			{if FK_USER_FROM != ID_USER}
+				<a onclick="return confirm('Do you want to accept the proposal in amount of {topreis(BID)} {CURRENCY_DEFAULT}?');" href="{uri_action(marktplatz_handeln,{FK_AD},{FK_AD_VARIANT},a,{ID_TRADE})}" title="Accept price proposal">
+					Accept
+				</a>
+            {else}
+                <strong>Active</strong>
+			{endif}
+		{endif}
+		{if BID_STATUS_ACCEPTED}
+			<strong>Accepted</strong>
+		{endif}
+		{if BID_STATUS_ENDED}
+			Closed
+		{endif}
+		{if BID_STATUS_REQUEST}
+			<i>Gesuch</i>
+		{endif}
+		{if BID_STATUS_CANCEL}
+			<span class="text-error">
+				Cancelled
+			</span>
+		{endif}
+	</td>
+</tr>
+{if ID_TRADE_my}
+	<tr class="{if !BID_STATUS_ACTIVE}text-error{endif}">
+		<td>
+			{todate(STAMP_BID_my)}
+		</td>
+		<td>
+			<a href="{uri_action(view_user,{urllabel(NAME)},{FK_USER_FROM})}" title="Show profile">
+				{htm(NAME_my)}
+			</a>
+		</td>
+		<td class="align-right">
+			{AMOUNT_my}
+		</td>
+		<td class="align-right">
+			{topreis_ex(BID_my)} {CURRENCY_DEFAULT}
+		</td>
+		<td class="align-right">
+			{topreis_ex(BID_FULL_my)} {CURRENCY_DEFAULT}
+		</td>
+		<td>
+			{if BID_STATUS_ACTIVE_my}
+				{if FK_USER_FROM_my == ID_USER}
+					<a onclick="return confirm('Do you want to cancel the proposal?');" href="{uri_action(marktplatz_handeln,{FK_AD},{FK_AD_VARIANT},c,{ID_TRADE})}" title="Seclude proposal">
+											Cancel
+					</a>
+				{else}
+					<a onclick="return confirm('Do you want to accept the proposal in amount of {topreis(BID)} {CURRENCY_DEFAULT}?');" href="{uri_action(marktplatz_handeln,{FK_AD},{FK_AD_VARIANT},a,{ID_TRADE})}" title="Accept price proposal">
+											Accept
+					</a>
+				{endif}
+			{endif}
+			{if BID_STATUS_ACCEPTED_my}
+							<strong>Accepted</strong>
+			{endif}
+			{if BID_STATUS_ENDED_my}
+					Closed
+			{endif}
+			{if BID_STATUS_CANCEL_my}
+				<span class="text-error">
+					Cancelled
+				</span>
+			{endif}
+		</td>
+	</tr>
+	{if REMARKS}
+	<tr class="{if !BID_STATUS_ACTIVE}error{endif}">
+		<td></td>
+		<td colspan="5">
+			Remarks:
+			<i>{text(REMARKS)}</i>
+		</td>
+	</tr>	
+	{endif}
+{endif}
+{if last}
+	<tr>
+		<td colspan="6">
+			{if ID_TRADE_my}
+				<p>
+					{if BID_STATUS_MY_ACTIVE}
+						<span class="text-success">Current counter proposal:{topreis_ex(BID_my)} {CURRENCY_DEFAULT}</span>
+						<a onclick="return confirm('Do you want to cancel the proposal?');" href="{uri_action(marktplatz_handeln,{FK_AD},{FK_AD_VARIANT},c,{ID_TRADE_my})}" title="Seclude proposal">
+                            Cancel
+						</a>
+					{else}
+						<span class="text-error">
+							Your last counter proposal amounted {topreis_ex(BID_my)} {CURRENCY_DEFAULT}
+						</span>
+					{endif}
+				</p>
+			{endif}
+			{if BID_STATUS_ACCEPTED}
+				<span class="text-success">Offer accepted</span>
+			{else}
+			<form method="post" action="{uri_baseurl(/index.php)}">
+				<input type="hidden" name="page" value="{curpage}" />
+				<input type="hidden" name="ID_AD" value="{ID_AD_MASTER}" />
+				<input type="hidden" name="ID_AD_VARIANT" value="{ID_AD_VARIANT}" />
+				<input type="hidden" name="ID" value="{FK_USER_BID}" />
+				<input type="hidden" name="FK_USER_TO" value="{FK_USER_BID}" />
+				<input type="hidden" name="AGB" value="1" />
+                <input type="hidden" name="BID_AMOUNT" value="{AMOUNT}" />
+
+                <div class="form-group">
+                    <label class="control-label"><strong>Quantity:</strong></label>
+                    <div class="controls">
+                        {AMOUNT} pieces
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label"><strong>Price proposal (Piece price):</strong></label>
+                    <div class="input-group">
+                        <input type="text" name="BID_NEW" value="{BID_NEW}" class="form-control" />
+                        <div class="input-group-addon">{CURRENCY_DEFAULT} / pieces</div>
+                    </div>
+                </div>
+                <br /><br />
+				<input class="btn btn-primary" type="submit" value="Submit proposal"
+                       onclick="return confirm('Are you sure, to submit the counter proposal?');" />
+                <a class="btn btn-default" href="{uri_action(my-marktplatz-handeln)}">
+                    To overview!
+                </a>
+			</form>	
+			{endif}
+		</td>
+	</tr>
+{endif}

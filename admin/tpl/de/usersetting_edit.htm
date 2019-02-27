@@ -1,0 +1,55 @@
+{if ID_USERSETTING}
+ <h1>Einstellung &quot;{htm(V1)}&quot; bearbeiten</h1>
+{else}
+ <h1>Neue Einstellung anlegen</h1>
+{endif}
+
+<p>Hier können Sie Einstellungen anlegen oder bearbeiten.</p>
+
+{if err}
+ <p class="error">{err}</p>
+{endif}
+
+{if ok}
+ <h2 class="ok">Speichervorgang erfolgreich!</h2>
+{endif}
+
+<form method="post" action="index.php">
+ <input type="hidden" name="page" value="{curpage}">
+ <input type="hidden" name="ID_USERSETTING" value="{ID_USERSETTING}">
+ <table class="formTable" cellspacing="0">
+  <tr>
+   <th nowrap>&Ouml;ffentlich sichtbar?</th>
+   <td><input type="checkbox" name="B_VIS" value="1" class="nob" {if B_VIS} checked{endif} /></td>
+  </tr>
+  <tr>
+   <th>Gruppenzuordnung</th>
+   <td>{select(setting_group)}</td>
+  </tr>
+  <tr>
+   <th>Name der Einstellung </th>
+   <td><input type="text"  name="V1" value="{htm(V1)}" size="45"></td>
+  </tr>
+  <tr>
+   <th valign="top">Kurzbeschreibung (255 Zeichen)</th>
+   <td><textarea name="V2" rows="4" cols="35">{htm(V2)}</textarea></td>
+  </tr>
+  <tr>
+   <th valign="top">Typ der Einstellung</th>
+   <td><select name="TYP">{TYPEN}</select></td>
+  </tr>
+  <tr>
+   <th valign="top">Format / Art<br />oder Parameter</th>
+   <td><textarea name="FORMAT" rows="4" cols="45">{htm(FORMAT)}</textarea></td>
+  </tr> 
+  <tr>
+   <th>Default Wert</th>
+   <td><input type="text" name="DEFAULT_VALUE" value="{htm(DEFAULT_VALUE)}" size="45"></td>
+  </tr>
+  <tr class="footer">
+   <td colspan="2" align="right">
+    <input type="submit" value="Speichern" class="button">
+   </td>
+  </tr>
+ </table> 
+</form>

@@ -1,0 +1,30 @@
+/************************************
+ *    Grundlegende HTML-Elemente    *
+ * -------------------------------- *
+ * z.B. Hintergrund, Links, Listen  *
+ ************************************/
+
+// Page styles
+body {
+  background: @design-page-background;
+  color: @design-page-text-color;
+  font-family: @font-family-base;
+  margin-top: -1px;
+  padding-top: 1px;
+}
+
+// Regular link
+a {
+  color: @design-link-color;
+  // Hover transition effect
+  & when not(@link-hover-effect=none) {
+    transition: @link-hover-effect; /* explorer 10 */
+    -webkit-transition: @link-hover-effect; /* chrome & safari */
+    -moz-transition: @link-hover-effect; /* firefox */
+    -o-transition: @link-hover-effect; /* opera */
+  }
+  // Hover or active link
+  &:hover, &:active {
+    color: @design-link-hover-color;
+  }
+}

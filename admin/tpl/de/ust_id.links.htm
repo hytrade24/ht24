@@ -1,0 +1,41 @@
+{if !INVOICE_TAX_EXEMPT_USTID}
+<div class="left_alert">
+    <h1>Keine eigene USt.-ID hinterlegt</h1>
+
+    <p>Achtung! Sie haben keine eigene USt.-ID hinterlegt.</p>
+    <a class="button" href="index.php?page=options&selectplugin=MARKTPLATZ&typ=INVOICE_TAX_EXEMPT_USTID">Hier können Sie das ändern</a>
+</div>
+{endif}
+
+<div class="left_setting">
+
+            <h1>Einstellung</h1>
+
+    <h2>USt.-ID Optionen</h2>
+            <p>
+                {if INVOICE_TAX_EXEMPT_ENABLE}
+                Die UST-ID Optionen  sind aktiv. Je nach Kunde und Land werden die landesspezifischen Einstellungen berücksichtigt.
+                {else}
+                Die UST-ID Optionen sind zur Zeit deaktiviert. Alle Rechnungen werden ungeachtet des Empfängers mit der angegebenen USt. gestellt.
+                {endif}
+            </p>
+           <p>
+
+                Sie können die Option in den <a class="button" href="index.php?page=options&selectplugin=MARKTPLATZ&typ=INVOICE_TAX_EXEMPT_ENABLE">Marktplatz Einstellungen ändern.</a>
+            </p>
+
+</div>
+<div class="left_info">
+
+    <h1>Hinweis</h1>
+
+    <h2>Länder hinzufügen</h2>
+    <p>
+        Sie können hier weitere Länder hinzufügen.
+    </p>
+    <p>
+
+       <a class="button" href="index.php?page=countries">Länder hinzufügen</a>
+    </p>
+
+</div>

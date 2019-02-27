@@ -1,0 +1,59 @@
+
+			<tr>
+				<td title="Quantity">
+					<input type="hidden" name="FK_PACKET_RUNTIME" value="{ID_PACKET_RUNTIME}" />
+				</td>
+				<td title="{htm(T1)}">{htm(V1)}</td>
+				<td>
+					{topreis_ex(BILLING_PRICE)} {CURRENCY_DEFAULT}
+					{if CYCLE_ONCE}
+						(Cycle once)
+					{else}
+						/ {BILLING_FACTOR}
+                        {if CYCLE_DAY}
+                            {if BILLING_FACTOR==1}
+                                Day
+                            {else}
+                                Days
+                            {endif}
+                        {endif}
+                        {if CYCLE_WEEK}
+                            {if BILLING_FACTOR==1}
+                                Week
+                            {else}
+                                Weeks
+                            {endif}
+                        {endif}
+                        {if CYCLE_MONTH}
+                            {if BILLING_FACTOR==1}
+                                Month
+                            {else}
+                                Months
+                            {endif}
+                        {endif}
+                        {if CYCLE_QUARTER}
+                            {if BILLING_FACTOR==1}
+                                Quarter
+                            {else}
+                                Quarters
+                            {endif}
+                        {endif}
+                        {if CYCLE_YEAR}
+                            {if BILLING_FACTOR==1}
+                                Year
+                            {else}
+                                Years
+                            {endif}
+                        {endif}
+					{endif}
+				</td>
+				<td>{topreis_ex(PRICE_ALL)} {CURRENCY_DEFAULT}</td>
+				<td>{topreis_ex(PRICE_ALL_BRUTTO)} {CURRENCY_DEFAULT}</td>
+			</tr>
+			<tr class="table-no-lines">
+				<td>&nbsp;</td>
+				<td colspan="3" style="padding-left: 16px;">
+					Contains:<br />
+					{text(PACKETS_TEXT)}
+				</td>
+			</tr>

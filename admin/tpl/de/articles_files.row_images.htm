@@ -1,0 +1,11 @@
+<div style="float: left; text-align: center;">
+  <a target="_blank" href="{SRC}">
+    <img border="0" style="margin: 4px; border: 1px solid black;" src="{SRC_THUMB}">
+  </a><br />
+  {if IS_DEFAULT==0}
+    <a href="index.php?page=articles_files&action=image_default&ID_IMAGE={ID_IMAGE}&ID_AD={FK_AD}&frompopup=1&frame=popup">Standard-Bild</a><br />
+  {else}
+    <strong>Standard-Bild</strong><br />
+  {endif}
+  <a onclick="return confirm('Dieses Bild wirklich löschen?');" href="index.php?page=articles_files&action=image_del&ID_IMAGE={ID_IMAGE}&ID_AD={FK_AD}&frompopup=1&frame=popup">L&ouml;schen</a>
+</div>

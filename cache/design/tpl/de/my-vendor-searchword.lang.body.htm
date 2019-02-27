@@ -1,0 +1,25 @@
+<div id="searchword-lang-{ABBR}">
+    <script type="text/javascript">
+        jQuery(function() {
+            reloadVendorSearchWordList("#vendorSearchList{ABBR}", "{ABBR}");
+        })
+    </script>
+
+    <form action="#" id="vendorSearchWordFormular{ABBR}" class="vendorSearchWordFormular form-inline">
+        <input type="hidden" name="DO" value="ADD" />
+        <input type="hidden" name="LANG" value="{ABBR}" />
+
+        <p id="vendorSearchList{ABBR}" class="vendorSearchList design-action-buttons"></p>
+
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" name="SEARCHWORD" />
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-success">
+                        Schlagwort hinzufügen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

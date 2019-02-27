@@ -1,0 +1,71 @@
+{if WARNING_MODERATION}
+<div class="alert alert-info">
+<strong>Another review is required!</strong><br>
+    If you edit your vendor profile it will not be open for public anymore,
+    until an administrator has reviewed it again.
+
+</div>
+{else}
+    {if VENDOR_MODERATED!=1}
+        {if VENDOR_MODERATED==2}
+        <div class="alert alert-danger">
+        <strong>Vendor profile was declined by the administrator!</strong><br>
+            Your vendor profile was declined by an administrator!
+            {if VENDOR_DECLINE_REASON}
+                This was entered as a reason:<br>{text(VENDOR_DECLINE_REASON)}
+            {endif}
+
+        </div>
+        {else}
+        <div class="alert alert-info">
+        <strong>Vendor profile will be reviewed...</strong><br>
+            Your vendor profile will be reviewed by an administrator shortly. Once the administrator
+            confirmed your profile, it will be open for public again.
+
+        </div>
+        {endif}
+    {endif}
+{endif}
+
+<ul class="nav nav-tabs userTabsTable">
+
+    <li class="{uri_is_active(my-vendor,active,)}">
+        <a href="{uri_action(my-vendor)}">Vendor</a>
+    </li>
+    <li class="dropdown visibleOnEnabledVendor {uri_is_active(my-vendor-place,active,)}{uri_is_active(my-vendor-place-update,active,)}{uri_is_active(my-vendor-description,active,)}{uri_is_active(my-vendor-business-hours,active,)}{uri_is_active(my-vendor-searchword-list,active,)}{uri_is_active(my-vendor-gallery,active,)}">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        Description <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{uri_action(my-vendor-description)}">Description</a></li>
+            {if VENDOR_FIELDS}
+            <li><a href="{uri_action(my-vendor-details)}">Extra details</a></li>
+            {endif}
+            <li><a href="{uri_action(my-vendor-business-hours)}">Öffnungszeiten</a></li>
+            <li><a href="{uri_action(my-vendor-searchword-list)}">keywords</a></li>
+            <li><a href="{uri_action(my-vendor-gallery)}">Images and Videos</a></li>
+            <li><a href="{uri_action(my-vendor-place)}">Locations</a></li>
+            <li><a href="{uri_action(my-vendor-imprint)}">Site notice</a></li>
+        </ul>
+    </li>
+    {if vendorHomepageAvailable}
+    <li class="visibleOnEnabledVendor {uri_is_active(my-vendor-homepage,active,)}">
+        <a href="{uri_action(my-vendor-homepage)}">Homepage</a>
+    </li>   
+    {endif}
+    <li class="visibleOnEnabledVendor {uri_is_active(my-vendor-comments,active,)}">
+        <a href="{uri_action(my-vendor-comments)}">Comments</a>
+    </li>   
+     <li class="dropdown visibleOnEnabledVendor {uri_is_active(my-vendor-events,active,)}">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        Events <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{uri_action(my-vendor-events)}">Show calendar</a></li>
+            <li><a href="{uri_action(my-calendar-events-add,,vendor)}">Make a calendar entry</a></li>
+        </ul>
+    </li>
+    <li class="visibleOnEnabledVendor {uri_is_active(my-vendor-stats-profil,active,)}">
+        <a href="{uri_action(my-vendor-stats-profil)}">Access-statistics</a>
+    </li>
+</ul>

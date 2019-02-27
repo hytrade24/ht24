@@ -1,0 +1,13 @@
+<tr>
+    <td>{htm(V1)}</td>
+    <td>{htm(Name)}</td>
+    <td>{KAT_COUNT} Kategorie(n)</td>
+    <td>{FIELD_COUNT} Feld(er)</td>
+    <td>
+        <form method="POST">
+            <input type="hidden" name="FK_TABLE" value="{ID_TABLE_DEF}" />
+            <button name="DO" value="EXPORT">Felder als CSV</button>
+            <button name="DO" value="EXPORT_KAT">Kategoriezuordnung als CSV</button>
+        </form>
+    </td>
+</tr>

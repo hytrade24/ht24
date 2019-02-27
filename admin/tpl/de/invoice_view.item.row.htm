@@ -1,0 +1,45 @@
+<tr class="zeile{even} item-row" data-invoice-billing-item="{ID_BILLING_INVOICE_ITEM}">
+	<td valign="top">
+		{if ID_BILLING_CANCEL}
+		<span title="Beinhaltet Strornoanfragen" style="color: blue;">
+			&nbsp;&nbsp;<strong>!</strong>
+		</span>
+		{endif}
+		<span>{POS}</span>
+	</td>
+	<td valign="top">
+	{if MODE_EDIT}
+		<textarea class="item-description" name="DESCRIPTION[{POS}]" rows="2" style="width: 400px;">{htm(DESCRIPTION)}</textarea>
+	{else}
+		<span class="item-description">{text(DESCRIPTION)}</span>
+	{endif}
+	</td>
+	<td align="right" valign="top">
+	{if MODE_EDIT}
+		<input type="number" class="item-quantity" name="QUANTITY[{POS}]" value="{QUANTITY}" />
+	{else}
+		<span class="item-quantity">{QUANTITY}</span>
+	{endif}		
+	</td>
+  <td align="right" valign="top">
+	{if MODE_EDIT}
+		<input type="text" class="item-price" name="PRICE[{POS}]" value="{topreis(PRICE)}" data-tax="{TAX_VALUE}" />
+	{else}
+		<span class="item-price">{topreis(PRICE)}</span> {CURRENCY_DEFAULT}
+	{endif}
+	</td>
+	<td align="right" valign="top">
+		{TAX_VALUE} %
+	</td>
+	<td align="right" valign="top">
+		<span class="item-price-total">{topreis(TOTAL_PRICE)}</span> {CURRENCY_DEFAULT}
+	</td>
+	{if MODE_EDIT}
+	<td align="center" valign="top">
+		<input type="checkbox" class="item-storno item-storno-full" name="STORNO_FULL[{POS}]" value="1"{if STORNO_FULL} checked{endif} />
+	</td>
+	<td align="center" valign="top">
+		<input type="checkbox" class="item-storno item-storno-keep" name="STORNO_KEEP[{POS}]" value="1"{if STORNO_KEEP} checked{endif} />
+	</td>
+	{endif}
+</tr>

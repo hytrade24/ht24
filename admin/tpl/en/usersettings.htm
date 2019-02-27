@@ -1,0 +1,29 @@
+<h1><img src="gfx/sys_64.gif" width="64" height="64" alt="" border="0" align="left">Usereinstellungen ändern</h1> 
+<p>Diese Einstellungen können von jedem User nach eigenen Wünschen eingestellt werden. Bei neuen Users wird die Staandardeinstellung gesetzt, welche Sie hier vordefinieren können.</p> 
+<p>Bitte geben Sie die Beschreibung so an, dass Sie f&uuml;r den user auf der Webseite verst&auml;ndlich ist.</p> 
+<form method="post" action="index.php"> 
+  <input type="hidden" name="page" value="{curpage}" /> 
+  <input type="hidden" name="selectplugin" value="{selectplugin}" /> 
+  Wählen Sie eine bestimmte Gruppe  aus:
+  {select(setting_group,,,,,,alle Gruppen anzeigen)}
+  <input type="submit" value="Ausw&auml;hlen" /> 
+</form> 
+
+<h2>Einstellungsliste {htm(GRUPPE)}</h2> 
+ <table class="liste" cellspacing="0">
+  <tr>
+   <th>Aktion</th>
+   <th>Sichtbar</th>
+   <th>Name der Einstellung</th>
+   <th>Typ</th>
+   <th>Defaultwert</th>
+  </tr>
+  {if liste}
+  {liste}
+  {else}
+  <tr>
+   <td colspan="5" align="center" class="error">Keine Einstellungen gefunden!</td>
+  </tr>
+  {endif}
+ </table>
+<p>&nbsp;</p> 

@@ -1,0 +1,313 @@
+<style type="text/css">
+	.highlight {
+		background-color: #FFFBCC !important;
+	}
+</style>
+
+<h1>Invoice overview</h1>
+<p>Your invoice in the overview</p>
+
+{if OPEN}
+	<p>
+		You have to meet <strong>{topreis_ex(OPEN)}</strong> {CURRENCY_DEFAULT} outstanding invoices.
+	</p>
+{endif}
+
+
+<ul class="nav nav-tabs userTabsTable">
+	<li{if show_open} class="active"{endif}>
+		<a href="{uri_action(invoices)}">Outstanding invoices</a>
+	</li>
+	<li{if show_paid} class="active"{endif}>
+		<a href="{uri_action(invoices,1,paid)}">Paid invoices</a>
+	</li>
+	<li{if show_storno} class="active"{endif}>
+		<a href="{uri_action(invoices,1,storno)}">Canceled invoices</a>
+	</li>
+	<li{if show_credit} class="active"{endif}>
+		<a href="{uri_action(invoices,1,credit)}">Show credit</a>
+	</li>
+
+	{if OPTION_COUPON_ENABLED}
+	<li{if show_coupon} class="active"{endif}>
+		<a href="{uri_action(invoices,1,coupon)}">Coupon</a>
+	</li>
+	{endif}
+	<li{if show_cancel_requests} class="active"{endif}>
+		<a href="{uri_action(invoices,1,cancel_requests)}">Submitted cancellation requests</a>
+	</li>
+</ul>
+{if show_open || show_paid || show_storno}
+	<form action="{uri_action(invoice_print)}" method="post">
+	<input type="hidden" id="input_do" name="do" value="selected" />
+
+	{if !liste}
+	<div class="alert alert-info">
+		No invoices found
+	</div>
+	{else}
+		<table class="mytable table table-bordered table-striped table-condensed">
+			<tr>
+				<th>
+				</th>
+				<th>
+					Invoice-Nr.
+				</th>
+				<th style="padding-right:55px;">
+					Invoice date
+				</th>
+				<th>
+					Due until
+				</th>
+				<th>
+					Invoice status
+				</th>
+
+				<th style="text-align:right;">
+					Amount
+				</th>
+				<th>
+					Action
+				</th>
+			</tr>
+			{liste}
+		</table>
+
+		{pager}
+		<p>
+			<button type="button" name="do" class="btn btn-default" onclick="$('#input_do').val('print').parent('form').submit();">
+				<i class="glyphicon glyphicon-print"></i>
+				Print selected invoices
+			</button>
+			<button type="button" name="do" class="btn btn-default" onclick="$('#input_do').val('download').parent('form').submit();">
+				<i class="glyphicon glyphicon-download"></i>
+				Download selected invoices
+			</button>
+		</p>
+	{endif}
+	</form>
+
+	<div class="design-content-box design-icon-legend">
+		<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-eye-open"></i></a> = view
+		</div>
+		<div class="pull-left"><a class="btn btn-default"><i class="glyphicon glyphicon-print"></i></a> = print
+		</div>
+		<div class="pull-left">
+			<a class="btn btn-default">
+				<i class="fa fa-eraser"></i>
+			</a> = Request for invoice cancel
+		</div>
+		<div class="pull-left">
+			<span class="btn btn-default" style="color: blue;">
+				<strong>!</strong>
+			</span> = Include cancel requests
+		</div>
+	</div>
+{endif}
+{if show_credit}
+
+
+	<h4>My credits</h4>
+
+	{if TOTAL_CREDITNOTE_SUM}
+		<p>You have {topreis_ex(TOTAL_CREDITNOTE_SUM)} {CURRENCY_DEFAULT} credits
+		because of activated coupons.<br> It will be balanced automatically with the next invoice.
+</p>
+	{endif}
+
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Description</th>
+				<th>Totalprice</th>
+				<th>Remaining price</th>
+			</tr>
+		</thead>
+		{if liste_creditnotes}
+			{liste_creditnotes}
+		{else}
+			<tr><td colspan="4">You have no creditnotes at the moment</td></tr>
+		{endif}
+	</table>
+
+	{if liste_billableitems}
+		<hr>
+
+		<h4>Yet not invoiced positions</h4>
+
+		<p>The following positions will be invoiced in the position.</p>
+
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Description</th>
+				<th>Totalprice</th>
+			</tr>
+		</thead>
+		{if liste_billableitems}
+			{liste_billableitems}
+		{else}
+			<tr><td colspan="3">You have no billable items at the moment</td></tr>
+		{endif}
+	</table>
+
+	{endif}
+{endif}
+{if show_coupon && OPTION_COUPON_ENABLED}
+	<h4>My coupons</h4>
+
+
+	<p>If you received coupon codes from us, you can redeem those in the form below. Coupons Gutscheine
+		may contain cutting of prices of several services or contain credits of a specified amount.
+		</p>
+		<p>The service will be shown below if you redeemed a code, but did not redeemed
+			the service.</p>
+
+
+	{if SUCCESS_COUPON}
+		<div class="alert alert-success">The coupon {htm(COUPON_CODE)} was redeemed successfully.<br>{SUCCESS_COUPON_MSG}</div>
+	{endif}
+	{if ERR_COUPON}
+		<div class="alert alert-danger">{htm(ERR_COUPON)}</div>
+	{endif}
+
+	<form class="form form-horizontal design-content-box" action="{uri_action(invoices,1,coupon)}" method="post">
+		<div class="control-group">
+			<label class="control-label"><strong>Type coupon code:</strong></label>
+			<div class="controls">
+				<input type="text" name="COUPON_CODE" value="{htm(COUPON_CODE)}" placeholder="Coupon code">
+				<input type="submit" class="btn" value="Redeem a coupon">
+			</div>
+		</div>
+	</form>
+
+
+	{if liste_coupons}
+
+	<h5>Not yet activated coupons</h5>
+	<table class="mytable table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+				<th>Coupon</th>
+				<th>Activated on</th>
+				<th>Coupon-code</th>
+			</tr>
+		</thead>
+		{if liste_coupons}
+			{liste_coupons}
+		{endif}
+	</table>
+	{endif}
+
+{endif}
+
+{if show_cancel_requests}
+<div class="row">
+	<div class="col-md-12">
+		<table class="list-cancel-requests table table-bordered table-striped table-condensed">
+			<thead>
+			<tr>
+				<th>Cancel request ID</th>
+				<th>Description</th>
+				<th>Status</th>
+				<th>Customer remarks</th>
+				<th>Admin remarks</th>
+				<th>Last modified</th>
+				<th>Created at</th>
+				<th>Action</th>
+			</tr>
+			</thead>
+			<tbody>
+			{liste_cancel_requests}
+			</tbody>
+		</table>
+	</div>
+</div>
+{endif}
+
+{if show_open}
+	<h1>Invoice Positions</h1>
+	{if liste_rechnungslauf}
+	<table class="table table-bordered table-striped table-condensed">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>Perform Date</th>
+			<th>Description</th>
+			<th>Quantity</th>
+			<th>Price (Net)</th>
+			<th>VAT</th>
+			<th>Total (Gross)</th>
+			<th>Action</th>
+		</tr>
+		</thead>
+		<tbody>
+		{liste_rechnungslauf}
+		</tbody>
+	</table>
+	<p>
+		<span>Note :</span>
+		<span>The invoice starts on the following days of the month <b>{INVOICE_DAYS_AUTOMATIC_BILLING}</b> automatic!</span>
+	</p>
+
+	<h4>This method will be used to charge the invoices</h4>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-3">
+					<strong>Method</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_NAME}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<strong>IBAN</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_IBAN}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<strong>BIC</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_BIC}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<strong>Bank</strong>
+				</div>
+				<div class="col-md-9">{USER_SELECTED_PAYMENT_ADAPTER_BANK}</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 15px;">
+		<div class="col-md-12">
+			<a href="{uri_action(my-payment-adapter)}" class="btn btn-success">
+				Payment methods
+			</a>
+		</div>
+	</div>
+	{else}
+	* No invoice positions exist
+	{endif}
+{endif}
+
+<script type="application/javascript">
+
+	$(document).ready(function() {
+        {if newly_added}
+			var newly_added = "{newly_added}";
+        	console.log( newly_added );
+			newly_added = newly_added.split("-");
+			console.log( newly_added );
+			var list_cancel_requests = $(".list-cancel-requests");
+			$.each(newly_added,function(index, value) {
+				var temp = list_cancel_requests.find('tr[data-row-cancel-requests="'+value+'"]');
+				temp.addClass("highlight");
+				console.log( temp );
+			});
+        {endif}
+	});
+
+</script>

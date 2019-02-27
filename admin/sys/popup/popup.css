@@ -1,0 +1,137 @@
+#popup_overlay,.popup_overlay {
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	background-color: #fff;
+	left: 0px;
+	top: 0px;
+	z-index: 100;
+}
+
+#popup_loader {
+	width: 200px;
+	height: 20px;
+	position: fixed;
+	top: 50%;
+	margin-top: -10px;
+	left: 50%;
+	margin-left: -100px;
+	border: 1px #EEE solid;
+	background-color: #fff;
+	z-index: 100;
+}
+
+#popup_container,.popup_container {
+	top: 50%;
+	left: 50%;
+	background-color: #fff;
+	position: fixed;
+	border: 1px #ADA99F solid;
+	z-index: 100;
+}
+
+#popup_container #popup_title #popup_close,.popup_container .popup_title .popup_close
+	{
+	cursor: pointer;
+	background-image: url('close.png');
+	height: 14px;
+	width: 14px;
+	position: absolute;
+	top: 3px;
+	right: 10px;
+}
+
+#popup_container #popup_title,.popup_container .popup_title {
+	width: 100%;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	height: 20px;
+	background-color: #505050;
+	text-align: center;
+	font-weight: bold;
+    color:#FFFFff;
+    font-size: 18px;
+}
+
+#popup_title_NF {
+	color: #FFFFFF;
+}
+
+#popup_container #popup_content,.popup_container .popup_content {
+	width: 100%;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	background-color: #EEEEEE;
+	overflow: auto;
+}
+
+#ADJUST, #ADJUST2 {
+	background-color:#d5d5ea;
+}
+
+#ADJUST input, #ADJUST2 input, .bigButt {
+	background-color:#e2e2f7;
+	padding:5px;
+	font-size:13px;
+	font-weight:bold;
+}
+
+#edit_invoice {
+	padding-top:40px;
+}
+
+fieldset {
+	padding-top:14px;
+	-moz-border-radius:6px;
+	border:1px #3a3a49 solid;
+	background-color:#d5d5ea;
+	margin-right:15px;
+}
+
+legend {
+	padding:3px 10px 3px 10px;
+	color:#3a3a49;
+	background-color:#e2e2f7;
+	font-size:16px;
+	font-weight:bold;
+	-moz-border-radius:6px;
+	border:1px #3a3a49 solid;
+}
+
+h1 {
+	margin-bottom:25px;
+	padding:5px;
+	border-bottom:1px #3a3a49 solid;
+	color:#3a3a49;
+	font-size:20px;
+}
+
+h2 {
+	margin-bottom:20px;
+	padding:5px;
+	border-bottom:1px #3a3a49 solid;
+	color:#3a3a49;
+	font-size:16px;
+}
+
+#edit_invoice .zeile0 {
+	background-color:#e6e6f8;
+}
+
+#edit_invoice .zeile0 td, #edit_invoice .zeile1 td {
+	border-bottom:1px #3a3a49 solid;
+}
+
+#posten .head th {
+	background-color:#e6e6f8;
+	border-bottom:1px #3a3a49 solid;
+	font-size:12px;
+	padding-top:12px;
+}
+
+#new_row td {
+	padding-top:4px;
+	background-color:#ffffff;
+}

@@ -1,0 +1,39 @@
+</script><h1>News bearbeiten</h1>
+<p>Mit Hilfe von keywords können Sie News-Beiträge verknüpfen! Artikel mit den selben Kewywords werden in der Artikelübersicht zusammen dargestellt.</p>
+{if err}<div class="error">{err}</div>{endif}
+<table border="0" cellspacing="0" cellpadding="4" class="reiter">
+  <tr>
+    <th class="reiterPassiv"><a href="index.php?page=modul_news_adv_edit&ID_NEWS={ID_NEWS}">Kategorie, Titel und Texte</a> </th>
+    <th class="reiterPassiv"><a href="index.php?page=modul_news_adv_edit&ID_NEWS={ID_NEWS}&tab=2">Links zum Thema</a> </th>
+    <th class="reiterAktiv"><a href="index.php?page=modul_news_adv_keywords&ID_NEWS={ID_NEWS}">Keywords</a> </th>
+    <th class="reiterPassiv"><a href="index.php?page=modul_news_adv_edit&ID_NEWS={ID_NEWS}&tab=4">Standort</a> </th>
+  </tr>
+</table>
+<table class="formTable"><tr valign="top">
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="page" value="{curpagealias}" />
+  <input type="hidden" name="ID_NEWS" value="{ID_NEWS}" />
+  <td width="50%">{if kliste}
+    <table class="liste"><tr>
+      <th colspan="2">bereits zugeordnet</th>
+    </tr>{kliste}<tr>
+      <td class="footer" colspan="2"><input type="submit" value="ausgew&auml;hlte entfernen" /></td>
+    </tr></table>
+  {else}noch keine Keywords zugeordnet&nbsp;{endif}</td>
+</form>
+  <td style="width:1px;padding:0;background: black;"></td>
+<form method="post" action="index.php" style="display:inline;">
+  <input type="hidden" name="page" value="{curpagealias}" />
+  <input type="hidden" name="ID_NEWS" value="{ID_NEWS}" />
+  <td><b>weitere Keywords zuordnen</b><br />
+    Suche: <input type="text" name="qry" value="{htm(qry)}" />
+    <input type="submit" name="search" value="suchen" />{if search}
+    <input type="submit" name="new" value="neues Keyword definieren" />{if sliste}
+    <table class="liste" cellpadding="0" cellspacing="0"><tr>
+      <th colspan="2">Treffer</th>
+    </tr>{sliste}<tr>
+      <td class="footer" colspan="2"><input type="submit" value="ausgew&auml;hlte zuordnen" /></td>
+    </tr></table>{else}Keine Treffer.{endif}{endif}{endif}
+  </td>
+</form>
+</tr></table>

@@ -1,0 +1,43 @@
+<script type="text/javascript">
+    function kontakt() {
+        ShowDialog(ebiz_trader_baseurl + 'index.php?page=ad_request_kontakt&ID_AD_REQUEST={ID_AD_REQUEST}&frame=ajax', "Make contact", 550, 550);
+    }
+</script>
+<div class="row design-page-with-menu">
+    <div class="design-page-content">
+        
+        <div class="text-box design-location">
+            <div class="design-ariande design-ariande-request">
+                {kat_ariadne_dynamic({FK_KAT},ad_request,{PRODUKTNAME})}
+            </div>
+        </div>
+        
+        <h1>
+            A user searches: {PRODUKTNAME}
+        </h1>
+        <span class="lead">
+            If you have a fitting product / service, you can offer it on here
+        </span>
+        <div class="advertisement-box">{adserver(,1780,)}</div>
+        <div class="design-content-box">
+        {nl2br(BESCHREIBUNG)}
+        </div>
+        <p class="text-right">
+            {if ID_USER==USER_ID}
+            <a title="Edit search request" href="{uri_action(gesuch_neu,{ID_AD_REQUEST})}" class="btn btn-default">
+                Edit search request
+            </a>
+            {else}
+            <a title="Nachricht schreiben" href="javascript:kontakt();" class="btn btn-info">
+                Offer the user a product.
+            </a>
+            {endif}
+        </p>
+        
+    </div>
+    <div class="design-page-menu">
+		{subtpl(tpl/{SYS_TPL_LANG}/view_user.info.htm,OVERRIDE_USER_ID={USER_ID})}
+    </div>
+</div>
+
+

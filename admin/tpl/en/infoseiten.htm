@@ -1,0 +1,31 @@
+<h1><img src="gfx/modul_infoarea_64.gif" width="64" height="64" alt="" border="0" align="left"> Infobereiche  f&uuml;r Ihr Portal</h1>
+<p>Infoseiten k&ouml;nen bei den Seiteneigenschaften angegeben werden.<br />
+Sie sind dienen dazu HTML Inhalte an jeder beliebigen Stelle zu verwenden.</p>
+<p><b>Achtung - das löschen von Infobereichen kann zu Fehler führen!!</b></p>
+
+
+<div {if SHOWTYPE} class="reiterPassiv" {else} class="reiterAktiv" {endif}>
+		<a href="index.php?page=infoseiten&SHOWTYPE=0" title="Allgemeine">Allgemeine-Inforbereiche</a>
+	</div>
+<div {if SHOWTYPE} class="reiterAktiv" {else} class="reiterPassiv" {endif}>
+		<a href="index.php?page=infoseiten&SHOWTYPE=1" title="Kategorie">Kategorie-Inforbereiche</a>
+	</div>
+    
+{if seiten}
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktionen</th>
+  <th>Art</th>
+  <th>Verwendet</th>
+  <th>Name</th>
+  {if !SHOWTYPE}<th>Template Code</th>{endif}
+  <th>Sprache</th>
+ </tr>
+{seiten}
+</table>
+<small>Klicken Sie auf <strong>Art</strong> (HTML oder TXT) um den Typ zu ändern</small>
+{else}
+<br />
+<div class="hinweis"><span class="error">Sie haben noch keine Infoseiten angelegt
+ <a href="index.php?page=infoseiten_edit">Neu anlegen</a></span></div>
+{endif}

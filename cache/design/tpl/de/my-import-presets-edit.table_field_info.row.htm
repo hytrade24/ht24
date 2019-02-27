@@ -1,0 +1,21 @@
+<tr data-fieldname="{htm(fieldName)}">
+	<td>
+		<b>{displayName}</b><br>
+		<span class="text-muted">{fieldName} | {tableDefName}</span>
+	</td>
+	<td>
+		{type}
+	</td>
+	<td>
+		{if isRequired}
+			<span class="text-error">Pflichtfeld</span>
+		{else}
+			<span class="text-muted">optional</span>
+		{endif}
+	</td>
+	<td>
+		{if acceptedValuesAsTableString}
+			{acceptedValuesAsTableString}
+		{endif}
+	</td>
+</tr>

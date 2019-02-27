@@ -1,0 +1,248 @@
+<script type="text/javascript">
+	function updateCartPaymentAdapter(el) {
+		var value = jQuery(el).val();
+		jQuery.ajax({
+			url: 'index.php?page=cart&frame=ajax',
+			'type': 'POST',
+			'data': { 'DO': 'SETCARTPAYMENTADAPTER', 'CART_PAYMENT_ADAPTER': value },
+			'success': function(result) {
+				jQuery("select[name*=payment_adapter]").each(function(index, inputSelect) {
+					var isAvailable = jQuery(inputSelect).find("option[value="+value+"]").length;
+					if (isAvailable > 0) {
+						jQuery(inputSelect).val(value);
+					}
+				});
+			}
+		});
+	}
+	
+	function updateCartItemPaymentAdapter(el, idArticle, idVariant) {
+		var value = jQuery(el).val();
+		jQuery.ajax({
+			url: 'index.php?page=cart&frame=ajax',
+			'type': 'POST',
+			'data': { 'DO': 'SETPAYMENTADAPTER', 'ID_AD': idArticle, 'ID_VARIANT': idVariant, 'CART_PAYMENT_ADAPTER': value },
+			'success': function(result) {
+				// Nothing yet
+			}
+		});
+	}
+
+  function removeArticleFromCart(adId, adVariantId) {
+    if(confirm("Möchten Sie den Artikel wirklich aus dem Warenkorb entfernen ?")) {
+      CartRemoveArticle(adId, adVariantId, function() {
+          document.location.reload();
+      });
+    }
+  }
+	
+	function cartUpdateList() {
+    jQuery(".design-cart-list-loading").show();
+		jQuery.post("{uri_action(cart)}", "ajax=list&"+jQuery("form.design-user-cart").serialize(), function(result) {
+			jQuery(".design-cart-list").html(result);
+		});
+	}
+
+{if !ID_USER && liste && !updated}
+    jQuery(function () {
+        ShowContentDialog(
+            jQuery("#prompt").html(), 
+            "{if SETTINGS_BUYING_UNREGISTERED}Einkauf ohne Anmeldung fortsetzen{else}Bitte einloggen um fortzufahren{endif}", 
+            800, "auto", 
+            {
+                'beforeclose': function () {
+                    {if !SETTINGS_BUYING_UNREGISTERED}
+                        location.href = '{uri_action(cart)}';
+                        return false;
+                    {endif}
+                }
+            }
+        );
+    });
+{endif}
+</script>
+
+<h1>Warenkorb</h1>
+<p class="lead">
+    Artikel in Ihrem Warenkorb
+</p>
+
+<script type="text/html" id="prompt">
+<div class="design-user-cart">
+  <div class="row design-user-cart-register-split">
+    <div>
+      {if SETTINGS_BUYING_UNREGISTERED}
+        <h4>Ohne einen Account fortsetzen?</h4>
+
+        <p>
+          Wenn Sie neu auf unserem Marktplatz sind und ihre Bestellung ohne einen Account fortsetzen möchten, klicken Sie auf die folgende Schaltfläche:
+        </p>
+
+        <button type="button" data-dismiss="modal" class="btn btn-default" aria-hidden="true">
+          Einkauf ohne Account fortsetzen
+        </button>
+
+        <br>
+        <br>
+      {endif}
+
+      <h4>Auf dem Marktplatz registrieren?</h4>
+
+      <p>
+        Möchten Sie alle Vorteile auf unserem Marktplatz nutzen ? Dann registrieren Sie jetzt Ihr persönlichen
+          Account.
+      </p>
+
+      <a href="{uri_action(register)}" class="btn btn-default">Auf dem Marktplatz registrieren</a>
+
+    </div>
+    <div>
+      <div class="design-content-box">
+        <form method="post" target="_top" action="{uri_baseurl_ssl(/login.php)}">
+          <input type="hidden" name="dummy" value="" />
+          <input type="hidden" name="redirect" value="{uri_action({curpage})}" />
+          <input type="hidden" name="forward" value="login" />
+
+          <h4>Haben Sie bereits einen Account?</h4>
+
+          <p>
+            Wenn Sie bereits auf einen Login auf unserem Marktplatz haben können Sie sich hier einloggen und den
+            Einkauf mit ihrem Account fortsetzen.
+          </p>
+
+          <div class="form-group">
+            <label class="control-label">Benutzername:</label>
+            <input class="form-control" type="text" name="user" id="loginname" maxlength="30" value="{htm(user)}" />
+          </div>
+
+          <div class="form-group">
+            <label class="control-label">Passwort:</label>
+            <input class="form-control" type="password" name="pass" id="loginpass" maxlength="64" />
+          </div>
+
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="stay" value="1">
+              eingeloggt bleiben?
+            </label>
+          </div>
+
+          <p>
+            <input name="submit" type="submit" class="btn btn-default" value="Einloggen" />
+          </p>
+          <p>
+            <a href="{uri_action(login,lostpassword)}" title="Passwort anfordern">
+              Passwort vergessen?
+            </a>
+          </p>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</script>
+
+<form action="{uri_action(cart)}" method="POST" class="design-user-cart">
+    <input type="hidden" name="DO" value="SET_ARTICLE_DETAILS">
+
+    <div class="design-content-box">
+    {if err_address || err_user_create || err_buying_unregistered_not_allowed}
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+		    		<strong>Es ist ein Fehler aufgetreten!</strong>
+
+            <ul>
+				    {if err_address}
+					      <li>Bitte geben Sie ihre vollständige Adresse an um die Bestellung abzuschließen.</li>
+            {endif}
+            {if err_address_required}
+                <li>Sie müssen alle Pflichtfelder ausfüllen.</li>
+            {endif}
+            {if err_address_name_or_company}
+                <li>Sie müssen entweder Vor- und Nachname oder einen Firmennamen angeben.</li>
+            {endif}
+				    {if err_user_create}
+					      <li>Es existiert bereits ein User mit dieser E-Mail Adresse</li>
+				    {endif}
+				    {if err_buying_unregistered_not_allowed}
+					      <li>Ein Einkauf ohne Benutzerkonto ist leider nicht möglich. Bitte registrieren Sie sich auf unserem Marktplatz</li>
+				    {endif}
+            </ul>
+        </div>
+    {endif}
+    {if ID_USER || SETTINGS_BUYING_UNREGISTERED}
+				<div class="row design-user-cart-address-split">
+            <div>
+                <h3>Ihre Rechnungsadresse</h3>
+                {if ID_USER > 0}
+						        {subtpl(tpl/{SYS_TPL_LANG}/user_invoice.htm,*)}
+					      {else}
+						        {subtpl(tpl/{SYS_TPL_LANG}/user_invoice_guest.htm,*)}
+					      {endif}
+					  </div>
+            <div>
+						    <h3>Ihre Versandadresse</h3>
+					      {if ID_USER > 0}
+						        {subtpl(tpl/{SYS_TPL_LANG}/user_versand.htm,*)}
+					      {else}
+						        {subtpl(tpl/{SYS_TPL_LANG}/user_versand_guest.htm,*)}
+					      {endif}
+					  </div>
+				</div>
+    {endif}
+        <p>
+        Sie bestellen Waren bei verschiedenen Anbietern, die jeweils eigene Allgemeine Geschäfts- und Widerrufsbedingungen besitzen.
+            <br><br>
+            <strong>
+                Der Verkauf erfolgt unter Vorbehalt der Verfügbarkeit!
+                Der Kauf ist rechtsverbindlich und kann nicht storniert werden!
+            </strong>
+        </p>
+		</div>
+    
+
+    <p class="pull-right">
+        {if liste}
+            <button type="submit" name="DO" value="CONTINUE" class="btn btn-success">
+                Zur Kasse gehen
+            </button>
+        {endif}
+    </p>
+    <div class="clearfix"></div>
+
+    {if cart_payment_adapter}
+    <br />
+    <div class="cart-payment-adapter design-content-box form-inline">
+        <div class="form-group">
+            <label class="control-label">
+                Ihre bevorzugte Zahlungsweise:
+            </label>
+            <select class="form-control" name="CART_PAYMENT_ADAPTER" onchange="updateCartPaymentAdapter(this)">
+                {cart_payment_adapter}
+            </select>
+        </div>
+        <br />
+        <span class="text-muted">
+            Bitte beachten Sie, dass unter Umständen nicht jede Zahlungsweise von allen Anbietern unterstützt wird.
+        </span>
+    </div>
+    {endif}
+    
+    <div class="design-cart-list">
+			{subtpl(tpl/{SYS_TPL_LANG}/cart.list.htm,*)}
+    </div>
+
+		{PLUGIN_HTML}
+  
+	<br>
+	<a href="{uri_action(marktplatz)}" class="btn btn-default">Weiter einkaufen</a>
+
+    {if liste}
+        <button type="submit" name="DO" value="CONTINUE" class="btn btn-success pull-right">
+            Zur Kasse gehen
+        </button>
+    {endif}
+
+</form>

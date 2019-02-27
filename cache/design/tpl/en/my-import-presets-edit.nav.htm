@@ -1,0 +1,28 @@
+<ul class="nav nav-pills">
+	<li class="step {if CURRENT_STEP == 1}active{endif}">
+        <a  href="#" {if MAX_STEP >= 1}onclick="ipe.loadStep(1)"{endif}>
+            1. Templatetype
+        </a>
+    </li>
+	<li class="step {if CURRENT_STEP == 2}active{endif} {if MAX_STEP < 2}disabled{endif}">
+        <a href="#" {if MAX_STEP >= 2}onclick="ipe.loadStep(2)"{endif}>
+			2. Basis assignment
+        </a>
+    </li>
+	<li class="step {if CURRENT_STEP == 3}active{endif} {if MAX_STEP < 3}disabled{endif}">
+        <a href="#" {if MAX_STEP >= 3}onclick="ipe.loadStep(3)"{endif}>
+			3. category assignment
+        </a>
+    </li>
+	<li class="step {if CURRENT_STEP == 4}active{endif} {if MAX_STEP < 4}disabled{endif}">
+        <a href="#" {if MAX_STEP >= 4}onclick="ipe.loadStep(4)"{endif}>
+			4. Field assignment
+        </a>
+    </li>
+	<li class="step {if CURRENT_STEP == 5}active{endif} {if MAX_STEP < 5}disabled{endif}">
+        <a href="#" {if MAX_STEP >= 5}onclick="ipe.loadStep(5)"{endif}>
+			5. Settings
+
+        </a>
+    </li>
+</ul>

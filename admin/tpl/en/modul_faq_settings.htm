@@ -1,0 +1,18 @@
+<h1><img src="gfx/modul_faq_64.gif" width="64" height="64" alt="" border="0" align="left">FAQ-Modul - Einstellungen</h1>
+<p>Bitte beachte Sie, dass die hier gemachten Einstellungen sich auf alle 
+Seiten beziehen, die das FAQ-Modul benutzen.</p>
+<h2>Einstellungen</h2>
+<form method="post" action="index.php">
+<input type="hidden" name="B_VIS" value="0" />
+<input type="hidden" name="nav" value="{curnav}" />
+
+
+
+
+<table class="liste" style="border:1px #9A9A9A solid">
+ <tr><th>Beschreibung</th><th>Einstellung</th></tr>
+ <tr class="zeile1"><td>Info Seite in der Modul&uuml;bersicht anzeigen?</td><td><input type="checkbox" name="B_VIS" {if B_VIS}checked {endif} value="1"  style="border:none;"></td></tr>
+ <tr><td colspan="2" class="footer"><input type="submit" class="button" value="Speichern" /></td></tr>
+</table>
+
+</form>

@@ -1,0 +1,61 @@
+<h1>Anzeigenarten {if ID_ANZART}bearbeiten{else}erstellen{endif}</h1>
+
+{if err || msg}
+<div class="hinweis">
+ {if err}<span class="error">{err}</span>
+ {else}<span class="ok">{msg}</span>{endif}
+{endif}
+<form method="post" action="index.php">
+<input type="hidden" name="page" value="{curpage}">
+{if ID_ANZART}
+<input type="hidden" name="ID_ANZART" value="{ID_ANZART}">
+{endif}
+<table class="formTable" cellspacing="0">
+ <tr>
+   <th style="text-align:left">Name der Anzeigenart <br>
+   <span class="notizSmall">&nbsp;-&nbsp;z.B. Verkauf, Gesuch etc.</span></th>
+   <td><input type="text" name="V1" value="{htm(V1)}"></td>
+ </tr>
+ <tr class="zeile1">
+  <th style="text-align:left"> Feld f&uuml;r Zustand verwenden? <br></th>
+  <td><input type="checkbox" name="B__LU_ZUSTAND" value="1" class="nob" {if B__LU_ZUSTAND}checked{endif}></td>
+ </tr>
+ <tr>
+   <th style="text-align:left"> Feld f&uuml;r Menge verwenden? </th>
+   <td><input type="checkbox" name="B__COUNT" value="1" class="nob" {if B__COUNT}checked{endif}></td>
+ </tr>
+ <tr class="zeile1">
+   <th style="text-align:left"> Feld f&uuml;r Preisangabe verwenden? </th>
+   <td><input type="checkbox" name="B__BUYNOW" value="1" class="nob" {if B__BUYNOW}checked{endif}></td>
+ </tr>
+ <tr>
+   <th style="text-align:left"> Verkaufsweg verwenden? </th>
+   <td><input type="checkbox" name="B__LU_VKWEG" value="1" class="nob" {if B__LU_VKWEG}checked{endif}></td>
+ </tr>
+ <tr class="zeile1">
+   <th style="text-align:left"> Feld f&uuml;r Zahlungsweise verwenden? </th>
+   <td><input type="checkbox" name="B__LU_ZAHLUNG" value="1" class="nob" {if B__LU_ZAHLUNG}checked{endif}></td>
+ </tr>
+ <tr>
+   <th style="text-align:left"> Feld f&uuml;r Versandart verwenden? </th>
+   <td><input type="checkbox" name="B__LU_VERSAND" value="1" class="nob" {if B__LU_VERSAND}checked{endif}></td>
+ </tr>
+ <tr class="zeile1">
+   <th style="text-align:left"> Feld f&uuml;r Versandkostenverwenden? </th>
+   <td><input type="checkbox" name="B__VERSANDKOSTEN" value="1" class="nob" {if B__VERSANDKOSTEN}checked{endif}></td>
+ </tr>
+ <tr>
+   <th style="text-align:left"> Feld f&uuml;r Standort verwenden? </th>
+   <td><input type="checkbox" name="B__PLZ__ORT" value="1" class="nob" {if B__PLZ__ORT}checked{endif}></td>
+ </tr>
+ <tr>
+   <th style="text-align:left"> Gebote erlauben? </th>
+   <td><input type="checkbox" name="B__MINBID" value="1" class="nob" {if B__MINBID}checked{endif}></td>
+ </tr>
+ <tr class="footer">
+  <td colspan="2" align="right"><input type="submit" value="Speichern" class="button"></td>
+ </tr>
+</table>
+</form>
+
+

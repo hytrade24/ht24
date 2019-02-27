@@ -1,0 +1,153 @@
+{if ID_LISTE}
+  <h1>&nbsp;&nbsp;&nbsp;&nbsp;Auswahlliste bearbeiten</h1>
+  <p style="margin-left: 20px;">
+    Es kann nur die Auswahlliste oder nur die Optionen der Auswahlliste bearbeitet werden.<br />
+    Der <strong>Listen-Name</strong> ist ein beschreibender Name der nicht &ouml;ffentlich sichtbar ist.
+  </p>
+  {if save_ok}<h2 class="ok">Speichern war erfolgreich.</h2>{endif}
+  {if save_error}<h2 class="error">Fehler aufgetreten!</h2>{endif}
+
+  {if !EDIT}
+    <form id="auswahlliste_form" action="#" onsubmit="saveNow('auswahlliste_form'); return false;">
+          <input type="hidden" name="save_auswahlliste" value="1" />
+          <input type="hidden" name="ID_LISTE" value="{ID_LISTE}" />
+    <table cellspacing="0" class="formTable" width="440" align="center">
+      <tr>
+        <th>Listen-Name:</th>
+        <td><input type="text" value="{htm(LIST_NAME)}" name="LIST_NAME" /></td>
+      </tr>
+      <tr>
+        <th>Global:</th>
+        <td><input type="checkbox" value="1" name="LIST_GLOBAL" {if LIST_GLOBAL}checked="checked"{endif} /></td>
+      </tr>
+      <tr class="footer">
+        <td align="right" colspan="2"><input type="submit" value="Speichern" /></td>
+      </tr>
+    </table>
+    </form>
+  {else}
+    <table cellspacing="0" class="liste" width="440" align="center">
+      <tr class="zeile0">
+        <td>Listen-Name:</td>
+        <td>{htm(LIST_NAME)}</td>
+      </tr>
+      <tr class="zeile1">
+        <td>Global:</td>
+        <td>{if LIST_GLOBAL}Ja{else}Nein{endif}</td>
+      </tr>
+    </table>
+  {endif}
+    <h2>&nbsp;&nbsp;&nbsp;&nbsp;Optionen</h2>
+
+    {if !EDIT}
+    <table cellspacing="0" class="liste" width="440" align="center">
+        <tr>
+            <th colspan="2">Neue Option hinzufügen</th>
+        </tr>
+        <tr class="zeile{even}">
+            <td>
+                <a title="Neu hinzuf&uuml;gen" style="cursor:pointer;" onclick="saveNow('myForm'); return false;"><img src="gfx/btn.save.gif" width="16" height="16" alt="neu" /> <i>Neu</i></a>
+            </td>
+            <td>
+                <form accept-charset="utf-8" id="myForm" action="#" onsubmit="saveNow('myForm'); return false;">
+                    <input type="hidden" name="save_options" value="1" />
+                    <input type="hidden" name="FK_LISTE" value="{ID_LISTE}" />
+                    <input type="hidden" name="ID_LISTE_VALUES" value="" />
+                    <input type="text" value="{htm(V1)}" name="V1" />
+                    <input type="text" value="1" name="ORDER" />
+                </form>
+            </td>
+        </tr>
+    </table>
+    <br />
+    {endif}
+    <table cellspacing="0" class="liste" width="440" align="center">
+      <tr>
+        <th>Aktion</th>
+        <th>Options-Name</th>
+        <th>Order</th>
+      </tr>
+      {if liste}
+        {liste}
+      {else}
+        <tr>
+          <td align="center" colspan="2" class="error">
+            Leider keine Optionen f&uuml;r die Auswahlliste gefunden
+          </td>
+        </tr>
+      {endif}
+      <tr class="footer">
+        <td align="right" colspan="3"><input type="button" onclick="myPopup.close();" value="Schlie&szlig;en" /></td>
+      </tr>
+    </table>
+{else}
+<h1>&nbsp;&nbsp;&nbsp;&nbsp;Neue Auswahlliste hinzuf&uuml;gen</h1>
+  <p style="margin-left: 20px;">
+    Es kann nur die Auswahlliste oder nur die Optionen der Auswahlliste bearbeitet werden.
+    Der <strong>Listen-Name</strong> ist ein beschreibender Name der nicht &ouml;ffentlich sichtbar ist.
+  </p>
+
+<form id="auswahlliste_form" action="#" onsubmit="saveNow('auswahlliste_form'); return false;">
+    <table cellspacing="0" class="formTable" width="440" align="center">
+      <tr>
+        <th>Listen-Name:</th>
+        <td><input type="text" value="{htm(LIST_NAME)}" name="LIST_NAME" /></td>
+      </tr>
+      <tr>
+        <th>Global:</th>
+        <td><input type="checkbox" value="1" name="LIST_GLOBAL" {if LIST_GLOBAL}checked="checked"{endif} /></td>
+      </tr>
+      <tr>
+        <th valign="top">Options:<br><span class="notizSmall">Jede Zeile ist eine Option.</span></th>
+        <td><textarea rows="10" name="LISTE_VALUES"></textarea></td>
+      </tr>
+      <tr class="footer">
+        <td align="right" colspan="2"><input type="submit" value="Speichern" name="save_auswahlliste" /></td>
+      </tr>
+    </table>
+    </form>
+{endif}
+<br />
+<script type="text/javascript">
+
+window.saveNow = function (form, form2){
+    var param = '';
+    if ( arguments.length == 2 ) {
+        param = Form.serialize($(form))+'&'+Form.serialize($(form2));
+    }
+    else if ( arguments.length == 1 ) {
+        param = Form.serialize($(form));
+    }
+              myPopup.open(
+              {
+                  url: "index.php?page=auswahllisten_edit&ID_LISTE={ID_LISTE}&frame=ajax", 
+                  title: "Auswahlliste bearbeiten",
+                  param: param,
+                  onClose: function (){
+                    document.location.reload();
+                  },
+                  id: "edit_{ID_LISTE}",
+                  width: 480,
+                  height: 400
+                });
+            };
+            
+window.deleteNow = function (id_element){
+	if (!confirm("ACHTUNG! Bitte stellen Sie vor dem Loeschen des Eintrags sicher, das dieser nicht "+
+					"mehr verwendet wird! Bestaetigen Sie mit OK wenn Sie sich sicher sind das dieser "+
+					"Eintrag nicht mehr in Verwendung ist."))
+		return;
+    myPopup.open(
+    {
+        url: "index.php?page=auswahllisten_edit&ID_LISTE={ID_LISTE}&frame=ajax", 
+        title: "Auswahlliste bearbeiten",
+        param: "delete_value="+id_element,
+        onClose: function (){
+          document.location.reload();
+        },
+        id: "edit_{ID_LISTE}",
+        width: 480,
+        height: 400
+      });
+  };
+</script>

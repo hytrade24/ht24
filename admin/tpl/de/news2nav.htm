@@ -1,0 +1,16 @@
+<h1>News Zuordnung</h1>
+<p>Weiteren Hinweise zu den m&ouml;glichen Einstellungen finden Sie in der 
+<a href="#" onclick="trhelp('news_zuordnung')"><strong>Hilfe zur Newszuordnung</strong></a></p>
+{if liste}
+<table class="liste" cellspacing="0">
+ <tr>
+  <th>Aktionen</th>
+  <th>News Kategorie </th>
+  <th>Skin</th>
+  <th>Zugeordnete Seite</th>
+ </tr>
+{liste}
+</table>
+{else}
+<div class="hinweis"><span class="error">Keine Zuordnungen gefunden</span></div>
+{endif}

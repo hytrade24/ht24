@@ -1,0 +1,88 @@
+<tr class="zeile{even}">
+	<td>
+		<a href="#edit" onclick="CalendarEventEdit({ID_CALENDAR_EVENT})" title="Veranstaltung bearbeiten/ansehen">
+			<img src="gfx/btn.edit.gif" width="32" height="16" alt="edit" />
+		</a>
+		<a href="#delete" onclick="CalendarEventDelete({int(ID_CALENDAR_EVENT)}, '{htm(TITLE)}');" title="Vertrag bearbeiten/ansehen">
+			<img src="gfx/btn.del.gif" width="32" height="16" alt="löschen" border="0">
+		</a>
+	</td>
+    {if MODERATE_EVENTS}
+    <td>
+        {if MODERATED==0}<a style="font-weight: bold;" href="{uri_action(calendar_events_view,{urllabel(TITLE)},{ID_CALENDAR_EVENT})}" target="_blank">Nicht geprüft</a>{endif}
+        {if MODERATED==1}<span class="ok">Freigegeben</span>{endif}
+        {if MODERATED==2}<span class="error">Abgelehnt</span>{endif}
+    </td>
+    <td align="right">
+        {if MODERATED!=1}
+        <a title="Veranstaltung freigeben" onclick="UnlockAccept({ID_CALENDAR_EVENT}, '{htm(TITLE)}', {FK_USER}, '{htm(USERNAME)}');">
+            <img border="0" height="16" src="gfx/btn.important2.png">
+        </a>
+        {endif}
+    </td>
+    <td align="left">
+        {if MODERATED!=2}
+        <a title="Freigabe ablehenen/entziehen" onclick="UnlockDecline({ID_CALENDAR_EVENT}, '{htm(TITLE)}', {FK_USER}, '{htm(USERNAME)}');">
+            <img border="0" height="16" src="gfx/btn.cancel.gif">
+        </a>
+        {endif}
+    </td>
+    {endif}
+	<td>{todate(STAMP_START)}</td>
+	<td>
+        <a href="{uri_action(calendar_events_view,{urllabel(TITLE)},{ID_CALENDAR_EVENT})}" target="_blank">
+            {htm(TITLE)}
+        </a>
+    </td>
+	<td>{htm(KAT_NAME)}</td>
+	<td>
+		{COMMENTS}
+	</td>
+	<td align="left">
+		{if SIGNUPS_CONFIRMED>0}{SIGNUPS_CONFIRMED}{endif}
+	</td>
+	<td align="left">
+		{if SIGNUPS_UNSURE>0}{SIGNUPS_UNSURE}{endif}
+	</td>
+	<td align="left">
+		{if SIGNUPS_DECLINED>0}{SIGNUPS_DECLINED}{endif}
+	</td>
+	<td>
+		<a title="Nachricht schreiben" href="#" onclick="SendMail({FK_USER}, '', 0, 0, 0); return false;">
+			<i class="icon-envelope"></i>
+		</a>
+		<a href="{uri_action(view_user,{urllabel(USERNAME)},{FK_USER})}" target="_blank" title="Profil von {htm(USERNAME)} ansehen">
+			{htm(USERNAME)}
+		</a>
+	</td>
+	<td>
+		{if FK_REF_TYPE_CLUB}
+		<a title="Veranstaltungen von {htm(CLUBNAME)} ansehen">
+			<i class="icon-star"></i>
+			{htm(CLUBNAME)}
+		</a>
+		{endif}
+		{if FK_REF_TYPE_USER}
+		<a title="Veranstaltungen von {htm(VENDORNAME)} ansehen">
+			<i class="icon-user"></i>
+			{htm(VENDORNAME)}
+		</a>
+		{endif}
+	</td>
+	<td>
+		{if LOCATION || STREET || ZIP || CITY || COUNTRY}
+			{if LOCATION}
+				{htm(LOCATION)}<br />
+			{endif}
+			{if STREET}
+				{htm(STREET)}<br />
+			{endif}
+			{if ZIP || CITY}
+				{ZIP} {htm(CITY)}<br />
+			{endif}
+			{htm(COUNTRY)}
+       	{else}
+       		<span class="muted">Nicht angegeben</span>
+       	{endif}
+	</td>
+</tr>

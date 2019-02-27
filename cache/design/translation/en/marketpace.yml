@@ -1,0 +1,52 @@
+billableitems.description: Description
+billableitems.totalprice: Totalprice
+coupon.activated.on: 'Activated on'
+coupon.name: Coupon
+coupon.used.code: Coupon-code
+creditnote.description: Description
+creditnote.remainprice: 'Remaining price'
+creditnote.totalprice: Totalprice
+date: Date
+import.preset.basemapping.ebay.descriptions: |
+  You have selected the account <b>{htm(EBAY_USER_UserID)}</b> for the import. 
+  			This account has <b>{AD_COUNT} active sales</b> that can be adopted in the marketplace.
+  			<br />
+  			Click the "Save and Close" button to save with the template.
+  			<br />
+  			<br />
+  			<i>
+  				If you are an advanced user you can view, on the button below,
+  				Advanced Settings. You may, for example, change the default settings for the product to be imported.
+  			</i>
+import.preset.basemapping.ebay.extended.settings.hide: 'Hide extended settings'
+import.preset.basemapping.ebay.extended.settings.show: 'Show extended settings'
+import.preset.basemapping.ebay.title: 'eBay import'
+import.preset.basemapping.help: |
+  <p>
+  				In this step, you make an association between the product properties that you have configured on
+  				one side in your source system and those of the marketplace. <br>
+  				In the table below are shown in the left side all the basic fields of the marketplace
+  				such as category, product name, etc. Now assign these fields either with information
+  				from your source file (field mapping) or deposit fixed standard values.
+  			</p>
+import.preset.categories.ebay.description: 'Please choose the adverts, which you want to take from eBay.'
+import.preset.categories.ebay.title: 'eBay import - assign categories'
+import.preset.edit.ebay.button.back: Back
+import.preset.edit.ebay.button.cancel: Cancel
+import.preset.edit.ebay.button.next: Next
+import.preset.edit.ebay.button.start: 'Start import'
+import.preset.edit.ebay.category.edit: 'Change category'
+import.preset.edit.ebay.description: 'Please check the articles you want to import.'
+import.preset.edit.ebay.title: 'eBay import - Postprocessing'
+import.preset.init.ebay.description: 'Please choose the adverts, which you want to take from eBay.'
+import.preset.init.ebay.limit.reached: 'Sie haben zu viele Artikel ausgewählt! Sie können heute nur noch {int(selectionLimit)} Artikel importieren. Das Gesamt-Limit beträgt {int(selectionLimitMax)} Artikel pro Tag.'
+import.preset.init.ebay.search: Search
+import.preset.init.ebay.search.mode.full: 'in advertstitle/-description/-category (Attention: Slow!)'
+import.preset.init.ebay.search.mode.title: 'in advertstitle'
+import.preset.init.ebay.search.reset: 'Show all'
+import.preset.init.ebay.title: 'eBay import - Select adverts'
+import.preset.limit_reached.ebay.description: |
+  Sehr geehrter Kunde,<br />
+      die mögliche Anzahl der Imports aus ebay für den heutigen Tag wurde erreicht.<br />
+      Weitere imports sind leider erst Morgen wieder möglich. Bitte versuchen Sie es dann erneut.
+import.preset.limit_reached.ebay.title: 'eBay Import - Import-Limit erreicht'

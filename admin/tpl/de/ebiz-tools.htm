@@ -1,0 +1,102 @@
+<link rel="stylesheet" type="text/css" href="{uri_resource(/lib/bootstrap/css/bootstrap.css)}" />
+<script src="{uri_resource(/lib/bootstrap/js/bootstrap.min.js)}"></script>
+
+<h1>ebiz Entwicklungs-Tools</h1>
+
+<h2>Verwendung auf eigene Gefahr!!</h2>
+
+{if done}
+<div class="ok">
+	<strong>Erfolgreich!</strong>
+    {if done_ad_search}
+    <p>Die Such-Einträge werden nun neu erzeugt. Dies kann einige Zeit in Anspruch nehmen.</p>
+    {endif}
+    {if done_update_test}
+    <p>Die angegebenen Update-Anweisungen wurden erfolgreich ausgeführt!.</p>
+    {endif}
+    {if done_leads_recache}
+    <p>Das Lead-System wurde erfolgreich aktualisiert.</p>
+    {endif}
+</div>
+{endif}
+
+{output}
+
+<div class="btn-group">
+	<!-- ANZEIGEN -->
+	<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+		Anzeigen <span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li>
+			<a href="index.php?page=welcome&ebizTools=42&do=ad_search">Alle Such-Einträge neu erzeugen</a>
+		</li>
+		<li>
+			<a href="index.php?page=welcome&ebizTools=42&do=ad_search_cleanup">Verwaiste Such-Einträge löschen</a>
+		</li>
+	</ul>
+</div>
+	
+<div class="btn-group">
+	<!-- NAVIGATION -->	
+	<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+		Navigation <span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li>
+			<a href="index.php?page=welcome&ebizTools=42&do=sync_meta">Meta-Tags importieren</a>
+		</li>
+	</ul>
+</div>
+	
+<div class="btn-group">
+	<!-- UPDATE -->	
+	<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+		Update-Tools <span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+        <li>
+            <a href="index.php?page=welcome&ebizTools=42&do=leads_recache">Lead-System updaten</a>
+        </li>
+        <li>
+            <a href="index.php?page=welcome&ebizTools=42&do=update_test">Update Anweisung(en) testen</a>
+        </li>
+        <li>
+            <a href="index.php?page=welcome&ebizTools=42&do=backup_mail_yml">YML-Backup von E-Mail Templates</a>
+        </li>
+        <li>
+            <a href="index.php?page=welcome&ebizTools=42&do=update_mail_yml">YML-Update von E-Mail Templates</a>
+        </li>
+        <li>
+            <a href="index.php?page=welcome&ebizTools=42&do=backup_xml">XML-Backup erzeugen</a>
+        </li>
+        <li>
+            <a href="index.php?page=welcome&ebizTools=42&do=update_templates">Geänderte Templates finden</a>
+        </li>
+        <li>
+            <a href="index.php?page=welcome&ebizTools=42&do=convert_myisam_to_innodb">MyISAM Tabellen nach InnoDB (SQL Statements generieren)</a>
+        </li>
+	</ul>
+</div>
+
+{if UPDATE_TEST}
+<form method="post" action="index.php">
+    <h3>Update-Anweisungen testen</h3>
+    {if errors}
+    <p class="error">
+        <strong>Fehler!</strong>
+        <br />
+        {errors}
+    </p>
+    {endif}
+    <input type="hidden" name="page" value="{curpage}" />
+    <input type="hidden" name="ebizTools" value="42" />
+    <input type="hidden" name="do" value="update_test" />
+    <textarea style="width: 700px; height: 200px;" name="updateYML">{htm(updateYML)}</textarea>
+    <button type="submit">Anweisung(en) ausführen</button>
+</form>
+{endif}
+
+{if ALTER_TABLE_STATEMENTS}
+<pre>{ALTER_TABLE_STATEMENTS}</pre>
+{endif}

@@ -1,0 +1,33 @@
+<div class="design-search-row-item" style="width: {GROUP_WIDTH};">
+    <div class="design-search-group">
+        <h3 class="design-search-group-header">
+            Search within
+        </h3>
+        <div class="design-search-group-content">
+            <div class="form-group">
+                <label for="lu_umkreis">
+                    Within:
+                </label>
+                ^lookup(UMKREIS,,, class="form-control",F_ORDER ASC,---)°
+            </div>
+            <div class="form-group">
+                <label for="vendorSearchFormLocationZip">
+                    ZIP:
+                </label>
+                <input id="vendorSearchFormLocationZip" type="text" class="form-control" name="PLZ" value="^htm(B_PLZ)°" />
+            </div>
+            <div class="form-group">
+                <label for="vendorSearchFormLocationCity">
+                    City:
+                </label>
+                <input id="vendorSearchFormLocationCity" type="text" class="form-control" name="ORT" value="^htm(B_ORT)°" />
+            </div>
+            <div class="form-group">
+                <label for="fk_country">
+                    Country:
+                </label>
+                ^select_country(land,,,, class="form-control",----)°
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<script type="text/javascript">
+    jQuery(function() {
+
+        setVendorFormular = function(d) {
+            if(d) {
+                jQuery(".visibleOnEnabledVendor").show();
+            } else {
+                jQuery(".visibleOnEnabledVendor").hide();
+            }
+        }
+
+        jQuery("#vendorFormularSearchWordTab").tabs();
+
+        setVendorFormular({if VENDOR_STATUS}true{else}false{endif});
+    });
+
+
+</script>
+
+<h1>Vendor directory</h1>
+
+{if DO_SAVE}
+<p>
+    <strong>Form was saved..</strong>
+</p>
+{endif}
+
+{subtpl(tpl/{SYS_TPL_LANG}/my-vendor-nav.htm,*)}
+<span class="lead">Enter the search keyword for the product to be found.</span>
+<div class="visibleOnEnabledVendor">
+    <script type="text/javascript">
+        jQuery(function() {
+            reloadVendorSearchWordList = function(el, l) {
+                jQuery.ajax({
+                    url: ebiz_trader_baseurl + 'my-pages/my-vendor-searchword.htm',
+                    data: { DO: 'GET', LANG: l },
+                    type: 'POST',
+                    success: function(result) {
+                        jQuery(el).html(result);
+                        // Initialize delete buttons
+                        bindVendorSearchWordListButtons();
+                    }
+                })
+            };
+            
+            bindVendorSearchWordListButtons = function() {
+                jQuery(".deleteVendorSearchWord").on('click', function() {
+                    var word = jQuery(this).attr('rel');
+                    var lang = jQuery(this).closest("form").find("input[name=LANG]").val();
+    
+                    if(confirm("Do you really want to delete the keyword "+word+"?")) {
+                        jQuery.ajax({
+                            url: ebiz_trader_baseurl + 'my-pages/my-vendor-searchword.htm',
+                            data: { DO: 'DELETE', SEARCHWORD: word, LANG: lang },
+                            dataType: 'json',
+                            type: 'POST',
+                            success: function(result) {
+                                reloadVendorSearchWordList('#vendorSearchList' + lang, lang);
+                            }
+                        })
+                    }
+    
+                    return false;
+                });
+            };
+
+            jQuery(".vendorSearchWordFormular").submit(function() {
+                var formular = this;
+                jQuery.ajax({
+                    url: ebiz_trader_baseurl + 'my-pages/my-vendor-searchword.htm',
+                    data: jQuery(this).serialize(),
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function(result) {
+                        jQuery(formular).find("input[name=SEARCHWORD]").val('');
+                        reloadVendorSearchWordList('#' + jQuery(formular).attr('id') + ' .vendorSearchList', jQuery(formular).find("input[name=LANG]").val());
+                    }
+                })
+
+                return false;
+            });
+        })
+    </script>
+
+    <div id="vendorFormularSearchWordTab">
+        <ul>
+            {searchWordLanguageHeader}
+        </ul>
+		<div class="design-content-box">
+        	{searchWordLanguageBody}
+		</div>
+    </div>
+</div>
+
+
+

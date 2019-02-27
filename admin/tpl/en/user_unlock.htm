@@ -1,0 +1,28 @@
+<h1>Mitgliedschafts Upgrade Anträge</h1>
+
+{if err}<strong class="err">Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut</strong>{endif}
+{if approved}<strong class="ok">Das Mitgliedschaftsupgrade wurde akzeptiert</strong>{endif}
+{if declined}<strong class="err">Das Mitgliedschaftsupgrade wurde abgelehnt</strong>{endif}
+
+<table border="0" cellspacing="0" cellpadding="4" class="liste">
+
+	<tr>
+		<th>Nr.</th>
+		<th>Username</th>
+		<th>Name</th>
+        <th>E-Mail</th>
+        <th>Upgrade Datum</th>
+        <th>alte Mitgliedschaft</th>
+        <th>neue Mitgliedschaft</th>
+		<th>Aktionen</th>
+	</tr>
+	{liste}
+	<tr>
+		<td colspan="8">
+			{pager}
+		</td>
+	</tr>
+</table>
+<p>
+	Anzahl der beantragten Upgrades : <b>{all}</b>
+</p>

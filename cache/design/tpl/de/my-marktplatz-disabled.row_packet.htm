@@ -1,0 +1,11 @@
+{if allow_free || (PRICE>0)}
+<option value="{ID_PACKET_ORDER}">
+		{htm(V1)} vom {todate(STAMP_START)}
+
+		{if (MAX0==-1)}
+		(Flatrate)
+		{else}
+		({FREE0} / {MAX0} Anzeigen frei)
+		{endif}
+</option>
+{endif}

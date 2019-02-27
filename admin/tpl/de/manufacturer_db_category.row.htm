@@ -1,0 +1,20 @@
+<tr data-id="{ID_KAT}" data-level="{LEVEL}" data-childs-loaded="0" data-visible="1" class="categoryRow">
+  <td class="categoryName">
+    {if HAS_CHILDREN}
+    <a href="#toggle{ID_KAT}" onclick="manufacturerCategory_ToggleChilds({ID_KAT});">
+      <img class="folder_open" border="0" src="gfx/folder_has_kids.png">
+      <img class="folder_close" border="0" src="gfx/folder_open.png" style="display: none;">
+      {htm(V1)}
+    </a>
+    {else}
+    <a class="disabled">
+      <img src="gfx/folder.png">
+      {htm(V1)}
+    </a>
+    {endif}
+    <input type="hidden" name="MAPPING_INDEX[]" value="{ID_KAT}" />
+  </td>
+  {groups}
+  <td class="categoryGroupSpacer">
+  </td>
+</tr>

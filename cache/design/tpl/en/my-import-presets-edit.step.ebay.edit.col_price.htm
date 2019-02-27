@@ -1,0 +1,7 @@
+<td{if numeric} class="is-numeric"{endif}>
+    {if icon}<img src="{icon}" />{endif}
+    {if !iconOnly}{htm(value)}{endif}
+<span class="text-muted">
+        {htm(row_SellingStatus_CurrentPrice)}&nbsp;{htm(row_SellingStatus_CurrentPrice_currencyID)}
+    </span>
+</td>
