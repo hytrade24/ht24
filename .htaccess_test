@@ -1,0 +1,29 @@
+#AuthName "secure"
+#AuthType Basic
+#AuthUserFile /var/www/web42/html/ebiz-trader/.htpasswd
+#require valid-user
+
+ErrorDocument 404 /404.php
+
+Options +FollowSymLinks
+
+RewriteEngine on
+#RewriteOptions InheritDown
+#RewriteBase /
+
+
+################################################################################################################
+
+# LARAVEL
+
+# Assets
+RewriteCond "%{DOCUMENT_ROOT}/ebiz-kernel/public$2" -f
+RewriteRule "^/?(de|en)/leads(.+)" "%{DOCUMENT_ROOT}/ebiz-kernel/public$2" [L]
+
+# Handle Front Controller...
+RewriteCond "%{DOCUMENT_ROOT}/ebiz-kernel/public$2" !-d
+RewriteCond "%{DOCUMENT_ROOT}/ebiz-kernel/public$2" !-f
+RewriteRule "^/?(de|en)/leads(.+)" "%{DOCUMENT_ROOT}/ebiz-kernel/public/index.php" [L]
+
+################################################################################################################
+

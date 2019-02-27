@@ -1,0 +1,90 @@
+variables:
+  # Docker mysql - https://hub.docker.com/r/_/mysql/
+  MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+  MYSQL_DATABASE: ebiz
+  MYSQL_USER: ebiz
+  MYSQL_PASSWORD: xrghJGF23Un6
+tests:
+  stage: test
+  services:
+    - mysql-trader:latest
+  script:
+    - chown -R www-data:www-data .
+    - >
+      TRADER_VERSION=`php -r "include 'inc.app.php'; die(EBIZ_TRADER_VERSION);"`
+    - >
+      TRADER_VERSION_PLAIN="${TRADER_VERSION//./}"
+    - >
+      TRADER_VERSION_PREV=`php dev/scripts/get_prev_version.php "${TRADER_VERSION}" "${CI_COMMIT_REF_NAME}"`
+    - >
+      TRADER_VERSION_PREV_PLAIN="${TRADER_VERSION_PREV//./}"
+    - sudo -Hu www-data git clone git@gitlab.ebiz-consult.de:ebiz/ebiz-trader-installer.git install-tool
+    - ls install-tool/packages | grep -v EbizTrader${TRADER_VERSION_PREV_PLAIN}Install | xargs -I{} rm -R install-tool/packages/{}
+    - ncftpget -u ebiz-trader-db -p jLkxfZv4 picard.ebiz-webhosting.de . /ebiz-trader-install-${TRADER_VERSION_PREV}.sql
+    - cp -p ebiz-trader-install-${TRADER_VERSION_PREV}.sql install-tool/packages/EbizTrader${TRADER_VERSION_PREV_PLAIN}Install/_data/ebiz-trader_${TRADER_VERSION_PREV}.sql
+    - rm ebiz-trader-install-${TRADER_VERSION_PREV}.sql
+    - cp -pR patch/${TRADER_VERSION_PREV}_to_${TRADER_VERSION}/update .
+    - sleep 5
+    - sudo -Hu www-data php -d memory_limit=1G dev/lib/vendor/phpunit/phpunit/phpunit -v
+    - sudo -Hu www-data php -d memory_limit=1G dev/scripts/truncate_database.php 
+    - mysqldump -h mysql-trader -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} > ebiz-trader-install-${TRADER_VERSION}.sql
+  retry: 2
+  artifacts:
+    when: always
+    paths:
+    - ebiz-trader-install-*.sql
+    - dev/log/
+    - logs/
+installer:
+  stage: deploy
+  when: manual
+  script:
+    - chown -R www-data:www-data .
+    - >
+      TRADER_VERSION=`php -r "include 'inc.app.php'; die(EBIZ_TRADER_VERSION);"`
+    - >
+      TRADER_VERSION_PLAIN="${TRADER_VERSION//./}"
+    - >
+      TRADER_VERSION_PREV=`php dev/scripts/get_prev_version.php "${TRADER_VERSION}" "${CI_COMMIT_REF_NAME}"`
+    - >
+      TRADER_VERSION_PREV_PLAIN="${TRADER_VERSION_PREV//./}"
+    - sudo -Hu www-data git clone git@gitlab.ebiz-consult.de:ebiz/ebiz-trader-installer.git install-tool
+    - ls install-tool/packages | grep -v EbizTrader${TRADER_VERSION_PLAIN}Install | xargs -I{} rm -R install-tool/packages/{}
+    - cp -p ebiz-trader-install-${TRADER_VERSION}.sql install-tool/packages/EbizTrader${TRADER_VERSION_PLAIN}Install/_data/ebiz-trader_${TRADER_VERSION}.sql
+    - ncftpput -u ebiz-trader-db -p jLkxfZv4 picard.ebiz-webhosting.de / ebiz-trader-install-${TRADER_VERSION}.sql
+    - rm ebiz-trader-install-${TRADER_VERSION}.sql
+    - php dev/scripts/add_versionblock.php ${TRADER_VERSION} > /dev/null
+    - php dev/scripts/create_documentation.php install "../install.pdf" ${TRADER_VERSION} ${TRADER_VERSION}
+    - if [ -f patch/${TRADER_VERSION_PREV}_to_${TRADER_VERSION}/changelog.md ]; then cp -pR patch/${TRADER_VERSION_PREV}_to_${TRADER_VERSION}/changelog.md ..; fi
+    - rm -fR .git .idea doc dev patch
+    - rm -f .gitlab-ci.yml readme.md phpunit.xml
+    - INSTALLER_DATE=`date +%Y%m%d-%H%M`
+    - INSTALLER_FILENAME="ebiz-trader-${TRADER_VERSION}-${CI_COMMIT_REF_NAME}-${INSTALLER_DATE}.zip"
+    - cd ..
+    - zip -q -r ${INSTALLER_FILENAME} ebiz-trader install.pdf changelog.md
+    - mv ${INSTALLER_FILENAME} ebiz-trader/
+    - cd ebiz-trader
+  dependencies:
+    - tests
+  artifacts:
+    paths:
+    - ebiz-trader-install-*.sql
+    - ebiz-trader-*.zip
+patches:
+  stage: deploy
+  when: manual
+  script:
+    - chown -R www-data:www-data .
+    - >
+      TRADER_VERSION=`php -r "include 'inc.app.php'; die(EBIZ_TRADER_VERSION);"`
+    - >
+      TRADER_VERSION_PLAIN="${TRADER_VERSION//./}"
+    - cp -p dev/scripts/create_patch.sh .  
+    - chmod +x create_patch.sh
+    - ./create_patch.sh ${TRADER_VERSION} ${CI_COMMIT_REF_NAME}
+    - rm create_patch.sh
+  dependencies:
+    - tests
+  artifacts:
+    paths:
+    - patch*.zip

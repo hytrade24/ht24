@@ -1,0 +1,31 @@
+RewriteEngine on
+
+AddType "application/json;charset=UTF-8" .jsongz
+AddEncoding gzip .jsongz
+
+
+AddOutputFilterByType DEFLATE text/html text/xml text/css text/javascript application/json text/plain
+
+#RewriteRule ^login/?$ index.php?page=login
+RewriteRule ^admin/?$ admin/index.php
+## um zu vermeiden, dass /admin/ auf index.php?page=admin umleitet
+RewriteRule ^/?$ index.php?page=index
+RewriteRule ^/?([a-z]{2})/?$ index.php?page=index
+## damit Startseite = page=index, auch wenn die versteckt ist
+
+RewriteRule index.php index.php [L,NC,QSA]
+RewriteRule ^/?([a-z]{2})/(.*/)?([^/]*)\.htm$ index.php?lang=$2&page=$3 [L,NC,QSA]
+## ^^ ersetzt URL/verzeichnis/datei.htm durch page=datei
+RewriteRule ^/?([a-z]{2})/(.*/)?([^/\.]+)/?$ index.php?lang=$2&page=$3 [L,NC,QSA]
+## ^^ ersetzt URL/verzeichnis/ durch page=verzeichnis
+
+## die index.php (public) sorgt jetzt dafuer, dass alles was durch Kommata
+## abgetrennt ist, im Array $ar_params landet.
+
+## Less development rule
+RewriteRule (^|/)cache/design/(resources/[^/]+/css/.+\.less)$ dev.php?do=getLessFile&path=$2 [L,NC,QSA]
+
+## Weiterleitung auf die regulären Dateien bei Sprache über das Unterverzeichnis (z.B. http://www.example.com/de/...)
+## - /de/js/jquery.js   >>>   /js/jquery.js
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([a-z]{2})/(.+)$ $2 [L,NC,QSA]

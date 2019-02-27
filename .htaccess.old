@@ -1,0 +1,86 @@
+<If "%{REMOTE_ADDR} != '176.94.235.220'">
+AuthName "secure"
+AuthType Basic
+AuthUserFile /kunden/homepages/18/d724502903/htdocs/hytrade/.htpasswd
+require valid-user
+</If>
+
+ErrorDocument 404 /404.php
+
+Options +FollowSymLinks
+
+RewriteEngine on
+#RewriteOptions InheritDown
+RewriteBase /
+
+
+################################################################################################################
+
+# LARAVEL
+
+# Assets
+RewriteCond "/kunden/homepages/18/d724502903/htdocs/hytrade/ebiz-kernel/public$2" -f
+RewriteRule "^/?(de|en)/leads(/.+)" "/kunden/homepages/18/d724502903/htdocs/hytrade/ebiz-kernel/public$2" [L,NC]
+
+# Storage
+#RewriteCond "%{DOCUMENT_ROOT}/ebiz-kernel/storage/app/public$2" -f
+#RewriteRule "^/?(de|en)/leads/storage(/.+)" "%{DOCUMENT_ROOT}/ebiz-kernel/storage/app/public$2" [L,NC]
+
+# Handle Front Controller...
+RewriteCond "/kunden/homepages/18/d724502903/htdocs/hytrade/ebiz-kernel/public$2" !-d
+RewriteCond "/kunden/homepages/18/d724502903/htdocs/hytrade/ebiz-kernel/public$2" !-f
+RewriteRule "^/?(de|en)/leads(/.+)" "/kunden/homepages/18/d724502903/htdocs/hytrade/ebiz-kernel/public/index.php" [END,L,NC]
+
+################################################################################################################
+
+
+AddType "application/json;charset=UTF-8" .jsongz
+AddEncoding gzip .jsongz
+AddOutputFilterByType DEFLATE text/html text/xml text/css text/javascript application/json text/plain
+
+#RewriteRule ^de(/?.*)$ $1?lang=de
+
+## Less development rule
+#RewriteRule (^|/)cache/design/(resources/[^/]+/css/.+\.css)$ dev.php?do=getCssFile&path=$2 [L,NC,QSA]
+#RewriteRule (^|/)cache/design/(resources/[^/]+/css/.+\.less)$ dev.php?do=getLessFile&path=$2 [L,NC,QSA]
+
+## GERMAN
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+RewriteRule ^de(/.*)$ $1?lang=de [NC,QSA]
+## ENGLISH
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+RewriteRule ^en(/.*)$ $1?lang=en [NC,QSA]
+
+## GENERIC RULES
+
+# ARTICLE CACHE
+RewriteRule cache/marktplatz/anzeigen/([0-9a-f]{3}/[0-9a-f]{3}/[0-9a-f]{3}/[0-9]+/[^/]+)$ cache_article.php?file=$1 [L,NC,QSA]
+
+# ADMIN BACKEND
+#RewriteRule ^admin/?$ admin/index.php
+
+# DOMAIN ROOT
+RewriteRule ^/?$ index.php?page=index [L]
+
+# DIRECT CALL TO INDEX.PHP
+RewriteRule index.php index.php [L,NC,QSA]
+
+# CALL TO FRONTEND PAGE ( e.g. /info/contact.htm )
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+RewriteRule ^/?(.*/)?([^/]*)\.htm$ index.php?page=$2 [L,NC,QSA]
+
+# CALL TO FRONTEND PAGE ( e.g. /info/ )
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+RewriteRule ^/?(.*/)?([^/\.]+)/?$ index.php?page=$2 [L,NC,QSA]
+
+# OTHER CALLS
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+RewriteRule ^/?([^\.]+)$ index.php [L,NC,QSA]
+
+## die index.php (public) sorgt jetzt dafuer, dass alles was durch Kommata
+## abgetrennt ist, im Array $ar_params landet.
+
+## Weiterleitung auf die regulären Dateien bei Sprache über das Unterverzeichnis (z.B. http://www.example.com/de/...)
+## - /de/js/jquery.js   >>>   /js/jquery.js
+#RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+#RewriteRule ^([a-z]{2})/(.+)$ $2 [L,NC,QSA]
