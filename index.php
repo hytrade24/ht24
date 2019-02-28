@@ -3,7 +3,7 @@
 
 
 if (preg_match("/gzip/i", getenv("HTTP_ACCEPT_ENCODING"))) {
-    ob_start("ob_gzhandler");
+    //ob_start("ob_gzhandler");
 }
 
 /*
