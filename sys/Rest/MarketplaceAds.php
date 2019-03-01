@@ -845,6 +845,10 @@ class Rest_MarketplaceAds extends Rest_Abstract {
         $dataTable->addWhereCondition("SEARCH_TEXT_ID", "(".$masterTableShortcut.".ID_AD_MASTER='$1$' OR ".$masterTableShortcut.".NOTIZ='$1$')");
         $dataTable->addWhereCondition("SEARCH_TEXT_FULL", "(MATCH (ad_search.STEXT) AGAINST ('$1$'))", array("ad_search"));
         $dataTable->addWhereCondition("SEARCH_TEXT_SHORT", "((m.NAME LIKE '%$1$%') OR (" . $masterTableShortcut . ".PRODUKTNAME LIKE '%$1$%'))", array("m"));
+
+        //////////////// IMENSO  /////////////////////////////
+        $dataTable->addWhereCondition("SEARCH_TEXT_LIKE", "(" . $masterTableShortcut . ".PRODUKTNAME LIKE '%$1$%')", array("ad_search"));
+
         $dataTable->addWhereCondition("GEO_RECT", $masterTableShortcut . ".LATITUDE BETWEEN '$1$' AND '$2$' AND " . $masterTableShortcut . ".LONGITUDE BETWEEN '$3$' AND '$4$'");
         $dataTable->addWhereCondition("GEO_CIRCLE", "
                 (
@@ -1202,8 +1206,10 @@ class Rest_MarketplaceAds extends Rest_Abstract {
 		    if (strlen($searchData["PRODUKTNAME"]) >= $ft_min_word) {
                 $arLikeWords = [];
                 $fulltextSearchQuery = generateFulltextSearchstring($searchData["PRODUKTNAME"], $arLikeWords, $ft_min_word);
+                ///////////////  IMENSO  /////////////////////////////
                 if (!empty($fulltextSearchQuery)) {
-                    $dataTableQuery->addWhereCondition("SEARCH_TEXT_FULL", $fulltextSearchQuery);
+                    $dataTableQuery->addWhereCondition("SEARCH_TEXT_LIKE", $searchData["PRODUKTNAME"]);
+                    //$dataTableQuery->addWhereCondition("SEARCH_TEXT_FULL", $fulltextSearchQuery);
                 }
                 if (!empty($arLikeWords)) {
                     foreach ($arLikeWords as $word) {

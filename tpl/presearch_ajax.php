@@ -2,24 +2,13 @@
 /* ###VERSIONSBLOCKINLCUDE### */
 
 require_once $ab_path."sys/lib.ads.php";
-
+//////////////// IMENSO //////////////////////
+include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
 /**
  * @var string $return
  *
  * Rückgabe ans Template
  */
-//////////////// IMENSO //////////////////////
-if(file_exists('./vendor/autoload.php')) 
-{
-	require_once('./vendor/autoload.php');
-}
-use \Statickidz\GoogleTranslate;
-function translate_api($source,$target,$text)
-{
-	$trans = new GoogleTranslate();
-	$result = $trans->translate($source, $target, $text);
-	return $result;
-}
 
 $return = "Dev hat return vergessen :-)";
 $return_json = array();
@@ -176,18 +165,32 @@ if ( $execute_template ) {
 	//.............
 	$tplList->addvar("ALL_ADS",$return_json['COUNT']);
 	$tplList->addvar("DAYS_ADS_NEW", $nar_systemsettings["MARKTPLATZ"]["DAYS_ADS_NEW"]);
+
 	//////////////// IMENSO //////////////////////
-	if(file_exists('./vendor/autoload.php')) 
+	if($s_lang == 'en' )
 	{
-		if($s_lang == 'en' )
+		for($i = 0 ; $i < count( $adsList ) ; $i++ )  
 		{
-			for($i = 0 ; $i < count( $adsList ) ; $i++ )  
+			$PRODUKTNAME_EN = $adsList[$i]['PRODUKTNAME_EN'];
+			if( $PRODUKTNAME_EN == '')
 			{
-				//$adsList[$i]['FULL_PRODUKTNAME']=translate_api('de','en',$adsList[$i]['FULL_PRODUKTNAME']);
-				$adsList[$i]['BESCHREIBUNG'] = translate_api('de','en',$adsList[$i]['BESCHREIBUNG']);
+				$PRODUKTNAME_EN = Translate( $adsList[$i]['PRODUKTNAME'] );
+				$db->querynow("update ad_master set PRODUKTNAME_EN ='".$PRODUKTNAME_EN."'
+			      	where ID_AD_MASTER=". $adsList[$i]['ID_AD_MASTER'] );
 			}
+			$BESCHREIBUNG_EN = $adsList[$i]['BESCHREIBUNG_EN'];
+			if( $BESCHREIBUNG_EN == '')
+			{
+				$BESCHREIBUNG_EN = Translate( $adsList[$i]['BESCHREIBUNG'] );
+				$db->querynow("update ad_master set BESCHREIBUNG_EN ='".$BESCHREIBUNG_EN."'
+			      	where ID_AD_MASTER=". $adsList[$i]['ID_AD_MASTER'] );
+			}
+			$adsList[$i]['FULL_PRODUKTNAME'] = $PRODUKTNAME_EN;
+			$adsList[$i]['PRODUKTNAME'] = $PRODUKTNAME_EN;
+			$adsList[$i]['BESCHREIBUNG'] = $BESCHREIBUNG_EN;
 		}
 	}
+	
 
 	$tplList->addlist("liste", $adsList, $templateRowFile);
 	$tplList->addvar("VIEW_TYPE_".$viewType,1);

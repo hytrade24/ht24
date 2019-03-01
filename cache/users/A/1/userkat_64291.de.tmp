@@ -1,0 +1,31 @@
+<li class="level design-user-shop-kat" >
+    <a href="/de/anbieter/view_user,admin,1,64292,span-classfirst-categoryden-Hauptkategorien-spanbr-span-classsecond-categorykat-2span.htm" title="This is category 2.">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        <span class='first-category'>den Hauptkategorien </span><br /><span class='second-category'>kat 2</span> (1)
+    </a>
+  </li><li class="level design-user-shop-kat" >
+    <a href="/de/anbieter/view_user,admin,1,64297,span-classfirst-categorykat-2-spanbr-span-classsecond-categorykat-2-1span.htm" title="This is description.">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        <span class='first-category'>kat 2 </span><br /><span class='second-category'>kat 2 1</span> (1)
+    </a>
+  </li><li class="level design-user-shop-kat" >
+    <a href="/de/anbieter/view_user,admin,1,64298,span-classfirst-categorykat-2-1-spanbr-span-classsecond-categorykat-2-1-1-1span.htm" title="">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        <span class='first-category'>kat 2 1 </span><br /><span class='second-category'>kat 2 1 1.1</span> (1)
+    </a>
+  </li><li class="level design-user-shop-kat" >
+    <a href="/de/anbieter/view_user,admin,1,64295,span-classfirst-categoryden-Hauptkategorien-spanbr-span-classsecond-categorykat-5span.htm" title="This is fifth category">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        <span class='first-category'>den Hauptkategorien </span><br /><span class='second-category'>kat 5</span> (1)
+    </a>
+  </li><li class="level design-user-shop-kat" >
+    <a href="/de/anbieter/view_user,admin,1,64296,span-classfirst-categoryden-Hauptkategorien-spanbr-span-classsecond-categorykat-6span.htm" title="This is sixth category.">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        <span class='first-category'>den Hauptkategorien </span><br /><span class='second-category'>kat 6</span> (1)
+    </a>
+  </li><li class="level design-user-shop-kat active" >
+    <a href="/de/anbieter/view_user,admin,1,64291,span-classfirst-categoryden-Hauptkategorien-spanbr-span-classsecond-categoryTest-kategoriespan.htm" title="This is first category.">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        <span class='first-category'>den Hauptkategorien </span><br /><span class='second-category'>Test kategorie</span> (1)
+    </a>
+  </li>

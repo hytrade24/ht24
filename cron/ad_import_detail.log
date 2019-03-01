@@ -1,2 +1,7 @@
-2019-02-02 09:12:34 Cronjob 'ad import' gestartet.
-2019-02-02 09:12:34 Geolocation fix.
+2019-03-01 09:20:41 Cronjob 'ad import' gestartet.
+2019-03-01 09:20:41 Geolocation fix.
+2019-03-01 09:20:41 Cleanup old imports.
+2019-03-01 09:20:41 Cleanup issued for 1 processes.
+2019-03-01 09:20:41 Cleanup TEst2 / #128
+2019-03-01 09:20:41  - Failed to load! Skipping for further runs.
+2019-03-01 09:20:41 Cronjob 'ad_import' beendet.

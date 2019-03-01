@@ -25,4 +25,9 @@ $max_top = $nar_systemsettings['MARKTPLATZ']['INDEX_TOPADS'];
 $tpl_content->addvar("MARKTPLATZ_INDEX_NEWADS", $max_ads);
 $tpl_content->addvar("MARKTPLATZ_INDEX_TOPADS", $max_top);
 
+$articlesOnline = $db->fetch_atom("SELECT COUNT(DISTINCT PRODUKTNAME) FROM `ad_master` WHERE STATUS=1");
+$round = floor($articlesOnline/1000);
+$final = $round *1000;
+$tpl_content->addvar("ARTICLE_COUNT_ONLINE", $final);
+
 ?>

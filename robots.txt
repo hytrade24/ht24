@@ -1,0 +1,3 @@
+# Standard robots.txt zum ebiz-trader
+
+Sitemap: https://hytrade24.com/de/cache/sitemap/sitemap.xml

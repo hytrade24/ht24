@@ -1,17 +1,17 @@
-<div id="4704534725c6ba9385707f7.85242899"></div>
+<div id="13298468205c78d759547971.18655570"></div>
 <script type="text/javascript" src="https://hytrade24.com/de/lib/swfobject.js"></script>
 <script type="text/javascript">
-var so = new SWFObject("https://hytrade24.com/de/open-flash-chart.swf?t=02", "ofc", "400", "200", "9", "#FFFFFF");
+var so = new SWFObject("https://hytrade24.com/de/open-flash-chart.swf?t=03", "ofc", "400", "200", "9", "#FFFFFF");
 so.addVariable("variables","true");
-so.addVariable("title","Useranmeldungen+%2819.02.19+07%3A59%29,{font-size: 10px; color: #736AFF}");
+so.addVariable("title","Useranmeldungen+%2801.03.19+07%3A55%29,{font-size: 10px; color: #736AFF}");
 so.addVariable("x_label_style","10,0x000000,2,1");
 so.addVariable("x_axis_steps","1");
 so.addVariable("y_legend","Anmeldungen ,10,#736AFF");
 so.addVariable("y_ticks","5,10,5");
 so.addVariable("line_dot","3,0xCC3399,User ,10,5");
-so.addVariable("values","0,0,0,0,0,0,0,5,0,3,1,2,8");
-so.addVariable("x_labels","2018-2,2018-3,2018-4,2018-5,2018-6,2018-7,2018-8,2018-9,2018-10,2018-11,2018-12,2019-1,2019-2");
+so.addVariable("values","0,0,0,0,0,0,5,0,3,1,2,9,0");
+so.addVariable("x_labels","2018-3,2018-4,2018-5,2018-6,2018-7,2018-8,2018-9,2018-10,2018-11,2018-12,2019-1,2019-2,2019-3");
 so.addVariable("y_min","0");
-so.addVariable("y_max","8");
-so.write("4704534725c6ba9385707f7.85242899");
+so.addVariable("y_max","9");
+so.write("13298468205c78d759547971.18655570");
 </script>

@@ -7,7 +7,12 @@
 #</If>
 
 
+<Files 403.htm>
+order allow,deny
+allow from all
+</Files>
 
+deny from ahrefs.com
 
 ErrorDocument 404 /404.php
 

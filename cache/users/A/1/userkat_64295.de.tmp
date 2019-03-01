@@ -1,0 +1,21 @@
+<li class="level design-user-shop-kat" >
+    <a href="/de/anbieter/view_user,admin,1,64292,den-Hauptkategorien--kat_2.htm" title="This is category 2.">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        den Hauptkategorien &gt; kat_2 (1)
+    </a>
+  </li><li class="level design-user-shop-kat active" >
+    <a href="/de/anbieter/view_user,admin,1,64295,den-Hauptkategorien--kat_5.htm" title="This is fifth category">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        den Hauptkategorien &gt; kat_5 (1)
+    </a>
+  </li><li class="level design-user-shop-kat" >
+    <a href="/de/anbieter/view_user,admin,1,64296,den-Hauptkategorien--kat_6.htm" title="This is sixth category.">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        den Hauptkategorien &gt; kat_6 (1)
+    </a>
+  </li><li class="level design-user-shop-kat" >
+    <a href="/de/anbieter/view_user,admin,1,64291,den-Hauptkategorien--Testkategorie.htm" title="This is first category.">
+        <i class="glyphicon glyphicon-triangle-right"></i>
+        den Hauptkategorien &gt; Testkategorie (1)
+    </a>
+  </li>

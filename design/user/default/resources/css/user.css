@@ -10,9 +10,11 @@
   font-size: 18px;
   padding-top: 30px;
   padding-bottom: 20px;
+  letter-spacing: 0;
 }
 #headerMenuMainFirst .nav li a:hover {
   color: #e00000;
+  letter-spacing: 5px;
   border-top: solid 4px #444548;
   border-bottom: solid 2px #444548;
 }
@@ -21,6 +23,7 @@
   border-top: solid 4px #444548;
   border-bottom: solid 2px #444548;
 }
+
 .design-ad-details .design-ad-details-actions {
   margin-top: 0;
 }
@@ -1770,11 +1773,19 @@ previous code ends here
 }
 
 .zoom:hover {
-    transform: scale(1.1); 
+    transform: scale(1.05); 
+    box-shadow: 10px 10px 50px -10px rgba(0,0,0,0.75);
 }
 
 table.table.table-condensed.table-bordered.table-striped tbody tr td img {
   max-width: 80px;
   width: 100%;
+}
 
+.zoom1 {
+  transition: transform .2s; /* Animation */
+}
+
+.zoom1:hover {
+  transform: scale(1.1); 
 }

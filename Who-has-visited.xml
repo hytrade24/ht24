@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Header: d:\cvs/3.8/Who-has-visited.xml,v 1.6 2008/11/26 21:36:47 pem 
+	Exp $ -->
+<product productid="paulm_wvt_38" active="1">
+	<title>Members who have Visited</title>
+	<description>Display members who have visited the forum.</description>
+	<version>3.8.002</version>
+	<url />
+	<versioncheckurl />
+	<cvs><![CDATA[$Revision: 1.6 $]]></cvs>
+	<dependencies>
+		<dependency dependencytype="vbulletin" minversion="3.8.0 Beta"
+			maxversion="3.8.99" />
+	</dependencies>
+	<codes>
+		<code version="*">
+			<installcode><![CDATA[
+// Start v3.8.003 //
+$pidlist = array(
+'paulm_20051014',
+'paulm_20050610',
+'paulm_wvt_37',
+'paulm_trm_37',
+'paulm_trm_38',
+);
+echo "<br />";
+echo "<center>Please remember to <b>Mark as Installed</b> at vBulletin.org</center>";
+echo "<br />";
+echo "<center>Install Information</center>";
+echo "<br />";
+vbflush(); 
+if (!empty($pidlist))
+{
+	foreach ($pidlist as $oldpid)
+	{
+		$check = $db->query_first_slave("
+			SELECT version FROM ".TABLE_PREFIX."product WHERE productid = '".$db->escape_string($oldpid)."'
+		");
+		if ($check['version'])
+		{
+			delete_product($oldpid);
+			echo "<center><font color='red'>A previous modification has automatically been removed : pid = $oldpid</font></center>";
+			echo "<br />";
+			vbflush(); 
+			sleep(2);
+		}
+	}
+}
+$info['cvs'] = trim(substr(substr($arr['cvs'],10),0,-1));
+if ($vbulletin->options['pemdata38'])
+{
+	$data = unserialize($vbulletin->options['pemdata38']);
+	$prev = $data[$info['productid']];
+	$data[$info['productid']] = $info;
+	$productdata = $db->escape_string(serialize($data));
+	$db->query_write("UPDATE ".TABLE_PREFIX."setting SET value = '$productdata' where varname = 'pemdata38'");
+}
+else
+{
+	$data[$info['productid']] = $info;
+	$productdata = $db->escape_string(serialize($data));
+	$db->query_write("
+		REPLACE INTO ".TABLE_PREFIX."phrase 
+		(varname, fieldname, product, text)
+		VALUES ('setting_pemdata38_desc','vbsettings','pem-dummy-product','Leave this setting alone.'),
+		       ('setting_pemdata38_title','vbsettings','pem-dummy-product','Modification Version Data (3.8)')
+	");
+	$db->query_write("
+		REPLACE INTO ".TABLE_PREFIX."setting 
+		(varname, value, optioncode, displayorder, grouptitle, defaultvalue, volatile, product)
+		VALUES ('pemdata38','$productdata','',999,'version','',1,'pem-dummy-product')
+	");
+}
+$info['url'] = 'http://www.vbulletin.org/forum/misc.php?do=producthelp&pid='.$info['productid'];
+$info['versioncheckurl'] = 'http://www.vbulletin.org/forum/misc.php?do=productcheck&pid='.$info['productid'];
+// End //]]></installcode>
+			<uninstallcode />
+		</code>
+		<code version="3.8.000">
+			<installcode><![CDATA[
+$indexfound = false;
+echo "<center>Checking for Index</center>"; 
+vbflush();
+$indexdata = $vbulletin->db->query_read_slave("SHOW INDEX FROM " . TABLE_PREFIX . "user");
+while ($indexlist = $vbulletin->db->fetch_array($indexdata))
+{
+	if ($indexlist['Key_name'] == 'lastactivity')
+	{
+		$indexfound = true;
+	}
+}
+if (!$indexfound)
+{
+	echo "<center>Adding Index</center>"; vbflush();
+	vbflush();
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "user ADD INDEX (lastactivity)");
+}
+]]></installcode>
+			<uninstallcode />
+		</code>
+		<code version="*">
+			<installcode><![CDATA[
+// Display Version Information //
+echo "<br />";
+echo "<center>{$info['title']}</center>";
+echo "<br />";
+echo "<center>Installing : Version {$info['version']} ; Revision {$info['cvs']}</center>";
+echo "<br />";
+if ($prev['cvs'])
+{
+	echo "<center>( Replacing : Version {$prev['version']} ; Revision {$prev['cvs']} )</center><br />";
+}
+// Wait //
+vbflush();
+echo "<br /><br />";
+vbflush();
+sleep(6);
+// End //]]></installcode>
+			<uninstallcode />
+		</code>
+	</codes>
+	<templates>
+		<template name="Display_Visitors" templatetype="template"
+			date="1152000000" username="Paul M" version="4.32"><![CDATA[
+<!-- $data_wvt[title] -->
+<tbody>
+	<tr>
+		<td class="thead" colspan="2">
+			<a style="float:$stylevar[right]" href="#top" onclick="return toggle_collapse('forumhome_todayusers')"><img id="collapseimg_forumhome_todayusers" src="$stylevar[imgdir_button]/collapse_thead$vbcollapse[collapseimg_forumhome_todayusers].gif" alt="" border="0" /></a>
+			$whotitle
+		</td>
+	</tr>
+</tbody>
+<tbody id="collapseobj_forumhome_todayusers" style="$vbcollapse[collapseobj_forumhome_todayusers]">
+	<tr>
+		<td class="alt2"><a href="memberlist.php"><img src="$stylevar[imgdir_misc]/whos_online.gif" alt="" border="0" /></a></td>
+		<td class="alt1" width="100%"><div class="smallfont">$whotoday</div></td>
+	</tr>
+</tbody>
+<!-- PEMDATA38: $data_wvt[title] : Version = $data_wvt[version] : Revision = $data_wvt[cvs] -->
+]]></template>
+		<template name="Display_Visitors_User" templatetype="template"
+			date="1165000000" username="Paul M" version="4.38"><![CDATA[<a rel="nofollow" href="member.php?$session[sessionurl]u=$today[userid]" title="$today[wrdate]">$today[opentag]$today[username]$today[closetag]</a>$today[markinv]]]></template>
+	</templates>
+	<plugins>
+		<plugin active="1" executionorder="5">
+			<title>Members who have visited (1)</title>
+			<hookname>cache_templates</hookname>
+			<phpcode><![CDATA[
+if ($vbulletin->options['wvt'])
+{
+	if ($vbulletin->options['wvtgrpz'])
+	{
+		$show['wvt'] = false;
+		$ugroups = explode(',',$vbulletin->options['wvtgrps']); 
+		if ($vbulletin->options['wvtgrpz'] == 1)
+		{
+			if (is_member_of($vbulletin->userinfo,$ugroups)) 
+			{
+				$show['wvt'] = true;
+			}
+		}
+		if ($vbulletin->options['wvtgrpz'] == 2)
+		{
+			if (!is_member_of($vbulletin->userinfo,$ugroups)) 
+			{
+				$show['wvt']= true;
+			}
+		}
+	}
+	else
+	{
+		$show['wvt']= true;
+	}
+}
+else
+{
+	$show['wvt']= false;
+}
+
+if ($show['wvt']) 
+{
+	$globaltemplates[] = 'Display_Visitors' ;
+	$globaltemplates[] = 'Display_Visitors_User' ;
+}
+]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="15">
+			<title>Members who have visited (2)</title>
+			<hookname>forumhome_start</hookname>
+			<phpcode><![CDATA[
+if ($show['wvt'])
+{
+	if ($vbulletin->options['wvt24'])
+	{
+		$cutoff = TIMENOW - 86400;
+		$whodesc = $vbphrase['wvt_visited_today_24'];
+	}
+	else
+	{
+		$whodesc = $vbphrase['wvt_visited_today'];
+		$tnow = date('YmdHis',TIMENOW - intval($vbulletin->options['hourdiff'])); 
+		$cutoff = TIMENOW - (substr($tnow,8,2)*3600 + substr($tnow,10,2)*60 + substr($tnow,12,2)); 
+	}
+
+	unset ($whotoday);
+	$show['loggedinusers'] = true;
+
+	if ($vbulletin->options['wvtnames']) 
+	{
+		$todaysusers = $vbulletin->db->query_read_slave("
+			SELECT * FROM ".TABLE_PREFIX."user FORCE INDEX (lastactivity)
+			WHERE lastactivity > $cutoff ORDER BY username
+		"); 
+		
+		$totaltoday = 0;
+		while ($today = $vbulletin->db->fetch_array($todaysusers))
+		{
+			$totaltoday += 1;
+			$today['markinv'] = '';
+			$today[visible] = true ;
+			if ($today['options'] & $vbulletin->bf_misc_useroptions['invisible']) 
+			{
+				$today['visible'] = false ;
+				if (($vbulletin->userinfo['permissions']['genericpermissions'] 
+				& $vbulletin->bf_ugp_genericpermissions['canseehidden']) 
+				OR $today['userid'] == $vbulletin->userinfo['userid'])
+				{
+					$today['markinv'] = '*';
+					$today['visible'] = true ;
+				}
+			}
+			if ($today['visible']) 
+			{
+				$ugroup = ($today['displaygroupid'] > 0 ? $today['displaygroupid'] : $today['usergroupid']);
+				$today['opentag'] = $vbulletin->usergroupcache[$ugroup]['opentag'];
+				$today['closetag'] = $vbulletin->usergroupcache[$ugroup]['closetag'];
+				$today['wrdate'] = vbdate($vbulletin->options['timeformat'], $today['lastactivity']);
+				eval('$whotoday .= "' . fetch_template('Display_Visitors_User') . '" . ", ";');
+			}
+		}
+
+		if ($whotoday)
+		{
+			$whotoday = substr($whotoday, 0, -2);
+		}
+		else
+		{
+			$whotoday = $vbphrase['wvt_no_visitors'];
+		}
+	}
+	else 
+	{
+		$todaysusers = $vbulletin->db->query_first_slave("
+			SELECT COUNT(lastactivity) AS whotoday 
+			FROM ".TABLE_PREFIX."user FORCE INDEX (lastactivity)
+			WHERE lastactivity > $cutoff
+		"); 
+		
+		$totaltoday = $todaysusers['whotoday'];
+		$whotoday = $vbphrase['wvt_no_visitors_display'];
+	}
+
+	if ($vbulletin->options['wvtcol'])
+	{
+		$vbcollapse['collapseimg_forumhome_todayusers'] = '_collapsed';
+		$vbcollapse['collapseobj_forumhome_todayusers'] = 'display:none;';
+	}
+
+	$ftotaltoday = vb_number_format($totaltoday);
+	$whotitle = construct_phrase($whodesc,$ftotaltoday);
+
+	$pid = 'paulm_wvt_38';
+	if ($pemdata38['set'] == true)
+	{
+		$data_wvt =& $pemdata38[$pid];
+	}
+	else
+	{
+		if ($pemdata38 = unserialize($vbulletin->options['pemdata38']))
+		{
+			$pemdata38['set'] = true;
+			$data_wvt =& $pemdata38[$pid];
+		}
+		else
+		{
+			$data_wvt = array('version' => 'N/A');
+		}
+ 	}
+
+	if ($vbulletin->options['wvtmost'])
+	{ 
+		if (empty($vbulletin->maxloggedin))
+		{
+			if (method_exists($vbulletin->datastore,'do_fetch'))
+			{ // Datastore extension exists, use it
+				$vbulletin->datastore->do_fetch('maxloggedin',$errors);
+				if ($errors[0])
+				{ // Fetch failed, use original datastore
+					$vbulletin->datastore->do_db_fetch("'maxloggedin'");
+				}
+			}
+			else
+			{ // No extension, use original datastore
+				$vbulletin->datastore->do_db_fetch("'maxloggedin'");
+			}
+		}
+
+		if ($totaltoday > intval($vbulletin->maxloggedin['maxvisitors']))
+		{
+			$vbulletin->maxloggedin['maxvisitorsdate'] = TIMENOW;
+			$vbulletin->maxloggedin['maxvisitors'] = $totaltoday;
+			build_datastore('maxloggedin', serialize($vbulletin->maxloggedin),1);
+
+		}
+
+		if ($vbulletin->options['wvt24'])
+		{
+			$description = $vbphrase['wvt_members_24'];
+		}
+		else
+		{
+			$description = $vbphrase['wvt_members_day'];
+		}
+
+		$visitors = construct_phrase( 
+				$description, vb_number_format($vbulletin->maxloggedin['maxvisitors']),
+				vbdate( $vbulletin->options['dateformat'], $vbulletin->maxloggedin['maxvisitorsdate'], true ),
+				vbdate( $vbulletin->options['timeformat'], $vbulletin->maxloggedin['maxvisitorsdate'] ) 
+		);
+
+		$whotoday = $visitors . "<br />" . $whotoday;
+	}
+
+	// Use template hook.
+	eval('$template_hook[\'forumhome_wgo_pos2\'] .= "' . fetch_template('Display_Visitors') . '";');
+}
+]]></phpcode>
+		</plugin>
+	</plugins>
+	<phrases>
+		<phrasetype name="GLOBAL" fieldname="global">
+			<phrase name="wvt_no_visitors" date="1152000000" username="Paul M"
+				version="4.32"><![CDATA[There are no visitors to list at this moment.]]></phrase>
+			<phrase name="wvt_visited_today" date="1152000000" username="Paul M"
+				version="4.32"><![CDATA[Total members that have visited the forum today: {1}]]></phrase>
+			<phrase name="wvt_visited_today_24" date="1152000000"
+				username="Paul M" version="4.32"><![CDATA[Total members that have visited the forum in the last 24 hours: {1}]]></phrase>
+			<phrase name="wvt_no_visitors_display" date="1152000000"
+				username="Paul M" version="4.32"><![CDATA[The list of visiting members has been disabled by the forum administrators.]]></phrase>
+			<phrase name="wvt_members_day" date="1191000000" username="Paul M"
+				version="4.43"><![CDATA[The most members online in one day was {1}, {2}.]]></phrase>
+			<phrase name="wvt_members_24" date="1191000000" username="Paul M"
+				version="4.43"><![CDATA[The most members online over 24 hours was {1}, {2} at {3}.]]></phrase>
+		</phrasetype>
+		<phrasetype name="vBulletin Settings" fieldname="vbsettings">
+			<phrase name="setting_wvt24_desc" date="1152000000" username="Paul M"
+				version="4.32"><![CDATA[Set to 'yes' for a rolling 24 hour display, leave as 'no' to reset the count at each members midnight.]]></phrase>
+			<phrase name="setting_wvt24_title" date="1152000000" username="Paul M"
+				version="4.32"><![CDATA[Who Visited - Rolling 24 Hours]]></phrase>
+			<phrase name="setting_wvt_desc" date="1152000000" username="Paul M"
+				version="4.32"><![CDATA[Turn on the Who has Visited display.]]></phrase>
+			<phrase name="setting_wvt_title" date="1152000000" username="Paul M"
+				version="4.32"><![CDATA[Enable Display]]></phrase>
+			<phrase name="setting_wvtcol_desc" date="1152000000" username="Paul M"
+				version="4.32"><![CDATA[Set to 'yes' to make the box always collapsed when first displaying the page - users must manually expand it to view the contents. If set to 'no' it will remember it's state via a cookie.]]></phrase>
+			<phrase name="setting_wvtcol_title" date="1152000000"
+				username="Paul M" version="4.32"><![CDATA[Collapse Display]]></phrase>
+			<phrase name="setting_wvtgrps_desc" date="1152000000"
+				username="Paul M" version="4.42"><![CDATA[Comma seperated list of primary usergroups - used in conjunction with the include/exclude setting to determine which members are allowed to view the Who has Visited display.]]></phrase>
+			<phrase name="setting_wvtgrps_title" date="1152000000"
+				username="Paul M" version="4.42"><![CDATA[Usergroup List]]></phrase>
+			<phrase name="setting_wvtnames_desc" date="1152000000"
+				username="Paul M" version="4.32"><![CDATA[Set to 'yes' to list the visiting member names in the display.]]></phrase>
+			<phrase name="setting_wvtnames_title" date="1152000000"
+				username="Paul M" version="4.32"><![CDATA[Display Names ]]></phrase>
+			<phrase name="settinggroup_wvtgroup" date="1152000000"
+				username="Paul M" version="4.32"><![CDATA[Who Has Visited Today]]></phrase>
+			<phrase name="setting_wvtgrpz_desc" date="1186000000"
+				username="Paul M" version="4.42"><![CDATA[Determines how the Usergroup list is used. If Include or Exclude is selected then members whose primary usergroup is listed will be included/excluded from seeing the display. If 'all' is selected then members of any usergroup will see the display.]]></phrase>
+			<phrase name="setting_wvtgrpz_title" date="1186000000"
+				username="Paul M" version="4.42"><![CDATA[Include/Exclude Usergroups]]></phrase>
+			<phrase name="setting_wvtmost_desc" date="1191000000"
+				username="Paul M" version="4.43"><![CDATA[Set to 'Yes' to display the most ever members display.]]></phrase>
+			<phrase name="setting_wvtmost_title" date="1191000000"
+				username="Paul M" version="4.43"><![CDATA[Enable Most Ever Members Option]]></phrase>
+		</phrasetype>
+	</phrases>
+	<options>
+		<settinggroup name="wvtgroup" displayorder="3005">
+			<setting varname="wvt" displayorder="10">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>1</defaultvalue>
+			</setting>
+			<setting varname="wvtnames" displayorder="20">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>1</defaultvalue>
+			</setting>
+			<setting varname="wvtcol" displayorder="30">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="wvt24" displayorder="40">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="wvtgrps" displayorder="50">
+				<datatype>free</datatype>
+				<defaultvalue>2,5,6,7</defaultvalue>
+			</setting>
+			<setting varname="wvtgrpz" displayorder="60">
+				<datatype>number</datatype>
+				<optioncode>radio:piped
+					1|Include Groups Listed
+					2|Exclude Groups Listed
+					0|Include ALL usergroups</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="wvtmost" displayorder="70">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>1</defaultvalue>
+			</setting>
+		</settinggroup>
+	</options>
+	<helptopics>
+	</helptopics>
+	<cronentries>
+	</cronentries>
+	<faqentries>
+	</faqentries>
+</product>

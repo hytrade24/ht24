@@ -6,17 +6,8 @@ require_once $ab_path.'sys/lib.ad_variants.php';
 require_once $ab_path.'sys/lib.ad_payment_adapter.php';
 
 //////////////// IMENSO //////////////////////
-if(file_exists('./vendor/autoload.php')) 
-{
-	require_once('./vendor/autoload.php');
-}
-use \Statickidz\GoogleTranslate;
-function translate_api($source,$target,$text)
-{
-	$trans = new GoogleTranslate();
-	$result = $trans->translate($source, $target, $text);
-	return $result;
-}
+include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
+
 # Field template configuration
 $arFieldTemplates = array(
     "FK_MAN"    => "marktplatz_anzeige.group.manufacturer.htm"
@@ -459,16 +450,34 @@ $article_tpl["AD_SOLD"] = (($article_data["STATUS"]&4)==4 ? true : false);
 //////////////// IMENSO //////////////////////
 $article_tpl["AD_DESCRIPTION"] = ($nar_systemsettings['MARKTPLATZ']['ALLOW_HTML'] == 0 ? nl2br($article->getDescriptionText()) : $article->getDescriptionHtml());
 
-if(file_exists('./vendor/autoload.php')) 
+
+if($s_lang == 'en' )
 {
-	if($s_lang == 'en' )
-	{
-		$AD_DESCRIPTION_temp =str_replace("&Oslash","XYZ1ABC2XYZ",$article_tpl["AD_DESCRIPTION"]);
-		$AD_DESCRIPTION_temp = translate_api('de','en',$AD_DESCRIPTION_temp);
-		$AD_DESCRIPTION_temp = str_replace("XYZ1ABC2XYZ","&Oslash",$AD_DESCRIPTION_temp);
-		$article_tpl["AD_DESCRIPTION"] = $AD_DESCRIPTION_temp ;
-		$article_tpl["AD_TITLE"] = translate_api('de','en',$article_tpl["AD_TITLE"]);
-	}
+	$AD_DESCRIPTION_temp =str_replace("&Oslash","XYZ1ABC2XYZ",$article_tpl["AD_DESCRIPTION"]);
+	$AD_DESCRIPTION_temp = Translate($AD_DESCRIPTION_temp);
+	$AD_DESCRIPTION_temp = str_replace("XYZ1ABC2XYZ","&Oslash",$AD_DESCRIPTION_temp);
+	$article_tpl["AD_DESCRIPTION"] = $AD_DESCRIPTION_temp ;
+	$article_tpl["AD_TITLE"] = Translate($article_tpl["AD_TITLE"]);
+}
+
+//XAVER//
+
+//$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+$reg_exUrl = "@(https?|ftp)://(-\.)?([^\s/?\.#-]+\.?)+(/[^\s]*)?$@iS";
+// The Text you want to filter for urls
+$text = $article_tpl["AD_DESCRIPTION"];
+$text = strip_tags($text);
+// Check if there is a url in the text
+if(preg_match($reg_exUrl, $text, $url)) {
+
+       // make the urls hyper links
+       $article_tpl["AD_DESCRIPTION"] = preg_replace($reg_exUrl, '<a href="'.$url[0].'" rel="nofollow" target="_blank">'.$url[0].'</a>', $text);
+
+} else {
+
+       // if no urls in the text just return the text
+       $article_tpl["AD_DESCRIPTION"] = $text;
+
 }
 
 // Standort

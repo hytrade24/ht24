@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="dev/bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         printerClass="PHPUnit_TextUI_ErrorResultPrinter"
+         printerFile="dev/tests/ErrorResultPrinter.php">
+    <testsuites>
+        <testsuite name="Feature Tests">
+            <directory suffix="Feature.php">./dev/tests</directory>
+        </testsuite>
+        <testsuite name="Unit Tests">
+            <directory suffix="Unit.php">./dev/tests</directory>
+        </testsuite>
+    </testsuites>
+    <groups>
+        <include>
+            <group>update</group>
+            <group>install</group>
+            <group>default</group>
+            <group>sale</group>
+            <group>paypal</group>
+        </include>
+    </groups>
+</phpunit>

@@ -5,23 +5,12 @@ global $id_kat;
 
 require_once $ab_path.'sys/lib.ad_constraint.php';
 
+//////////////// IMENSO //////////////////////
+include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
+
 // Einstellungen
 $tpl_content->addvar("USE_HERSTELLER", $nar_systemsettings['MARKTPLATZ']['USE_PRODUCT_DB']);
 $tpl_content->addvar("SHOW_RATING", $nar_systemsettings['MARKTPLATZ']['ALLOW_COMMENTS_RATED']);
-
-//////////////// IMENSO //////////////////////
-if(file_exists('./vendor/autoload.php')) 
-{
-	require_once('./vendor/autoload.php');
-}
-use \Statickidz\GoogleTranslate;
-function translate_api($source,$target,$text)
-{
-	$trans = new GoogleTranslate();
-	$result = $trans->translate($source, $target, $text);
-	return $result;
-}
-
 
 // Kategorie
 include_once "sys/lib.shop_kategorien.php";
@@ -263,18 +252,30 @@ if ($strKatart == "STANDARD") {
 	$tpl_content->isTemplateCached = TRUE;
 
 	//////////////// IMENSO //////////////////////
-	if(file_exists('./vendor/autoload.php')) 
+	if($s_lang == 'en' )
 	{
-		if($s_lang == 'en' )
+		for($i = 0 ; $i < count( $adsList ) ; $i++ )  
 		{
-			for($i = 0 ; $i < count( $adsList ) ; $i++ )  
+			$PRODUKTNAME_EN = $adsList[$i]['PRODUKTNAME_EN'];
+			if( $PRODUKTNAME_EN == '')
 			{
-				$adsList[$i]['BESCHREIBUNG'] = translate_api('de','en',$adsList[$i]['BESCHREIBUNG']);
-				$adsList[$i]['FULL_PRODUKTNAME'] = translate_api('de','en',$adsList[$i]['FULL_PRODUKTNAME']);
+				$PRODUKTNAME_EN = Translate( $adsList[$i]['PRODUKTNAME'] );
+				$db->querynow("update ad_master set PRODUKTNAME_EN ='".$PRODUKTNAME_EN."'
+			      	where ID_AD_MASTER=". $adsList[$i]['ID_AD_MASTER'] );
 			}
+			$BESCHREIBUNG_EN = $adsList[$i]['BESCHREIBUNG_EN'];
+			if( $BESCHREIBUNG_EN == '')
+			{
+				$BESCHREIBUNG_EN = Translate( $adsList[$i]['BESCHREIBUNG'] );
+				$db->querynow("update ad_master set BESCHREIBUNG_EN ='".$BESCHREIBUNG_EN."'
+			      	where ID_AD_MASTER=". $adsList[$i]['ID_AD_MASTER'] );
+			}
+			$adsList[$i]['FULL_PRODUKTNAME'] = $PRODUKTNAME_EN;
+			$adsList[$i]['PRODUKTNAME'] = $PRODUKTNAME_EN;
+			$adsList[$i]['BESCHREIBUNG'] = $BESCHREIBUNG_EN;
 		}
 	}
-	
+
 	$tpl_content->addlist("liste", $adsList, $templateRowFile);
 	// Seitenzähler hinzufügen
 	$tpl_content->addvar("ALL_ADS", $adsCount);

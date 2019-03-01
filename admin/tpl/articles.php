@@ -4,6 +4,9 @@
 
 global $id_kat;
 
+//////////////// IMENSO //////////////////////
+include_once $ab_path.'sys/MicrosoftTranslator.php';
+
 function hide_childs(&$row) {
     global $id_kat, $id_root_kat, $kat;
     $row["kids"] = $kat->element_has_childs($row["ID_KAT"]);
@@ -65,6 +68,10 @@ if (!empty($_REQUEST["do"])) {
 			$query_fields = "PRODUKTNAME='".mysql_escape_string($_POST["PRODUKTNAME"])."', ".
 				"STAMP_END='".$_POST["STAMP_END_y"]."-".$_POST["STAMP_END_m"]."-".$_POST["STAMP_END_d"]." 23:59:59'";
 			$query_product = "UPDATE `".mysql_escape_string($ad_table)."` SET ".$query_fields." WHERE ID_".strtoupper($ad_table)."=".$id_ad;
+
+			//////////////// IMENSO //////////////////////
+			$PRODUKTNAME_EN =  Translate( mysql_escape_string($_POST["PRODUKTNAME"]));
+			$query_fields = $query_fields.", PRODUKTNAME_EN='".$PRODUKTNAME_EN."'";
 			$query_master = "UPDATE `ad_master` SET ".$query_fields.", B_TOP=".(int)$bf_top.",
 					B_TOP_LIST=".Rest_MarketplaceAds::getTopValueByFlags($bf_top)." WHERE ID_AD_MASTER=".$id_ad;
 			if (($db->querynow($query_product) !== false) && ($db->querynow($query_master) !== false)) {

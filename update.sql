@@ -1,0 +1,1 @@
+INSERT INTO `option` (`plugin`, `typ`, `value`, `default_value`, `beschreibung`, `format`) VALUES ('MARKTPLATZ', 'CATEGORY_ROOT', '0', '0', 'Standard Root-Kategorie', 'int');
