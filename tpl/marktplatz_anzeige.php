@@ -6,8 +6,8 @@ require_once $ab_path.'sys/lib.ad_variants.php';
 require_once $ab_path.'sys/lib.ad_payment_adapter.php';
 
 //////////////// IMENSO //////////////////////
-include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
-
+//include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
+include_once $GLOBALS["ab_path"]."sys/GoogleTranslator.php";
 # Field template configuration
 $arFieldTemplates = array(
     "FK_MAN"    => "marktplatz_anzeige.group.manufacturer.htm"
@@ -454,10 +454,10 @@ $article_tpl["AD_DESCRIPTION"] = ($nar_systemsettings['MARKTPLATZ']['ALLOW_HTML'
 if($s_lang == 'en' )
 {
 	$AD_DESCRIPTION_temp =str_replace("&Oslash","XYZ1ABC2XYZ",$article_tpl["AD_DESCRIPTION"]);
-	$AD_DESCRIPTION_temp = Translate($AD_DESCRIPTION_temp);
+	$AD_DESCRIPTION_temp = translateText($AD_DESCRIPTION_temp);
 	$AD_DESCRIPTION_temp = str_replace("XYZ1ABC2XYZ","&Oslash",$AD_DESCRIPTION_temp);
 	$article_tpl["AD_DESCRIPTION"] = $AD_DESCRIPTION_temp ;
-	$article_tpl["AD_TITLE"] = Translate($article_tpl["AD_TITLE"]);
+	$article_tpl["AD_TITLE"] = translateText($article_tpl["AD_TITLE"]);
 }
 
 //XAVER//

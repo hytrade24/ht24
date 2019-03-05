@@ -3,7 +3,8 @@
 
 require_once $ab_path."sys/lib.ads.php";
 //////////////// IMENSO //////////////////////
-include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
+//include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
+include_once $GLOBALS["ab_path"]."sys/GoogleTranslator.php";
 /**
  * @var string $return
  *
@@ -174,14 +175,14 @@ if ( $execute_template ) {
 			$PRODUKTNAME_EN = $adsList[$i]['PRODUKTNAME_EN'];
 			if( $PRODUKTNAME_EN == '')
 			{
-				$PRODUKTNAME_EN = Translate( $adsList[$i]['PRODUKTNAME'] );
+				$PRODUKTNAME_EN = translateText( $adsList[$i]['PRODUKTNAME'] );
 				$db->querynow("update ad_master set PRODUKTNAME_EN ='".$PRODUKTNAME_EN."'
 			      	where ID_AD_MASTER=". $adsList[$i]['ID_AD_MASTER'] );
 			}
 			$BESCHREIBUNG_EN = $adsList[$i]['BESCHREIBUNG_EN'];
 			if( $BESCHREIBUNG_EN == '')
 			{
-				$BESCHREIBUNG_EN = Translate( $adsList[$i]['BESCHREIBUNG'] );
+				$BESCHREIBUNG_EN = translateText( $adsList[$i]['BESCHREIBUNG'] );
 				$db->querynow("update ad_master set BESCHREIBUNG_EN ='".$BESCHREIBUNG_EN."'
 			      	where ID_AD_MASTER=". $adsList[$i]['ID_AD_MASTER'] );
 			}

@@ -6,7 +6,8 @@ global $id_kat;
 require_once $ab_path.'sys/lib.ad_constraint.php';
 
 //////////////// IMENSO //////////////////////
-include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
+//include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
+include_once $GLOBALS["ab_path"]."sys/GoogleTranslator.php";
 
 // Einstellungen
 $tpl_content->addvar("USE_HERSTELLER", $nar_systemsettings['MARKTPLATZ']['USE_PRODUCT_DB']);
@@ -259,14 +260,14 @@ if ($strKatart == "STANDARD") {
 			$PRODUKTNAME_EN = $adsList[$i]['PRODUKTNAME_EN'];
 			if( $PRODUKTNAME_EN == '')
 			{
-				$PRODUKTNAME_EN = Translate( $adsList[$i]['PRODUKTNAME'] );
+				$PRODUKTNAME_EN = translateText( $adsList[$i]['PRODUKTNAME'] );
 				$db->querynow("update ad_master set PRODUKTNAME_EN ='".$PRODUKTNAME_EN."'
 			      	where ID_AD_MASTER=". $adsList[$i]['ID_AD_MASTER'] );
 			}
 			$BESCHREIBUNG_EN = $adsList[$i]['BESCHREIBUNG_EN'];
 			if( $BESCHREIBUNG_EN == '')
 			{
-				$BESCHREIBUNG_EN = Translate( $adsList[$i]['BESCHREIBUNG'] );
+				$BESCHREIBUNG_EN = translateText( $adsList[$i]['BESCHREIBUNG'] );
 				$db->querynow("update ad_master set BESCHREIBUNG_EN ='".$BESCHREIBUNG_EN."'
 			      	where ID_AD_MASTER=". $adsList[$i]['ID_AD_MASTER'] );
 			}

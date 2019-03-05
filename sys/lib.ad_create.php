@@ -5,8 +5,8 @@ require_once __DIR__."/lib.ads.php";
 require_once __DIR__."/lib.ad_constraint.php";
 
 //////////////// IMENSO //////////////////////
-include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
-
+//include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
+include_once $GLOBALS["ab_path"]."sys/GoogleTranslator.php";
 class AdCreate {
     const MEDIA_MAX_IMAGES = 10;
     const MEDIA_MAX_UPLOADS = 10;
@@ -662,8 +662,8 @@ class AdCreate {
             $success = false;
             $idArticle = false;
             //////////////// IMENSO //////////////////////
-            $this->adData['PRODUKTNAME_EN'] =  Translate( $this->adData['PRODUKTNAME'] );
-            $this->adData['BESCHREIBUNG_EN'] = Translate( $this->adData['BESCHREIBUNG'] );
+            $this->adData['PRODUKTNAME_EN'] =  translateText( $this->adData['PRODUKTNAME'] );
+            $this->adData['BESCHREIBUNG_EN'] = translateText( $this->adData['BESCHREIBUNG'] );
             
             if ($this->adData['ID_AD_MASTER'] > 0) {
                 // Existing article, update

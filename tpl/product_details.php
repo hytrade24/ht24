@@ -1,8 +1,8 @@
 <?php
 
 //////////////// IMENSO //////////////////////
-include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
-
+//include_once $GLOBALS["ab_path"]."sys/MicrosoftTranslator.php";
+include_once $GLOBALS["ab_path"]."sys/GoogleTranslator.php";
 $productId = (array_key_exists("ID_HDB_PRODUCT", $_POST) ? (int)$_POST["ID_HDB_PRODUCT"] : (int)$ar_params[2]);
 if (array_key_exists("ID_HDB_PRODUCT", $tpl_content->vars) && ($tpl_content->vars["ID_HDB_PRODUCT"] > 0)) {
     $productId = $tpl_content->vars["ID_HDB_PRODUCT"];
@@ -26,8 +26,8 @@ $arProduct = $hdbManagement->fetchProductById($productId, "hdb_table_".$category
 
 if($s_lang == 'en' )
 {
-	$arProduct['FULL_PRODUKTNAME'] = Translate( $arProduct['FULL_PRODUKTNAME'] );
-	$arProduct['BESCHREIBUNG'] = Translate( $arProduct['BESCHREIBUNG'] ); 
+	$arProduct['FULL_PRODUKTNAME'] = translateText( $arProduct['FULL_PRODUKTNAME'] );
+	$arProduct['BESCHREIBUNG'] = translateText( $arProduct['BESCHREIBUNG'] ); 
 }
 
 
