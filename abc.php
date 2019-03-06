@@ -1,7 +1,7 @@
 <?php
 include_once "sys/GoogleTranslator.php";
 
-echo translateText( "Sun Hydraulics 2/2 - Wegesitzventil - DTBFXHV740-224" );
+//echo translateText( "Sun Hydraulics 2/2 - Wegesitzventil - DTBFXHV740-224" );
 
 // include_once "src/MicrosoftTranslator.php";
 
