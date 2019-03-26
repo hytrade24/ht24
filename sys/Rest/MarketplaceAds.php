@@ -844,7 +844,9 @@ class Rest_MarketplaceAds extends Rest_Abstract {
         $dataTable->addWhereCondition("ONLINE", "(" . $masterTableShortcut . ".STATUS IN (1,5,9,13) AND " . $masterTableShortcut . ".DELETED=0)");
         $dataTable->addWhereCondition("SEARCH_TEXT_ID", "(".$masterTableShortcut.".ID_AD_MASTER='$1$' OR ".$masterTableShortcut.".NOTIZ='$1$')");
         $dataTable->addWhereCondition("SEARCH_TEXT_FULL", "(MATCH (ad_search.STEXT) AGAINST ('$1$'))", array("ad_search"));
-        $dataTable->addWhereCondition("SEARCH_TEXT_SHORT", "((m.NAME LIKE '%$1$%') OR (" . $masterTableShortcut . ".PRODUKTNAME LIKE '%$1$%'))", array("m"));
+        
+         // $dataTable->addWhereCondition("SEARCH_TEXT_SHORT", "((m.NAME LIKE '%$1$%') OR (" . $masterTableShortcut . ".PRODUKTNAME LIKE '%$1$%'))", array("m"));
+        $dataTable->addWhereCondition("SEARCH_TEXT_LIKE", "((m.NAME LIKE '%$1$%') OR (" . $masterTableShortcut . ".PRODUKTNAME LIKE '%$1$%'))", array("m"));
 
         //////////////// IMENSO  /////////////////////////////
         $dataTable->addWhereCondition("SEARCH_TEXT_LIKE", "(" . $masterTableShortcut . ".PRODUKTNAME LIKE '%$1$%')", array("ad_search"));
