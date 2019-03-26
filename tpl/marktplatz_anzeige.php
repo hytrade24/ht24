@@ -442,23 +442,37 @@ $article_tpl["AD_PRODUCT"] = $db->fetch_atom("
         ON s.S_TABLE='product' and s.FK=p.ID_PRODUCT
         and s.BF_LANG=if(p.BF_LANG_PRODUCT & ".$langval.", ".$langval.", 1 << floor(log(".$langval."+0.5)/log(2)))
     WHERE p.ID_PRODUCT=".(int)$article_data["FK_PRODUCT"]);
-$article_tpl["AD_TITLE"] = $article_data["PRODUKTNAME"];
+
+//////////////// IMENSO //////////////////////
+//$article_tpl["AD_TITLE"] =$article_data["PRODUKTNAME"];
+$article_tpl["AD_TITLE"] = $article->getData_ArticleProduct()['PRODUKTNAME'];  
 // Status
 $article_tpl["AD_SOLD"] = (($article_data["STATUS"]&4)==4 ? true : false);
 // Beschreibung
+$article_tpl["AD_PERSONALNOTE"] = $article->getData_Article('NOTIZ'); 
 
 //////////////// IMENSO //////////////////////
 $article_tpl["AD_DESCRIPTION"] = ($nar_systemsettings['MARKTPLATZ']['ALLOW_HTML'] == 0 ? nl2br($article->getDescriptionText()) : $article->getDescriptionHtml());
 
 
+
+
+
+
+
 if($s_lang == 'en' )
 {
-	$AD_DESCRIPTION_temp =str_replace("&Oslash","XYZ1ABC2XYZ",$article_tpl["AD_DESCRIPTION"]);
-	$AD_DESCRIPTION_temp = translateText($AD_DESCRIPTION_temp);
-	$AD_DESCRIPTION_temp = str_replace("XYZ1ABC2XYZ","&Oslash",$AD_DESCRIPTION_temp);
-	$article_tpl["AD_DESCRIPTION"] = $AD_DESCRIPTION_temp ;
-	$article_tpl["AD_TITLE"] = translateText($article_tpl["AD_TITLE"]);
+	$article_tpl["AD_TITLE"] = $article->getData_ArticleProduct()['PRODUKTNAME_EN']; 
+	$article_tpl["AD_DESCRIPTION"] = $article->getData_ArticleProduct()['BESCHREIBUNG_EN']; 
 }
+// if($s_lang == 'en' )
+// {
+// 	$AD_DESCRIPTION_temp =str_replace("&Oslash","XYZ1ABC2XYZ",$article_tpl["AD_DESCRIPTION"]);
+// 	$AD_DESCRIPTION_temp = translateText($AD_DESCRIPTION_temp);
+// 	$AD_DESCRIPTION_temp = str_replace("XYZ1ABC2XYZ","&Oslash",$AD_DESCRIPTION_temp);
+// 	$article_tpl["AD_DESCRIPTION"] = $AD_DESCRIPTION_temp ;
+// 	$article_tpl["AD_TITLE"] = $article->getData_ArticleProduct()['PRODUKTNAME_EN']; 
+// }
 
 //XAVER//
 

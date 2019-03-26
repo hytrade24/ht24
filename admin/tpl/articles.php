@@ -1,7 +1,6 @@
 <?php
 /* ###VERSIONSBLOCKINLCUDE### */
 
-
 global $id_kat;
 
 //////////////// IMENSO //////////////////////
@@ -468,6 +467,10 @@ foreach($articles as $key => $article) {
 	if($article['ID_VERSTOSS']) {
 		$articles[$key] = array_merge($article, $db->fetch1("SELECT ve.GRUND, ve.STAMP AS STAMP_VERSTOSS FROM verstoss ve WHERE ve.ID_VERSTOSS = '".(int)$article['ID_VERSTOSS']."'"));
 	}
+	//////////////// IMENSO //////////////////////
+	$adTable = $article["AD_TABLE"];
+    $articles[$key]['PRODUKTNAME'] = $db->fetch_atom("SELECT PRODUKTNAME FROM 
+        hdb_table_$adTable WHERE ID_HDB_TABLE_$adTable=".(int)$article["FK_PRODUCT"]);
 }
 
 $tpl_content->addlist('liste', $articles, 'tpl/de/articles.row.htm');

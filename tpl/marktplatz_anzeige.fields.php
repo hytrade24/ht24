@@ -47,7 +47,9 @@ foreach ($arGroups as $groupIndex => $groupId) {
   foreach ($arArticleFields as $fieldIndex => $fieldDetails) {
 	  $fieldDetails["TYPE_".$fieldDetails["F_TYP"]] = 1;
     $fieldName = $fieldDetails["F_NAME"];
-    $fieldValue = $article->getData_Article($fieldName);
+    /////////////////  imenso  ///////////////////////////
+    //$fieldValue = $article->getData_Article($fieldName);
+    $fieldValue = $article->getData_ArticleProduct($fieldName);
     // Check if field is visible
     if (($fieldValue === null) || ($fieldDetails["IS_SPECIAL"] && !in_array($fieldName, $arSpecialVisible))) {
       continue;

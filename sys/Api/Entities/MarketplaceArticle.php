@@ -907,8 +907,9 @@ class Api_Entities_MarketplaceArticle {
             if ($removeTags === null) {
                 $removeTags = array("script", "style", "link");
             }
-            // Generate html description
-            $descriptionHtml = $this->getData_Article("BESCHREIBUNG");
+            /////////////// IMENSO   ////////////////////////
+            //$descriptionHtml = $this->getData_ArticleProduct("BESCHREIBUNG");
+            $descriptionHtml = $this->getData_ArticleProduct("BESCHREIBUNG");
             if (is_array($removeTags) && !empty($removeTags)) {
                 // Convert UTF-8 characters to html entities
                 $descriptionHtml = mb_convert_encoding($descriptionHtml, 'HTML-ENTITIES', 'UTF-8');
@@ -1082,6 +1083,17 @@ class Api_Entities_MarketplaceArticle {
         if ($this->getData_ArticleFull() !== null) {
             $arResult = array_merge($arResult, $this->getData_ArticleFull());
         }
+        
+       
+
+        //////////////// IMENSO //////////////////////
+        $arResult['BESCHREIBUNG'] = $this->getData_ArticleProduct()['BESCHREIBUNG'] ;
+        $arResult['BESCHREIBUNG_EN'] = $this->getData_ArticleProduct()['BESCHREIBUNG_EN'] ;
+        $arResult['PRODUKTNAME'] = $this->getData_ArticleProduct()['PRODUKTNAME'] ;
+        $arResult['PRODUKTNAME_EN'] = $this->getData_ArticleProduct()['PRODUKTNAME_EN'] ;
+        $arResult['FULL_PRODUKTNAME'] = $this->getData_ArticleProduct()['FULL_PRODUKTNAME'] ;
+        $arResult['FULL_PRODUKTNAME_EN'] = $this->getData_ArticleProduct()['FULL_PRODUKTNAME_EN'] ;
+
         // Default image
         if (array_key_exists("images", $arResult) && !empty($arResult)) {
             $arResult["IMG_DEFAULT_SRC"] = $arResult["images"][0]["SRC"];

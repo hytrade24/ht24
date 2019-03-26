@@ -252,26 +252,43 @@ if ($strKatart == "STANDARD") {
 	$tpl_content->isTemplateRecursiveParsable = TRUE;
 	$tpl_content->isTemplateCached = TRUE;
 
+
+
+
+
+
 	//////////////// IMENSO //////////////////////
 	if($s_lang == 'en' )
 	{
 		for($i = 0 ; $i < count( $adsList ) ; $i++ )  
 		{
+			$table = "hdb_table_".$adsList[$i]['AD_TABLE'] ;
+			$column = strtoupper('ID_HDB_TABLE_'.$adsList[$i]['AD_TABLE']);
+			$id = $adsList[$i][$column];
 			$PRODUKTNAME_EN = $adsList[$i]['PRODUKTNAME_EN'];
 			if( $PRODUKTNAME_EN == '')
-			{
-				$PRODUKTNAME_EN = translateText( $adsList[$i]['PRODUKTNAME'] );
-				$db->querynow("update ad_master set PRODUKTNAME_EN ='".$PRODUKTNAME_EN."'
-			      	where ID_AD_MASTER=". $adsList[$i]['ID_AD_MASTER'] );
+			{	
+			 	$PRODUKTNAME_EN = translateText( $adsList[$i]['PRODUKTNAME'] );
+				$db->querynow("update $table set PRODUKTNAME_EN ='".$PRODUKTNAME_EN."'
+			      	where $column =".$id );
 			}
+		
 			$BESCHREIBUNG_EN = $adsList[$i]['BESCHREIBUNG_EN'];
 			if( $BESCHREIBUNG_EN == '')
 			{
 				$BESCHREIBUNG_EN = translateText( $adsList[$i]['BESCHREIBUNG'] );
-				$db->querynow("update ad_master set BESCHREIBUNG_EN ='".$BESCHREIBUNG_EN."'
-			      	where ID_AD_MASTER=". $adsList[$i]['ID_AD_MASTER'] );
+				$db->querynow("update $table set BESCHREIBUNG_EN ='".$BESCHREIBUNG_EN."'
+			      	where $column =".$id );
 			}
-			$adsList[$i]['FULL_PRODUKTNAME'] = $PRODUKTNAME_EN;
+
+			$FULL_PRODUKTNAME_EN = $adsList[$i]['FULL_PRODUKTNAME_EN'];
+			if( $FULL_PRODUKTNAME_EN == '')
+			{
+				$FULL_PRODUKTNAME_EN = translateText( $adsList[$i]['FULL_PRODUKTNAME'] );
+				$db->querynow("update $table set FULL_PRODUKTNAME_EN ='".$FULL_PRODUKTNAME_EN."'
+			      	where $column =".$id );
+			}
+			$adsList[$i]['FULL_PRODUKTNAME'] = $FULL_PRODUKTNAME_EN;
 			$adsList[$i]['PRODUKTNAME'] = $PRODUKTNAME_EN;
 			$adsList[$i]['BESCHREIBUNG'] = $BESCHREIBUNG_EN;
 		}

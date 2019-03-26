@@ -316,6 +316,10 @@ foreach ($ads as $curAdIndex => $curAd) {
     if ($curAd["VERKAUFSOPTIONEN"] == 5) {
         $ads[$curAdIndex]["BID_COUNT"] = $db->fetch_atom("SELECT COUNT(DISTINCT FK_NEGOTIATION) FROM `trade` WHERE FK_AD_REQUEST=".(int)$curAdId);
     }
+    //////////////// IMENSO //////////////////////
+    $adTable = $curAd["AD_TABLE"];
+    $ads[$curAdIndex]["PRODUKTNAME"] = $db->fetch_atom("SELECT PRODUKTNAME FROM 
+        hdb_table_$adTable WHERE ID_HDB_TABLE_$adTable=".(int)$curAd["FK_PRODUCT"]);
 }
 $tpl_content->addvar("HIDDEN_INPUT_SELECTED", implode("\n", $arSelectedHidden));
 $tpl_content->addvar("DATE_START",date("Y-m-d"));

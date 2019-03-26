@@ -15,7 +15,7 @@
             </label>
             <div class="design-input-field">
                 <input type="hidden" name="tmp_type[HERSTELLER]" value="text">
-                <input type="text" id="HERSTELLER" name="HERSTELLER" value="{htm(HERSTELLER)}" autocomplete="off" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
+                <input {if FK_PRODUCT}  readonly="true" {endif} type="text" id="HERSTELLER" name="HERSTELLER" value="{htm(HERSTELLER)}" autocomplete="off" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
             </div>
             <div class="design-input-help">
                 <span class="help-inline"></span>
@@ -29,7 +29,7 @@
             </label>
             <div class="design-input-field">
                 <input type="hidden" name="tmp_type[PRODUKTNAME]" value="text">
-                <input type="text" id="PRODUKTNAME" name="PRODUKTNAME" value="{htm(PRODUKTNAME)}" autocomplete="off" class="form-control" required="required" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
+                <input {if FK_PRODUCT}  readonly="true" {endif} type="text" id="PRODUKTNAME" name="PRODUKTNAME" value="{htm(PRODUKTNAME)}" autocomplete="off" class="form-control" required="required" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
             </div>
             <div class="design-input-help">
                 <span class="help-inline"></span>
@@ -43,7 +43,7 @@
             </label>
             <div class="design-input-field">
                 <input type="hidden" name="tmp_type[FK_ARTICLE_EXT]" value="text">
-                <input type="text" id="FK_ARTICLE_EXT" name="FK_ARTICLE_EXT" value="{htm(FK_ARTICLE_EXT)}" autocomplete="off" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
+                <input {if FK_PRODUCT}  readonly="true" {endif} type="text" id="FK_ARTICLE_EXT" name="FK_ARTICLE_EXT" value="{htm(FK_ARTICLE_EXT)}" autocomplete="off" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
             </div>
             <div class="design-input-help">
                 <span class="help-inline"></span>
@@ -58,7 +58,7 @@
 			</label>
             <div class="design-input-field">
                 <input type="hidden" name="tmp_type[EAN]" value="text">
-            				<input type="text" id="EAN" name="EAN" value="{htm(EAN)}" autocomplete="off" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
+            				<input {if FK_PRODUCT}  readonly="true" {endif} type="text" id="EAN" name="EAN" value="{htm(EAN)}" autocomplete="off" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);">
             </div>
             <div class="design-input-help">
                 <span class="help-inline"></span>
@@ -74,7 +74,7 @@
             </label>
             <div class="design-input-field">
                 <input type="hidden" name="tmp_type[NOTIZ]" value="text">
-                <input type="text" id="NOTIZ" name="NOTIZ" value="{htm(NOTIZ)}" class="form-control" onchange="validateInput(this);" onkeyup="validateInputLive(this);"/>
+                <textarea onchange="validateInput(this);" id="NOTIZ" name="NOTIZ" class="form-control">{htm(NOTIZ)}</textarea>
             </div>
             <div class="design-input-help">
                 <span class="help-inline"></span>
@@ -89,7 +89,7 @@
             <div class="design-input-field">
                 <a id="BESCHREIBUNG_ANCHOR"></a>
                 <input type="hidden" name="tmp_type[BESCHREIBUNG]" value="text">
-                <textarea onchange="validateInput(this);" id="BESCHREIBUNG" name="BESCHREIBUNG" class="form-control">{htm(BESCHREIBUNG)}</textarea>
+                <textarea {if FK_PRODUCT}  readonly="true" {endif} onchange="validateInput(this);" id="BESCHREIBUNG" name="BESCHREIBUNG" class="form-control">{htm(BESCHREIBUNG)}</textarea>
             </div>
             <div class="design-input-help">
                 <span class="help-inline"></span>
@@ -163,7 +163,8 @@ function GetProducts(query, callback) {
 }
 
 jQuery(function() {
-    InitializeEditor(true);
+    /////////////////  imenso //////////////
+    {if !FK_PRODUCT}  InitializeEditor(true); {endif} 
     // Hersteller Eingabefeld
     if (jQuery('#HERSTELLER').length > 0) {
         // Herstellerdatenbank aktiv
